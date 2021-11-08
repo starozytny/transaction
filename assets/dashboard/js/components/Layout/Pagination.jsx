@@ -150,7 +150,6 @@ export class TopPagination extends Component {
         ]
 
         let pageCount = Math.ceil(taille / perPage);
-        console.log(taille)
 
         return <div className="sorter-pagination">
             <div className="nbPerPage">

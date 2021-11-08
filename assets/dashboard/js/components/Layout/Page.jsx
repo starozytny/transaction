@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { PageError }        from "./PageError";
-import {Pagination, PaginationView} from "./Pagination";
+import { Pagination }       from "./Pagination";
 import { LoaderElement }    from "@dashboardComponents/Layout/Loader";
 
 import Formulaire           from "@dashboardComponents/functions/Formulaire";
@@ -190,7 +190,7 @@ export class Layout extends Component {
                 break;
             default:
                 havePagination = true;
-                content = loadData ? <LoaderElement /> : onContentList(data, currentData, this.handleChangeContext, this.handleGetFilters, filters)
+                content = loadData ? <LoaderElement /> : onContentList(currentData, this.handleChangeContext, this.handleGetFilters, filters, data)
                 break;
         }
 

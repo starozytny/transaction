@@ -123,7 +123,9 @@ export class User extends Component {
 
     handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
 
-    handleContentList = (data, currentData, changeContext, getFilters, filters) => {
+    handleContentList = (currentData, changeContext, getFilters, filters, data) => {
+        const { perPage, currentPage } = this.state;
+
         return <UserList onChangeContext={changeContext}
                          onDelete={this.handleDelete}
                          onGetFilters={this.handleGetFilters}
@@ -131,9 +133,9 @@ export class User extends Component {
                          onDeleteAll={this.handleDeleteGroup}
                          filters={filters}
                          developer={parseInt(this.props.developer)}
-                         perPage={this.state.perPage}
+                         perPage={perPage}
                          onPerPage={this.handlePerPage}
-                         currentPage={this.state.currentPage}
+                         currentPage={currentPage}
                          onPaginationClick={this.layout.current.page.current.pagination.current.handleClick}
                          taille={data.length}
                          data={currentData} />
