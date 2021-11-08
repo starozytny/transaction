@@ -44,7 +44,7 @@ export class UserList extends Component {
                     </div>
                     <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
-                        <Search onSearch={onSearch} />
+                        <Search onSearch={onSearch} placeholder="Recherche par identifiant, nom, prénom ou email.."/>
                         <FilterSelected filters={filters} itemsFiltersLabel={itemsFiltersLabelArray} itemsFiltersId={itemsFiltersIdArray} onChange={this.handleFilter}/>
                     </div>
                 </div>
