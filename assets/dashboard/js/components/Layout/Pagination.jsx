@@ -85,21 +85,7 @@ export class Pagination extends Component {
         let pageCount = Math.ceil(taille / perPage);
 
         let content = <>
-            <ReactPaginate
-                previousLabel={<span className="icon-left-arrow" />}
-                nextLabel={<span className="icon-right-arrow" />}
-                breakLabel={'...'}
-                breakClassName={'break-me'}
-                pageCount={pageCount}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={3}
-                onPageChange={this.handleClick}
-                containerClassName={'pagination'}
-                subContainerClassName={'pages pagination'}
-                activeClassName={'active'}
-                initialPage={parseInt(currentPage)}
-                forcePage={parseInt(currentPage)}
-            />
+            <PaginationView pageCount={pageCount} currentPage={currentPage} onClick={this.handleClick}/>
             {pageCount > 1 && <div className="input-page">
                 <Input value={inputPage} identifant="inputPage" placeholder="Aller à la page.." errors={[]} onChange={this.handleChange} />
             </div>}
@@ -109,6 +95,24 @@ export class Pagination extends Component {
             {havePagination && content}
         </>
     }
+}
+
+export function PaginationView ({ pageCount, currentPage, onClick }) {
+    return <ReactPaginate
+        previousLabel={<span className="icon-left-arrow" />}
+        nextLabel={<span className="icon-right-arrow" />}
+        breakLabel={'...'}
+        breakClassName={'break-me'}
+        pageCount={pageCount}
+        marginPagesDisplayed={1}
+        pageRangeDisplayed={3}
+        onPageChange={onClick}
+        containerClassName={'pagination'}
+        subContainerClassName={'pages pagination'}
+        activeClassName={'active'}
+        initialPage={parseInt(currentPage)}
+        forcePage={parseInt(currentPage)}
+    />
 }
 
 export class TopPagination extends Component {
