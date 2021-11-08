@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ReactPaginate      from 'react-paginate';
 
-import {Input, Select} from "@dashboardComponents/Tools/Fields";
-import Formulaire from "@dashboardComponents/functions/Formulaire";
+import { Input, Select } from "@dashboardComponents/Tools/Fields";
 
 export class Pagination extends Component {
     constructor (props) {
@@ -18,11 +17,14 @@ export class Pagination extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleComeback = this.handleComeback.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handlePerPage = this.handlePerPage.bind(this);
     }
 
     componentDidMount() {
         sessionStorage.setItem(this.props.sessionName, "0");
     }
+
+    handlePerPage = (perPage) => { this.setState({ perPage }) }
 
     handleClick = (e) => {
         const { perPage, items, sessionName } = this.props;
@@ -77,8 +79,8 @@ export class Pagination extends Component {
     }
 
     render () {
-        const { havePagination, taille } = this.props
-        const { perPage, currentPage, inputPage } = this.state
+        const { havePagination, taille } = this.props;
+        const { perPage, currentPage, inputPage } = this.state;
 
         let pageCount = Math.ceil(taille / perPage);
 
@@ -121,7 +123,11 @@ export class TopPagination extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange = (e) => { this.setState({ [e.currentTarget.name]: e.currentTarget.value }) }
+    handleChange = (e) => {
+        let value = parseInt(e.currentTarget.value);
+        this.setState({ [e.currentTarget.name]: value })
+        this.props.onPerPage(value)
+    }
 
     render () {
         const { perPage, errors } = this.state;

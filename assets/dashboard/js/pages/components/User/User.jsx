@@ -72,6 +72,7 @@ export class User extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleGetFilters = this.handleGetFilters.bind(this);
         this.handleRegenPassword = this.handleRegenPassword.bind(this);
+        this.handlePerPage = this.handlePerPage.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
         this.handleContentCreate = this.handleContentCreate.bind(this);
@@ -113,6 +114,11 @@ export class User extends Component {
         ;
     }
 
+    handlePerPage = (perPage) => {
+        this.layout.current.handlePerPage(perPage);
+        this.setState({ perPage: perPage })
+    }
+
     handleContentList = (currentData, changeContext, getFilters, filters) => {
         return <UserList onChangeContext={changeContext}
                          onDelete={this.handleDelete}
@@ -122,6 +128,7 @@ export class User extends Component {
                          filters={filters}
                          developer={parseInt(this.props.developer)}
                          perPage={this.state.perPage}
+                         onPerPage={this.handlePerPage}
                          data={currentData} />
     }
 

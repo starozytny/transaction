@@ -11,6 +11,12 @@ export class Page extends Component {
         super(props);
 
         this.pagination = React.createRef();
+
+        this.handlePerPage = this.handlePerPage.bind(this);
+    }
+
+    handlePerPage = (perPage) => {
+        this.pagination.current.handlePerPage(perPage);
     }
 
     render () {
@@ -109,6 +115,7 @@ export class Layout extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
         this.handleSwitchPublished = this.handleSwitchPublished.bind(this);
+        this.handlePerPage = this.handlePerPage.bind(this);
     }
 
     componentDidMount() { this.props.onGetData(this); }
@@ -202,9 +209,14 @@ export class Layout extends Component {
         Formulaire.switchPublished(self, element, url, nameEntity);
     }
 
+    handlePerPage = (perPage) => {
+        this.page.current.handlePerPage(perPage);
+        this.setState({ perPage });
+    }
+
     render () {
         const { onContentList, onContentCreate, onContentUpdate, onContentRead, onContentCustomOne, onContentCustomTwo } = this.props;
-        const { loadPageError, context, loadData, data, currentData, element, sessionName, filters } = this.state;
+        const { perPage, loadPageError, context, loadData, data, currentData, element, sessionName, filters } = this.state;
 
         let content, havePagination = false;
         switch (context){
@@ -234,7 +246,7 @@ export class Layout extends Component {
         }
 
         return <>
-            <Page ref={this.page} haveLoadPageError={loadPageError} sessionName={sessionName}
+            <Page ref={this.page} haveLoadPageError={loadPageError} sessionName={sessionName} perPage={perPage}
                   havePagination={havePagination} taille={data && data.length} data={data} onUpdate={this.handleUpdateData}
             >
                 {content}
