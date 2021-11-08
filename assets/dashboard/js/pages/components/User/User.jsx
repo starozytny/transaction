@@ -121,6 +121,7 @@ export class User extends Component {
                          onDeleteAll={this.handleDeleteGroup}
                          filters={filters}
                          developer={parseInt(this.props.developer)}
+                         perPage={this.state.perPage}
                          data={currentData} />
     }
 

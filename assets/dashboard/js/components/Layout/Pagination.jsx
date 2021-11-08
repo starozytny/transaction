@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactPaginate      from 'react-paginate';
 
-import { Input } from "@dashboardComponents/Tools/Fields";
+import {Input, Select} from "@dashboardComponents/Tools/Fields";
+import Formulaire from "@dashboardComponents/functions/Formulaire";
 
 export class Pagination extends Component {
     constructor (props) {
@@ -105,5 +106,44 @@ export class Pagination extends Component {
         return <>
             {havePagination && content}
         </>
+    }
+}
+
+export class TopPagination extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            perPage: props.perPage,
+            errors: []
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange = (e) => { this.setState({ [e.currentTarget.name]: e.currentTarget.value }) }
+
+    render () {
+        const { perPage, errors } = this.state;
+
+        let selectItems = [
+            { value: 10, label: '10', identifiant: 'perpage-10' },
+            { value: 15, label: '15', identifiant: 'perpage-15' },
+            { value: 20, label: '20', identifiant: 'perpage-20' },
+            { value: 25, label: '25', identifiant: 'perpage-25' },
+            { value: 30, label: '30', identifiant: 'perpage-30' },
+            { value: 35, label: '35', identifiant: 'perpage-35' },
+            { value: 40, label: '40', identifiant: 'perpage-40' },
+            { value: 45, label: '45', identifiant: 'perpage-45' },
+            { value: 50, label: '50', identifiant: 'perpage-50' },
+        ]
+
+        return <div className="sorter-pagination">
+            <div className="nbPerPage">
+                <div className="line">
+                    <Select items={selectItems} identifiant="perPage" valeur={perPage} errors={errors} onChange={this.handleChange}>Nombre de résultats par page</Select>
+                </div>
+            </div>
+        </div>
     }
 }
