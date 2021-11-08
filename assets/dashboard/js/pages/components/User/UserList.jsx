@@ -4,7 +4,7 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Button, ButtonIcon }       from "@dashboardComponents/Tools/Button";
 import { Filter, FilterSelected }   from "@dashboardComponents/Layout/Filter";
-import { TopPagination }            from "@dashboardComponents/Layout/Pagination";
+import { TopSorterPagination } from "@dashboardComponents/Layout/Pagination";
 import { Search }                   from "@dashboardComponents/Layout/Search";
 import { Alert }                    from "@dashboardComponents/Tools/Alert";
 
@@ -48,7 +48,7 @@ export class UserList extends Component {
                     </div>
                 </div>
 
-                <TopPagination currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
+                <TopSorterPagination currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
 
                 <div className="items-table">
                     <div className="items items-default items-user">

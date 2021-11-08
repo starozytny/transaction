@@ -115,7 +115,7 @@ export function PaginationView ({ pageCount, currentPage, onClick }) {
     />
 }
 
-export class TopPagination extends Component {
+export class TopSorterPagination extends Component {
     constructor(props) {
         super(props);
 
