@@ -59,7 +59,8 @@ export class User extends Component {
         super(props);
 
         this.state = {
-            perPage: 10,
+            perPage: 3,
+            currentPage: 0,
             sessionName: "user.pagination"
         }
 
@@ -73,6 +74,7 @@ export class User extends Component {
         this.handleGetFilters = this.handleGetFilters.bind(this);
         this.handleRegenPassword = this.handleRegenPassword.bind(this);
         this.handlePerPage = this.handlePerPage.bind(this);
+        this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
         this.handleContentCreate = this.handleContentCreate.bind(this);
@@ -119,7 +121,9 @@ export class User extends Component {
         this.setState({ perPage: perPage });
     }
 
-    handleContentList = (currentData, changeContext, getFilters, filters) => {
+    handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
+
+    handleContentList = (data, currentData, changeContext, getFilters, filters) => {
         return <UserList onChangeContext={changeContext}
                          onDelete={this.handleDelete}
                          onGetFilters={this.handleGetFilters}
@@ -129,6 +133,9 @@ export class User extends Component {
                          developer={parseInt(this.props.developer)}
                          perPage={this.state.perPage}
                          onPerPage={this.handlePerPage}
+                         currentPage={this.state.currentPage}
+                         onPaginationClick={this.layout.current.page.current.pagination.current.handleClick}
+                         taille={data.length}
                          data={currentData} />
     }
 
@@ -148,7 +155,8 @@ export class User extends Component {
         return <>
             <Layout ref={this.layout} {...this.state} search={this.props.search} onGetData={this.handleGetData}
                     onContentList={this.handleContentList} onContentRead={this.handleContentRead}
-                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}/>
+                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}
+                    onChangeCurrentPage={this.handleChangeCurrentPage}/>
         </>
     }
 }

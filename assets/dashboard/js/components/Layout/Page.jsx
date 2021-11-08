@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { PageError }        from "./PageError";
-import { Pagination }       from "./Pagination";
+import {Pagination, PaginationView} from "./Pagination";
 import { LoaderElement }    from "@dashboardComponents/Layout/Loader";
 
 import Formulaire           from "@dashboardComponents/functions/Formulaire";
@@ -15,24 +15,21 @@ export class Page extends Component {
         this.handlePerPage = this.handlePerPage.bind(this);
     }
 
-    handlePerPage = (perPage) => {
-        this.pagination.current.handlePerPage(perPage);
-    }
+    handlePerPage = (perPage) => { this.pagination.current.handlePerPage(perPage); }
 
     render () {
-        const { haveLoadPageError, children, sessionName,
-            havePagination, perPage = "10", taille, data,
-        } = this.props;
+        const { haveLoadPageError, children, sessionName, havePagination,
+            perPage = "10", taille, data, onChangeCurrentPage } = this.props;
 
         let hPagination = (havePagination && data && data.length !== 0);
 
         return <>
             {haveLoadPageError && <PageError />}
             <div className="main-content">
-
                 {children}
                 <Pagination ref={this.pagination} havePagination={hPagination} perPage={perPage} taille={taille} items={data}
-                            onUpdate={(items) => this.props.onUpdate(items)} sessionName={sessionName}/>
+                            onUpdate={(items) => this.props.onUpdate(items)} sessionName={sessionName}
+                            onChangeCurrentPage={onChangeCurrentPage}/>
             </div>
 
         </>
@@ -218,7 +215,8 @@ export class Layout extends Component {
     }
 
     render () {
-        const { onContentList, onContentCreate, onContentUpdate, onContentRead, onContentCustomOne, onContentCustomTwo } = this.props;
+        const { onContentList, onContentCreate, onContentUpdate, onContentRead, onContentCustomOne, onContentCustomTwo,
+            onChangeCurrentPage} = this.props;
         const { perPage, loadPageError, context, loadData, data, currentData, element, sessionName, filters } = this.state;
 
         let content, havePagination = false;
@@ -240,7 +238,7 @@ export class Layout extends Component {
                 break;
             default:
                 havePagination = true;
-                content = loadData ? <LoaderElement /> : onContentList(currentData, this.handleChangeContext, this.handleGetFilters, filters)
+                content = loadData ? <LoaderElement /> : onContentList(data, currentData, this.handleChangeContext, this.handleGetFilters, filters)
                 break;
         }
 
@@ -251,6 +249,7 @@ export class Layout extends Component {
         return <>
             <Page ref={this.page} haveLoadPageError={loadPageError} sessionName={sessionName} perPage={perPage}
                   havePagination={havePagination} taille={data && data.length} data={data} onUpdate={this.handleUpdateData}
+                  onChangeCurrentPage={onChangeCurrentPage}
             >
                 {content}
             </Page>

@@ -3,6 +3,12 @@ import ReactPaginate      from 'react-paginate';
 
 import { Input, Select } from "@dashboardComponents/Tools/Fields";
 
+function updateData(self, selectedPage, offset, items, perPage) {
+    self.setState({ currentPage: selectedPage, offset: offset })
+    self.props.onUpdate(items.slice(offset, offset + parseInt(perPage)))
+    self.props.onChangeCurrentPage(selectedPage)
+}
+
 export class Pagination extends Component {
     constructor (props) {
         super(props)
@@ -33,8 +39,7 @@ export class Pagination extends Component {
         const offset = selectedPage * perPage;
 
         if(items !== null){
-            this.setState({ currentPage: selectedPage, offset: offset })
-            this.props.onUpdate(items.slice(offset, offset + parseInt(perPage)))
+            updateData(this, selectedPage, offset, items, perPage);
             sessionStorage.setItem(sessionName, selectedPage);
         }
     }
@@ -46,18 +51,14 @@ export class Pagination extends Component {
             const selectedPage = localStorage.getItem(sessionName);
             const offset = selectedPage * perPage;
 
-            this.setState({ currentPage: selectedPage, offset: offset })
-            this.props.onUpdate(items.slice(offset, offset + parseInt(perPage)))
+            updateData(this, selectedPage, offset, items, perPage);
         }
     }
 
     handlePageOne = () => {
         const { perPage, items } = this.props;
 
-        const offset = 0;
-
-        this.setState({ currentPage: 0, offset: offset })
-        this.props.onUpdate(items.slice(offset, offset + parseInt(perPage)))
+        updateData(this, 0, 0, items, perPage);
     }
 
     handleChange = (e) => {
@@ -72,9 +73,8 @@ export class Pagination extends Component {
         }
 
         if(items !== null){
-            this.setState({ inputPage: selectedPage, currentPage: selectedPage, offset: offset })
-            this.props.onUpdate(items.slice(offset, offset + parseInt(perPage)))
-            sessionStorage.setItem(sessionName, e.currentTarget.value);
+            updateData(this, selectedPage, offset, items, perPage);
+            this.setState({ inputPage: selectedPage });
         }
     }
 
@@ -134,6 +134,7 @@ export class TopPagination extends Component {
     }
 
     render () {
+        const { taille, currentPage, onClick } = this.props;
         const { perPage, errors } = this.state;
 
         let selectItems = [
@@ -148,12 +149,17 @@ export class TopPagination extends Component {
             { value: 50, label: '50', identifiant: 'perpage-50' },
         ]
 
+        let pageCount = Math.ceil(taille / perPage);
+        console.log(taille)
+
         return <div className="sorter-pagination">
             <div className="nbPerPage">
                 <div className="line">
                     <Select items={selectItems} identifiant="perPage" valeur={perPage} errors={errors} onChange={this.handleChange}>Nombre de résultats par page</Select>
                 </div>
             </div>
+
+            <PaginationView pageCount={pageCount} currentPage={currentPage} onClick={onClick}/>
         </div>
     }
 }

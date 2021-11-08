@@ -24,7 +24,7 @@ export class UserList extends Component {
     }
 
     render () {
-        const { data, perPage, onChangeContext, onGetFilters, filters, onSearch, onDeleteAll, onPerPage } = this.props;
+        const { taille, data, perPage, onChangeContext, onGetFilters, filters, onSearch, onDeleteAll, onPerPage, onPaginationClick, currentPage } = this.props;
 
         let itemsFiltersLabelArray = ["Utilisateur", "Développeur", "Administrateur"];
         let itemsFiltersIdArray = ["f-user", "f-dev", "f-admin"];
@@ -48,7 +48,7 @@ export class UserList extends Component {
                     </div>
                 </div>
 
-                <TopPagination perPage={perPage} onPerPage={onPerPage}/>
+                <TopPagination currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
 
                 <div className="items-table">
                     <div className="items items-default items-user">
