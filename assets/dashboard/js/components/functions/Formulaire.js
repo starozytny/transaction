@@ -64,6 +64,17 @@ function updateDataPagination(self, sorter, newContext, context, data, element, 
     })
 }
 
+function updatePerPage(self, sorter, data, perPage){
+    data.sort(sorter)
+
+    self.setState({
+        dataImmuable: data,
+        data: data,
+        currentData: data.slice(0, perPage),
+        perPage: perPage
+    })
+}
+
 function displayErrors(self, error, message="Veuillez vérifier les informations transmises."){
     if(Array.isArray(error.response.data)){
         toastr.error(message);
@@ -201,5 +212,6 @@ module.exports = {
     deleteElement,
     isSeen,
     switchPublished,
-    updateValueCheckbox
+    updateValueCheckbox,
+    updatePerPage
 }

@@ -115,7 +115,7 @@ export class Layout extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
         this.handleSwitchPublished = this.handleSwitchPublished.bind(this);
-        this.handlePerPage = this.handlePerPage.bind(this);
+        this.handleUpdatePerPage = this.handleUpdatePerPage.bind(this);
     }
 
     componentDidMount() { this.props.onGetData(this); }
@@ -138,6 +138,13 @@ export class Layout extends Component {
     handleUpdateList = (element, newContext = null, sorter = null) => {
         const { data, context, perPage } = this.state
         Formulaire.updateDataPagination(this, sorter, newContext, context, data, element, perPage);
+    }
+
+    handleUpdatePerPage = (sorter = null, perPage) => {
+        const { data } = this.state
+
+        this.page.current.handlePerPage(perPage);
+        Formulaire.updatePerPage(this, sorter, data, perPage);
     }
 
     handleSetDataPagination = (donnees, sorter = null, nContext = "read", type = "id") => {
@@ -207,11 +214,6 @@ export class Layout extends Component {
 
     handleSwitchPublished = (self, element, url, nameEntity) => {
         Formulaire.switchPublished(self, element, url, nameEntity);
-    }
-
-    handlePerPage = (perPage) => {
-        this.page.current.handlePerPage(perPage);
-        this.setState({ perPage });
     }
 
     render () {

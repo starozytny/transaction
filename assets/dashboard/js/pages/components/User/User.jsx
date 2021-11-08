@@ -115,8 +115,8 @@ export class User extends Component {
     }
 
     handlePerPage = (perPage) => {
-        this.layout.current.handlePerPage(perPage);
-        this.setState({ perPage: perPage })
+        this.layout.current.handleUpdatePerPage(SORTER, perPage);
+        this.setState({ perPage: perPage });
     }
 
     handleContentList = (currentData, changeContext, getFilters, filters) => {
