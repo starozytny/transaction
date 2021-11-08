@@ -36,54 +36,6 @@ export class Page extends Component {
     }
 }
 
-function initData(donnees, sorter)
-{
-    let data = JSON.parse(donnees);
-    if(sorter){
-        data.sort(sorter);
-    }
-
-    return data;
-}
-
-function initPageWithSearch(data, search, type, context, nContext)
-{
-    let newContext = context;
-    let elem = null;
-    if(search){
-        data.forEach(el => {
-            let find = false;
-            if(type === "username"){
-                if(el.username === search){
-                    find = true;
-                }
-            }else if(type === "id"){
-                if(el.id === parseInt(search)){
-                    find = true;
-                }
-            }
-
-            if(find){
-                elem = el;
-                newContext = nContext;
-            }
-        })
-    }
-
-    return [elem, newContext];
-}
-
-function getData(donnees, sorter, search, type, context, nContext)
-{
-    let data = initData(donnees, sorter);
-
-    let element = initPageWithSearch(data, search, type, context, nContext);
-    let elem = element[0];
-    let newContext = element[1];
-
-    return [data, elem, newContext];
-}
-
 export class Layout extends Component {
     constructor(props) {
         super(props);
@@ -255,4 +207,53 @@ export class Layout extends Component {
             </Page>
         </>
     }
+}
+
+
+function initData(donnees, sorter)
+{
+    let data = JSON.parse(donnees);
+    if(sorter){
+        data.sort(sorter);
+    }
+
+    return data;
+}
+
+function initPageWithSearch(data, search, type, context, nContext)
+{
+    let newContext = context;
+    let elem = null;
+    if(search){
+        data.forEach(el => {
+            let find = false;
+            if(type === "username"){
+                if(el.username === search){
+                    find = true;
+                }
+            }else if(type === "id"){
+                if(el.id === parseInt(search)){
+                    find = true;
+                }
+            }
+
+            if(find){
+                elem = el;
+                newContext = nContext;
+            }
+        })
+    }
+
+    return [elem, newContext];
+}
+
+function getData(donnees, sorter, search, type, context, nContext)
+{
+    let data = initData(donnees, sorter);
+
+    let element = initPageWithSearch(data, search, type, context, nContext);
+    let elem = element[0];
+    let newContext = element[1];
+
+    return [data, elem, newContext];
 }
