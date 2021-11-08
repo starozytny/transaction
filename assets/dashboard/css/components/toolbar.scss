@@ -133,7 +133,7 @@
     }
   }
 
-  .actions-pagination{
+  .actions-pagination, .actions-sorter{
     .line{
       margin-bottom: 0;
       justify-content: flex-end;
@@ -152,13 +152,19 @@
         margin-left: 12px;
       }
     }
+  }
 
-    .pagination-container{
-
-    }
-
+  .actions-pagination{
     .pagination{
       margin: 0;
+    }
+  }
+
+  .actions-sorter{
+    .form-group{
+      select{
+        width: 125px;
+      }
     }
   }
 }

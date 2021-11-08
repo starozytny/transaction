@@ -120,6 +120,7 @@ export class TopSorterPagination extends Component {
         super(props);
 
         this.state = {
+            sorter: 0,
             perPage: props.perPage,
             errors: []
         }
@@ -128,14 +129,23 @@ export class TopSorterPagination extends Component {
     }
 
     handleChange = (e) => {
+        let name = e.currentTarget.name;
         let value = parseInt(e.currentTarget.value);
-        this.setState({ [e.currentTarget.name]: value })
-        this.props.onPerPage(value)
+
+        if(name === "perPage"){
+            this.props.onPerPage(value)
+        }
+
+        if(name === "sorter"){
+            this.props.onSorter(value);
+        }
+
+        this.setState({ [name]: value })
     }
 
     render () {
-        const { taille, currentPage, onClick } = this.props;
-        const { perPage, errors } = this.state;
+        const { taille, currentPage, onClick, sorters } = this.props;
+        const { sorter, perPage, errors } = this.state;
 
         let selectItems = [
             { value: 10, label: '10', identifiant: 'perpage-10' },
@@ -152,7 +162,13 @@ export class TopSorterPagination extends Component {
         let pageCount = Math.ceil(taille / perPage);
 
         return <div className="sorter-pagination">
-            <div className="actions-sorter"></div>
+            <div className="actions-sorter">
+                {sorters && <div className="line">
+                    <Select items={sorters} identifiant="sorter" valeur={sorter} errors={errors} onChange={this.handleChange}>Trier par</Select>
+                </div>}
+            </div>
+
+
             <div className="actions-pagination">
                 {onClick && <div className="line line-2">
                     <Select items={selectItems} identifiant="perPage" valeur={perPage} errors={errors} onChange={this.handleChange}>Nombre de résultats par page</Select>

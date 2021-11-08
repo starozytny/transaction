@@ -24,7 +24,8 @@ export class UserList extends Component {
     }
 
     render () {
-        const { taille, data, perPage, onChangeContext, onGetFilters, filters, onSearch, onDeleteAll, onPerPage, onPaginationClick, currentPage } = this.props;
+        const { taille, data, perPage, onChangeContext, onGetFilters, filters, onSearch, onDeleteAll, onPerPage,
+            onPaginationClick, currentPage, sorters, onSorter } = this.props;
 
         let itemsFiltersLabelArray = ["Utilisateur", "Développeur", "Administrateur"];
         let itemsFiltersIdArray = ["f-user", "f-dev", "f-admin"];
@@ -48,7 +49,8 @@ export class UserList extends Component {
                     </div>
                 </div>
 
-                <TopSorterPagination currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
+                <TopSorterPagination sorters={sorters} onSorter={onSorter}
+                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
 
                 <div className="items-table">
                     <div className="items items-default items-user">
