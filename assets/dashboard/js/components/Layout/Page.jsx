@@ -66,6 +66,7 @@ export class Layout extends Component {
         this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
         this.handleSwitchPublished = this.handleSwitchPublished.bind(this);
         this.handleUpdatePerPage = this.handleUpdatePerPage.bind(this);
+        this.handleGetPaginationClick = this.handleGetPaginationClick.bind(this);
     }
 
     componentDidMount() { this.props.onGetData(this); }
@@ -165,6 +166,8 @@ export class Layout extends Component {
     handleSwitchPublished = (self, element, url, nameEntity) => {
         Formulaire.switchPublished(self, element, url, nameEntity);
     }
+
+    handleGetPaginationClick = (self) => { return self.layout.current.page.current.pagination.current.handleClick; }
 
     render () {
         const { onContentList, onContentCreate, onContentUpdate, onContentRead, onContentCustomOne, onContentCustomTwo,

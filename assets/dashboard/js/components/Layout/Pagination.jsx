@@ -152,13 +152,16 @@ export class TopPagination extends Component {
         let pageCount = Math.ceil(taille / perPage);
 
         return <div className="sorter-pagination">
-            <div className="nbPerPage">
-                <div className="line">
+            <div className="actions-sorter"></div>
+            <div className="actions-pagination">
+                {onClick && <div className="line line-2">
                     <Select items={selectItems} identifiant="perPage" valeur={perPage} errors={errors} onChange={this.handleChange}>Nombre de résultats par page</Select>
-                </div>
-            </div>
+                    <div className="pagination-container">
+                        <PaginationView pageCount={pageCount} currentPage={currentPage} onClick={onClick}/>
+                    </div>
+                </div>}
 
-            <PaginationView pageCount={pageCount} currentPage={currentPage} onClick={onClick}/>
+            </div>
         </div>
     }
 }

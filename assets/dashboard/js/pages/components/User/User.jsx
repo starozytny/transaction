@@ -59,7 +59,7 @@ export class User extends Component {
         super(props);
 
         this.state = {
-            perPage: 3,
+            perPage: 10,
             currentPage: 0,
             sessionName: "user.pagination"
         }
@@ -128,16 +128,20 @@ export class User extends Component {
 
         return <UserList onChangeContext={changeContext}
                          onDelete={this.handleDelete}
-                         onGetFilters={this.handleGetFilters}
-                         onSearch={this.handleSearch}
                          onDeleteAll={this.handleDeleteGroup}
-                         filters={filters}
                          developer={parseInt(this.props.developer)}
+                         //filter-search
+                         onSearch={this.handleSearch}
+                         filters={filters}
+                         onGetFilters={this.handleGetFilters}
+                         //changeNumberPerPage
                          perPage={perPage}
                          onPerPage={this.handlePerPage}
+                         //twice pagination
                          currentPage={currentPage}
-                         onPaginationClick={this.layout.current.page.current.pagination.current.handleClick}
+                         onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
                          taille={data.length}
+                         //data
                          data={currentData} />
     }
 
