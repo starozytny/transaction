@@ -164,14 +164,14 @@ export class TopSorterPagination extends Component {
         return <div className="sorter-pagination">
             <div className="actions-sorter">
                 {sorters && <div className="line">
-                    <Select items={sorters} identifiant="sorter" valeur={sorter} errors={errors} onChange={this.handleChange}>Trier par</Select>
+                    <Select noEmpty={true} items={sorters} identifiant="sorter" valeur={sorter} errors={errors} onChange={this.handleChange}>Trier par</Select>
                 </div>}
             </div>
 
 
             <div className="actions-pagination">
                 {onClick && <div className="line line-2">
-                    <Select items={selectItems} identifiant="perPage" valeur={perPage} errors={errors} onChange={this.handleChange}>Nombre de résultats par page</Select>
+                    <Select noEmpty={true} items={selectItems} identifiant="perPage" valeur={perPage} errors={errors} onChange={this.handleChange}>Nombre de résultats par page</Select>
                     <div className="pagination-container">
                         <PaginationView pageCount={pageCount} currentPage={currentPage} onClick={onClick}/>
                     </div>

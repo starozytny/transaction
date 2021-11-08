@@ -96,6 +96,7 @@ export class Layout extends Component {
 
         this.page.current.handlePerPage(perPage);
         Formulaire.updatePerPage(this, sorter, data, perPage);
+        this.page.current.pagination.current.handlePageOne();
     }
 
     handleSetDataPagination = (donnees, sorter = null, nContext = "read", type = "id") => {

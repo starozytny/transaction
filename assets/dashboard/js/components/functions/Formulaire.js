@@ -68,7 +68,6 @@ function updatePerPage(self, sorter, data, perPage){
     data.sort(sorter)
 
     self.setState({
-        dataImmuable: data,
         data: data,
         currentData: data.slice(0, perPage),
         perPage: perPage
