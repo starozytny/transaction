@@ -1,5 +1,3 @@
-@import "../vars/vars";
-
 .spinner{
   @include flex(row, center, flex-start);
   background-color: var(--fondContent);
