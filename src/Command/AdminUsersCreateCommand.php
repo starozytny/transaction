@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Notification;
 use App\Entity\User;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,7 +40,7 @@ class AdminUsersCreateCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [User::class]);
+        $this->databaseService->resetTable($io, [Notification::class, User::class]);
 
         $users = array(
             [
@@ -62,7 +63,14 @@ class AdminUsersCreateCommand extends Command
                 'lastname' => 'Shanks',
                 'email' => 'shanks@hotmail.fr',
                 'roles' => ['ROLE_USER']
-            ]
+            ],
+            [
+                'username' => 'manager',
+                'firstname' => 'Manager',
+                'lastname' => 'Shan',
+                'email' => 'chanbora.chhun@outlook.fr',
+                'roles' => ['ROLE_USER', 'ROLE_MANAGER']
+            ],
         );
 
         $password = password_hash("azerty", PASSWORD_ARGON2I);

@@ -176,8 +176,8 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      */
     public function getHighRole(): string
     {
-        $rolesSortedByImportance = ['ROLE_DEVELOPER', 'ROLE_ADMIN', 'ROLE_USER', 'ROLE_MANAGER'];
-        $rolesLabel = ['Développeur', 'Administrateur', 'Utilisateur', 'Manager'];
+        $rolesSortedByImportance = ['ROLE_DEVELOPER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER', ];
+        $rolesLabel = ['Développeur', 'Administrateur', 'Manager', 'Utilisateur'];
         $i = 0;
         foreach ($rolesSortedByImportance as $role)
         {
