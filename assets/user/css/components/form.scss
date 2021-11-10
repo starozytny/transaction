@@ -1,3 +1,48 @@
 @import '../vars/vars.scss';
 
 @import "../../../common/css/components/form";
+
+.form-group .simple-select.react-selectize.default.root-node:not(.open) .react-selectize-control{
+  background: var(--alpha);
+}
+
+.checkbox-item, .radiobox-item{
+  &.checked > label{
+    border-color: var(--color0);
+    background-color: var(--color0);
+    color: var(--alpha);
+
+    &:hover{
+      background-color: var(--color0);
+      color:var(--grey2);
+      border-style: solid;
+    }
+  }
+
+  label{
+    padding: 6px 16px;
+    border: 1px solid var(--grey);
+    background: var(--fondContent);
+    color: var(--grey2);
+
+    &:hover{
+      border-color: var(--color0);
+    }
+  }
+}
+
+.radiobox-item{
+  &.checked > label{
+    &:hover{
+      background-color: var(--color0);
+      border-color: var(--color0);
+      color:var(--alpha);
+    }
+  }
+}
+
+.radiobox-item{
+  label{
+    border-radius: 100px;
+  }
+}

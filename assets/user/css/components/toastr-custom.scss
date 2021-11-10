@@ -1,3 +1,26 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/toastr";
+
+#toast-container{
+  .toast{
+    $types:
+            "error" "\e912",
+            "info" "\e935",
+            "warning" "\e912",
+            "success" "\e959"
+  ;
+
+    @each $name, $icon in $types {
+      &.toast-#{$name}{
+        .toast-message {
+          &:before {
+            content: $icon;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+
+}

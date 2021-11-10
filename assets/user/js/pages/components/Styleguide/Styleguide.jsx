@@ -13,7 +13,7 @@ export class Styleguide extends Component {
         return <div className="main-content">
             <StyleguideAlert />
             <StyleguideButton />
-            {/*<StyleguideForm />*/}
+            <StyleguideForm />
             {/*<StyleguideTable />*/}
             {/*<StyleguideMaps />*/}
             {/*<StyleguideAside />*/}
