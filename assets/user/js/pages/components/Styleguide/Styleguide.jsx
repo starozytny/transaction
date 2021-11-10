@@ -16,8 +16,8 @@ export class Styleguide extends Component {
             <StyleguideForm />
             <StyleguideAside />
             <StyleguideTable />
-            <StyleguideMaps />
-            <StyleguideLozad />
+            {/*<StyleguideMaps />*/}
+            {/*<StyleguideLozad />*/}
         </div>
     }
 }

@@ -2,9 +2,7 @@
 
 @import "../../../common/css/components/button";
 
-.btn, .btn-icon,
-button.swal2-confirm.swal2-styled,
-button.swal2-cancel.swal2-styled{
+.btn-icon{
   [class^="icon-"]{
     font-size: 18px;
   }
@@ -38,7 +36,7 @@ button.swal2-cancel.swal2-styled{
 }
 
 $icons:
-        "reverse" var(--grey) var(--txt) var(--greyShadow),
+        "reverse" var(--grey) var(--txt) var(--grey),
         "color0" var(--color0) var(--alpha) var(--color0Shadow2);
 
 @each $name, $bg, $txt, $shadow in $icons {
@@ -113,21 +111,5 @@ $icons:
   &:hover{
     color: var(--txt);
     opacity: 1;
-  }
-}
-
-//                      __   _____ __    ___    __
-//                     | _| |___  / /_  ( _ )  |_ |
-//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
-//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
-//                     | |   /_/  \___/ \___/   | |
-//                     |__|                    |__|
-@media (min-width:768px) {
-  .btn, .btn-icon,
-  button.swal2-confirm.swal2-styled,
-  button.swal2-cancel.swal2-styled{
-    [class^="icon-"]{
-      font-size: 20px;
-    }
   }
 }

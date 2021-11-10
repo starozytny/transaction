@@ -278,6 +278,12 @@
       .actions{
         width: auto;
         margin-top: 0;
+
+        .btn-icon{
+          [class^="icon-"]{
+            font-size: 20px;
+          }
+        }
       }
       .col-1{
         & + *{
