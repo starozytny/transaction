@@ -5,13 +5,21 @@
 
 :root{
   --color0: #094fa7;
-
   --primary: #1678F2;
-
   --danger: #F76E76;
-  --error: #ff5444;
-
   --warning: #F3AF49;
+
+  --color0Shadow: rgba(9, 79, 167, 0.4);
+  --color0Shadow2: rgba(9, 79, 167, 0.1);
+
+  --primaryShadow: rgba(22, 120, 242, 0.4);
+  --primaryShadow2: rgba(22, 120, 242, 0.1);
+
+  --dangerShadow: rgba(247, 110, 118, 0.4);
+  --dangerShadow2: rgba(247, 110, 118, 0.1);
+
+  --warningShadow: rgba(243, 175, 73, 0.4);
+  --warningShadow2: rgba(243, 175, 73, 0.1);
 
   --grey: #E0E0E3;
   --grey2: #8A8F97;

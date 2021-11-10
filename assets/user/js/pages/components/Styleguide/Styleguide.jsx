@@ -12,12 +12,12 @@ export class Styleguide extends Component {
     render () {
         return <div className="main-content">
             <StyleguideButton />
-            <StyleguideAlert />
-            <StyleguideForm />
-            <StyleguideTable />
-            <StyleguideMaps />
-            <StyleguideAside />
-            <StyleguideLozad />
+            {/*<StyleguideAlert />*/}
+            {/*<StyleguideForm />*/}
+            {/*<StyleguideTable />*/}
+            {/*<StyleguideMaps />*/}
+            {/*<StyleguideAside />*/}
+            {/*<StyleguideLozad />*/}
         </div>
     }
 }
