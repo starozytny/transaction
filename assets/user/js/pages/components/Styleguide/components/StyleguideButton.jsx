@@ -7,9 +7,14 @@ export function StyleguideButton () {
         <section>
             <h2>Boutons</h2>
             <div className="buttons-items">
+                <div className="interactions">
+                    <Button>Primary</Button>
+                    <Button>Active</Button>
+                    <Button>Disabled</Button>
+                </div>
 
                 <Button type="default">Default</Button>
-                <Button>Primary</Button>
+
                 <Button type="danger">Danger</Button>
                 <Button type="warning">Warning</Button>
                 <Button type="success">Success</Button>

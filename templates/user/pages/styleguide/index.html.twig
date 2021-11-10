@@ -8,7 +8,10 @@
 {% endblock %}
 
 {% block main_content %}
-    <div id="styleguide"></div>
+    {% include "dashboard/layout/components/spinnger.html.twig" %}
+{#    <div id="styleguide">#}
+{#        {% include "dashboard/layout/components/spinnger.html.twig" %}#}
+{#    </div>#}
 {% endblock %}
 
 {% block javascripts %}
