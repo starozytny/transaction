@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import axios             from "axios";
 import toastr            from "toastr";
 import Swal              from "sweetalert2";
-import SwalOptions       from "@dashboardComponents/functions/swalOptions";
+import SwalOptions       from "@commonComponents/functions/swalOptions";
 import Routing           from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Layout }        from "@dashboardComponents/Layout/Page";
-import Sort              from "@dashboardComponents/functions/sort";
+import Sort              from "@commonComponents/functions/sort";
 import Formulaire        from "@dashboardComponents/functions/Formulaire";
 
 import { UserList }       from "./UserList";

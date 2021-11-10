@@ -4,7 +4,7 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Button, ButtonIcon }       from "@dashboardComponents/Tools/Button";
 import { Filter, FilterSelected }   from "@dashboardComponents/Layout/Filter";
-import { TopSorterPagination } from "@dashboardComponents/Layout/Pagination";
+import { TopSorterPagination }      from "@dashboardComponents/Layout/Pagination";
 import { Search }                   from "@dashboardComponents/Layout/Search";
 import { Alert }                    from "@dashboardComponents/Tools/Alert";
 

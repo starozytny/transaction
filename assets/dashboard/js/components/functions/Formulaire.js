@@ -1,7 +1,7 @@
 const axios       = require("axios");
 const toastr      = require("toastr");
 const Swal        = require("sweetalert2");
-const SwalOptions = require("@dashboardComponents/functions/swalOptions");
+const SwalOptions = require("@commonComponents/functions/swalOptions");
 const UpdateList  = require("@dashboardComponents/functions/updateList");
 
 function axiosGetData(self, url, sorter = null){
