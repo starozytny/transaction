@@ -40,6 +40,15 @@ Encore
         to: 'app/images/[path][name].[ext]',
     })
 
+    .copyFiles({
+        from: './assets/user/fonts',
+        to: 'app/fonts/[path][name].[ext]',
+    })
+    .copyFiles({
+        from: './assets/user/images',
+        to: 'app/images/[path][name].[ext]',
+    })
+
     .configureFilenames({
         css: !Encore.isProduction() ? 'css/[name].css' : 'css/[name].[hash:8].css',
         js: !Encore.isProduction() ? 'js/[name].js' : 'js/[name].[hash:8].js'
@@ -62,6 +71,8 @@ Encore
     .addEntry('dashboard_settings', './assets/dashboard/js/pages/settings.js')
     .addEntry('dashboard_contact', './assets/dashboard/js/pages/contact.js')
     .addEntry('dashboard_notifications', './assets/dashboard/js/pages/notifications.js')
+
+    .addEntry('user', './assets/user/js/app.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')
