@@ -50,6 +50,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .icon-menu:before {
   content: "\e900";
 }
@@ -58,6 +59,9 @@
 }
 .icon-earth:before {
   content: "\e902";
+}
+.icon-heart:before {
+  content: "\e907";
 }
 .icon-layer:before {
   content: "\e903";
