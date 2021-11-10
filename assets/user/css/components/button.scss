@@ -2,6 +2,14 @@
 
 @import "../../../common/css/components/button";
 
+.btn, .btn-icon,
+button.swal2-confirm.swal2-styled,
+button.swal2-cancel.swal2-styled{
+  [class^="icon-"]{
+    font-size: 18px;
+  }
+}
+
 .btn{
   position: relative;
   padding: 8px 16px;
@@ -105,5 +113,21 @@ $icons:
   &:hover{
     color: var(--txt);
     opacity: 1;
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .btn, .btn-icon,
+  button.swal2-confirm.swal2-styled,
+  button.swal2-cancel.swal2-styled{
+    [class^="icon-"]{
+      font-size: 20px;
+    }
   }
 }

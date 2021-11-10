@@ -14,10 +14,10 @@ export class Styleguide extends Component {
             <StyleguideAlert />
             <StyleguideButton />
             <StyleguideForm />
-            {/*<StyleguideTable />*/}
-            {/*<StyleguideMaps />*/}
-            {/*<StyleguideAside />*/}
-            {/*<StyleguideLozad />*/}
+            <StyleguideAside />
+            <StyleguideTable />
+            <StyleguideMaps />
+            <StyleguideLozad />
         </div>
     }
 }
