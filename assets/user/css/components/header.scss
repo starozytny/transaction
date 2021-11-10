@@ -1,13 +1,22 @@
 @import "../vars/vars";
 
 header{
-  padding: 12px;
+  padding: 8px 12px;
   background-color: var(--fond);
 
   .header-container{
     position: relative;
-    @include flex(row, center, flex-end);
-    margin: 12px 0;
+    @include flex(column-reverse, flex-start, flex-end);
+    margin: 8px 0 0 0;
+
+    .left{
+      margin-top: 12px;
+    }
+
+    .right{
+      width: 100%;
+      @include flex(row, center, flex-end);
+    }
 
     .header-name{
       @include flex(row, center, flex-start);
@@ -50,6 +59,14 @@ header{
 @media (min-width:768px) {
   header{
     .header-container{
+      flex-direction: row;
+      align-items: center;
+      margin-top: 0;
+
+      .left{
+        margin-top: 0;
+      }
+
       a{
         span:last-child{
           display: inline-block;
