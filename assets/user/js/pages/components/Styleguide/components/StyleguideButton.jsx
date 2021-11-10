@@ -6,26 +6,27 @@ export function StyleguideButton () {
     return (
         <section>
             <h2>Boutons</h2>
-            <div className="buttons-items">
+            <div className="styleguide-items">
                 <div className="interactions">
-                    <Button>Primary</Button>
+                    <Button>Default</Button>
                     <Button>Active</Button>
                     <Button>Disabled</Button>
                 </div>
+            </div>
 
+            <div className="styleguide-items">
                 <Button type="default">Default</Button>
-
+                <Button type="primary">Primary</Button>
                 <Button type="danger">Danger</Button>
                 <Button type="warning">Warning</Button>
                 <Button type="success">Success</Button>
                 <Button type="default" icon="padlock">Default</Button>
 
-                <ButtonIcon icon="pencil">Modifier</ButtonIcon>
-                <ButtonIcon icon="pencil" text="Default" />
-
+                <ButtonIcon icon="heart">Modifier</ButtonIcon>
+                <ButtonIcon icon="heart" text="Default" />
             </div>
 
-            <div className="buttons-items">
+            <div className="styleguide-items">
 
                 <Button outline={true} type="default">Default</Button>
                 <Button outline={true}>Primary</Button>

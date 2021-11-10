@@ -1,0 +1,38 @@
+@import "../vars/vars";
+
+section{
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 48px;
+  background-color: var(--alpha);
+  border: 1px solid var(--grey);
+
+  h2{
+    margin-bottom: 24px;
+  }
+
+  .styleguide-items{
+
+    .interactions {
+      & > *:not(:last-child) {
+        margin-right: 12px;
+      }
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  section{
+    padding: 24px;
+  }
+}
