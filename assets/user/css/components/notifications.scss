@@ -79,7 +79,7 @@
     max-height: 320px;
     overflow: auto;
     @include scrollbar();
-    border-bottom: 1px solid var(--fond);
+    border-bottom: 1px solid var(--grey);
     padding-bottom: 12px;
 
     .item{
@@ -97,12 +97,12 @@
     }
 
     .item-icon{
-      background-color: var(--fond);
+      background-color: var(--grey);
       border-radius: 50px;
       margin-right: 12px;
       width: 32px; height: 32px;
       @include flex(row, center, center);
-      color: var(--grey2);
+      color: var(--grey3);
     }
 
     .title{
@@ -143,7 +143,7 @@
   @include flex(row, flex-start, space-between);
   padding: 12px;
   margin-bottom: 12px;
-  border-bottom: 1px solid var(--fond);
+  border-bottom: 1px solid var(--grey);
 
   & > span:first-child{
     opacity: 0.8;
@@ -152,8 +152,8 @@
   }
 
   .icon-cancel{
-    font-size: 12px;
-    opacity: 0.6;
+    font-size: 16px;
+    opacity: 0.8;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
 
