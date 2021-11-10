@@ -6,6 +6,35 @@
   background: var(--alpha);
 }
 
+.line{
+  label{
+    color: var(--grey3);
+  }
+}
+
+.switcher-items{
+  .switcher-item{
+
+    label{
+      cursor: pointer;
+
+      &:after{
+        content: "\e912";
+        top: 7px; left: 8.5px;
+        font-size: 16px;
+      }
+    }
+
+    &.checked{
+      label{
+        &:after{
+          content: "\e959";
+        }
+      }
+    }
+  }
+}
+
 .checkbox-item, .radiobox-item{
   &.checked > label{
     border-color: var(--color0);
@@ -14,7 +43,7 @@
 
     &:hover{
       background-color: var(--color0);
-      color:var(--grey2);
+      color:var(--grey);
       border-style: solid;
     }
   }
@@ -23,7 +52,7 @@
     padding: 6px 16px;
     border: 1px solid var(--grey);
     background: var(--fondContent);
-    color: var(--grey2);
+    color: var(--grey3);
 
     &:hover{
       border-color: var(--color0);
