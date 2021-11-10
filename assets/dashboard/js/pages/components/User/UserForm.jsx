@@ -22,7 +22,7 @@ export function UserFormulaire ({ type, onChangeContext, onUpdateList, element }
     if(type === "update"){
         title = "Modifier " + element.username;
         url = Routing.generate('api_users_update', {'id': element.id});
-        msg = "Félicitation ! La mise à jour s'est réalisé avec succès !";
+        msg = "Félicitation ! La mise à jour s'est réalisée avec succès !";
     }
 
     let form = <UserForm
@@ -156,8 +156,8 @@ export class UserForm extends Component {
         const { errors, success, username, firstname, lastname, email, password, passwordConfirm, roles, avatar } = this.state;
 
         let rolesItems = [
-            { 'value': 'ROLE_ADMIN', 'label': 'Admin', 'identifiant': 'admin' },
-            { 'value': 'ROLE_USER', 'label': 'Utilisateur', 'identifiant': 'utilisateur' },
+            { value: 'ROLE_ADMIN', label: 'Admin',          identifiant: 'admin' },
+            { value: 'ROLE_USER',  label: 'Utilisateur',    identifiant: 'utilisateur' },
         ]
 
         return <>
