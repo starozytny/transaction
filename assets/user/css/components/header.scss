@@ -3,6 +3,11 @@
 header{
   padding: 8px 12px;
   background-color: var(--fond);
+  border-bottom: 2px solid var(--fondContent);
+
+  h1{
+    font-size: 26px;
+  }
 
   .header-container{
     position: relative;
@@ -40,11 +45,10 @@ header{
     }
 
     .logout{
-      opacity: 0.6;
-      color: var(--txt);
+      color: var(--grey2);
 
       &:hover{
-        opacity: 1;
+        color: var(--txt);
       }
     }
   }
@@ -96,10 +100,23 @@ header{
 //                     |__|                      |__|
 @media (min-width:1280px) {
   header{
-    padding: 32px;
+    padding: 16px 32px 12px 32px;
+    margin-bottom: 36px;
 
     .header-container{
       @include maxscreen();
     }
+  }
+}
+
+//                      __   _  __    ___   ___    __
+//                     | _| / |/ /_  / _ \ / _ \  |_ |
+//    _____ _____ _____| |  | | '_ \| | | | | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | | (_) | |_| | |_| |  | |_____|_____|_____|
+//                     | |  |_|\___/ \___/ \___/   | |
+//                     |__|                       |__|
+@media (min-width: 1600px){
+  header{
+    padding: 24px 32px 24px 32px;
   }
 }

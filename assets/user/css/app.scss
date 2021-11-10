@@ -3,6 +3,26 @@
 
 @import "../../common/css/color";
 
+:root{
+  --color0: #094fa7;
+
+  --primary: #1678F2;
+
+  --danger: #F76E76;
+  --error: #ff5444;
+
+  --warning: #F3AF49;
+
+  --grey: #E0E0E3;
+  --grey2: #8A8F97;
+  --grey3: #727477;
+
+  --txt:#202020;
+  --fond: #FEFEFE;
+  --fondContent: #F3F4F8;
+  --fondMenu: #212121;
+}
+
 @import "vars/fonts";
 @import "vars/vars";
 
@@ -65,7 +85,7 @@ h2{
 }
 
 main{
-  background-color: var(--fondContent);
+  background-color: var(--fond);
 }
 
 .main-content{
@@ -107,8 +127,8 @@ main{
 //                     |__|                      |__|
 @media (min-width:1280px) {
   main{
-    width: 84%;
-    margin-left: 16%;
+    width: 82.5%;
+    margin-left: 17.5%;
   }
   .main-content{
     padding: 24px 32px;
