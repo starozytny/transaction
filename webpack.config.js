@@ -43,11 +43,11 @@ Encore
 
     .copyFiles({
         from: './assets/user/fonts',
-        to: 'app/fonts/[path][name].[ext]',
+        to: 'user/fonts/[path][name].[ext]',
     })
     .copyFiles({
         from: './assets/user/images',
-        to: 'app/images/[path][name].[ext]',
+        to: 'user/images/[path][name].[ext]',
     })
 
     .configureFilenames({
