@@ -11,8 +11,8 @@ import { StyleguideButton }    from "./components/StyleguideButton";
 export class Styleguide extends Component {
     render () {
         return <div className="main-content">
+            <StyleguideAlert />
             <StyleguideButton />
-            {/*<StyleguideAlert />*/}
             {/*<StyleguideForm />*/}
             {/*<StyleguideTable />*/}
             {/*<StyleguideMaps />*/}

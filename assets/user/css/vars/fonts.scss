@@ -57,8 +57,17 @@
 .icon-menu:before {
   content: "\e900";
 }
+.icon-pencil:before {
+  content: "\e90a";
+}
 .icon-dashboard:before {
   content: "\e901";
+}
+.icon-eye:before {
+  content: "\e90b";
+}
+.icon-eye-slash:before {
+  content: "\e90c";
 }
 .icon-earth:before {
   content: "\e902";
@@ -69,6 +78,9 @@
 .icon-layer:before {
   content: "\e903";
 }
+.icon-question:before {
+  content: "\e90d";
+}
 .icon-logout:before {
   content: "\e904";
 }
@@ -78,6 +90,15 @@
 .icon-setting:before {
   content: "\e906";
 }
+.icon-error:before {
+  content: "\e912";
+}
 .icon-cancel:before {
   content: "\e913";
+}
+.icon-warning:before {
+  content: "\e919";
+}
+.icon-information:before {
+  content: "\e935";
 }

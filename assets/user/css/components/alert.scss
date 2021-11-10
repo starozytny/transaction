@@ -1,3 +1,22 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/alert";
+
+$icons:
+        "default" var(--fondContent) var(--txt) var(--greyShadow),
+        "default-reverse" var(--alpha) var(--txt) var(--greyShadow),
+        "primary" var(--primaryNuance0) var(--primary) var(--primaryShadow2),
+        "danger" var(--dangerNuance0) var(--danger) var(--dangerShadow2),
+        "warning" var(--warningNuance0) var(--warning) var(--warningShadow2)
+;
+
+@each $name, $bg, $txt, $shadow in $icons {
+  .alert-#{$name} {
+    background: $bg;
+    color: $txt;
+  }
+}
+
+.alert-default-reverse{
+  border: 1px solid var(--grey);
+}
