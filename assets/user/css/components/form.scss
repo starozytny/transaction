@@ -17,6 +17,7 @@
 
     label{
       cursor: pointer;
+      background-color: var(--danger);
 
       &:after{
         content: "\e912";
@@ -27,8 +28,11 @@
 
     &.checked{
       label{
+        background-color: var(--color0);
+
         &:after{
           content: "\e959";
+          color: var(--color0);
         }
       }
     }
