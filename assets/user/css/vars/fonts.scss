@@ -51,8 +51,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 .icon-colorfilter:before {
   content: "\e908";
+}
+.icon-archive:before {
+  content: "\e909";
 }
 .icon-menu:before {
   content: "\e900";
@@ -101,6 +105,9 @@
 }
 .icon-information:before {
   content: "\e935";
+}
+.icon-dropdown:before {
+  content: "\e942";
 }
 .icon-check:before {
   content: "\e959";

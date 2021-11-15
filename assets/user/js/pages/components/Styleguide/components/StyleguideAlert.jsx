@@ -7,7 +7,6 @@ export function StyleguideAlert () {
         <section>
             <h2>Alerts</h2>
             <div className="styleguide-items">
-
                 <div className="interactions">
                     <Alert>Default</Alert>
                     <Alert type="reverse">Reverse</Alert>
