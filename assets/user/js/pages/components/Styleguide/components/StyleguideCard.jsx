@@ -70,8 +70,8 @@ export function AdCard ({ status, statusName }) {
                 </div>
             </div>
             <div className="card-footer">
-                <div className="commentary">Commentaire : Les clés sont à récupérer auprès de Shanbo.</div>
-                <div>
+                <div>Commentaire : Les clés sont à récupérer auprès de Shanbo.</div>
+                <div className="footer-actions">
                     <div className="createdAt">
                         Ajouté le 03 nov. 2021 par Shanbo - Modifié le 05 nov. 2021 par Shanbo
                     </div>

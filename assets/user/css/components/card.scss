@@ -54,15 +54,6 @@
     overflow: hidden;
   }
 
-  .selector{
-    width: 13px;
-    margin-right: 12px;
-
-    input{
-      width: 13px;
-    }
-  }
-
   .card-main{
     border-radius: 4px;
     background-color: var(--alpha);
@@ -101,6 +92,8 @@
 
     .references{
       margin-bottom: 8px;
+      color: var(--grey3);
+      font-size: 14px;
     }
   }
 
@@ -108,7 +101,7 @@
     padding: 12px 12px 4px 12px;
     background-color: var(--fondContent);
 
-    .commentary + div{
+    .footer-actions{
       margin-top: 12px;
     }
 
@@ -177,7 +170,7 @@
 
     .card-footer{
 
-      .commentary + div{
+      .footer-actions{
         margin-top: 0;
         @include flex(row, flex-end, space-between);
       }
@@ -205,13 +198,25 @@
       width: 140px;
     }
 
+    .status{
+      font-size: 15px;
+    }
+
     .card-body{
       .infos{
         width: calc(100% - 24px - 140px);
       }
+
+      .references{
+        font-size: 15px;
+      }
     }
 
     .card-footer{
+      .createdAt{
+        font-size: 13px;
+      }
+
       .btn-icon [class^="icon-"]{
         font-size: 22px;
       }
