@@ -46,6 +46,21 @@
     margin-left: 4px;
   }
 
+  .negociateur{
+    position: relative;
+
+    .tooltip{
+      min-width: 90px;
+    }
+
+    &:hover{
+      .tooltip{
+        opacity: 1;
+        z-index: 1;
+      }
+    }
+  }
+
   .avatar{
     width: 32px; height: 32px;
     border-radius: 100px;
@@ -198,17 +213,9 @@
       width: 140px;
     }
 
-    .status{
-      font-size: 15px;
-    }
-
     .card-body{
       .infos{
         width: calc(100% - 24px - 140px);
-      }
-
-      .references{
-        font-size: 15px;
       }
     }
 
@@ -219,6 +226,22 @@
 
       .btn-icon [class^="icon-"]{
         font-size: 22px;
+      }
+    }
+  }
+}
+
+//                      __   _  __    ___   ___    __
+//                     | _| / |/ /_  / _ \ / _ \  |_ |
+//    _____ _____ _____| |  | | '_ \| | | | | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | | (_) | |_| | |_| |  | |_____|_____|_____|
+//                     | |  |_|\___/ \___/ \___/   | |
+//                     |__|                       |__|
+@media (min-width: 1600px){
+  .card-ad{
+    .card-body{
+      .references{
+        font-size: 15px;
       }
     }
   }

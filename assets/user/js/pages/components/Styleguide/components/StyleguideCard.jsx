@@ -65,6 +65,7 @@ export function AdCard ({ status, statusName }) {
                             <div className="avatar">
                                 <img src={`https://robohash.org/${Math.random()}?size=64x64`} alt="Avatar" />
                             </div>
+                            <span className="tooltip">Shanbora Shhun</span>
                         </div>
                     </div>
                 </div>
