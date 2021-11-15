@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Selector } from "@dashboardComponents/Layout/Selector";
-import {ButtonIcon} from "@dashboardComponents/Tools/Button";
+import { Selector }   from "@dashboardComponents/Layout/Selector";
+import { ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 export function StyleguideCard () {
     return (
@@ -10,8 +10,20 @@ export function StyleguideCard () {
             <div className="styleguide-items">
                 <div className="interactions">
                     <AdCard status={0} statusName="Inactif"/>
+                </div>
+            </div>
+            <div className="styleguide-items">
+                <div className="interactions">
                     <AdCard status={1} statusName="Actif"/>
+                </div>
+            </div>
+            <div className="styleguide-items">
+                <div className="interactions">
                     <AdCard status={2} statusName="Brouillon"/>
+                </div>
+            </div>
+            <div className="styleguide-items">
+                <div className="interactions">
                     <AdCard status={3} statusName="Archive"/>
                 </div>
             </div>
@@ -71,7 +83,7 @@ export function AdCard ({ status, statusName }) {
                 </div>
             </div>
             <div className="card-footer">
-                <div>Commentaire : Les clés sont à récupérer auprès de Shanbo.</div>
+                <div className="commentary">Commentaire : Les clés sont à récupérer auprès de Shanbo.</div>
                 <div className="footer-actions">
                     <div className="createdAt">
                         Ajouté le 03 nov. 2021 par Shanbo - Modifié le 05 nov. 2021 par Shanbo

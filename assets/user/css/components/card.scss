@@ -185,6 +185,10 @@
 
     .card-footer{
 
+      .commentary{
+        width: calc(100% - 184px);
+      }
+
       .footer-actions{
         margin-top: 0;
         @include flex(row, flex-end, space-between);
