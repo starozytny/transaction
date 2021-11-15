@@ -6,10 +6,18 @@
   background: var(--alpha);
 }
 
+.react-selectize.default.root-node .react-selectize-control .react-selectize-placeholder{
+  @include fontRegular();
+}
+
 .line{
   label{
     color: var(--grey3);
   }
+}
+
+.form-group-error label{
+  color: var(--error);
 }
 
 .switcher-items{
