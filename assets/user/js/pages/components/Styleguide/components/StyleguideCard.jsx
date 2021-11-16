@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Selector }   from "@dashboardComponents/Layout/Selector";
-import { ButtonIcon } from "@dashboardComponents/Tools/Button";
+import {ButtonIcon, ButtonIconDropdown} from "@dashboardComponents/Tools/Button";
 
 export function StyleguideCard () {
     return (
@@ -32,6 +32,10 @@ export function StyleguideCard () {
 }
 
 export function AdCard ({ status, statusName }) {
+    let items = [
+        {data: <a href="/">Envoyer un mail</a>},
+        {data: <a href="/">Imprimer la fiche</a>}
+    ]
     return <div className="card-ad">
         <Selector />
 
@@ -92,7 +96,7 @@ export function AdCard ({ status, statusName }) {
                         <ButtonIcon icon="pencil">Modifier</ButtonIcon>
                         <ButtonIcon icon="archive">Archive</ButtonIcon>
                         <ButtonIcon icon="trash">Supprimer</ButtonIcon>
-                        <ButtonIcon icon="dropdown">Dropdown</ButtonIcon>
+                        <ButtonIconDropdown icon="dropdown" items={items}>Menu</ButtonIconDropdown>
                     </div>
                 </div>
             </div>
