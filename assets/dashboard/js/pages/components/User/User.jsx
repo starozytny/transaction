@@ -69,6 +69,7 @@ export class User extends Component {
         this.state = {
             perPage: 10,
             currentPage: 0,
+            sorter: SORTER,
             sessionName: "user.pagination"
         }
 
@@ -90,9 +91,9 @@ export class User extends Component {
         this.handleContentRead = this.handleContentRead.bind(this);
     }
 
-    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, SORTER, "read", "username"); }
+    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "username"); }
 
-    handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext, SORTER); }
+    handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
     handleDelete = (element) => {
         this.layout.current.handleDelete(this, element, Routing.generate(URL_DELETE_ELEMENT, {'id': element.id}), MSG_DELETE_ELEMENT);
@@ -107,6 +108,7 @@ export class User extends Component {
     handleSearch = (search) => { this.layout.current.handleSearch(search, searchFunction, true, filterFunction); }
 
     handleRegenPassword = (elem) => {
+        const self = this;
         Swal.fire(SwalOptions.options("Réinitialiser son mot de passe", "Le nouveau mot de passe ne s'affichera <u>qu'une seule fois</u>. Pensez donc à le noter."))
             .then((result) => {
                 if (result.isConfirmed) {
@@ -136,6 +138,7 @@ export class User extends Component {
 
         SORTER = sortersFunction[nb];
         this.layout.current.handleUpdatePerPage(SORTER, perPage);
+        this.setState({ sorter: SORTER });
     }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {

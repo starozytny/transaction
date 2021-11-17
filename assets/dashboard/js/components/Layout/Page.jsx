@@ -48,6 +48,7 @@ export class Layout extends Component {
             currentData: null,
             element: null,
             filters: [],
+            sorter: props.sorter ? props.sorter : null,
             perPage: props.perPage,
             sessionName: props.sessionName,
             search: props.search ? props.search : null
@@ -86,9 +87,19 @@ export class Layout extends Component {
         }
     }
 
-    handleUpdateList = (element, newContext = null, sorter = null) => {
-        const { data, context, perPage } = this.state
-        Formulaire.updateDataPagination(this, sorter, newContext, context, data, element, perPage);
+    handleUpdateList = (element, newContext = null) => {
+        const { data, dataImmuable, currentData, context, perPage, sorter} = this.state
+
+        let newData = Formulaire.updateDataPagination(this, sorter, newContext, context, data, element, perPage);
+        let newDataImmuable = Formulaire.updateDataPagination(this, sorter, newContext, context, dataImmuable, element, perPage);
+        let newCurrentData = Formulaire.updateDataPagination(this, sorter, newContext, context, currentData, element, perPage);
+
+        this.setState({
+            data: newData,
+            dataImmuable: newDataImmuable,
+            currentData: newCurrentData,
+            element: element
+        })
     }
 
     handleUpdatePerPage = (sorter = null, perPage) => {
@@ -97,10 +108,11 @@ export class Layout extends Component {
         this.page.current.handlePerPage(perPage);
         Formulaire.updatePerPage(this, sorter, data, perPage);
         this.page.current.pagination.current.handlePageOne();
+        this.setState({ sorter });
     }
 
-    handleSetDataPagination = (donnees, sorter = null, nContext = "read", type = "id") => {
-        const { context, perPage, search } = this.state;
+    handleSetDataPagination = (donnees, nContext = "read", type = "id") => {
+        const { context, perPage, search, sorter } = this.state;
 
         let elements = getData(donnees, sorter, search, type, context, nContext);
 
@@ -111,8 +123,8 @@ export class Layout extends Component {
         this.setState({ context: newContext, dataImmuable: data, data: data, currentData: data.slice(0, perPage), loadPageError: false, loadData: false, element: elem })
     }
 
-    handleSetData = (donnees, sorter = null, nContext = "read", type = "id") => {
-        const { context, search } = this.state;
+    handleSetData = (donnees, nContext = "read", type = "id") => {
+        const { context, search, sorter } = this.state;
 
         let elements = getData(donnees, sorter, search, type, context, nContext);
 
@@ -124,30 +136,38 @@ export class Layout extends Component {
     }
 
     handleSearch = (search, searchFunction, haveFilter = false, filterFunction) => {
-        const { dataImmuable, filters, perPage } = this.state;
+        const { dataImmuable, filters, perPage, sorter } = this.state;
 
+        let d = dataImmuable
         if(!haveFilter){
             if(search === "") {
                 this.setState({ data: dataImmuable, currentData: dataImmuable.slice(0, perPage) });
-            }else{
-                let newData = searchFunction(dataImmuable, search);
-                this.setState({ data: newData, currentData: newData.slice(0, perPage) });
             }
         }else{
             let dataSearch = this.handleGetFilters(filters, filterFunction);
             if(search === "") {
                 this.handleGetFilters(filters, filterFunction)
             }else{
-                let newData = searchFunction(dataSearch, search);
-                this.setState({ data: newData, currentData: newData.slice(0, perPage) });
+                d = dataSearch
             }
+        }
+
+        if(search !== ""){
+            let newData = searchFunction(d, search);
+            if(sorter){
+                newData.sort(sorter)
+            }
+            this.setState({ data: newData, currentData: newData.slice(0, perPage) });
         }
     }
 
     handleGetFilters = (filters, filterFunction) => {
-        const { dataImmuable, perPage, sessionName } = this.state;
+        const { dataImmuable, perPage, sessionName, sorter } = this.state;
 
         let newData = filterFunction(dataImmuable, filters);
+        if(sorter){
+            newData.sort(sorter)
+        }
 
         sessionStorage.setItem(sessionName, "0")
         this.page.current.pagination.current.handlePageOne();
@@ -159,9 +179,9 @@ export class Layout extends Component {
         Formulaire.axiosDeleteElement(self, element, url, msg, text);
     }
 
-    handleDeleteGroup = (self, url, msg) => {
+    handleDeleteGroup = (self, url, msg, sorter = null) => {
         let checked = document.querySelectorAll('.i-selector:checked');
-        Formulaire.axiosDeleteGroupElement(self, checked, url, msg)
+        Formulaire.axiosDeleteGroupElement(self, checked, url, msg, sorter)
     }
 
     handleSwitchPublished = (self, element, url, nameEntity) => {
