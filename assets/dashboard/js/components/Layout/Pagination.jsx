@@ -148,6 +148,7 @@ export class TopSorterPagination extends Component {
         const { sorter, perPage, errors } = this.state;
 
         let selectItems = [
+            { value: 5, label: '5', identifiant: 'perpage-5' },
             { value: 10, label: '10', identifiant: 'perpage-10' },
             { value: 15, label: '15', identifiant: 'perpage-15' },
             { value: 20, label: '20', identifiant: 'perpage-20' },
