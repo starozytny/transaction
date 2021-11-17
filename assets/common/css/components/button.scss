@@ -94,6 +94,19 @@ $icons:
   border-color: var(--grey);
 }
 
+.dark-mode{
+  $icons:
+          "primary" var(--txt),
+          "danger" var(--txt),
+          "success" var(--txt);
+
+  @each $name, $txt in $icons {
+    .btn-#{$name} {
+      color: $txt;
+    }
+  }
+}
+
 //                      __   _  __    ___   ___    __
 //                     | _| / |/ /_  / _ \ / _ \  |_ |
 //    _____ _____ _____| |  | | '_ \| | | | | | |  | |_____ _____ _____
