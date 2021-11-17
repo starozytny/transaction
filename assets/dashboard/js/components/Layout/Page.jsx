@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Routing              from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { PageError }        from "./PageError";
 import { Pagination }       from "./Pagination";
 import { LoaderElement }    from "@dashboardComponents/Layout/Loader";
@@ -155,13 +157,30 @@ export class Layout extends Component {
         return newData;
     }
 
-    handleDelete = (self, element, url, msg, text='Cette action est irréversible.') => {
-        Formulaire.axiosDeleteElement(self, element, url, msg, text);
+    /**
+     * Delete one element
+     *
+     * @param element
+     * @param text
+     */
+    handleDelete = (element, text='Cette action est irréversible.') => {
+        const { pathDeleteElement, urlDeleteElement, msgDeleteElement } = this.props;
+
+        let url = urlDeleteElement ? urlDeleteElement : Routing.generate(pathDeleteElement, {'id': element.id});
+        Formulaire.axiosDeleteElement(this, element, url, msgDeleteElement, text);
     }
 
-    handleDeleteGroup = (self, url, msg) => {
+    /**
+     * Delete selected elements by selector input checkbox
+     *
+     */
+    handleDeleteGroup = () => {
+        const { pathDeleteGroup, urlDeleteGroup, msgDeleteGroup } = this.props;
+
         let checked = document.querySelectorAll('.i-selector:checked');
-        Formulaire.axiosDeleteGroupElement(self, checked, url, msg)
+
+        let url = urlDeleteGroup ? urlDeleteGroup : Routing.generate(pathDeleteGroup);
+        Formulaire.axiosDeleteGroupElement(this, checked, url, msgDeleteGroup);
     }
 
     handleSwitchPublished = (self, element, url, nameEntity) => {

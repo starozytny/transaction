@@ -54,7 +54,10 @@ function updateData(self, sorter, newContext, context, data, element){
 function updateDataPagination(self, sorter, newContext, context, data, element, perPage=10){
     let nContext = (newContext !== null) ? newContext : context;
     let newData = UpdateList.update(nContext, data, element);
-    newData.sort(sorter)
+
+    if(sorter){
+        newData.sort(sorter)
+    }
 
     self.setState({
         dataImmuable: newData,
@@ -100,6 +103,8 @@ function deleteElement(self, element, url, showLoader = true, showFire = true)
             self.handleUpdateList(element, "delete");
         })
         .catch(function (error) {
+            console.log(error)
+            console.log(error.response)
             displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
         })
         .then(() => {
@@ -147,6 +152,8 @@ function axiosDeleteGroupElement(self, checked, url,
                             self.handleUpdateList(selectors, "delete_group");
                         })
                         .catch(function (error) {
+                            console.log(error)
+                            console.log(error.response)
                             displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
                         })
                         .then(() => {
