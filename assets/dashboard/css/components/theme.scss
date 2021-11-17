@@ -2,7 +2,6 @@
 
 .theme-container{
   position: relative;
-  margin-right: 36px;
 
   .switcher-items .switcher-item label{
     padding: 4px 8px;
@@ -23,8 +22,19 @@
   .switcher-items .switcher-item.checked label:after{
     transform: translateX(24px);
   }
-  .switcher-items .switcher-item.checked label:after{
+  .switcher-items .switcher-item.checked label:after {
     content: "\e97b";
   }
+}
 
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .theme-container {
+    margin-right: 36px;
+  }
 }
