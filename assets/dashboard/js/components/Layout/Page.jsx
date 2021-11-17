@@ -6,6 +6,7 @@ import { PageError }        from "./PageError";
 import { Pagination }       from "./Pagination";
 import { LoaderElement }    from "@dashboardComponents/Layout/Loader";
 
+import Search               from "@commonComponents/functions/search";
 import Formulaire           from "@dashboardComponents/functions/Formulaire";
 
 export class Page extends Component {
@@ -136,7 +137,7 @@ export class Layout extends Component {
         this.setState({ context: newContext, data: data, loadPageError: false, loadData: false, element: elem })
     }
 
-    handleSearch = (search, searchFunction, haveFilter = false, filterFunction) => {
+    handleSearch = (search, type, haveFilter = false, filterFunction) => {
         const { dataImmuable, filters, perPage, sorter } = this.state;
 
         let d = dataImmuable
@@ -154,7 +155,7 @@ export class Layout extends Component {
         }
 
         if(search !== ""){
-            let newData = searchFunction(d, search);
+            let newData = Search.search(type, d, search);
             if(sorter){
                 newData.sort(sorter)
             }

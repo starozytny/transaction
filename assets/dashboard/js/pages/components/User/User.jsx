@@ -28,22 +28,6 @@ let sorters = [
 
 let sortersFunction = [Sort.compareLastname, Sort.compareUsername, Sort.compareEmail];
 
-function searchFunction(dataImmuable, search){
-    let newData = [];
-    search = search.toLowerCase();
-    newData = dataImmuable.filter(function(v) {
-        if(v.username.toLowerCase().startsWith(search)
-            || v.email.toLowerCase().startsWith(search)
-            || v.firstname.toLowerCase().startsWith(search)
-            || v.lastname.toLowerCase().startsWith(search)
-        ){
-            return v;
-        }
-    })
-
-    return newData;
-}
-
 function filterFunction(dataImmuable, filters){
     let newData = [];
     if(filters.length === 0) {
@@ -99,7 +83,7 @@ export class User extends Component {
 
     handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, filterFunction); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, searchFunction, true, filterFunction); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "user", true, filterFunction); }
 
     handlePerPage = (perPage) => {
         this.layout.current.handleUpdatePerPage(SORTER, perPage);
