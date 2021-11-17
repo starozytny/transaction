@@ -94,9 +94,11 @@ input, textarea, select{
   font-size: 14px;
   width: calc(100% - 20px);
   outline: none;
+  background-color: var(--alpha);
+  color: var(--grey2);
 
   &:focus{
-    border: 1px solid var(--grey2);
+    border: 1px solid var(--txt);
   }
 }
 
