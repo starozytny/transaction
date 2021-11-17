@@ -13,6 +13,7 @@ import { StyleguideAccordion } from "./components/StyleguideAccordion";
 export class Styleguide extends Component {
     render () {
         return <div className="main-content">
+            <StyleguideAlert />
             <StyleguideButton />
             <StyleguideAccordion />
             <StyleguidePlanning />
@@ -20,7 +21,6 @@ export class Styleguide extends Component {
             <StyleguideTable />
             {/*<StyleguideMaps />*/}
             <StyleguideAside />
-            <StyleguideAlert />
             {/*<StyleguideLozad />*/}
         </div>
     }

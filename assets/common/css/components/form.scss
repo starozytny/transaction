@@ -427,13 +427,13 @@ select{
 // **************************************
 .dark-mode{
   input, textarea, select {
-    background-color: var(--fond);
+    background-color: var(--alpha);
     color: var(--txt);
   }
   .react-selectize.default.root-node {
     &:not(.open) {
       .react-selectize-control {
-        background: var(--fond);
+        background: var(--alpha);
       }
 
       .react-selectize-placeholder{
