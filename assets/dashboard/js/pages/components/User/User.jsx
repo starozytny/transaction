@@ -21,9 +21,9 @@ const MSG_DELETE_GROUP      = 'Aucun utilisateur sélectionné.';
 let SORTER = Sort.compareLastname;
 
 let sorters = [
-    { value: 0, label: 'Nom', identifiant: 'sorter-nom' },
-    { value: 1, label: 'Identifiant', identifiant: 'sorter-identifiant' },
-    { value: 2, label: 'Email', identifiant: 'sorter-email' },
+    { value: 0, label: 'Nom',           identifiant: 'sorter-nom' },
+    { value: 1, label: 'Identifiant',   identifiant: 'sorter-identifiant' },
+    { value: 2, label: 'Email',         identifiant: 'sorter-email' },
 ]
 
 let sortersFunction = [Sort.compareLastname, Sort.compareUsername, Sort.compareEmail];
