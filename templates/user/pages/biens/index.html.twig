@@ -1,0 +1,19 @@
+{% extends 'user/layout/layout.html.twig' %}
+
+{% set page_title %}Liste des biens{% endset %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('user_biens') }}
+{% endblock %}
+
+{% block main_content %}
+    <div id="styleguide">
+        {% include "dashboard/layout/components/spinner.html.twig" %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('user_biens') }}
+{% endblock %}

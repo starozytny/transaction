@@ -26,4 +26,12 @@ class UserController extends AbstractController
     {
         return $this->render('user/pages/styleguide/index.html.twig');
     }
+
+    /**
+     * @Route("/biens", name="biens")
+     */
+    public function biens(): Response
+    {
+        return $this->render('user/pages/biens/index.html.twig');
+    }
 }
