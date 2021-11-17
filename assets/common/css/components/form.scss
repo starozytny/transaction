@@ -132,6 +132,7 @@ select{
       border-radius: 100px;
       background-color: var(--grey);
       transition: all 0.2s ease-in-out;
+      cursor: pointer;
 
       span{
         opacity: 0;

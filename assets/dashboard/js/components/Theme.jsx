@@ -54,8 +54,9 @@ export class Theme extends Component{
 
         let switcherItems = [ { value: 0, label: 'Dark', identifiant: 'theme-dark' } ]
 
-        return <div className="theme-container">
+        return <div className="theme-container" title="Thème">
             <Checkbox isSwitcher={true} items={switcherItems} identifiant="theme" valeur={theme} errors={[]} onChange={this.handleChange} />
+            <span className="tooltip">Thème</span>
         </div>
     }
 }

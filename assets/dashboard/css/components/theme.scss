@@ -1,6 +1,7 @@
 @import "../vars/vars";
 
 .theme-container{
+  position: relative;
   margin-right: 36px;
 
   .switcher-items .switcher-item label{
