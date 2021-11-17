@@ -70,6 +70,10 @@ export class User extends Component {
             perPage: 10,
             currentPage: 0,
             sorter: SORTER,
+            pathDeleteElement: URL_DELETE_ELEMENT,
+            msgDeleteElement: MSG_DELETE_ELEMENT,
+            pathDeleteGroup: URL_DELETE_GROUP,
+            msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "user.pagination"
         }
 
@@ -77,8 +81,6 @@ export class User extends Component {
 
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleGetFilters = this.handleGetFilters.bind(this);
         this.handleRegenPassword = this.handleRegenPassword.bind(this);
@@ -95,17 +97,24 @@ export class User extends Component {
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleDelete = (element) => {
-        this.layout.current.handleDelete(this, element, Routing.generate(URL_DELETE_ELEMENT, {'id': element.id}), MSG_DELETE_ELEMENT);
-    }
-
-    handleDeleteGroup = () => {
-        this.layout.current.handleDeleteGroup(this, Routing.generate(URL_DELETE_GROUP), MSG_DELETE_GROUP);
-    }
-
     handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, filterFunction); }
 
     handleSearch = (search) => { this.layout.current.handleSearch(search, searchFunction, true, filterFunction); }
+
+    handlePerPage = (perPage) => {
+        this.layout.current.handleUpdatePerPage(SORTER, perPage);
+        this.setState({ perPage: perPage });
+    }
+
+    handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
+
+    handleSorter = (nb) => {
+        const { perPage } = this.state;
+
+        SORTER = sortersFunction[nb];
+        this.layout.current.handleUpdatePerPage(SORTER, perPage);
+        this.setState({ sorter: SORTER });
+    }
 
     handleRegenPassword = (elem) => {
         const self = this;
@@ -126,27 +135,12 @@ export class User extends Component {
         ;
     }
 
-    handlePerPage = (perPage) => {
-        this.layout.current.handleUpdatePerPage(SORTER, perPage);
-        this.setState({ perPage: perPage });
-    }
-
-    handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
-
-    handleSorter = (nb) => {
-        const { perPage } = this.state;
-
-        SORTER = sortersFunction[nb];
-        this.layout.current.handleUpdatePerPage(SORTER, perPage);
-        this.setState({ sorter: SORTER });
-    }
-
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { perPage, currentPage } = this.state;
 
         return <UserList onChangeContext={changeContext}
-                         onDelete={this.handleDelete}
-                         onDeleteAll={this.handleDeleteGroup}
+                         onDelete={this.layout.current.handleDelete}
+                         onDeleteAll={this.layout.current.handleDeleteGroup}
                          developer={parseInt(this.props.developer)}
                          //filter-search
                          onSearch={this.handleSearch}
