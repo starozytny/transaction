@@ -55,10 +55,10 @@ export class Pagination extends Component {
         }
     }
 
-    handlePageOne = () => {
+    handlePageOne = (perP) => {
         const { perPage, items } = this.props;
 
-        updateData(this, 0, 0, items, perPage);
+        updateData(this, 0, 0, items, perP ? perP : perPage);
     }
 
     handleChange = (e) => {

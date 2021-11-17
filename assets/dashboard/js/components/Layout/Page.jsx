@@ -105,12 +105,11 @@ export class Layout extends Component {
     }
 
     handleUpdatePerPage = (sorter = null, perPage) => {
-        const { data } = this.state
+        const { data } = this.state;
 
         this.page.current.handlePerPage(perPage);
         Formulaire.updatePerPage(this, sorter, data, perPage);
-        this.page.current.pagination.current.handlePageOne();
-        this.setState({ sorter });
+        this.page.current.pagination.current.handlePageOne(perPage);
     }
 
     handleSetDataPagination = (donnees, nContext = "read", type = "id") => {

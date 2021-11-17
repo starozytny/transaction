@@ -62,12 +62,15 @@ function updateDataPagination(self, sorter, newContext, context, data, element){
 }
 
 function updatePerPage(self, sorter, data, perPage){
-    data.sort(sorter)
+    if(sorter) {
+        data.sort(sorter)
+    }
 
     self.setState({
         data: data,
         currentData: data.slice(0, perPage),
-        perPage: perPage
+        perPage: perPage,
+        sorter: sorter
     })
 }
 
