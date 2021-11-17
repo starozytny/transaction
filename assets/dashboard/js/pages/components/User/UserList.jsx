@@ -80,8 +80,7 @@ export class UserList extends Component {
                         }) : <Alert>Aucun résultat</Alert>}
                     </div>
                 </div>
-
-                <div className="page-actions">
+                {(data && data.length !== 0) && <div className="page-actions">
                     <div className="selectors-actions">
                         <div className="item" onClick={onDeleteAll}>
                             <ButtonIcon icon="trash" text="Supprimer la sélection" />
@@ -92,8 +91,7 @@ export class UserList extends Component {
                             <ButtonIconDropdown icon="download" text="Exporter" items={dropdownItems} />
                         </div>
                     </div>
-                </div>
-
+                </div>}
             </div>
         </>
     }
