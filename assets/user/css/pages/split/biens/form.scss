@@ -36,7 +36,15 @@
   }
 }
 
+.line:not(.line-buttons){
+  border-bottom: 1px solid var(--fondContent);
+  padding-bottom: 32px;
+  margin-bottom: 32px;
+}
+
 .line-buttons{
+  margin-top: 32px;
+
   & > .btn:not(:last-child){
     margin-bottom: 12px;
   }
