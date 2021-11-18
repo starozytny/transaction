@@ -1,1 +1,114 @@
 @import "../vars/vars";
+
+.page-default{
+
+  .page-col-1{
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .comeback{
+    margin-bottom: 24px;
+  }
+
+  .title-col-1{
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--txt);
+  }
+
+  .content-col-1{
+    background-color: var(--fondContent);
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .title-col-1, .tab-col-2{
+    @include fontSemibold();
+  }
+
+  .tab-col-2{
+    margin-bottom: 16px;
+
+    & > .item{
+      color: var(--grey2);
+      border-bottom: 2px solid var(--grey);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      padding-right: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      &:not(.active):hover{
+        color: var(--txt);
+      }
+
+      &.active{
+        color: var(--txt);
+        border-bottom: 2px solid var(--primary);
+      }
+    }
+  }
+
+  .title-col-2{
+    margin-bottom: 24px;
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .page-default{
+
+    .title-col-2{
+      @include flex(row, flex-end, flex-start);
+      margin-bottom: 28px;
+    }
+
+    .tab-col-2{
+      @include flex(row, flex-start, flex-start);
+      border-bottom: 2px solid var(--grey);
+      margin-bottom: 0;
+      margin-right: 24px;
+      width: calc(100% - 24px);
+
+      & > .item{
+        margin-bottom: 0;
+        transform: translateY(2px);
+
+        &:not(:last-child){
+          margin-right: 24px;
+        }
+      }
+    }
+
+    .tab-col-2 + button{
+      width: 187px;
+    }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .page-default{
+    @include flex(row, flex-start, flex-start);
+
+    .page-col-1{
+      max-width: 218px;
+    }
+
+    .page-col-2{
+      width: calc(100% - 218px - 48px);
+      margin-left: 48px;
+    }
+  }
+}

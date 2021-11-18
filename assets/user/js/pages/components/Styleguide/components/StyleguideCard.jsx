@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Selector }   from "@dashboardComponents/Layout/Selector";
-import {ButtonIcon, ButtonIconDropdown} from "@dashboardComponents/Tools/Button";
+import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
 export function StyleguideCard () {
     return (
