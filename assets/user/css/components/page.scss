@@ -2,6 +2,12 @@
 
 .page-default{
 
+  section{
+    border-radius: 12px;
+    border: 1px solid var(--grey);
+    background-color: var(--alpha);
+  }
+
   .page-col-1{
     width: 100%;
     margin-bottom: 24px;

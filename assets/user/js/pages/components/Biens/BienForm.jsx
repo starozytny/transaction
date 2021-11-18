@@ -128,19 +128,21 @@ class Form extends Component {
                     </div>
                     <Button type="warning">Enregistrer le brouillon</Button>
                 </div>
-                <form>
-                    <form onSubmit={this.handleSubmit}>
-                        <div className="line">
-                            <Input valeur={codeTypeAd} identifiant="codeTypeAd" errors={errors} onChange={this.handleChange} >Nom utilisateur</Input>
-                        </div>
-
-                        <div className="line">
-                            <div className="form-button">
-                                <Button isSubmit={true}>Etape suivante</Button>
+                <section>
+                    <form className="form-bien">
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="line">
+                                <Input valeur={codeTypeAd} identifiant="codeTypeAd" errors={errors} onChange={this.handleChange} >Nom utilisateur</Input>
                             </div>
-                        </div>
+
+                            <div className="line">
+                                <div className="form-button">
+                                    <Button isSubmit={true}>Etape suivante</Button>
+                                </div>
+                            </div>
+                        </form>
                     </form>
-                </form>
+                </section>
             </div>
         </div>
     }
