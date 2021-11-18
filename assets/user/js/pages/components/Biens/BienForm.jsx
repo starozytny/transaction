@@ -48,7 +48,8 @@ class Form extends Component {
 
         this.state = {
             codeTypeAd: props.codeTypeAd,
-            errors: []
+            errors: [],
+            step: 1
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -105,19 +106,34 @@ class Form extends Component {
 
     render () {
         const { context } = this.props;
-        const { errors, codeTypeAd } = this.state;
+        const { step, errors, codeTypeAd } = this.state;
+
+        let steps = [
+            {id: 1, label: "Informations globales"},
+            {id: 2, label: "Details du bien"},
+            {id: 3, label: "Localisation"},
+            {id: 4, label: "Financier"},
+            {id: 5, label: "Photos"},
+            {id: 6, label: "Propriétaire"},
+            {id: 7, label: "Publication"},
+        ]
 
         return <div className="page-default">
             <div className="page-col-1">
                 <div className="comeback">
-                    <Button type="reverse" onClick={Routing.generate('user_biens')}>Retour à la liste</Button>
+                    <Button type="reverse" element="a" onClick={Routing.generate('user_biens')}>Retour à la liste</Button>
                 </div>
                 <div className="body-col-1">
                     <div className="title-col-1">
                         <span>Etapes :</span>
                     </div>
-                    <div className="content-col-1">
-                        <div>Item</div>
+                    <div className="content-col-1 steps">
+                        {steps.map(el => {
+                            return <div className={"item" + (el.id === step ? " active" : "")} key={el.id}>
+                                <span className="number">{el.id}</span>
+                                <span className="label">{el.label}</span>
+                            </div>
+                        })}
                     </div>
                 </div>
             </div>
@@ -129,18 +145,16 @@ class Form extends Component {
                     <Button type="warning">Enregistrer le brouillon</Button>
                 </div>
                 <section>
-                    <form className="form-bien">
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="line">
-                                <Input valeur={codeTypeAd} identifiant="codeTypeAd" errors={errors} onChange={this.handleChange} >Nom utilisateur</Input>
-                            </div>
+                    <form className="form-bien" onSubmit={this.handleSubmit}>
+                        <div className="line">
+                            <Input valeur={codeTypeAd} identifiant="codeTypeAd" errors={errors} onChange={this.handleChange} >Nom utilisateur</Input>
+                        </div>
 
-                            <div className="line">
-                                <div className="form-button">
-                                    <Button isSubmit={true}>Etape suivante</Button>
-                                </div>
+                        <div className="line">
+                            <div className="form-button">
+                                <Button isSubmit={true}>Etape suivante</Button>
                             </div>
-                        </form>
+                        </div>
                     </form>
                 </section>
             </div>

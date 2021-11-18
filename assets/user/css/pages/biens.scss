@@ -6,6 +6,38 @@
   padding: 12px;
 }
 
+.steps{
+  position: relative;
+
+  & > .item{
+    @include flex(row, center, flex-start);
+    @include fontSemibold();
+    color: var(--grey2);
+
+    &:not(:last-child){
+      margin-bottom: 12px;
+    }
+
+    .number{
+      display: inline-block;
+      @include flex(row, center, center);
+      border-radius: 4px;
+      background-color: var(--grey);
+      width: 24px; height: 24px;
+      margin-right: 8px;
+    }
+
+    &.active{
+      color: var(--txt);
+
+      .number{
+        background-color: var(--primary);
+        color: var(--alpha);
+      }
+    }
+  }
+}
+
 //                      __   _ ____  ___   ___    __
 //                     | _| / |___ \( _ ) / _ \  |_ |
 //    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
@@ -15,5 +47,11 @@
 @media (min-width:1280px) {
   .form-bien{
     padding: 24px;
+  }
+
+  .page-default{
+    .steps{
+      padding-bottom: 120px;
+    }
   }
 }
