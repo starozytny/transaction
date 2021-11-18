@@ -53,6 +53,7 @@ class Form extends Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleNext = this.handleNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -62,6 +63,8 @@ class Form extends Component {
 
         this.setState({[name]: value})
     }
+
+    handleNext = (step) => { this.setState({ step }) }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -167,16 +170,18 @@ class Form extends Component {
                 </div>
                 <section>
                     <form className="form-bien" onSubmit={this.handleSubmit}>
-                        <div className="line special-line">
-                            <Radiobox items={typeAdItems} identifiant="codeTypeAd" valeur={codeTypeAd} errors={errors} onChange={this.handleChange}>
-                                Type d'annonce
-                            </Radiobox>
-                        </div>
+                        <div className={"step-section" + (step === 1 ? " active" : "")}>
+                            <div className="line special-line">
+                                <Radiobox items={typeAdItems} identifiant="codeTypeAd" valeur={codeTypeAd} errors={errors} onChange={this.handleChange}>
+                                    Type d'annonce
+                                </Radiobox>
+                            </div>
 
-                        <div className="line line-buttons">
-                            <Button type="reverse" element="a">Etape précédente</Button>
-                            <Button type="warning">Enregistrer le brouillon</Button>
-                            <Button isSubmit={true}>Etape suivante</Button>
+                            <div className="line line-buttons">
+                                <Button type="reverse">Etape précédente</Button>
+                                <Button type="warning">Enregistrer le brouillon</Button>
+                                <Button onClick={() => this.handleNext(2)}>Etape suivante</Button>
+                            </div>
                         </div>
                     </form>
                 </section>
