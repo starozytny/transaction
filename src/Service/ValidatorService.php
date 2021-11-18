@@ -36,7 +36,7 @@ class ValidatorService
         return true;
     }
 
-    public function validateCustom($data): array
+    public function validateCustom($data)
     {
         $errors = [];
         foreach($data as $elem){
@@ -49,7 +49,11 @@ class ValidatorService
             }
         }
 
-        return $errors;
+        if (count($errors) > 0) {
+            return $errors;
+        }
+
+        return true;
     }
 
     private function switchCase($elem)
