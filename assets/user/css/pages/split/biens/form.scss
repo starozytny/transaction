@@ -43,6 +43,7 @@
     & > label{
       @include fontSemibold();
       color: var(--txt);
+      margin-bottom: 16px;
     }
 
     .radiobox-items{
