@@ -107,32 +107,39 @@ class Form extends Component {
         const { context } = this.props;
         const { errors, codeTypeAd } = this.state;
 
-        return <div className="form-steps">
+        return <div className="page-default">
             <div className="page-col-1">
-                <div className="combeback">
+                <div className="comeback">
                     <Button type="reverse" onClick={Routing.generate('user_biens')}>Retour à la liste</Button>
                 </div>
-                <div className="steps">
+                <div className="body-col-1">
                     <div className="title-col-1">
                         <span>Etapes :</span>
+                    </div>
+                    <div className="content-col-1">
+                        <div>Item</div>
                     </div>
                 </div>
             </div>
             <div className="page-col-2">
                 <div className="title-col-2">
-                    <h2>Etape 1 : Informations globales</h2>
+                    <div className="tab-col-2">
+                        <div className="item active">Etape 1 : Informations globales</div>
+                    </div>
                     <Button type="warning">Enregistrer le brouillon</Button>
                 </div>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="line">
-                        <Input valeur={codeTypeAd} identifiant="codeTypeAd" errors={errors} onChange={this.handleChange} >Nom utilisateur</Input>
-                    </div>
-
-                    <div className="line">
-                        <div className="form-button">
-                            <Button isSubmit={true}>Etape suivante</Button>
+                <form>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="line">
+                            <Input valeur={codeTypeAd} identifiant="codeTypeAd" errors={errors} onChange={this.handleChange} >Nom utilisateur</Input>
                         </div>
-                    </div>
+
+                        <div className="line">
+                            <div className="form-button">
+                                <Button isSubmit={true}>Etape suivante</Button>
+                            </div>
+                        </div>
+                    </form>
                 </form>
             </div>
         </div>
