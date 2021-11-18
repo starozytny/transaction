@@ -429,4 +429,12 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     {
         return (string) $this->username;
     }
+
+    /**
+     * Like C. CHHUN
+     */
+    public function getShortFullName(): string
+    {
+        return substr($this->firstname, 0,1) . '. ' . mb_strtoupper($this->lastname);
+    }
 }

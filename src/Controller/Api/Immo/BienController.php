@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImBien;
+use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\FileUploader;
@@ -51,6 +52,10 @@ class BienController extends AbstractController
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $obj->setCreatedBy($user->getShortFullName());
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
