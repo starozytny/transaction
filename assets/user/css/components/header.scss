@@ -16,6 +16,8 @@ header{
 
     .left{
       margin-top: 12px;
+      width: 100%;
+      text-align: center;
     }
 
     .right{
@@ -69,6 +71,7 @@ header{
 
       .left{
         margin-top: 0;
+        text-align: left;
       }
 
       a{
