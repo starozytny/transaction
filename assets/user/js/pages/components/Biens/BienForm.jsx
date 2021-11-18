@@ -118,6 +118,21 @@ class Form extends Component {
             {id: 7, label: "Publication"},
         ];
 
+        let stepTitle = "Etape 1 : Informations globales";
+        let stepsItems = [];
+        {steps.forEach(el => {
+            let active = "";
+            if(el.id === step){
+                active = " active";
+                stepTitle = "Etape " + el.id + " : " + el.label;
+            }
+            stepsItems.push(<div className={"item" + active} key={el.id}>
+                <span className="number">{el.id}</span>
+                <span className="label">{el.label}</span>
+            </div>)
+        })}
+
+
         let typeAdItems = [
             { value: 0, label: 'Vente',                         identifiant: 'vente' },
             { value: 1, label: 'Location',                      identifiant: 'location' },
@@ -127,7 +142,7 @@ class Form extends Component {
             { value: 5, label: 'Location vacances',             identifiant: 'location-vacances' },
             { value: 6, label: 'Vente de prestige',             identifiant: 'vente-de-prestige' },
             { value: 7, label: 'Fond de commerce',              identifiant: 'fond-de-commerce' },
-        ]
+        ];
 
         return <div className="page-default">
             <div className="page-col-1">
@@ -139,19 +154,14 @@ class Form extends Component {
                         <span>Etapes :</span>
                     </div>
                     <div className="content-col-1 steps">
-                        {steps.map(el => {
-                            return <div className={"item" + (el.id === step ? " active" : "")} key={el.id}>
-                                <span className="number">{el.id}</span>
-                                <span className="label">{el.label}</span>
-                            </div>
-                        })}
+                        {stepsItems}
                     </div>
                 </div>
             </div>
             <div className="page-col-2">
                 <div className="title-col-2">
                     <div className="tab-col-2">
-                        <div className="item active">Etape 1 : Informations globales</div>
+                        <div className="item active">{stepTitle}</div>
                     </div>
                     <Button type="warning">Enregistrer le brouillon</Button>
                 </div>
