@@ -64,15 +64,17 @@ class Form extends Component {
         this.setState({[name]: value})
     }
 
-    handleNext = (step) => {
+    handleNext = (stepClicked, stepInitial = null) => {
         const { codeTypeAd } = this.state;
 
         let paramsToValidate = [];
-        switch (step){
+        switch (stepClicked){
             case 2:
                 paramsToValidate = [
                     {type: "text", id: 'codeTypeAd',  value: codeTypeAd},
                 ];
+                break;
+            default:
                 break;
         }
 
@@ -82,7 +84,7 @@ class Form extends Component {
             toastr.warning("Veuillez vérifier les informations transmises.");
             this.setState({ errors: validate.errors });
         }else{
-            this.setState({ step })
+            this.setState({ step: stepInitial ? stepInitial : stepClicked })
         }
     }
 
@@ -149,7 +151,7 @@ class Form extends Component {
                 active = " active";
                 stepTitle = "Etape " + el.id + " : " + el.label;
             }
-            stepsItems.push(<div className={"item" + active} key={el.id}>
+            stepsItems.push(<div className={"item" + active} key={el.id} onClick={() => this.handleNext(el.id, step)}>
                 <span className="number">{el.id}</span>
                 <span className="label">{el.label}</span>
             </div>)
@@ -202,7 +204,7 @@ class Form extends Component {
                                 <div/>
                                 <div className="btns-submit">
                                     <Button type="warning">Enregistrer le brouillon</Button>
-                                    <Button onClick={() => this.handleNext(2)}>Etape suivante</Button>
+                                    <Button onClick={() => this.handleNext( 2)}>Etape suivante</Button>
                                 </div>
                             </div>
                         </div>
