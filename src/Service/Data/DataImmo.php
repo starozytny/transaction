@@ -16,7 +16,6 @@ class DataImmo extends DataConstructor
         ];
         $noErrors = $this->validator->validateCustom($paramsToValidate);
         if ($noErrors !== true) {
-            dump("in");
             return $noErrors;
         }
 

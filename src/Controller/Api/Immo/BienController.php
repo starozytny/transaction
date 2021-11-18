@@ -57,7 +57,8 @@ class BienController extends AbstractController
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
         }
 
-        dump($obj);
+        $em->persist($obj);
+        $em->flush();
 
         return $apiResponse->apiJsonResponseSuccessful("Création du bien réalisée avec succès.");
     }
