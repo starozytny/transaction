@@ -63,7 +63,10 @@
 .line{
   @include flex(column, stretch, flex-start);
   width: 100%;
-  margin-bottom: 16px;
+
+  &:not(:last-child){
+    margin-bottom: 16px;
+  }
 
   & > .form-group:not(:last-child){
     margin-bottom: 8px;
