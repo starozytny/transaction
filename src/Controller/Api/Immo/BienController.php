@@ -2,9 +2,9 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\User;
+use App\Entity\Immo\ImBien;
 use App\Service\ApiResponse;
-use App\Service\Data\DataUser;
+use App\Service\Data\DataImmo;
 use App\Service\FileUploader;
 use App\Service\ValidatorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,14 +31,14 @@ class BienController extends AbstractController
      * @OA\Tag(name="Bien")
      *
      * @param Request $request
-     * @param ValidatorService $validator
      * @param ApiResponse $apiResponse
+     * @param ValidatorService $validator
+     * @param DataImmo $dataEntity
      * @param FileUploader $fileUploader
-     * @param DataUser $dataEntity
      * @return JsonResponse
      */
-    public function create(Request $request, ValidatorService $validator, ApiResponse $apiResponse,
-                           FileUploader $fileUploader, DataUser $dataEntity): JsonResponse
+    public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
+                           DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->get('data'));
@@ -47,7 +47,17 @@ class BienController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        dump($data);
+        $obj = $dataEntity->setDataBien(new ImBien(), $data);
+        if(!$obj instanceof ImBien){
+            return $apiResponse->apiJsonResponseValidationFailed($obj);
+        }
+
+        $noErrors = $validator->validate($obj);
+        if ($noErrors !== true) {
+            return $apiResponse->apiJsonResponseValidationFailed($noErrors);
+        }
+
+        dump($obj);
 
         return $apiResponse->apiJsonResponseSuccessful("Création du bien réalisée avec succès.");
     }
