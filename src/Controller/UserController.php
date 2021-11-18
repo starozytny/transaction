@@ -36,9 +36,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/ajouter-un-bien", name="biens_create_view")
+     * @Route("/ajouter-un-bien", name="biens_create")
      */
-    public function createBienView(): Response
+    public function createBien(): Response
     {
         return $this->render('user/pages/biens/create.html.twig');
     }

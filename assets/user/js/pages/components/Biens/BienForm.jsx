@@ -4,7 +4,7 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import {Input, Checkbox, Radiobox} from "@dashboardComponents/Tools/Fields";
+import { Input, Checkbox, Radiobox } from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { Drop }                from "@dashboardComponents/Tools/Drop";
@@ -13,7 +13,7 @@ import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 import Validateur              from "@commonComponents/functions/validateur";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_users_create";
+const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_users_update";
 
 export function BienFormulaire ({ type, onUpdateList, element })
@@ -91,42 +91,27 @@ class Form extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { context, url, messageSuccess } = this.props;
-        const { codeTypeAd } = this.state;
+        const { url, messageSuccess } = this.props;
 
-        this.setState({ success: false})
+        let self = this;
+        Formulaire.loader(true);
 
-        let paramsToValidate = [
-            {type: "text", id: 'codeTypeAd',  value: codeTypeAd},
-        ];
+        let formData = new FormData();
+        formData.append("data", JSON.stringify(this.state));
 
-        // validate global
-        let validate = Validateur.validateur(paramsToValidate)
-        if(!validate.code){
-            toastr.warning("Veuillez vérifier les informations transmises.");
-            this.setState({ errors: validate.errors });
-        }else{
-            Formulaire.loader(true);
-            let self = this;
-
-            let formData = new FormData();
-
-            formData.append("data", JSON.stringify(this.state));
-
-            axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
-                .then(function (response) {
-                    let data = response.data;
-                    toastr.info(messageSuccess);
-                    //message success + redirect to index
-                })
-                .catch(function (error) {
-                    Formulaire.displayErrors(self, error);
-                })
-                .then(() => {
-                    Formulaire.loader(false);
-                })
-            ;
-        }
+        axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
+            .then(function (response) {
+                let data = response.data;
+                toastr.info(messageSuccess);
+                //message success + redirect to index
+            })
+            .catch(function (error) {
+                Formulaire.displayErrors(self, error);
+            })
+            .then(() => {
+                Formulaire.loader(false);
+            })
+        ;
     }
 
     render () {
@@ -206,6 +191,10 @@ class Form extends Component {
                                     <Button type="warning">Enregistrer le brouillon</Button>
                                     <Button onClick={() => this.handleNext( 2)}>Etape suivante</Button>
                                 </div>
+                            </div>
+
+                            <div className="line">
+                                <Button isSubmit={true}>Enregistrer le bien</Button>
                             </div>
                         </div>
                     </form>
