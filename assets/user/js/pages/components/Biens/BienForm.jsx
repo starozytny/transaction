@@ -198,7 +198,8 @@ class Form extends Component {
                             </div>
 
                             <div className="line line-buttons">
-                                <Button type="reverse">Etape précédente</Button>
+                                {/*<Button type="reverse">Etape précédente</Button>*/}
+                                <div/>
                                 <div className="btns-submit">
                                     <Button type="warning">Enregistrer le brouillon</Button>
                                     <Button onClick={() => this.handleNext(2)}>Etape suivante</Button>
