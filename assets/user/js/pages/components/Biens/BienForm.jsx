@@ -4,7 +4,7 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Checkbox }     from "@dashboardComponents/Tools/Fields";
+import {Input, Checkbox, Radiobox} from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { Drop }                from "@dashboardComponents/Tools/Drop";
@@ -32,7 +32,7 @@ export function BienFormulaire ({ type, onUpdateList, element })
         title={title}
         context={type}
         url={url}
-        codeTypeAd={element ? element.codeTypeAd : 0}
+        codeTypeAd={element ? element.codeTypeAd : ""}
         onUpdateList={onUpdateList}
         messageSuccess={msg}
     />
@@ -116,6 +116,17 @@ class Form extends Component {
             {id: 5, label: "Photos"},
             {id: 6, label: "Propriétaire"},
             {id: 7, label: "Publication"},
+        ];
+
+        let typeAdItems = [
+            { value: 0, label: 'Vente',                         identifiant: 'vente' },
+            { value: 1, label: 'Location',                      identifiant: 'location' },
+            { value: 2, label: 'Viager',                        identifiant: 'viager' },
+            { value: 3, label: 'Cession de bail',               identifiant: 'cession-de-bail' },
+            { value: 4, label: 'Produit d\'investissement',     identifiant: 'produit-investissement' },
+            { value: 5, label: 'Location vacances',             identifiant: 'location-vacances' },
+            { value: 6, label: 'Vente de prestige',             identifiant: 'vente-de-prestige' },
+            { value: 7, label: 'Fond de commerce',              identifiant: 'fond-de-commerce' },
         ]
 
         return <div className="page-default">
@@ -146,8 +157,10 @@ class Form extends Component {
                 </div>
                 <section>
                     <form className="form-bien" onSubmit={this.handleSubmit}>
-                        <div className="line">
-                            <Input valeur={codeTypeAd} identifiant="codeTypeAd" errors={errors} onChange={this.handleChange} >Nom utilisateur</Input>
+                        <div className="line special-line">
+                            <Radiobox items={typeAdItems} identifiant="codeTypeAd" valeur={codeTypeAd} errors={errors} onChange={this.handleChange}>
+                                Type d'annonce
+                            </Radiobox>
                         </div>
 
                         <div className="line">

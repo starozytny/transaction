@@ -48,6 +48,19 @@
 }
 
 .checkbox-item, .radiobox-item{
+  label{
+    padding: 6px 16px;
+    border: 1px solid var(--grey);
+    background: var(--fondContent);
+    color: var(--grey2);
+    @include fontSemibold();
+    text-transform: initial;
+
+    &:hover{
+      border-color: var(--color0);
+    }
+  }
+
   &.checked > label{
     border-color: var(--color0);
     background-color: var(--color0);
@@ -57,17 +70,6 @@
       background-color: var(--color0);
       color:var(--grey);
       border-style: solid;
-    }
-  }
-
-  label{
-    padding: 6px 16px;
-    border: 1px solid var(--grey);
-    background: var(--fondContent);
-    color: var(--grey3);
-
-    &:hover{
-      border-color: var(--color0);
     }
   }
 }
