@@ -64,7 +64,27 @@ class Form extends Component {
         this.setState({[name]: value})
     }
 
-    handleNext = (step) => { this.setState({ step }) }
+    handleNext = (step) => {
+        const { codeTypeAd } = this.state;
+
+        let paramsToValidate = [];
+        switch (step){
+            case 2:
+                paramsToValidate = [
+                    {type: "text", id: 'codeTypeAd',  value: codeTypeAd},
+                ];
+                break;
+        }
+
+        // validate global
+        let validate = Validateur.validateur(paramsToValidate)
+        if(!validate.code){
+            toastr.warning("Veuillez vérifier les informations transmises.");
+            this.setState({ errors: validate.errors });
+        }else{
+            this.setState({ step })
+        }
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -179,8 +199,10 @@ class Form extends Component {
 
                             <div className="line line-buttons">
                                 <Button type="reverse">Etape précédente</Button>
-                                <Button type="warning">Enregistrer le brouillon</Button>
-                                <Button onClick={() => this.handleNext(2)}>Etape suivante</Button>
+                                <div className="btns-submit">
+                                    <Button type="warning">Enregistrer le brouillon</Button>
+                                    <Button onClick={() => this.handleNext(2)}>Etape suivante</Button>
+                                </div>
                             </div>
                         </div>
                     </form>
