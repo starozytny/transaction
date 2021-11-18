@@ -21,7 +21,7 @@ export function StyleguideButton () {
                     <Button type="danger">Danger</Button>
                     <Button type="warning">Warning</Button>
                     <Button type="success">Success</Button>
-                    <Button type="reverse">Cancel</Button>
+                    <Button type="reverse">Reverse</Button>
                     <Button type="default" icon="heart">Default</Button>
 
                     <ButtonIcon icon="heart">Modifier</ButtonIcon>

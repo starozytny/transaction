@@ -28,7 +28,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/biens", name="biens")
+     * @Route("/biens", options={"expose"=true}, name="biens")
      */
     public function biens(): Response
     {

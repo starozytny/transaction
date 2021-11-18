@@ -3,6 +3,8 @@
 @import "../../../common/css/components/button";
 
 .btn-icon{
+  @include fontSemibold();
+
   [class^="icon-"]{
     font-size: 18px;
   }
@@ -10,8 +12,9 @@
 
 .btn{
   position: relative;
-  padding: 8px 16px;
+  padding: 8px 24px;
   z-index: 5;
+  @include fontSemibold();
 
   &:before{
     content: "";
