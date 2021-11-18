@@ -68,6 +68,12 @@
       padding: 6px 24px;
     }
   }
+
+  & > .form-group-error:first-child{
+    & > label{
+      color: var(--error);
+    }
+  }
 }
 
 //                      __   _____ __    ___    __
