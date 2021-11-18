@@ -163,10 +163,10 @@ class Form extends Component {
                             </Radiobox>
                         </div>
 
-                        <div className="line">
-                            <div className="form-button">
-                                <Button isSubmit={true}>Etape suivante</Button>
-                            </div>
+                        <div className="line line-buttons">
+                            <Button type="reverse" element="a">Etape précédente</Button>
+                            <Button type="warning">Enregistrer le brouillon</Button>
+                            <Button isSubmit={true}>Etape suivante</Button>
                         </div>
                     </form>
                 </section>

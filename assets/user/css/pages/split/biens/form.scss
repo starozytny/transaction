@@ -36,6 +36,12 @@
   }
 }
 
+.line-buttons{
+  & > .btn:not(:last-child){
+    margin-bottom: 12px;
+  }
+}
+
 .special-line{
   & > .form-group:first-child{
     align-items: center;
@@ -52,6 +58,23 @@
 
     .radiobox-item label{
       padding: 6px 24px;
+    }
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .line-buttons{
+    flex-direction: row;
+    justify-content: space-between;
+
+    & > .btn:not(:last-child){
+      margin-bottom: 0;
     }
   }
 }
