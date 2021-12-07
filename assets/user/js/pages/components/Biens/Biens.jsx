@@ -12,26 +12,39 @@ const MSG_DELETE_ELEMENT    = 'Supprimer ce bien ?';
 const MSG_DELETE_GROUP      = 'Aucun message sélectionné.';
 const SORTER = Sort.compareCreatedAt;
 
+function setNewTab(initTab, el, comparateur, newTable) {
+    if(initTab.length !== 0){
+        initTab.forEach(filter => {
+            if(filter === comparateur){
+                newTable.push(el);
+            }
+        })
+    }else{
+        newTable.push(el)
+    }
+
+    return newTable;
+}
+
 function filterFunction(dataImmuable, filters){
     let newData = [];
+    let newData1 = [];
 
     let filtersAd = filters[0];
+    let filtersBien = filters[1];
 
     if(filters.length === 0) {
         newData = dataImmuable
     }else{
         dataImmuable.forEach(el => {
-            if(filtersAd.length !== 0){
-                filtersAd.forEach(filter => {
-                    if(filter === el.codeTypeAd){
-                        newData.push(el);
-                    }
-                })
-            }else{
-                newData.push(el)
-            }
-
+            newData = setNewTab(filtersAd, el, el.codeTypeAd, newData);
         })
+
+        newData.forEach(el => {
+            newData1 = setNewTab(filtersBien, el, el.codeTypeBien, newData1);
+        })
+
+        newData = newData1
     }
 
     return newData;
@@ -49,7 +62,11 @@ export class Biens extends Component {
             msgDeleteElement: MSG_DELETE_ELEMENT,
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
-            sessionName: "biens.pagination"
+            sessionName: "biens.pagination",
+            filters: [
+                [0, 1], // type ad
+                [0, 1, 2, 3], // type bien
+            ]
         }
 
         this.layout = React.createRef();
@@ -61,7 +78,9 @@ export class Biens extends Component {
         this.handleContentList = this.handleContentList.bind(this);
     }
 
-    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
+    handleGetData = (self) => {
+        self.handleSetDataPagination(this.props.donnees, "read", "id", this.state.filters, filterFunction);
+    }
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 

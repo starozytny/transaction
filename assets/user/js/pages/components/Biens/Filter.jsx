@@ -1,42 +1,64 @@
 import React, { Component } from 'react';
 
+function setActive(tab, el) {
+    let active = "";
+    tab.forEach(filter => {
+        if(filter === el.value){
+            active = " active";
+        }
+    })
+
+    return active;
+}
+
+function updateTab(initTable, value, newTable) {
+    let find = false;
+    initTable.forEach(el => {
+        if(el === value){
+            find = true;
+        }
+    })
+
+    if(find){
+        newTable = initTable.filter(el => { return el !== value });
+    }else{
+        newTable.push(value);
+    }
+
+    return newTable;
+}
+
 export class Filter extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            filtersAd: [0, 1]
+            filtersAd: [0, 1],
+            filtersBien: [0, 1, 2, 3],
         }
     }
 
     handleFilter = (type, value) => {
-        const { filtersAd } = this.state;
+        const { filtersAd, filtersBien } = this.state;
 
         let nFiltersAd = filtersAd;
+        let nFiltersBien = filtersBien;
 
         switch (type){
+            case "bien":
+                nFiltersBien = updateTab(filtersBien, value, nFiltersBien);
+                break;
             default:
-                let find = false;
-                filtersAd.forEach(el => {
-                    if(el === value){
-                        find = true;
-                    }
-                })
-
-                if(find){
-                    nFiltersAd = filtersAd.filter(el => { return el !== value });
-                }else{
-                    nFiltersAd.push(value);
-                }
+                nFiltersAd = updateTab(filtersAd, value, nFiltersAd);
                 break;
         }
 
-        this.setState({ filtersAd: nFiltersAd });
-        this.props.onGetFilters([nFiltersAd])
+        this.setState({ filtersAd: nFiltersAd, filtersBien: nFiltersBien });
+        this.props.onGetFilters([nFiltersAd, nFiltersBien])
     }
 
     render () {
-        const { filtersAd } = this.state;
+        const { filtersAd, filtersBien } = this.state;
 
         let itemsFiltersAd = [
             { value: 0, label: "Vente",                          identifiant: "vente" },
@@ -70,15 +92,7 @@ export class Filter extends Component {
                 </div>
                 <div className="items-filter">
                     {itemsFiltersAd.map(el => {
-
-                        let active = "";
-                        filtersAd.forEach(filter => {
-                            if(filter === el.value){
-                                active = " active";
-                            }
-                        })
-
-                        return <div className={"item-filter" + active}
+                        return <div className={"item-filter" + setActive(filtersAd, el)}
                                     key={el.value} onClick={() => this.handleFilter("ad", el.value)}>
                             <div className="box" />
                             <div>{el.label}</div>
@@ -93,8 +107,8 @@ export class Filter extends Component {
                 </div>
                 <div className="items-filter">
                     {itemsFiltersBien.map(el => {
-                        return <div className={"item-filter"}
-                                    key={el.value} onClick={() => this.handleFilter("ad", el.value)}>
+                        return <div className={"item-filter" + setActive(filtersBien, el)}
+                                    key={el.value} onClick={() => this.handleFilter("bien", el.value)}>
                             <div className="box" />
                             <div>{el.label}</div>
                         </div>

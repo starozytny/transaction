@@ -56,6 +56,7 @@ class ImBien extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $codeTypeBien;
 

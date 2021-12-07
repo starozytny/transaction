@@ -113,16 +113,21 @@ export class Layout extends Component {
         this.page.current.pagination.current.handlePageOne(perPage);
     }
 
-    handleSetDataPagination = (donnees, nContext = "read", type = "id") => {
+    handleSetDataPagination = (donnees, nContext = "read", type = "id", filters = null, filterFunction = null) => {
         const { context, perPage, search, sorter } = this.state;
 
         let elements = getData(donnees, sorter, search, type, context, nContext);
 
         let data = elements[0];
+        let dataImmuable = elements[0];
         let elem = elements[1];
         let newContext = elements[2];
 
-        this.setState({ context: newContext, dataImmuable: data, data: data, currentData: data.slice(0, perPage), loadPageError: false, loadData: false, element: elem })
+        if(filters){
+            data = this.handleGetFilters(filters, filterFunction, data)
+        }
+
+        this.setState({ context: newContext, dataImmuable: dataImmuable, data: data, currentData: data.slice(0, perPage), loadPageError: false, loadData: false, element: elem })
     }
 
     handleSetData = (donnees, nContext = "read", type = "id") => {
@@ -163,16 +168,18 @@ export class Layout extends Component {
         }
     }
 
-    handleGetFilters = (filters, filterFunction) => {
+    handleGetFilters = (filters, filterFunction, dataIm = null) => {
         const { dataImmuable, perPage, sessionName, sorter } = this.state;
 
-        let newData = filterFunction(dataImmuable, filters);
+        let newData = filterFunction(dataIm ? dataIm : dataImmuable, filters);
         if(sorter){
             newData.sort(sorter)
         }
 
-        sessionStorage.setItem(sessionName, "0")
-        this.page.current.pagination.current.handlePageOne();
+        if(dataIm == null){
+            sessionStorage.setItem(sessionName, "0")
+            this.page.current.pagination.current.handlePageOne();
+        }
         this.setState({ data: newData, currentData: newData.slice(0, perPage), filters: filters });
         return newData;
     }
