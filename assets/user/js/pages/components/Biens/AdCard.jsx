@@ -27,7 +27,7 @@ export function AdCard ({ el, onDelete, status, statusName }) {
                         </div>
                         <div className="identifier">
                             <div className="title">
-                                <span>Appartement T4</span>
+                                <span>{el.libelle}</span>
                                 <span className="online" />
                             </div>
                             <div className="address">

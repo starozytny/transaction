@@ -61,6 +61,12 @@ class ImBien extends DataEntity
     private $codeTypeBien;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
+     */
+    private $libelle;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -254,6 +260,18 @@ class ImBien extends DataEntity
     public function setIdentifiant(string $identifiant): self
     {
         $this->identifiant = $identifiant;
+
+        return $this;
+    }
+
+    public function getLibelle(): ?string
+    {
+        return $this->libelle;
+    }
+
+    public function setLibelle(string $libelle): self
+    {
+        $this->libelle = $libelle;
 
         return $this;
     }

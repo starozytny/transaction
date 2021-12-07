@@ -4,11 +4,8 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Checkbox, Radiobox } from "@dashboardComponents/Tools/Fields";
-import { Alert }               from "@dashboardComponents/Tools/Alert";
-import {Button, ButtonIcon} from "@dashboardComponents/Tools/Button";
-import { Drop }                from "@dashboardComponents/Tools/Drop";
-import { FormLayout }          from "@dashboardComponents/Layout/Elements";
+import { Input, Radiobox }     from "@dashboardComponents/Tools/Fields";
+import { Button, ButtonIcon }  from "@dashboardComponents/Tools/Button";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
