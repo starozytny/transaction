@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
 import { Button } from "@dashboardComponents/Tools/Button";
-import { AdCard } from "../Styleguide/components/StyleguideCard";
+import {AdCard} from "./AdCard";
+import {Alert} from "@dashboardComponents/Tools/Alert";
 
 export class Biens extends Component {
     constructor(props) {
@@ -17,12 +18,14 @@ export class Biens extends Component {
 
         console.log(data)
 
-        return <div className="main-content">
+        let items = [];
+        data.forEach(el => {
+            items.push(<AdCard el={el} status={1} statusName="Actif" key={el.id}/>)
+        })
+
+        return <div className="main-content list-biens">
             <div className="page-default">
                 <div className="page-col-1">
-                    <div className="comeback">
-                        <Button type="reverse" onClick="/">Retour à la liste</Button>
-                    </div>
                     <div className="body-col-1">
                         <div className="title-col-1">
                             <span>Filtres :</span>
@@ -43,9 +46,9 @@ export class Biens extends Component {
                         </div>
                         <Button type="primary">Ajouter un bien</Button>
                     </div>
-                    <form>
-                        <AdCard status={1} statusName="Actif"/>
-                    </form>
+                    <div>
+                        {items.length > 0 ? items : <Alert type="info">Aucun résultat.</Alert>}
+                    </div>
                 </div>
             </div>
         </div>

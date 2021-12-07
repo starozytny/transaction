@@ -5,6 +5,7 @@ namespace App\Entity\Immo;
 use App\Entity\DataEntity;
 use App\Repository\Immo\ImBienRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImBienRepository::class)
@@ -24,6 +25,7 @@ class ImBien extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
@@ -39,6 +41,7 @@ class ImBien extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
      */
     private $createdBy;
 
@@ -49,6 +52,7 @@ class ImBien extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read"})
      */
     private $updatedBy;
 
@@ -67,6 +71,17 @@ class ImBien extends DataEntity
         return $this->codeTypeAd;
     }
 
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getTypeAdString(): string
+    {
+        $data = ["Vente", "Location", "Viager", "Cession bail", "Produit d'investissement", "Location vacances", "Vente prestige", "Fond de commerce"];
+
+        return $data[$this->codeTypeAd];
+    }
+
     public function setCodeTypeAd(int $codeTypeAd): self
     {
         $this->codeTypeAd = $codeTypeAd;
@@ -77,6 +92,18 @@ class ImBien extends DataEntity
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    /**
+     * return ll -> 5 janv. 2017
+     * return LL -> 5 janvier 2017
+     *
+     * @return string|null
+     * @Groups({"user:read"})
+     */
+    public function getCreatedAtString(): ?string
+    {
+        return $this->getFullDateString($this->createdAt);
     }
 
     public function setCreatedAt(\DateTimeInterface $createdAt): self
@@ -101,6 +128,18 @@ class ImBien extends DataEntity
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * return ll -> 5 janv. 2017
+     * return LL -> 5 janvier 2017
+     *
+     * @return string|null
+     * @Groups({"user:read"})
+     */
+    public function getUpdatedAtString(): ?string
+    {
+        return $this->getFullDateString($this->updatedAt);
     }
 
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
