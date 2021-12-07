@@ -16,7 +16,7 @@ import Formulaire              from "@dashboardComponents/functions/Formulaire";
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_users_update";
 
-export function BienFormulaire ({ type, onUpdateList, element })
+export function BienFormulaire ({ type, element })
 {
     let title = "Ajouter un bien";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -33,7 +33,6 @@ export function BienFormulaire ({ type, onUpdateList, element })
         context={type}
         url={url}
         codeTypeAd={element ? element.codeTypeAd : ""}
-        onUpdateList={onUpdateList}
         messageSuccess={msg}
     />
 

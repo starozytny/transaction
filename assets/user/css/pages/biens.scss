@@ -17,7 +17,8 @@
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
-  .page-default .tab-col-2 + button{
+  .page-default .tab-col-2 + button,
+  .page-default .tab-col-2 + a{
     width: 278px;
   }
 }

@@ -1,5 +1,7 @@
 import React from "react";
 
+import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { Selector } from "@dashboardComponents/Layout/Selector";
 import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
@@ -65,7 +67,7 @@ export function AdCard ({ el, status, statusName }) {
                         Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par" + el.updatedBy)}
                     </div>
                     <div className="actions">
-                        <ButtonIcon icon="pencil">Modifier</ButtonIcon>
+                        <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update')}>Modifier</ButtonIcon>
                         <ButtonIcon icon="archive">Archive</ButtonIcon>
                         <ButtonIcon icon="trash">Supprimer</ButtonIcon>
                         <ButtonIconDropdown icon="dropdown" items={items}>Menu</ButtonIconDropdown>

@@ -20,3 +20,8 @@ el = document.getElementById("create-bien");
 if(el){
     render(<BienFormulaire type="create" />, el)
 }
+
+el = document.getElementById("update-bien");
+if(el){
+    render(<BienFormulaire element={el.dataset.element} type="update" />, el)
+}

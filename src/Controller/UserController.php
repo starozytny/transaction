@@ -42,10 +42,21 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/ajouter-un-bien", name="biens_create")
+     * @Route("/ajouter-un-bien", options={"expose"=true}, name="biens_create")
      */
     public function createBien(): Response
     {
         return $this->render('user/pages/biens/create.html.twig');
+    }
+
+    /**
+     * @Route("/modifier-un-bien",options={"expose"=true},  name="biens_update")
+     */
+    public function updateBien(ImBienRepository $repository, SerializerInterface $serializer): Response
+    {
+//        $element = $repository->findOneBy();
+//        $element = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/biens/update.html.twig', ['element' => $element]);
     }
 }
