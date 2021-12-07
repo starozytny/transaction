@@ -9,6 +9,7 @@ use App\Service\Data\DataImmo;
 use App\Service\FileUploader;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +28,9 @@ class BienController extends AbstractController
         $this->doctrine = $doctrine;
     }
 
+    /**
+     * @throws Exception
+     */
     public function submitForm($type, $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
         $em = $this->doctrine->getManager();
@@ -42,13 +46,17 @@ class BienController extends AbstractController
         }
 
         /** @var User $user */
+        $user = $this->getUser();
         if($type == "create"){
-            $user = $this->getUser();
-            $obj->setCreatedBy($user->getShortFullName());
+            $obj = ($obj)
+                ->setCreatedBy($user->getShortFullName())
+                ->setIdentifiant(uniqid().bin2hex(random_bytes(8)))
+            ;
         }else{
-            $user = $this->getUser();
-            $obj->setUpdatedAt(new \DateTime());
-            $obj->setUpdatedBy($user->getShortFullName());
+            $obj = ($obj)
+                ->setUpdatedAt(new \DateTime())
+                ->setUpdatedBy($user->getShortFullName())
+            ;
         }
 
         $noErrors = $validator->validate($obj);
@@ -80,6 +88,7 @@ class BienController extends AbstractController
      * @param DataImmo $dataEntity
      * @param FileUploader $fileUploader
      * @return JsonResponse
+     * @throws Exception
      */
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
@@ -106,6 +115,7 @@ class BienController extends AbstractController
      * @param DataImmo $dataEntity
      * @param FileUploader $fileUploader
      * @return JsonResponse
+     * @throws Exception
      */
     public function update(ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse

@@ -32,7 +32,7 @@ class ImBien extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Gedmo\Slug(fields={"createdBy"})
+     * @Gedmo\Slug(updatable=true, fields={"createdBy", "identifiant"})
      * @Groups({"user:read"})
      */
     private $slug;
@@ -65,6 +65,17 @@ class ImBien extends DataEntity
      */
     private $updatedBy;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
+     */
+    private $reference;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $identifiant;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -78,6 +89,13 @@ class ImBien extends DataEntity
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     public function getCodeTypeAd(): ?int
@@ -172,6 +190,30 @@ class ImBien extends DataEntity
     public function setUpdatedBy(?string $updatedBy): self
     {
         $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getIdentifiant(): ?string
+    {
+        return $this->identifiant;
+    }
+
+    public function setIdentifiant(string $identifiant): self
+    {
+        $this->identifiant = $identifiant;
 
         return $this;
     }

@@ -48,7 +48,7 @@ export function AdCard ({ el, status, statusName }) {
                     </div>
                     <div className="col-3">
                         <div className="references">
-                            <div>L00152256</div>
+                            <div>{el.reference}</div>
                             <div>GERANCE01</div>
                         </div>
                         <div className="negociateur">
