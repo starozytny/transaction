@@ -1,70 +1,55 @@
 import React, { Component } from "react";
 
-import Routing    from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+import Sort          from "@commonComponents/functions/sort";
 
-import Formulaire from "@dashboardComponents/functions/Formulaire";
+import { Layout }    from "@dashboardComponents/Layout/Page";
 
-import { Button } from "@dashboardComponents/Tools/Button";
-import { Alert }  from "@dashboardComponents/Tools/Alert";
-
-import { AdCard } from "./AdCard";
+import { BiensList } from "./BiensList";
 
 const URL_DELETE_ELEMENT    = 'api_biens_delete';
+const URL_DELETE_GROUP      = 'api_contact_delete_group';
 const MSG_DELETE_ELEMENT    = 'Supprimer ce bien ?';
+const MSG_DELETE_GROUP      = 'Aucun message sélectionné.';
+const SORTER = Sort.compareCreatedAt;
 
 export class Biens extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: JSON.parse(props.donnees)
+            perPage: 10,
+            currentPage: 0,
+            sorter: SORTER,
+            pathDeleteElement: URL_DELETE_ELEMENT,
+            msgDeleteElement: MSG_DELETE_ELEMENT,
+            pathDeleteGroup: URL_DELETE_GROUP,
+            msgDeleteGroup: MSG_DELETE_GROUP,
+            sessionName: "biens.pagination"
         }
 
-        this.handleDelete = this.handleDelete.bind(this);
+        this.layout = React.createRef();
+
+        this.handleGetData = this.handleGetData.bind(this);
+        this.handleUpdateList = this.handleUpdateList.bind(this);
+
+        this.handleContentList = this.handleContentList.bind(this);
     }
 
-    handleDelete = (element, text='Cette action est irréversible.') => {
-        Formulaire.axiosDeleteElement(this, element, Routing.generate(URL_DELETE_ELEMENT, {'id': element.id}), MSG_DELETE_ELEMENT, text);
+    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
+
+    handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
+
+    handleContentList = (currentData, changeContext) => {
+        return <BiensList onChangeContext={changeContext}
+                            onDelete={this.layout.current.handleDelete}
+                            onDeleteAll={this.layout.current.handleDeleteGroup}
+                            data={currentData} />
     }
 
     render () {
-        const { data } = this.state;
-
-        console.log(data)
-
-        let items = [];
-        data.forEach(el => {
-            items.push(<AdCard el={el} onDelete={this.handleDelete} status={1} statusName="Actif" key={el.id}/>)
-        })
-
-        return <div className="main-content list-biens">
-            <div className="page-default">
-                <div className="page-col-1">
-                    <div className="body-col-1">
-                        <div className="title-col-1">
-                            <span>Filtres :</span>
-                        </div>
-                        <div className="content-col-1">
-                            <div>Item</div>
-                        </div>
-                    </div>
-                </div>
-                <div className="page-col-2">
-                    <div className="title-col-2">
-                        <div className="tab-col-2">
-                            <div className="item active">Tous</div>
-                            <div className="item">Actif</div>
-                            <div className="item">Inactif</div>
-                            <div className="item">Brouillon</div>
-                            <div className="item">Archive</div>
-                        </div>
-                        <Button type="primary" element="a" onClick={Routing.generate('user_biens_create')}>Ajouter un bien</Button>
-                    </div>
-                    <div>
-                        {items.length > 0 ? items : <Alert type="info">Aucun résultat.</Alert>}
-                    </div>
-                </div>
-            </div>
-        </div>
+        return <>
+            <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
+                    onContentList={this.handleContentList}/>
+        </>
     }
 }
