@@ -33,6 +33,7 @@ export function BienFormulaire ({ type, element })
         context={type}
         url={url}
         codeTypeAd={element ? element.codeTypeAd : ""}
+        codeTypeBien={element ? element.codeTypeBien : ""}
         messageSuccess={msg}
     />
 
@@ -47,6 +48,7 @@ class Form extends Component {
 
         this.state = {
             codeTypeAd: props.codeTypeAd,
+            codeTypeBien: props.codeTypeBien,
             errors: [],
             step: 1
         }
@@ -64,13 +66,14 @@ class Form extends Component {
     }
 
     handleNext = (stepClicked, stepInitial = null) => {
-        const { codeTypeAd } = this.state;
+        const { codeTypeAd, codeTypeBien } = this.state;
 
         let paramsToValidate = [];
         switch (stepClicked){
             case 2:
                 paramsToValidate = [
                     {type: "text", id: 'codeTypeAd',  value: codeTypeAd},
+                    {type: "text", id: 'codeTypeBien',  value: codeTypeBien},
                 ];
                 break;
             default:
@@ -115,7 +118,7 @@ class Form extends Component {
 
     render () {
         const { context } = this.props;
-        const { step, errors, codeTypeAd } = this.state;
+        const { step, errors, codeTypeAd, codeTypeBien } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -141,7 +144,6 @@ class Form extends Component {
             </div>)
         })}
 
-
         let typeAdItems = [
             { value: 0, label: 'Vente',                         identifiant: 'vente' },
             { value: 1, label: 'Location',                      identifiant: 'location' },
@@ -151,6 +153,19 @@ class Form extends Component {
             { value: 5, label: 'Location vacances',             identifiant: 'location-vacances' },
             { value: 6, label: 'Vente de prestige',             identifiant: 'vente-de-prestige' },
             { value: 7, label: 'Fond de commerce',              identifiant: 'fond-de-commerce' },
+        ];
+
+        let typeBienItems = [
+            { value: 0, label: 'Appartement',       identifiant: 'appartement' },
+            { value: 1, label: 'Maison',            identifiant: 'maison' },
+            { value: 2, label: 'Parking/Box',       identifiant: 'parking-box' },
+            { value: 3, label: 'Terrain',           identifiant: 'terrain' },
+            { value: 4, label: 'Boutique',          identifiant: 'boutique' },
+            { value: 5, label: 'Bureau',            identifiant: 'bureau' },
+            { value: 6, label: 'Château',           identifiant: 'chateau' },
+            { value: 7, label: 'Immeuble',          identifiant: 'immeuble' },
+            { value: 8, label: 'Terrain + Maison',  identifiant: 'terrain-maison' },
+            { value: 9, label: 'Divers',            identifiant: 'divers' },
         ];
 
         return <div className="page-default">
@@ -180,6 +195,12 @@ class Form extends Component {
                             <div className="line special-line">
                                 <Radiobox items={typeAdItems} identifiant="codeTypeAd" valeur={codeTypeAd} errors={errors} onChange={this.handleChange}>
                                     Type d'annonce
+                                </Radiobox>
+                            </div>
+
+                            <div className="line special-line">
+                                <Radiobox items={typeBienItems} identifiant="codeTypeBien" valeur={codeTypeBien} errors={errors} onChange={this.handleChange}>
+                                    Type de bien
                                 </Radiobox>
                             </div>
 
