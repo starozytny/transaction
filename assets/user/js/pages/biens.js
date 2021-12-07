@@ -23,5 +23,5 @@ if(el){
 
 el = document.getElementById("update-bien");
 if(el){
-    render(<BienFormulaire element={el.dataset.element} type="update" />, el)
+    render(<BienFormulaire element={JSON.parse(el.dataset.element)} type="update" />, el)
 }

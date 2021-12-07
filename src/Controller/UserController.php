@@ -50,12 +50,12 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/modifier-un-bien",options={"expose"=true},  name="biens_update")
+     * @Route("/modifier-un-bien/{slug}",options={"expose"=true},  name="biens_update")
      */
-    public function updateBien(ImBienRepository $repository, SerializerInterface $serializer): Response
+    public function updateBien($slug, ImBienRepository $repository, SerializerInterface $serializer): Response
     {
-//        $element = $repository->findOneBy();
-//        $element = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
+        $element = $repository->findOneBy(["slug" => $slug]);
+        $element = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/biens/update.html.twig', ['element' => $element]);
     }

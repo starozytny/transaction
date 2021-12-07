@@ -5,6 +5,7 @@ namespace App\Entity\Immo;
 use App\Entity\DataEntity;
 use App\Repository\Immo\ImBienRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -30,7 +31,15 @@ class ImBien extends DataEntity
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Gedmo\Slug(fields={"createdBy"})
+     * @Groups({"user:read"})
+     */
+    private $slug;
+
+    /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $codeTypeAd;
 
@@ -64,6 +73,11 @@ class ImBien extends DataEntity
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
     }
 
     public function getCodeTypeAd(): ?int
