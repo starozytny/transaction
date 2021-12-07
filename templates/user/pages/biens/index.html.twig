@@ -3,7 +3,7 @@
 {% set page_title %}Liste des biens{% endset %}
 
 {% block main_content %}
-    <div id="biens">
+    <div id="list-biens" data-donnees="{{ data }}">
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

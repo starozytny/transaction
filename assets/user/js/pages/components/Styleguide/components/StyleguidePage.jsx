@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button } from "@dashboardComponents/Tools/Button";
-import {AdCard} from "./StyleguideCard";
+import { AdCard } from "./StyleguideCard";
 
 export function StyleguidePage () {
     return (

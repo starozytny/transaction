@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Repository\Immo\ImBienRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/espace-membre", name="user_")
@@ -30,9 +33,12 @@ class UserController extends AbstractController
     /**
      * @Route("/biens", options={"expose"=true}, name="biens")
      */
-    public function biens(): Response
+    public function biens(ImBienRepository $repository, SerializerInterface $serializer): Response
     {
-        return $this->render('user/pages/biens/index.html.twig');
+        $objs = $repository->findAll();
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/biens/index.html.twig', ['data' => $objs]);
     }
 
     /**
