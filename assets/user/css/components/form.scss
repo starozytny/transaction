@@ -89,3 +89,24 @@
     border-radius: 100px;
   }
 }
+
+.input-label-help{
+  display: inline-block;
+
+  .btn-icon{
+    padding-top: 0;
+    padding-bottom: 0;
+
+    [class^="icon-"]{
+      font-size: 16px;
+    }
+
+    & > span:first-child{
+      color: var(--primary);
+    }
+
+    .tooltip{
+      top: -24px;
+    }
+  }
+}

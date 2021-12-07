@@ -6,7 +6,7 @@ import Routing                 from '@publicFolder/bundles/fosjsrouting/js/route
 
 import { Input, Checkbox, Radiobox } from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
-import { Button }              from "@dashboardComponents/Tools/Button";
+import {Button, ButtonIcon} from "@dashboardComponents/Tools/Button";
 import { Drop }                from "@dashboardComponents/Tools/Drop";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
@@ -34,6 +34,7 @@ export function BienFormulaire ({ type, element })
         url={url}
         codeTypeAd={element ? element.codeTypeAd : ""}
         codeTypeBien={element ? element.codeTypeBien : ""}
+        libelle={element ? element.libelle : ""}
         messageSuccess={msg}
     />
 
@@ -49,6 +50,7 @@ class Form extends Component {
         this.state = {
             codeTypeAd: props.codeTypeAd,
             codeTypeBien: props.codeTypeBien,
+            libelle: props.libelle,
             errors: [],
             step: 1
         }
@@ -66,14 +68,15 @@ class Form extends Component {
     }
 
     handleNext = (stepClicked, stepInitial = null) => {
-        const { codeTypeAd, codeTypeBien } = this.state;
+        const { codeTypeAd, codeTypeBien, libelle } = this.state;
 
         let paramsToValidate = [];
         switch (stepClicked){
             case 2:
                 paramsToValidate = [
-                    {type: "text", id: 'codeTypeAd',  value: codeTypeAd},
+                    {type: "text", id: 'codeTypeAd',    value: codeTypeAd},
                     {type: "text", id: 'codeTypeBien',  value: codeTypeBien},
+                    {type: "text", id: 'libelle',       value: libelle},
                 ];
                 break;
             default:
@@ -118,7 +121,7 @@ class Form extends Component {
 
     render () {
         const { context } = this.props;
-        const { step, errors, codeTypeAd, codeTypeBien } = this.state;
+        const { step, errors, codeTypeAd, codeTypeBien, libelle } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -202,6 +205,17 @@ class Form extends Component {
                                 <Radiobox items={typeBienItems} identifiant="codeTypeBien" valeur={codeTypeBien} errors={errors} onChange={this.handleChange}>
                                     Type de bien
                                 </Radiobox>
+                            </div>
+
+                            <div className="line special-line">
+                                <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}
+                                       placeholder="Exemple : Appartement T1 Centre ville (max 64 caractères)"
+                                >
+                                    <span>Libellé de l'annonce</span>
+                                    <div className="input-label-help">
+                                        <ButtonIcon icon="question-1">Aide</ButtonIcon>
+                                    </div>
+                                </Input>
                             </div>
 
                             <div className="line line-buttons">
