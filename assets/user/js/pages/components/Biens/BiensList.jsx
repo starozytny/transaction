@@ -8,8 +8,32 @@ import { Alert }  from "@dashboardComponents/Tools/Alert";
 import { AdCard } from "./AdCard";
 
 export class BiensList extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            filterAd: 0
+        }
+    }
+
+    handleFilter = (type, value) => {
+        const { filterAd } = this.state;
+
+        let nFilterAd = filterAd;
+
+        switch (type){
+            default:
+                nFilterAd = filterAd === value ? "" : value;
+                break;
+        }
+
+        this.setState({ filterAd: nFilterAd });
+        this.props.onGetFilters([nFilterAd])
+    }
+
     render () {
         const { data, onDelete } = this.props;
+        const { filterAd } = this.state;
 
         let filtersAd = [
             {value: 0, label: "Vente",                          identifiant: "vente"},
@@ -27,6 +51,7 @@ export class BiensList extends Component {
             items.push(<AdCard el={el} onDelete={onDelete} status={1} statusName="Actif" key={el.id}/>)
         })
 
+
         return <div className="main-content list-biens">
             <div className="page-default">
                 <div className="page-col-1">
@@ -43,7 +68,8 @@ export class BiensList extends Component {
                                     </div>
                                     <div className="items-filter items-filters-radio">
                                         {filtersAd.map(el => {
-                                            return <div className="item-filter" key={el.value}>
+                                            return <div className={"item-filter" + (filterAd === el.value ? " active" : "")}
+                                                        key={el.value} onClick={() => this.handleFilter("ad", el.value)}>
                                                 <div className="radio" />
                                                 <div>{el.label}</div>
                                             </div>
