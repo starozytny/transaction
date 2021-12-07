@@ -22,6 +22,17 @@ class ImBien extends DataEntity
     const AD_VENTE_PRESTIGE     = 6;
     const AD_FOND_COMMERCE      = 7;
 
+    const BIEN_APPARTEMENT      = 0;
+    const BIEN_MAISON           = 1;
+    const BIEN_PARKING_BOX      = 2;
+    const BIEN_TERRAIN          = 3;
+    const BIEN_BOUTIQUE         = 4;
+    const BIEN_BUREAU           = 5;
+    const BIEN_CHATEAU          = 6;
+    const BIEN_IMMEUBLE         = 7;
+    const BIEN_TERRAIN_MAISON   = 8;
+    const BIEN_DIVERS           = 9;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -42,6 +53,11 @@ class ImBien extends DataEntity
      * @Groups({"user:read"})
      */
     private $codeTypeAd;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $codeTypeBien;
 
     /**
      * @ORM\Column(type="datetime")
@@ -117,6 +133,29 @@ class ImBien extends DataEntity
     public function setCodeTypeAd(int $codeTypeAd): self
     {
         $this->codeTypeAd = $codeTypeAd;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getTypeBienString(): string
+    {
+        $data = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
+
+        return $data[$this->codeTypeBien];
+    }
+
+    public function getCodeTypeBien(): ?int
+    {
+        return $this->codeTypeBien;
+    }
+
+    public function setCodeTypeBien(int $codeTypeBien): self
+    {
+        $this->codeTypeBien = $codeTypeBien;
 
         return $this;
     }

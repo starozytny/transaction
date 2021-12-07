@@ -23,7 +23,7 @@ export function AdCard ({ el, onDelete, status, statusName }) {
                     <div className="col-1">
                         <div className="badges">
                             <div className={"status status-" + status}>{statusName}</div>
-                            <div className="status">Appartement</div>
+                            <div className="status">{el.typeBienString}</div>
                         </div>
                         <div className="identifier">
                             <div className="title">
