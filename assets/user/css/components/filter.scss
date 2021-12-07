@@ -43,25 +43,24 @@
       font-size: 16px;
 
       &:hover{
-        .radio{
+        .box{
           background-color: var(--primaryShadow);
         }
       }
 
       &.active{
-        .radio{
+        .box{
           background-color: var(--primary);
           border-color: var(--txt);
         }
       }
     }
 
-    .radio{
+    .box{
       display: block;
       width: 10px; height: 10px;
       border: 1px solid var(--grey2);
       margin-right: 8px;
-      border-radius: 20px;
       transition: all 0.2s ease-in-out;
     }
   }

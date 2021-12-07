@@ -15,15 +15,22 @@ const SORTER = Sort.compareCreatedAt;
 function filterFunction(dataImmuable, filters){
     let newData = [];
 
-    let filterAd = filters[0];
+    let filtersAd = filters[0];
 
     if(filters.length === 0) {
         newData = dataImmuable
     }else{
         dataImmuable.forEach(el => {
-            if(el.codeTypeAd === filterAd || filterAd === ""){
-                newData.push(el);
+            if(filtersAd.length !== 0){
+                filtersAd.forEach(filter => {
+                    if(filter === el.codeTypeAd){
+                        newData.push(el);
+                    }
+                })
+            }else{
+                newData.push(el)
             }
+
         })
     }
 
