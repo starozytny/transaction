@@ -5,7 +5,7 @@ import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 import { Selector } from "@dashboardComponents/Layout/Selector";
 import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
-export function AdCard ({ el, status, statusName }) {
+export function AdCard ({ el, onDelete, status, statusName }) {
     let items = [
         {data: <a href="/">Envoyer un mail</a>},
         {data: <a href="/">Imprimer la fiche</a>}
@@ -69,7 +69,7 @@ export function AdCard ({ el, status, statusName }) {
                     <div className="actions">
                         <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
                         <ButtonIcon icon="archive">Archive</ButtonIcon>
-                        <ButtonIcon icon="trash">Supprimer</ButtonIcon>
+                        <ButtonIcon icon="trash" onClick={() => onDelete(el)}>Supprimer</ButtonIcon>
                         <ButtonIconDropdown icon="dropdown" items={items}>Autres</ButtonIconDropdown>
                     </div>
                 </div>

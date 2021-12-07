@@ -2,10 +2,15 @@ import React, { Component } from "react";
 
 import Routing    from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
+import Formulaire from "@dashboardComponents/functions/Formulaire";
+
 import { Button } from "@dashboardComponents/Tools/Button";
 import { Alert }  from "@dashboardComponents/Tools/Alert";
 
 import { AdCard } from "./AdCard";
+
+const URL_DELETE_ELEMENT    = 'api_biens_delete';
+const MSG_DELETE_ELEMENT    = 'Supprimer ce bien ?';
 
 export class Biens extends Component {
     constructor(props) {
@@ -14,6 +19,12 @@ export class Biens extends Component {
         this.state = {
             data: JSON.parse(props.donnees)
         }
+
+        this.handleDelete = this.handleDelete.bind(this);
+    }
+
+    handleDelete = (element, text='Cette action est irréversible.') => {
+        Formulaire.axiosDeleteElement(this, element, Routing.generate(URL_DELETE_ELEMENT, {'id': element.id}), MSG_DELETE_ELEMENT, text);
     }
 
     render () {
@@ -23,7 +34,7 @@ export class Biens extends Component {
 
         let items = [];
         data.forEach(el => {
-            items.push(<AdCard el={el} status={1} statusName="Actif" key={el.id}/>)
+            items.push(<AdCard el={el} onDelete={this.handleDelete} status={1} statusName="Actif" key={el.id}/>)
         })
 
         return <div className="main-content list-biens">

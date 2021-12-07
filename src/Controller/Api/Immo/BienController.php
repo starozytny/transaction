@@ -6,6 +6,7 @@ use App\Entity\Immo\ImBien;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
+use App\Service\Data\DataService;
 use App\Service\FileUploader;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -121,5 +122,26 @@ class BienController extends AbstractController
                            DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
+    }
+
+    /**
+     * Delete a bien
+     *
+     * @Route("/{id}", name="delete", options={"expose"=true}, methods={"DELETE"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message"
+     * )
+     *
+     * @OA\Tag(name="Bien")
+     *
+     * @param ImBien $obj
+     * @param DataService $dataService
+     * @return JsonResponse
+     */
+    public function delete(ImBien $obj, DataService $dataService): JsonResponse
+    {
+        return $dataService->delete($obj);
     }
 }
