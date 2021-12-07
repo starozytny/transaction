@@ -48,8 +48,8 @@ export function AdCard ({ el, status, statusName }) {
                     </div>
                     <div className="col-3">
                         <div className="references">
-                            <div>L001522</div>
-                            <div>GER0012</div>
+                            <div>L00152256</div>
+                            <div>GERANCE01</div>
                         </div>
                         <div className="negociateur">
                             <div className="avatar">
@@ -64,7 +64,6 @@ export function AdCard ({ el, status, statusName }) {
                 <div className="commentary">Commentaire : Les clés sont à récupérer auprès de Shanbo.</div>
                 <div className="footer-actions">
                     <div className="createdAt">
-
                         Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par " + el.updatedBy)}
                     </div>
                     <div className="actions">

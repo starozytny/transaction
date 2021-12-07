@@ -26,6 +26,42 @@ class BienController extends AbstractController
     {
         $this->doctrine = $doctrine;
     }
+
+    public function submitForm($type, $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $data = json_decode($request->get('data'));
+
+        if ($data === null) {
+            return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
+        }
+
+        $obj = $dataEntity->setDataBien($obj, $data);
+        if(!$obj instanceof ImBien){
+            return $apiResponse->apiJsonResponseValidationFailed($obj);
+        }
+
+        /** @var User $user */
+        if($type == "create"){
+            $user = $this->getUser();
+            $obj->setCreatedBy($user->getShortFullName());
+        }else{
+            $user = $this->getUser();
+            $obj->setUpdatedAt(new \DateTime());
+            $obj->setUpdatedBy($user->getShortFullName());
+        }
+
+        $noErrors = $validator->validate($obj);
+        if ($noErrors !== true) {
+            return $apiResponse->apiJsonResponseValidationFailed($noErrors);
+        }
+
+        $em->persist($obj);
+        $em->flush();
+
+        return $apiResponse->apiJsonResponseSuccessful("Success");
+    }
+
     /**
      * Create a bien
      *
@@ -48,31 +84,7 @@ class BienController extends AbstractController
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
-        $em = $this->doctrine->getManager();
-        $data = json_decode($request->get('data'));
-
-        if ($data === null) {
-            return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
-        }
-
-        $obj = $dataEntity->setDataBien(new ImBien(), $data);
-        if(!$obj instanceof ImBien){
-            return $apiResponse->apiJsonResponseValidationFailed($obj);
-        }
-
-        /** @var User $user */
-        $user = $this->getUser();
-        $obj->setCreatedBy($user->getShortFullName());
-
-        $noErrors = $validator->validate($obj);
-        if ($noErrors !== true) {
-            return $apiResponse->apiJsonResponseValidationFailed($noErrors);
-        }
-
-        $em->persist($obj);
-        $em->flush();
-
-        return $apiResponse->apiJsonResponseSuccessful("Création du bien réalisée avec succès.");
+        return $this->submitForm("create", new ImBien(), $request, $apiResponse, $validator, $dataEntity);
     }
 
     /**
@@ -98,31 +110,6 @@ class BienController extends AbstractController
     public function update(ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
-        $em = $this->doctrine->getManager();
-        $data = json_decode($request->get('data'));
-
-        if ($data === null) {
-            return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
-        }
-
-        $obj = $dataEntity->setDataBien($obj, $data);
-        if(!$obj instanceof ImBien){
-            return $apiResponse->apiJsonResponseValidationFailed($obj);
-        }
-
-        /** @var User $user */
-        $user = $this->getUser();
-        $obj->setUpdatedAt(new \DateTime());
-        $obj->setUpdatedBy($user->getShortFullName());
-
-        $noErrors = $validator->validate($obj);
-        if ($noErrors !== true) {
-            return $apiResponse->apiJsonResponseValidationFailed($noErrors);
-        }
-
-        $em->persist($obj);
-        $em->flush();
-
-        return $apiResponse->apiJsonResponseSuccessful("Modification du bien réalisée avec succès.");
+        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
 }
