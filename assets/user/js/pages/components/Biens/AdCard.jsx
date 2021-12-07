@@ -71,7 +71,7 @@ export function AdCard ({ el, status, statusName }) {
                         <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
                         <ButtonIcon icon="archive">Archive</ButtonIcon>
                         <ButtonIcon icon="trash">Supprimer</ButtonIcon>
-                        <ButtonIconDropdown icon="dropdown" items={items}>Menu</ButtonIconDropdown>
+                        <ButtonIconDropdown icon="dropdown" items={items}>Autres</ButtonIconDropdown>
                     </div>
                 </div>
             </div>
