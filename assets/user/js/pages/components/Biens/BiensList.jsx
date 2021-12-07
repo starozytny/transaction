@@ -11,6 +11,17 @@ export class BiensList extends Component {
     render () {
         const { data, onDelete } = this.props;
 
+        let filtersAd = [
+            {value: 0, label: "Vente",                          identifiant: "vente"},
+            {value: 1, label: "Location",                       identifiant: "location"},
+            {value: 2, label: "Viager",                         identifiant: "viager"},
+            {value: 3, label: "Cession bail",                   identifiant: "cession-bail"},
+            {value: 4, label: "Produit d'investissement",       identifiant: "pdt-invest"},
+            {value: 5, label: "Location vacances",              identifiant: "location-vac"},
+            {value: 6, label: "Vente prestige",                 identifiant: "vente-prestige"},
+            {value: 7, label: "Fond de commerce",               identifiant: "fond-commerce"},
+        ]
+
         let items = [];
         data.forEach(el => {
             items.push(<AdCard el={el} onDelete={onDelete} status={1} statusName="Actif" key={el.id}/>)
@@ -24,7 +35,22 @@ export class BiensList extends Component {
                             <span>Filtres :</span>
                         </div>
                         <div className="content-col-1">
-                            <div>Item</div>
+                            <div className="filters">
+                                <div className="item">
+                                    <div className="title">
+                                        <span>Annonce</span>
+                                        <span className="icon-minus" />
+                                    </div>
+                                    <div className="items-filter items-filters-radio">
+                                        {filtersAd.map(el => {
+                                            return <div className="item-filter" key={el.value}>
+                                                <div className="radio" />
+                                                <div>{el.label}</div>
+                                            </div>
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

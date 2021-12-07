@@ -109,11 +109,11 @@
     @include flex(row, flex-start, flex-start);
 
     .page-col-1{
-      max-width: 218px;
+      max-width: 232px;
     }
 
     .page-col-2{
-      width: calc(100% - 218px - 48px);
+      width: calc(100% - 232px - 48px);
       margin-left: 48px;
     }
   }

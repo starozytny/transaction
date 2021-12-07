@@ -28,8 +28,6 @@ export function BienFormulaire ({ type, element })
         msg = "Félicitation ! La mise à jour s'est réalisée avec succès !";
     }
 
-    console.log(element)
-
     let form = <Form
         title={title}
         context={type}

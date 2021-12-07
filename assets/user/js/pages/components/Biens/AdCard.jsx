@@ -11,7 +11,7 @@ export function AdCard ({ el, onDelete, status, statusName }) {
         {data: <a href="/">Imprimer la fiche</a>}
     ]
     return <div className="card-ad">
-        <Selector />
+        <Selector id={el.id} />
 
         <div className="card-main">
             <div className="card-body">
