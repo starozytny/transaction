@@ -64,7 +64,8 @@ export function AdCard ({ el, status, statusName }) {
                 <div className="commentary">Commentaire : Les clés sont à récupérer auprès de Shanbo.</div>
                 <div className="footer-actions">
                     <div className="createdAt">
-                        Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par" + el.updatedBy)}
+
+                        Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par " + el.updatedBy)}
                     </div>
                     <div className="actions">
                         <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>

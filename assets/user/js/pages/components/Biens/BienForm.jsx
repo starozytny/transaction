@@ -14,7 +14,7 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
 const URL_CREATE_ELEMENT     = "api_biens_create";
-const URL_UPDATE_GROUP       = "api_users_update";
+const URL_UPDATE_GROUP       = "api_biens_update";
 
 export function BienFormulaire ({ type, element })
 {
