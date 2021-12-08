@@ -1,12 +1,12 @@
 import React from "react";
 
 export function ButtonIcon(props){
-    const { icon, children, text, onClick, element="button", target="_self", tooltipWidth=null } = props;
+    const { icon, isSubmit=false, children, text, onClick, element="button", target="_self", tooltipWidth=null } = props;
 
     let divStyle = tooltipWidth ? { width: tooltipWidth + "px" } : null;
 
     if(element === "button"){
-        return <button className="btn-icon" onClick={onClick}>
+        return <button className="btn-icon" type={isSubmit ? "submit" : "button"} onClick={onClick}>
             <span className={`icon-${icon}`} />
             {text && <span>{text}</span>}
             {children && <span className="tooltip" style={divStyle}>{children}</span>}
