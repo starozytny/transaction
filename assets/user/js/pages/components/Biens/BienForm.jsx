@@ -71,9 +71,10 @@ class Form extends Component {
         switch (stepClicked){
             case 2:
                 paramsToValidate = [
-                    {type: "text", id: 'codeTypeAd',    value: codeTypeAd},
-                    {type: "text", id: 'codeTypeBien',  value: codeTypeBien},
-                    {type: "text", id: 'libelle',       value: libelle},
+                    {type: "text",      id: 'codeTypeAd',    value: codeTypeAd},
+                    {type: "text",      id: 'codeTypeBien',  value: codeTypeBien},
+                    {type: "text",      id: 'libelle',       value: libelle},
+                    {type: "length",    id: 'libelle',       value: libelle, min: 0, max: 64},
                 ];
                 break;
             default:

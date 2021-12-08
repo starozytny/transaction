@@ -42,10 +42,10 @@ class ValidatorService
         foreach($data as $elem){
             $validate = $this->switchCase($elem);
             if($validate != 1){
-                array_push($errors, [
+                $errors[] = [
                     'name' => $elem['name'],
                     'message' => $validate
-                ]);
+                ];
             }
         }
 

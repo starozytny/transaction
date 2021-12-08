@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 
-function setActive(tab, el) {
-    let active = "";
-    tab.forEach(filter => {
-        if(filter === el.value){
-            active = " active";
-        }
-    })
-
-    return active;
-}
+import Sanitaze from "@commonComponents/functions/sanitaze";
 
 function updateTab(initTable, value, newTable) {
     let find = false;
@@ -92,7 +83,7 @@ export class Filter extends Component {
                 </div>
                 <div className="items-filter">
                     {itemsFiltersAd.map(el => {
-                        return <div className={"item-filter" + setActive(filtersAd, el)}
+                        return <div className={"item-filter" + Sanitaze.setActive(filtersAd, el.value)}
                                     key={el.value} onClick={() => this.handleFilter("ad", el.value)}>
                             <div className="box" />
                             <div>{el.label}</div>
@@ -107,7 +98,7 @@ export class Filter extends Component {
                 </div>
                 <div className="items-filter">
                     {itemsFiltersBien.map(el => {
-                        return <div className={"item-filter" + setActive(filtersBien, el)}
+                        return <div className={"item-filter" + Sanitaze.setActive(filtersBien, el.value)}
                                     key={el.value} onClick={() => this.handleFilter("bien", el.value)}>
                             <div className="box" />
                             <div>{el.label}</div>

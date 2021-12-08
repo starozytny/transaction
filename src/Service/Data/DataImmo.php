@@ -18,9 +18,10 @@ class DataImmo extends DataConstructor
 
         // validation des données
         $paramsToValidate = [
-            ['type' => 'text',  'name' => 'codeTypeAd',      'value' => $codeTypeAd],
-            ['type' => 'text',  'name' => 'codeTypeBien',    'value' => $codeTypeBien],
-            ['type' => 'text',  'name' => 'libelle',         'value' => $libelle],
+            ['type' => 'text',   'name' => 'codeTypeAd',      'value' => $codeTypeAd],
+            ['type' => 'text',   'name' => 'codeTypeBien',    'value' => $codeTypeBien],
+            ['type' => 'text',   'name' => 'libelle',         'value' => $libelle],
+            ['type' => 'length', 'name' => 'libelle',         'value' => $libelle, 'min' => 0, 'max' => 64],
         ];
         $noErrors = $this->validator->validateCustom($paramsToValidate);
         if ($noErrors !== true) {

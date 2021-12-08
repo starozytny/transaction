@@ -41,6 +41,7 @@
       @include flex(row, center, flex-start);
       cursor: pointer;
       font-size: 16px;
+      color: var(--grey3);
 
       &:hover{
         .box{
@@ -49,6 +50,8 @@
       }
 
       &.active{
+        color: var(--txt);
+
         .box{
           background-color: var(--primary);
           border-color: var(--txt);
@@ -61,6 +64,7 @@
       width: 10px; height: 10px;
       border: 1px solid var(--grey2);
       margin-right: 8px;
+      border-radius: 2px;
       transition: all 0.2s ease-in-out;
     }
   }

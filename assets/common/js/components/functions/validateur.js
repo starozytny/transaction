@@ -96,6 +96,28 @@ function validateAtLeastOne($value, $valueCheck) {
     return {'code': true};
 }
 
+function validateLength($value, min, max) {
+    if($value.length < min || $value.length > max){
+        return {
+            'code': false,
+            'message': 'Ce champ doit contenir entre ' + (min + 1) + " et " + max + " caractères."
+        };
+    }
+
+    return {'code': true}
+}
+
+function validateUniqueLength($value, size) {
+    if($value.length !== size){
+        return {
+            'code': false,
+            'message': 'Ce champ doit contenir ' + size + " caractères."
+        };
+    }
+
+    return {'code': true}
+}
+
 function switchCase(element){
     let validate;
     switch (element.type) {
@@ -119,6 +141,12 @@ function switchCase(element){
             break;
         case 'date':
             validate = validateDate(element.value);
+            break;
+        case 'length':
+            validate = validateLength(element.value, element.min, element.max);
+            break;
+        case 'uniqueLength':
+            validate = validateUniqueLength(element.value, element.size);
             break;
     }
 
