@@ -454,9 +454,12 @@ select{
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
+  .line{
+    &.line-2, &.line-3, &.line-4, &.line-infinite{
+      flex-direction: row;
+    }
+  }
   .line.line-2{
-    flex-direction: row;
-
     & > .form-group:first-child{
       margin-right: 12px;
       width: 50%;
@@ -468,11 +471,19 @@ select{
   }
 
   .line.line-3{
-    flex-direction: row;
-
     & > .form-group{
       width: 33%;
     }
+    & > .form-group:not(:last-child){
+      margin-right: 12px;
+    }
+  }
+
+  .line.line-4{
+    & > .form-group{
+      width: 25%;
+    }
+
     & > .form-group:not(:last-child){
       margin-right: 12px;
     }
@@ -499,8 +510,18 @@ select{
       margin-right: 12px;
     }
   }
+}
+
+//                      __   _  ___ ____  _  _     __
+//                     | _| / |/ _ \___ \| || |   |_ |
+//    _____ _____ _____| |  | | | | |__) | || |_   | |_____ _____ _____
+//   |_____|_____|_____| |  | | |_| / __/|__   _|  | |_____|_____|_____|
+//                     | |  |_|\___/_____|  |_|    | |
+//                     |__|                       |__|
+@media (min-width: 1024px) {
 
 }
+
 //                      __   _ ____  ___   ___    __
 //                     | _| / |___ \( _ ) / _ \  |_ |
 //    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
