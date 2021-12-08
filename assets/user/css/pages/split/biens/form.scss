@@ -73,6 +73,7 @@
       @include fontSemibold();
       color: var(--txt);
       margin-bottom: 16px;
+      text-transform: uppercase;
     }
 
     .radiobox-items{

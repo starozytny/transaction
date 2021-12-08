@@ -5,12 +5,12 @@ import { SimpleSelect } from 'react-selectize';
  * INPUT Classique
  ***************************************/
 export function Input (props) {
-    const { type="text", identifiant, valeur, onChange, children, placeholder, min="", max="" } = props;
+    const { type="text", identifiant, valeur, onChange, children, placeholder, min="", max="", step=1 } = props;
 
     let content = <input type={type} name={identifiant} id={identifiant} placeholder={placeholder} value={valeur} onChange={onChange}/>
 
     if(type === "number"){
-        content = <input type={type} min={min} max={max} name={identifiant} id={identifiant} placeholder={placeholder} value={valeur} onChange={onChange}/>
+        content = <input type={type} min={min} max={max} step={step} name={identifiant} id={identifiant} placeholder={placeholder} value={valeur} onChange={onChange}/>
     }
 
     return (<ClassiqueStructure {...props} content={content} label={children} />)

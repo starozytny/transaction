@@ -42,14 +42,14 @@ class ImBien extends DataEntity
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({"user:read"})
      */
     private $reference;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Gedmo\Slug(updatable=true, fields={"createdBy", "identifiant"})
+     * @Gedmo\Slug(updatable=true, fields={"reference", "identifiant"})
      * @Groups({"user:read"})
      */
     private $slug;
@@ -104,6 +104,13 @@ class ImBien extends DataEntity
      * @ORM\Column(type="string", length=255)
      */
     private $identifiant;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ImArea::class, fetch="EAGER", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
+     */
+    private $area;
 
     public function __construct()
     {
@@ -301,6 +308,18 @@ class ImBien extends DataEntity
     public function setIdentifiant(string $identifiant): self
     {
         $this->identifiant = $identifiant;
+
+        return $this;
+    }
+
+    public function getArea(): ?ImArea
+    {
+        return $this->area;
+    }
+
+    public function setArea(ImArea $area): self
+    {
+        $this->area = $area;
 
         return $this;
     }

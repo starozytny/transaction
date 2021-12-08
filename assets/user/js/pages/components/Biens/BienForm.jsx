@@ -17,6 +17,10 @@ const URL_UPDATE_GROUP       = "api_biens_update";
 
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
+function setValueEmptyIfNull (value) {
+    return value ? value : ""
+}
+
 export function BienFormulaire ({ type, element })
 {
     let title = "Ajouter un bien";
@@ -33,11 +37,23 @@ export function BienFormulaire ({ type, element })
         title={title}
         context={type}
         url={url}
+
         codeTypeAd={element ? element.codeTypeAd : ""}
         codeTypeBien={element ? element.codeTypeBien : ""}
         libelle={element ? element.libelle : ""}
         codeTypeMandat={element ? element.codeTypeMandat : ""}
         negociateur={element ? element.negociateur : ""}
+
+        areaTotal={element ? setValueEmptyIfNull(element.area.total) : ""}
+        areaHabitable={element ? setValueEmptyIfNull(element.area.habitable) : ""}
+        areaLand={element ? setValueEmptyIfNull(element.area.land) : ""}
+        areaGarden={element ? setValueEmptyIfNull(element.area.garden) : ""}
+        areaTerrace={element ? setValueEmptyIfNull(element.area.terrace) : ""}
+        areaCave={element ? setValueEmptyIfNull(element.area.cave) : ""}
+        areaBathroom={element ? setValueEmptyIfNull(element.area.bathroom) : ""}
+        areaLiving={element ? setValueEmptyIfNull(element.area.living) : ""}
+        areaDining={element ? setValueEmptyIfNull(element.area.dining) : ""}
+
         messageSuccess={msg}
     />
 
@@ -56,6 +72,17 @@ class Form extends Component {
             libelle: props.libelle,
             codeTypeMandat: props.codeTypeMandat,
             negociateur: props.negociateur,
+
+            areaTotal: props.areaTotal,
+            areaHabitable: props.areaHabitable,
+            areaLand: props.areaLand,
+            areaGarden: props.areaGarden,
+            areaTerrace: props.areaTerrace,
+            areaCave: props.areaCave,
+            areaBathroom: props.areaBathroom,
+            areaLiving: props.areaLiving,
+            areaDining: props.areaDining,
+
             contentHelpBubble: "",
             errors: [],
             step: 1
@@ -88,10 +115,16 @@ class Form extends Component {
     handleChangeSelect = (e) => { this.setState({ negociateur: e !== undefined ? e.value : "" }) }
 
     handleNext = (stepClicked, stepInitial = null) => {
-        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negociateur } = this.state;
+        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negociateur,
+            areaTotal } = this.state;
 
         let paramsToValidate = [];
         switch (stepClicked){
+            case 3:
+                paramsToValidate = [
+                    {type: "text",      id: 'areaTotal',      value: areaTotal}
+                ];
+                break;
             case 2:
                 paramsToValidate = [
                     {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
@@ -156,7 +189,8 @@ class Form extends Component {
     }
 
     render () {
-        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negociateur } = this.state;
+        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negociateur,
+            areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -259,10 +293,6 @@ class Form extends Component {
                                     <Button onClick={() => this.handleNext( 2)}>Etape suivante</Button>
                                 </div>
                             </div>
-
-                            <div className="line">
-                                <Button isSubmit={true}>Enregistrer le bien</Button>
-                            </div>
                         </div>
 
                         <div className={"step-section" + (step === 1 ? " active" : "")}>
@@ -270,36 +300,48 @@ class Form extends Component {
                                 <div className="form-group">
                                     <label>Surfaces (m²)</label>
                                 </div>
-
                                 <div className="line line-infinite">
-                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                    <Input type="number" step="any" min={0} identifiant="areaTotal" valeur={areaTotal} errors={errors} onChange={this.handleChange}>
                                         <span>Totale</span>
                                     </Input>
-                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
-                                        <span>Habitale</span>
+                                    <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={this.handleChange}>
+                                        <span>Habitable</span>
                                     </Input>
-                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                    <Input type="number" step="any" min={0} identifiant="areaLand" valeur={areaLand} errors={errors} onChange={this.handleChange}>
                                         <span>Terrain</span>
                                     </Input>
-                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                    <Input type="number" step="any" min={0} identifiant="areaGarden" valeur={areaGarden} errors={errors} onChange={this.handleChange}>
                                         <span>Jardin</span>
                                     </Input>
-                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                    <Input type="number" step="any" min={0} identifiant="areaTerrace" valeur={areaTerrace} errors={errors} onChange={this.handleChange}>
                                         <span>Terrasse</span>
                                     </Input>
-                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                    <Input type="number" step="any" min={0} identifiant="areaCave" valeur={areaCave} errors={errors} onChange={this.handleChange}>
                                         <span>Cave</span>
                                     </Input>
-                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                    <Input type="number" step="any" min={0} identifiant="areaBathroom" valeur={areaBathroom} errors={errors} onChange={this.handleChange}>
                                         <span>Salle de bain</span>
                                     </Input>
-                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                    <Input type="number" step="any" min={0} identifiant="areaLiving" valeur={areaLiving} errors={errors} onChange={this.handleChange}>
                                         <span>Salon</span>
                                     </Input>
-                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                    <Input type="number" step="any" min={0} identifiant="areaDining" valeur={areaDining} errors={errors} onChange={this.handleChange}>
                                         <span>Salle à manger</span>
                                     </Input>
                                 </div>
+                            </div>
+
+                            <div className="line line-buttons">
+                                <Button type="reverse">Etape précédente</Button>
+                                <div/>
+                                <div className="btns-submit">
+                                    <Button type="warning">Enregistrer le brouillon</Button>
+                                    <Button onClick={() => this.handleNext( 3)}>Etape suivante</Button>
+                                </div>
+                            </div>
+
+                            <div className="line">
+                                <Button isSubmit={true}>Enregistrer le bien</Button>
                             </div>
                         </div>
                     </form>

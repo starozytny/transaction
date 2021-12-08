@@ -43,7 +43,7 @@ export function AdCard ({ el, onDelete, status, statusName }) {
                         </div>
                         <div className="identifier">
                             <div className="price">590 € cc/mois</div>
-                            <div className="carac">20m² - 1 pièce</div>
+                            <div className="carac">{el.area.total}m² - 1 pièce</div>
                         </div>
                     </div>
                     <div className="col-3">

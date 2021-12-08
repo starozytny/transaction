@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\User;
 use App\Service\ApiResponse;
@@ -32,7 +33,27 @@ class BienController extends AbstractController
     /**
      * @throws Exception
      */
-    public function submitForm($type, $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+    public function setProperty($em, $obj, $data, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
+    {
+        $obj = $dataEntity->setDataArea($obj, $data);
+        if(!is_object($obj)){
+            return $apiResponse->apiJsonResponseValidationFailed($obj);
+        }
+
+        $noErrors = $validator->validate($obj);
+        if ($noErrors !== true) {
+            return $apiResponse->apiJsonResponseValidationFailed($noErrors);
+        }
+
+        $em->persist($obj);
+
+        return $obj;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function submitForm($type, ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
@@ -41,7 +62,12 @@ class BienController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataBien($obj, $data);
+        $area = $this->setProperty($em, $type == "create" ? new ImArea() : $obj->getArea(), $data, $apiResponse, $validator, $dataEntity);
+        if(!$area instanceof ImArea){
+            return $area;
+        }
+
+        $obj = $dataEntity->setDataBien($obj, $data, $area);
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }

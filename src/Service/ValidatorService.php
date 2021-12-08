@@ -102,7 +102,6 @@ class ValidatorService
         if($value == ""){
             return 'Ce champ doit être renseigné';
         }
-
         return 1;
     }
 }
