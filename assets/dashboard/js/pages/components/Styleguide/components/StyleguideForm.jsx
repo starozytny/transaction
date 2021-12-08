@@ -220,9 +220,6 @@ export class StyleguideForm extends Component {
                                 <Input identifiant="username" valeur={username} errors={errors} onChange={this.handleChange}>Line 4 - Col 3</Input>
                                 <Input identifiant="username" valeur={username} errors={errors} onChange={this.handleChange}>Line 4 - Col 4</Input>
                             </div>
-                            <div className="line">
-                                <Input identifiant="username" valeur={username} errors={errors} onChange={this.handleChange}>Line 1 - Col 1</Input>
-                            </div>
                         </form>
                     </div>
                 </section>

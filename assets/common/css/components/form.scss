@@ -455,7 +455,7 @@ select{
 //                     |__|                    |__|
 @media (min-width:768px) {
   .line{
-    &.line-2, &.line-3, &.line-4{
+    &.line-2, &.line-3, &.line-4, &.line-infinite{
       flex-direction: row;
     }
   }
@@ -480,19 +480,12 @@ select{
   }
 
   .line.line-4{
-    flex-wrap: wrap;
-    margin-bottom: 0;
-
     & > .form-group{
-      width: calc(50% - 12px);
-      margin-bottom: 16px;
+      width: 25%;
     }
 
-    & > .form-group:nth-child(odd){
+    & > .form-group:not(:last-child){
       margin-right: 12px;
-    }
-    & > .form-group:nth-child(even){
-      margin-left: 12px;
     }
   }
 
@@ -526,26 +519,7 @@ select{
 //                     | |  |_|\___/_____|  |_|    | |
 //                     |__|                       |__|
 @media (min-width: 1024px) {
-  .line.line-4{
-    flex-wrap: nowrap;
-    margin-bottom: 16px;
 
-    & > .form-group{
-      width: 25%;
-      margin-bottom: 0;
-    }
-
-    & > .form-group:nth-child(odd){
-      margin-right: 0;
-    }
-    & > .form-group:nth-child(even){
-      margin-left: 0;
-    }
-
-    & > .form-group:not(:last-child){
-      margin-right: 12px;
-    }
-  }
 }
 
 //                      __   _ ____  ___   ___    __
