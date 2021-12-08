@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { StyleguideForm }      from "./components/StyleguideForm";
 import { StyleguideMaps }      from "./components/StyleguideMaps";
+import { StyleguideHelp }      from "./components/StyleguideHelp";
 import { StyleguideLozad }     from "./components/StyleguideLozad";
 import { StyleguideTable }     from "./components/StyleguideTable";
 import { StyleguideAside }     from "./components/StyleguideAside";
@@ -13,6 +14,7 @@ import { StyleguideAccordion } from "./components/StyleguideAccordion";
 export class Styleguide extends Component {
     render () {
         return <div className="main-content">
+            <StyleguideHelp />
             <StyleguideAlert />
             <StyleguideButton />
             <StyleguideAccordion />
