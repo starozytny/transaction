@@ -271,7 +271,7 @@ class Form extends Component {
                                     <label>Surfaces (m²)</label>
                                 </div>
 
-                                <div className="line line-6">
+                                <div className="line line-infinite">
                                     <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
                                         <span>Totale</span>
                                     </Input>
@@ -283,6 +283,21 @@ class Form extends Component {
                                     </Input>
                                     <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
                                         <span>Jardin</span>
+                                    </Input>
+                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                        <span>Terrasse</span>
+                                    </Input>
+                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                        <span>Cave</span>
+                                    </Input>
+                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                        <span>Salle de bain</span>
+                                    </Input>
+                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                        <span>Salon</span>
+                                    </Input>
+                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                        <span>Salle à manger</span>
                                     </Input>
                                 </div>
                             </div>
