@@ -4,7 +4,7 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Radiobox }     from "@dashboardComponents/Tools/Fields";
+import {Input, Radiobox, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
 import { Button, ButtonIcon }  from "@dashboardComponents/Tools/Button";
 import { HelpBubble }          from "@dashboardComponents/Tools/HelpBubble";
 
@@ -37,6 +37,7 @@ export function BienFormulaire ({ type, element })
         codeTypeBien={element ? element.codeTypeBien : ""}
         libelle={element ? element.libelle : ""}
         codeTypeMandat={element ? element.codeTypeMandat : ""}
+        negociateur={element ? element.negociateur : ""}
         messageSuccess={msg}
     />
 
@@ -54,6 +55,7 @@ class Form extends Component {
             codeTypeBien: props.codeTypeBien,
             libelle: props.libelle,
             codeTypeMandat: props.codeTypeMandat,
+            negociateur: props.negociateur,
             contentHelpBubble: "",
             errors: [],
             step: 1
@@ -62,6 +64,7 @@ class Form extends Component {
         this.helpBubble = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleNext = this.handleNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleOpenHelp = this.handleOpenHelp.bind(this);
@@ -82,8 +85,10 @@ class Form extends Component {
         }
     }
 
+    handleChangeSelect = (e) => { this.setState({ negociateur: e !== undefined ? e.value : "" }) }
+
     handleNext = (stepClicked, stepInitial = null) => {
-        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat } = this.state;
+        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negociateur } = this.state;
 
         let paramsToValidate = [];
         switch (stepClicked){
@@ -93,6 +98,7 @@ class Form extends Component {
                     {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
                     {type: "text",      id: 'libelle',        value: libelle},
                     {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
+                    {type: "text",      id: 'negociateur',    value: negociateur},
                     {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
                 ];
                 break;
@@ -150,7 +156,7 @@ class Form extends Component {
     }
 
     render () {
-        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat } = this.state;
+        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negociateur } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -179,6 +185,12 @@ class Form extends Component {
         let typeAdItems = helper.getItems("ads");
         let typeBienItems = helper.getItems("biens");
         let typeMandatItems = helper.getItems("mandats");
+
+        let negociateurs = [
+            { value: 0, label: 'Orange', identifiant: 'orange' },
+            { value: 1, label: 'Pomme',  identifiant: 'pomme' },
+            { value: 2, label: 'Mangue', identifiant: 'mangue' },
+        ]
 
         return <div className="page-default">
             <div className="page-col-1">
@@ -231,6 +243,12 @@ class Form extends Component {
                                 <Radiobox items={typeMandatItems} identifiant="codeTypeMandat" valeur={codeTypeMandat} errors={errors} onChange={this.handleChange}>
                                     Type de mandat
                                 </Radiobox>
+                            </div>
+
+                            <div className="line line-2">
+                                <SelectReactSelectize items={negociateurs} identifiant="negociateur" valeur={negociateur} errors={errors} onChange={this.handleChangeSelect}>
+                                    Négociateur
+                                </SelectReactSelectize>
                             </div>
 
                             <div className="line line-buttons">
