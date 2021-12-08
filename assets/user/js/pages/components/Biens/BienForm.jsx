@@ -9,6 +9,7 @@ import { Button, ButtonIcon }  from "@dashboardComponents/Tools/Button";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
+import {HelpBubble} from "@dashboardComponents/Tools/HelpBubble";
 
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_biens_update";
@@ -48,13 +49,17 @@ class Form extends Component {
             codeTypeAd: props.codeTypeAd,
             codeTypeBien: props.codeTypeBien,
             libelle: props.libelle,
+            contentHelpBubble: "",
             errors: [],
             step: 1
         }
 
+        this.helpBubble = React.createRef();
+
         this.handleChange = this.handleChange.bind(this);
         this.handleNext = this.handleNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleOpenHelp = this.handleOpenHelp.bind(this);
     }
 
     handleChange = (e) => {
@@ -117,9 +122,22 @@ class Form extends Component {
         ;
     }
 
+    handleOpenHelp = (type) => {
+        let content = "";
+        switch (type) {
+            default:
+                content = "Un titre comme \"Appartement T1 centre ville 20m²\" est parfait pour le référencement\n" +
+                          "et donc obtenir une meilleure visibilité de votre annonce sur les moteurs de recherches et plateformes.";
+                break;
+        }
+
+        this.setState({ contentHelpBubble: content })
+        this.helpBubble.current.handleOpen();
+    }
+
     render () {
         const { context } = this.props;
-        const { step, errors, codeTypeAd, codeTypeBien, libelle } = this.state;
+        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -211,7 +229,7 @@ class Form extends Component {
                                 >
                                     <span>Libellé de l'annonce</span>
                                     <div className="input-label-help">
-                                        <ButtonIcon icon="question-1">Aide</ButtonIcon>
+                                        <ButtonIcon icon="question-1" onClick={() => this.handleOpenHelp("libelle")}>Aide</ButtonIcon>
                                     </div>
                                 </Input>
                             </div>
@@ -232,6 +250,8 @@ class Form extends Component {
                     </form>
                 </section>
             </div>
+
+            <HelpBubble ref={this.helpBubble} content={contentHelpBubble}>Aide</HelpBubble>
         </div>
     }
 }
