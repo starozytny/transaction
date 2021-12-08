@@ -107,6 +107,17 @@ function setCityFromZipcode(self, e, arrayPostalCode){
     }
 }
 
+function setActive(tab, value) {
+    let active = "";
+    tab.forEach(elem => {
+        if(elem === value){
+            active = " active";
+        }
+    })
+
+    return active;
+}
+
 module.exports = {
     sanitizeString,
     getPostalCodes,
@@ -115,5 +126,6 @@ module.exports = {
     toFormatDateTime,
     toFormatPhone,
     toFormatCurrency,
-    setCityFromZipcode
+    setCityFromZipcode,
+    setActive
 }
