@@ -127,7 +127,8 @@ export class Layout extends Component {
             data = this.handleGetFilters(filters, filterFunction, data)
         }
 
-        this.setState({ context: newContext, dataImmuable: dataImmuable, data: data, currentData: data.slice(0, perPage), loadPageError: false, loadData: false, element: elem })
+        this.setState({ context: newContext, dataImmuable: dataImmuable, data: data, currentData: data.slice(0, perPage),
+            loadPageError: false, loadData: false, element: elem })
     }
 
     handleSetData = (donnees, nContext = "read", type = "id") => {
@@ -180,6 +181,7 @@ export class Layout extends Component {
             sessionStorage.setItem(sessionName, "0")
             this.page.current.pagination.current.handlePageOne();
         }
+
         this.setState({ data: newData, currentData: newData.slice(0, perPage), filters: filters });
         return newData;
     }
