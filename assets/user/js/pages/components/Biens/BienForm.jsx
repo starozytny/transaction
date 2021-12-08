@@ -264,6 +264,29 @@ class Form extends Component {
                                 <Button isSubmit={true}>Enregistrer le bien</Button>
                             </div>
                         </div>
+
+                        <div className={"step-section" + (step === 1 ? " active" : "")}>
+                            <div className="line special-line">
+                                <div className="form-group">
+                                    <label>Surfaces (m²)</label>
+                                </div>
+
+                                <div className="line line-6">
+                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                        <span>Totale</span>
+                                    </Input>
+                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                        <span>Habitale</span>
+                                    </Input>
+                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                        <span>Terrain</span>
+                                    </Input>
+                                    <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}>
+                                        <span>Jardin</span>
+                                    </Input>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </section>
             </div>
