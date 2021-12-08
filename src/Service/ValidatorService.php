@@ -81,7 +81,7 @@ class ValidatorService
 
     private function validateUniqueLength($value, $size)
     {
-        if(strlen($value) !== $size){
+        if(strlen($value) != $size){
             return 'Ce champ doit contenir ' . $size . ' caractères.';
         }
 
