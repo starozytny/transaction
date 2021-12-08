@@ -454,9 +454,12 @@ select{
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
+  .line{
+    &.line-2, &.line-3, &.line-4{
+      flex-direction: row;
+    }
+  }
   .line.line-2{
-    flex-direction: row;
-
     & > .form-group:first-child{
       margin-right: 12px;
       width: 50%;
@@ -468,13 +471,28 @@ select{
   }
 
   .line.line-3{
-    flex-direction: row;
-
     & > .form-group{
       width: 33%;
     }
     & > .form-group:not(:last-child){
       margin-right: 12px;
+    }
+  }
+
+  .line.line-4{
+    flex-wrap: wrap;
+    margin-bottom: 0;
+
+    & > .form-group{
+      width: calc(50% - 12px);
+      margin-bottom: 16px;
+    }
+
+    & > .form-group:nth-child(odd){
+      margin-right: 12px;
+    }
+    & > .form-group:nth-child(even){
+      margin-left: 12px;
     }
   }
 
@@ -499,8 +517,37 @@ select{
       margin-right: 12px;
     }
   }
-
 }
+
+//                      __   _  ___ ____  _  _     __
+//                     | _| / |/ _ \___ \| || |   |_ |
+//    _____ _____ _____| |  | | | | |__) | || |_   | |_____ _____ _____
+//   |_____|_____|_____| |  | | |_| / __/|__   _|  | |_____|_____|_____|
+//                     | |  |_|\___/_____|  |_|    | |
+//                     |__|                       |__|
+@media (min-width: 1024px) {
+  .line.line-4{
+    flex-wrap: nowrap;
+    margin-bottom: 16px;
+
+    & > .form-group{
+      width: 25%;
+      margin-bottom: 0;
+    }
+
+    & > .form-group:nth-child(odd){
+      margin-right: 0;
+    }
+    & > .form-group:nth-child(even){
+      margin-left: 0;
+    }
+
+    & > .form-group:not(:last-child){
+      margin-right: 12px;
+    }
+  }
+}
+
 //                      __   _ ____  ___   ___    __
 //                     | _| / |___ \( _ ) / _ \  |_ |
 //    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
