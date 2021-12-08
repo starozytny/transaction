@@ -29,9 +29,11 @@ function setNewTab(initTab, el, comparateur, newTable) {
 function filterFunction(dataImmuable, filters){
     let newData = [];
     let newData1 = [];
+    let newData2 = [];
 
     let filtersAd = filters[0];
     let filtersBien = filters[1];
+    let filtersMandat = filters[2];
 
     if(filters.length === 0) {
         newData = dataImmuable
@@ -44,7 +46,11 @@ function filterFunction(dataImmuable, filters){
             newData1 = setNewTab(filtersBien, el, el.codeTypeBien, newData1);
         })
 
-        newData = newData1
+        newData1.forEach(el => {
+            newData2 = setNewTab(filtersMandat, el, el.codeTypeMandat, newData2);
+        })
+
+        newData = newData2
     }
 
     return newData;
@@ -66,6 +72,7 @@ export class Biens extends Component {
             filters: [
                 [0, 1], // type ad
                 [0, 1, 2, 3], // type bien
+                [], //type mandat
             ]
         }
 

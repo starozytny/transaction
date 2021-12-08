@@ -42,6 +42,12 @@ class ImBien extends DataEntity
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
+     */
+    private $reference;
+
+    /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Gedmo\Slug(updatable=true, fields={"createdBy", "identifiant"})
      * @Groups({"user:read"})
@@ -67,6 +73,12 @@ class ImBien extends DataEntity
     private $libelle;
 
     /**
+     * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
+     */
+    private $codeTypeMandat;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -90,12 +102,6 @@ class ImBien extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
-     */
-    private $reference;
-
-    /**
-     * @ORM\Column(type="string", length=255)
      */
     private $identifiant;
 
@@ -107,6 +113,18 @@ class ImBien extends DataEntity
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
     }
 
     public function getSlug(): string
@@ -163,6 +181,41 @@ class ImBien extends DataEntity
     public function setCodeTypeBien(int $codeTypeBien): self
     {
         $this->codeTypeBien = $codeTypeBien;
+
+        return $this;
+    }
+
+    public function getLibelle(): ?string
+    {
+        return $this->libelle;
+    }
+
+    public function setLibelle(string $libelle): self
+    {
+        $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getTypeMandatString(): string
+    {
+        $data = ["Simple", "Exclusif", "Semi-exclusif"];
+
+        return $data[$this->codeTypeMandat];
+    }
+
+    public function getCodeTypeMandat(): ?int
+    {
+        return $this->codeTypeMandat;
+    }
+
+    public function setCodeTypeMandat(int $codeTypeMandat): self
+    {
+        $this->codeTypeMandat = $codeTypeMandat;
 
         return $this;
     }
@@ -240,18 +293,6 @@ class ImBien extends DataEntity
         return $this;
     }
 
-    public function getReference(): ?string
-    {
-        return $this->reference;
-    }
-
-    public function setReference(string $reference): self
-    {
-        $this->reference = $reference;
-
-        return $this;
-    }
-
     public function getIdentifiant(): ?string
     {
         return $this->identifiant;
@@ -260,18 +301,6 @@ class ImBien extends DataEntity
     public function setIdentifiant(string $identifiant): self
     {
         $this->identifiant = $identifiant;
-
-        return $this;
-    }
-
-    public function getLibelle(): ?string
-    {
-        return $this->libelle;
-    }
-
-    public function setLibelle(string $libelle): self
-    {
-        $this->libelle = $libelle;
 
         return $this;
     }

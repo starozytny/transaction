@@ -39,7 +39,7 @@ export function AdCard ({ el, onDelete, status, statusName }) {
                     <div className="col-2">
                         <div className="badges">
                             <div className="status">{el.typeAdString}</div>
-                            <div className="status">Mandat simple</div>
+                            <div className="status">Mandat {el.typeMandatString}</div>
                         </div>
                         <div className="identifier">
                             <div className="price">590 € cc/mois</div>

@@ -10,9 +10,12 @@ import { HelpBubble }          from "@dashboardComponents/Tools/HelpBubble";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
+import helper                  from "./helper";
 
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_biens_update";
+
+const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
 export function BienFormulaire ({ type, element })
 {
@@ -33,7 +36,7 @@ export function BienFormulaire ({ type, element })
         codeTypeAd={element ? element.codeTypeAd : ""}
         codeTypeBien={element ? element.codeTypeBien : ""}
         libelle={element ? element.libelle : ""}
-        mandat={element ? element.mandat : ""}
+        codeTypeMandat={element ? element.codeTypeMandat : ""}
         messageSuccess={msg}
     />
 
@@ -50,7 +53,7 @@ class Form extends Component {
             codeTypeAd: props.codeTypeAd,
             codeTypeBien: props.codeTypeBien,
             libelle: props.libelle,
-            mandat: props.mandat,
+            codeTypeMandat: props.codeTypeMandat,
             contentHelpBubble: "",
             errors: [],
             step: 1
@@ -65,24 +68,32 @@ class Form extends Component {
     }
 
     handleChange = (e) => {
+        const { libelle } = this.state;
+
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
 
-        this.setState({[name]: value})
+        this.setState({[name]: value});
+
+        // PREREMPLIR le libellé
+        if(name === "codeTypeBien" && libelle !== ARRAY_STRING_BIENS[value]
+            && (ARRAY_STRING_BIENS.includes(libelle) || libelle === "")){
+            this.setState({ libelle: ARRAY_STRING_BIENS[value] })
+        }
     }
 
     handleNext = (stepClicked, stepInitial = null) => {
-        const { codeTypeAd, codeTypeBien, libelle, mandat } = this.state;
+        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat } = this.state;
 
         let paramsToValidate = [];
         switch (stepClicked){
             case 2:
                 paramsToValidate = [
-                    {type: "text",      id: 'codeTypeAd',    value: codeTypeAd},
-                    {type: "text",      id: 'codeTypeBien',  value: codeTypeBien},
-                    {type: "text",      id: 'libelle',       value: libelle},
-                    {type: "text",      id: 'mandat',        value: mandat},
-                    {type: "length",    id: 'libelle',       value: libelle, min: 0, max: 64},
+                    {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
+                    {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
+                    {type: "text",      id: 'libelle',        value: libelle},
+                    {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
+                    {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
                 ];
                 break;
             default:
@@ -139,7 +150,7 @@ class Form extends Component {
     }
 
     render () {
-        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, mandat } = this.state;
+        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -165,35 +176,9 @@ class Form extends Component {
             </div>)
         })}
 
-        let typeAdItems = [
-            { value: 0, label: 'Vente',                         identifiant: 'vente' },
-            { value: 1, label: 'Location',                      identifiant: 'location' },
-            { value: 2, label: 'Viager',                        identifiant: 'viager' },
-            { value: 3, label: 'Cession de bail',               identifiant: 'cession-de-bail' },
-            { value: 4, label: 'Produit d\'investissement',     identifiant: 'produit-investissement' },
-            { value: 5, label: 'Location vacances',             identifiant: 'location-vacances' },
-            { value: 6, label: 'Vente de prestige',             identifiant: 'vente-de-prestige' },
-            { value: 7, label: 'Fond de commerce',              identifiant: 'fond-de-commerce' },
-        ];
-
-        let typeBienItems = [
-            { value: 0, label: 'Appartement',       identifiant: 'appartement' },
-            { value: 1, label: 'Maison',            identifiant: 'maison' },
-            { value: 2, label: 'Parking/Box',       identifiant: 'parking-box' },
-            { value: 3, label: 'Terrain',           identifiant: 'terrain' },
-            { value: 4, label: 'Boutique',          identifiant: 'boutique' },
-            { value: 5, label: 'Bureau',            identifiant: 'bureau' },
-            { value: 6, label: 'Château',           identifiant: 'chateau' },
-            { value: 7, label: 'Immeuble',          identifiant: 'immeuble' },
-            { value: 8, label: 'Terrain + Maison',  identifiant: 'terrain-maison' },
-            { value: 9, label: 'Divers',            identifiant: 'divers' },
-        ];
-
-        let typeMandatItems = [
-            { value: 0, label: 'Simple',            identifiant: 'simple' },
-            { value: 1, label: 'Exclusif',          identifiant: 'exclusif' },
-            { value: 2, label: 'Semi-exclusif',     identifiant: 'semi-exclusif' },
-        ];
+        let typeAdItems = helper.getItems("ads");
+        let typeBienItems = helper.getItems("biens");
+        let typeMandatItems = helper.getItems("mandats");
 
         return <div className="page-default">
             <div className="page-col-1">
@@ -243,7 +228,7 @@ class Form extends Component {
                             </div>
 
                             <div className="line special-line">
-                                <Radiobox items={typeMandatItems} identifiant="mandat" valeur={mandat} errors={errors} onChange={this.handleChange}>
+                                <Radiobox items={typeMandatItems} identifiant="codeTypeMandat" valeur={codeTypeMandat} errors={errors} onChange={this.handleChange}>
                                     Type de mandat
                                 </Radiobox>
                             </div>
