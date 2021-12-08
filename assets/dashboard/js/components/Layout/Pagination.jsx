@@ -6,7 +6,9 @@ import { Input, Select } from "@dashboardComponents/Tools/Fields";
 function updateData(self, selectedPage, offset, items, perPage) {
     self.setState({ currentPage: selectedPage, offset: offset })
     self.props.onUpdate(items.slice(offset, offset + parseInt(perPage)))
-    self.props.onChangeCurrentPage(selectedPage)
+    if(self.props.onChangeCurrentPage){
+        self.props.onChangeCurrentPage(selectedPage)
+    }
 }
 
 export class Pagination extends Component {
