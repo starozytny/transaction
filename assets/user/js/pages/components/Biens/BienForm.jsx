@@ -6,10 +6,10 @@ import Routing                 from '@publicFolder/bundles/fosjsrouting/js/route
 
 import { Input, Radiobox }     from "@dashboardComponents/Tools/Fields";
 import { Button, ButtonIcon }  from "@dashboardComponents/Tools/Button";
+import { HelpBubble }          from "@dashboardComponents/Tools/HelpBubble";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
-import {HelpBubble} from "@dashboardComponents/Tools/HelpBubble";
 
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_biens_update";
@@ -33,6 +33,7 @@ export function BienFormulaire ({ type, element })
         codeTypeAd={element ? element.codeTypeAd : ""}
         codeTypeBien={element ? element.codeTypeBien : ""}
         libelle={element ? element.libelle : ""}
+        mandat={element ? element.mandat : ""}
         messageSuccess={msg}
     />
 
@@ -49,6 +50,7 @@ class Form extends Component {
             codeTypeAd: props.codeTypeAd,
             codeTypeBien: props.codeTypeBien,
             libelle: props.libelle,
+            mandat: props.mandat,
             contentHelpBubble: "",
             errors: [],
             step: 1
@@ -70,7 +72,7 @@ class Form extends Component {
     }
 
     handleNext = (stepClicked, stepInitial = null) => {
-        const { codeTypeAd, codeTypeBien, libelle } = this.state;
+        const { codeTypeAd, codeTypeBien, libelle, mandat } = this.state;
 
         let paramsToValidate = [];
         switch (stepClicked){
@@ -79,6 +81,7 @@ class Form extends Component {
                     {type: "text",      id: 'codeTypeAd',    value: codeTypeAd},
                     {type: "text",      id: 'codeTypeBien',  value: codeTypeBien},
                     {type: "text",      id: 'libelle',       value: libelle},
+                    {type: "text",      id: 'mandat',        value: mandat},
                     {type: "length",    id: 'libelle',       value: libelle, min: 0, max: 64},
                 ];
                 break;
@@ -136,8 +139,7 @@ class Form extends Component {
     }
 
     render () {
-        const { context } = this.props;
-        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle } = this.state;
+        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, mandat } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -187,6 +189,12 @@ class Form extends Component {
             { value: 9, label: 'Divers',            identifiant: 'divers' },
         ];
 
+        let typeMandatItems = [
+            { value: 0, label: 'Simple',            identifiant: 'simple' },
+            { value: 1, label: 'Exclusif',          identifiant: 'exclusif' },
+            { value: 2, label: 'Semi-exclusif',     identifiant: 'semi-exclusif' },
+        ];
+
         return <div className="page-default">
             <div className="page-col-1">
                 <div className="comeback">
@@ -232,6 +240,12 @@ class Form extends Component {
                                         <ButtonIcon icon="question-1" onClick={() => this.handleOpenHelp("libelle")}>Aide</ButtonIcon>
                                     </div>
                                 </Input>
+                            </div>
+
+                            <div className="line special-line">
+                                <Radiobox items={typeMandatItems} identifiant="mandat" valeur={mandat} errors={errors} onChange={this.handleChange}>
+                                    Type de mandat
+                                </Radiobox>
                             </div>
 
                             <div className="line line-buttons">
