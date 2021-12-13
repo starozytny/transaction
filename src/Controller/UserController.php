@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,6 +25,11 @@ class UserController extends AbstractController
      */
     public function profil(): Response
     {
-        return $this->render('user/pages/profil/index.html.twig');
+        /** @var User $obj */
+        $obj = $this->getUser();
+
+        return $this->render('user/pages/profil/index.html.twig',  [
+            'obj' => $obj
+        ]);
     }
 }

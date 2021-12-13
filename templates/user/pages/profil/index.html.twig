@@ -2,8 +2,33 @@
 
 {% set page_title %}Mon profil{% endset %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('user_profil') }}
+{% endblock %}
+
 {% block main_content %}
     <div class="main-content">
-        Hello
+        <div class="col-1">
+            <div class="profil-card">
+                <div class="profil-card-header">
+                    <div class="title">{{ obj.firstname }} {{ obj.lastname }}</div>
+                </div>
+                <div class="profil-card-body">
+                    <div class="items">
+                        <div class="item">{{ obj.username }}</div>
+                        <div class="item">{{ obj.email }}</div>
+                    </div>
+                </div>
+                <div class="profil-card-footer">
+                    <a href="/" class="btn btn-primary">Modifier ses informations</a>
+                </div>
+            </div>
+        </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('user_profil') }}
 {% endblock %}
