@@ -32,4 +32,14 @@ class UserController extends AbstractController
             'obj' => $obj
         ]);
     }
+
+    /**
+     * @Route("/modifier-profil", name="profil_update")
+     */
+    public function profilUpdate(): Response
+    {
+        /** @var User $obj */
+        $obj = $this->getUser();
+        return $this->render('user/pages/profil/update.html.twig',  ['obj' => $obj]);
+    }
 }
