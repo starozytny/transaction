@@ -41,7 +41,7 @@ class UserController extends AbstractController
     {
         /** @var User $data */
         $data = $this->getUser();
-        $data = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
+        $data = $serializer->serialize($data, 'json', ['groups' => User::ADMIN_READ]);
         return $this->render('user/pages/profil/update.html.twig',  ['donnees' => $data]);
     }
 }

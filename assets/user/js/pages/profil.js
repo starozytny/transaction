@@ -11,5 +11,7 @@ Routing.setRoutingData(routes);
 
 let el = document.getElementById("profil-update");
 if(el){
-    render(<div className="main-content"><UserFormulaire type="update" element={JSON.parse(el.dataset.donnees)} /></div>, el)
+    render(<div className="main-content">
+        <UserFormulaire type="profil" element={JSON.parse(el.dataset.donnees)} />
+    </div>, el)
 }

@@ -18,6 +18,7 @@ Encore
     .addAliases({
         '@publicFolder': path.resolve(__dirname, './public'),
         '@dashboardComponents': path.resolve(__dirname, './assets/dashboard/js/components'),
+        '@dashboardPages': path.resolve(__dirname, './assets/dashboard/js/pages'),
         '@commonComponents': path.resolve(__dirname, './assets/common/js/components'),
         '@appComponents': path.resolve(__dirname, './assets/app/js/components'),
         '@userComponents': path.resolve(__dirname, './assets/user/js/components'),
