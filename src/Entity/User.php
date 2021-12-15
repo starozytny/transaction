@@ -19,7 +19,7 @@ use OpenApi\Annotations as OA;
  * @UniqueEntity(fields={"username"})
  * @UniqueEntity(fields={"email"})
  */
-class User extends DataEntity implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends DataEntityHelper implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const ADMIN_READ = ['admin:read'];
     const USER_READ = ['user:read'];

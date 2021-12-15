@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=NotificationRepository::class)
  */
-class Notification extends DataEntity
+class Notification extends DataEntityHelper
 {
     /**
      * @ORM\Id
