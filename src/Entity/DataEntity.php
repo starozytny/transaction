@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Carbon\Factory;
 use Exception;
 
-class DataEntityHelper
+class DataEntity
 {
     public function initNewDate(): \DateTime
     {

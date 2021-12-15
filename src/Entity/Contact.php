@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ContactRepository;
-use Carbon\Carbon;
-use Carbon\Factory;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ContactRepository::class)
  */
-class Contact extends DataEntityHelper
+class Contact extends DataEntity
 {
     /**
      * @ORM\Id
