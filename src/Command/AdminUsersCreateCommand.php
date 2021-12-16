@@ -107,7 +107,7 @@ class AdminUsersCreateCommand extends Command
             $fake = Factory::create();
             for($i=0; $i<10 ; $i++) {
                 $new = (new Society())
-                    ->setName($fake->domainName)
+                    ->setName($fake->name)
                     ->setCode($i)
                 ;
 
