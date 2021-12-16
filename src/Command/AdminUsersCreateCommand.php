@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Entity\Notification;
+use App\Entity\Society;
 use App\Entity\User;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,7 +32,7 @@ class AdminUsersCreateCommand extends Command
     {
         $this
             ->setDescription('Create an user and an admin.')
-            ->addOption('fake', null, InputOption::VALUE_NONE, 'Option shit values')
+            ->addOption('fake', 'f', InputOption::VALUE_NONE, 'Option shit values')
         ;
     }
 
@@ -39,7 +41,7 @@ class AdminUsersCreateCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [User::class]);
+        $this->databaseService->resetTable($io, [Notification::class, User::class, Society::class]);
 
         $users = array(
             [
@@ -62,10 +64,26 @@ class AdminUsersCreateCommand extends Command
                 'lastname' => 'Shanks',
                 'email' => 'shanks@hotmail.fr',
                 'roles' => ['ROLE_USER']
-            ]
+            ],
+            [
+                'username' => 'manager',
+                'firstname' => 'Manager',
+                'lastname' => 'Shan',
+                'email' => 'chanbora.chhun@outlook.fr',
+                'roles' => ['ROLE_USER', 'ROLE_MANAGER']
+            ],
         );
 
         $password = password_hash("azerty", PASSWORD_ARGON2I);
+
+        $io->title('Création de la société Logilink');
+        $society = (new Society())
+            ->setName("Logilink")
+            ->setCode(0)
+        ;
+
+        $this->em->persist($society);
+        $io->text('SOCIETE : Logilink créé' );
 
         $io->title('Création des utilisateurs');
         foreach ($users as $user) {
@@ -76,6 +94,7 @@ class AdminUsersCreateCommand extends Command
                 ->setFirstname(ucfirst($user['firstname']))
                 ->setLastname(mb_strtoupper($user['lastname']))
                 ->setPassword($password)
+                ->setSociety($society)
             ;
 
             $this->em->persist($new);
@@ -83,17 +102,31 @@ class AdminUsersCreateCommand extends Command
         }
 
         if ($input->getOption('fake')) {
-            $io->title('Création de 110 utilisateurs lambdas');
+            $io->title('Création de 10 société fake');
+            $societies = [];
+            $fake = Factory::create();
+            for($i=0; $i<10 ; $i++) {
+                $new = (new Society())
+                    ->setName($fake->name)
+                    ->setCode($i)
+                ;
+
+                $this->em->persist($new);
+                $societies[] = $new;
+            }
+            $io->text('SOCIETE : Sociétés fake créées' );
+
+            $io->title('Création de 110 utilisateurs fake');
             $fake = Factory::create();
             for($i=0; $i<110 ; $i++) {
                 $new = (new User())
                     ->setUsername($fake->userName)
                     ->setEmail($fake->freeEmail)
-//                    ->setEmail("undefined@undefined.fr")
                     ->setRoles(['ROLE_USER'])
                     ->setFirstname(ucfirst($fake->firstName))
                     ->setLastname(mb_strtoupper($fake->lastName))
                     ->setPassword($password)
+                    ->setSociety($societies[$fake->numberBetween(0,9)])
                 ;
 
                 $this->em->persist($new);
