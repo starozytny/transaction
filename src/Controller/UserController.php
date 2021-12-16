@@ -53,10 +53,10 @@ class UserController extends AbstractController
      */
     public function profilUpdate(SerializerInterface $serializer): Response
     {
-        /** @var User $data */
-        $data = $this->getUser();
-        $data = $serializer->serialize($data, 'json', ['groups' => User::ADMIN_READ]);
-        return $this->render('user/pages/profil/update.html.twig',  ['donnees' => $data]);
+        /** @var User $obj */
+        $obj = $this->getUser();
+        $data = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
+        return $this->render('user/pages/profil/update.html.twig',  ['elem' => $obj, 'donnees' => $data]);
     }
 
     /**
@@ -66,7 +66,9 @@ class UserController extends AbstractController
      */
     public function userCreate(): Response
     {
-        return $this->render('user/pages/profil/user/create.html.twig');
+        /** @var User $obj */
+        $obj = $this->getUser();
+        return $this->render('user/pages/profil/user/create.html.twig', ['elem' => $obj]);
     }
 
     /**

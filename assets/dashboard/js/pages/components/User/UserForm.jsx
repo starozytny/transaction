@@ -171,7 +171,7 @@ export class Form extends Component {
     }
 
     render () {
-        const { context, societies } = this.props;
+        const { context, societies, isProfil=false } = this.props;
         const { errors, success, username, firstname, lastname, email, password, passwordConfirm, roles, avatar, society } = this.state;
 
         let rolesItems = [
@@ -180,7 +180,11 @@ export class Form extends Component {
             { value: 'ROLE_MANAGER',    label: 'Manager',        identifiant: 'manager' },
         ]
 
-        if(context !== "profil"){
+        if(isProfil){
+            rolesItems.shift();
+        }
+
+        if(context !== "profil" && !isProfil){
             let selectSociety = [];
             societies.forEach(elem => {
                 selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: elem.name.toLowerCase() })
@@ -212,7 +216,7 @@ export class Form extends Component {
                           label="Téléverser un avatar" labelError="Seules les images sont acceptées.">Fichier (facultatif)</Drop>
                 </div>}
 
-                {context !== "profil" && <div className="line">
+                {context !== "profil" && !isProfil && <div className="line">
                     <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
                                           placeholder={"Sélectionner la société"}
                                           errors={errors} onChange={(e) => this.handleChangeSelect("society", e)}

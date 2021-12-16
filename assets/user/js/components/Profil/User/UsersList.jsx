@@ -25,18 +25,19 @@ export class UsersList extends Component {
     render () {
         const { data, onSearch, filters, onGetFilters } = this.props;
 
-        let filtersLabel = ["Utilisateur"];
-        let filtersId    = ["f-user"];
+        let filtersLabel = ["Utilisateur", "Manager"];
+        let filtersId    = ["f-user", "f-manager"];
 
         let itemsFilter = [
             { value: 0, id: filtersId[0], label: filtersLabel[0] },
+            { value: 1, id: filtersId[1], label: filtersLabel[1] },
         ];
 
         return <>
             <div>
                 <div className="toolbar">
                     <div className="item create">
-                        <Button element="a">Ajouter un utilisateur</Button>
+                        <Button element="a" onClick={Routing.generate('user_user_create')}>Ajouter un utilisateur</Button>
                     </div>
                     <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
