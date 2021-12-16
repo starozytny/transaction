@@ -23,6 +23,7 @@ export function UserFormulaire ({ type, element })
         email={element ? element.email : ""}
         avatar={element ? element.avatar : null}
         roles={element ? element.roles : []}
+        society={element ? element.society.id : ""}
         messageSuccess={msg}
     />
 

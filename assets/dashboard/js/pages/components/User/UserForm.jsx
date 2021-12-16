@@ -179,10 +179,12 @@ export class Form extends Component {
             { value: 'ROLE_USER',  label: 'Utilisateur',    identifiant: 'utilisateur' },
         ]
 
-        let selectSociety = [];
-        societies.forEach(elem => {
-            selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: elem.name.toLowerCase() })
-        });
+        if(context !== "profil"){
+            let selectSociety = [];
+            societies.forEach(elem => {
+                selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: elem.name.toLowerCase() })
+            });
+        }
 
         return <>
             <p className="form-infos">
@@ -209,14 +211,14 @@ export class Form extends Component {
                           label="Téléverser un avatar" labelError="Seules les images sont acceptées.">Fichier (facultatif)</Drop>
                 </div>}
 
-                <div className="line">
+                {context !== "profil" && <div className="line">
                     <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
                                           placeholder={"Sélectionner la société"}
                                           errors={errors} onChange={(e) => this.handleChangeSelect("society", e)}
                     >
                         Société
                     </SelectReactSelectize>
-                </div>
+                </div>}
 
                 {(context === "create" || context === "profil") ? <>
                     <Alert type="reverse">
