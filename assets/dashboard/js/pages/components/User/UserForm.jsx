@@ -192,7 +192,7 @@ export class Form extends Component {
                     <Checkbox items={rolesItems} identifiant="roles" valeur={roles} errors={errors} onChange={this.handleChange}>Roles</Checkbox>
 
                     <Drop ref={this.inputAvatar} identifiant="avatar" file={avatar} folder="avatars" errors={errors} accept={"image/*"} maxFiles={1}
-                          label="Téléverser un avatar" labelError="Seules les images sont acceptées.">Fichier</Drop>
+                          label="Téléverser un avatar" labelError="Seules les images sont acceptées.">Fichier (facultatif)</Drop>
                 </div>}
 
                 {(context === "create" || context === "profil") ? <>
