@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import axios                   from "axios";
-import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Input, Checkbox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
@@ -11,6 +10,7 @@ import { Drop }                from "@dashboardComponents/Tools/Drop";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
 import Validateur              from "@commonComponents/functions/validateur";
+import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
 const URL_CREATE_ELEMENT     = "api_users_create";
@@ -74,8 +74,7 @@ export class Form extends Component {
     }
 
     componentDidMount() {
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        Helper.toTop();
         let username = document.getElementById("username");
         if(username){ username.focus(); }
     }
@@ -143,6 +142,7 @@ export class Form extends Component {
             axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                 .then(function (response) {
                     let data = response.data;
+                    Helper.toTop();
                     if(self.props.onUpdateList){
                         self.props.onUpdateList(data);
                     }
