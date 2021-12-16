@@ -108,7 +108,7 @@ class AdminUsersCreateCommand extends Command
             for($i=0; $i<10 ; $i++) {
                 $new = (new Society())
                     ->setName($fake->name)
-                    ->setCode($i)
+                    ->setCode($i+1)
                 ;
 
                 $this->em->persist($new);

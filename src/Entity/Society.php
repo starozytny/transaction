@@ -28,7 +28,7 @@ class Society
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", unique=true)
      * @Groups({"admin:read"})
      */
     private $code;
