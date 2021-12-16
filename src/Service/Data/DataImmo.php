@@ -100,8 +100,8 @@ class DataImmo extends DataConstructor
             ->setLat($data->lat)
             ->setLon($data->lon)
             ->setIdentifiant($data->dirname)
-            ->setDescription($data->description->value)
-            ->setLegal($data->legal->value)
+            ->setDescription($data->description->html)
+            ->setLegal($data->legal->html)
         ;
     }
 }
