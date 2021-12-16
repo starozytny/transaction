@@ -5,6 +5,8 @@ import Sort              from "@commonComponents/functions/sort";
 
 import { UsersList }      from "./UsersList";
 
+const URL_DELETE_ELEMENT    = 'api_users_delete';
+const MSG_DELETE_ELEMENT    = 'Supprimer cet utilisateur ?';
 const SORTER = Sort.compareLastname;
 
 function filterFunction(dataImmuable, filters){
@@ -33,6 +35,8 @@ export class Users extends Component {
             perPage: 10,
             currentPage: 0,
             sorter: SORTER,
+            pathDeleteElement: URL_DELETE_ELEMENT,
+            msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "user.users.pagination",
             classes: ""
         }
@@ -57,6 +61,7 @@ export class Users extends Component {
 
     handleContentList = (currentData, changeContext, getFilters, filters,) => {
         return <UsersList onChangeContext={changeContext}
+                          onDelete={this.layout.current.handleDelete}
                           onSearch={this.handleSearch}
                           filters={filters}
                           onGetFilters={this.handleGetFilters}
