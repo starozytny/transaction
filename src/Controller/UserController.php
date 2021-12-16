@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,5 +57,26 @@ class UserController extends AbstractController
         $data = $this->getUser();
         $data = $serializer->serialize($data, 'json', ['groups' => User::ADMIN_READ]);
         return $this->render('user/pages/profil/update.html.twig',  ['donnees' => $data]);
+    }
+
+    /**
+     * @Route("/utilisateur/ajouter", options={"expose"=true}, name="user_create")
+     *
+     * @Security("is_granted('ROLE_MANAGER')")
+     */
+    public function userCreate(): Response
+    {
+        return $this->render('user/pages/profil/user/create.html.twig');
+    }
+
+    /**
+     * @Route("/utilisateur/modifier/{id}", options={"expose"=true}, name="user_update")
+     *
+     * @Security("is_granted('ROLE_MANAGER')")
+     */
+    public function userUpdate(User $obj, SerializerInterface $serializer): Response
+    {
+        $data = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
+        return $this->render('user/pages/profil/user/update.html.twig', ['elem' => $obj, 'donnees' => $data]);
     }
 }
