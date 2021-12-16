@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class DataConstructor
 {
     protected $validator;
-    private $em;
+    protected $em;
 
     public function __construct(EntityManagerInterface $entityManager, ValidatorService $validator)
     {
