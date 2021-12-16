@@ -112,6 +112,13 @@ class ImBien extends DataEntity
      */
     private $area;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="biens", fetch="EAGER")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
+     */
+    private $agency;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -320,6 +327,18 @@ class ImBien extends DataEntity
     public function setArea(ImArea $area): self
     {
         $this->area = $area;
+
+        return $this;
+    }
+
+    public function getAgency(): ?ImAgency
+    {
+        return $this->agency;
+    }
+
+    public function setAgency(?ImAgency $agency): self
+    {
+        $this->agency = $agency;
 
         return $this;
     }
