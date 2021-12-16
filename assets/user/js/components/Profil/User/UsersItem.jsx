@@ -1,0 +1,32 @@
+import React, { Component } from 'react';
+
+import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
+import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
+
+export class UsersItem extends Component {
+    render () {
+        const { elem } = this.props;
+
+        return <div className="item">
+            <div className="item-content">
+                <div className="item-body">
+                    <div className="infos infos-col-3">
+                        <div className="col-1">
+                            <div className="name">
+                                <span>{elem.lastname} {elem.firstname}</span>
+                                <div className="role">{elem.highRole}</div>
+                            </div>
+                        </div>
+                        <div className="col-2">
+                            <div className="sub">{elem.username}</div>
+                            <div className="sub">{elem.email}</div>
+                        </div>
+                        <div className="col-3 actions">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

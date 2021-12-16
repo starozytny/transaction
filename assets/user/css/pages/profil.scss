@@ -24,6 +24,14 @@
   text-align: center;
 }
 
+#profil-users{
+  margin-top: 24px;
+
+  .role + .sub{
+    margin-top: 6px;
+  }
+}
+
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
@@ -39,6 +47,10 @@
       width: calc(50% - 12px);
       margin-right: 12px;
     }
+  }
+
+  #profil-users{
+    margin-top: 0;
   }
 }
 

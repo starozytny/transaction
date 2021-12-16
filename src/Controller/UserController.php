@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +14,13 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class UserController extends AbstractController
 {
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
      * @Route("/", options={"expose"=true}, name="homepage")
      */
@@ -24,13 +32,18 @@ class UserController extends AbstractController
     /**
      * @Route("/profil", options={"expose"=true}, name="profil")
      */
-    public function profil(): Response
+    public function profil(SerializerInterface $serializer): Response
     {
+        $em = $this->doctrine->getManager();
         /** @var User $obj */
         $obj = $this->getUser();
+        $users = $em->getRepository(User::class)->findBy(['society' => $obj->getSociety()]);
+
+        $users = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/profil/index.html.twig',  [
-            'obj' => $obj
+            'obj' => $obj,
+            'users' => $users
         ]);
     }
 
