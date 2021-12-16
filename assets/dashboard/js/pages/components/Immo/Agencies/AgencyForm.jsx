@@ -86,6 +86,7 @@ export class AgencyForm extends Component {
             legal: { value: props.legal ? props.legal : "", html: props.legal ? props.legal : "" },
             logo: props.logo,
             tarif: props.tarif,
+            society: props.society,
             errors: [],
             success: false,
             critere: ""
