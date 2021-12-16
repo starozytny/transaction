@@ -3,15 +3,21 @@
 {% set page_title %}Mon profil{% endset %}
 
 {% block main_content %}
+    {% set avatar = obj.avatar ? "/avatars/" ~ obj.avatar : "https://robohash.org/${elem.society.name}?size=64x64" %}
     <div class="main-content">
         <div class="profil-page">
             <div class="col-1">
                 <div class="profil-card">
+                    <div class="profil-card-avatar">
+                        <img src="{{ avatar }}" alt="Avatar de l'entreprise">
+                    </div>
                     <div class="profil-card-header">
-                        <div class="title">{{ obj.firstname }} {{ obj.lastname }}</div>
+                        <div class="title">#{{ obj.society.codeString }}</div>
+                        <div class="title">{{ obj.society.name }}</div>
                     </div>
                     <div class="profil-card-body">
                         <div class="items">
+                            <div class="item">{{ obj.firstname }} {{ obj.lastname }}</div>
                             <div class="item">{{ obj.username }}</div>
                             <div class="item">{{ obj.email }}</div>
                         </div>
