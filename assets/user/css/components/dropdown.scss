@@ -1,0 +1,9 @@
+@import "../vars/vars";
+
+@import "../../../common/css/components/dropdown";
+
+.toolbar .filter-search{
+  .dropdown-btn{
+    padding: 10.5px 12px;
+  }
+}
