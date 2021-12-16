@@ -60,6 +60,8 @@ export class Users extends Component {
                           onSearch={this.handleSearch}
                           filters={filters}
                           onGetFilters={this.handleGetFilters}
+                          id={parseInt(this.props.id)}
+                          isUser={this.props.isUser === "true"}
                           data={currentData} />
     }
 

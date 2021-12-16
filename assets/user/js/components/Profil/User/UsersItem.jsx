@@ -6,7 +6,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class UsersItem extends Component {
     render () {
-        const { elem } = this.props;
+        const { id, isUser, elem, onDelete } = this.props;
 
         return <div className="item">
             <div className="item-content">
@@ -23,6 +23,10 @@ export class UsersItem extends Component {
                             <div className="sub">{elem.email}</div>
                         </div>
                         <div className="col-3 actions">
+                            {(id !== elem.id && !isUser && elem.highRoleCode !== 1 && elem.highRoleCode !== 2) && <>
+                                <ButtonIcon icon="pencil" onClick={Routing.generate('user_user_update', {'username': elem.username})} element="a">Modifier</ButtonIcon>
+                                <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            </>}
                         </div>
                     </div>
                 </div>

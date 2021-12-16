@@ -23,7 +23,7 @@ export class UsersList extends Component {
     }
 
     render () {
-        const { data, onSearch, filters, onGetFilters } = this.props;
+        const { isUser, data, onSearch, filters, onGetFilters } = this.props;
 
         let filtersLabel = ["Utilisateur", "Manager"];
         let filtersId    = ["f-user", "f-manager"];
@@ -35,7 +35,7 @@ export class UsersList extends Component {
 
         return <>
             <div>
-                <div className="toolbar">
+                {!isUser && <div className="toolbar">
                     <div className="item create">
                         <Button element="a" onClick={Routing.generate('user_user_create')}>Ajouter un utilisateur</Button>
                     </div>
@@ -44,7 +44,8 @@ export class UsersList extends Component {
                         <Search onSearch={onSearch} placeholder="Recherche par identifiant, nom, prénom ou email.."/>
                         <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                     </div>
-                </div>
+                </div>}
+
                 <div className="items-table">
                     <div className="items items-default">
                         <div className="item item-header">

@@ -72,7 +72,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/utilisateur/modifier/{id}", options={"expose"=true}, name="user_update")
+     * @Route("/utilisateur/modifier/{username}", options={"expose"=true}, name="user_update")
      *
      * @Security("is_granted('ROLE_MANAGER')")
      */

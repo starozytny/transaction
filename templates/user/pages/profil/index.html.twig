@@ -29,7 +29,8 @@
             </div>
 
             <div class="col-2">
-                <div id="profil-users" data-donnees="{{ users }}">
+                <div id="profil-users" data-donnees="{{ users }}" data-id="{{ obj.id }}"
+                     data-is-user="{{ app.user.highRoleCode == 0 ? true : false }}" >
                     {% include "dashboard/layout/components/spinner.html.twig" %}
                 </div>
             </div>
