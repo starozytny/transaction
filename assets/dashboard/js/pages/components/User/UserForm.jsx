@@ -182,7 +182,7 @@ export class Form extends Component {
         let selectSociety = [];
         societies.forEach(elem => {
             selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: elem.name.toLowerCase() })
-        })
+        });
 
         return <>
             <p className="form-infos">
