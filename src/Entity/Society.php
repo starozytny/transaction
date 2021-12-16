@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Immo\ImAgency;
 use App\Repository\SocietyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -44,9 +45,15 @@ class Society
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImAgency::class, mappedBy="society")
+     */
+    private $imAgencies;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->imAgencies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,6 +141,36 @@ class Society
     public function setLogo(?string $logo): self
     {
         $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImAgency[]
+     */
+    public function getImAgencies(): Collection
+    {
+        return $this->imAgencies;
+    }
+
+    public function addImAgency(ImAgency $imAgency): self
+    {
+        if (!$this->imAgencies->contains($imAgency)) {
+            $this->imAgencies[] = $imAgency;
+            $imAgency->setSociety($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImAgency(ImAgency $imAgency): self
+    {
+        if ($this->imAgencies->removeElement($imAgency)) {
+            // set the owning side to null (unless already changed)
+            if ($imAgency->getSociety() === $this) {
+                $imAgency->setSociety(null);
+            }
+        }
 
         return $this;
     }

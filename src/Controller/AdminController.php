@@ -154,10 +154,12 @@ class AdminController extends AbstractController
         $em = $this->doctrine->getManager();
         $objs = $this->getAllData(ImAgency::class, $serializer);
         $biens = $em->getRepository(ImBien::class)->findAll();
+        $societies = $this->getAllData(Society::class, $serializer);
 
         return $this->render('admin/pages/immo/agencies.html.twig', [
             'donnees' => $objs,
-            'total' => count($biens)
+            'total' => count($biens),
+            'societies' => $societies,
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Immo;
 
+use App\Entity\Society;
 use App\Repository\Immo\ImAgencyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -139,6 +140,13 @@ class ImAgency
      * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="agency", orphanRemoval=true)
      */
     private $biens;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="imAgencies")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"admin:read"})
+     */
+    private $society;
 
     public function __construct()
     {
@@ -414,5 +422,17 @@ class ImAgency
     public function getTotalBiens(): int
     {
         return count($this->biens);
+    }
+
+    public function getSociety(): ?Society
+    {
+        return $this->society;
+    }
+
+    public function setSociety(?Society $society): self
+    {
+        $this->society = $society;
+
+        return $this;
     }
 }

@@ -5,6 +5,8 @@ namespace App\Service\Data;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
+use App\Entity\Society;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
 class DataImmo extends DataConstructor
@@ -84,7 +86,10 @@ class DataImmo extends DataConstructor
 
     public function setDataAgency(ImAgency $agency, $data): ImAgency
     {
+        $society = $this->em->getRepository(Society::class)->find($data->society);
+
         return ($agency)
+            ->setSociety($society)
             ->setName($data->name)
             ->setDirname($data->dirname)
             ->setWebsite($data->website)

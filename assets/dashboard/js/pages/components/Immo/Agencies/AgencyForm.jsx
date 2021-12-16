@@ -4,7 +4,7 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input }               from "@dashboardComponents/Tools/Fields";
+import {Input, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { Trumb }               from "@dashboardComponents/Tools/Trumb";
@@ -20,7 +20,7 @@ const URL_UPDATE_GROUP       = "api_agencies_update";
 const TXT_CREATE_BUTTON_FORM = "Ajouter l'agence";
 const TXT_UPDATE_BUTTON_FORM = "Modifier l'agence";
 
-export function AgencyFormulaire ({ type, onChangeContext, onUpdateList, element })
+export function AgencyFormulaire ({ type, onChangeContext, onUpdateList, element, societies })
 {
     let title = "Ajouter une agence";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -53,9 +53,11 @@ export function AgencyFormulaire ({ type, onChangeContext, onUpdateList, element
         legal={element ? element.legal : ""}
         logo={element ? element.logo : ""}
         tarif={element ? element.tarif : ""}
+        society={element ? element.society.id : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
+        societies={societies}
     />
 
     return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
@@ -94,6 +96,7 @@ export class AgencyForm extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeTrumb = this.handleChangeTrumb.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -111,13 +114,15 @@ export class AgencyForm extends Component {
         this.setState({[name]: {value: [name].value, html: text}})
     }
 
+    handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
+
     handleSubmit = (e) => {
         e.preventDefault();
 
         const { context, url, messageSuccess } = this.props;
         const { critere, name, dirname, website, email, emailLocation, emailVente,
             phone, phoneLocation, phoneVente, address, zipcode, city, lat, lon,
-            description, legal
+            description, legal, society
         } = this.state;
 
         if(critere !== ""){
@@ -126,6 +131,7 @@ export class AgencyForm extends Component {
             this.setState({ success: false});
 
             let paramsToValidate = [
+                {type: "text", id: 'society',           value: society},
                 {type: "text", id: 'name',              value: name},
                 {type: "text", id: 'dirname',           value: dirname},
                 {type: "text", id: 'website',           value: website},
@@ -196,7 +202,8 @@ export class AgencyForm extends Component {
                                 description: { value: "", html: "" },
                                 legal: { value: "", html: "" },
                                 logo: "",
-                                tarif: ""
+                                tarif: "",
+                                society: '',
                             })
                         }
                     })
@@ -212,14 +219,28 @@ export class AgencyForm extends Component {
     }
 
     render () {
-        const { context } = this.props;
+        const { context, societies } = this.props;
         const { critere, errors, success, name, dirname, website, email, emailLocation, emailVente,
-                phone, phoneLocation, phoneVente, address, zipcode, city, lat, lon, description, legal, logo, tarif } = this.state;
+                phone, phoneLocation, phoneVente, address, zipcode, city, lat, lon, description, legal, logo, tarif, society } = this.state;
+
+        let selectSociety = [];
+        societies.forEach(elem => {
+            selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: elem.name.toLowerCase() })
+        });
 
         return <>
             <form onSubmit={this.handleSubmit}>
 
                 {success !== false && <Alert type="info">{success}</Alert>}
+
+                <div className="line">
+                    <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
+                                          placeholder={"Sélectionner la société"}
+                                          errors={errors} onChange={(e) => this.handleChangeSelect("society", e)}
+                    >
+                        Société
+                    </SelectReactSelectize>
+                </div>
 
                 <div className="line line-3">
                     <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Nom / raison sociale</Input>

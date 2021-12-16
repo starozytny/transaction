@@ -20,7 +20,8 @@ export class Agency extends Component {
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
-            sessionName: "agencies.pagination"
+            sessionName: "agencies.pagination",
+            societies: JSON.parse(props.societies)
         }
 
         this.layout = React.createRef();
@@ -46,11 +47,13 @@ export class Agency extends Component {
     }
 
     handleContentCreate = (changeContext) => {
-        return <AgencyFormulaire type="create" onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        const { societies } = this.state;
+        return <AgencyFormulaire type="create" societies={societies} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
-        return <AgencyFormulaire type="update" element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        const { societies } = this.state;
+        return <AgencyFormulaire type="update" societies={societies} element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentRead = (changeContext, element) => {
