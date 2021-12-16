@@ -120,6 +120,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     /**
      * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"admin:read"})
      */
     private $society;
 
@@ -182,7 +183,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      */
     public function getHighRole(): string
     {
-        $rolesSortedByImportance = ['ROLE_DEVELOPER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER', ];
+        $rolesSortedByImportance = ['ROLE_DEVELOPER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'];
         $rolesLabel = ['Développeur', 'Administrateur', 'Manager', 'Utilisateur'];
         $i = 0;
         foreach ($rolesSortedByImportance as $role)

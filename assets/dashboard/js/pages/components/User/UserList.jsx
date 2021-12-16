@@ -28,13 +28,13 @@ export class UserList extends Component {
             onPaginationClick, currentPage, sorters, onSorter } = this.props;
 
         let filtersLabel = ["Utilisateur", "Développeur", "Administrateur", "Manager"];
-        let filtersId    = ["f-user", "f-dev", "f-admin", "f-manager"];
+        let filtersId    = ["f-user", "f-dev", "f-admin", 'f-manager'];
 
         let itemsFilter = [
             { value: 0, id: filtersId[0], label: filtersLabel[0] },
             { value: 1, id: filtersId[1], label: filtersLabel[1] },
             { value: 2, id: filtersId[2], label: filtersLabel[2] },
-            { value: 3, id: filtersId[3], label: filtersLabel[3] },
+            { value: 3, id: filtersId[3], label: filtersLabel[3] }
         ];
 
         let dropdownItems = [

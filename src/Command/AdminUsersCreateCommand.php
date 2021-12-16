@@ -32,7 +32,7 @@ class AdminUsersCreateCommand extends Command
     {
         $this
             ->setDescription('Create an user and an admin.')
-            ->addOption('fake', null, InputOption::VALUE_NONE, 'Option shit values')
+            ->addOption('fake', 'f', InputOption::VALUE_NONE, 'Option shit values')
         ;
     }
 
@@ -69,7 +69,7 @@ class AdminUsersCreateCommand extends Command
                 'username' => 'manager',
                 'firstname' => 'Manager',
                 'lastname' => 'Shan',
-                'email' => 'chanbora.chhun@outlook.fr',
+                'email' => 'chanbora.manager@outlook.fr',
                 'roles' => ['ROLE_USER', 'ROLE_MANAGER']
             ],
         );
@@ -108,7 +108,7 @@ class AdminUsersCreateCommand extends Command
             for($i=0; $i<10 ; $i++) {
                 $new = (new Society())
                     ->setName($fake->name)
-                    ->setCode($i)
+                    ->setCode($i+1)
                 ;
 
                 $this->em->persist($new);
@@ -116,13 +116,12 @@ class AdminUsersCreateCommand extends Command
             }
             $io->text('SOCIETE : Sociétés fake créées' );
 
-            $io->title('Création de 110 utilisateurs lambdas');
+            $io->title('Création de 110 utilisateurs fake');
             $fake = Factory::create();
             for($i=0; $i<110 ; $i++) {
                 $new = (new User())
                     ->setUsername($fake->userName)
                     ->setEmail($fake->freeEmail)
-//                    ->setEmail("undefined@undefined.fr")
                     ->setRoles(['ROLE_USER'])
                     ->setFirstname(ucfirst($fake->firstName))
                     ->setLastname(mb_strtoupper($fake->lastName))

@@ -62,9 +62,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * Admin - Create a user
+     * Manager - Create a user
      *
-     * @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_MANAGER')")
      *
      * @Route("/", name="create", options={"expose"=true}, methods={"POST"})
      *
@@ -98,7 +98,7 @@ class UserController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        if (!isset($data->username) || !isset($data->email) || !isset($data->firstname) || !isset($data->lastname)) {
+        if (!isset($data->username) || !isset($data->email) || !isset($data->firstname) || !isset($data->lastname) || !isset($data->society)) {
             return $apiResponse->apiJsonResponseBadRequest('Il manque des données.');
         }
 

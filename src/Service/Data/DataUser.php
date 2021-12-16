@@ -4,19 +4,23 @@
 namespace App\Service\Data;
 
 
+use App\Entity\Society;
 use App\Entity\User;
 use App\Service\SanitizeData;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class DataUser
 {
     private $sanitizeData;
     private $passwordHasher;
+    private $em;
 
-    public function __construct(SanitizeData $sanitizeData, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(EntityManagerInterface $entityManager, SanitizeData $sanitizeData, UserPasswordHasherInterface $passwordHasher)
     {
         $this->sanitizeData = $sanitizeData;
         $this->passwordHasher = $passwordHasher;
+        $this->em = $entityManager;
     }
     public function setData(User $obj, $data): User
     {
@@ -26,6 +30,8 @@ class DataUser
             $obj->setRoles($data->roles);
         }
 
+        $society = $this->em->getRepository(Society::class)->find($data->society);
+
         $username = isset($data->username) ? $this->sanitizeData->fullSanitize($data->username) : $data->email;
 
         return ($obj)
@@ -34,6 +40,7 @@ class DataUser
             ->setLastname(mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname)))
             ->setEmail($data->email)
             ->setPassword($this->passwordHasher->hashPassword($obj, $pass))
+            ->setSociety($society)
         ;
     }
 }

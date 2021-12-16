@@ -6,6 +6,7 @@ use App\Repository\SocietyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=SocietyRepository::class)
@@ -16,18 +17,27 @@ class Society
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"admin:read"})
      */
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", unique=true)
+     * @Groups({"admin:read"})
      */
     private $code;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $logo;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="society")
@@ -54,6 +64,24 @@ class Society
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getCodeString(): string
+    {
+        $code = $this->code;
+        if($code < 10){
+            return "000" . $code;
+        }elseif($code < 100){
+            return "00" . $code;
+        }elseif($code < 1000){
+            return "0" . $code;
+        }
+
+        return $code;
     }
 
     public function getCode(): ?int
@@ -94,6 +122,18 @@ class Society
                 $user->setSociety(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): self
+    {
+        $this->logo = $logo;
 
         return $this;
     }

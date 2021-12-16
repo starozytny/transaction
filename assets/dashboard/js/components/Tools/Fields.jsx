@@ -106,12 +106,16 @@ export function Select(props) {
 export function SelectReactSelectize(props) {
     const { items, identifiant, valeur, onChange, children, placeholder } = props;
 
-    let choices = items.map((item, index) =>
-        <option key={index} value={item.value}>{item.label}</option>
-    )
+    let defaultValeur = "";
+    let choices = items.map((item, index) => {
+        if(item.value === valeur){
+            defaultValeur = {value: item.value, label: item.label}
+        }
+        return <option key={index} value={item.value}>{item.label}</option>
+    })
 
     let content = <>
-        <SimpleSelect placeholder={placeholder} onValueChange={onChange}>
+        <SimpleSelect defaultValue={defaultValeur} placeholder={placeholder} onValueChange={onChange}>
             {choices}
         </SimpleSelect>
         <input type="hidden" name={identifiant} value={valeur}/>
