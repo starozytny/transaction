@@ -102,6 +102,20 @@ class AdminUsersCreateCommand extends Command
         }
 
         if ($input->getOption('fake')) {
+            $io->title('Création de 10 société fake');
+            $societies = [];
+            $fake = Factory::create();
+            for($i=0; $i<10 ; $i++) {
+                $new = (new Society())
+                    ->setName($fake->domainName)
+                    ->setCode($i)
+                ;
+
+                $this->em->persist($new);
+                $societies[] = $new;
+            }
+            $io->text('SOCIETE : Sociétés fake créées' );
+
             $io->title('Création de 110 utilisateurs lambdas');
             $fake = Factory::create();
             for($i=0; $i<110 ; $i++) {
@@ -113,7 +127,7 @@ class AdminUsersCreateCommand extends Command
                     ->setFirstname(ucfirst($fake->firstName))
                     ->setLastname(mb_strtoupper($fake->lastName))
                     ->setPassword($password)
-                    ->setSociety($society)
+                    ->setSociety($societies[$fake->numberBetween(0,9)])
                 ;
 
                 $this->em->persist($new);
