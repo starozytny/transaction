@@ -11,11 +11,12 @@ export class AgencyRead extends Component {
         const { element, onChangeContext } = this.props;
 
         let statsAds = null, statsBiens = null;
-        let last = element.stats.length;
-        if(last > 0){
-            statsAds = <ChartAds donnees={JSON.stringify(element.stats)} />;
-            statsBiens = <ChartBiens donnees={JSON.stringify([element.stats[last - 1]])} />
-        }
+        let last = 0;
+        // let last = element.stats.length;
+        // if(last > 0){
+        //     statsAds = <ChartAds donnees={JSON.stringify(element.stats)} />;
+        //     statsBiens = <ChartBiens donnees={JSON.stringify([element.stats[last - 1]])} />
+        // }
 
         return <>
             <div>

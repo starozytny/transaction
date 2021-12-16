@@ -1,0 +1,112 @@
+@import "../../../vars/vars";
+
+.details-general{
+  margin-top: 12px;
+  @include flex(row, flex-start, space-between);
+}
+
+.details-ad-types{
+  .type-ad{
+    margin-top: 0;
+    margin-right: 12px;
+    margin-bottom: 0;
+  }
+}
+
+.item-agency-read{
+  .user-read-infos{
+    max-width: 768px;
+  }
+
+  .name{
+    margin-bottom: 12px;
+  }
+
+  .role{
+    font-size: 14px;
+
+    & > a{
+      color: var(--txt);
+      padding: 0;
+    }
+
+    & > *:not(:last-child){
+      margin-right: 8px;
+    }
+  }
+
+  .sub-contact{
+    text-align: left;
+    margin-top: 12px;
+  }
+}
+
+.agency-stats{
+  max-width: 360px;
+  background-color: var(--alpha);
+  border-radius: 12px;
+  box-shadow: 0 0 12px var(--greyShadow);
+  margin-top: 24px;
+
+  .chart{
+    transform: scale(1.125) translateX(-6px);
+  }
+
+  .title{
+    @include fontSemibold();
+    padding: 12px;
+  }
+}
+
+.items-agency{
+
+  .col-1{
+    cursor: pointer;
+  }
+
+  .name{
+    flex-direction: row;
+
+    a{
+      margin-left: 8px;
+      font-size: 14px;
+    }
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .agency-stats{
+    .chart{
+      transform: scale(1.107) translateX(-6px);
+    }
+  }
+
+}
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width: 1280px) {
+  .item-agency-read {
+    @include flex(row, flex-start, flex-start);
+
+    .user-read-infos {
+      width: calc(100% - 360px - 48px);
+      margin-right: 48px;
+      max-width: initial;
+    }
+
+    .agency-stats{
+      width: 360px;
+      margin-top: 0;
+    }
+  }
+}
