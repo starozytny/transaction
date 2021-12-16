@@ -30,6 +30,5 @@ winpty.exe.stackdump
 ###< symfony/webpack-encore-bundle ###
 
 /public/data/*
-/public/annonces/*
 /public/articles/*
 /public/avatars/*
