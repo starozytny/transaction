@@ -3,7 +3,7 @@
 {% set page_title %}Mon profil{% endset %}
 
 {% block main_content %}
-    {% set avatar = obj.society.logo ? "/avatars/" ~ obj.society.logo : "https://robohash.org/${elem.society.name}?size=64x64" %}
+    {% set avatar = obj.society.logo ? "/avatars/" ~ obj.society.logo : "https://robohash.org/${elem.society.name}?size=120x120" %}
     <div class="main-content">
         <div class="profil-page">
             <div class="col-1">
@@ -17,9 +17,9 @@
                     </div>
                     <div class="profil-card-body">
                         <div class="items">
-                            <div class="item">{{ obj.firstname }} {{ obj.lastname }}</div>
-                            <div class="item">{{ obj.username }}</div>
-                            <div class="item">{{ obj.email }}</div>
+                            <div class="item"><span class="icon-padlock"></span> {{ obj.username }}</div>
+                            <div class="item"><span class="icon-email"></span> {{ obj.email }}</div>
+                            <div class="item"><span class="icon-user"></span> {{ obj.firstname }} {{ obj.lastname }}</div>
                         </div>
                     </div>
                     <div class="profil-card-footer">
