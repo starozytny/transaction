@@ -407,4 +407,12 @@ class ImAgency
 
         return $this;
     }
+
+    /**
+     * @Groups({"admin:read"})
+     */
+    public function getTotalBiens(): int
+    {
+        return count($this->biens);
+    }
 }

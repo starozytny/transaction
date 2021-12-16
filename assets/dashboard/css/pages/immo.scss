@@ -1,0 +1,291 @@
+@import "../vars/vars";
+
+.toolbar{
+  .display-mode{
+    margin-right: 12px;
+  }
+}
+
+.role{
+  & + .role{
+    margin-left: 8px;
+  }
+
+  & + .createAt{
+    margin-top: 8px;
+    margin-bottom: 0;
+  }
+}
+
+.items-table{
+  .selector{
+    width: 60px;
+    @include fontSemibold();
+  }
+
+  .item-alert{
+    .selector{
+      width: 12px;
+    }
+  }
+
+   .item-estimation{
+     .infos{
+       & > div:first-child{
+         width: 100%;
+         cursor: pointer;
+       }
+     }
+    .phone{
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+     .address{
+       margin-bottom: 8px;
+     }
+  }
+
+  .item-content{
+    width: 100%;
+  }
+}
+
+.items-ad{
+  .gallery {
+    .image {
+      object-fit: cover;
+    }
+  }
+  .avatar{
+    width: 100%;
+    max-width: 150px;
+    height: 100%;
+    background-color: transparent;
+    margin-bottom: 12px;
+    max-height: 112px;
+
+    .gallery{
+      position: relative;
+      max-height: 112px;
+      z-index: 20;
+    }
+
+    img{
+      width: auto;
+      max-width: 150px;
+      height: 100%;
+      border-radius: 4px;
+    }
+  }
+
+  .infos{
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .name{
+    margin-bottom: 4px;
+  }
+
+  .ad-price{
+    margin-top: 8px;
+  }
+}
+
+.type-ad, .type-bien{
+  opacity: 0.8;
+}
+
+.type-ad{
+  margin-bottom: 4px;
+  margin-top: 12px;
+  font-size: 15px;
+
+  &.ad-1{
+    background-color: var(--dangerShadow);
+  }
+}
+.type-bien{
+  margin-bottom: 0;
+  font-size: 15px;
+  background-color: var(--greyShadow);
+}
+
+.name-deleted{
+  text-decoration: line-through;
+}
+
+.name-opened{
+  color: var(--primary);
+}
+
+.item-agency-read{
+  .user-read-infos{
+    max-width: 768px;
+  }
+
+  .name{
+    margin-bottom: 12px;
+  }
+
+  .role{
+    font-size: 14px;
+
+    & > a{
+      color: var(--txt);
+      padding: 0;
+    }
+
+    & > *:not(:last-child){
+      margin-right: 8px;
+    }
+  }
+
+  .sub-contact{
+    text-align: left;
+    margin-top: 12px;
+  }
+}
+
+.agency-stats{
+  max-width: 360px;
+  background-color: var(--alpha);
+  border-radius: 12px;
+  box-shadow: 0 0 12px var(--greyShadow);
+  margin-top: 24px;
+
+  .chart{
+    transform: scale(1.125) translateX(-6px);
+  }
+
+  .title{
+    @include fontSemibold();
+    padding: 12px;
+  }
+}
+
+.items-agency{
+
+  .col-1{
+    cursor: pointer;
+  }
+
+  .name{
+    flex-direction: row;
+
+    a{
+      margin-left: 8px;
+      font-size: 14px;
+    }
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .items-ad{
+    .avatar{
+      width: 150px;
+      margin-bottom: 0;
+      margin-right: 12px;
+
+      img{
+        width: 150px;
+      }
+    }
+
+    .infos{
+      width: calc(100% - 150px - 12px);
+      align-items: flex-start;
+    }
+
+    .type-ad, .type-bien{
+      margin: 0;
+    }
+
+    .ad-info{
+      width: calc(100% - 350px);
+    }
+    .ad-price{
+      margin-top: 0;
+      width: 125px;
+    }
+    .ad-ad{
+      width: 100px;
+    }
+    .ad-bien{
+      width: 125px;
+    }
+  }
+
+  .item-demande{
+    .item-content{
+
+      .infos{
+        & > div:first-child{
+          width: calc(40% - 12px);
+          margin-right: 12px;
+          cursor: pointer;
+        }
+
+        & > div:nth-child(2){
+          width: calc(100% - 40% - 12px - 30px);
+          margin-right: 12px;
+        }
+
+        .actions{
+          width: 30px;
+        }
+      }
+
+    }
+  }
+
+  .agency-stats{
+    .chart{
+      transform: scale(1.107) translateX(-6px);
+    }
+  }
+
+}
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width: 1280px) {
+  .items-ad{
+    .ad-info{
+      width: calc(100% - 525px);
+    }
+    .ad-price{
+      width: 200px;
+    }
+    .ad-ad{
+      width: 200px;
+    }
+    .ad-bien{
+      width: 125px;
+    }
+  }
+
+  .item-agency-read {
+    @include flex(row, flex-start, flex-start);
+
+    .user-read-infos {
+      width: calc(100% - 360px - 48px);
+      margin-right: 48px;
+      max-width: initial;
+    }
+
+    .agency-stats{
+      width: 360px;
+      margin-top: 0;
+    }
+  }
+}

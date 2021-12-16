@@ -1,0 +1,15 @@
+{% extends 'admin/layout/layout.html.twig' %}
+
+{% set submenu = [
+    { 'label': "Agences", 'path': path('admin_agencies_index') }
+] %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('dashboard_immo') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('dashboard_immo') }}
+{% endblock %}

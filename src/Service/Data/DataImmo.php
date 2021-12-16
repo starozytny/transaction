@@ -2,6 +2,7 @@
 
 namespace App\Service\Data;
 
+use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use Exception;
@@ -78,6 +79,29 @@ class DataImmo extends DataConstructor
             ->setBathroom($areaBathroom)
             ->setLiving($areaLiving)
             ->setDining($areaDining)
+        ;
+    }
+
+    public function setDataAgency(ImAgency $agency, $data): ImAgency
+    {
+        return ($agency)
+            ->setName($data->name)
+            ->setDirname($data->dirname)
+            ->setWebsite($data->website)
+            ->setEmail($data->email)
+            ->setEmailLocation($data->emailLocation)
+            ->setEmailVente($data->emailVente)
+            ->setPhone($data->phone)
+            ->setPhoneLocation($data->phoneLocation)
+            ->setPhoneVente($data->phoneVente)
+            ->setAddress($data->address)
+            ->setZipcode($data->zipcode)
+            ->setCity($data->city)
+            ->setLat($data->lat)
+            ->setLon($data->lon)
+            ->setIdentifiant($data->dirname)
+            ->setDescription($data->description->value)
+            ->setLegal($data->legal->value)
         ;
     }
 }
