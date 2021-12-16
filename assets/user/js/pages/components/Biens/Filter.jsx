@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Sanitaze from "@commonComponents/functions/sanitaze";
+import Helper from "@commonComponents/functions/helper";
 import helper   from "./helper";
 
 function updateTab(initTable, value, newTable) {
@@ -84,7 +84,7 @@ function ItemFilter ({ type, title, itemsFilters, filters, onFilter }) {
 }
 
 function ItemFilterBox ({ type, el, filters, onFilter }) {
-    return <div className={"item-filter" + Sanitaze.setActive(filters, el.value)}
+    return <div className={"item-filter" + Helper.setActive(filters, el.value)}
                 onClick={() => onFilter(type, el.value)}>
         <div className="box" />
         <div>{el.label}</div>

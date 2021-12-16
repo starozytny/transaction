@@ -268,7 +268,7 @@ class Form extends Component {
                                 >
                                     <span>Libellé de l'annonce</span>
                                     <div className="input-label-help">
-                                        <ButtonIcon icon="question-1" onClick={() => this.handleOpenHelp("libelle")}>Aide</ButtonIcon>
+                                        <ButtonIcon icon="question" onClick={() => this.handleOpenHelp("libelle")}>Aide</ButtonIcon>
                                     </div>
                                 </Input>
                             </div>
