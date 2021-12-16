@@ -34,6 +34,12 @@ class Society
     private $code;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $logo;
+
+    /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="society")
      */
     private $users;
@@ -116,6 +122,18 @@ class Society
                 $user->setSociety(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): self
+    {
+        $this->logo = $logo;
 
         return $this;
     }

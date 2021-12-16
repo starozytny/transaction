@@ -3,7 +3,7 @@
 {% set page_title %}Mon profil{% endset %}
 
 {% block main_content %}
-    {% set avatar = obj.avatar ? "/avatars/" ~ obj.avatar : "https://robohash.org/${elem.society.name}?size=64x64" %}
+    {% set avatar = obj.society.logo ? "/avatars/" ~ obj.society.logo : "https://robohash.org/${elem.society.name}?size=64x64" %}
     <div class="main-content">
         <div class="profil-page">
             <div class="col-1">
