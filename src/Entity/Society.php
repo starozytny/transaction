@@ -6,6 +6,7 @@ use App\Repository\SocietyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=SocietyRepository::class)
@@ -16,16 +17,19 @@ class Society
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"admin:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $code;
 
@@ -54,6 +58,24 @@ class Society
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getCodeString(): string
+    {
+        $code = $this->code;
+        if($code < 10){
+            return "000" . $code;
+        }elseif($code < 100){
+            return "00" . $code;
+        }elseif($code < 1000){
+            return "0" . $code;
+        }
+
+        return $code;
     }
 
     public function getCode(): ?int
