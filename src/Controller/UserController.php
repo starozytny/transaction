@@ -59,4 +59,28 @@ class UserController extends AbstractController
 
         return $this->render('user/pages/biens/update.html.twig', ['element' => $element]);
     }
+
+    /**
+     * @Route("/profil", options={"expose"=true}, name="profil")
+     */
+    public function profil(): Response
+    {
+        /** @var User $obj */
+        $obj = $this->getUser();
+
+        return $this->render('user/pages/profil/index.html.twig',  [
+            'obj' => $obj
+        ]);
+    }
+
+    /**
+     * @Route("/modifier-profil", name="profil_update")
+     */
+    public function profilUpdate(SerializerInterface $serializer): Response
+    {
+        /** @var User $data */
+        $data = $this->getUser();
+        $data = $serializer->serialize($data, 'json', ['groups' => User::ADMIN_READ]);
+        return $this->render('user/pages/profil/update.html.twig',  ['donnees' => $data]);
+    }
 }

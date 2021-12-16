@@ -21,14 +21,14 @@ export class Page extends Component {
     handlePerPage = (perPage) => { this.pagination.current.handlePerPage(perPage); }
 
     render () {
-        const { haveLoadPageError, children, sessionName, havePagination,
+        const { classes="main-content", haveLoadPageError, children, sessionName, havePagination,
             perPage = "10", taille, data, onChangeCurrentPage } = this.props;
 
         let hPagination = (havePagination && data && data.length !== 0);
 
         return <>
             {haveLoadPageError && <PageError />}
-            <div className="main-content">
+            <div className={classes}>
                 {children}
                 <Pagination ref={this.pagination} havePagination={hPagination} perPage={perPage} taille={taille} items={data}
                             onUpdate={(items) => this.props.onUpdate(items)} sessionName={sessionName}
@@ -51,6 +51,7 @@ export class Layout extends Component {
             currentData: null,
             element: null,
             filters: [],
+            classes: props.classes ? props.classes : "main-content",
             sorter: props.sorter ? props.sorter : null,
             perPage: props.perPage,
             sessionName: props.sessionName,
@@ -69,6 +70,7 @@ export class Layout extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
         this.handleSwitchPublished = this.handleSwitchPublished.bind(this);
+        this.handleSwitchData = this.handleSwitchData.bind(this);
         this.handleUpdatePerPage = this.handleUpdatePerPage.bind(this);
         this.handleGetPaginationClick = this.handleGetPaginationClick.bind(this);
     }
@@ -205,11 +207,15 @@ export class Layout extends Component {
         Formulaire.switchPublished(self, element, url, nameEntity);
     }
 
+    handleSwitchData = (self, elementValue, url, nameEntity, txtOff=" en ligne", txtOn=" archivé") => {
+        Formulaire.switchFunction(self, elementValue, url, nameEntity, txtOff, txtOn);
+    }
+
     handleGetPaginationClick = (self) => { return self.layout.current.page.current.pagination.current.handleClick; }
 
     render () {
         const { onContentList, onContentCreate, onContentUpdate, onContentRead, onContentCustomOne, onContentCustomTwo,
-            onChangeCurrentPage} = this.props;
+            onChangeCurrentPage, classes } = this.props;
         const { perPage, loadPageError, context, loadData, data, currentData, element, sessionName, filters } = this.state;
 
         let content, havePagination = false;
@@ -240,7 +246,7 @@ export class Layout extends Component {
         }
 
         return <>
-            <Page ref={this.page} haveLoadPageError={loadPageError} sessionName={sessionName} perPage={perPage}
+            <Page ref={this.page} classes={classes} haveLoadPageError={loadPageError} sessionName={sessionName} perPage={perPage}
                   havePagination={havePagination} taille={data && data.length} data={data} onUpdate={this.handleUpdateData}
                   onChangeCurrentPage={onChangeCurrentPage}
             >

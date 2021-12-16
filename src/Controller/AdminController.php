@@ -6,6 +6,7 @@ use App\Entity\Contact;
 use App\Entity\Notification;
 use App\Entity\Settings;
 use App\Entity\User;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,12 +19,19 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class AdminController extends AbstractController
 {
-    private function getAllData($classe, SerializerInterface $serializer): string
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
     {
-        $em = $this->getDoctrine()->getManager();
+        $this->doctrine = $doctrine;
+    }
+    
+    private function getAllData($classe, SerializerInterface $serializer, $groups = User::ADMIN_READ): string
+    {
+        $em = $this->doctrine->getManager();
         $objs = $em->getRepository($classe)->findAll();
 
-        return $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
+        return $serializer->serialize($objs, 'json', ['groups' => $groups]);
     }
 
     private function getRenderView(Request $request, SerializerInterface $serializer, $class, $route): Response
@@ -47,7 +55,7 @@ class AdminController extends AbstractController
      */
     public function index(): Response
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->doctrine->getManager();
         $users = $em->getRepository(User::class)->findAll();
         $settings = $em->getRepository(Settings::class)->findAll();
 

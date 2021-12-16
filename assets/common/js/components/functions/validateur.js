@@ -1,3 +1,5 @@
+const {func} = require("prop-types");
+
 function validateDate($value) {
     if($value === "" || $value === null){
         return {
@@ -108,7 +110,7 @@ function validateLength($value, min, max) {
 }
 
 function validateUniqueLength($value, size) {
-    if($value.length !== size){
+    if ($value.length !== size) {
         return {
             'code': false,
             'message': 'Ce champ doit contenir ' + size + " caractères."
@@ -116,6 +118,16 @@ function validateUniqueLength($value, size) {
     }
 
     return {'code': true}
+}
+
+function validateMinMax($value, $valueCheck) {
+    if(parseFloat($value) > parseFloat($valueCheck)){
+        return {
+            'code': false,
+            'message': 'La valeur MIN doit être inférieur à la valeur MAX.'
+        };
+    }
+    return {'code': true};
 }
 
 function switchCase(element){
@@ -147,6 +159,9 @@ function switchCase(element){
             break;
         case 'uniqueLength':
             validate = validateUniqueLength(element.value, element.size);
+            break;
+        case 'minMax':
+            validate = validateMinMax(element.value, element.valueCheck);
             break;
     }
 
