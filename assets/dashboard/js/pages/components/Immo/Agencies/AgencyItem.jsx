@@ -8,7 +8,7 @@ export class AgencyItem extends Component {
         const { elem, total, onChangeContext, onDelete } = this.props
 
         let progress;
-        let nb = (elem.totalBiens / total) * 100; // sub le total global des agences
+        let nb = parseInt(total) !== 0 ? (elem.totalBiens / parseInt(total)) * 100 : 0; // sub le total global des agences
         if(nb === 0){
             progress = 0;
         }else if(nb > 0 && nb < 26){
