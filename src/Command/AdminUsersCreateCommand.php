@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Notification;
+use App\Entity\Society;
 use App\Entity\User;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,7 +41,7 @@ class AdminUsersCreateCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [Notification::class, User::class]);
+        $this->databaseService->resetTable($io, [Notification::class, User::class, Society::class]);
 
         $users = array(
             [
@@ -75,6 +76,15 @@ class AdminUsersCreateCommand extends Command
 
         $password = password_hash("azerty", PASSWORD_ARGON2I);
 
+        $io->title('Création de la société Logilink');
+        $society = (new Society())
+            ->setName("Logilink")
+            ->setCode(0)
+        ;
+
+        $this->em->persist($society);
+        $io->text('SOCIETE : Logilink créé' );
+
         $io->title('Création des utilisateurs');
         foreach ($users as $user) {
             $new = (new User())
@@ -84,6 +94,7 @@ class AdminUsersCreateCommand extends Command
                 ->setFirstname(ucfirst($user['firstname']))
                 ->setLastname(mb_strtoupper($user['lastname']))
                 ->setPassword($password)
+                ->setSociety($society)
             ;
 
             $this->em->persist($new);
@@ -102,6 +113,7 @@ class AdminUsersCreateCommand extends Command
                     ->setFirstname(ucfirst($fake->firstName))
                     ->setLastname(mb_strtoupper($fake->lastName))
                     ->setPassword($password)
+                    ->setSociety($society)
                 ;
 
                 $this->em->persist($new);

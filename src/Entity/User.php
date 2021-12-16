@@ -118,6 +118,12 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $notifications;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $society;
+
+    /**
      * @throws Exception
      */
     public function __construct()
@@ -436,5 +442,17 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     public function getShortFullName(): string
     {
         return substr($this->firstname, 0,1) . '. ' . mb_strtoupper($this->lastname);
+    }
+
+    public function getSociety(): ?Society
+    {
+        return $this->society;
+    }
+
+    public function setSociety(?Society $society): self
+    {
+        $this->society = $society;
+
+        return $this;
     }
 }
