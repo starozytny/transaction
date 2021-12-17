@@ -1,0 +1,17 @@
+@import "../vars/vars";
+
+@import "../../../common/css/components/theme";
+
+.theme-container{
+  .switcher-items .switcher-item label{
+    &:after{
+      content: "\e911";
+      left: 8.5px;
+      color: var(--txt);
+    }
+  }
+
+  .switcher-items .switcher-item.checked label:after {
+    content: "\e910";
+  }
+}

@@ -8,6 +8,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Menu } from '@dashboardComponents/Layout/Menu';
 import { Notifications } from "@dashboardComponents/Notifications";
+import { Theme } from "@dashboardComponents/Theme";
 
 Routing.setRoutingData(routes);
 
@@ -16,6 +17,11 @@ if(menu) {
     render(
         <Menu {...menu.dataset} />, menu
     )
+}
+
+const theme = document.getElementById("theme");
+if(theme){
+    render(<Theme />, theme)
 }
 
 const notifications = document.getElementById("notifications");
