@@ -7,7 +7,6 @@ use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Society;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
 class DataImmo extends DataConstructor
@@ -134,7 +133,7 @@ class DataImmo extends DataConstructor
         }
 
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
-        $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname);
+        $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
         $code = mb_strtoupper(substr($lastname, 0, 1) . substr($firstname, 0, 1));
 
         return ($obj)
