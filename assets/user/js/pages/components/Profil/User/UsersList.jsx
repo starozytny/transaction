@@ -30,7 +30,7 @@ export class UsersList extends Component {
 
         let itemsFilter = [
             { value: 0, id: filtersId[0], label: filtersLabel[0] },
-            { value: 1, id: filtersId[1], label: filtersLabel[1] },
+            { value: 3, id: filtersId[1], label: filtersLabel[1] },
         ];
 
         return <>
