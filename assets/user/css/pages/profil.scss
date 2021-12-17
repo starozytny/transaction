@@ -80,8 +80,8 @@
   }
 }
 
-.agency-list{
-  margin-top: 12px;
+.agency-data{
+  margin-top: 24px;
 
   .item{
     @include flex(column, flex-start, flex-start);
@@ -177,7 +177,7 @@
     margin-top: 24px;
   }
 
-  .agency-list{
+  .agency-data{
     .item{
       flex-direction: row;
       align-items: center;

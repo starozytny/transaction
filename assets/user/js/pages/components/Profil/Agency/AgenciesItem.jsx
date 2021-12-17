@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
+import {Button, ButtonIcon} from "@dashboardComponents/Tools/Button";
 import parse from "html-react-parser";
 
 export class AgenciesItem extends Component {
@@ -15,7 +15,7 @@ export class AgenciesItem extends Component {
                 {parse(elem.description)}
             </div>
 
-            <div className="agency-list">
+            <div className="agency-data">
                 <div className="item">
                     <div className="label">Type d'entreprise :</div>
                     <div>Data</div>
@@ -45,6 +45,10 @@ export class AgenciesItem extends Component {
                     <div>{elem.address}, {elem.zipcode} {elem.city}</div>
                 </div>
             </div>
+
+            {!isUser && <div className="agency-data">
+                <Button >Modifier des informations</Button>
+            </div>}
         </div>
     }
 }
