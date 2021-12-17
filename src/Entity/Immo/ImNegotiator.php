@@ -78,6 +78,7 @@ class ImNegotiator
     /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="negotiators")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"admin:read"})
      */
     private $agency;
 
@@ -176,7 +177,7 @@ class ImNegotiator
      */
     public function getTransportString(): string
     {
-        $transports = ["", "Pied", "Transport en commun", "Voiture professionnel", "Voiture personnel", "Deux roues professionnel", "Deux roues personnel"];
+        $transports = ["", "Pied", "Transport en commun", "Voiture professionnelle", "Voiture personnelle", "Deux roues professionnel", "Deux roues personnel"];
 
         return $transports[$this->transport];
     }
