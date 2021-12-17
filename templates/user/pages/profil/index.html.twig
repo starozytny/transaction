@@ -32,6 +32,7 @@
                 <div id="profil-content" data-id="{{ obj.id }}" data-agency-id="{{ obj.agency.id }}" data-is-user="{{ app.user.highRoleCode == 0 ? true : false }}"
                      data-users="{{ users }}"
                      data-agencies="{{ agencies }}"
+                     data-negotiators="{{ negotiators }}"
                 >
                     {% include "dashboard/layout/components/spinner.html.twig" %}
                 </div>

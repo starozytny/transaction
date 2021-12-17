@@ -109,6 +109,12 @@
   }
 }
 
+#profil-negotiators{
+  .toolbar .filter-search .search{
+    width: 100%;
+  }
+}
+
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
@@ -133,6 +139,13 @@
   #profil-users{
     .toolbar{
       flex-wrap: nowrap;
+    }
+  }
+
+  #profil-negotiators{
+    .toolbar .filter-search{
+      margin-left: 0;
+      width: 100%;
     }
   }
 }

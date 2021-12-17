@@ -1,19 +1,21 @@
 import React, { Component } from "react";
 
-import { Users } from "@userPages/components/Profil/User/Users";
-import {AgenciesList} from "@userPages/components/Profil/Agency/AgenciesList";
+import { Users }        from "@userPages/components/Profil/User/Users";
+import { AgenciesList } from "@userPages/components/Profil/Agency/AgenciesList";
+import { Negotiators }  from "@userPages/components/Profil/Negotiator/Negotiators";
 
 export class UserContent extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            context: "agencies",
+            context: "negotiators",
             id: parseInt(props.id),
             idAgency: parseInt(props.agencyId),
             isUser: props.isUser === "true",
             users: props.users,
             agencies: props.agencies,
+            negotiators: props.negotiators,
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -24,12 +26,12 @@ export class UserContent extends Component {
     }
 
     render () {
-        const { context, id, idAgency, isUser, users, agencies } = this.state;
+        const { context, id, idAgency, isUser, users, agencies, negotiators } = this.state;
 
         let content;
         switch (context){
             case "negotiators":
-                content = <div>Hello négociateurs</div>
+                content = <div id="profil-negotiators"><Negotiators donnees={negotiators} isUser={isUser}/></div>
                 break;
             case "agencies":
                 content = <div id="profil-agencies"><AgenciesList donnees={agencies} idAgency={idAgency} isUser={isUser}/></div>

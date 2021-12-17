@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImNegotiator;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -82,14 +83,17 @@ class UserController extends AbstractController
 
         $users    = $em->getRepository(User::class)->findBy(['society' => $obj->getSociety()]);
         $agencies = $em->getRepository(ImAgency::class)->findBy(['society' => $obj->getSociety()]);
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
 
         $users    = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
         $agencies = $serializer->serialize($agencies, 'json', ['groups' => User::ADMIN_READ]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/profil/index.html.twig',  [
             'obj' => $obj,
             'users' => $users,
             'agencies' => $agencies,
+            'negotiators' => $negotiators
         ]);
     }
 
