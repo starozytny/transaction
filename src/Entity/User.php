@@ -128,6 +128,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"admin:read"})
      */
     private $agency;
 

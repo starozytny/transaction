@@ -5,7 +5,6 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min';
 
 import React from "react";
 import { render } from "react-dom";
-import { Users }          from "@userPages/components/Profil/User/Users";
 import { UserFormulaire } from "@userPages/components/Profil/UserForm";
 import { UserContent }    from "@userPages/components/Profil/UserContent";
 
@@ -16,7 +15,7 @@ if(el){
     render(<div className="main-content">
         <UserFormulaire type="profil"
                         element={JSON.parse(el.dataset.donnees)}
-                        societyId={el.dataset.societyId} />
+                        societyId={el.dataset.societyId} agencyId={el.dataset.agencyId} />
     </div>, el)
 }
 
@@ -28,13 +27,13 @@ if(el){
 el = document.getElementById("user-create");
 if(el){
     render(<div className="main-content">
-        <UserFormulaire type="create" societyId={el.dataset.societyId} />
+        <UserFormulaire type="create" societyId={el.dataset.societyId} agencyId={el.dataset.agencyId} />
     </div>, el)
 }
 
 el = document.getElementById("user-update");
 if(el){
     render(<div className="main-content">
-        <UserFormulaire type="update" element={JSON.parse(el.dataset.donnees)} societyId={el.dataset.societyId} />
+        <UserFormulaire type="update" element={JSON.parse(el.dataset.donnees)} societyId={el.dataset.societyId} agencyId={el.dataset.agencyId} />
     </div>, el)
 }

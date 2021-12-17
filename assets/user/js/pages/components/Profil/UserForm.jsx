@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Button }       from "@dashboardComponents/Tools/Button";
-
 import { Form }         from "@dashboardPages/components/User/UserForm";
+import {FormLayout} from "@dashboardComponents/Layout/Elements";
 
 const URL_CREATE_ELEMENT  = "api_users_create";
 const URL_UPDATE_GROUP  = "api_users_update";
 
-export function UserFormulaire ({ type, element, societyId })
+export function UserFormulaire ({ type, element, societyId, agencyId })
 {
     let title = "Ajouter un utilisateur";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -21,6 +20,8 @@ export function UserFormulaire ({ type, element, societyId })
         msg = "Félicitation ! La mise à jour s'est réalisée avec succès !";
     }
 
+    console.log(element)
+
     let form = <Form
         context={type}
         url={url}
@@ -31,20 +32,10 @@ export function UserFormulaire ({ type, element, societyId })
         avatar={element ? element.avatar : null}
         roles={element ? element.roles : []}
         society={element ? element.society.id : societyId}
+        agency={element ? element.agency.id : agencyId}
         messageSuccess={msg}
         isProfil={true}
     />
 
-    return <>
-        <div className="toolbar">
-            <div className="item">
-                <Button element="a" outline={true} icon="left-arrow" type="primary" onClick={Routing.generate('user_profil')}>Retour à mon profil</Button>
-            </div>
-        </div>
-
-        <div className="form">
-            <h2>{title}</h2>
-            {form}
-        </div>
-    </>
+    return <FormLayout url={Routing.generate('user_profil')} form={form} text="Retour à mon profil">{title}</FormLayout>
 }
