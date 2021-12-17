@@ -7,7 +7,7 @@ import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class UserItem extends Component {
     render () {
-        const { developer, elem, onChangeContext, onDelete, onSelectors } = this.props
+        const { minimal, developer, elem, onChangeContext, onDelete, onSelectors } = this.props
 
         let routeName = 'user_homepage'
         if(elem.highRoleCode === 2){
@@ -43,9 +43,11 @@ export class UserItem extends Component {
                             {elem.highRoleCode !== 1 &&
                             <>
                                 <ButtonIcon icon="vision" onClick={() => onChangeContext("read", elem)}>Profil</ButtonIcon>
-                                <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                                <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
-                                {developer === 1 && <ButtonIcon icon="share" element="a" target="_blank" onClick={url}>Imiter</ButtonIcon>}
+                                {!minimal && <>
+                                    <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
+                                    <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                                    {developer === 1 && <ButtonIcon icon="share" element="a" target="_blank" onClick={url}>Imiter</ButtonIcon>}
+                                </>}
                             </>
                             }
                         </div>

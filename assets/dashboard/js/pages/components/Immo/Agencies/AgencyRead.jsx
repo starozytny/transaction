@@ -1,14 +1,48 @@
 import React, { Component } from 'react';
 
-import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
-import Sanitize               from "@commonComponents/functions/sanitaze";
+import axios                  from "axios";
 import parse                  from "html-react-parser";
+import Routing                from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
+import Sanitize               from "@commonComponents/functions/sanitaze";
+import Formulaire             from "@dashboardComponents/functions/Formulaire";
+
+import { Alert }              from "@dashboardComponents/Tools/Alert";
+import { LoaderElement }      from "@dashboardComponents/Layout/Loader";
+import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import { ChartAds, ChartBiens } from "@dashboardPages/components/Immo/Stats/Charts";
+import {User} from "@dashboardPages/components/User/User";
 
 export class AgencyRead extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loadData: true,
+            users: [],
+            negotiators: []
+        }
+    }
+
+    componentDidMount = () => {
+        const { element } = this.props;
+
+        const self = this;
+        axios({ method: "GET", url: Routing.generate('api_agencies_read', {'id': element.id}) })
+            .then(function (response) {
+                let data = response.data;
+                self.setState({ loadData: false, users: data.users, negotiators: JSON.parse(data.negotiators)})
+            })
+            .catch(function (error) {
+                Formulaire.displayErrors(self, error);
+            })
+        ;
+    }
+
     render () {
         const { element, onChangeContext } = this.props;
+        const { users, negotiators, loadData } = this.state
 
         let statsAds = null, statsBiens = null;
         let last = 0;
@@ -17,8 +51,6 @@ export class AgencyRead extends Component {
         //     statsAds = <ChartAds donnees={JSON.stringify(element.stats)} />;
         //     statsBiens = <ChartBiens donnees={JSON.stringify([element.stats[last - 1]])} />
         // }
-
-        console.log(element)
 
         let logo = (element.logo) ? "/immo/logos/" + element.logo : `https://robohash.org/${element.id}?size=64x64`;
 
@@ -88,8 +120,11 @@ export class AgencyRead extends Component {
                             <div className="title">Société : {element.society.fullname}</div>
                         </div>
 
-                        <div>
-                            Liste des utilisateurs
+                        <div className="agency-stats">
+                            <div className="title">Liste des utilisateurs</div>
+                            <div className="content">
+                                {loadData ? <LoaderElement /> : <User donnees={users} developer={1} minimal={true} />}
+                            </div>
                         </div>
 
                         <div className="agency-stats">

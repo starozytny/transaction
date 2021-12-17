@@ -64,7 +64,11 @@ class AgencyController extends AbstractController
         $users = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
-        return $apiResponse->apiJsonResponseSuccessful("ok");
+        return $apiResponse->apiJsonResponseCustom([
+            'agency' => $obj,
+            'users'=> $users,
+            'negotiators' => $negotiators
+        ]);
     }
 
     /**

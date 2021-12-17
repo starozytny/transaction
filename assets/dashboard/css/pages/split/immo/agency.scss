@@ -14,12 +14,7 @@
 }
 
 .item-agency-read{
-  & > div:first-child{
-    max-width: 768px;
-  }
-
   & > div:last-child{
-    max-width: 360px;
     margin-top: 24px;
   }
 
@@ -64,6 +59,23 @@
   .title{
     @include fontSemibold();
     padding: 12px;
+  }
+
+  .content{
+    padding: 12px;
+
+    .main-content{
+      min-height: auto;
+      margin-top: 0;
+      padding: 0;
+    }
+
+    .toolbar{
+      .filter-search{
+        margin-left: 0;
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -110,12 +122,10 @@
     & > div:first-child{
       width: 414px;
       margin-right: 48px;
-      max-width: initial;
     }
 
     & > div:last-child{
       width: calc(100% - 414px - 48px);
-      max-width: initial;
       margin-top: 0;
     }
   }
