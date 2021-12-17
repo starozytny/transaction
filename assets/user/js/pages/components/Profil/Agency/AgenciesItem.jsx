@@ -12,7 +12,7 @@ function setData (value)
 
 export class AgenciesItem extends Component {
     render () {
-        const { isUser, elem } = this.props;
+        const { idAgency, isUser, elem } = this.props;
 
         return <div className="profil-card">
             <div className="title">Description de {elem.name}</div>
@@ -75,7 +75,7 @@ export class AgenciesItem extends Component {
                 </div>
             </div>
 
-            {!isUser && <div className="agency-data">
+            {(!isUser && idAgency === elem.id) && <div className="agency-data">
                 <Button >Modifier des informations</Button>
             </div>}
         </div>

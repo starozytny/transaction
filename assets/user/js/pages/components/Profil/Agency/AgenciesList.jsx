@@ -13,13 +13,13 @@ export class AgenciesList extends Component {
         }
     }
     render () {
-        const { isUser } = this.props;
+        const { idAgency, isUser } = this.props;
         const { data } = this.state;
 
         return <>
             <div>
                 {data && data.length !== 0 ? data.map(elem => {
-                    return <AgenciesItem elem={elem} isUser={isUser} key={elem.id}/>
+                    return <AgenciesItem elem={elem} idAgency={idAgency} isUser={isUser} key={elem.id}/>
                 }) : <Alert>Aucun résultat</Alert>}
             </div>
         </>
