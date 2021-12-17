@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImNegotiator;
 use App\Entity\Notification;
 use App\Entity\Settings;
 use App\Entity\Society;
@@ -163,6 +164,20 @@ class AdminController extends AbstractController
             'donnees' => $objs,
             'total' => count($biens),
             'societies' => $societies,
+        ]);
+    }
+
+    /**
+     * @Route("/immobilier/negociateurs", name="negotiators_index")
+     */
+    public function negotiators(SerializerInterface $serializer): Response
+    {
+        $objs = $this->getAllData(ImNegotiator::class, $serializer);
+        $agencies = $this->getAllData(ImAgency::class, $serializer);
+
+        return $this->render('admin/pages/immo/negotiators.html.twig', [
+            'donnees' => $objs,
+            'agencies' => $agencies,
         ]);
     }
 }
