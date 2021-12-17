@@ -17,6 +17,7 @@ export class UsersItem extends Component {
                                 <span>{elem.lastname} {elem.firstname}</span>
                                 <div className="role">{elem.highRole}</div>
                             </div>
+                            <div className="sub">{elem.agency.name}</div>
                         </div>
                         <div className="col-2">
                             <div className="sub">{elem.username}</div>
