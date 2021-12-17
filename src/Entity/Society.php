@@ -142,7 +142,7 @@ class Society
      * @return string
      * @Groups({"admin:read"})
      */
-    public function fullname(): string
+    public function getFullname(): string
     {
         return "#" . $this->getCodeString() . " - " . $this->name;
     }
