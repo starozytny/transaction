@@ -122,20 +122,12 @@
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
-  .profil-page{
-    @include flex(row, flex-start, flex-start);
-    width: calc(100% + 12px);
-
-    & > *{
-      width: calc(50% - 12px);
-      margin-right: 12px;
+  .page-default{
+    .tab-col-2{
+      margin-right: 0;
+      width: 100%;
     }
   }
-
-  #profil-content{
-    margin-top: 0;
-  }
-
   #profil-users{
     .toolbar{
       flex-wrap: nowrap;
@@ -162,6 +154,7 @@
   }
 
   .profil-page{
+    @include flex(row, flex-start, flex-start);
     width: 100%;
 
     & > .col-1{
@@ -176,6 +169,10 @@
   }
   .profil-card{
     padding: 24px;
+  }
+
+  #profil-content{
+    margin-top: 0;
   }
 
   #profil-users{
