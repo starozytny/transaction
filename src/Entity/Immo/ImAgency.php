@@ -190,10 +190,16 @@ class ImAgency
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImNegotiator::class, mappedBy="agency")
+     */
+    private $negotiators;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->negotiators = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -575,6 +581,36 @@ class ImAgency
             // set the owning side to null (unless already changed)
             if ($user->getAgency() === $this) {
                 $user->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImNegotiator[]
+     */
+    public function getNegotiators(): Collection
+    {
+        return $this->negotiators;
+    }
+
+    public function addNegotiator(ImNegotiator $negotiator): self
+    {
+        if (!$this->negotiators->contains($negotiator)) {
+            $this->negotiators[] = $negotiator;
+            $negotiator->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNegotiator(ImNegotiator $negotiator): self
+    {
+        if ($this->negotiators->removeElement($negotiator)) {
+            // set the owning side to null (unless already changed)
+            if ($negotiator->getAgency() === $this) {
+                $negotiator->setAgency(null);
             }
         }
 
