@@ -1,3 +1,73 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/filter";
+
+.filters{
+  .item:not(:last-child){
+    margin-bottom: 12px;
+  }
+
+  .title{
+    position: relative;
+    @include fontSemibold();
+    color: var(--txt);
+    @include flex(row, center, space-between);
+    margin-bottom: 8px;
+
+    span{
+      position: relative;
+      background-color: var(--fondContent);
+    }
+
+    span:first-child{
+      padding-right: 8px;
+    }
+
+    span:last-child{
+      padding-left: 8px;
+      cursor: pointer;
+    }
+
+    &:before{
+      content: "";
+      position: absolute;
+      top: 10px; left: 0;
+      display: block;
+      border: 1px dashed var(--txt);
+      width: calc(100% - 24px);
+    }
+  }
+
+  .items-filter{
+    .item-filter{
+      @include flex(row, center, flex-start);
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--grey3);
+
+      &:hover{
+        .box{
+          background-color: var(--primaryShadow);
+        }
+      }
+
+      &.active{
+        color: var(--txt);
+
+        .box{
+          background-color: var(--primary);
+          border-color: var(--txt);
+        }
+      }
+    }
+
+    .box{
+      display: block;
+      width: 10px; height: 10px;
+      border: 1px solid var(--grey2);
+      margin-right: 8px;
+      border-radius: 2px;
+      transition: all 0.2s ease-in-out;
+    }
+  }
+}
