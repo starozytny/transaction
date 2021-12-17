@@ -63,6 +63,18 @@ function setActive(tab, value)
     return active;
 }
 
+function setActiveByValue(tab, value)
+{
+    let active = "";
+    tab.forEach(elem => {
+        if(elem.value === value){
+            active = " active";
+        }
+    })
+
+    return active;
+}
+
 function createTimeHoursMinutes(hours, minutes)
 {
     let date = new Date();
@@ -177,6 +189,7 @@ module.exports = {
     getPostalCodes,
     setCityFromZipcode,
     setActive,
+    setActiveByValue,
     setIncludeTimes,
     createTimeHoursMinutes,
     extractDateToArray,
