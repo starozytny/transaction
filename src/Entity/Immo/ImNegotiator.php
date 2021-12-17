@@ -76,7 +76,7 @@ class ImNegotiator
     private $immatriculation;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="negotiators")
+     * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="negotiators")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"admin:read"})
      */

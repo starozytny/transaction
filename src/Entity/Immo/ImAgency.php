@@ -126,24 +126,6 @@ class ImAgency
     private $lon;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     * @Groups({"admin:read"})
-     */
-    private $identifiant;
-
-    /**
-     * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="agency", orphanRemoval=true)
-     */
-    private $biens;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="imAgencies")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read"})
-     */
-    private $society;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"admin:read"})
      */
@@ -184,6 +166,24 @@ class ImAgency
      * @Groups({"admin:read"})
      */
     private $mediation;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Groups({"admin:read"})
+     */
+    private $identifiant;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="agency", orphanRemoval=true)
+     */
+    private $biens;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Society::class, fetch="EAGER", inversedBy="imAgencies")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"admin:read"})
+     */
+    private $society;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="agency")
@@ -458,7 +458,8 @@ class ImAgency
      */
     public function getTotalBiens(): int
     {
-        return count($this->biens);
+//        return count($this->biens);
+        return 0;
     }
 
     public function getSociety(): ?Society
