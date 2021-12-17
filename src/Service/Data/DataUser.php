@@ -4,10 +4,12 @@
 namespace App\Service\Data;
 
 
+use App\Entity\Immo\ImAgency;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Service\SanitizeData;
 use Doctrine\ORM\EntityManagerInterface;
+use mysql_xdevapi\Exception;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class DataUser
@@ -31,6 +33,11 @@ class DataUser
         }
 
         $society = $this->em->getRepository(Society::class)->find($data->society);
+        $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
+
+        if(!$society || !$agency || $agency->getSociety()->getId() !== $society->getId()){
+            throw new Exception("Erreur lien entre société et agence.");
+        }
 
         $username = isset($data->username) ? $this->sanitizeData->fullSanitize($data->username) : $data->email;
 
@@ -41,6 +48,7 @@ class DataUser
             ->setEmail($data->email)
             ->setPassword($this->passwordHasher->hashPassword($obj, $pass))
             ->setSociety($society)
+            ->setAgency($agency)
         ;
     }
 }
