@@ -102,19 +102,22 @@ class AdminController extends AbstractController
         $route = 'admin/pages/user/index.html.twig';
         $objs = $this->getAllData(User::class, $serializer);
         $societies = $this->getAllData(Society::class, $serializer);
+        $agencies = $this->getAllData(ImAgency::class, $serializer);
 
         $search = $request->query->get('search');
         if($search){
             return $this->render($route, [
                 'donnees' => $objs,
                 'search' => $search,
-                'societies' => $societies
+                'societies' => $societies,
+                'agencies' => $agencies
             ]);
         }
 
         return $this->render($route, [
             'donnees' => $objs,
-            'societies' => $societies
+            'societies' => $societies,
+            'agencies' => $agencies
         ]);
     }
 

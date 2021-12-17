@@ -59,7 +59,8 @@ export class User extends Component {
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "user.pagination",
-            societies: JSON.parse(props.societies)
+            societies: JSON.parse(props.societies),
+            agencies: JSON.parse(props.agencies)
         }
 
         this.layout = React.createRef();
@@ -146,13 +147,15 @@ export class User extends Component {
     }
 
     handleContentCreate = (changeContext) => {
-        const { societies } = this.state;
-        return <UserFormulaire type="create" societies={societies} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        const { societies, agencies } = this.state;
+        return <UserFormulaire type="create" societies={societies} agencies={agencies}
+                               onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
-        const { societies } = this.state;
-        return <UserFormulaire type="update" societies={societies} element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        const { societies, agencies } = this.state;
+        return <UserFormulaire type="update" societies={societies} agencies={agencies} element={element}
+                               onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentRead = (changeContext, element) => {

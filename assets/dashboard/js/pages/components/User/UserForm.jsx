@@ -18,7 +18,7 @@ const URL_UPDATE_GROUP       = "api_users_update";
 const TXT_CREATE_BUTTON_FORM = "Ajouter l'utilisateur";
 const TXT_UPDATE_BUTTON_FORM = "Modifier l'utilisateur";
 
-export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, societies })
+export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, societies, agencies })
 {
     let title = "Ajouter un utilisateur";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -40,10 +40,12 @@ export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, 
         avatar={element ? element.avatar : null}
         roles={element ? element.roles : []}
         society={element ? element.society.id : ""}
+        agency={element ? element.agency.id : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
         societies={societies}
+        agencies={agencies}
     />
 
     return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
@@ -61,6 +63,7 @@ export class Form extends Component {
             roles: props.roles,
             avatar: props.avatar,
             society: props.society,
+            agency: props.agency,
             password: '',
             passwordConfirm: '',
             errors: [],
@@ -98,7 +101,7 @@ export class Form extends Component {
         e.preventDefault();
 
         const { context, url, messageSuccess } = this.props;
-        const { username, firstname, lastname, password, passwordConfirm, email, roles, society } = this.state;
+        const { username, firstname, lastname, password, passwordConfirm, email, roles, society, agency } = this.state;
 
         this.setState({ success: false})
 
@@ -118,7 +121,10 @@ export class Form extends Component {
         }
 
         if(context !== "profil"){
-            paramsToValidate = [...paramsToValidate, ...[{type: "text", id: 'society', value: society}]];
+            paramsToValidate = [...paramsToValidate, ...[
+                {type: "text", id: 'society', value: society},
+                {type: "text", id: 'agency', value: agency}
+            ]];
         }
 
         let inputAvatar = this.inputAvatar.current;
@@ -155,6 +161,7 @@ export class Form extends Component {
                             email: '',
                             roles: [],
                             society: '',
+                            agency: '',
                             password: '',
                             passwordConfirm: '',
                         })
@@ -171,8 +178,8 @@ export class Form extends Component {
     }
 
     render () {
-        const { context, societies, isProfil=false } = this.props;
-        const { errors, success, username, firstname, lastname, email, password, passwordConfirm, roles, avatar, society } = this.state;
+        const { context, societies, agencies, isProfil=false } = this.props;
+        const { errors, success, username, firstname, lastname, email, password, passwordConfirm, roles, avatar, society, agency } = this.state;
 
         let rolesItems = [
             { value: 'ROLE_ADMIN',      label: 'Admin',          identifiant: 'admin' },
@@ -184,10 +191,32 @@ export class Form extends Component {
             rolesItems.shift();
         }
 
+        let selectSociety = [];
         if(context !== "profil" && !isProfil){
-            let selectSociety = [];
             societies.forEach(elem => {
-                selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: elem.name.toLowerCase() })
+                let add = agency === "";
+
+                if(agency !== ""){
+                    agencies.forEach(el => {
+                        if(el.id === agency && el.society.id === elem.id){
+                            add = true;
+                        }
+                    })
+                }
+
+                if(add){
+                    selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: elem.name.toLowerCase() })
+                }
+            });
+        }
+
+        let selectAgency = [];
+        if(context !== "profil" && !isProfil){
+            agencies.forEach(elem => {
+                let add = society === "" ? true : (elem.society.id === society);
+                if(add){
+                    selectAgency.push({ value: elem.id, label: elem.name, identifiant: elem.id })
+                }
             });
         }
 
@@ -216,12 +245,18 @@ export class Form extends Component {
                           label="Téléverser un avatar" labelError="Seules les images sont acceptées.">Fichier (facultatif)</Drop>
                 </div>}
 
-                {context !== "profil" && !isProfil && <div className="line">
+                {context !== "profil" && !isProfil && <div className="line line-2">
                     <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
                                           placeholder={"Sélectionner la société"}
                                           errors={errors} onChange={(e) => this.handleChangeSelect("society", e)}
                     >
                         Société
+                    </SelectReactSelectize>
+                    <SelectReactSelectize items={selectAgency} identifiant="agency" valeur={agency}
+                                          placeholder={"Sélectionner l'agence"}
+                                          errors={errors} onChange={(e) => this.handleChangeSelect("agency", e)}
+                    >
+                        Agence
                     </SelectReactSelectize>
                 </div>}
 
