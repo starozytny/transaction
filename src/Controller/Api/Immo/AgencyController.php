@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImNegotiator;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/agencies", name="api_agencies_")
@@ -32,6 +34,37 @@ class AgencyController extends AbstractController
     public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+
+    /**
+     * Admin - Read agency
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @Route("/{id}", name="read", options={"expose"=true}, methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns agency object"
+     * )
+     * @OA\Tag(name="Agency")
+     *
+     * @param ImAgency $obj
+     * @param ApiResponse $apiResponse
+     * @param SerializerInterface $serializer
+     * @return JsonResponse
+     */
+    public function read(ImAgency $obj, ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $users = $em->getRepository(User::class)->findBy(['agency' => $obj]);
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj]);
+
+        $obj = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
+        $users = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $apiResponse->apiJsonResponseSuccessful("ok");
     }
 
     /**

@@ -14,8 +14,19 @@
 }
 
 .item-agency-read{
-  .user-read-infos{
+  & > div:first-child{
     max-width: 768px;
+  }
+
+  & > div:last-child{
+    max-width: 360px;
+    margin-top: 24px;
+  }
+
+  & > div{
+    & > div:not(:last-child){
+      margin-bottom: 24px;
+    }
   }
 
   .name{
@@ -42,11 +53,9 @@
 }
 
 .agency-stats{
-  max-width: 360px;
   background-color: var(--alpha);
   border-radius: 12px;
   box-shadow: 0 0 12px var(--greyShadow);
-  margin-top: 24px;
 
   .chart{
     transform: scale(1.125) translateX(-6px);
@@ -98,14 +107,15 @@
   .item-agency-read {
     @include flex(row, flex-start, flex-start);
 
-    .user-read-infos {
-      width: calc(100% - 360px - 48px);
+    & > div:first-child{
+      width: 414px;
       margin-right: 48px;
       max-width: initial;
     }
 
-    .agency-stats{
-      width: 360px;
+    & > div:last-child{
+      width: calc(100% - 414px - 48px);
+      max-width: initial;
       margin-top: 0;
     }
   }
