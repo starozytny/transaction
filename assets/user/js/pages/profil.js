@@ -19,6 +19,11 @@ if(el){
     </div>, el)
 }
 
+el = document.getElementById("profil-content");
+if(el){
+    render(<Users {...el.dataset} />, el)
+}
+
 el = document.getElementById("profil-users");
 if(el){
     render(<Users {...el.dataset} />, el)

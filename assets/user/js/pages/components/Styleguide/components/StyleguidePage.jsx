@@ -34,9 +34,9 @@ export function StyleguidePage () {
                                 </div>
                                 <Button type="primary">Ajouter un bien</Button>
                             </div>
-                            <form>
+                            <div>
                                 <AdCard status={1} statusName="Actif"/>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
