@@ -53,6 +53,26 @@ export class AgenciesItem extends Component {
                     <div className="label">Adresse de la société :</div>
                     <div>{elem.address}, {elem.zipcode} {elem.city}</div>
                 </div>
+                <div className="item">
+                    <div className="label">Site internet :</div>
+                    <div><a href={"/" + elem.website}>{elem.website}</a></div>
+                </div>
+                <div className="item">
+                    <div className="label">Téléphones :</div>
+                    <div>
+                        <div><u>Général</u> : {elem.phone}</div>
+                        <div><u>Location</u> : {elem.phoneLocation}</div>
+                        <div><u>Vente</u> : {elem.phoneVente}</div>
+                    </div>
+                </div>
+                <div className="item">
+                    <div className="label">Emails :</div>
+                    <div>
+                        <div><u>Général</u> : {elem.email}</div>
+                        <div><u>Location</u> : {elem.emailLocation}</div>
+                        <div><u>Vente</u> : {elem.emailVente}</div>
+                    </div>
+                </div>
             </div>
 
             {!isUser && <div className="agency-data">
