@@ -19,6 +19,7 @@ export class NegotiatorsItem extends Component {
                                 <span>{elem.lastname} {elem.firstname}</span>
                             </div>
                             <div className="sub">{elem.email}</div>
+                            <div className="sub">{elem.agency.name}</div>
                         </div>
                         <div className="col-2">
                             {elem.phone && <div className="sub">{elem.phone}</div>}
