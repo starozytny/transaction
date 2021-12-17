@@ -137,4 +137,13 @@ class Society
 
         return $this;
     }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function fullname(): string
+    {
+        return "#" . $this->getCodeString() . " - " . $this->name;
+    }
 }
