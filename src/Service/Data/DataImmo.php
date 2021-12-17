@@ -5,6 +5,7 @@ namespace App\Service\Data;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImNegotiator;
 use App\Entity\Society;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -84,35 +85,68 @@ class DataImmo extends DataConstructor
         ;
     }
 
-    public function setDataAgency(ImAgency $agency, $data): ImAgency
+    /**
+     * @throws Exception
+     */
+    public function setDataAgency(ImAgency $obj, $data): ImAgency
     {
         $society = $this->em->getRepository(Society::class)->find($data->society);
+        if(!$society){
+            throw new Exception("Société introuvable.");
+        }
 
-        return ($agency)
+        return ($obj)
             ->setSociety($society)
-            ->setName($data->name)
-            ->setDirname($data->dirname)
-            ->setWebsite($data->website)
-            ->setEmail($data->email)
-            ->setEmailLocation($data->emailLocation)
-            ->setEmailVente($data->emailVente)
-            ->setPhone($data->phone)
-            ->setPhoneLocation($data->phoneLocation)
-            ->setPhoneVente($data->phoneVente)
-            ->setAddress($data->address)
-            ->setZipcode($data->zipcode)
-            ->setCity($data->city)
-            ->setLat($data->lat)
-            ->setLon($data->lon)
-            ->setIdentifiant($data->dirname)
-            ->setDescription($data->description->html)
-            ->setType($data->type)
-            ->setSiret($data->siret)
-            ->setRcs($data->rcs)
-            ->setCartePro($data->cartePro)
-            ->setGarantie($data->garantie)
-            ->setAffiliation($data->affiliation)
-            ->setMediation($data->mediation)
+            ->setName($this->sanitizeData->sanitizeString($data->name))
+            ->setDirname($this->sanitizeData->sanitizeString($data->dirname))
+            ->setWebsite($this->sanitizeData->sanitizeString($data->website))
+            ->setEmail(trim($data->email))
+            ->setEmailLocation(trim($data->emailLocation))
+            ->setEmailVente(trim($data->emailVente))
+            ->setPhone(trim($data->phone))
+            ->setPhoneLocation(trim($data->phoneLocation))
+            ->setPhoneVente(trim($data->phoneVente))
+            ->setAddress(trim($data->address))
+            ->setZipcode(trim($data->zipcode))
+            ->setCity(trim($data->city))
+            ->setLat(trim($data->lat))
+            ->setLon(trim($data->lon))
+            ->setIdentifiant($this->sanitizeData->sanitizeString($data->dirname))
+            ->setDescription(trim($data->description->html))
+            ->setType(trim($data->type))
+            ->setSiret(trim($data->siret))
+            ->setRcs(trim($data->rcs))
+            ->setCartePro(trim($data->cartePro))
+            ->setGarantie(trim($data->garantie))
+            ->setAffiliation(trim($data->affiliation))
+            ->setMediation(trim($data->mediation))
+        ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataNegotiator(ImNegotiator $obj, $data): ImNegotiator
+    {
+        $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
+        if(!$agency){
+            throw new Exception("Agence introuvable.");
+        }
+
+        $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
+        $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname);
+        $code = mb_strtoupper(substr($lastname, 0, 1) . substr($firstname, 0, 1));
+
+        return ($obj)
+            ->setAgency($agency)
+            ->setCode($code)
+            ->setLastname($lastname)
+            ->setFirstname($firstname)
+            ->setEmail(trim($data->email))
+            ->setPhone(trim($data->phone))
+            ->setPhone2(trim($data->phone2))
+            ->setTransport((int) $data->transport)
+            ->setImmatriculation(trim($data->immatriculation))
         ;
     }
 }

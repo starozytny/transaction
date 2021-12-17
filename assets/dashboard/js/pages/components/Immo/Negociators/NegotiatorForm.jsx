@@ -13,8 +13,8 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_agencies_create";
-const URL_UPDATE_GROUP       = "api_agencies_update";
+const URL_CREATE_ELEMENT     = "api_negotiators_create";
+const URL_UPDATE_GROUP       = "api_negotiators_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
@@ -111,7 +111,10 @@ export class NegotiatorForm extends Component {
                 Formulaire.loader(true);
                 let self = this;
 
-                axios({ method: "POST", url: url, data: this.state, headers: {'Content-Type': 'multipart/form-data'} })
+                let formData = new FormData();
+                formData.append("data", JSON.stringify(this.state));
+
+                axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                     .then(function (response) {
                         let data = response.data;
                         self.props.onUpdateList(data);

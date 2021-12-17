@@ -6,9 +6,9 @@ import Sort              from "@commonComponents/functions/sort";
 import { NegotiatorsList }       from "./NegotiatorsList";
 import { NegotiatorFormulaire } from "./NegotiatorForm";
 
-const URL_DELETE_ELEMENT = 'api_agencies_delete';
+const URL_DELETE_ELEMENT = 'api_negotiators_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer ce négociateur ?';
-const URL_DELETE_GROUP   = 'api_users_delete_group';
+const URL_DELETE_GROUP   = 'api_negotiators_delete_group';
 const MSG_DELETE_GROUP   = 'Aucun négociateur sélectionnés.';
 const SORTER = Sort.compareName;
 
