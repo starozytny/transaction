@@ -18,6 +18,8 @@ export class AgencyRead extends Component {
         //     statsBiens = <ChartBiens donnees={JSON.stringify([element.stats[last - 1]])} />
         // }
 
+        let logo = (element.logo) ? "/immo/logos/" + element.logo : `https://robohash.org/${element.id}?size=64x64`;
+
         return <>
             <div>
                 <div className="toolbar">
@@ -34,7 +36,7 @@ export class AgencyRead extends Component {
                         </div>
                         <div className="user-read-infos-container">
                             <div className="avatar">
-                                <img src={"/immo/logos/" + element.logo} alt={`Logo de ${element.name}`}/>
+                                <img src={logo} alt={`Logo de ${element.name}`}/>
                             </div>
 
                             <div className="main-infos">
@@ -56,7 +58,15 @@ export class AgencyRead extends Component {
                                 <div className="sub sub-contact">
                                     <div><u>Adresse</u> : {element.address}, {element.zipcode} {element.city}</div>
                                 </div>
-                                <div className="sub sub-contact"><div>{element.legal ? parse(element.legal) : "Texte légal vide."}</div></div>
+                                <div className="sub sub-contact">
+                                    <div><u>Type d'entreprise</u> : {setData(element.type)}</div>
+                                    <div><u>SIRET</u> : {setData(element.siret)}</div>
+                                    <div><u>Numéro RCS</u> : {setData(element.rcs)}</div>
+                                    <div><u>Carte professionnelle</u> : {setData(element.cartePro)}</div>
+                                    <div><u>Garantie financière</u> : {setData(element.garantie)}</div>
+                                    <div><u>Affiliation</u> : {setData(element.affiliation)}</div>
+                                    <div><u>Médiation</u> : {setData(element.mediation)}</div>
+                                </div>
                             </div>
 
                             <div className="footer-infos">
@@ -84,4 +94,9 @@ export class AgencyRead extends Component {
             </div>
         </>
     }
+}
+
+function setData (value)
+{
+    return value ? value : "/";
 }
