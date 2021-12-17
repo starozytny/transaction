@@ -4,7 +4,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class NegotiatorsItem extends Component {
     render () {
-        const { elem, onDelete } = this.props
+        const { isUser, elem, onDelete } = this.props
 
         return <div className="item">
             <div className="item-content">
@@ -24,8 +24,10 @@ export class NegotiatorsItem extends Component {
                             {elem.fullTransportString !== null ? <div className="sub">{elem.fullTransportString}</div> : ""}
                         </div>
                         <div className="col-3 actions">
-                            <ButtonIcon icon="pencil">Modifier</ButtonIcon>
-                            <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            {!isUser && <>
+                                <ButtonIcon icon="pencil">Modifier</ButtonIcon>
+                                <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            </>}
                         </div>
                     </div>
                 </div>
