@@ -35,6 +35,7 @@ export function AgencyFormulaire ({ type, onChangeContext, onUpdateList, element
     let form = <AgencyForm
         context={type}
         url={url}
+        society={element ? element.society.id : ""}
         name={element ? element.name : ""}
         dirname={element ? element.dirname : ""}
         website={element ? element.website : ""}
@@ -50,10 +51,15 @@ export function AgencyFormulaire ({ type, onChangeContext, onUpdateList, element
         lat={element ? element.lat : ""}
         lon={element ? element.lon : ""}
         description={element ? element.description : ""}
-        legal={element ? element.legal : ""}
         logo={element ? element.logo : ""}
         tarif={element ? element.tarif : ""}
-        society={element ? element.society.id : ""}
+        type={element ? element.type : ""}
+        siret={element ? element.siret : ""}
+        rcs={element ? element.rcs : ""}
+        cartePro={element ? element.cartePro : ""}
+        garantie={element ? element.garantie : ""}
+        affiliation={element ? element.affiliation : ""}
+        mediation={element ? element.mediation : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
@@ -68,6 +74,7 @@ export class AgencyForm extends Component {
         super(props);
 
         this.state = {
+            society: props.society,
             name: props.name,
             dirname: props.dirname,
             website: props.website,
@@ -83,10 +90,15 @@ export class AgencyForm extends Component {
             lat: props.lat,
             lon: props.lon,
             description: { value: props.description ? props.description : "", html: props.description ? props.description : "" },
-            legal: { value: props.legal ? props.legal : "", html: props.legal ? props.legal : "" },
             logo: props.logo,
             tarif: props.tarif,
-            society: props.society,
+            type: props.type,
+            siret: props.siret,
+            rcs: props.rcs,
+            cartePro: props.cartePro,
+            garantie: props.garantie,
+            affiliation: props.affiliation,
+            mediation: props.mediation,
             errors: [],
             success: false,
             critere: ""
@@ -148,7 +160,6 @@ export class AgencyForm extends Component {
                 {type: "text", id: 'lat',               value: lat},
                 {type: "text", id: 'lon',               value: lon},
                 {type: "text", id: 'description',       value: description.html},
-                {type: "text", id: 'legal',             value: legal.html},
             ];
 
             let dropLogo = this.inputLogo.current.drop.current.files;
@@ -186,6 +197,7 @@ export class AgencyForm extends Component {
                             Helper.toTop();
                             toastr.info(messageSuccess);
                             self.setState( {
+                                society: "",
                                 name: "",
                                 dirname: "",
                                 website: "",
@@ -201,10 +213,15 @@ export class AgencyForm extends Component {
                                 lat: "",
                                 lon: "",
                                 description: { value: "", html: "" },
-                                legal: { value: "", html: "" },
                                 logo: "",
                                 tarif: "",
-                                society: '',
+                                type: "",
+                                siret: "",
+                                rcs: "",
+                                cartePro: "",
+                                garantie: "",
+                                affiliation: "",
+                                mediation: "",
                             })
                         }
                     })
@@ -222,7 +239,8 @@ export class AgencyForm extends Component {
     render () {
         const { context, societies } = this.props;
         const { critere, errors, success, name, dirname, website, email, emailLocation, emailVente,
-                phone, phoneLocation, phoneVente, address, zipcode, city, lat, lon, description, legal, logo, tarif, society } = this.state;
+                phone, phoneLocation, phoneVente, address, zipcode, city, lat, lon, description, logo, tarif, society,
+                type, siret, rcs, cartePro, garantie, affiliation, mediation } = this.state;
 
         let selectSociety = [];
         societies.forEach(elem => {
@@ -246,7 +264,7 @@ export class AgencyForm extends Component {
                 <div className="line line-3">
                     <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Nom / raison sociale</Input>
                     <Input valeur={dirname} identifiant="dirname" errors={errors} onChange={this.handleChange}>Nom du ZIP</Input>
-                    <Input valeur={website} identifiant="website" errors={errors} onChange={this.handleChange}>Adresse URL</Input>
+                    <Input valeur={website} identifiant="website" errors={errors} onChange={this.handleChange}>Site internet</Input>
                 </div>
 
                 <div className="line line-3">
@@ -265,6 +283,18 @@ export class AgencyForm extends Component {
                     <Input identifiant="critere" valeur={critere} errors={errors} onChange={this.handleChange}>Critère</Input>
                 </div>
 
+                <div className="line line-3">
+                    <Input valeur={address} identifiant="address" errors={errors} onChange={this.handleChange}>Adresse</Input>
+                    <Input valeur={zipcode} identifiant="zipcode" errors={errors} onChange={this.handleChange}>Code postal</Input>
+                    <Input valeur={city} identifiant="city" errors={errors} onChange={this.handleChange}>Ville</Input>
+                </div>
+
+                <div className="line line-3">
+                    <Input valeur={lat} identifiant="lat" errors={errors} onChange={this.handleChange} type="number">Latitude</Input>
+                    <Input valeur={lon} identifiant="lon" errors={errors} onChange={this.handleChange} type="number">Longitude</Input>
+                    <div className="form-group" />
+                </div>
+
                 <div className="line line-2">
                     <Drop ref={this.inputLogo} identifiant="logo" file={logo} folder="immo/logos" errors={errors} accept={"image/*"} maxFiles={1}
                           label="Téléverser un logo" labelError="Seules les images sont acceptées.">Logo</Drop>
@@ -272,20 +302,26 @@ export class AgencyForm extends Component {
                           label="Téléverser un PDF Tarif" labelError="Seules les PDFs sont acceptées.">Tarif</Drop>
                 </div>
 
-                <div className="line line-2">
+                <div className="line line">
                     <Trumb identifiant="description" valeur={description.value} errors={errors} onChange={this.handleChangeTrumb}>Description</Trumb>
-                    <Trumb identifiant="legal" valeur={legal.value} errors={errors} onChange={this.handleChangeTrumb}>Légal</Trumb>
                 </div>
 
                 <div className="line line-3">
-                    <Input valeur={address} identifiant="address" errors={errors} onChange={this.handleChange}>Adresse</Input>
-                    <Input valeur={zipcode} identifiant="zipcode" errors={errors} onChange={this.handleChange}>Code postal</Input>
-                    <Input valeur={city} identifiant="city" errors={errors} onChange={this.handleChange}>Ville</Input>
+                    <Input valeur={type} identifiant="type" errors={errors} onChange={this.handleChange}>Type d'entreprise</Input>
+                    <Input valeur={siret} identifiant="siret" errors={errors} onChange={this.handleChange}>SIRET</Input>
+                    <Input valeur={rcs} identifiant="rcs" errors={errors} onChange={this.handleChange}>Numéro RCS</Input>
                 </div>
 
-                <div className="line line-2">
-                    <Input valeur={lat} identifiant="lat" errors={errors} onChange={this.handleChange} type="number">Latitude</Input>
-                    <Input valeur={lon} identifiant="lon" errors={errors} onChange={this.handleChange} type="number">Longitude</Input>
+                <div className="line line-3">
+                    <Input valeur={cartePro} identifiant="cartePro" errors={errors} onChange={this.handleChange}>Carte professionnelle</Input>
+                    <Input valeur={garantie} identifiant="garantie" errors={errors} onChange={this.handleChange}>Garantie financière</Input>
+                    <Input valeur={affiliation} identifiant="affiliation" errors={errors} onChange={this.handleChange}>Affiliation</Input>
+                </div>
+
+                <div className="line line-3">
+                    <Input valeur={mediation} identifiant="mediation" errors={errors} onChange={this.handleChange}>Médiation</Input>
+                    <div className="form-group" />
+                    <div className="form-group" />
                 </div>
 
                 <div className="line">

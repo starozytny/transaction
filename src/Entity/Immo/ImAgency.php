@@ -95,12 +95,6 @@ class ImAgency
     private $tarif;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Groups({"admin:read"})
-     */
-    private $legal;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("admin:read")
      */
@@ -147,6 +141,48 @@ class ImAgency
      * @Groups({"admin:read"})
      */
     private $society;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $siret;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $rcs;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $cartePro;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $garantie;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $affiliation;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $mediation;
 
     public function __construct()
     {
@@ -302,18 +338,6 @@ class ImAgency
         return $this;
     }
 
-    public function getLegal(): ?string
-    {
-        return $this->legal;
-    }
-
-    public function setLegal(?string $legal): self
-    {
-        $this->legal = $legal;
-
-        return $this;
-    }
-
     public function getAddress(): ?string
     {
         return $this->address;
@@ -432,6 +456,90 @@ class ImAgency
     public function setSociety(?Society $society): self
     {
         $this->society = $society;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSiret(): ?string
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(?string $siret): self
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    public function getRcs(): ?string
+    {
+        return $this->rcs;
+    }
+
+    public function setRcs(?string $rcs): self
+    {
+        $this->rcs = $rcs;
+
+        return $this;
+    }
+
+    public function getCartePro(): ?string
+    {
+        return $this->cartePro;
+    }
+
+    public function setCartePro(?string $cartePro): self
+    {
+        $this->cartePro = $cartePro;
+
+        return $this;
+    }
+
+    public function getGarantie(): ?string
+    {
+        return $this->garantie;
+    }
+
+    public function setGarantie(?string $garantie): self
+    {
+        $this->garantie = $garantie;
+
+        return $this;
+    }
+
+    public function getAffiliation(): ?string
+    {
+        return $this->affiliation;
+    }
+
+    public function setAffiliation(?string $affiliation): self
+    {
+        $this->affiliation = $affiliation;
+
+        return $this;
+    }
+
+    public function getMediation(): ?string
+    {
+        return $this->mediation;
+    }
+
+    public function setMediation(?string $mediation): self
+    {
+        $this->mediation = $mediation;
 
         return $this;
     }

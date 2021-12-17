@@ -106,7 +106,13 @@ class DataImmo extends DataConstructor
             ->setLon($data->lon)
             ->setIdentifiant($data->dirname)
             ->setDescription($data->description->html)
-            ->setLegal($data->legal->html)
+            ->setType($data->type)
+            ->setSiret($data->siret)
+            ->setRcs($data->rcs)
+            ->setCartePro($data->cartePro)
+            ->setGarantie($data->garantie)
+            ->setAffiliation($data->affiliation)
+            ->setMediation($data->mediation)
         ;
     }
 }
