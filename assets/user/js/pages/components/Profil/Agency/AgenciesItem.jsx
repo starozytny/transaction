@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 
-import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+import parse      from "html-react-parser";
+import Routing    from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Button } from "@dashboardComponents/Tools/Button";
-import parse from "html-react-parser";
+
+function setData (value)
+{
+    return value ? value : "/";
+}
 
 export class AgenciesItem extends Component {
     render () {
@@ -18,27 +23,31 @@ export class AgenciesItem extends Component {
             <div className="agency-data">
                 <div className="item">
                     <div className="label">Type d'entreprise :</div>
-                    <div>Data</div>
+                    <div>{setData(elem.type)}</div>
                 </div>
                 <div className="item">
                     <div className="label">SIRET :</div>
-                    <div>Data</div>
+                    <div>{setData(elem.siret)}</div>
                 </div>
                 <div className="item">
                     <div className="label">Numéro RCS :</div>
-                    <div>Data</div>
+                    <div>{setData(elem.rcs)}</div>
                 </div>
                 <div className="item">
                     <div className="label">Carte professionnelle :</div>
-                    <div>Data</div>
+                    <div>{setData(elem.cartePro)}</div>
                 </div>
                 <div className="item">
                     <div className="label">Garantie financière :</div>
-                    <div>Data</div>
+                    <div>{setData(elem.garantie)}</div>
                 </div>
                 <div className="item">
                     <div className="label">Affiliation :</div>
-                    <div>Data</div>
+                    <div>{setData(elem.affiliation)}</div>
+                </div>
+                <div className="item">
+                    <div className="label">Médiation :</div>
+                    <div>{setData(elem.mediation)}</div>
                 </div>
                 <div className="item">
                     <div className="label">Adresse de la société :</div>

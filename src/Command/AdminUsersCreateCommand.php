@@ -159,7 +159,7 @@ class AdminUsersCreateCommand extends Command
             $fake = Factory::create();
             for($i=0; $i<20 ; $i++) {
                 $new = (new ImAgency())
-                    ->setSociety($societies[$fake->numberBetween(0,9)])
+                    ->setSociety($i == 0 ? $society : $societies[$fake->numberBetween(0,9)])
                     ->setName($fake->name)
                     ->setDirname("fake-" . $i)
                     ->setWebsite($fake->domainName)
