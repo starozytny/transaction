@@ -33,7 +33,7 @@ export class AgencyItem extends Component {
                         <div className="col-1" onClick={() => onChangeContext("read", elem)}>
                             <div className="name">
                                 <span>{elem.name}</span>
-                                <a target="_blank" href={elem.website}><span className="icon-link-2" /></a>
+                                <a target="_blank" href={"/" + elem.website}><span className="icon-link-2" /></a>
                             </div>
                             <div className="sub">{elem.society.fullname}</div>
                             <div className="sub">{elem.dirname}</div>
