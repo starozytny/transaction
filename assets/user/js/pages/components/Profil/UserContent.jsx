@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 
 import { Users } from "@userPages/components/Profil/User/Users";
+import {AgenciesList} from "@userPages/components/Profil/Agency/AgenciesList";
 
 export class UserContent extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            context: "users",
+            context: "agencies",
             users: props.users,
+            agencies: props.agencies
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -20,15 +22,15 @@ export class UserContent extends Component {
 
     render () {
         const { id, isUser } = this.props;
-        const { context, users } = this.state;
+        const { context, users, agencies } = this.state;
 
         let content;
         switch (context){
             case "negotiators":
                 content = <div>Hello négociateurs</div>
                 break;
-            case "agency":
-                content = <div>Hello Agency</div>
+            case "agencies":
+                content = <div id="profil-agencies"><AgenciesList donnees={agencies} isUser={isUser}/></div>
                 break;
             default:
                 content = <div id="profil-users"><Users donnees={users} id={id} isUser={isUser} /></div>
@@ -38,8 +40,8 @@ export class UserContent extends Component {
         let tabs = [
             { value: 'users', label: "Utilisateurs" },
             { value: 'negotiators', label: "Négociateurs" },
-            { value: 'agency', label: "Agence" },
-        ]
+            { value: 'agencies', label: "Agence" },
+        ];
 
         return <div className="page-default">
             <div>

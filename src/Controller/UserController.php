@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Immo\ImAgency;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -75,15 +76,20 @@ class UserController extends AbstractController
     public function profil(SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
+
         /** @var User $obj */
         $obj = $this->getUser();
-        $users = $em->getRepository(User::class)->findBy(['society' => $obj->getSociety()]);
 
-        $users = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
+        $users    = $em->getRepository(User::class)->findBy(['society' => $obj->getSociety()]);
+        $agencies = $em->getRepository(ImAgency::class)->findBy(['society' => $obj->getSociety()]);
+
+        $users    = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
+        $agencies = $serializer->serialize($agencies, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/profil/index.html.twig',  [
             'obj' => $obj,
-            'users' => $users
+            'users' => $users,
+            'agencies' => $agencies,
         ]);
     }
 

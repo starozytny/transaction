@@ -11,6 +11,11 @@
   background-color: var(--alpha);
   border: 1px solid var(--grey);
   border-radius: 8px;
+
+  .title{
+    @include fontSemibold();
+    margin-bottom: 4px;
+  }
 }
 
 .profil-card-avatar{
@@ -59,11 +64,48 @@
   text-align: center;
 }
 
-#profil-users{
+#profil-content{
   margin-top: 24px;
+}
 
+#profil-users{
   .role + .sub{
     margin-top: 6px;
+  }
+}
+
+#profil-agencies{
+  .profil-card:not(:last-child){
+    margin-bottom: 24px;
+  }
+}
+
+.agency-list{
+  margin-top: 12px;
+
+  .item{
+    @include flex(column, flex-start, flex-start);
+    margin-bottom: 8px;
+
+    .label{
+      @include fontSemibold();
+      margin-right: 8px;
+      min-width: 100px;
+
+      &:before{
+        content: "";
+        display: inline-block;
+        background-color: var(--primary);
+        width: 12px; height: 12px;
+        border-radius: 50px;
+        margin-right: 4px;
+      }
+    }
+
+    .label + div{
+      margin-left: 18px;
+      margin-top: 2px;
+    }
   }
 }
 
@@ -84,9 +126,11 @@
     }
   }
 
-  #profil-users{
+  #profil-content{
     margin-top: 0;
+  }
 
+  #profil-users{
     .toolbar{
       flex-wrap: nowrap;
     }
@@ -131,5 +175,25 @@
 
   .profil-card-footer{
     margin-top: 24px;
+  }
+
+  .agency-list{
+    .item{
+      flex-direction: row;
+      align-items: center;
+
+      .label{
+        min-width: 190px;
+
+        &:before{
+          margin-right: 8px;
+        }
+      }
+
+      .label + div{
+        margin-left: 8px;
+        margin-top: 0;
+      }
+    }
   }
 }
