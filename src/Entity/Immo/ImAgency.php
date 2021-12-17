@@ -3,6 +3,7 @@
 namespace App\Entity\Immo;
 
 use App\Entity\Society;
+use App\Entity\User;
 use App\Repository\Immo\ImAgencyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -184,9 +185,15 @@ class ImAgency
      */
     private $mediation;
 
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="agency")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -540,6 +547,36 @@ class ImAgency
     public function setMediation(?string $mediation): self
     {
         $this->mediation = $mediation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getAgency() === $this) {
+                $user->setAgency(null);
+            }
+        }
 
         return $this;
     }

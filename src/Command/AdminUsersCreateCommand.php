@@ -110,14 +110,14 @@ class AdminUsersCreateCommand extends Command
             ->setCartePro("CPI 8550 250 666 546 789")
             ->setGarantie("Galian 140 000€")
             ->setAffiliation("FNAIM")
-            ->setDescription("
+            ->setDescription(trim("
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut interdum scelerisque nisl 
                 ac rutrum. Mauris in ex nibh. Donec tincidunt diam sit amet eros fringilla vehicula e
                 t at arcu. Vestibulum iaculis arcu vitae hendrerit auctor. Morbi non libero velit. Al
                 iquam erat volutpat. Pellentesque sodales, ex a facilisis sodales, sapien dui hendrer
                 it orci, non posuere enim enim ut turpis. Aenean dolor nisl, mollis ac orci fermentum
                 , imperdiet tincidunt est. Sed varius augue erat, lobortis vehicula quam volutpat et. 
-            ")
+            "))
         ;
 
         $this->em->persist($agency);
@@ -133,6 +133,7 @@ class AdminUsersCreateCommand extends Command
                 ->setLastname(mb_strtoupper($user['lastname']))
                 ->setPassword($password)
                 ->setSociety($society)
+                ->setAgency($agency)
             ;
 
             $this->em->persist($new);
@@ -158,8 +159,9 @@ class AdminUsersCreateCommand extends Command
             $agencies = [];
             $fake = Factory::create();
             for($i=0; $i<20 ; $i++) {
+                $agenceSociety = $i == 0 ? $society : $societies[$fake->numberBetween(0,9)];
                 $new = (new ImAgency())
-                    ->setSociety($i == 0 ? $society : $societies[$fake->numberBetween(0,9)])
+                    ->setSociety($agenceSociety)
                     ->setName($fake->name)
                     ->setDirname("fake-" . $i)
                     ->setWebsite($fake->domainName)
@@ -181,24 +183,28 @@ class AdminUsersCreateCommand extends Command
                     ->setCartePro("CPI 8550 250 666 546 789")
                     ->setGarantie("Galian 140 000€")
                     ->setAffiliation("FNAIM")
-                    ->setDescription("
+                    ->setDescription(trim("
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut interdum scelerisque nisl 
                         ac rutrum. Mauris in ex nibh. Donec tincidunt diam sit amet eros fringilla vehicula e
                         t at arcu. Vestibulum iaculis arcu vitae hendrerit auctor. Morbi non libero velit. Al
                         iquam erat volutpat. Pellentesque sodales, ex a facilisis sodales, sapien dui hendrer
                         it orci, non posuere enim enim ut turpis. Aenean dolor nisl, mollis ac orci fermentum
                         , imperdiet tincidunt est. Sed varius augue erat, lobortis vehicula quam volutpat et. 
-                    ")
+                    "))
                 ;
 
                 $this->em->persist($new);
-                $agencies[] = $new;
+                $agencies[] = [
+                    'agency' => $new,
+                    'society' => $agenceSociety
+                ];
             }
             $io->text('AGENCE : Agences fake créées' );
 
             $io->title('Création de 110 utilisateurs fake');
             $fake = Factory::create();
             for($i=0; $i<110 ; $i++) {
+                $agency = $agencies[$fake->numberBetween(0,9)];
                 $new = (new User())
                     ->setUsername($fake->userName)
                     ->setEmail($fake->freeEmail)
@@ -206,7 +212,8 @@ class AdminUsersCreateCommand extends Command
                     ->setFirstname(ucfirst($fake->firstName))
                     ->setLastname(mb_strtoupper($fake->lastName))
                     ->setPassword($password)
-                    ->setSociety($societies[$fake->numberBetween(0,9)])
+                    ->setSociety($agency['society'])
+                    ->setAgency($agency['agency'])
                 ;
 
                 $this->em->persist($new);

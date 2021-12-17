@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Immo\ImAgency;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -123,6 +124,12 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * @Groups({"admin:read"})
      */
     private $society;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $agency;
 
     /**
      * @throws Exception
@@ -453,6 +460,18 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     public function setSociety(?Society $society): self
     {
         $this->society = $society;
+
+        return $this;
+    }
+
+    public function getAgency(): ?ImAgency
+    {
+        return $this->agency;
+    }
+
+    public function setAgency(?ImAgency $agency): self
+    {
+        $this->agency = $agency;
 
         return $this;
     }
