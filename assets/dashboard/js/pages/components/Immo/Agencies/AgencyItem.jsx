@@ -33,8 +33,8 @@ export class AgencyItem extends Component {
                                 <span>{elem.name}</span>
                                 <a target="_blank" href={elem.website}><span className="icon-link-2" /></a>
                             </div>
-                            <div className="sub">{elem.dirname}</div>
                             <div className="sub">{elem.society.fullname}</div>
+                            <div className="sub">{elem.dirname}</div>
                         </div>
                         <div className="col-2">
                             <div className="sub">{elem.address},</div>
