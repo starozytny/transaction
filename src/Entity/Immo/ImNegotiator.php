@@ -4,56 +4,74 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImNegotiatorRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImNegotiatorRepository::class)
  */
 class ImNegotiator
 {
+    const TRANSPORT_UNKNOWN = 0;
+    const TRANSPORT_PIED = 1;
+    const TRANSPORT_COMMUN = 2;
+    const TRANSPORT_VOITURE_PRO = 3;
+    const TRANSPORT_VOITURE_PERSO = 4;
+    const TRANSPORT_DEUX_ROUES_PRO = 5;
+    const TRANSPORT_DEUX_ROUES_PERSO = 6;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"admin:read"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"admin:read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"admin:read"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups({"admin:read"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups({"admin:read"})
      */
     private $phone2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"admin:read"})
      */
-    private $transport;
+    private $transport = 0;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"admin:read"})
      */
     private $immatriculation;
 
@@ -138,6 +156,29 @@ class ImNegotiator
         $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getFullTransportString(): ?string
+    {
+        if($this->transport == null){
+            return null;
+        }
+        return $this->getTransportString() . (($this->transport != 0 && $this->transport != 1) ? " - " . $this->immatriculation : "");
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getTransportString(): string
+    {
+        $transports = ["", "Pied", "Transport en commun", "Voiture professionnel", "Voiture personnel", "Deux roues professionnel", "Deux roues personnel"];
+
+        return $transports[$this->transport];
     }
 
     public function getTransport(): ?int

@@ -19,6 +19,15 @@ function switchFunction(type, search, v) {
                 return v;
             }
             break;
+        case "negotiators":
+            if(v.email.toLowerCase().startsWith(search)
+                || v.code.toLowerCase() === search
+                || v.firstname.toLowerCase().startsWith(search)
+                || v.lastname.toLowerCase().startsWith(search)
+            ){
+                return v;
+            }
+            break;
         default:
             break;
     }
