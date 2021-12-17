@@ -12,7 +12,7 @@ import { Checkbox, Input, Radiobox, Select, TextArea,
     SelectReactSelectize }                             from "@dashboardComponents/Tools/Fields";
 
 import Validator    from "@commonComponents/functions/validateur";
-import Sanitaze     from "@commonComponents/functions/sanitaze";
+import Helper       from "@commonComponents/functions/helper";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
 
 export class StyleguideForm extends Component {
@@ -58,7 +58,7 @@ export class StyleguideForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount = () => { Sanitaze.getPostalCodes(this); } // fill arrayPostalCode
+    componentDidMount = () => { Helper.getPostalCodes(this); } // fill arrayPostalCode
 
     handleChange = (e) => {
         const { roles } = this.state;
@@ -82,7 +82,7 @@ export class StyleguideForm extends Component {
     handleChangePostalCodeCity = (e) => {
         const { arrayPostalCode } = this.state;
 
-        Sanitaze.setCityFromZipcode(this, e, arrayPostalCode)
+        Helper.setCityFromZipcode(this, e, arrayPostalCode)
     }
 
     handleChangeDateBirthday = (e) => { this.setState({ birthday: e }) }
