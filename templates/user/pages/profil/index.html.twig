@@ -29,20 +29,9 @@
             </div>
 
             <div class="col-2">
-                <div id="profil-content">
+                <div id="profil-content" data-users="{{ users }}" data-id="{{ obj.id }}"
+                     data-is-user="{{ app.user.highRoleCode == 0 ? true : false }}">
                     {% include "dashboard/layout/components/spinner.html.twig" %}
-                </div>
-                <div class="page-default">
-                    <div class="title-col-2">
-                        <div class="tab-col-2">
-                            <div class="item active">Utilisateurs</div>
-                            <div class="item">Négociateurs</div>
-                            <div class="item">Agence</div>
-                        </div>
-                    </div>
-                </div>
-                <div id="profil-users" data-donnees="{{ users }}" data-id="{{ obj.id }}"
-                     data-is-user="{{ app.user.highRoleCode == 0 ? true : false }}" >
                 </div>
             </div>
         </div>

@@ -7,6 +7,7 @@ import React from "react";
 import { render } from "react-dom";
 import { Users }          from "@userPages/components/Profil/User/Users";
 import { UserFormulaire } from "@userPages/components/Profil/UserForm";
+import { UserContent }    from "@userPages/components/Profil/UserContent";
 
 Routing.setRoutingData(routes);
 
@@ -21,12 +22,7 @@ if(el){
 
 el = document.getElementById("profil-content");
 if(el){
-    render(<Users {...el.dataset} />, el)
-}
-
-el = document.getElementById("profil-users");
-if(el){
-    render(<Users {...el.dataset} />, el)
+    render(<UserContent {...el.dataset} />, el)
 }
 
 el = document.getElementById("user-create");

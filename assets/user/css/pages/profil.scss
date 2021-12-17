@@ -1,5 +1,11 @@
 @import "../vars/vars";
 
+.page-default{
+  & > *{
+    width: 100%;
+  }
+}
+
 .profil-card{
   padding: 12px;
   background-color: var(--alpha);
@@ -94,6 +100,10 @@
 //                     | |  |_|_____\___/ \___/   | |
 //                     |__|                      |__|
 @media (min-width:1280px) {
+  .page-default{
+    flex-direction: column;
+  }
+
   .profil-page{
     width: 100%;
 
