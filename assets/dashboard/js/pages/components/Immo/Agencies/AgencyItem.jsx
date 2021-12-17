@@ -21,11 +21,13 @@ export class AgencyItem extends Component {
             progress = 100;
         }
 
+        let logo = (elem.logo) ? "/immo/logos/" + elem.logo : `https://robohash.org/${elem.id}?size=64x64`;
+
         return <div className="item">
             <div className="item-content">
                 <div className="item-body item-body-image">
                     <div className="item-image">
-                        <img src={`/immo/logos/${elem.logo}`} alt={`Image de ${elem.name}`}/>
+                        <img src={logo} alt={`Image de ${elem.name}`}/>
                     </div>
                     <div className="infos infos-col-4">
                         <div className="col-1" onClick={() => onChangeContext("read", elem)}>

@@ -101,7 +101,7 @@ class ImAgency
     private $address;
 
     /**
-     * @ORM\Column(type="string", length=5, nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      * @Groups("admin:read")
      */
     private $zipcode;
@@ -125,7 +125,7 @@ class ImAgency
     private $lon;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({"admin:read"})
      */
     private $identifiant;

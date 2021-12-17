@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Immo\ImAgency;
 use App\Entity\Notification;
 use App\Entity\Society;
 use App\Entity\User;
@@ -41,7 +42,7 @@ class AdminUsersCreateCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [Notification::class, User::class, Society::class]);
+        $this->databaseService->resetTable($io, [Notification::class, User::class, ImAgency::class, Society::class]);
 
         $users = array(
             [
@@ -83,7 +84,44 @@ class AdminUsersCreateCommand extends Command
         ;
 
         $this->em->persist($society);
-        $io->text('SOCIETE : Logilink créé' );
+        $io->text('SOCIETE : Logilink créée' );
+
+        $io->title('Création de l\'agence Logilink');
+        $agency = (new ImAgency())
+            ->setSociety($society)
+            ->setName("Logilink")
+            ->setDirname('logilinkZip')
+            ->setWebsite('logilink.fr')
+            ->setEmail('chanbora@logilink.fr')
+            ->setEmailLocation('chanbora@logilink.fr')
+            ->setEmailVente('chanbora@logilink.fr')
+            ->setPhone('065204XXXX')
+            ->setPhoneLocation('065204XXXX')
+            ->setPhoneVente('065204XXXX')
+            ->setAddress("17 rue de la République")
+            ->setZipcode("13002")
+            ->setCity("MARSEILLE 02")
+            ->setLat("4")
+            ->setLon("4")
+            ->setIdentifiant('logilinkZip' . time())
+            ->setType("Logilink")
+            ->setSiret("307 772 269 000")
+            ->setRcs("307 772 269")
+            ->setCartePro("CPI 8550 250 666 546 789")
+            ->setGarantie("Galian 140 000€")
+            ->setAffiliation("FNAIM")
+            ->setDescription("
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut interdum scelerisque nisl 
+                ac rutrum. Mauris in ex nibh. Donec tincidunt diam sit amet eros fringilla vehicula e
+                t at arcu. Vestibulum iaculis arcu vitae hendrerit auctor. Morbi non libero velit. Al
+                iquam erat volutpat. Pellentesque sodales, ex a facilisis sodales, sapien dui hendrer
+                it orci, non posuere enim enim ut turpis. Aenean dolor nisl, mollis ac orci fermentum
+                , imperdiet tincidunt est. Sed varius augue erat, lobortis vehicula quam volutpat et. 
+            ")
+        ;
+
+        $this->em->persist($agency);
+        $io->text('AGENCE : Logilink créée' );
 
         $io->title('Création des utilisateurs');
         foreach ($users as $user) {
@@ -115,6 +153,48 @@ class AdminUsersCreateCommand extends Command
                 $societies[] = $new;
             }
             $io->text('SOCIETE : Sociétés fake créées' );
+
+            $io->title('Création de 20 agences fake');
+            $agencies = [];
+            $fake = Factory::create();
+            for($i=0; $i<20 ; $i++) {
+                $new = (new ImAgency())
+                    ->setSociety($societies[$fake->numberBetween(0,9)])
+                    ->setName($fake->name)
+                    ->setDirname("fake-" . $i)
+                    ->setWebsite($fake->domainName)
+                    ->setEmail($fake->email)
+                    ->setEmailLocation($fake->email)
+                    ->setEmailVente($fake->email)
+                    ->setPhone($fake->phoneNumber)
+                    ->setPhoneLocation($fake->phoneNumber)
+                    ->setPhoneVente($fake->phoneNumber)
+                    ->setAddress($fake->address)
+                    ->setZipcode($fake->postcode)
+                    ->setCity($fake->city)
+                    ->setLat($fake->randomFloat(5))
+                    ->setLon($fake->randomFloat(5))
+                    ->setIdentifiant("fake-" . $i . time())
+                    ->setType($fake->name)
+                    ->setSiret("307 772 269 000")
+                    ->setRcs("307 772 269")
+                    ->setCartePro("CPI 8550 250 666 546 789")
+                    ->setGarantie("Galian 140 000€")
+                    ->setAffiliation("FNAIM")
+                    ->setDescription("
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut interdum scelerisque nisl 
+                        ac rutrum. Mauris in ex nibh. Donec tincidunt diam sit amet eros fringilla vehicula e
+                        t at arcu. Vestibulum iaculis arcu vitae hendrerit auctor. Morbi non libero velit. Al
+                        iquam erat volutpat. Pellentesque sodales, ex a facilisis sodales, sapien dui hendrer
+                        it orci, non posuere enim enim ut turpis. Aenean dolor nisl, mollis ac orci fermentum
+                        , imperdiet tincidunt est. Sed varius augue erat, lobortis vehicula quam volutpat et. 
+                    ")
+                ;
+
+                $this->em->persist($new);
+                $agencies[] = $new;
+            }
+            $io->text('AGENCE : Agences fake créées' );
 
             $io->title('Création de 110 utilisateurs fake');
             $fake = Factory::create();
