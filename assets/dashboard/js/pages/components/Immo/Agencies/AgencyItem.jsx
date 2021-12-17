@@ -34,12 +34,13 @@ export class AgencyItem extends Component {
                                 <a target="_blank" href={elem.website}><span className="icon-link-2" /></a>
                             </div>
                             <div className="sub">{elem.dirname}</div>
-                            <div className="sub">{elem.email}</div>
-                            <div className="sub">{Sanitize.toFormatPhone(elem.phone)}</div>
+                            <div className="sub">{elem.society.fullname}</div>
                         </div>
                         <div className="col-2">
                             <div className="sub">{elem.address},</div>
                             <div className="sub">{elem.zipcode} {elem.city}</div>
+                            <div className="sub">{elem.email}</div>
+                            <div className="sub">{Sanitize.toFormatPhone(elem.phone)}</div>
                         </div>
                         <div className="col-3">
                             <div className="sub">{elem.totalBiens}</div>

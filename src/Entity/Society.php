@@ -146,6 +146,7 @@ class Society
     }
 
     /**
+<<<<<<< HEAD
      * @return Collection|ImAgency[]
      */
     public function getImAgencies(): Collection
@@ -173,5 +174,14 @@ class Society
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function fullname(): string
+    {
+        return "#" . $this->getCodeString() . " - " . $this->name;
     }
 }
