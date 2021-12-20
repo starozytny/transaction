@@ -24,8 +24,8 @@ export class NegotiatorsItem extends Component {
                             {elem.fullTransportString !== null ? <div className="sub">{elem.fullTransportString}</div> : ""}
                         </div>
                         <div className="col-3 actions">
+                            <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             {!isUser && <>
-                                <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                             </>}
                         </div>

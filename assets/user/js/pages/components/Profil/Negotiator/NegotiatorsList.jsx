@@ -12,7 +12,6 @@ export class NegotiatorsList extends Component {
 
         return <>
             <div>
-
                 <div className="toolbar">
                     <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter un négociateur</Button>
