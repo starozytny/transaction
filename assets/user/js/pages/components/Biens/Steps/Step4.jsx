@@ -20,7 +20,7 @@ export function Step4({ step, onChange, onChangeZipcode, onNext, errors,
                     <span>Adresse</span>
                 </Input>
                 <Radiobox items={helper.getItems("answers-simple", 0)} identifiant="hideAddress" valeur={hideAddress} errors={errors} onChange={onChange}>
-                    Masque l'adresse
+                    Masquer l'adresse
                 </Radiobox>
             </div>
             <div className="line line-3">
@@ -57,7 +57,7 @@ export function Step4({ step, onChange, onChangeZipcode, onNext, errors,
                     <span>Longitude</span>
                 </Input>
                 <Radiobox items={helper.getItems("answers-simple", 1)} identifiant="hideMap" valeur={hideMap} errors={errors} onChange={onChange}>
-                    Masque la géolocalisation
+                    Masquer la géolocalisation
                 </Radiobox>
             </div>
         </div>
