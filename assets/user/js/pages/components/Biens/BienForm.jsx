@@ -268,33 +268,37 @@ class Form extends Component {
             areaTotal, piece } = this.state;
 
         let paramsToValidate = [];
-        switch (stepClicked){
-            case 3:
-                paramsToValidate = [
-                    {type: "text",      id: 'areaTotal',      value: areaTotal},
-                    {type: "text",      id: 'piece',          value: piece}
-                ];
-                break;
-            case 2:
-                paramsToValidate = [
-                    {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
-                    {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
-                    {type: "text",      id: 'libelle',        value: libelle},
-                    {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
-                    {type: "text",      id: 'negotiator',     value: negotiator},
-                    {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
-                ];
-                break;
-            default:
-                break;
+        if(stepInitial == null){
+            switch (stepClicked){
+                case 3:
+                    paramsToValidate = [
+                        {type: "text",      id: 'areaTotal',      value: areaTotal},
+                        {type: "text",      id: 'piece',          value: piece}
+                    ];
+                    break;
+                case 2:
+                    paramsToValidate = [
+                        {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
+                        {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
+                        {type: "text",      id: 'libelle',        value: libelle},
+                        {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
+                        {type: "text",      id: 'negotiator',     value: negotiator},
+                        {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
+                    ];
+                    break;
+                default:
+                    break;
+            }
         }
 
         // validate global
-        let validate = Validateur.validateur(paramsToValidate)
+        let validate = Validateur.validateur(paramsToValidate);
+
+        Helper.toTop();
         if(!validate.code){
             Formulaire.showErrors(this, validate);
         }else{
-            this.setState({ step: stepInitial ? stepInitial : stepClicked })
+            this.setState({ step: stepClicked })
         }
     }
 

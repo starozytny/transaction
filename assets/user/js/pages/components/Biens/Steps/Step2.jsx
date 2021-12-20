@@ -146,7 +146,7 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
             </div>
         </div>
         <div className="line line-buttons">
-            <Button type="reverse">Etape précédente</Button>
+            <Button type="reverse" onClick={() => onNext(1, 2)}>Etape précédente</Button>
             <div/>
             <div className="btns-submit">
                 <Button type="warning">Enregistrer le brouillon</Button>

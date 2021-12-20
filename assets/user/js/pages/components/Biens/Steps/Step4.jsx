@@ -63,7 +63,7 @@ export function Step4({ step, onChange, onChangeZipcode, onNext, errors,
         </div>
 
         <div className="line line-buttons">
-            <Button type="reverse">Etape précédente</Button>
+            <Button type="reverse" onClick={() => onNext(3, 4)}>Etape précédente</Button>
             <div/>
             <div className="btns-submit">
                 <Button type="warning">Enregistrer le brouillon</Button>

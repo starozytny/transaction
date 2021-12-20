@@ -160,7 +160,7 @@ export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, er
         </div>
 
         <div className="line line-buttons">
-            <Button type="reverse">Etape précédente</Button>
+            <Button type="reverse" onClick={() => onNext(2, 3)}>Etape précédente</Button>
             <div/>
             <div className="btns-submit">
                 <Button type="warning">Enregistrer le brouillon</Button>
