@@ -53,9 +53,9 @@ export function AdCard ({ el, onDelete, status, statusName }) {
                         </div>
                         <div className="negociateur">
                             <div className="avatar">
-                                <img src={`https://robohash.org/${Math.random()}?size=64x64`} alt="Avatar" />
+                                <img src={`https://robohash.org/${el.negotiator.fullname}?size=64x64`} alt="Avatar" />
                             </div>
-                            <span className="tooltip">Shanbora Shhun</span>
+                            <span className="tooltip">{el.negotiator.fullname}</span>
                         </div>
                     </div>
                 </div>

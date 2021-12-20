@@ -20,6 +20,7 @@ class DataImmo extends DataConstructor
         $codeTypeBien   = $data->codeTypeBien;
         $libelle        = $data->libelle;
         $codeTypeMandat = $data->codeTypeMandat;
+        $negotiator     = $data->negotiator;
 
         // validation des données
         $paramsToValidate = [
@@ -27,11 +28,20 @@ class DataImmo extends DataConstructor
             ['type' => 'text',   'name' => 'codeTypeBien',    'value' => $codeTypeBien],
             ['type' => 'text',   'name' => 'libelle',         'value' => $libelle],
             ['type' => 'text',   'name' => 'codeTypeMandat',  'value' => $codeTypeMandat],
+            ['type' => 'text',   'name' => 'negotiator',      'value' => $negotiator],
             ['type' => 'length', 'name' => 'libelle',         'value' => $libelle, 'min' => 0, 'max' => 64]
         ];
         $noErrors = $this->validator->validateCustom($paramsToValidate);
         if ($noErrors != true) {
             return $noErrors;
+        }
+
+        $negotiator = $this->em->getRepository(ImNegotiator::class)->findOneBy(['id' => $negotiator]);
+        if(!$negotiator){
+            return [[
+                'name' => "negotiator",
+                'message' => "Ce négociateur n'existe pas. Si le problème persiste, veuillez contacter le support technique."
+            ]];
         }
 
         // Création de l'objet
@@ -41,6 +51,7 @@ class DataImmo extends DataConstructor
             ->setCodeTypeBien((int) $codeTypeBien)
             ->setLibelle(trim($libelle))
             ->setCodeTypeMandat((int) $codeTypeMandat)
+            ->setNegotiator($negotiator)
             ->setReference(substr(mb_strtoupper(uniqid().bin2hex(random_bytes(1))), 0, 10))
             ->setArea($area)
         ;

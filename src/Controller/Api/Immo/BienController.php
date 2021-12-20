@@ -77,6 +77,7 @@ class BienController extends AbstractController
         $user = $this->getUser();
         if($type == "create"){
             $obj = ($obj)
+                ->setUser($user)
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(uniqid().bin2hex(random_bytes(8)))
                 ->setAgency($user->getAgency())

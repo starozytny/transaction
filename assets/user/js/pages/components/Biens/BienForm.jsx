@@ -22,7 +22,7 @@ function setValueEmptyIfNull (value) {
     return value ? value : ""
 }
 
-export function BienFormulaire ({ type, element, negociators })
+export function BienFormulaire ({ type, element, negotiators })
 {
     let title = "Ajouter un bien";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -43,7 +43,7 @@ export function BienFormulaire ({ type, element, negociators })
         codeTypeBien={element ? element.codeTypeBien : ""}
         libelle={element ? element.libelle : ""}
         codeTypeMandat={element ? element.codeTypeMandat : ""}
-        negociateur={element ? element.negociateur : ""}
+        negotiator={element ? element.negotiator : ""}
 
         areaTotal={element ? setValueEmptyIfNull(element.area.total) : ""}
         areaHabitable={element ? setValueEmptyIfNull(element.area.habitable) : ""}
@@ -57,7 +57,7 @@ export function BienFormulaire ({ type, element, negociators })
 
         messageSuccess={msg}
 
-        negociators={negociators}
+        negotiators={negotiators}
     />
 
     return <div className="main-content">
@@ -74,7 +74,7 @@ class Form extends Component {
             codeTypeBien: props.codeTypeBien,
             libelle: props.libelle,
             codeTypeMandat: props.codeTypeMandat,
-            negociateur: props.negociateur,
+            negotiator: props.negotiator,
 
             areaTotal: props.areaTotal,
             areaHabitable: props.areaHabitable,
@@ -115,10 +115,10 @@ class Form extends Component {
         }
     }
 
-    handleChangeSelect = (e) => { this.setState({ negociateur: e !== undefined ? e.value : "" }) }
+    handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
 
     handleNext = (stepClicked, stepInitial = null) => {
-        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negociateur,
+        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
             areaTotal } = this.state;
 
         let paramsToValidate = [];
@@ -134,7 +134,7 @@ class Form extends Component {
                     {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
                     {type: "text",      id: 'libelle',        value: libelle},
                     {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
-                    {type: "text",      id: 'negociateur',    value: negociateur},
+                    {type: "text",      id: 'negotiator',     value: negotiator},
                     {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
                 ];
                 break;
@@ -192,8 +192,8 @@ class Form extends Component {
     }
 
     render () {
-        const { negociators } = this.props;
-        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negociateur,
+        const { negotiators } = this.props;
+        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
             areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining } = this.state;
 
         let steps = [
@@ -225,8 +225,8 @@ class Form extends Component {
         let typeMandatItems = helper.getItems("mandats");
 
         let negociateurs = []
-        negociators.sort(Sort.compareLastname)
-        negociators.forEach(ne => {
+        negotiators.sort(Sort.compareLastname)
+        negotiators.forEach(ne => {
             negociateurs.push({ value: ne.id, label: "#" + ne.code + " - " + ne.fullname, identifiant: "neg-" + ne.id })
         })
 
@@ -284,7 +284,8 @@ class Form extends Component {
                             </div>
 
                             <div className="line line-2">
-                                <SelectReactSelectize items={negociateurs} identifiant="negociateur" valeur={negociateur} errors={errors} onChange={this.handleChangeSelect}>
+                                <SelectReactSelectize items={negociateurs} identifiant="negotiator" valeur={negotiator} errors={errors}
+                                                      onChange={(e) => this.handleChangeSelect('negotiator', e)}>
                                     Négociateur
                                 </SelectReactSelectize>
                             </div>

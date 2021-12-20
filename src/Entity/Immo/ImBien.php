@@ -3,6 +3,7 @@
 namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
+use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -115,9 +116,21 @@ class ImBien extends DataEntity
     /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="biens", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read"})
      */
     private $agency;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="biens")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
+     */
+    private $negotiator;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="imBiens")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -339,6 +352,30 @@ class ImBien extends DataEntity
     public function setAgency(?ImAgency $agency): self
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function getNegotiator(): ?ImNegotiator
+    {
+        return $this->negotiator;
+    }
+
+    public function setNegotiator(?ImNegotiator $negotiator): self
+    {
+        $this->negotiator = $negotiator;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

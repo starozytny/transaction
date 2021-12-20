@@ -3,6 +3,8 @@
 namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImNegotiatorRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -23,7 +25,7 @@ class ImNegotiator
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     private $id;
 
@@ -81,6 +83,16 @@ class ImNegotiator
      * @Groups({"admin:read"})
      */
     private $agency;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="negotiator")
+     */
+    private $biens;
+
+    public function __construct()
+    {
+        $this->biens = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -220,10 +232,40 @@ class ImNegotiator
 
     /**
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     public function getFullname(): string
     {
         return trim($this->lastname . ' ' . $this->firstname);
+    }
+
+    /**
+     * @return Collection|ImBien[]
+     */
+    public function getBiens(): Collection
+    {
+        return $this->biens;
+    }
+
+    public function addBien(ImBien $bien): self
+    {
+        if (!$this->biens->contains($bien)) {
+            $this->biens[] = $bien;
+            $bien->setNegotiator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBien(ImBien $bien): self
+    {
+        if ($this->biens->removeElement($bien)) {
+            // set the owning side to null (unless already changed)
+            if ($bien->getNegotiator() === $this) {
+                $bien->setNegotiator(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImBien;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -133,6 +134,11 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $agency;
 
     /**
+     * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="user")
+     */
+    private $imBiens;
+
+    /**
      * @throws Exception
      */
     public function __construct()
@@ -140,6 +146,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
         $this->createdAt = $this->initNewDate();
         $this->token = $this->initToken();
         $this->notifications = new ArrayCollection();
+        $this->imBiens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -473,6 +480,36 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     public function setAgency(?ImAgency $agency): self
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImBien[]
+     */
+    public function getImBiens(): Collection
+    {
+        return $this->imBiens;
+    }
+
+    public function addImBien(ImBien $imBien): self
+    {
+        if (!$this->imBiens->contains($imBien)) {
+            $this->imBiens[] = $imBien;
+            $imBien->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImBien(ImBien $imBien): self
+    {
+        if ($this->imBiens->removeElement($imBien)) {
+            // set the owning side to null (unless already changed)
+            if ($imBien->getUser() === $this) {
+                $imBien->setUser(null);
+            }
+        }
 
         return $this;
     }
