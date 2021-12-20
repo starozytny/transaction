@@ -43,7 +43,7 @@ export function BienFormulaire ({ type, element, negotiators })
         codeTypeBien={element ? element.codeTypeBien : ""}
         libelle={element ? element.libelle : ""}
         codeTypeMandat={element ? element.codeTypeMandat : ""}
-        negotiator={element ? element.negotiator : ""}
+        negotiator={element ? element.negotiator.id : ""}
 
         areaTotal={element ? setValueEmptyIfNull(element.area.total) : ""}
         areaHabitable={element ? setValueEmptyIfNull(element.area.habitable) : ""}

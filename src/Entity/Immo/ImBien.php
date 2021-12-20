@@ -135,6 +135,7 @@ class ImBien extends DataEntity
     /**
      * @ORM\OneToOne(targetEntity=ImNumber::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
      */
     private $number;
 
