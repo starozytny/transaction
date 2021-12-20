@@ -156,6 +156,13 @@ class ImBien extends DataEntity
      */
     private $advantage;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ImDiag::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
+     */
+    private $diag;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -436,6 +443,18 @@ class ImBien extends DataEntity
     public function setAdvantage(ImAdvantage $advantage): self
     {
         $this->advantage = $advantage;
+
+        return $this;
+    }
+
+    public function getDiag(): ?ImDiag
+    {
+        return $this->diag;
+    }
+
+    public function setDiag(ImDiag $diag): self
+    {
+        $this->diag = $diag;
 
         return $this;
     }

@@ -7,12 +7,12 @@ import Routing                 from '@publicFolder/bundles/fosjsrouting/js/route
 import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Button, ButtonIcon }  from "@dashboardComponents/Tools/Button";
 import { HelpBubble }          from "@dashboardComponents/Tools/HelpBubble";
+import { DatePick }            from "@dashboardComponents/Tools/DatePicker";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Sort                    from "@commonComponents/functions/sort";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 import helper                  from "./helper";
-import {DatePick} from "@dashboardComponents/Tools/DatePicker";
 
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_biens_update";
@@ -39,6 +39,7 @@ export function BienFormulaire ({ type, element, negotiators })
     let number = element ? element.number : null;
     let feature = element ? element.feature : null;
     let advantage = element ? element.advantage : null;
+    let diag = element ? element.diag : null;
 
     let form = <Form
         title={title}
@@ -99,6 +100,18 @@ export function BienFormulaire ({ type, element, negotiators })
         situation={element ? setValueEmptyIfNull(advantage, advantage.situation) : ""}
         sousType={element ? setValueEmptyIfNull(advantage, advantage.sousType) : ""}
         sol={element ? setValueEmptyIfNull(advantage, advantage.sol) : ""}
+
+        beforeJuly={element ? setValueEmptyIfNull(diag, diag.beforeJuly) : 1}
+        isVirgin={element ? setValueEmptyIfNull(diag, diag.isVirgin) : 0}
+        isSend={element ? setValueEmptyIfNull(diag, diag.isSend) : 0}
+        createdAtDpe={element ?  (setValueEmptyIfNull(feature, feature.createdAtDpeJavascript) !== "" ? new Date(feature.createdAtDpeJavascript) : "" ) : ""}
+        referenceDpe={element ? setValueEmptyIfNull(diag, diag.referenceDpe) : ""}
+        dpeLetter={element ? setValueEmptyIfNull(diag, diag.dpeLetter) : ""}
+        gesLetter={element ? setValueEmptyIfNull(diag, diag.gesLetter) : ""}
+        dpeValue={element ? setValueEmptyIfNull(diag, diag.dpeValue) : ""}
+        gesValue={element ? setValueEmptyIfNull(diag, diag.gesValue) : ""}
+        minAnnual={element ? setValueEmptyIfNull(diag, diag.minAnnual) : ""}
+        maxAnnual={element ? setValueEmptyIfNull(diag, diag.maxAnnual) : ""}
 
         messageSuccess={msg}
 
@@ -168,9 +181,21 @@ class Form extends Component {
             sousType: props.sousType,
             sol: props.sol,
 
+            beforeJuly: props.beforeJuly,
+            isVirgin: props.isVirgin,
+            isSend: props.isSend,
+            createdAtDpe: props.createdAtDpe,
+            referenceDpe: props.referenceDpe,
+            dpeLetter: props.dpeLetter,
+            gesLetter: props.gesLetter,
+            dpeValue: props.dpeValue,
+            gesValue: props.gesValue,
+            minAnnual: props.minAnnual,
+            maxAnnual: props.maxAnnual,
+
             contentHelpBubble: "",
             errors: [],
-            step: 1
+            step: 3
         }
 
         this.helpBubble = React.createRef();
@@ -283,16 +308,18 @@ class Form extends Component {
             piece, room, bathroom, wc, balcony, parking, box,
             dispoAt, buildAt, isMeuble, isNew, floor, nbFloor, codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0,
             hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian, hasAlarme, hasLift, hasClim, hasCalme, hasInternet,
-            hasHandi, hasFibre, situation, sousType, sol } = this.state;
+            hasHandi, hasFibre, situation, sousType, sol,
+            beforeJuly, isVirgin, isSend, createdAtDpe, referenceDpe, dpeLetter, gesLetter, dpeValue, gesValue, minAnnual, maxAnnual } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
-            {id: 2, label: "Details du bien"},
-            {id: 3, label: "Localisation"},
-            {id: 4, label: "Financier"},
-            {id: 5, label: "Photos"},
-            {id: 6, label: "Propriétaire"},
-            {id: 7, label: "Publication"},
+            {id: 2, label: "Details du bien (1/2)"},
+            {id: 3, label: "Details du bien (2/2)"},
+            {id: 4, label: "Localisation"},
+            {id: 5, label: "Financier"},
+            {id: 6, label: "Photos"},
+            {id: 7, label: "Propriétaire"},
+            {id: 8, label: "Publication"},
         ];
 
         let stepTitle = "Etape 1 : Informations globales";
@@ -396,7 +423,7 @@ class Form extends Component {
                             </div>
                         </div>
 
-                        <div className={"step-section" + (step === 1 ? " active" : "")}>
+                        <div className={"step-section" + (step === 2 ? " active" : "")}>
                             <div className="line special-line">
                                 <div className="form-group">
                                     <label>Surfaces (m²)</label>
@@ -522,8 +549,19 @@ class Form extends Component {
                                         Exposition
                                     </Radiobox>
                                 </div>
-                            </div>
 
+                                <div className="line line-buttons">
+                                    <Button type="reverse">Etape précédente</Button>
+                                    <div/>
+                                    <div className="btns-submit">
+                                        <Button type="warning">Enregistrer le brouillon</Button>
+                                        <Button onClick={() => this.handleNext( 3)}>Etape suivante</Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={"step-section" + (step === 3 ? " active" : "")}>
                             <div className="line special-line">
                                 <div className="form-group">
                                     <label>Les avantages</label>
@@ -604,12 +642,62 @@ class Form extends Component {
                                 </div>
                             </div>
 
+                            <div className={"step-section" + (step === 3 ? " active" : "")}>
+                                <div className="line special-line">
+                                    <div className="form-group">
+                                        <label>Diagnostique</label>
+                                    </div>
+
+                                    <div className="line line-3">
+                                        <Radiobox items={helper.getItems("answers", 17)} identifiant="beforeJuly" valeur={beforeJuly} errors={errors} onChange={this.handleChange}>
+                                            DPE avant le 1 juil. 2021
+                                        </Radiobox>
+                                        {parseInt(beforeJuly) !== 1 && <>
+                                            <Radiobox items={helper.getItems("answers", 18)} identifiant="isVirgin" valeur={isVirgin} errors={errors} onChange={this.handleChange}>
+                                                DPE vierge
+                                            </Radiobox>
+                                            <Radiobox items={helper.getItems("answers", 19)} identifiant="isSend" valeur={isSend} errors={errors} onChange={this.handleChange}>
+                                                DPE non soumis
+                                            </Radiobox>
+                                        </>}
+                                    </div>
+
+                                    <div className="line line-2">
+                                        <DatePick identifiant="createdAtDpe" valeur={createdAtDpe} errors={errors}
+                                                  onChange={(e) => this.handleChangeDate("createdAtDpe", e)}>
+                                            Date de réalisation du DPE
+                                        </DatePick>
+                                        <Input type="number" min={1200} identifiant="referenceDpe" valeur={referenceDpe} errors={errors} onChange={this.handleChange}>
+                                            <span>Année de référence conso DPE</span>
+                                        </Input>
+                                    </div>
+
+                                    <div className="line line-2">
+                                        <Input type="number" step="any" min={0} identifiant="dpeValue" valeur={dpeValue} errors={errors} onChange={this.handleChange}>
+                                            <span>en KWh/m² an</span>
+                                        </Input>
+                                        <Input type="number" step="any" min={0} identifiant="dpeLetter" valeur={gesValue} errors={errors} onChange={this.handleChange}>
+                                            <span>en Kg/co² an</span>
+                                        </Input>
+                                    </div>
+
+                                    <div className="line line-2">
+                                        <Input type="number" step="any" min={0} identifiant="minAnnual" valeur={minAnnual} errors={errors} onChange={this.handleChange}>
+                                            <span>Estimation des coûts annuels minimun</span>
+                                        </Input>
+                                        <Input type="number" step="any" min={0} identifiant="maxAnnuel" valeur={maxAnnual} errors={errors} onChange={this.handleChange}>
+                                            <span>Estimation des coûts annuels maximum</span>
+                                        </Input>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="line line-buttons">
                                 <Button type="reverse">Etape précédente</Button>
                                 <div/>
                                 <div className="btns-submit">
                                     <Button type="warning">Enregistrer le brouillon</Button>
-                                    <Button onClick={() => this.handleNext( 3)}>Etape suivante</Button>
+                                    <Button onClick={() => this.handleNext( 4)}>Etape suivante</Button>
                                 </div>
                             </div>
 
