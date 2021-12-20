@@ -5,7 +5,7 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min';
 
 import React from "react";
 import { render } from "react-dom";
-import { UserFormulaire } from "@userPages/components/Profil/UserForm";
+import { UserFormulaire } from "@userPages/components/Profil/User/UserForm";
 import { UserContent }    from "@userPages/components/Profil/UserContent";
 
 Routing.setRoutingData(routes);
