@@ -144,14 +144,13 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                     Exposition
                 </Radiobox>
             </div>
-
-            <div className="line line-buttons">
-                <Button type="reverse">Etape précédente</Button>
-                <div/>
-                <div className="btns-submit">
-                    <Button type="warning">Enregistrer le brouillon</Button>
-                    <Button onClick={() => onNext(3)}>Etape suivante</Button>
-                </div>
+        </div>
+        <div className="line line-buttons">
+            <Button type="reverse">Etape précédente</Button>
+            <div/>
+            <div className="btns-submit">
+                <Button type="warning">Enregistrer le brouillon</Button>
+                <Button onClick={() => onNext(3)}>Etape suivante</Button>
             </div>
         </div>
     </div>

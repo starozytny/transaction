@@ -13,11 +13,15 @@ import Formulaire              from "@dashboardComponents/functions/Formulaire";
 import { Step1 }               from "@userPages/components/Biens/Steps/Step1";
 import { Step2 }               from "@userPages/components/Biens/Steps/Step2";
 import { Step3 }               from "@userPages/components/Biens/Steps/Step3";
+import { Step4 }               from "@userPages/components/Biens/Steps/Step4";
+import Helper from "@commonComponents/functions/helper";
 
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_biens_update";
 
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
+
+let arrayZipcodeSave = [];
 
 function setValueEmptyIfNull (parentValue, value) {
     return parentValue ? value : ""
@@ -40,6 +44,7 @@ export function BienFormulaire ({ type, element, negotiators })
     let feature = element ? element.feature : null;
     let advantage = element ? element.advantage : null;
     let diag = element ? element.diag : null;
+    let localisation = element ? element.localisation : null;
 
     let form = <Form
         title={title}
@@ -112,6 +117,17 @@ export function BienFormulaire ({ type, element, negotiators })
         gesValue={element ? setValueEmptyIfNull(diag, diag.gesValue) : ""}
         minAnnual={element ? setValueEmptyIfNull(diag, diag.minAnnual) : ""}
         maxAnnual={element ? setValueEmptyIfNull(diag, diag.maxAnnual) : ""}
+
+        address={element ? setValueEmptyIfNull(localisation, localisation.address) : ""}
+        hideAddress={element ? setValueEmptyIfNull(localisation, localisation.hideAddress) : 0}
+        zipcode={element ? setValueEmptyIfNull(localisation, localisation.zipcode) : ""}
+        city={element ? setValueEmptyIfNull(localisation, localisation.city) : ""}
+        country={element ? setValueEmptyIfNull(localisation, localisation.country) : ""}
+        departement={element ? setValueEmptyIfNull(localisation, localisation.departement) : ""}
+        quartier={element ? setValueEmptyIfNull(localisation, localisation.quartier) : ""}
+        lat={element ? setValueEmptyIfNull(localisation, localisation.lat) : ""}
+        lon={element ? setValueEmptyIfNull(localisation, localisation.lon) : ""}
+        hideMap={element ? setValueEmptyIfNull(localisation, localisation.hideMap) : 0}
 
         messageSuccess={msg}
 
@@ -193,9 +209,21 @@ class Form extends Component {
             minAnnual: props.minAnnual,
             maxAnnual: props.maxAnnual,
 
+            address: props.address,
+            hideAddress: props.hideAddress,
+            zipcode: props.zipcode,
+            city: props.city,
+            country: props.country,
+            departement: props.departement,
+            quartier: props.quartier,
+            lat: props.lat,
+            lon: props.lon,
+            hideMap: props.hideMap,
+
             contentHelpBubble: "",
+            arrayPostalCode: [],
             errors: [],
-            step: 3
+            step: 4
         }
 
         this.helpBubble = React.createRef();
@@ -207,6 +235,8 @@ class Form extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleOpenHelp = this.handleOpenHelp.bind(this);
     }
+
+    componentDidMount = () => { Helper.getPostalCodes(this); }
 
     handleChange = (e) => {
         const { libelle } = this.state;
@@ -226,6 +256,12 @@ class Form extends Component {
     handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
 
     handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
+
+    handleChangeZipcode = (e) => {
+        const { arrayPostalCode } = this.state;
+
+        Helper.setCityFromZipcode(this, e, arrayPostalCode ? arrayPostalCode : arrayZipcodeSave)
+    }
 
     handleNext = (stepClicked, stepInitial = null) => {
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
@@ -272,6 +308,9 @@ class Form extends Component {
 
         let formData = new FormData();
         formData.append("data", JSON.stringify(this.state));
+
+        arrayZipcodeSave = this.state.arrayPostalCode;
+        delete this.state.arrayPostalCode;
 
         axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
             .then(function (response) {
@@ -356,13 +395,17 @@ class Form extends Component {
 
                         <Step1 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
-                               negotiators={negotiators}/>
+                               negotiators={negotiators} />
 
                         <Step2 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
-                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}/>
+                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
                         <Step3 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
-                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}/>
+                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
+
+                        <Step4 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
+                               onChangeZipcode={this.handleChangeZipcode} />
 
                     </form>
                 </section>

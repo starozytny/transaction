@@ -8,6 +8,7 @@ use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
+use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Society;
@@ -28,7 +29,7 @@ class DataImmo extends DataConstructor
      * @throws Exception
      */
     public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature,
-                                ImAdvantage $advantage, ImDiag $diag)
+                                ImAdvantage $advantage, ImDiag $diag, ImLocalisation $localisation)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -72,6 +73,7 @@ class DataImmo extends DataConstructor
             ->setFeature($feature)
             ->setAdvantage($advantage)
             ->setDiag($diag)
+            ->setLocalisation($localisation)
         ;
     }
 
@@ -187,6 +189,22 @@ class DataImmo extends DataConstructor
             ->setGesValue($this->setToNullFloat($data->gesValue))
             ->setMinAnnual($this->setToNullFloat($data->minAnnual))
             ->setMaxAnnual($this->setToNullFloat($data->maxAnnual))
+        ;
+    }
+
+    public function setDataLocalisation(ImLocalisation $obj, $data): ImLocalisation
+    {
+        return ($obj)
+            ->setHideAddress($this->setToNullInteger($data->hideAddress))
+            ->setHideMap($this->setToNullInteger($data->hideMap))
+            ->setAddress(trim($data->address))
+            ->setZipcode(trim($data->zipcode))
+            ->setCity(trim($data->city))
+            ->setCountry(trim($data->country))
+            ->setDepartement(trim($data->departement))
+            ->setQuartier(trim($data->quartier))
+            ->setLat(trim($data->lat))
+            ->setLon(trim($data->lon))
         ;
     }
 

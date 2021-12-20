@@ -163,6 +163,13 @@ class ImBien extends DataEntity
      */
     private $diag;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ImLocalisation::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
+     */
+    private $localisation;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -455,6 +462,18 @@ class ImBien extends DataEntity
     public function setDiag(ImDiag $diag): self
     {
         $this->diag = $diag;
+
+        return $this;
+    }
+
+    public function getLocalisation(): ?ImLocalisation
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(ImLocalisation $localisation): self
+    {
+        $this->localisation = $localisation;
 
         return $this;
     }

@@ -7,6 +7,7 @@ use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
+use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNumber;
 use App\Entity\User;
 use App\Service\ApiResponse;
@@ -40,6 +41,9 @@ class BienController extends AbstractController
     public function setProperty($em, $type, $obj, $data, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
     {
         switch ($type){
+            case "localisation":
+                $obj = $dataEntity->setDataLocalisation($obj, $data);
+                break;
             case "diag":
                 $obj = $dataEntity->setDataDiag($obj, $data);
                 break;
@@ -115,7 +119,13 @@ class BienController extends AbstractController
             return $diag;
         }
 
-        $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage, $diag);
+        $localisation = $this->setProperty($em, "localisation", $type == "create" ? new ImLocalisation() : $obj->getLocalisation(),
+            $data, $apiResponse, $validator, $dataEntity);
+        if(!$localisation instanceof ImLocalisation){
+            return $localisation;
+        }
+
+        $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage, $diag, $localisation);
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }

@@ -65,6 +65,11 @@ function getItems (type, prefix) {
                 { value: 0, label: 'Non',               identifiant: 'answer-' + prefix + '-non' },
                 { value: 99, label: 'Je ne sais pas',   identifiant: 'answer-' + prefix + '-ne-sais-pas' },
             ]
+        case "answers-simple":
+            return [
+                { value: 1, label: 'Oui',               identifiant: 'answer-' + prefix + '-oui' },
+                { value: 0, label: 'Non',               identifiant: 'answer-' + prefix + '-non' },
+            ]
         case "mandats":
             return [
                 { value: 0, label: 'Simple',            identifiant: 'simple' },
