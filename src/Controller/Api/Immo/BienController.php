@@ -53,7 +53,8 @@ class BienController extends AbstractController
     /**
      * @throws Exception
      */
-    public function submitForm($type, ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+    public function submitForm($type, ImBien $obj, Request $request, ApiResponse $apiResponse,
+                               ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
@@ -78,6 +79,7 @@ class BienController extends AbstractController
             $obj = ($obj)
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(uniqid().bin2hex(random_bytes(8)))
+                ->setAgency($user->getAgency())
             ;
         }else{
             $obj = ($obj)
