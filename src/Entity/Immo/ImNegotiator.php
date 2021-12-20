@@ -217,4 +217,13 @@ class ImNegotiator
 
         return $this;
     }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getFullname(): string
+    {
+        return trim($this->lastname . ' ' . $this->firstname);
+    }
 }

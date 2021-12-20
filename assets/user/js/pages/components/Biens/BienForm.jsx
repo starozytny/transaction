@@ -4,11 +4,12 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import {Input, Radiobox, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
+import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Button, ButtonIcon }  from "@dashboardComponents/Tools/Button";
 import { HelpBubble }          from "@dashboardComponents/Tools/HelpBubble";
 
 import Validateur              from "@commonComponents/functions/validateur";
+import Sort                    from "@commonComponents/functions/sort";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 import helper                  from "./helper";
 
@@ -21,7 +22,7 @@ function setValueEmptyIfNull (value) {
     return value ? value : ""
 }
 
-export function BienFormulaire ({ type, element })
+export function BienFormulaire ({ type, element, negociators })
 {
     let title = "Ajouter un bien";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -55,6 +56,8 @@ export function BienFormulaire ({ type, element })
         areaDining={element ? setValueEmptyIfNull(element.area.dining) : ""}
 
         messageSuccess={msg}
+
+        negociators={negociators}
     />
 
     return <div className="main-content">
@@ -189,6 +192,7 @@ class Form extends Component {
     }
 
     render () {
+        const { negociators } = this.props;
         const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negociateur,
             areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining } = this.state;
 
@@ -220,11 +224,11 @@ class Form extends Component {
         let typeBienItems = helper.getItems("biens");
         let typeMandatItems = helper.getItems("mandats");
 
-        let negociateurs = [
-            { value: 0, label: 'Orange', identifiant: 'orange' },
-            { value: 1, label: 'Pomme',  identifiant: 'pomme' },
-            { value: 2, label: 'Mangue', identifiant: 'mangue' },
-        ]
+        let negociateurs = []
+        negociators.sort(Sort.compareLastname)
+        negociators.forEach(ne => {
+            negociateurs.push({ value: ne.id, label: "#" + ne.code + " - " + ne.fullname, identifiant: "neg-" + ne.id })
+        })
 
         return <div className="page-default">
             <div className="page-col-1">

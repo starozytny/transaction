@@ -18,10 +18,12 @@ if(el){
 
 el = document.getElementById("create-bien");
 if(el){
-    render(<BienFormulaire type="create" />, el)
+    render(<BienFormulaire type="create"
+                           negociators={JSON.parse(el.dataset.negotiators)} />, el)
 }
 
 el = document.getElementById("update-bien");
 if(el){
-    render(<BienFormulaire element={JSON.parse(el.dataset.element)} type="update" />, el)
+    render(<BienFormulaire type="update" element={JSON.parse(el.dataset.element)}
+                           negociators={JSON.parse(el.dataset.negotiators)} />, el)
 }

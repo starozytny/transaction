@@ -53,11 +53,30 @@ class UserController extends AbstractController
     }
 
     /**
+     * Common return createBien and updateBien
+     */
+    private function formBien(SerializerInterface $serializer, $route, $element = null): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render($route, [
+            'element' => $element,
+            'negotiators' => $negotiators
+        ]);
+    }
+
+    /**
      * @Route("/ajouter-un-bien", options={"expose"=true}, name="biens_create")
      */
-    public function createBien(): Response
+    public function createBien(SerializerInterface $serializer): Response
     {
-        return $this->render('user/pages/biens/create.html.twig');
+        return $this->formBien($serializer, 'user/pages/biens/create.html.twig');
     }
 
     /**
@@ -68,7 +87,7 @@ class UserController extends AbstractController
         $element = $repository->findOneBy(["slug" => $slug]);
         $element = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
 
-        return $this->render('user/pages/biens/update.html.twig', ['element' => $element]);
+        return $this->formBien($serializer, 'user/pages/biens/update.html.twig', $element);
     }
 
     /**
