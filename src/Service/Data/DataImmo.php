@@ -72,15 +72,15 @@ class DataImmo extends DataConstructor
 
         // Création de l'objet
         return ($obj)
-            ->setTotal($areaTotal)
-            ->setHabitable($areaHabitable)
-            ->setLand($areaLand)
-            ->setGarden($areaGarden)
-            ->setTerrace($areaTerrace)
-            ->setCave($areaCave)
-            ->setBathroom($areaBathroom)
-            ->setLiving($areaLiving)
-            ->setDining($areaDining)
+            ->setTotal((float) $areaTotal)
+            ->setHabitable((float) $areaHabitable)
+            ->setLand((float) $areaLand)
+            ->setGarden((float) $areaGarden)
+            ->setTerrace((float) $areaTerrace)
+            ->setCave((float) $areaCave)
+            ->setBathroom((float) $areaBathroom)
+            ->setLiving((float) $areaLiving)
+            ->setDining((float) $areaDining)
         ;
     }
 
