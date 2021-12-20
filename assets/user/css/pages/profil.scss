@@ -136,8 +136,7 @@
 
   #profil-negotiators{
     .toolbar .filter-search{
-      margin-left: 0;
-      width: 100%;
+      width: calc(100% - 198px - 48px);
     }
   }
 }

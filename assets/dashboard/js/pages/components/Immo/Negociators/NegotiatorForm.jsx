@@ -30,8 +30,6 @@ export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, ele
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
 
-    console.log(element)
-
     let form = <NegotiatorForm
         context={type}
         url={url}
@@ -109,6 +107,7 @@ export class NegotiatorForm extends Component {
             // validate global
             let validate = Validateur.validateur(paramsToValidate)
             if(!validate.code){
+                console.log(validate)
                 Formulaire.showErrors(this, validate);
             }else{
                 Formulaire.loader(true);

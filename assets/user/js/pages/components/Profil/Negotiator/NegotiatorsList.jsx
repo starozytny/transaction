@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 
-import { Search }                   from "@dashboardComponents/Layout/Search";
-import { Alert }                    from "@dashboardComponents/Tools/Alert";
+import { Search }            from "@dashboardComponents/Layout/Search";
+import { Alert }             from "@dashboardComponents/Tools/Alert";
+import { Button }            from "@dashboardComponents/Tools/Button";
 
 import { NegotiatorsItem }   from "./NegotiatorsItem";
 
 export class NegotiatorsList extends Component {
     render () {
-        const { data, onSearch } = this.props;
+        const { data, onSearch, onChangeContext } = this.props;
 
         return <>
             <div>
+
                 <div className="toolbar">
+                    <div className="item create">
+                        <Button onClick={() => onChangeContext("create")}>Ajouter un négociateur</Button>
+                    </div>
                     <div className="item filter-search">
                         <Search onSearch={onSearch} placeholder="Recherche par code, nom, prénom ou email.."/>
                     </div>
