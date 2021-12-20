@@ -31,7 +31,7 @@ class ImNegotiator
 
     /**
      * @ORM\Column(type="string", length=20)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     private $code;
 
@@ -49,19 +49,19 @@ class ImNegotiator
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     private $phone2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     private $email;
 
