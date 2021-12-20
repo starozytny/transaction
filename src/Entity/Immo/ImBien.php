@@ -132,6 +132,12 @@ class ImBien extends DataEntity
      */
     private $user;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ImNumber::class, fetch="EAGER", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $number;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -376,6 +382,18 @@ class ImBien extends DataEntity
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getNumber(): ?ImNumber
+    {
+        return $this->number;
+    }
+
+    public function setNumber(ImNumber $number): self
+    {
+        $this->number = $number;
 
         return $this;
     }

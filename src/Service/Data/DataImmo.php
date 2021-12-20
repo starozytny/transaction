@@ -6,15 +6,25 @@ use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
+use App\Entity\Immo\ImNumber;
 use App\Entity\Society;
 use Exception;
 
 class DataImmo extends DataConstructor
 {
+    private function setToNullFloat($value): ?float
+    {
+        return $value != "" ? (float) $value : null;
+    }
+    private function setToNullInteger($value): ?int
+    {
+        return $value != "" ? (int) $value : null;
+    }
+
     /**
      * @throws Exception
      */
-    public function setDataBien(ImBien $obj, $data, ImArea $area)
+    public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -54,6 +64,7 @@ class DataImmo extends DataConstructor
             ->setNegotiator($negotiator)
             ->setReference(substr(mb_strtoupper(uniqid().bin2hex(random_bytes(1))), 0, 10))
             ->setArea($area)
+            ->setNumber($number)
         ;
     }
 
@@ -62,19 +73,8 @@ class DataImmo extends DataConstructor
      */
     public function setDataArea(ImArea $obj, $data)
     {
-        $areaTotal      = $data->areaTotal;
-        $areaHabitable  = $data->areaHabitable != "" ?: null;
-        $areaLand       = $data->areaLand != "" ?: null;
-        $areaGarden     = $data->areaGarden != "" ?: null;
-        $areaTerrace    = $data->areaTerrace != "" ?: null;
-        $areaCave       = $data->areaCave != "" ?: null;
-        $areaBathroom   = $data->areaBathroom != "" ?: null;
-        $areaLiving     = $data->areaLiving != "" ?: null;
-        $areaDining     = $data->areaDining != "" ?: null;
-
-        // validation des données
         $paramsToValidate = [
-            ['type' => 'text',   'name' => 'areaTotal',       'value' => $areaTotal],
+            ['type' => 'text', 'name' => 'areaTotal', 'value' => $data->areaTotal],
         ];
         $noErrors = $this->validator->validateCustom($paramsToValidate);
         if ($noErrors != true) {
@@ -83,15 +83,40 @@ class DataImmo extends DataConstructor
 
         // Création de l'objet
         return ($obj)
-            ->setTotal((float) $areaTotal)
-            ->setHabitable((float) $areaHabitable)
-            ->setLand((float) $areaLand)
-            ->setGarden((float) $areaGarden)
-            ->setTerrace((float) $areaTerrace)
-            ->setCave((float) $areaCave)
-            ->setBathroom((float) $areaBathroom)
-            ->setLiving((float) $areaLiving)
-            ->setDining((float) $areaDining)
+            ->setTotal((float) $data->areaTotal)
+            ->setHabitable($this->setToNullFloat($data->areaHabitable))
+            ->setLand($this->setToNullFloat($data->areaLand))
+            ->setGarden($this->setToNullFloat($data->areaGarden))
+            ->setTerrace($this->setToNullFloat($data->areaTerrace))
+            ->setCave($this->setToNullFloat($data->areaCave))
+            ->setBathroom($this->setToNullFloat($data->areaBathroom))
+            ->setLiving($this->setToNullFloat($data->areaLiving))
+            ->setDining($this->setToNullFloat($data->areaDining))
+        ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataNumber(ImNumber $obj, $data)
+    {
+        $paramsToValidate = [
+            ['type' => 'text', 'name' => 'piece',  'value' => $data->piece],
+        ];
+        $noErrors = $this->validator->validateCustom($paramsToValidate);
+        if ($noErrors != true) {
+            return $noErrors;
+        }
+
+        // Création de l'objet
+        return ($obj)
+            ->setPiece((int) $data->piece)
+            ->setRoom($this->setToNullInteger($data->room))
+            ->setBathroom($this->setToNullInteger($data->bathroom))
+            ->setWc($this->setToNullInteger($data->wc))
+            ->setBalcony($this->setToNullInteger($data->balcony))
+            ->setParking($this->setToNullInteger($data->parking))
+            ->setBox($this->setToNullInteger($data->box))
         ;
     }
 

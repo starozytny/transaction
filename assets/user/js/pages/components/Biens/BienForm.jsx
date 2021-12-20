@@ -55,14 +55,20 @@ export function BienFormulaire ({ type, element, negotiators })
         areaLiving={element ? setValueEmptyIfNull(element.area.living) : ""}
         areaDining={element ? setValueEmptyIfNull(element.area.dining) : ""}
 
+        piece={element ? setValueEmptyIfNull(element.number.piece) : ""}
+        room={element ? setValueEmptyIfNull(element.number.room) : ""}
+        bathroom={element ? setValueEmptyIfNull(element.number.bathroom) : ""}
+        wc={element ? setValueEmptyIfNull(element.number.wc) : ""}
+        balcony={element ? setValueEmptyIfNull(element.number.balcony) : ""}
+        parking={element ? setValueEmptyIfNull(element.number.parking) : ""}
+        box={element ? setValueEmptyIfNull(element.number.box) : ""}
+
         messageSuccess={msg}
 
         negotiators={negotiators}
     />
 
-    return <div className="main-content">
-        {form}
-    </div>
+    return <div className="main-content">{form}</div>
 }
 
 class Form extends Component {
@@ -85,6 +91,14 @@ class Form extends Component {
             areaBathroom: props.areaBathroom,
             areaLiving: props.areaLiving,
             areaDining: props.areaDining,
+
+            piece: props.piece,
+            room: props.room,
+            bathroom: props.bathroom,
+            wc: props.wc,
+            balcony: props.balcony,
+            parking: props.parking,
+            box: props.box,
 
             contentHelpBubble: "",
             errors: [],
@@ -119,13 +133,14 @@ class Form extends Component {
 
     handleNext = (stepClicked, stepInitial = null) => {
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
-            areaTotal } = this.state;
+            areaTotal, piece } = this.state;
 
         let paramsToValidate = [];
         switch (stepClicked){
             case 3:
                 paramsToValidate = [
-                    {type: "text",      id: 'areaTotal',      value: areaTotal}
+                    {type: "text",      id: 'areaTotal',      value: areaTotal},
+                    {type: "text",      id: 'piece',          value: piece}
                 ];
                 break;
             case 2:
@@ -145,8 +160,7 @@ class Form extends Component {
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
         if(!validate.code){
-            toastr.warning("Veuillez vérifier les informations transmises.");
-            this.setState({ errors: validate.errors });
+            Formulaire.showErrors(this, validate);
         }else{
             this.setState({ step: stepInitial ? stepInitial : stepClicked })
         }
@@ -194,7 +208,8 @@ class Form extends Component {
     render () {
         const { negotiators } = this.props;
         const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
-            areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining } = this.state;
+            areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
+            piece, room, bathroom, wc, balcony, parking, box } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -332,6 +347,35 @@ class Form extends Component {
                                     </Input>
                                     <Input type="number" step="any" min={0} identifiant="areaDining" valeur={areaDining} errors={errors} onChange={this.handleChange}>
                                         <span>Salle à manger</span>
+                                    </Input>
+                                </div>
+                            </div>
+
+                            <div className="line special-line">
+                                <div className="form-group">
+                                    <label>Nombre de ...</label>
+                                </div>
+                                <div className="line line-infinite">
+                                    <Input type="number" min={0} identifiant="piece" valeur={piece} errors={errors} onChange={this.handleChange}>
+                                        <span>Pièces</span>
+                                    </Input>
+                                    <Input type="number" min={0} identifiant="room" valeur={room} errors={errors} onChange={this.handleChange}>
+                                        <span>Chambres</span>
+                                    </Input>
+                                    <Input type="number" min={0} identifiant="bathroom" valeur={bathroom} errors={errors} onChange={this.handleChange}>
+                                        <span>Salles de bain</span>
+                                    </Input>
+                                    <Input type="number" min={0} identifiant="wc" valeur={wc} errors={errors} onChange={this.handleChange}>
+                                        <span>WC</span>
+                                    </Input>
+                                    <Input type="number" min={0} identifiant="balcony" valeur={balcony} errors={errors} onChange={this.handleChange}>
+                                        <span>Blacons</span>
+                                    </Input>
+                                    <Input type="number" min={0} identifiant="parking" valeur={parking} errors={errors} onChange={this.handleChange}>
+                                        <span>Parkings</span>
+                                    </Input>
+                                    <Input type="number" min={0} identifiant="box" valeur={box} errors={errors} onChange={this.handleChange}>
+                                        <span>Boxes</span>
                                     </Input>
                                 </div>
                             </div>

@@ -4,6 +4,7 @@ namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImNumber;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
@@ -33,9 +34,17 @@ class BienController extends AbstractController
     /**
      * @throws Exception
      */
-    public function setProperty($em, $obj, $data, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
+    public function setProperty($em, $type, $obj, $data, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
     {
-        $obj = $dataEntity->setDataArea($obj, $data);
+        switch ($type){
+            case "number":
+                $obj = $dataEntity->setDataNumber($obj, $data);
+                break;
+            default:
+                $obj = $dataEntity->setDataArea($obj, $data);
+                break;
+        }
+
         if(!is_object($obj)){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }
@@ -63,12 +72,20 @@ class BienController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $area = $this->setProperty($em, $type == "create" ? new ImArea() : $obj->getArea(), $data, $apiResponse, $validator, $dataEntity);
+        $area = $this->setProperty($em, "area", $type == "create" ? new ImArea() : $obj->getArea(),
+                                    $data, $apiResponse, $validator, $dataEntity
+        );
         if(!$area instanceof ImArea){
             return $area;
         }
 
-        $obj = $dataEntity->setDataBien($obj, $data, $area);
+        $number = $this->setProperty($em, "number", $type == "create" ? new ImNumber() : $obj->getNumber(),
+                                    $data, $apiResponse, $validator, $dataEntity);
+        if(!$number instanceof ImNumber){
+            return $number;
+        }
+
+        $obj = $dataEntity->setDataBien($obj, $data, $area, $number);
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }
