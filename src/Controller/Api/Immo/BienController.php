@@ -4,6 +4,7 @@ namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImNumber;
 use App\Entity\User;
 use App\Service\ApiResponse;
@@ -37,6 +38,9 @@ class BienController extends AbstractController
     public function setProperty($em, $type, $obj, $data, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
     {
         switch ($type){
+            case "feature":
+                $obj = $dataEntity->setDataFeature($obj, $data);
+                break;
             case "number":
                 $obj = $dataEntity->setDataNumber($obj, $data);
                 break;
@@ -85,7 +89,13 @@ class BienController extends AbstractController
             return $number;
         }
 
-        $obj = $dataEntity->setDataBien($obj, $data, $area, $number);
+        $feature = $this->setProperty($em, "feature", $type == "create" ? new ImFeature() : $obj->getFeature(),
+                                    $data, $apiResponse, $validator, $dataEntity);
+        if(!$feature instanceof ImFeature){
+            return $feature;
+        }
+
+        $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature);
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }

@@ -28,4 +28,9 @@
       }
     }
   }
+
+  .react-selectize,
+  .checkbox-item.checked > label, .radiobox-item.checked > label{
+    color: var(--txt);
+  }
 }

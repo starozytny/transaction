@@ -47,12 +47,13 @@ function getItems (type, prefix) {
                 { value: 5, label: 'Nord-ouest',    identifiant: 'nord-ouest' },
                 { value: 6, label: 'Sud-est',       identifiant: 'sud-est' },
                 { value: 7, label: 'Sud-ouest',     identifiant: 'sud-ouest' },
+                { value: 99, label: 'Je ne sais pas', identifiant: 'expo-ne-sais-pas' },
             ]
         case "answers":
             return [
                 { value: 1, label: 'Oui',               identifiant: prefix + '-oui' },
                 { value: 0, label: 'Non',               identifiant: prefix + '-non' },
-                { value: 2, label: 'Je ne sais pas',    identifiant: prefix + '-ne-sais-pas' },
+                { value: 99, label: 'Je ne sais pas',    identifiant: prefix + '-ne-sais-pas' },
             ]
         case "mandats":
             return [

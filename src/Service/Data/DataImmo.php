@@ -5,6 +5,7 @@ namespace App\Service\Data;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Society;
@@ -24,7 +25,7 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number)
+    public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -65,6 +66,7 @@ class DataImmo extends DataConstructor
             ->setReference(substr(mb_strtoupper(uniqid().bin2hex(random_bytes(1))), 0, 10))
             ->setArea($area)
             ->setNumber($number)
+            ->setFeature($feature)
         ;
     }
 
@@ -117,6 +119,26 @@ class DataImmo extends DataConstructor
             ->setBalcony($this->setToNullInteger($data->balcony))
             ->setParking($this->setToNullInteger($data->parking))
             ->setBox($this->setToNullInteger($data->box))
+        ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataFeature(ImFeature $obj, $data): ImFeature
+    {
+        return ($obj)
+            ->setIsMeuble($this->setToNullInteger($data->isMeuble))
+            ->setIsNew($this->setToNullInteger($data->isNew))
+            ->setDispoAt($this->createDate($data->dispoAt))
+            ->setBuildAt($this->setToNullInteger($data->buildAt))
+            ->setFloor(trim($data->floor))
+            ->setNbFloor($this->setToNullInteger($data->nbFloor))
+            ->setCodeHeater($this->setToNullInteger($data->codeHeater))
+            ->setCodeHeater0($this->setToNullInteger($data->codeHeater0))
+            ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
+            ->setIsWcSeparate($this->setToNullInteger($data->isWcSeparate))
+            ->setExposition($this->setToNullInteger($data->exposition))
         ;
     }
 

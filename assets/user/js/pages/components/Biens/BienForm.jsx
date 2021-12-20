@@ -70,16 +70,16 @@ export function BienFormulaire ({ type, element, negotiators })
 
         dispoAt={element ? (setValueEmptyIfNull(feature, feature.dispoAtJavascript) !== "" ? new Date(feature.dispoAtJavascript) : "" ) : ""}
         buildAt={element ? setValueEmptyIfNull(feature, feature.buildAt) : ""}
-        isMeuble={element ? setValueEmptyIfNull(feature, feature.isMeuble) : ""}
-        isNew={element ? setValueEmptyIfNull(feature, feature.isNew) : ""}
+        isMeuble={element ? setValueEmptyIfNull(feature, feature.isMeuble) : 99}
+        isNew={element ? setValueEmptyIfNull(feature, feature.isNew) : 99}
         floor={element ? setValueEmptyIfNull(feature, feature.floor) : ""}
         nbFloor={element ? setValueEmptyIfNull(feature, feature.nbFloor) : ""}
         codeHeater0={element ? setValueEmptyIfNull(feature, feature.codeHeater0) : ""}
         codeHeater={element ? setValueEmptyIfNull(feature, feature.codeHeater) : ""}
         codeKitchen={element ? setValueEmptyIfNull(feature, feature.codeKitchen) : ""}
-        isWcSeparate={element ? setValueEmptyIfNull(feature, feature.isWcSeparate) : ""}
+        isWcSeparate={element ? setValueEmptyIfNull(feature, feature.isWcSeparate) : 99}
         codeWater={element ? setValueEmptyIfNull(feature, feature.codeWater) : ""}
-        exposition={element ? setValueEmptyIfNull(feature, feature.exposition) : ""}
+        exposition={element ? setValueEmptyIfNull(feature, feature.exposition) : 99}
 
         messageSuccess={msg}
 
@@ -118,7 +118,7 @@ class Form extends Component {
             parking: props.parking,
             box: props.box,
 
-            dispoAt: props.dispoAtJavascript,
+            dispoAt: props.dispoAt,
             buildAt: props.buildAt,
             isMeuble: props.isMeuble,
             isNew: props.isNew,

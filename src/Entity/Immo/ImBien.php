@@ -143,6 +143,13 @@ class ImBien extends DataEntity
      */
     private $number;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ImFeature::class, fetch="EAGER", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
+     */
+    private $feature;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -399,6 +406,18 @@ class ImBien extends DataEntity
     public function setNumber(ImNumber $number): self
     {
         $this->number = $number;
+
+        return $this;
+    }
+
+    public function getFeature(): ?ImFeature
+    {
+        return $this->feature;
+    }
+
+    public function setFeature(ImFeature $feature): self
+    {
+        $this->feature = $feature;
 
         return $this;
     }

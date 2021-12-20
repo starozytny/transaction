@@ -56,13 +56,19 @@ class ImFeature extends DataEntity
     private $nbFloor;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $codeHeater0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
     private $codeHeater;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
     private $codeKitchen;
@@ -74,7 +80,7 @@ class ImFeature extends DataEntity
     private $isWcSeparate = ImBien::ANSWER_UNKNOWN;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
     private $codeWater;
@@ -84,12 +90,6 @@ class ImFeature extends DataEntity
      * @Groups({"user:read"})
      */
     private $exposition = ImBien::ANSWER_UNKNOWN;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $codeHeater0;
 
     public function getId(): ?int
     {
@@ -182,7 +182,7 @@ class ImFeature extends DataEntity
         return $this->codeHeater;
     }
 
-    public function setCodeHeater(int $codeHeater): self
+    public function setCodeHeater(?int $codeHeater): self
     {
         $this->codeHeater = $codeHeater;
 
@@ -194,7 +194,7 @@ class ImFeature extends DataEntity
         return $this->codeKitchen;
     }
 
-    public function setCodeKitchen(int $codeKitchen): self
+    public function setCodeKitchen(?int $codeKitchen): self
     {
         $this->codeKitchen = $codeKitchen;
 
@@ -218,7 +218,7 @@ class ImFeature extends DataEntity
         return $this->codeWater;
     }
 
-    public function setCodeWater(int $codeWater): self
+    public function setCodeWater(?int $codeWater): self
     {
         $this->codeWater = $codeWater;
 
