@@ -150,6 +150,12 @@ class ImBien extends DataEntity
      */
     private $feature;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ImAdvantage::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $advantage;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -418,6 +424,18 @@ class ImBien extends DataEntity
     public function setFeature(ImFeature $feature): self
     {
         $this->feature = $feature;
+
+        return $this;
+    }
+
+    public function getAdvantage(): ?ImAdvantage
+    {
+        return $this->advantage;
+    }
+
+    public function setAdvantage(ImAdvantage $advantage): self
+    {
+        $this->advantage = $advantage;
 
         return $this;
     }

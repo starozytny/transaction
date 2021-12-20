@@ -38,6 +38,7 @@ export function BienFormulaire ({ type, element, negotiators })
     let area = element ? element.area : null;
     let number = element ? element.number : null;
     let feature = element ? element.feature : null;
+    let advantage = element ? element.advantage : null;
 
     let form = <Form
         title={title}
@@ -80,6 +81,24 @@ export function BienFormulaire ({ type, element, negotiators })
         isWcSeparate={element ? setValueEmptyIfNull(feature, feature.isWcSeparate) : 99}
         codeWater={element ? setValueEmptyIfNull(feature, feature.codeWater) : ""}
         exposition={element ? setValueEmptyIfNull(feature, feature.exposition) : 99}
+
+        hasGarden={element ? setValueEmptyIfNull(advantage, advantage.hasGarden) : 99}
+        hasTerrace={element ? setValueEmptyIfNull(advantage, advantage.hasTerrace) : 99}
+        hasPool={element ? setValueEmptyIfNull(advantage, advantage.hasPool) : 99}
+        hasCave={element ? setValueEmptyIfNull(advantage, advantage.hasCave) : 99}
+        hasDigicode={element ? setValueEmptyIfNull(advantage, advantage.hasDigicode) : 99}
+        hasInterphone={element ? setValueEmptyIfNull(advantage, advantage.hasInterphone) : 99}
+        hasGuardian={element ? setValueEmptyIfNull(advantage, advantage.hasGuardian) : 99}
+        hasAlarme={element ? setValueEmptyIfNull(advantage, advantage.hasAlarme) : 99}
+        hasLift={element ? setValueEmptyIfNull(advantage, advantage.hasLift) : 99}
+        hasClim={element ? setValueEmptyIfNull(advantage, advantage.hasClim) : 99}
+        hasCalme={element ? setValueEmptyIfNull(advantage, advantage.hasCalme) : 99}
+        hasInternet={element ? setValueEmptyIfNull(advantage, advantage.hasInternet) : 99}
+        hasHandi={element ? setValueEmptyIfNull(advantage, advantage.hasHandi) : 99}
+        hasFibre={element ? setValueEmptyIfNull(advantage, advantage.hasFibre) : 99}
+        situation={element ? setValueEmptyIfNull(advantage, advantage.situation) : ""}
+        sousType={element ? setValueEmptyIfNull(advantage, advantage.sousType) : ""}
+        sol={element ? setValueEmptyIfNull(advantage, advantage.sol) : ""}
 
         messageSuccess={msg}
 
@@ -130,6 +149,24 @@ class Form extends Component {
             isWcSeparate: props.isWcSeparate,
             codeWater: props.codeWater,
             exposition: props.exposition,
+
+            hasGarden: props.hasGarden,
+            hasTerrace: props.hasTerrace,
+            hasPool: props.hasPool,
+            hasCave: props.hasCave,
+            hasDigicode: props.hasDigicode,
+            hasInterphone: props.hasInterphone,
+            hasGuardian: props.hasGuardian,
+            hasAlarme: props.hasAlarme,
+            hasLift: props.hasLift,
+            hasClim: props.hasClim,
+            hasCalme: props.hasCalme,
+            hasInternet: props.hasInternet,
+            hasHandi: props.hasHandi,
+            hasFibre: props.hasFibre,
+            situation: props.situation,
+            sousType: props.sousType,
+            sol: props.sol,
 
             contentHelpBubble: "",
             errors: [],
@@ -244,7 +281,9 @@ class Form extends Component {
         const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
             areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
             piece, room, bathroom, wc, balcony, parking, box,
-            dispoAt, buildAt, isMeuble, isNew, floor, nbFloor, codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0 } = this.state;
+            dispoAt, buildAt, isMeuble, isNew, floor, nbFloor, codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0,
+            hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian, hasAlarme, hasLift, hasClim, hasCalme, hasInternet,
+            hasHandi, hasFibre, situation, sousType, sol } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -278,6 +317,8 @@ class Form extends Component {
         let chauffage1Items = helper.getItems("chauffages-1");
         let cuisineItems = helper.getItems("cuisines");
         let waterItems = helper.getItems("water");
+        let soustypeItems = helper.getItems("water");
+        let solItems = helper.getItems("water");
 
         let negociateurs = []
         negotiators.sort(Sort.compareLastname)
@@ -480,6 +521,86 @@ class Form extends Component {
                                     <Radiobox items={expositionItems} identifiant="exposition" valeur={exposition} errors={errors} onChange={this.handleChange}>
                                         Exposition
                                     </Radiobox>
+                                </div>
+                            </div>
+
+                            <div className="line special-line">
+                                <div className="form-group">
+                                    <label>Les avantages</label>
+                                </div>
+                                <div className="line line-2">
+                                    <Radiobox items={helper.getItems("answers", 3)} identifiant="hasGarden" valeur={hasGarden} errors={errors} onChange={this.handleChange}>
+                                        Jardin
+                                    </Radiobox>
+                                    <Radiobox items={helper.getItems("answers", 4)} identifiant="hasTerrace" valeur={hasTerrace} errors={errors} onChange={this.handleChange}>
+                                        Terrasse
+                                    </Radiobox>
+                                </div>
+                                <div className="line line-2">
+                                    <Radiobox items={helper.getItems("answers", 5)} identifiant="hasPool" valeur={hasPool} errors={errors} onChange={this.handleChange}>
+                                        Piscine
+                                    </Radiobox>
+                                    <Radiobox items={helper.getItems("answers", 6)} identifiant="hasCave" valeur={hasCave} errors={errors} onChange={this.handleChange}>
+                                        Cave
+                                    </Radiobox>
+                                </div>
+                                <div className="line line-2">
+                                    <Radiobox items={helper.getItems("answers", 7)} identifiant="hasDigicode" valeur={hasDigicode} errors={errors} onChange={this.handleChange}>
+                                        Digicode
+                                    </Radiobox>
+                                    <Radiobox items={helper.getItems("answers", 8)} identifiant="hasInterphone" valeur={hasInterphone} errors={errors} onChange={this.handleChange}>
+                                        Interphone
+                                    </Radiobox>
+                                </div>
+                                <div className="line line-2">
+                                    <Radiobox items={helper.getItems("answers", 9)} identifiant="hasGuardian" valeur={hasGuardian} errors={errors} onChange={this.handleChange}>
+                                        Gardien
+                                    </Radiobox>
+                                    <Radiobox items={helper.getItems("answers", 10)} identifiant="hasAlarme" valeur={hasAlarme} errors={errors} onChange={this.handleChange}>
+                                        Alarme
+                                    </Radiobox>
+                                </div>
+                                <div className="line line-2">
+                                    <Radiobox items={helper.getItems("answers", 11)} identifiant="hasLift" valeur={hasLift} errors={errors} onChange={this.handleChange}>
+                                        Ascenseur
+                                    </Radiobox>
+                                    <Radiobox items={helper.getItems("answers", 12)} identifiant="hasClim" valeur={hasClim} errors={errors} onChange={this.handleChange}>
+                                        Climatisation
+                                    </Radiobox>
+                                </div>
+                                <div className="line line-2">
+                                    <Radiobox items={helper.getItems("answers", 13)} identifiant="hasCalme" valeur={hasCalme} errors={errors} onChange={this.handleChange}>
+                                        Calme
+                                    </Radiobox>
+                                    <Radiobox items={helper.getItems("answers", 14)} identifiant="hasInternet" valeur={hasInternet} errors={errors} onChange={this.handleChange}>
+                                        Internet
+                                    </Radiobox>
+                                </div>
+                                <div className="line line-2">
+                                    <Radiobox items={helper.getItems("answers", 15)} identifiant="hasHandi" valeur={hasHandi} errors={errors} onChange={this.handleChange}>
+                                        Aménagement pour handicapés
+                                    </Radiobox>
+                                    <Radiobox items={helper.getItems("answers", 16)} identifiant="hasFibre" valeur={hasFibre} errors={errors} onChange={this.handleChange}>
+                                        Internet avec la fibre
+                                    </Radiobox>
+                                </div>
+
+                                <div className="line line-2">
+                                    <Input identifiant="situation" valeur={situation} errors={errors} onChange={this.handleChange}>
+                                        <span>Situation</span>
+                                    </Input>
+                                    <SelectReactSelectize items={soustypeItems} identifiant="sousType" valeur={sousType} errors={errors}
+                                                          onChange={(e) => this.handleChangeSelect('codeKitchen', e)}>
+                                        Sous type de bien
+                                    </SelectReactSelectize>
+                                </div>
+
+                                <div className="line line-2">
+                                    <SelectReactSelectize items={solItems} identifiant="sol" valeur={sol} errors={errors}
+                                                          onChange={(e) => this.handleChangeSelect('codeKitchen', e)}>
+                                        Type de sol
+                                    </SelectReactSelectize>
+                                    <div className="form-group" />
                                 </div>
                             </div>
 

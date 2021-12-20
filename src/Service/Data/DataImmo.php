@@ -2,6 +2,7 @@
 
 namespace App\Service\Data;
 
+use App\Entity\Immo\ImAdvantage;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
@@ -25,7 +26,7 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature)
+    public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature, ImAdvantage $advantage)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -67,6 +68,7 @@ class DataImmo extends DataConstructor
             ->setArea($area)
             ->setNumber($number)
             ->setFeature($feature)
+            ->setAdvantage($advantage)
         ;
     }
 
