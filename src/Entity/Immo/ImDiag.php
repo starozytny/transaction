@@ -50,7 +50,7 @@ class ImDiag extends DataEntity
     private $referenceDpe;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
     private $dpeLetter;
@@ -62,7 +62,7 @@ class ImDiag extends DataEntity
     private $dpeValue;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
     private $gesLetter;
@@ -160,12 +160,12 @@ class ImDiag extends DataEntity
         return $this;
     }
 
-    public function getDpeLetter(): ?string
+    public function getDpeLetter(): ?int
     {
         return $this->dpeLetter;
     }
 
-    public function setDpeLetter(?string $dpeLetter): self
+    public function setDpeLetter(?int $dpeLetter): self
     {
         $this->dpeLetter = $dpeLetter;
 
@@ -184,12 +184,12 @@ class ImDiag extends DataEntity
         return $this;
     }
 
-    public function getGesLetter(): ?string
+    public function getGesLetter(): ?int
     {
         return $this->gesLetter;
     }
 
-    public function setGesLetter(?string $gesLetter): self
+    public function setGesLetter(?int $gesLetter): self
     {
         $this->gesLetter = $gesLetter;
 

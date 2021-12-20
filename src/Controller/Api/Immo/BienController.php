@@ -5,6 +5,7 @@ namespace App\Controller\Api\Immo;
 use App\Entity\Immo\ImAdvantage;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImNumber;
 use App\Entity\User;
@@ -39,6 +40,9 @@ class BienController extends AbstractController
     public function setProperty($em, $type, $obj, $data, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
     {
         switch ($type){
+            case "diag":
+                $obj = $dataEntity->setDataDiag($obj, $data);
+                break;
             case "advantage":
                 $obj = $dataEntity->setDataAdvantage($obj, $data);
                 break;
@@ -81,31 +85,37 @@ class BienController extends AbstractController
         }
 
         $area = $this->setProperty($em, "area", $type == "create" ? new ImArea() : $obj->getArea(),
-                                    $data, $apiResponse, $validator, $dataEntity
+            $data, $apiResponse, $validator, $dataEntity
         );
         if(!$area instanceof ImArea){
             return $area;
         }
 
         $number = $this->setProperty($em, "number", $type == "create" ? new ImNumber() : $obj->getNumber(),
-                                    $data, $apiResponse, $validator, $dataEntity);
+            $data, $apiResponse, $validator, $dataEntity);
         if(!$number instanceof ImNumber){
             return $number;
         }
 
         $feature = $this->setProperty($em, "feature", $type == "create" ? new ImFeature() : $obj->getFeature(),
-                                    $data, $apiResponse, $validator, $dataEntity);
+            $data, $apiResponse, $validator, $dataEntity);
         if(!$feature instanceof ImFeature){
             return $feature;
         }
 
         $advantage = $this->setProperty($em, "advantage", $type == "create" ? new ImAdvantage() : $obj->getAdvantage(),
-                                    $data, $apiResponse, $validator, $dataEntity);
+            $data, $apiResponse, $validator, $dataEntity);
         if(!$advantage instanceof ImAdvantage){
             return $advantage;
         }
 
-        $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage);
+        $diag = $this->setProperty($em, "diag", $type == "create" ? new ImDiag() : $obj->getDiag(),
+            $data, $apiResponse, $validator, $dataEntity);
+        if(!$diag instanceof ImDiag){
+            return $diag;
+        }
+
+        $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage, $diag);
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }

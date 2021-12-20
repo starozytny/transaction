@@ -1,5 +1,15 @@
 function getItems (type, prefix) {
     switch (type) {
+        case "diags":
+            return [
+                { value: 0, label: 'A', identifiant: 'diag-' + prefix + '-a' },
+                { value: 1, label: 'B', identifiant: 'diag-' + prefix + '-b' },
+                { value: 2, label: 'C', identifiant: 'diag-' + prefix + '-c' },
+                { value: 3, label: 'D', identifiant: 'diag-' + prefix + '-d' },
+                { value: 4, label: 'E', identifiant: 'diag-' + prefix + '-e' },
+                { value: 5, label: 'F', identifiant: 'diag-' + prefix + '-f' },
+                { value: 6, label: 'G', identifiant: 'diag-' + prefix + '-g' },
+            ];
         case "cuisines":
             return [
                 { value: 0, label: 'Aucune',               identifiant: 'aucune' },
@@ -39,21 +49,21 @@ function getItems (type, prefix) {
             ];
         case "expositions":
             return [
-                { value: 0, label: 'Nord',          identifiant: 'nord' },
-                { value: 1, label: 'Est',           identifiant: 'est' },
-                { value: 2, label: 'Sud',           identifiant: 'sud' },
-                { value: 3, label: 'Ouest',         identifiant: 'ouest' },
-                { value: 4, label: 'Nord-est',      identifiant: 'nord-est' },
-                { value: 5, label: 'Nord-ouest',    identifiant: 'nord-ouest' },
-                { value: 6, label: 'Sud-est',       identifiant: 'sud-est' },
-                { value: 7, label: 'Sud-ouest',     identifiant: 'sud-ouest' },
+                { value: 0, label: 'Nord',            identifiant: 'nord' },
+                { value: 1, label: 'Est',             identifiant: 'est' },
+                { value: 2, label: 'Sud',             identifiant: 'sud' },
+                { value: 3, label: 'Ouest',           identifiant: 'ouest' },
+                { value: 4, label: 'Nord-est',        identifiant: 'nord-est' },
+                { value: 5, label: 'Nord-ouest',      identifiant: 'nord-ouest' },
+                { value: 6, label: 'Sud-est',         identifiant: 'sud-est' },
+                { value: 7, label: 'Sud-ouest',       identifiant: 'sud-ouest' },
                 { value: 99, label: 'Je ne sais pas', identifiant: 'expo-ne-sais-pas' },
             ]
         case "answers":
             return [
-                { value: 1, label: 'Oui',               identifiant: prefix + '-oui' },
-                { value: 0, label: 'Non',               identifiant: prefix + '-non' },
-                { value: 99, label: 'Je ne sais pas',    identifiant: prefix + '-ne-sais-pas' },
+                { value: 1, label: 'Oui',               identifiant: 'answer-' + prefix + '-oui' },
+                { value: 0, label: 'Non',               identifiant: 'answer-' + prefix + '-non' },
+                { value: 99, label: 'Je ne sais pas',   identifiant: 'answer-' + prefix + '-ne-sais-pas' },
             ]
         case "mandats":
             return [

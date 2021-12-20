@@ -16,6 +16,8 @@ export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, er
 {
     let soustypeItems = helper.getItems("water");
     let solItems = helper.getItems("water");
+    let diag0Items = helper.getItems("diags", 0);
+    let diag1Items = helper.getItems("diags", 1);
 
     return <div className={"step-section" + (step === 3 ? " active" : "")}>
         <div className="line special-line">
@@ -129,10 +131,19 @@ export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                 </div>
 
                 <div className="line line-2">
+                    <Radiobox items={diag0Items} identifiant="dpeLetter" valeur={dpeLetter} errors={errors} onChange={onChange}>
+                        Consommation énergétique DPE
+                    </Radiobox>
+                    <Radiobox items={diag1Items} identifiant="gesLetter" valeur={gesLetter} errors={errors} onChange={onChange}>
+                        Bilan émission GES
+                    </Radiobox>
+                </div>
+
+                <div className="line line-2">
                     <Input type="number" step="any" min={0} identifiant="dpeValue" valeur={dpeValue} errors={errors} onChange={onChange}>
                         <span>en KWh/m² an</span>
                     </Input>
-                    <Input type="number" step="any" min={0} identifiant="dpeLetter" valeur={gesValue} errors={errors} onChange={onChange}>
+                    <Input type="number" step="any" min={0} identifiant="gesValue" valeur={gesValue} errors={errors} onChange={onChange}>
                         <span>en Kg/co² an</span>
                     </Input>
                 </div>

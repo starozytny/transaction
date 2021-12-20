@@ -6,6 +6,7 @@ use App\Entity\Immo\ImAdvantage;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
@@ -26,7 +27,8 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature, ImAdvantage $advantage)
+    public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature,
+                                ImAdvantage $advantage, ImDiag $diag)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -69,6 +71,7 @@ class DataImmo extends DataConstructor
             ->setNumber($number)
             ->setFeature($feature)
             ->setAdvantage($advantage)
+            ->setDiag($diag)
         ;
     }
 
@@ -141,6 +144,49 @@ class DataImmo extends DataConstructor
             ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
             ->setIsWcSeparate($this->setToNullInteger($data->isWcSeparate))
             ->setExposition($this->setToNullInteger($data->exposition))
+        ;
+    }
+
+    public function setDataAdvantage(ImAdvantage $obj, $data): ImAdvantage
+    {
+        return ($obj)
+            ->setHasGarden($this->setToNullInteger($data->hasGarden))
+            ->setHasTerrace($this->setToNullInteger($data->hasTerrace))
+            ->setHasPool($this->setToNullInteger($data->hasPool))
+            ->setHasCave($this->setToNullInteger($data->hasCave))
+            ->setHasDigicode($this->setToNullInteger($data->hasDigicode))
+            ->setHasInterphone($this->setToNullInteger($data->hasInterphone))
+            ->setHasGuardian($this->setToNullInteger($data->hasGuardian))
+            ->setHasAlarme($this->setToNullInteger($data->hasAlarme))
+            ->setHasLift($this->setToNullInteger($data->hasLift))
+            ->setHasClim($this->setToNullInteger($data->hasClim))
+            ->setHasCalme($this->setToNullInteger($data->hasCalme))
+            ->setHasInternet($this->setToNullInteger($data->hasInternet))
+            ->setHasHandi($this->setToNullInteger($data->hasHandi))
+            ->setHasFibre($this->setToNullInteger($data->hasFibre))
+            ->setSituation(trim($data->situation))
+            ->setSousType($this->setToNullInteger($data->sousType))
+            ->setSol($this->setToNullInteger($data->sol))
+        ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataDiag(ImDiag $obj, $data): ImDiag
+    {
+        return ($obj)
+            ->setBeforeJuly($this->setToNullInteger($data->beforeJuly))
+            ->setIsVirgin($this->setToNullInteger($data->isVirgin))
+            ->setIsSend($this->setToNullInteger($data->isSend))
+            ->setCreatedAtDpe($this->createDate($data->createdAtDpe))
+            ->setReferenceDpe($this->setToNullInteger($data->referenceDpe))
+            ->setDpeLetter($this->setToNullInteger($data->dpeLetter))
+            ->setGesLetter($this->setToNullInteger($data->gesLetter))
+            ->setDpeValue($this->setToNullFloat($data->dpeValue))
+            ->setGesValue($this->setToNullFloat($data->gesValue))
+            ->setMinAnnual($this->setToNullFloat($data->minAnnual))
+            ->setMaxAnnual($this->setToNullFloat($data->maxAnnual))
         ;
     }
 

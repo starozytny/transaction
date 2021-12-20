@@ -10,9 +10,9 @@ import { HelpBubble }          from "@dashboardComponents/Tools/HelpBubble";
 import Validateur              from "@commonComponents/functions/validateur";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-import { Step3 }               from "@userPages/components/Biens/Steps/Step3";
+import { Step1 }               from "@userPages/components/Biens/Steps/Step1";
 import { Step2 }               from "@userPages/components/Biens/Steps/Step2";
-import {Step1} from "@userPages/components/Biens/Steps/Step1";
+import { Step3 }               from "@userPages/components/Biens/Steps/Step3";
 
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_biens_update";
@@ -195,7 +195,7 @@ class Form extends Component {
 
             contentHelpBubble: "",
             errors: [],
-            step: 1
+            step: 3
         }
 
         this.helpBubble = React.createRef();
