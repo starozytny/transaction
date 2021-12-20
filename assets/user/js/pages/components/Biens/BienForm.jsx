@@ -74,6 +74,7 @@ export function BienFormulaire ({ type, element, negotiators })
         isNew={element ? setValueEmptyIfNull(feature, feature.isNew) : ""}
         floor={element ? setValueEmptyIfNull(feature, feature.floor) : ""}
         nbFloor={element ? setValueEmptyIfNull(feature, feature.nbFloor) : ""}
+        codeHeater0={element ? setValueEmptyIfNull(feature, feature.codeHeater0) : ""}
         codeHeater={element ? setValueEmptyIfNull(feature, feature.codeHeater) : ""}
         codeKitchen={element ? setValueEmptyIfNull(feature, feature.codeKitchen) : ""}
         isWcSeparate={element ? setValueEmptyIfNull(feature, feature.isWcSeparate) : ""}
@@ -123,6 +124,7 @@ class Form extends Component {
             isNew: props.isNew,
             floor: props.floor,
             nbFloor: props.nbFloor,
+            codeHeater0: props.codeHeater0,
             codeHeater: props.codeHeater,
             codeKitchen: props.codeKitchen,
             isWcSeparate: props.isWcSeparate,
@@ -242,7 +244,7 @@ class Form extends Component {
         const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
             areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
             piece, room, bathroom, wc, balcony, parking, box,
-            dispoAt, buildAt, isMeuble, isNew, floor, nbFloor, codeHeater, codeKitchen, isWcSeparate, codeWater, exposition } = this.state;
+            dispoAt, buildAt, isMeuble, isNew, floor, nbFloor, codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0 } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -272,6 +274,10 @@ class Form extends Component {
         let typeBienItems = helper.getItems("biens");
         let typeMandatItems = helper.getItems("mandats");
         let expositionItems = helper.getItems("expositions");
+        let chauffage0Items = helper.getItems("chauffages-0");
+        let chauffage1Items = helper.getItems("chauffages-1");
+        let cuisineItems = helper.getItems("cuisines");
+        let waterItems = helper.getItems("water");
 
         let negociateurs = []
         negotiators.sort(Sort.compareLastname)
@@ -445,23 +451,30 @@ class Form extends Component {
                                     </Input>
                                 </div>
                                 <div className="line line-2">
-                                    <SelectReactSelectize items={negociateurs} identifiant="codeHeater" valeur={codeHeater} errors={errors}
-                                                          onChange={(e) => this.handleChangeSelect('codeHeater', e)}>
-                                        Type de chauffage
+                                    <SelectReactSelectize items={chauffage0Items} identifiant="codeHeater0" valeur={codeHeater0} errors={errors}
+                                                          onChange={(e) => this.handleChangeSelect('codeHeater0', e)}>
+                                        Type de chauffage (1/2)
                                     </SelectReactSelectize>
-                                    <SelectReactSelectize items={negociateurs} identifiant="codeKitchen" valeur={codeKitchen} errors={errors}
+                                    <SelectReactSelectize items={chauffage1Items} identifiant="codeHeater" valeur={codeHeater} errors={errors}
+                                                          onChange={(e) => this.handleChangeSelect('codeHeater', e)}>
+                                        Type de chauffage (2/2)
+                                    </SelectReactSelectize>
+                                </div>
+                                <div className="line line-2">
+                                    <SelectReactSelectize items={cuisineItems} identifiant="codeKitchen" valeur={codeKitchen} errors={errors}
                                                           onChange={(e) => this.handleChangeSelect('codeKitchen', e)}>
                                         Type de cuisine
+                                    </SelectReactSelectize>
+                                    <SelectReactSelectize items={waterItems} identifiant="codeWater" valeur={codeWater} errors={errors}
+                                                          onChange={(e) => this.handleChangeSelect('codeWater', e)}>
+                                        Type d'eau chaude
                                     </SelectReactSelectize>
                                 </div>
                                 <div className="line line-2">
                                     <Radiobox items={helper.getItems("answers", 2)} identifiant="isWcSeparate" valeur={isWcSeparate} errors={errors} onChange={this.handleChange}>
                                         WC séparé ?
                                     </Radiobox>
-                                    <SelectReactSelectize items={negociateurs} identifiant="codeWater" valeur={codeWater} errors={errors}
-                                                          onChange={(e) => this.handleChangeSelect('codeWater', e)}>
-                                        Type d'eau chaude
-                                    </SelectReactSelectize>
+                                    <div className="form-group" />
                                 </div>
                                 <div className="line line-infinite">
                                     <Radiobox items={expositionItems} identifiant="exposition" valeur={exposition} errors={errors} onChange={this.handleChange}>

@@ -85,6 +85,12 @@ class ImFeature extends DataEntity
      */
     private $exposition = ImBien::ANSWER_UNKNOWN;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $codeHeater0;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -227,6 +233,18 @@ class ImFeature extends DataEntity
     public function setExposition(int $exposition): self
     {
         $this->exposition = $exposition;
+
+        return $this;
+    }
+
+    public function getCodeHeater0(): ?int
+    {
+        return $this->codeHeater0;
+    }
+
+    public function setCodeHeater0(?int $codeHeater0): self
+    {
+        $this->codeHeater0 = $codeHeater0;
 
         return $this;
     }

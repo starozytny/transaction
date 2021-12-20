@@ -1,5 +1,42 @@
 function getItems (type, prefix) {
     switch (type) {
+        case "cuisines":
+            return [
+                { value: 0, label: 'Aucune',               identifiant: 'aucune' },
+                { value: 1, label: 'Américaine',           identifiant: 'américaine' },
+                { value: 2, label: 'Séparée',              identifiant: 'separee' },
+                { value: 3, label: 'Industrielle',         identifiant: 'industrielle' },
+                { value: 4, label: 'Coin cuisine',         identifiant: 'coin-cuisine' },
+                { value: 5, label: 'Américaine équipée',   identifiant: 'américaine-equipee' },
+                { value: 6, label: 'Séparée équipée',      identifiant: 'separee-equipee' },
+                { value: 7, label: 'Coin cuisine équipé',  identifiant: 'coin-cuisine-equipe' },
+                { value: 8, label: 'Equipée',              identifiant: 'equipee' },
+            ];
+        case "water":
+        case "chauffages-0":
+            return [
+                { value: 0, label: 'Collectif',  identifiant: 'collectif' },
+                { value: 1, label: 'Individuel', identifiant: 'individuel' },
+            ]
+        case "chauffages-1":
+            return [
+                { value: 0, label: 'Radiateur',                 identifiant: 'radiateur' },
+                { value: 1, label: 'Sol',                       identifiant: 'sol' },
+                { value: 2, label: 'Mixte',                     identifiant: 'mixte' },
+                { value: 3, label: 'Gaz',                       identifiant: 'gaz' },
+                { value: 4, label: 'Gaz radiateur',             identifiant: 'gaz-radiateur' },
+                { value: 5, label: 'Gaz sol',                   identifiant: 'gaz-sol' },
+                { value: 6, label: 'Gaz mixte',                 identifiant: 'gaz-mixte' },
+                { value: 7, label: 'Fuel',                      identifiant: 'fuel' },
+                { value: 8, label: 'Fuel radiateur',            identifiant: 'fuel-radiateur' },
+                { value: 9, label: 'Fuel sol',                  identifiant: 'fuel-sol' },
+                { value: 10, label: 'Fuel mixte',               identifiant: 'fuel-mixte' },
+                { value: 11, label: 'Electrique',               identifiant: 'electrique' },
+                { value: 12, label: 'Electrique radiateur',     identifiant: 'electrique-radiateur' },
+                { value: 13, label: 'Electrique sol',           identifiant: 'electrique-sol' },
+                { value: 14, label: 'Electrique mixte',         identifiant: 'electrique-mixte' },
+                { value: 15, label: 'Climatisation réversible', identifiant: 'climatisation-reversible' },
+            ];
         case "expositions":
             return [
                 { value: 0, label: 'Nord',          identifiant: 'nord' },
