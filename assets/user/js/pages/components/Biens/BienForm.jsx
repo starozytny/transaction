@@ -12,14 +12,15 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Sort                    from "@commonComponents/functions/sort";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 import helper                  from "./helper";
+import {DatePick} from "@dashboardComponents/Tools/DatePicker";
 
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_biens_update";
 
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
-function setValueEmptyIfNull (value) {
-    return value ? value : ""
+function setValueEmptyIfNull (parentValue, value) {
+    return parentValue ? value : ""
 }
 
 export function BienFormulaire ({ type, element, negotiators })
@@ -34,6 +35,10 @@ export function BienFormulaire ({ type, element, negotiators })
         msg = "Félicitation ! La mise à jour s'est réalisée avec succès !";
     }
 
+    let area = element ? element.area : null;
+    let number = element ? element.number : null;
+    let feature = element ? element.feature : null;
+
     let form = <Form
         title={title}
         context={type}
@@ -45,23 +50,35 @@ export function BienFormulaire ({ type, element, negotiators })
         codeTypeMandat={element ? element.codeTypeMandat : ""}
         negotiator={element ? element.negotiator.id : ""}
 
-        areaTotal={element ? setValueEmptyIfNull(element.area.total) : ""}
-        areaHabitable={element ? setValueEmptyIfNull(element.area.habitable) : ""}
-        areaLand={element ? setValueEmptyIfNull(element.area.land) : ""}
-        areaGarden={element ? setValueEmptyIfNull(element.area.garden) : ""}
-        areaTerrace={element ? setValueEmptyIfNull(element.area.terrace) : ""}
-        areaCave={element ? setValueEmptyIfNull(element.area.cave) : ""}
-        areaBathroom={element ? setValueEmptyIfNull(element.area.bathroom) : ""}
-        areaLiving={element ? setValueEmptyIfNull(element.area.living) : ""}
-        areaDining={element ? setValueEmptyIfNull(element.area.dining) : ""}
+        areaTotal={element ? setValueEmptyIfNull(area, area.total) : ""}
+        areaHabitable={element ? setValueEmptyIfNull(area, area.habitable) : ""}
+        areaLand={element ? setValueEmptyIfNull(area, area.land) : ""}
+        areaGarden={element ? setValueEmptyIfNull(area, area.garden) : ""}
+        areaTerrace={element ? setValueEmptyIfNull(area, area.terrace) : ""}
+        areaCave={element ? setValueEmptyIfNull(area, area.cave) : ""}
+        areaBathroom={element ? setValueEmptyIfNull(area, area.bathroom) : ""}
+        areaLiving={element ? setValueEmptyIfNull(area, area.living) : ""}
+        areaDining={element ? setValueEmptyIfNull(area, area.dining) : ""}
 
-        piece={element ? setValueEmptyIfNull(element.number.piece) : ""}
-        room={element ? setValueEmptyIfNull(element.number.room) : ""}
-        bathroom={element ? setValueEmptyIfNull(element.number.bathroom) : ""}
-        wc={element ? setValueEmptyIfNull(element.number.wc) : ""}
-        balcony={element ? setValueEmptyIfNull(element.number.balcony) : ""}
-        parking={element ? setValueEmptyIfNull(element.number.parking) : ""}
-        box={element ? setValueEmptyIfNull(element.number.box) : ""}
+        piece={element ? setValueEmptyIfNull(number, number.piece) : ""}
+        room={element ? setValueEmptyIfNull(number, number.room) : ""}
+        bathroom={element ? setValueEmptyIfNull(number, number.bathroom) : ""}
+        wc={element ? setValueEmptyIfNull(number, number.wc) : ""}
+        balcony={element ? setValueEmptyIfNull(number, number.balcony) : ""}
+        parking={element ? setValueEmptyIfNull(number, number.parking) : ""}
+        box={element ? setValueEmptyIfNull(number, number.box) : ""}
+
+        dispoAt={element ? (setValueEmptyIfNull(feature, feature.dispoAtJavascript) !== "" ? new Date(feature.dispoAtJavascript) : "" ) : ""}
+        buildAt={element ? setValueEmptyIfNull(feature, feature.buildAt) : ""}
+        isMeuble={element ? setValueEmptyIfNull(feature, feature.isMeuble) : ""}
+        isNew={element ? setValueEmptyIfNull(feature, feature.isNew) : ""}
+        floor={element ? setValueEmptyIfNull(feature, feature.floor) : ""}
+        nbFloor={element ? setValueEmptyIfNull(feature, feature.nbFloor) : ""}
+        codeHeater={element ? setValueEmptyIfNull(feature, feature.codeHeater) : ""}
+        codeKitchen={element ? setValueEmptyIfNull(feature, feature.codeKitchen) : ""}
+        isWcSeparate={element ? setValueEmptyIfNull(feature, feature.isWcSeparate) : ""}
+        codeWater={element ? setValueEmptyIfNull(feature, feature.codeWater) : ""}
+        exposition={element ? setValueEmptyIfNull(feature, feature.exposition) : ""}
 
         messageSuccess={msg}
 
@@ -100,6 +117,18 @@ class Form extends Component {
             parking: props.parking,
             box: props.box,
 
+            dispoAt: props.dispoAtJavascript,
+            buildAt: props.buildAt,
+            isMeuble: props.isMeuble,
+            isNew: props.isNew,
+            floor: props.floor,
+            nbFloor: props.nbFloor,
+            codeHeater: props.codeHeater,
+            codeKitchen: props.codeKitchen,
+            isWcSeparate: props.isWcSeparate,
+            codeWater: props.codeWater,
+            exposition: props.exposition,
+
             contentHelpBubble: "",
             errors: [],
             step: 1
@@ -109,6 +138,7 @@ class Form extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
+        this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleNext = this.handleNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleOpenHelp = this.handleOpenHelp.bind(this);
@@ -130,6 +160,8 @@ class Form extends Component {
     }
 
     handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
+
+    handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
 
     handleNext = (stepClicked, stepInitial = null) => {
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
@@ -209,7 +241,8 @@ class Form extends Component {
         const { negotiators } = this.props;
         const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
             areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
-            piece, room, bathroom, wc, balcony, parking, box } = this.state;
+            piece, room, bathroom, wc, balcony, parking, box,
+            dispoAt, buildAt, isMeuble, isNew, floor, nbFloor, codeHeater, codeKitchen, isWcSeparate, codeWater, exposition } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -238,6 +271,7 @@ class Form extends Component {
         let typeAdItems = helper.getItems("ads");
         let typeBienItems = helper.getItems("biens");
         let typeMandatItems = helper.getItems("mandats");
+        let expositionItems = helper.getItems("expositions");
 
         let negociateurs = []
         negotiators.sort(Sort.compareLastname)
@@ -377,6 +411,62 @@ class Form extends Component {
                                     <Input type="number" min={0} identifiant="box" valeur={box} errors={errors} onChange={this.handleChange}>
                                         <span>Boxes</span>
                                     </Input>
+                                </div>
+                            </div>
+
+                            <div className="line special-line">
+                                <div className="form-group">
+                                    <label>Caractéristique</label>
+                                </div>
+                                <div className="line line-2">
+                                    <DatePick identifiant="dispoAt" valeur={dispoAt} errors={errors}
+                                              onChange={(e) => this.handleChangeDate("dispoAt", e)}>
+                                        Date disponible
+                                    </DatePick>
+                                    <Input type="number" min={1200} identifiant="buildAt" valeur={buildAt} errors={errors} onChange={this.handleChange}>
+                                        <span>Année de construction</span>
+                                    </Input>
+                                </div>
+
+                                <div className="line line-2">
+                                    <Radiobox items={helper.getItems("answers", 0)} identifiant="isMeuble" valeur={isMeuble} errors={errors} onChange={this.handleChange}>
+                                        Meublé ?
+                                    </Radiobox>
+                                    <Radiobox items={helper.getItems("answers", 1)} identifiant="isNew" valeur={isNew} errors={errors} onChange={this.handleChange}>
+                                        Refait à neuf ?
+                                    </Radiobox>
+                                </div>
+                                <div className="line line-2">
+                                    <Input identifiant="floor" valeur={floor} errors={errors} onChange={this.handleChange}>
+                                        <span>Etage</span>
+                                    </Input>
+                                    <Input type="number" min={0} identifiant="nbFloor" valeur={nbFloor} errors={errors} onChange={this.handleChange}>
+                                        <span>Nombre d'étages</span>
+                                    </Input>
+                                </div>
+                                <div className="line line-2">
+                                    <SelectReactSelectize items={negociateurs} identifiant="codeHeater" valeur={codeHeater} errors={errors}
+                                                          onChange={(e) => this.handleChangeSelect('codeHeater', e)}>
+                                        Type de chauffage
+                                    </SelectReactSelectize>
+                                    <SelectReactSelectize items={negociateurs} identifiant="codeKitchen" valeur={codeKitchen} errors={errors}
+                                                          onChange={(e) => this.handleChangeSelect('codeKitchen', e)}>
+                                        Type de cuisine
+                                    </SelectReactSelectize>
+                                </div>
+                                <div className="line line-2">
+                                    <Radiobox items={helper.getItems("answers", 2)} identifiant="isWcSeparate" valeur={isWcSeparate} errors={errors} onChange={this.handleChange}>
+                                        WC séparé ?
+                                    </Radiobox>
+                                    <SelectReactSelectize items={negociateurs} identifiant="codeWater" valeur={codeWater} errors={errors}
+                                                          onChange={(e) => this.handleChangeSelect('codeWater', e)}>
+                                        Type d'eau chaude
+                                    </SelectReactSelectize>
+                                </div>
+                                <div className="line line-infinite">
+                                    <Radiobox items={expositionItems} identifiant="exposition" valeur={exposition} errors={errors} onChange={this.handleChange}>
+                                        Exposition
+                                    </Radiobox>
                                 </div>
                             </div>
 

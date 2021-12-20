@@ -2,6 +2,7 @@
 
 namespace App\Entity\Immo;
 
+use App\Entity\DataEntity;
 use App\Repository\Immo\ImFeatureRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -9,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=ImFeatureRepository::class)
  */
-class ImFeature
+class ImFeature extends DataEntity
 {
     /**
      * @ORM\Id
@@ -23,17 +24,16 @@ class ImFeature
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $isMeuble;
+    private $isMeuble = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $isNew;
+    private $isNew = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"user:read"})
      */
     private $dispoAt;
 
@@ -71,7 +71,7 @@ class ImFeature
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $isWcSeparate;
+    private $isWcSeparate = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
@@ -83,7 +83,7 @@ class ImFeature
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $exposition;
+    private $exposition = ImBien::ANSWER_UNKNOWN;
 
     public function getId(): ?int
     {
@@ -112,6 +112,15 @@ class ImFeature
         $this->isNew = $isNew;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"user:read"})
+     */
+    public function getDispoAtJavascript(): ?string
+    {
+        return $this->setDateJavascript($this->dispoAt);
     }
 
     public function getDispoAt(): ?\DateTimeInterface

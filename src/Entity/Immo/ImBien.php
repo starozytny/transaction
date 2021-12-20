@@ -14,6 +14,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImBien extends DataEntity
 {
+    const ANSWER_NO = 0;
+    const ANSWER_YES = 1;
+    const ANSWER_UNKNOWN = 99;
+
     const AD_VENTE              = 0;
     const AD_LOCATION           = 1;
     const AD_VIAGER             = 2;

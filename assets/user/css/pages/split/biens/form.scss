@@ -41,9 +41,11 @@
   @include fontSemibold();
 }
 
-.line:not(.line-buttons){
-  padding-bottom: 32px;
-  margin-bottom: 32px;
+.step-section{
+  & > .line:not(.line-buttons){
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+  }
 }
 
 .special-line:not(.line-buttons){
@@ -115,6 +117,10 @@
   & > .form-group:not(:last-child){
     margin-right: 12px;
   }
+
+  & > .form-group-radiobox{
+    width: 100%;
+  }
 }
 
 //                      __   _____ __    ___    __
@@ -146,6 +152,10 @@
   .line.line-infinite{
     & > .form-group{
       width: calc(16% - 8px);
+    }
+
+    & > .form-group-radiobox{
+      width: 100%;
     }
   }
 }

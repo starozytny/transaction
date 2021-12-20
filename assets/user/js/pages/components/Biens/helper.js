@@ -1,5 +1,22 @@
-function getItems (type) {
+function getItems (type, prefix) {
     switch (type) {
+        case "expositions":
+            return [
+                { value: 0, label: 'Nord',          identifiant: 'nord' },
+                { value: 1, label: 'Est',           identifiant: 'est' },
+                { value: 2, label: 'Sud',           identifiant: 'sud' },
+                { value: 3, label: 'Ouest',         identifiant: 'ouest' },
+                { value: 4, label: 'Nord-est',      identifiant: 'nord-est' },
+                { value: 5, label: 'Nord-ouest',    identifiant: 'nord-ouest' },
+                { value: 6, label: 'Sud-est',       identifiant: 'sud-est' },
+                { value: 7, label: 'Sud-ouest',     identifiant: 'sud-ouest' },
+            ]
+        case "answers":
+            return [
+                { value: 1, label: 'Oui',               identifiant: prefix + '-oui' },
+                { value: 0, label: 'Non',               identifiant: prefix + '-non' },
+                { value: 2, label: 'Je ne sais pas',    identifiant: prefix + '-ne-sais-pas' },
+            ]
         case "mandats":
             return [
                 { value: 0, label: 'Simple',            identifiant: 'simple' },
