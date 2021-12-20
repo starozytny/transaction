@@ -411,6 +411,15 @@ class Form extends Component {
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                onChangeZipcode={this.handleChangeZipcode} />
 
+                        <div className="step-section active">
+                            <div className="line line-buttons">
+                                <div />
+                                <div />
+                                <div className="btns-submit">
+                                    <Button isSubmit={true}>Enregistrer le bien</Button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </section>
             </div>

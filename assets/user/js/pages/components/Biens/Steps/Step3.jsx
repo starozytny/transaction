@@ -167,9 +167,5 @@ export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                 <Button onClick={() => onNext(4)}>Etape suivante</Button>
             </div>
         </div>
-
-        <div className="line">
-            <Button isSubmit={true}>Enregistrer le bien</Button>
-        </div>
     </div>
 }
