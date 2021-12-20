@@ -4,15 +4,15 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
-import { Button, ButtonIcon }  from "@dashboardComponents/Tools/Button";
+import { Button }              from "@dashboardComponents/Tools/Button";
 import { HelpBubble }          from "@dashboardComponents/Tools/HelpBubble";
-import { DatePick }            from "@dashboardComponents/Tools/DatePicker";
 
 import Validateur              from "@commonComponents/functions/validateur";
-import Sort                    from "@commonComponents/functions/sort";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
-import helper                  from "./helper";
+
+import { Step3 }               from "@userPages/components/Biens/Steps/Step3";
+import { Step2 }               from "@userPages/components/Biens/Steps/Step2";
+import {Step1} from "@userPages/components/Biens/Steps/Step1";
 
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_biens_update";
@@ -195,7 +195,7 @@ class Form extends Component {
 
             contentHelpBubble: "",
             errors: [],
-            step: 3
+            step: 1
         }
 
         this.helpBubble = React.createRef();
@@ -303,13 +303,7 @@ class Form extends Component {
 
     render () {
         const { negotiators } = this.props;
-        const { step, errors, contentHelpBubble, codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
-            areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
-            piece, room, bathroom, wc, balcony, parking, box,
-            dispoAt, buildAt, isMeuble, isNew, floor, nbFloor, codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0,
-            hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian, hasAlarme, hasLift, hasClim, hasCalme, hasInternet,
-            hasHandi, hasFibre, situation, sousType, sol,
-            beforeJuly, isVirgin, isSend, createdAtDpe, referenceDpe, dpeLetter, gesLetter, dpeValue, gesValue, minAnnual, maxAnnual } = this.state;
+        const { step, contentHelpBubble } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -336,23 +330,6 @@ class Form extends Component {
             </div>)
         })}
 
-        let typeAdItems = helper.getItems("ads");
-        let typeBienItems = helper.getItems("biens");
-        let typeMandatItems = helper.getItems("mandats");
-        let expositionItems = helper.getItems("expositions");
-        let chauffage0Items = helper.getItems("chauffages-0");
-        let chauffage1Items = helper.getItems("chauffages-1");
-        let cuisineItems = helper.getItems("cuisines");
-        let waterItems = helper.getItems("water");
-        let soustypeItems = helper.getItems("water");
-        let solItems = helper.getItems("water");
-
-        let negociateurs = []
-        negotiators.sort(Sort.compareLastname)
-        negotiators.forEach(ne => {
-            negociateurs.push({ value: ne.id, label: "#" + ne.code + " - " + ne.fullname, identifiant: "neg-" + ne.id })
-        })
-
         return <div className="page-default">
             <div className="page-col-1">
                 <div className="comeback">
@@ -376,335 +353,17 @@ class Form extends Component {
                 </div>
                 <section>
                     <form className="form-bien" onSubmit={this.handleSubmit}>
-                        <div className={"step-section" + (step === 1 ? " active" : "")}>
-                            <div className="line special-line">
-                                <Radiobox items={typeAdItems} identifiant="codeTypeAd" valeur={codeTypeAd} errors={errors} onChange={this.handleChange}>
-                                    Type d'annonce
-                                </Radiobox>
-                            </div>
 
-                            <div className="line special-line">
-                                <Radiobox items={typeBienItems} identifiant="codeTypeBien" valeur={codeTypeBien} errors={errors} onChange={this.handleChange}>
-                                    Type de bien
-                                </Radiobox>
-                            </div>
+                        <Step1 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
+                               negotiators={negotiators}/>
 
-                            <div className="line special-line">
-                                <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={this.handleChange}
-                                       placeholder="Exemple : Appartement T1 Centre ville (max 64 caractères)"
-                                >
-                                    <span>Libellé de l'annonce</span>
-                                    <div className="input-label-help">
-                                        <ButtonIcon icon="question" onClick={() => this.handleOpenHelp("libelle")}>Aide</ButtonIcon>
-                                    </div>
-                                </Input>
-                            </div>
+                        <Step2 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}/>
 
-                            <div className="line special-line">
-                                <Radiobox items={typeMandatItems} identifiant="codeTypeMandat" valeur={codeTypeMandat} errors={errors} onChange={this.handleChange}>
-                                    Type de mandat
-                                </Radiobox>
-                            </div>
+                        <Step3 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}/>
 
-                            <div className="line line-2">
-                                <SelectReactSelectize items={negociateurs} identifiant="negotiator" valeur={negotiator} errors={errors}
-                                                      onChange={(e) => this.handleChangeSelect('negotiator', e)}>
-                                    Négociateur
-                                </SelectReactSelectize>
-                            </div>
-
-                            <div className="line line-buttons">
-                                {/*<Button type="reverse">Etape précédente</Button>*/}
-                                <div/>
-                                <div className="btns-submit">
-                                    <Button type="warning">Enregistrer le brouillon</Button>
-                                    <Button onClick={() => this.handleNext( 2)}>Etape suivante</Button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className={"step-section" + (step === 2 ? " active" : "")}>
-                            <div className="line special-line">
-                                <div className="form-group">
-                                    <label>Surfaces (m²)</label>
-                                </div>
-                                <div className="line line-infinite">
-                                    <Input type="number" step="any" min={0} identifiant="areaTotal" valeur={areaTotal} errors={errors} onChange={this.handleChange}>
-                                        <span>Totale</span>
-                                    </Input>
-                                    <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={this.handleChange}>
-                                        <span>Habitable</span>
-                                    </Input>
-                                    <Input type="number" step="any" min={0} identifiant="areaLand" valeur={areaLand} errors={errors} onChange={this.handleChange}>
-                                        <span>Terrain</span>
-                                    </Input>
-                                    <Input type="number" step="any" min={0} identifiant="areaGarden" valeur={areaGarden} errors={errors} onChange={this.handleChange}>
-                                        <span>Jardin</span>
-                                    </Input>
-                                    <Input type="number" step="any" min={0} identifiant="areaTerrace" valeur={areaTerrace} errors={errors} onChange={this.handleChange}>
-                                        <span>Terrasse</span>
-                                    </Input>
-                                    <Input type="number" step="any" min={0} identifiant="areaCave" valeur={areaCave} errors={errors} onChange={this.handleChange}>
-                                        <span>Cave</span>
-                                    </Input>
-                                    <Input type="number" step="any" min={0} identifiant="areaBathroom" valeur={areaBathroom} errors={errors} onChange={this.handleChange}>
-                                        <span>Salle de bain</span>
-                                    </Input>
-                                    <Input type="number" step="any" min={0} identifiant="areaLiving" valeur={areaLiving} errors={errors} onChange={this.handleChange}>
-                                        <span>Salon</span>
-                                    </Input>
-                                    <Input type="number" step="any" min={0} identifiant="areaDining" valeur={areaDining} errors={errors} onChange={this.handleChange}>
-                                        <span>Salle à manger</span>
-                                    </Input>
-                                </div>
-                            </div>
-
-                            <div className="line special-line">
-                                <div className="form-group">
-                                    <label>Nombre de ...</label>
-                                </div>
-                                <div className="line line-infinite">
-                                    <Input type="number" min={0} identifiant="piece" valeur={piece} errors={errors} onChange={this.handleChange}>
-                                        <span>Pièces</span>
-                                    </Input>
-                                    <Input type="number" min={0} identifiant="room" valeur={room} errors={errors} onChange={this.handleChange}>
-                                        <span>Chambres</span>
-                                    </Input>
-                                    <Input type="number" min={0} identifiant="bathroom" valeur={bathroom} errors={errors} onChange={this.handleChange}>
-                                        <span>Salles de bain</span>
-                                    </Input>
-                                    <Input type="number" min={0} identifiant="wc" valeur={wc} errors={errors} onChange={this.handleChange}>
-                                        <span>WC</span>
-                                    </Input>
-                                    <Input type="number" min={0} identifiant="balcony" valeur={balcony} errors={errors} onChange={this.handleChange}>
-                                        <span>Blacons</span>
-                                    </Input>
-                                    <Input type="number" min={0} identifiant="parking" valeur={parking} errors={errors} onChange={this.handleChange}>
-                                        <span>Parkings</span>
-                                    </Input>
-                                    <Input type="number" min={0} identifiant="box" valeur={box} errors={errors} onChange={this.handleChange}>
-                                        <span>Boxes</span>
-                                    </Input>
-                                </div>
-                            </div>
-
-                            <div className="line special-line">
-                                <div className="form-group">
-                                    <label>Caractéristique</label>
-                                </div>
-                                <div className="line line-2">
-                                    <DatePick identifiant="dispoAt" valeur={dispoAt} errors={errors}
-                                              onChange={(e) => this.handleChangeDate("dispoAt", e)}>
-                                        Date disponible
-                                    </DatePick>
-                                    <Input type="number" min={1200} identifiant="buildAt" valeur={buildAt} errors={errors} onChange={this.handleChange}>
-                                        <span>Année de construction</span>
-                                    </Input>
-                                </div>
-
-                                <div className="line line-2">
-                                    <Radiobox items={helper.getItems("answers", 0)} identifiant="isMeuble" valeur={isMeuble} errors={errors} onChange={this.handleChange}>
-                                        Meublé ?
-                                    </Radiobox>
-                                    <Radiobox items={helper.getItems("answers", 1)} identifiant="isNew" valeur={isNew} errors={errors} onChange={this.handleChange}>
-                                        Refait à neuf ?
-                                    </Radiobox>
-                                </div>
-                                <div className="line line-2">
-                                    <Input identifiant="floor" valeur={floor} errors={errors} onChange={this.handleChange}>
-                                        <span>Etage</span>
-                                    </Input>
-                                    <Input type="number" min={0} identifiant="nbFloor" valeur={nbFloor} errors={errors} onChange={this.handleChange}>
-                                        <span>Nombre d'étages</span>
-                                    </Input>
-                                </div>
-                                <div className="line line-2">
-                                    <SelectReactSelectize items={chauffage0Items} identifiant="codeHeater0" valeur={codeHeater0} errors={errors}
-                                                          onChange={(e) => this.handleChangeSelect('codeHeater0', e)}>
-                                        Type de chauffage (1/2)
-                                    </SelectReactSelectize>
-                                    <SelectReactSelectize items={chauffage1Items} identifiant="codeHeater" valeur={codeHeater} errors={errors}
-                                                          onChange={(e) => this.handleChangeSelect('codeHeater', e)}>
-                                        Type de chauffage (2/2)
-                                    </SelectReactSelectize>
-                                </div>
-                                <div className="line line-2">
-                                    <SelectReactSelectize items={cuisineItems} identifiant="codeKitchen" valeur={codeKitchen} errors={errors}
-                                                          onChange={(e) => this.handleChangeSelect('codeKitchen', e)}>
-                                        Type de cuisine
-                                    </SelectReactSelectize>
-                                    <SelectReactSelectize items={waterItems} identifiant="codeWater" valeur={codeWater} errors={errors}
-                                                          onChange={(e) => this.handleChangeSelect('codeWater', e)}>
-                                        Type d'eau chaude
-                                    </SelectReactSelectize>
-                                </div>
-                                <div className="line line-2">
-                                    <Radiobox items={helper.getItems("answers", 2)} identifiant="isWcSeparate" valeur={isWcSeparate} errors={errors} onChange={this.handleChange}>
-                                        WC séparé ?
-                                    </Radiobox>
-                                    <div className="form-group" />
-                                </div>
-                                <div className="line line-infinite">
-                                    <Radiobox items={expositionItems} identifiant="exposition" valeur={exposition} errors={errors} onChange={this.handleChange}>
-                                        Exposition
-                                    </Radiobox>
-                                </div>
-
-                                <div className="line line-buttons">
-                                    <Button type="reverse">Etape précédente</Button>
-                                    <div/>
-                                    <div className="btns-submit">
-                                        <Button type="warning">Enregistrer le brouillon</Button>
-                                        <Button onClick={() => this.handleNext( 3)}>Etape suivante</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className={"step-section" + (step === 3 ? " active" : "")}>
-                            <div className="line special-line">
-                                <div className="form-group">
-                                    <label>Les avantages</label>
-                                </div>
-                                <div className="line line-2">
-                                    <Radiobox items={helper.getItems("answers", 3)} identifiant="hasGarden" valeur={hasGarden} errors={errors} onChange={this.handleChange}>
-                                        Jardin
-                                    </Radiobox>
-                                    <Radiobox items={helper.getItems("answers", 4)} identifiant="hasTerrace" valeur={hasTerrace} errors={errors} onChange={this.handleChange}>
-                                        Terrasse
-                                    </Radiobox>
-                                </div>
-                                <div className="line line-2">
-                                    <Radiobox items={helper.getItems("answers", 5)} identifiant="hasPool" valeur={hasPool} errors={errors} onChange={this.handleChange}>
-                                        Piscine
-                                    </Radiobox>
-                                    <Radiobox items={helper.getItems("answers", 6)} identifiant="hasCave" valeur={hasCave} errors={errors} onChange={this.handleChange}>
-                                        Cave
-                                    </Radiobox>
-                                </div>
-                                <div className="line line-2">
-                                    <Radiobox items={helper.getItems("answers", 7)} identifiant="hasDigicode" valeur={hasDigicode} errors={errors} onChange={this.handleChange}>
-                                        Digicode
-                                    </Radiobox>
-                                    <Radiobox items={helper.getItems("answers", 8)} identifiant="hasInterphone" valeur={hasInterphone} errors={errors} onChange={this.handleChange}>
-                                        Interphone
-                                    </Radiobox>
-                                </div>
-                                <div className="line line-2">
-                                    <Radiobox items={helper.getItems("answers", 9)} identifiant="hasGuardian" valeur={hasGuardian} errors={errors} onChange={this.handleChange}>
-                                        Gardien
-                                    </Radiobox>
-                                    <Radiobox items={helper.getItems("answers", 10)} identifiant="hasAlarme" valeur={hasAlarme} errors={errors} onChange={this.handleChange}>
-                                        Alarme
-                                    </Radiobox>
-                                </div>
-                                <div className="line line-2">
-                                    <Radiobox items={helper.getItems("answers", 11)} identifiant="hasLift" valeur={hasLift} errors={errors} onChange={this.handleChange}>
-                                        Ascenseur
-                                    </Radiobox>
-                                    <Radiobox items={helper.getItems("answers", 12)} identifiant="hasClim" valeur={hasClim} errors={errors} onChange={this.handleChange}>
-                                        Climatisation
-                                    </Radiobox>
-                                </div>
-                                <div className="line line-2">
-                                    <Radiobox items={helper.getItems("answers", 13)} identifiant="hasCalme" valeur={hasCalme} errors={errors} onChange={this.handleChange}>
-                                        Calme
-                                    </Radiobox>
-                                    <Radiobox items={helper.getItems("answers", 14)} identifiant="hasInternet" valeur={hasInternet} errors={errors} onChange={this.handleChange}>
-                                        Internet
-                                    </Radiobox>
-                                </div>
-                                <div className="line line-2">
-                                    <Radiobox items={helper.getItems("answers", 15)} identifiant="hasHandi" valeur={hasHandi} errors={errors} onChange={this.handleChange}>
-                                        Aménagement pour handicapés
-                                    </Radiobox>
-                                    <Radiobox items={helper.getItems("answers", 16)} identifiant="hasFibre" valeur={hasFibre} errors={errors} onChange={this.handleChange}>
-                                        Internet avec la fibre
-                                    </Radiobox>
-                                </div>
-
-                                <div className="line line-2">
-                                    <Input identifiant="situation" valeur={situation} errors={errors} onChange={this.handleChange}>
-                                        <span>Situation</span>
-                                    </Input>
-                                    <SelectReactSelectize items={soustypeItems} identifiant="sousType" valeur={sousType} errors={errors}
-                                                          onChange={(e) => this.handleChangeSelect('codeKitchen', e)}>
-                                        Sous type de bien
-                                    </SelectReactSelectize>
-                                </div>
-
-                                <div className="line line-2">
-                                    <SelectReactSelectize items={solItems} identifiant="sol" valeur={sol} errors={errors}
-                                                          onChange={(e) => this.handleChangeSelect('codeKitchen', e)}>
-                                        Type de sol
-                                    </SelectReactSelectize>
-                                    <div className="form-group" />
-                                </div>
-                            </div>
-
-                            <div className={"step-section" + (step === 3 ? " active" : "")}>
-                                <div className="line special-line">
-                                    <div className="form-group">
-                                        <label>Diagnostique</label>
-                                    </div>
-
-                                    <div className="line line-3">
-                                        <Radiobox items={helper.getItems("answers", 17)} identifiant="beforeJuly" valeur={beforeJuly} errors={errors} onChange={this.handleChange}>
-                                            DPE avant le 1 juil. 2021
-                                        </Radiobox>
-                                        {parseInt(beforeJuly) !== 1 && <>
-                                            <Radiobox items={helper.getItems("answers", 18)} identifiant="isVirgin" valeur={isVirgin} errors={errors} onChange={this.handleChange}>
-                                                DPE vierge
-                                            </Radiobox>
-                                            <Radiobox items={helper.getItems("answers", 19)} identifiant="isSend" valeur={isSend} errors={errors} onChange={this.handleChange}>
-                                                DPE non soumis
-                                            </Radiobox>
-                                        </>}
-                                    </div>
-
-                                    <div className="line line-2">
-                                        <DatePick identifiant="createdAtDpe" valeur={createdAtDpe} errors={errors}
-                                                  onChange={(e) => this.handleChangeDate("createdAtDpe", e)}>
-                                            Date de réalisation du DPE
-                                        </DatePick>
-                                        <Input type="number" min={1200} identifiant="referenceDpe" valeur={referenceDpe} errors={errors} onChange={this.handleChange}>
-                                            <span>Année de référence conso DPE</span>
-                                        </Input>
-                                    </div>
-
-                                    <div className="line line-2">
-                                        <Input type="number" step="any" min={0} identifiant="dpeValue" valeur={dpeValue} errors={errors} onChange={this.handleChange}>
-                                            <span>en KWh/m² an</span>
-                                        </Input>
-                                        <Input type="number" step="any" min={0} identifiant="dpeLetter" valeur={gesValue} errors={errors} onChange={this.handleChange}>
-                                            <span>en Kg/co² an</span>
-                                        </Input>
-                                    </div>
-
-                                    <div className="line line-2">
-                                        <Input type="number" step="any" min={0} identifiant="minAnnual" valeur={minAnnual} errors={errors} onChange={this.handleChange}>
-                                            <span>Estimation des coûts annuels minimun</span>
-                                        </Input>
-                                        <Input type="number" step="any" min={0} identifiant="maxAnnuel" valeur={maxAnnual} errors={errors} onChange={this.handleChange}>
-                                            <span>Estimation des coûts annuels maximum</span>
-                                        </Input>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="line line-buttons">
-                                <Button type="reverse">Etape précédente</Button>
-                                <div/>
-                                <div className="btns-submit">
-                                    <Button type="warning">Enregistrer le brouillon</Button>
-                                    <Button onClick={() => this.handleNext( 4)}>Etape suivante</Button>
-                                </div>
-                            </div>
-
-                            <div className="line">
-                                <Button isSubmit={true}>Enregistrer le bien</Button>
-                            </div>
-                        </div>
                     </form>
                 </section>
             </div>
