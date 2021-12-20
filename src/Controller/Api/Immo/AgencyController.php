@@ -12,6 +12,7 @@ use App\Service\FileUploader;
 use App\Service\Immo\ImmoService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -96,6 +97,7 @@ class AgencyController extends AbstractController
      * @param FileUploader $fileUploader
      * @param DataImmo $dataEntity
      * @return JsonResponse
+     * @throws Exception
      */
     public function create(Request $request, ValidatorService $validator, ApiResponse $apiResponse,
                            FileUploader $fileUploader, DataImmo $dataEntity): JsonResponse
@@ -161,6 +163,7 @@ class AgencyController extends AbstractController
      * @param FileUploader $fileUploader
      * @param DataImmo $dataEntity
      * @return JsonResponse
+     * @throws Exception
      */
     public function update(Request $request, ValidatorService $validator, ApiResponse $apiResponse, ImAgency $obj,
                            FileUploader $fileUploader, DataImmo $dataEntity): JsonResponse
@@ -272,7 +275,6 @@ class AgencyController extends AbstractController
                 $obj->getTarif(),
                 $obj->getDescription(),
                 $obj->getPhone(),
-                $obj->getLegal(),
                 $obj->getEmailLocation(),
                 $obj->getEmailVente()
             ];
@@ -285,10 +287,10 @@ class AgencyController extends AbstractController
         $header = [['Nom', 'Dirname', 'Téléphone Location', 'Téléphone Vente', 'Adresse e-mail standard', 'Adresse URL',
             'Logo', 'Adresse', 'Code postal', 'Ville', 'Arrondissement', 'Latitude', 'Longitude',
             'Catégorie - locative', 'Catégorie - vente', 'Catégorie - syndic', 'Catégorie - gérance',
-            'Tarif', 'Description', 'Téléphone standard', 'Legal', 'Adresse e-mail location', 'Adresse e-mail vente'
+            'Tarif', 'Description', 'Téléphone standard', 'Adresse e-mail location', 'Adresse e-mail vente'
         ]];
 
-        $export->createFile($format, 'Liste des ' . $nameFile, $fileName , $header, $data, 23, $nameFolder);
+        $export->createFile($format, 'Liste des ' . $nameFile, $fileName , $header, $data, 22, $nameFolder);
         return new BinaryFileResponse($this->getParameter('private_directory'). $nameFolder . $fileName);
     }
 }

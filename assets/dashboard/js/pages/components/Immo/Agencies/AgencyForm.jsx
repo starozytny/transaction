@@ -20,7 +20,7 @@ const URL_UPDATE_GROUP       = "api_agencies_update";
 const TXT_CREATE_BUTTON_FORM = "Ajouter l'agence";
 const TXT_UPDATE_BUTTON_FORM = "Modifier l'agence";
 
-export function AgencyFormulaire ({ type, onChangeContext, onUpdateList, element, societies })
+export function AgencyFormulaire ({ type, onChangeContext, onUpdateList, element, societies, societyId="", isProfil=false, dirname })
 {
     let title = "Ajouter une agence";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -35,7 +35,7 @@ export function AgencyFormulaire ({ type, onChangeContext, onUpdateList, element
     let form = <AgencyForm
         context={type}
         url={url}
-        society={element ? element.society.id : ""}
+        society={element ? element.society.id : societyId}
         name={element ? element.name : ""}
         dirname={element ? element.dirname : ""}
         website={element ? element.website : ""}
@@ -64,6 +64,7 @@ export function AgencyFormulaire ({ type, onChangeContext, onUpdateList, element
         onChangeContext={onChangeContext}
         messageSuccess={msg}
         societies={societies}
+        isProfil={isProfil}
     />
 
     return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
@@ -135,7 +136,7 @@ export class AgencyForm extends Component {
         const { context, url, messageSuccess } = this.props;
         const { critere, name, dirname, website, email, emailLocation, emailVente,
             phone, phoneLocation, phoneVente, address, zipcode, city, lat, lon,
-            description, legal, society
+            description, society
         } = this.state;
 
         if(critere !== ""){
@@ -191,10 +192,12 @@ export class AgencyForm extends Component {
                 axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                     .then(function (response) {
                         let data = response.data;
-                        self.props.onUpdateList(data);
+                        Helper.toTop();
+                        if(self.props.onUpdateList){
+                            self.props.onUpdateList(data);
+                        }
                         self.setState({ success: messageSuccess, errors: [] });
                         if(context === "create"){
-                            Helper.toTop();
                             toastr.info(messageSuccess);
                             self.setState( {
                                 society: "",
@@ -237,33 +240,35 @@ export class AgencyForm extends Component {
     }
 
     render () {
-        const { context, societies } = this.props;
+        const { isProfil, context, societies } = this.props;
         const { critere, errors, success, name, dirname, website, email, emailLocation, emailVente,
                 phone, phoneLocation, phoneVente, address, zipcode, city, lat, lon, description, logo, tarif, society,
                 type, siret, rcs, cartePro, garantie, affiliation, mediation } = this.state;
 
         let selectSociety = [];
-        societies.forEach(elem => {
-            selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: elem.name.toLowerCase() })
-        });
+        if(!isProfil){
+            societies.forEach(elem => {
+                selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: elem.name.toLowerCase() })
+            });
+        }
 
         return <>
             <form onSubmit={this.handleSubmit}>
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
-                <div className="line">
+                {!isProfil && <div className="line">
                     <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
                                           placeholder={"Sélectionner la société"}
                                           errors={errors} onChange={(e) => this.handleChangeSelect("society", e)}
                     >
                         Société
                     </SelectReactSelectize>
-                </div>
+                </div>}
 
                 <div className="line line-3">
                     <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Nom / raison sociale</Input>
-                    <Input valeur={dirname} identifiant="dirname" errors={errors} onChange={this.handleChange}>Nom du ZIP</Input>
+                    {!isProfil ? <Input valeur={dirname} identifiant="dirname" errors={errors} onChange={this.handleChange}>Nom du ZIP</Input> : <div className="form-group" />}
                     <Input valeur={website} identifiant="website" errors={errors} onChange={this.handleChange}>Site internet</Input>
                 </div>
 

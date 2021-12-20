@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import parse      from "html-react-parser";
-import Routing    from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Button } from "@dashboardComponents/Tools/Button";
 
@@ -12,7 +11,7 @@ function setData (value)
 
 export class AgenciesItem extends Component {
     render () {
-        const { idAgency, isUser, elem } = this.props;
+        const { idAgency, isUser, elem, onChangeContext } = this.props;
 
         return <div className="profil-card">
             <div className="title">Description de {elem.name}</div>
@@ -76,7 +75,7 @@ export class AgenciesItem extends Component {
             </div>
 
             {(!isUser && idAgency === elem.id) && <div className="agency-data">
-                <Button >Modifier des informations</Button>
+                <Button onClick={() => onChangeContext("update", elem)}>Modifier des informations</Button>
             </div>}
         </div>
     }

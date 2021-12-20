@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { Users }        from "@userPages/components/Profil/User/Users";
-import { AgenciesList } from "@userPages/components/Profil/Agency/AgenciesList";
+import { Agencies }     from "@userPages/components/Profil/Agency/Agencies";
 import { Negotiators }  from "@userPages/components/Profil/Negotiator/Negotiators";
 
 export class UserContent extends Component {
@@ -12,6 +12,7 @@ export class UserContent extends Component {
             context: "negotiators",
             id: parseInt(props.id),
             idAgency: parseInt(props.agencyId),
+            idSociety: parseInt(props.societyId),
             isUser: props.isUser === "true",
             users: props.users,
             agencies: props.agencies,
@@ -26,7 +27,7 @@ export class UserContent extends Component {
     }
 
     render () {
-        const { context, id, idAgency, isUser, users, agencies, negotiators } = this.state;
+        const { context, id, idAgency, idSociety, isUser, users, agencies, negotiators } = this.state;
 
         let content;
         switch (context){
@@ -34,7 +35,7 @@ export class UserContent extends Component {
                 content = <div id="profil-negotiators"><Negotiators donnees={negotiators} idAgency={idAgency} isUser={isUser}/></div>
                 break;
             case "agencies":
-                content = <div id="profil-agencies"><AgenciesList donnees={agencies} idAgency={idAgency} isUser={isUser}/></div>
+                content = <div id="profil-agencies"><Agencies donnees={agencies} idSociety={idSociety} idAgency={idAgency} isUser={isUser}/></div>
                 break;
             default:
                 content = <div id="profil-users"><Users donnees={users} id={id} isUser={isUser} /></div>
