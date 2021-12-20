@@ -30,6 +30,7 @@
   }
 
   .react-selectize,
+  .steps > .item.active .number,
   .checkbox-item.checked > label, .radiobox-item.checked > label{
     color: var(--txt);
   }
