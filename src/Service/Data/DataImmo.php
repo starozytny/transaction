@@ -43,7 +43,7 @@ class DataImmo extends DataConstructor
             ['type' => 'length', 'name' => 'libelle',         'value' => $libelle, 'min' => 0, 'max' => 64]
         ];
         $noErrors = $this->validator->validateCustom($paramsToValidate);
-        if ($noErrors != true) {
+        if ($noErrors !== true) {
             return $noErrors;
         }
 
@@ -79,7 +79,7 @@ class DataImmo extends DataConstructor
             ['type' => 'text', 'name' => 'areaTotal', 'value' => $data->areaTotal],
         ];
         $noErrors = $this->validator->validateCustom($paramsToValidate);
-        if ($noErrors != true) {
+        if ($noErrors !== true) {
             return $noErrors;
         }
 
@@ -106,7 +106,7 @@ class DataImmo extends DataConstructor
             ['type' => 'text', 'name' => 'piece',  'value' => $data->piece],
         ];
         $noErrors = $this->validator->validateCustom($paramsToValidate);
-        if ($noErrors != true) {
+        if ($noErrors !== true) {
             return $noErrors;
         }
 
