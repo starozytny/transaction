@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImNegotiator;
+use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
@@ -52,7 +53,7 @@ class NegotiatorController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponseSuccessful("Success");
+        return $apiResponse->apiJsonResponse($obj, User::ADMIN_READ);
     }
 
     /**

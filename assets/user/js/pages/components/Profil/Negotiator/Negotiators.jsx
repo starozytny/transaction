@@ -4,6 +4,7 @@ import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
 
 import { NegotiatorsList }      from "./NegotiatorsList";
+import {NegotiatorFormulaire} from "@dashboardPages/components/Immo/Negociators/NegotiatorForm";
 
 const URL_DELETE_ELEMENT    = 'api_negotiators_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer ce négociateur ?';
@@ -30,6 +31,8 @@ export class Negotiators extends Component {
         this.handleSearch = this.handleSearch.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
+        this.handleContentCreate = this.handleContentCreate.bind(this);
+        this.handleContentUpdate = this.handleContentUpdate.bind(this);
     }
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
@@ -46,10 +49,22 @@ export class Negotiators extends Component {
                                 data={currentData} />
     }
 
+
+    handleContentCreate = (changeContext) => {
+        const { agencyId } = this.props;
+        return <NegotiatorFormulaire type="create" agencyId={agencyId} isProfil={true} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+    }
+
+    handleContentUpdate = (changeContext, element) => {
+        const { agencyId } = this.props;
+        return <NegotiatorFormulaire type="update" agencyId={agencyId} isProfil={true} element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+    }
+
     render () {
         return <>
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
-                    onContentList={this.handleContentList}/>
+                    onContentList={this.handleContentList}
+                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}/>
         </>
     }
 }

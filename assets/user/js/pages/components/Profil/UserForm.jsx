@@ -20,8 +20,6 @@ export function UserFormulaire ({ type, element, societyId, agencyId })
         msg = "Félicitation ! La mise à jour s'est réalisée avec succès !";
     }
 
-    console.log(element)
-
     let form = <Form
         context={type}
         url={url}

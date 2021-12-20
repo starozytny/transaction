@@ -4,7 +4,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class NegotiatorsItem extends Component {
     render () {
-        const { isUser, elem, onDelete } = this.props
+        const { isUser, elem, onDelete, onChangeContext } = this.props
 
         return <div className="item">
             <div className="item-content">
@@ -25,7 +25,7 @@ export class NegotiatorsItem extends Component {
                         </div>
                         <div className="col-3 actions">
                             {!isUser && <>
-                                <ButtonIcon icon="pencil">Modifier</ButtonIcon>
+                                <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                             </>}
                         </div>

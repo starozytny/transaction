@@ -18,7 +18,7 @@ const URL_UPDATE_GROUP       = "api_negotiators_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, element, agencies })
+export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, element, agencies, agencyId = "", isProfil = false })
 {
     let title = "Ajouter un négociateur";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -30,10 +30,12 @@ export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, ele
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
 
+    console.log(element)
+
     let form = <NegotiatorForm
         context={type}
         url={url}
-        agency={element ? element.agency.id : ""}
+        agency={element ? element.agency.id : agencyId}
         code={element ? element.code : ""}
         lastname={element ? element.lastname : ""}
         firstname={element ? element.firstname : ""}
@@ -46,6 +48,7 @@ export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, ele
         onChangeContext={onChangeContext}
         messageSuccess={msg}
         agencies={agencies}
+        isProfil={isProfil}
     />
 
     return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
@@ -117,7 +120,11 @@ export class NegotiatorForm extends Component {
                 axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                     .then(function (response) {
                         let data = response.data;
-                        self.props.onUpdateList(data);
+
+                        if(self.props.onUpdateList){
+                            self.props.onUpdateList(data);
+                        }
+
                         self.setState({ success: messageSuccess, errors: [] });
                         if(context === "create"){
                             Helper.toTop();
@@ -147,13 +154,15 @@ export class NegotiatorForm extends Component {
     }
 
     render () {
-        const { context, agencies } = this.props;
+        const { context, agencies, isProfil } = this.props;
         const { critere, errors, success, agency, lastname, firstname, phone, phone2, email, transport, immatriculation } = this.state;
 
         let selectAgency = [];
-        agencies.forEach(elem => {
-            selectAgency.push({ value: elem.id, label: elem.name, identifiant: elem.name.toLowerCase() })
-        });
+        if(!isProfil){
+            agencies.forEach(elem => {
+                selectAgency.push({ value: elem.id, label: elem.name, identifiant: elem.name.toLowerCase() })
+            });
+        }
 
         let selectTransport = [
             {value: 1, label: "Pied",                       identifiant: "pied"},
@@ -169,14 +178,14 @@ export class NegotiatorForm extends Component {
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
-                <div className="line">
+                {!isProfil && <div className="line">
                     <SelectReactSelectize items={selectAgency} identifiant="agency" valeur={agency}
                                           placeholder={"Sélectionner l'agence"}
                                           errors={errors} onChange={(e) => this.handleChangeSelect("agency", e)}
                     >
                         Agence
                     </SelectReactSelectize>
-                </div>
+                </div>}
 
                 <div className="line line-2">
                     <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>Nom</Input>
