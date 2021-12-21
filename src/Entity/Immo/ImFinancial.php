@@ -41,6 +41,12 @@ class ImFinancial
      * @ORM\Column(type="float", nullable=true)
      * @Groups({"user:read"})
      */
+    private $provisionOrdures;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
     private $tva;
 
     /**
@@ -77,7 +83,7 @@ class ImFinancial
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
-    private $typeCharge;
+    private $typeCharges;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -198,14 +204,14 @@ class ImFinancial
         return $this;
     }
 
-    public function getTypeCharge(): ?int
+    public function getTypeCharges(): ?int
     {
-        return $this->typeCharge;
+        return $this->typeCharges;
     }
 
-    public function setTypeCharge(?int $typeCharge): self
+    public function setTypeCharges(?int $typeCharges): self
     {
-        $this->typeCharge = $typeCharge;
+        $this->typeCharges = $typeCharges;
 
         return $this;
     }
@@ -218,6 +224,18 @@ class ImFinancial
     public function setTotalGeneral(?float $totalGeneral): self
     {
         $this->totalGeneral = $totalGeneral;
+
+        return $this;
+    }
+
+    public function getProvisionOrdures(): ?float
+    {
+        return $this->provisionOrdures;
+    }
+
+    public function setProvisionOrdures(?float $provisionOrdures): self
+    {
+        $this->provisionOrdures = $provisionOrdures;
 
         return $this;
     }

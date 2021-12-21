@@ -53,16 +53,20 @@ function toFormatPhone(elem){
 
 function toFormatCurrency(number)
 {
-    let num = new Intl.NumberFormat("de-DE", {style: "currency", currency: "EUR"}).format(number)
+    if(number){
+        let num = new Intl.NumberFormat("de-DE", {style: "currency", currency: "EUR"}).format(number)
 
-    let main = num.substr(0, num.length - 5);
-    let decimale = num.substr(num.length - 5, 3);
-    if(decimale === ",00"){
-        decimale = "";
+        let main = num.substr(0, num.length - 5);
+        let decimale = num.substr(num.length - 5, 3);
+        if(decimale === ",00"){
+            decimale = "";
+        }
+        num = main + decimale + " €";
+
+        return num.replaceAll('.', ' ');
     }
-    num = main + decimale + " €";
 
-    return  num.replaceAll('.', ' ');
+    return "0,00 €";
 }
 
 module.exports = {

@@ -16,6 +16,7 @@ import { Step1 } from "@userPages/components/Biens/Steps/Step1";
 import { Step2 } from "@userPages/components/Biens/Steps/Step2";
 import { Step3 } from "@userPages/components/Biens/Steps/Step3";
 import { Step4 } from "@userPages/components/Biens/Steps/Step4";
+import { Step5 } from "@userPages/components/Biens/Steps/Step5";
 
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
@@ -211,6 +212,9 @@ export class Form extends Component {
                         <Step4 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                onChangeZipcode={this.handleChangeZipcode} />
+
+                        <Step5 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                               onChangeSelect={this.handleChangeSelect} />
 
                         <div className="step-section active">
                             <div className="line line-buttons">
