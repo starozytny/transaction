@@ -2,6 +2,7 @@
 
 namespace App\Entity\Immo;
 
+use App\Entity\DataEntity;
 use App\Repository\Immo\ImOwnerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -9,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=ImOwnerRepository::class)
  */
-class ImOwner
+class ImOwner extends DataEntity
 {
     /**
      * @ORM\Id
@@ -527,6 +528,33 @@ class ImOwner
      */
     public function getFullname(): string
     {
-        return $this->getCivilityString() . " " . $this->lastname . " " . $this->firstname;
+        return $this->getFullNameString($this->lastname, $this->firstname, $this->getCivilityString());
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getFullAddress(): string
+    {
+        return $this->getFullAddressString($this->address, $this->zipcode, $this->city, $this->complement, $this->country);
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getCoFullname(): string
+    {
+        return $this->getFullNameString($this->coLastname, $this->coFirstname);
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getCoFullAddress(): string
+    {
+        return $this->getFullAddressString($this->coAddress, $this->coZipcode, $this->coCity);
     }
 }
