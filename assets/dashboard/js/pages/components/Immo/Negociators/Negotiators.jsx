@@ -24,7 +24,9 @@ export class Negotiators extends Component {
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "negotiators.pagination",
-            agencies: props.agencies ? JSON.parse(props.agencies) : []
+            agencies: props.agencies ? JSON.parse(props.agencies) : [],
+            isClient: props.isClient ? props.isClient : false,
+            isUser: props.isUser ? props.isUser : false,
         }
 
         this.layout = React.createRef();
@@ -49,17 +51,21 @@ export class Negotiators extends Component {
                                 onDelete={this.layout.current.handleDelete}
                                 onDeleteAll={this.layout.current.handleDeleteGroup}
                                 onSearch={this.handleSearch}
+                                isClient={this.state.isClient}
+                                isUser={this.state.isUser}
                                 data={currentData} />
     }
 
     handleContentCreate = (changeContext) => {
-        const { agencies } = this.state;
-        return <NegotiatorFormulaire type="create" agencies={agencies} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        const { agencies, isClient, isUser } = this.state;
+        return <NegotiatorFormulaire type="create" agencies={agencies} isClient={isClient} isUser={isUser}
+                                     onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
-        const { agencies } = this.state;
-        return <NegotiatorFormulaire type="update" agencies={agencies} element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        const { agencies, isClient, isUser } = this.state;
+        return <NegotiatorFormulaire type="update" agencies={agencies} isClient={isClient} isUser={isUser} element={element}
+                                     onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     render () {

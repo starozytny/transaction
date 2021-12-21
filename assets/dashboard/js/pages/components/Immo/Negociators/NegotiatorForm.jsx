@@ -18,7 +18,7 @@ const URL_UPDATE_GROUP       = "api_negotiators_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, element, agencies, agencyId = "", isProfil = false })
+export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, element, agencies, agencyId = "", isClient = false })
 {
     let title = "Ajouter un négociateur";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -46,7 +46,7 @@ export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, ele
         onChangeContext={onChangeContext}
         messageSuccess={msg}
         agencies={agencies}
-        isProfil={isProfil}
+        isClient={isClient}
     />
 
     return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
@@ -153,11 +153,11 @@ export class NegotiatorForm extends Component {
     }
 
     render () {
-        const { context, agencies, isProfil } = this.props;
+        const { context, agencies, isClient } = this.props;
         const { critere, errors, success, agency, lastname, firstname, phone, phone2, email, transport, immatriculation } = this.state;
 
         let selectAgency = [];
-        if(!isProfil){
+        if(!isClient){
             agencies.forEach(elem => {
                 selectAgency.push({ value: elem.id, label: elem.name, identifiant: elem.name.toLowerCase() })
             });
@@ -177,7 +177,7 @@ export class NegotiatorForm extends Component {
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
-                {!isProfil && <div className="line">
+                {!isClient && <div className="line">
                     <SelectReactSelectize items={selectAgency} identifiant="agency" valeur={agency}
                                           placeholder={"Sélectionner l'agence"}
                                           errors={errors} onChange={(e) => this.handleChangeSelect("agency", e)}

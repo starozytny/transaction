@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { Users }        from "@userPages/components/Profil/User/Users";
 import { Agencies }     from "@userPages/components/Profil/Agency/Agencies";
-import { Negotiators }  from "@userPages/components/Profil/Negotiator/Negotiators";
+import { Negotiators } from "@dashboardPages/components/Immo/Negociators/Negotiators";
 
 export class UserContent extends Component {
     constructor(props) {

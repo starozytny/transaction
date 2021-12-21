@@ -5,10 +5,10 @@ import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class NegotiatorsItem extends Component {
     render () {
-        const { elem, onChangeContext, onDelete, onSelectors } = this.props
+        const { isClient, isUser, elem, onDelete, onChangeContext, onSelectors } = this.props
 
         return <div className="item">
-            <Selector id={elem.id} onSelectors={onSelectors} />
+            {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
 
             <div className="item-content">
                 <div className="item-body">
@@ -28,7 +28,9 @@ export class NegotiatorsItem extends Component {
                         </div>
                         <div className="col-3 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                            <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            {!isUser && <>
+                                <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            </>}
                         </div>
                     </div>
                 </div>
