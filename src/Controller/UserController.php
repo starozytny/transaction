@@ -6,6 +6,7 @@ use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
+use App\Repository\Immo\ImOwnerRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -148,5 +149,16 @@ class UserController extends AbstractController
     {
         $data = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
         return $this->render('user/pages/profil/user/update.html.twig', ['elem' => $obj, 'donnees' => $data]);
+    }
+
+    /**
+     * @Route("/proprietaires", name="owners")
+     */
+    public function owners(ImOwnerRepository $repository, SerializerInterface $serializer): Response
+    {
+        $objs = $repository->findAll();
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/owners/index.html.twig', ['data' => $objs]);
     }
 }
