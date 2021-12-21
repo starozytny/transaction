@@ -13,6 +13,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImOwner extends DataEntity
 {
+    const CIVILITY_MR = 0;
+    const CIVILITY_MME = 1;
+    const CIVILITY_SOC = 2;
+    const CIVILITY_OU = 3;
+    const CIVILITY_ET = 4;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -236,7 +242,7 @@ class ImOwner extends DataEntity
      */
     public function getCivilityString(): string
     {
-        $civilities = ["Mr ou Mme", "Mr et Mme", "Mr", "Mme", "Société"];
+        $civilities = ["Mr", "Mme", "Société", "Mr ou Mme", "Mr et Mme"];
 
         return $civilities[$this->civility];
     }

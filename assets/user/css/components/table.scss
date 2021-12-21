@@ -2,6 +2,10 @@
 
 @import "../../../common/css/components/table";
 
+.role, .badge{
+  opacity: 0.8;
+}
+
 .items-table {
   margin-bottom: 24px;
   border: 1px solid var(--grey);
