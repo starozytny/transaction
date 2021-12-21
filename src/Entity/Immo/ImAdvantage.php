@@ -4,6 +4,7 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImAdvantageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImAdvantageRepository::class)
@@ -14,91 +15,109 @@ class ImAdvantage
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasGarden;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasTerrace;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasPool;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasCave;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasDigicode;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasInterphone;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasGuardian;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasAlarme;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasLift;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasClim;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasCalme;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasInternet;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasHandi;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasFibre;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read"})
      */
     private $situation;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
      */
     private $sousType;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
      */
     private $sol;
 

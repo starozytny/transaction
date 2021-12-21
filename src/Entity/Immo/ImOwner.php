@@ -4,6 +4,7 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImOwnerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImOwnerRepository::class)
@@ -14,141 +15,169 @@ class ImOwner
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read", "user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups({"admin:read", "user:read"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"admin:read", "user:read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read", "user:read"})
      */
-    private $civility;
+    private $civility = 0;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $phone1;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $phone2;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $phone3;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $complement;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $country;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="owners")
+     * @Groups({"admin:read", "user:read"})
      */
     private $negotiator;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"admin:read", "user:read"})
      */
     private $isGerance;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $codeGerance;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $folderGerance;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"admin:read", "user:read"})
      */
     private $isCoIndivisaire;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $coLastname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $coFirstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $coAddress;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $coComplement;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $coZipcode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $coCity;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $coPhone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $coEmail;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read", "user:read"})
      */
     private $category;
 
@@ -191,6 +220,17 @@ class ImOwner
         $this->firstname = $firstname;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getCivilityString(): string
+    {
+        $civilities = ["Mr ou Mme", "Mr et Mme", "Mr", "Mme", "Société"];
+
+        return $civilities[$this->civility];
     }
 
     public function getCivility(): ?int
