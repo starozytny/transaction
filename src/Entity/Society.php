@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImOwner;
 use App\Repository\SocietyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -50,10 +51,16 @@ class Society
      */
     private $imAgencies;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImOwner::class, mappedBy="society")
+     */
+    private $imOwners;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->imAgencies = new ArrayCollection();
+        $this->imOwners = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -183,5 +190,35 @@ class Society
     public function getFullname(): string
     {
         return "#" . $this->getCodeString() . " - " . $this->name;
+    }
+
+    /**
+     * @return Collection|ImOwner[]
+     */
+    public function getImOwners(): Collection
+    {
+        return $this->imOwners;
+    }
+
+    public function addImOwner(ImOwner $imOwner): self
+    {
+        if (!$this->imOwners->contains($imOwner)) {
+            $this->imOwners[] = $imOwner;
+            $imOwner->setSociety($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImOwner(ImOwner $imOwner): self
+    {
+        if ($this->imOwners->removeElement($imOwner)) {
+            // set the owning side to null (unless already changed)
+            if ($imOwner->getSociety() === $this) {
+                $imOwner->setSociety(null);
+            }
+        }
+
+        return $this;
     }
 }

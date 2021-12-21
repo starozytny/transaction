@@ -3,6 +3,7 @@
 namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
+use App\Entity\Society;
 use App\Repository\Immo\ImOwnerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -108,7 +109,7 @@ class ImOwner extends DataEntity
      * @ORM\Column(type="boolean")
      * @Groups({"admin:read", "user:read"})
      */
-    private $isGerance;
+    private $isGerance = false;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
@@ -126,7 +127,7 @@ class ImOwner extends DataEntity
      * @ORM\Column(type="boolean")
      * @Groups({"admin:read", "user:read"})
      */
-    private $isCoIndivisaire;
+    private $isCoIndivisaire = false;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -181,6 +182,12 @@ class ImOwner extends DataEntity
      * @Groups({"admin:read", "user:read"})
      */
     private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="imOwners")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $society;
 
     public function getId(): ?int
     {
@@ -556,5 +563,17 @@ class ImOwner extends DataEntity
     public function getCoFullAddress(): string
     {
         return $this->getFullAddressString($this->coAddress, $this->coZipcode, $this->coCity);
+    }
+
+    public function getSociety(): ?Society
+    {
+        return $this->society;
+    }
+
+    public function setSociety(?Society $society): self
+    {
+        $this->society = $society;
+
+        return $this;
     }
 }
