@@ -1,12 +1,25 @@
 @import "../vars/vars";
 
-.role{
+.role, .badge{
   display: inline-block;
   padding: 4px 8px 2px 8px;
   background: var(--primaryShadow);
   border-radius: 4px;
   font-size: 12px;
   opacity: 0.5;
+
+  &.default{
+    background-color: var(--grey);
+  }
+  &.danger{
+    background-color: var(--danger);
+  }
+  &.warning{
+    background-color: var(--warning);
+  }
+  &.primary{
+    background-color: var(--primary);
+  }
 }
 
 .items-table{
@@ -45,6 +58,16 @@
     @include flex(column, flex-start, flex-start);
     width: 100%;
     flex-wrap: wrap;
+  }
+
+  .badges + .name{
+    margin-top: 8px;
+  }
+
+  .badges{
+    & > .role:not(:last-child){
+      margin-right: 12px;
+    }
   }
 
   .selector{
