@@ -13,8 +13,8 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_negotiators_create";
-const URL_UPDATE_GROUP       = "api_negotiators_update";
+const URL_CREATE_ELEMENT     = "api_owners_create";
+const URL_UPDATE_GROUP       = "api_owners_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
@@ -49,14 +49,13 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
         category={element ? element.category : ""}
 
         isCoIndivisaire={element ? element.isCoIndivisaire : 0}
-        coLastname={element ? element.lastname : ""}
-        coFirstname={element ? element.firstname : ""}
-        coCivility={element ? element.civility : ""}
-        coPhone={element ? element.phone1 : ""}
-        coEmail={element ? element.email : ""}
-        coAddress={element ? element.address : ""}
-        coZipcode={element ? element.zipcode : ""}
-        coCity={element ? element.city : ""}
+        coLastname={element ? element.coLastname : ""}
+        coFirstname={element ? element.coFirstname : ""}
+        coPhone={element ? element.coPhone : ""}
+        coEmail={element ? element.coEmail : ""}
+        coAddress={element ? element.coAddress : ""}
+        coZipcode={element ? element.coZipcode : ""}
+        coCity={element ? element.coCity : ""}
 
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
@@ -92,7 +91,6 @@ export class OwnerForm extends Component {
             isCoIndivisaire: props.isCoIndivisaire,
             coLastname: props.lastname,
             coFirstname: props.firstname,
-            coCivility: props.civility,
             coPhone: props.phone1,
             coEmail: props.email,
             coAddress: props.address,
@@ -178,7 +176,6 @@ export class OwnerForm extends Component {
                                 isCoIndivisaire: 0,
                                 coLastname: "",
                                 coFirstname: "",
-                                coCivility: "",
                                 coPhone: "",
                                 coEmail: "",
                                 coAddress: "",
@@ -202,7 +199,7 @@ export class OwnerForm extends Component {
         const { context, societies, isClient } = this.props;
         const { critere, errors, success, society, lastname, firstname, civility, phone1, phone2, phone3,
             email, address, complement, zipcode, city, country, category,
-            isCoIndivisaire, coLastname, coFirstname, coCivility, coPhone, coEmail, coAddress, coZipcode, coCity,  } = this.state;
+            isCoIndivisaire, coLastname, coFirstname, coPhone, coEmail, coAddress, coZipcode, coCity,  } = this.state;
 
         let selectSociety = [];
         if(!isClient){
@@ -226,9 +223,9 @@ export class OwnerForm extends Component {
 
         let selectCategory = [
             {value: 0, label: "Habitation",             identifiant: "habitation"},
-            {value: 0, label: "Des murs",               identifiant: "des-murs"},
-            {value: 0, label: "Du fond de commerce",    identifiant: "commerce"},
-            {value: 0, label: "Location",               identifiant: "location"},
+            {value: 1, label: "Des murs",               identifiant: "des-murs"},
+            {value: 2, label: "Du fond de commerce",    identifiant: "commerce"},
+            {value: 3, label: "Location",               identifiant: "location"},
         ]
 
         return <>

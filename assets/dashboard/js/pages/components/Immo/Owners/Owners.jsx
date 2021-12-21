@@ -6,9 +6,9 @@ import Sort              from "@commonComponents/functions/sort";
 import { OwnersList }       from "./OwnersList";
 import { OwnerFormulaire }  from "./OwnerForm";
 
-const URL_DELETE_ELEMENT = 'api_negotiators_delete';
+const URL_DELETE_ELEMENT = 'api_owners_delete';
+const URL_DELETE_GROUP   = 'api_owners_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer ce négociateur ?';
-const URL_DELETE_GROUP   = 'api_negotiators_delete_group';
 const MSG_DELETE_GROUP   = 'Aucun négociateur sélectionnés.';
 const SORTER = Sort.compareLastname;
 

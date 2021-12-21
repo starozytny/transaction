@@ -12,6 +12,7 @@ use App\Entity\Immo\ImFinancial;
 use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
+use App\Entity\Immo\ImOwner;
 use App\Entity\Society;
 use Exception;
 
@@ -292,6 +293,53 @@ class DataImmo extends DataConstructor
             ->setPhone2(trim($data->phone2))
             ->setTransport((int) $data->transport)
             ->setImmatriculation(trim($data->immatriculation))
+        ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataOwner(ImOwner $obj, $data): ImOwner
+    {
+        $society = $this->em->getRepository(Society::class)->find($data->society);
+        if(!$society){
+            throw new Exception("Société introuvable.");
+        }
+
+        $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
+        $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
+        $code = mb_strtoupper(substr($lastname, 0, 1) . substr($firstname, 0, 1)) . time();
+
+        $isCoIndivisaire = $this->setToNullInteger($data->isCoIndivisaire);
+
+        if($isCoIndivisaire){
+            $obj = ($obj)
+                ->setCoLastname(mb_strtoupper($this->sanitizeData->sanitizeString($data->coLastname)))
+                ->setCoFirstname(ucfirst($this->sanitizeData->sanitizeString($data->coFirstname)))
+                ->setCoEmail(trim($data->coEmail))
+                ->setCoPhone(trim($data->coPhone))
+                ->setCoAddress(trim($data->coAddress))
+                ->setCoZipcode(trim($data->zipcode))
+                ->setCoCity(trim($data->city))
+            ;
+        }
+
+        return ($obj)
+            ->setSociety($society)
+            ->setCode($code)
+            ->setLastname($lastname)
+            ->setFirstname($firstname)
+            ->setCivility((int) $data->civility)
+            ->setEmail(trim($data->email))
+            ->setPhone1(trim($data->phone1))
+            ->setPhone2(trim($data->phone2))
+            ->setPhone3(trim($data->phone3))
+            ->setAddress(trim($data->address))
+            ->setZipcode(trim($data->zipcode))
+            ->setCity(trim($data->city))
+            ->setCountry(trim($data->country))
+            ->setCategory($this->setToNullInteger($data->category))
+            ->setIsCoIndivisaire($isCoIndivisaire)
         ;
     }
 }

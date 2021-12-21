@@ -76,7 +76,7 @@ class FakeOwnersCreate extends Command
                 ->setZipcode($fake->postcode)
                 ->setCity($fake->city)
                 ->setCountry($fake->country)
-                ->setCategory($fake->numberBetween(0, 4))
+                ->setCategory($fake->numberBetween(0, 3))
 
             ;
 

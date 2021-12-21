@@ -22,7 +22,7 @@ export class OwnersList extends Component {
     }
 
     render () {
-        const { data, onSearch, onChangeContext, onDeleteAll } = this.props;
+        const { isClient, data, onSearch, onChangeContext, onDeleteAll } = this.props;
 
         return <>
             <div>
@@ -38,7 +38,7 @@ export class OwnersList extends Component {
                 <div className="items-table">
                     <div className="items items-default">
                         <div className="item item-header">
-                            <div className="item-header-selector" />
+                            {!isClient && <div className="item-header-selector" />}
                             <div className="item-content">
                                 <div className="item-body">
                                     <div className="infos infos-col-3">
@@ -55,7 +55,7 @@ export class OwnersList extends Component {
                     </div>
                 </div>
 
-                {(data && data.length !== 0) && <div className="page-actions">
+                {(data && data.length !== 0 && !isClient) && <div className="page-actions">
                     <div className="selectors-actions">
                         <div className="item" onClick={onDeleteAll}>
                             <ButtonIcon icon="trash" text="Supprimer la sélection" />

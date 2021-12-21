@@ -33,8 +33,10 @@ export class OwnersItem extends Component {
                             <div className="sub">{elem.phone3}</div>
                         </div>
                         <div className="col-3 actions">
-                            <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                            <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            {!elem.isGerance && <>
+                                <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
+                                <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            </>}
                         </div>
                     </div>
                 </div>

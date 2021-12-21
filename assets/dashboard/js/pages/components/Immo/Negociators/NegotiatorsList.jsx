@@ -23,7 +23,7 @@ export class NegotiatorsList extends Component {
                 <div className="items-table">
                     <div className="items items-default">
                         <div className="item item-header">
-                            <div className="item-header-selector" />
+                            {!isClient && <div className="item-header-selector" />}
                             <div className="item-content">
                                 <div className="item-body">
                                     <div className="infos infos-col-3">
