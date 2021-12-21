@@ -453,6 +453,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     }
 
     /**
+<<<<<<< HEAD
      * Like C. CHHUN
      */
     public function getShortFullName(): string
@@ -512,5 +513,14 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getFullname(): string
+    {
+        return $this->getFullNameString($this->lastname, $this->firstname);
     }
 }
