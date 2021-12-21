@@ -8,7 +8,7 @@ export class OwnersItem extends Component {
         const { isClient, elem, onDelete, onSelectors, onChangeContext } = this.props;
 
         return <div className="item">
-            <Selector id={elem.id} onSelectors={onSelectors} />
+            {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
 
             <div className="item-content">
                 <div className="item-body">
