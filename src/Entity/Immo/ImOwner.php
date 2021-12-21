@@ -520,4 +520,13 @@ class ImOwner
 
         return $this;
     }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getFullname(): string
+    {
+        return $this->getCivilityString() . " " . $this->lastname . " " . $this->firstname;
+    }
 }
