@@ -49,7 +49,8 @@ export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, ele
         isClient={isClient}
     />
 
-    return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
+    return isClient ? <FormLayout url={Routing.generate('user_profil')} form={form} text="Retour à mon profil">{title}</FormLayout> :
+            <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
 }
 
 export class NegotiatorForm extends Component {
@@ -107,7 +108,6 @@ export class NegotiatorForm extends Component {
             // validate global
             let validate = Validateur.validateur(paramsToValidate)
             if(!validate.code){
-                console.log(validate)
                 Formulaire.showErrors(this, validate);
             }else{
                 Formulaire.loader(true);
@@ -119,6 +119,7 @@ export class NegotiatorForm extends Component {
                 axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                     .then(function (response) {
                         let data = response.data;
+                        Helper.toTop();
 
                         if(self.props.onUpdateList){
                             self.props.onUpdateList(data);
@@ -126,7 +127,6 @@ export class NegotiatorForm extends Component {
 
                         self.setState({ success: messageSuccess, errors: [] });
                         if(context === "create"){
-                            Helper.toTop();
                             toastr.info(messageSuccess);
                             self.setState( {
                                 agency: "",
