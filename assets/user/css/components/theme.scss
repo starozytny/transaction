@@ -15,23 +15,3 @@
     content: "\e910";
   }
 }
-
-.dark-mode{
-  .items-default, .card-ad{
-    .actions{
-      a{
-        color: var(--grey2);
-
-        &:hover{
-          color: var(--txt);
-        }
-      }
-    }
-  }
-
-  .react-selectize,
-  .steps > .item.active .number,
-  .checkbox-item.checked > label, .radiobox-item.checked > label{
-    color: var(--txt);
-  }
-}

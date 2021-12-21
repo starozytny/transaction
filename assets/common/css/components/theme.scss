@@ -41,6 +41,29 @@
   a{
     color:var(--txt);
   }
+
+  .items-default, .card-ad{
+
+    .role, .badge{
+      opacity: 0.8;
+    }
+
+    .actions{
+      a{
+        color: var(--grey2);
+
+        &:hover{
+          color: var(--txt);
+        }
+      }
+    }
+  }
+
+  .react-selectize,
+  .steps > .item.active .number,
+  .checkbox-item.checked > label, .radiobox-item.checked > label{
+    color: var(--txt);
+  }
 }
 
 //                      __   _____ __    ___    __
