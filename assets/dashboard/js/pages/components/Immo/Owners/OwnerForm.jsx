@@ -64,8 +64,8 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
         isClient={isClient}
     />
 
-    return isClient ? <FormLayout url={Routing.generate('user_profil')} form={form} text="Retour à mon profil">{title}</FormLayout> :
-    <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
+    return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
+
 }
 
 export class OwnerForm extends Component {
