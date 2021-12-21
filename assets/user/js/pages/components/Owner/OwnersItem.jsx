@@ -12,7 +12,7 @@ export class OwnersItem extends Component {
                     <div className="infos infos-col-3">
                         <div className="col-1">
                             <div className="name">
-                                <span>{elem.lastname} {elem.firstname}</span>
+                                <span>{elem.fullname}</span>
                             </div>
                         </div>
                         <div className="col-2">

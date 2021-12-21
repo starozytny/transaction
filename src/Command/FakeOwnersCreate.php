@@ -65,7 +65,7 @@ class FakeOwnersCreate extends Command
             $new = (new ImOwner())
                 ->setSociety($society)
                 ->setCode($code)
-                ->setLastname($lastname)
+                ->setLastname(mb_strtoupper($lastname))
                 ->setFirstname($firstname)
                 ->setCivility($fake->numberBetween(0, 4))
                 ->setPhone1($fake->e164PhoneNumber)
@@ -91,7 +91,7 @@ class FakeOwnersCreate extends Command
             if($fake->numberBetween(0,1) == 1){
                 $new = ($new)
                     ->setIsCoIndivisaire(true)
-                    ->setCoLastname($fake->lastName)
+                    ->setCoLastname(mb_strtoupper($fake->lastName))
                     ->setCoFirstname($fake->firstName)
                     ->setCoPhone($fake->e164PhoneNumber)
                     ->setCoEmail($fake->email)
