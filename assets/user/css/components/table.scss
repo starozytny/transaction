@@ -1,3 +1,137 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/table";
+
+.items-table {
+  margin-bottom: 24px;
+  border: 1px solid var(--grey);
+
+  & > .items{
+    & > .item{
+      &:hover{
+      background-color: var(--color0Shadow3);
+      }
+    }
+
+    & > .item:not(:last-child){
+      border-bottom: 1px solid var(--grey);
+    }
+
+    & > .item-header{
+      display: none;
+      background-color: var(--color0Shadow3);
+    }
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .items-table {
+    & > .items {
+      & > .item-header {
+        color: var(--grey3);
+      }
+    }
+  }
+  .items-default{
+
+    .infos{
+      .actions{
+        .btn-icon{
+          [class^="icon-"]{
+            font-size: 20px;
+          }
+        }
+      }
+    }
+
+    .infos-col-2{
+      .col-1{
+        width: calc(100% - 24px - 144px);
+        margin-right: 24px;
+      }
+      .col-2{
+        width: 144px;
+      }
+    }
+
+    .infos-col-3{
+      .col-1{
+        width: calc(100% - 40% - 48px - 144px);
+      }
+
+      .col-3{
+        width: 144px;
+      }
+    }
+
+    .infos-col-4{
+      .col-1{
+        width: calc(100% - 50% - 72px - 144px);
+      }
+      .col-4{
+        width: 144px;
+      }
+    }
+
+    .infos-col-5{
+      .col-1{
+        width: calc(100% - 60% - 96px - 144px);
+      }
+      .col-5{
+        width: 144px;
+      }
+    }
+  }
+}
+
+//                      __   _  __    ___   ___    __
+//                     | _| / |/ /_  / _ \ / _ \  |_ |
+//    _____ _____ _____| |  | | '_ \| | | | | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | | (_) | |_| | |_| |  | |_____|_____|_____|
+//                     | |  |_|\___/ \___/ \___/   | |
+//                     |__|                       |__|
+@media (min-width: 1600px){
+  .items-default{
+    .infos-col-2{
+      .col-1{
+        width: calc(100% - 24px - 144px);
+      }
+      .col-2{
+        width: 144px;
+      }
+    }
+
+    .infos-col-3{
+      .col-1{
+        width: calc(100% - 40% - 48px - 144px);
+      }
+      .col-3{
+        width: 144px;
+      }
+    }
+
+    .infos-col-4{
+      .col-1{
+        width: calc(100% - 50% - 72px - 144px);
+      }
+      .col-4{
+        width: 144px;
+      }
+    }
+
+    .infos-col-5{
+      .col-1{
+        width: calc(100% - 60% - 96px - 144px);
+      }
+      .col-5{
+        width: 144px;
+      }
+    }
+  }
+}

@@ -25,8 +25,8 @@
   padding-bottom: 0;
   background-color: var(--alpha);
   border-radius: 4px;
-  margin-bottom: 24px;
-  border: 1px solid var(--grey);
+  box-shadow: 0 0 10px var(--greyShadow2);
+  margin-bottom: 16px;
 
   & > .items{
     & > .item{
@@ -34,17 +34,16 @@
       padding: 24px 12px 12px 12px;
 
       &:hover{
-        background-color: var(--color0Shadow3);
+        background-color: var(--primaryNuance0);
       }
     }
 
     & > .item:not(:last-child){
-      border-bottom: 1px solid var(--grey);
+      border-bottom: 1px solid var(--fond);
     }
 
     & > .item-header{
       display: none;
-      background-color: var(--color0Shadow3);
     }
   }
 
@@ -57,6 +56,59 @@
     @include flex(column, flex-start, flex-start);
     width: 100%;
     flex-wrap: wrap;
+  }
+
+  .badges + .name{
+    margin-top: 8px;
+  }
+
+  .badges{
+    & > .badge:not(:last-child),
+    & > .role:not(:last-child){
+      margin-right: 12px;
+    }
+  }
+
+  .selector{
+    width: 14px;
+    margin-right: 14px;
+
+    input{
+      display: none;
+    }
+
+    .item-selector{
+      position: relative;
+      display: block;
+      width: 14px; height: 14px;
+      border: 1px solid var(--grey);
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:before{
+        content: "";
+        display: block;
+        width: calc(100% - 2px); height: calc(100% - 2px);
+        position: absolute;
+        top: 1px; left: 1px;
+        background: var(--primary);
+        border-radius: 4px;
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+      }
+
+      &:hover{
+        &:before{
+          opacity: 0.5;
+        }
+      }
+
+      &.true{
+        &:before{
+          opacity: 1;
+        }
+      }
+    }
   }
 }
 
@@ -176,7 +228,7 @@
         display: flex;
         font-size: 14px;
         text-transform: uppercase;
-        color: var(--grey3);
+        color: var(--grey2);
         border-bottom: none;
         overflow: hidden;
         @include fontSemibold();
@@ -246,12 +298,6 @@
       .actions{
         width: auto;
         margin-top: 0;
-
-        .btn-icon{
-          [class^="icon-"]{
-            font-size: 20px;
-          }
-        }
       }
       .col-1{
         & + *{
@@ -276,17 +322,17 @@
 
     .infos-col-2{
       .col-1{
-        width: calc(100% - 24px - 144px);
+        width: calc(100% - 24px - 120px);
         margin-right: 24px;
       }
       .col-2{
-        width: 144px;
+        width: 120px;
       }
     }
 
     .infos-col-3{
       .col-1{
-        width: calc(100% - 40% - 48px - 144px);
+        width: calc(100% - 40% - 48px - 120px);
         margin-right: 24px;
       }
       .col-2{
@@ -294,13 +340,13 @@
         margin-right: 24px;
       }
       .col-3{
-        width: 144px;
+        width: 120px;
       }
     }
 
     .infos-col-4{
       .col-1{
-        width: calc(100% - 50% - 72px - 144px);
+        width: calc(100% - 50% - 72px - 120px);
         margin-right: 24px;
       }
       .col-2{
@@ -313,13 +359,13 @@
         margin-top: 0;
       }
       .col-4{
-        width: 144px;
+        width: 120px;
       }
     }
 
     .infos-col-5{
       .col-1{
-        width: calc(100% - 60% - 96px - 144px);
+        width: calc(100% - 60% - 96px - 120px);
         margin-right: 24px;
       }
       .col-2{
@@ -337,7 +383,7 @@
         margin-top: 0;
       }
       .col-5{
-        width: 144px;
+        width: 120px;
       }
     }
   }
@@ -361,37 +407,37 @@
   .items-default{
     .infos-col-2{
       .col-1{
-        width: calc(100% - 24px - 144px);
+        width: calc(100% - 24px - 128px);
       }
       .col-2{
-        width: 144px;
+        width: 128px;
       }
     }
 
     .infos-col-3{
       .col-1{
-        width: calc(100% - 40% - 48px - 144px);
+        width: calc(100% - 40% - 48px - 128px);
       }
       .col-3{
-        width: 144px;
+        width: 128px;
       }
     }
 
     .infos-col-4{
       .col-1{
-        width: calc(100% - 50% - 72px - 144px);
+        width: calc(100% - 50% - 72px - 128px);
       }
       .col-4{
-        width: 144px;
+        width: 128px;
       }
     }
 
     .infos-col-5{
       .col-1{
-        width: calc(100% - 60% - 96px - 144px);
+        width: calc(100% - 60% - 96px - 128px);
       }
       .col-5{
-        width: 144px;
+        width: 128px;
       }
     }
   }
