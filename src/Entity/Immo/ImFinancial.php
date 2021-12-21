@@ -91,6 +91,16 @@ class ImFinancial
      */
     private $totalGeneral;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $typeBail;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $durationBail;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -236,6 +246,30 @@ class ImFinancial
     public function setProvisionOrdures(?float $provisionOrdures): self
     {
         $this->provisionOrdures = $provisionOrdures;
+
+        return $this;
+    }
+
+    public function getTypeBail(): ?int
+    {
+        return $this->typeBail;
+    }
+
+    public function setTypeBail(?int $typeBail): self
+    {
+        $this->typeBail = $typeBail;
+
+        return $this;
+    }
+
+    public function getDurationBail(): ?int
+    {
+        return $this->durationBail;
+    }
+
+    public function setDurationBail(?int $durationBail): self
+    {
+        $this->durationBail = $durationBail;
 
         return $this;
     }

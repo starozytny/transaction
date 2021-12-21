@@ -8,6 +8,7 @@ use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
+use App\Entity\Immo\ImFinancial;
 use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
@@ -29,7 +30,7 @@ class DataImmo extends DataConstructor
      * @throws Exception
      */
     public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature,
-                                ImAdvantage $advantage, ImDiag $diag, ImLocalisation $localisation)
+                                ImAdvantage $advantage, ImDiag $diag, ImLocalisation $localisation, ImFinancial $financial)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -74,6 +75,7 @@ class DataImmo extends DataConstructor
             ->setAdvantage($advantage)
             ->setDiag($diag)
             ->setLocalisation($localisation)
+            ->setFinancial($financial)
         ;
     }
 
@@ -205,6 +207,26 @@ class DataImmo extends DataConstructor
             ->setQuartier(trim($data->quartier))
             ->setLat(trim($data->lat))
             ->setLon(trim($data->lon))
+        ;
+    }
+
+    public function setDataFinancial(ImFinancial $obj, $data): ImFinancial
+    {
+        return ($obj)
+            ->setTypeCalcul($this->setToNullInteger($data->typeCalcul))
+            ->setPrice($this->setToNullFloat($data->price))
+            ->setProvisionCharges($this->setToNullFloat($data->provisionCharges))
+            ->setProvisionOrdures($this->setToNullFloat($data->provisionOrdures))
+            ->setTva($this->setToNullFloat($data->tva))
+            ->setTotalTerme($this->setToNullFloat($data->totalTerme))
+            ->setCaution($this->setToNullFloat($data->caution))
+            ->setHonoraireTtc($this->setToNullFloat($data->honoraireTtc))
+            ->setHonoraireBail($this->setToNullFloat($data->honoraireBail))
+            ->setEdl($this->setToNullFloat($data->Edl))
+            ->setTypeCalcul($this->setToNullInteger($data->typeCalcul))
+            ->setTotalGeneral($this->setToNullFloat($data->totalGeneral))
+            ->setTypeBail($this->setToNullInteger($data->typeBail))
+            ->setDurationBail($this->setToNullFloat($data->durationBail))
         ;
     }
 
