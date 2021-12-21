@@ -151,24 +151,31 @@ class ImBien extends DataEntity
     private $feature;
 
     /**
-     * @ORM\OneToOne(targetEntity=ImAdvantage::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=ImAdvantage::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $advantage;
 
     /**
-     * @ORM\OneToOne(targetEntity=ImDiag::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=ImDiag::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"user:read"})
      */
     private $diag;
 
     /**
-     * @ORM\OneToOne(targetEntity=ImLocalisation::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=ImLocalisation::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"user:read"})
      */
     private $localisation;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ImFinancial::class, fetch="EAGER", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
+     */
+    private $financial;
 
     public function __construct()
     {
@@ -474,6 +481,18 @@ class ImBien extends DataEntity
     public function setLocalisation(ImLocalisation $localisation): self
     {
         $this->localisation = $localisation;
+
+        return $this;
+    }
+
+    public function getFinancial(): ?ImFinancial
+    {
+        return $this->financial;
+    }
+
+    public function setFinancial(ImFinancial $financial): self
+    {
+        $this->financial = $financial;
 
         return $this;
     }
