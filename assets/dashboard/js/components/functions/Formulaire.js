@@ -43,7 +43,9 @@ function axiosGetDataPagination(self, url, sorter = null, perPage=10){
 function updateData(self, sorter, newContext, context, data, element){
     let nContext = (newContext !== null) ? newContext : context;
     let newData = UpdateList.update(nContext, data, element);
-    newData.sort(sorter)
+    if(sorter){
+        newData.sort(sorter)
+    }
 
     self.setState({
         data: newData,
@@ -51,7 +53,7 @@ function updateData(self, sorter, newContext, context, data, element){
     })
 }
 
-function updateDataPagination(self, sorter, newContext, context, data, element){
+function updateDataPagination(sorter, newContext, context, data, element){
     let nContext = (newContext !== null) ? newContext : context;
     let newData = UpdateList.update(nContext, data, element);
     if(sorter){
