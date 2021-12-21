@@ -91,7 +91,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/profil", options={"expose"=true}, name="profil")
+     * @Route("/compte", options={"expose"=true}, name="profil")
      */
     public function profil(SerializerInterface $serializer): Response
     {
@@ -100,12 +100,12 @@ class UserController extends AbstractController
         /** @var User $obj */
         $obj = $this->getUser();
 
-        $users    = $em->getRepository(User::class)->findBy(['society' => $obj->getSociety()]);
-        $agencies = $em->getRepository(ImAgency::class)->findBy(['society' => $obj->getSociety()]);
+        $users       = $em->getRepository(User::class)->findBy(['society' => $obj->getSociety()]);
+        $agencies    = $em->getRepository(ImAgency::class)->findBy(['society' => $obj->getSociety()]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
 
-        $users    = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
-        $agencies = $serializer->serialize($agencies, 'json', ['groups' => User::ADMIN_READ]);
+        $users       = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
+        $agencies    = $serializer->serialize($agencies, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/profil/index.html.twig',  [
