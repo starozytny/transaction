@@ -426,4 +426,13 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     {
         return (string) $this->username;
     }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getFullname(): string
+    {
+        return $this->getFullNameString($this->lastname, $this->firstname);
+    }
 }
