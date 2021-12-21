@@ -1,0 +1,10 @@
+{% extends 'admin/pages/immo/template.html.twig' %}
+
+{% set page_title %}Liste des propriétaires{% endset %}
+{% set submenuActive = "Propriétaires" %}
+
+{% block main_content %}
+    <div id="owners" data-donnees="{{ donnees }}" data-societies="{{ societies }}">
+        {% include "dashboard/layout/components/spinner.html.twig" %}
+    </div>
+{% endblock %}

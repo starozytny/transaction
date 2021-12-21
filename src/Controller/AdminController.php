@@ -6,6 +6,7 @@ use App\Entity\Contact;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
+use App\Entity\Immo\ImOwner;
 use App\Entity\Notification;
 use App\Entity\Settings;
 use App\Entity\Society;
@@ -178,6 +179,20 @@ class AdminController extends AbstractController
         return $this->render('admin/pages/immo/negotiators.html.twig', [
             'donnees' => $objs,
             'agencies' => $agencies,
+        ]);
+    }
+
+    /**
+     * @Route("/immobilier/proprietaires", name="owners_index")
+     */
+    public function owners(SerializerInterface $serializer): Response
+    {
+        $objs = $this->getAllData(ImOwner::class, $serializer);
+        $societies = $this->getAllData(Society::class, $serializer);
+
+        return $this->render('admin/pages/immo/owners.html.twig', [
+            'donnees' => $objs,
+            'societies' => $societies,
         ]);
     }
 }

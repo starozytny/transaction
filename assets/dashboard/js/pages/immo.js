@@ -6,7 +6,8 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min';
 import React from "react";
 import { render } from "react-dom";
 import { Agency } from "@dashboardPages/components/Immo/Agencies/Agency";
-import { Negotiators } from "@dashboardPages/components/Immo/Negociators/Negotiators";
+import { Negotiators }  from "@dashboardPages/components/Immo/Negociators/Negotiators";
+import { Owners }       from "@dashboardPages/components/Immo/Owners/Owners";
 
 Routing.setRoutingData(routes);
 
@@ -18,4 +19,9 @@ if(el){
 el = document.getElementById("negotiators");
 if(el){
     render(<Negotiators {...el.dataset} />, el)
+}
+
+el = document.getElementById("owners");
+if(el){
+    render(<Owners {...el.dataset} />, el)
 }

@@ -192,6 +192,7 @@ class ImOwner extends DataEntity
     /**
      * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="imOwners")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"admin:read", "user:read"})
      */
     private $society;
 

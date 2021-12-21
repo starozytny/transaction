@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
+import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class OwnersItem extends Component {
     render () {
-        const { elem, onDelete, onChangeContext } = this.props;
+        const { isClient, elem, onDelete, onSelectors, onChangeContext } = this.props;
 
         return <div className="item">
+            <Selector id={elem.id} onSelectors={onSelectors} />
+
             <div className="item-content">
                 <div className="item-body">
                     <div className="infos infos-col-3">
@@ -21,9 +24,10 @@ export class OwnersItem extends Component {
                             <div className="name">
                                 <span>{elem.fullname}</span>
                             </div>
-                            <div className="sub">{elem.email}</div>
+                            {!isClient && <div className="sub">{elem.society.fullname}</div>}
                         </div>
                         <div className="col-2">
+                            <div className="sub">{elem.email}</div>
                             <div className="sub">{elem.phone1}</div>
                             <div className="sub">{elem.phone2}</div>
                             <div className="sub">{elem.phone3}</div>

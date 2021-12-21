@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
 
-import { OwnersList }      from "./OwnersList";
+import { OwnersList }       from "./OwnersList";
+import { OwnerFormulaire }  from "./OwnerForm";
 
-const URL_DELETE_ELEMENT    = 'api_users_delete';
-const URL_DELETE_GROUP      = 'api_users_delete_group';
-const MSG_DELETE_ELEMENT    = 'Supprimer cet propriétaire ?';
-const MSG_DELETE_GROUP      = 'Aucun propriétaire sélectionné.';
+const URL_DELETE_ELEMENT = 'api_negotiators_delete';
+const MSG_DELETE_ELEMENT = 'Supprimer ce négociateur ?';
+const URL_DELETE_GROUP   = 'api_negotiators_delete_group';
+const MSG_DELETE_GROUP   = 'Aucun négociateur sélectionnés.';
 const SORTER = Sort.compareLastname;
 
 export class Owners extends Component {
@@ -17,13 +18,14 @@ export class Owners extends Component {
 
         this.state = {
             perPage: 10,
-            currentPage: 0,
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
-            sessionName: "user.owners.pagination"
+            sessionName: "societies.pagination",
+            societies: props.societies ? JSON.parse(props.societies) : [],
+            isClient: props.isClient ? props.isClient : false
         }
 
         this.layout = React.createRef();
@@ -31,6 +33,8 @@ export class Owners extends Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleContentCreate = this.handleContentCreate.bind(this);
+        this.handleContentUpdate = this.handleContentUpdate.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
     }
@@ -46,13 +50,27 @@ export class Owners extends Component {
                            onDelete={this.layout.current.handleDelete}
                            onDeleteAll={this.layout.current.handleDeleteGroup}
                            onSearch={this.handleSearch}
+                           isClient={this.state.isClient}
                            data={currentData} />
+    }
+
+    handleContentCreate = (changeContext) => {
+        const { societies, isClient } = this.state;
+        return <OwnerFormulaire type="create" societies={societies} isClient={isClient}
+                                onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+    }
+
+    handleContentUpdate = (changeContext, element) => {
+        const { societies, isClient } = this.state;
+        return <OwnerFormulaire type="update" societies={societies} isClient={isClient} element={element}
+                                onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     render () {
         return <>
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
-                    onContentList={this.handleContentList}/>
+                    onContentList={this.handleContentList}
+                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}/>
         </>
     }
 }
