@@ -48,6 +48,7 @@ export class Layout extends Component {
             loadPageError: false,
             loadData: true,
             data: null,
+            dataImmuable: null,
             currentData: null,
             element: null,
             filters: [],
@@ -95,9 +96,9 @@ export class Layout extends Component {
     handleUpdateList = (element, newContext = null) => {
         const { data, dataImmuable, currentData, context, perPage, sorter} = this.state
 
-        let newData = Formulaire.updateDataPagination(this, sorter, newContext, context, data, element, perPage);
-        let newDataImmuable = Formulaire.updateDataPagination(this, sorter, newContext, context, dataImmuable, element, perPage);
-        let newCurrentData = Formulaire.updateDataPagination(this, sorter, newContext, context, currentData, element, perPage);
+        let newData = Formulaire.updateDataPagination(sorter, newContext, context, data, element, perPage);
+        let newDataImmuable = Formulaire.updateDataPagination(sorter, newContext, context, dataImmuable, element, perPage);
+        let newCurrentData = Formulaire.updateDataPagination(sorter, newContext, context, currentData, element, perPage);
 
         this.setState({
             data: newData,
@@ -121,9 +122,9 @@ export class Layout extends Component {
         let elements = getData(donnees, sorter, search, type, context, nContext);
 
         let data = elements[0];
-        let dataImmuable = elements[0];
-        let elem = elements[1];
-        let newContext = elements[2];
+        let dataImmuable = elements[1];
+        let elem = elements[2];
+        let newContext = elements[3];
 
         if(filters){
             data = this.handleGetFilters(filters, filterFunction, data)
@@ -138,9 +139,9 @@ export class Layout extends Component {
 
         let elements = getData(donnees, sorter, search, type, context, nContext);
 
-        let data = elements[0];
-        let elem = elements[1];
-        let newContext = elements[2];
+        let data = elements[0]; // 1 = immuable
+        let elem = elements[2];
+        let newContext = elements[3];
 
         this.setState({ context: newContext, data: data, loadPageError: false, loadData: false, element: elem })
     }
@@ -297,10 +298,11 @@ function initPageWithSearch(data, search, type, context, nContext)
 function getData(donnees, sorter, search, type, context, nContext)
 {
     let data = initData(donnees, sorter);
+    let dataImmuable = initData(donnees, sorter);
 
     let element = initPageWithSearch(data, search, type, context, nContext);
     let elem = element[0];
     let newContext = element[1];
 
-    return [data, elem, newContext];
+    return [data, dataImmuable, elem, newContext];
 }
