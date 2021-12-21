@@ -84,7 +84,7 @@ class FakeOwnersCreate extends Command
                 $new = ($new)
                     ->setIsGerance(true)
                     ->setCodeGerance(time())
-                    ->setFolderGerance($fake->slug)
+                    ->setFolderGerance(time())
                 ;
             }
 

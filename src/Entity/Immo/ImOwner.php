@@ -533,9 +533,18 @@ class ImOwner extends DataEntity
      * @return string
      * @Groups({"admin:read", "user:read"})
      */
-    public function getFullname(): string
+    public function getFullnameCivility(): string
     {
         return $this->getFullNameString($this->lastname, $this->firstname, $this->getCivilityString());
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getFullname(): string
+    {
+        return $this->getFullNameString($this->lastname, $this->firstname);
     }
 
     /**
