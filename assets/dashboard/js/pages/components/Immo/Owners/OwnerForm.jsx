@@ -18,7 +18,9 @@ const URL_UPDATE_GROUP       = "api_owners_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element, societies, societyId = "", isClient = false })
+export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element, isClient = false,
+                                     societies, societyId = "", agencies, agencyId = "",
+                                     negotiators })
 {
     let title = "Ajouter un propriétaire";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -34,6 +36,8 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
         context={type}
         url={url}
         society={element ? element.society.id : societyId}
+        agency={element ? element.agency.id : agencyId}
+        negotiator={element ? element.negotiator.id : ""}
         lastname={element ? element.lastname : ""}
         firstname={element ? element.firstname : ""}
         civility={element ? element.civility : 3}
@@ -61,6 +65,8 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
         onChangeContext={onChangeContext}
         messageSuccess={msg}
         societies={societies}
+        agencies={agencies}
+        negotiators={negotiators}
         isClient={isClient}
     />
 
@@ -74,6 +80,8 @@ export class OwnerForm extends Component {
 
         this.state = {
             society: props.society,
+            agency: props.agency,
+            negotiator: props.negotiator,
             lastname: props.lastname,
             firstname: props.firstname,
             civility: props.civility,
@@ -114,7 +122,22 @@ export class OwnerForm extends Component {
 
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
 
-    handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
+    handleChangeSelect = (name, e) => {
+        const { negotiator } = this.state;
+        let nego = negotiator;
+        if(name === "society" || name === "agency"){
+            if(e === undefined){
+                nego = "";
+                let label = document.querySelector("label[for='negotiator'] + .react-selectize .simple-value > span");
+                if(label){
+                    label.innerHTML = "";
+                }
+            }
+        }
+
+        console.log(nego)
+        this.setState({ [name]: e !== undefined ? e.value : "", negotiator: nego })
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -160,6 +183,8 @@ export class OwnerForm extends Component {
                             toastr.info(messageSuccess);
                             self.setState( {
                                 society: "",
+                                agency: "",
+                                negotiator: "",
                                 lastname: "",
                                 firstname: "",
                                 civility: 3,
@@ -196,17 +221,10 @@ export class OwnerForm extends Component {
     }
 
     render () {
-        const { context, societies, isClient } = this.props;
-        const { critere, errors, success, society, lastname, firstname, civility, phone1, phone2, phone3,
+        const { context, societies, agencies, negotiators, isClient } = this.props;
+        const { critere, errors, success, society, agency, negotiator, lastname, firstname, civility, phone1, phone2, phone3,
             email, address, complement, zipcode, city, country, category,
             isCoIndivisaire, coLastname, coFirstname, coPhone, coEmail, coAddress, coZipcode, coCity,  } = this.state;
-
-        let selectSociety = [];
-        if(!isClient){
-            societies.forEach(elem => {
-                selectSociety.push({ value: elem.id, label: elem.fullname, identifiant: elem.name.toLowerCase() })
-            });
-        }
 
         let coindivisaireItems = [
             {value: 1, label: "Oui", identifiant: "oui"},
@@ -228,32 +246,33 @@ export class OwnerForm extends Component {
             {value: 3, label: "Location",               identifiant: "location"},
         ]
 
+        let selectSociety = [];
+        let selectAgency = [];
+        let selectNegotiator = [];
+        if(context !== "profil" && !isClient){
+            let selectorsData = Helper.selectorsImmo(societies, society, agencies, agency, negotiators, negotiator);
+            selectSociety = selectorsData[0];
+            selectAgency = selectorsData[1];
+            selectNegotiator = selectorsData[2];
+        }
+
         return <>
             <form onSubmit={this.handleSubmit}>
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
-                <div className="line-separator">
-                    <div className="title">Informations générales</div>
-                </div>
-
-                {!isClient && <div className="line">
-                    <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
-                                          placeholder={"Sélectionner la société"}
-                                          errors={errors} onChange={(e) => this.handleChangeSelect("society", e)}
-                    >
-                        Société
-                    </SelectReactSelectize>
-                </div>}
-
-                <div className="line">
-                    <Radiobox items={civilityItems} identifiant="civility" valeur={civility} errors={errors} onChange={this.handleChange}>
-                        Civilité
-                    </Radiobox>
-                </div>
-
                 <div className="line line-2">
                     <div className="form-group">
+                        <div className="line-separator">
+                            <div className="title">Informations générales</div>
+                        </div>
+
+                        <div className="line">
+                            <Radiobox items={civilityItems} identifiant="civility" valeur={civility} errors={errors} onChange={this.handleChange}>
+                                Civilité
+                            </Radiobox>
+                        </div>
+
                         <div className="line line-2">
                             <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>Nom</Input>
                             <Input valeur={firstname} identifiant="firstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
@@ -265,7 +284,36 @@ export class OwnerForm extends Component {
                             </Select>
                         </div>
                     </div>
-                    <div className="form-group" />
+                    <div className="form-group">
+                        <div className="line-separator">
+                            <div className="title">Négociateur</div>
+                        </div>
+
+                        {!isClient && <div className="line">
+                            <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
+                                                  placeholder={"Sélectionner la société"}
+                                                  errors={errors} onChange={(e) => this.handleChangeSelect("society", e)}
+                            >
+                                Société
+                            </SelectReactSelectize>
+                            <SelectReactSelectize items={selectAgency} identifiant="agency" valeur={agency}
+                                                  placeholder={"Sélectionner l'agence"}
+                                                  errors={errors} onChange={(e) => this.handleChangeSelect("agency", e)}
+                            >
+                                Agence
+                            </SelectReactSelectize>
+                        </div>}
+
+                        {(society && agency) ? <div className="line">
+                            <SelectReactSelectize items={selectNegotiator} identifiant="negotiator" valeur={negotiator}
+                                                  placeholder={"Sélectionner le négociateur"}
+                                                  errors={errors} onChange={(e) => this.handleChangeSelect("negotiator", e)}
+                            >
+                                Négociateur
+                            </SelectReactSelectize>
+                        </div> : <Alert type="reverse">Veuillez choisir la société et l'agence avant de pouvoir affecter un négociateur.</Alert>}
+
+                    </div>
                 </div>
 
                 <div className="line line-2">

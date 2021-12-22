@@ -25,6 +25,8 @@ export class Owners extends Component {
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "societies.pagination",
             societies: props.societies ? JSON.parse(props.societies) : [],
+            agencies: props.agencies ? JSON.parse(props.agencies) : [],
+            negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             isClient: props.isClient ? props.isClient : false
         }
 
@@ -55,14 +57,14 @@ export class Owners extends Component {
     }
 
     handleContentCreate = (changeContext) => {
-        const { societies, isClient } = this.state;
-        return <OwnerFormulaire type="create" societies={societies} isClient={isClient}
+        const { societies, agencies, negotiators, isClient } = this.state;
+        return <OwnerFormulaire type="create" societies={societies} agencies={agencies} negotiators={negotiators} isClient={isClient}
                                 onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
-        const { societies, isClient } = this.state;
-        return <OwnerFormulaire type="update" societies={societies} isClient={isClient} element={element}
+        const { societies, agencies, negotiators, isClient } = this.state;
+        return <OwnerFormulaire type="update" societies={societies} agencies={agencies} negotiators={negotiators} isClient={isClient} element={element}
                                 onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 

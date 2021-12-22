@@ -192,32 +192,11 @@ export class Form extends Component {
         }
 
         let selectSociety = [];
-        if(context !== "profil" && !isProfil){
-            societies.forEach(elem => {
-                let add = agency === "";
-
-                if(agency !== ""){
-                    agencies.forEach(el => {
-                        if(el.id === agency && el.society.id === elem.id){
-                            add = true;
-                        }
-                    })
-                }
-
-                if(add){
-                    selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: elem.name.toLowerCase() })
-                }
-            });
-        }
-
         let selectAgency = [];
         if(context !== "profil" && !isProfil){
-            agencies.forEach(elem => {
-                let add = society === "" ? true : (elem.society.id === society);
-                if(add){
-                    selectAgency.push({ value: elem.id, label: elem.name, identifiant: elem.id })
-                }
-            });
+            let selectorsData = Helper.selectorsImmo(societies, society, agencies, agency);
+            selectSociety = selectorsData[0];
+            selectAgency = selectorsData[1];
         }
 
         return <>

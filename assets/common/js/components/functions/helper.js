@@ -185,6 +185,44 @@ function toTop() {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
+function selectorsImmo(societies, society, agencies, agency, negotiators = null, negotiator = "") {
+    let selectSociety = [];
+    let selectAgency = [];
+    let selectNegotiator = [];
+
+    societies.forEach(elem => {
+        let add = agency === "";
+
+        if(agency !== ""){
+            agencies.forEach(el => {
+                if(el.id === agency && el.society.id === elem.id){
+                    add = true;
+                }
+            })
+        }
+
+        if(add){
+            selectSociety.push({ value: elem.id, label: "#" + elem.codeString + " - " + elem.name, identifiant: "societe-" + elem.id })
+        }
+    });
+
+    agencies.forEach(elem => {
+        let add = society === "" ? true : (elem.society.id === society);
+        if(add){
+            selectAgency.push({ value: elem.id, label: elem.name, identifiant: "agence-" + elem.id })
+        }
+    });
+
+    negotiators.forEach(elem => {
+        let add = agency === "" ? true : (elem.agency.id === agency);
+        if(add){
+            selectNegotiator.push({ value: elem.id, label: elem.fullname, identifiant: "nego-" + elem.id })
+        }
+    })
+
+    return [selectSociety, selectAgency, selectNegotiator];
+}
+
 module.exports = {
     getPostalCodes,
     setCityFromZipcode,
@@ -195,5 +233,6 @@ module.exports = {
     extractDateToArray,
     getNbDayBetweenDateArray,
     downloadBinaryFile,
-    toTop
+    toTop,
+    selectorsImmo
 }
