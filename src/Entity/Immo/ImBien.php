@@ -14,6 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImBien extends DataEntity
 {
+    const TOTAL_READ_BY_OWNER = ["bien-owner:read"];
+
     const ANSWER_NO = 0;
     const ANSWER_YES = 1;
     const ANSWER_UNKNOWN = 99;
@@ -180,6 +182,7 @@ class ImBien extends DataEntity
 
     /**
      * @ORM\ManyToOne(targetEntity=ImOwner::class, inversedBy="biens")
+     * @Groups({"bien-owner:read"})
      */
     private $owner;
 

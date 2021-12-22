@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
@@ -160,15 +161,18 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $objs = $repository->findBy(['society' => $user->getSociety()]);
+        $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $objs]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+        $biens = $serializer->serialize($biens, 'json', ['groups' => ImBien::TOTAL_READ_BY_OWNER]);
 
         return $this->render('user/pages/owners/index.html.twig', [
             'data' => $objs,
             'user' => $user,
             'negotiators' => $negotiators,
+            'biens' => $biens,
         ]);
     }
 }

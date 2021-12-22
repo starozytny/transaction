@@ -25,7 +25,7 @@ class ImOwner extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "bien-owner:read"})
      */
     private $id;
 
@@ -199,8 +199,7 @@ class ImOwner extends DataEntity
     private $society;
 
     /**
-     * @ORM\OneToMany(targetEntity=ImBien::class, fetch="EAGER", mappedBy="owner")
-     * @Groups({"admin:read", "user:read"})
+     * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="owner")
      */
     private $biens;
 

@@ -189,16 +189,24 @@ class FakeBiensCreate extends Command
 
             $obj = $this->dataImmo->setDataBien(new ImBien(), $data, $area, $number, $feature, $advantage, $diag, $localisation, $financial);
 
+            $choicesOwners = [];
+            foreach($owners as $ow){
+                if($ow->getNegotiator() && $ow->getNegotiator()->getAgency()->getId() == $user->getAgency()->getId()){
+                    $choicesOwners[] = $ow;
+                }
+            }
+            $owner = null;
+            if(count($choicesOwners) > 0){
+                $owner = $choicesOwners[$fake->numberBetween(0,count($choicesOwners) - 1)];
+            }
+
             $obj = ($obj)
                 ->setUser($user)
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(uniqid().bin2hex(random_bytes(8)) . random_int(100,999))
                 ->setAgency($user->getAgency())
+                ->setOwner($owner)
             ;
-
-            do{
-                $owner = $owners[$fake->numberBetween(0,$nbOwners - 1)];
-            }while($owner->getNegotiator() && $owner->getNegotiator()->getAgency()->getId() !== $user->getAgency()->getId());
 
             $this->em->persist($obj);
         }

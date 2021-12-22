@@ -5,7 +5,14 @@ import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class OwnersItem extends Component {
     render () {
-        const { isClient, elem, onDelete, onSelectors, onChangeContext } = this.props;
+        const { isClient, biens, elem, onDelete, onSelectors, onChangeContext } = this.props;
+
+        let totalBien = 0;
+        biens.forEach(bien => {
+            if(bien.owner && bien.owner.id === elem.id){
+                totalBien++;
+            }
+        })
 
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
@@ -25,7 +32,8 @@ export class OwnersItem extends Component {
                                 <span>{elem.fullname}</span>
                             </div>
                             {!isClient && <div className="sub">{elem.society.fullname}</div>}
-                            <div>{elem.biens.length}</div>
+                            {/*<div>{elem.biens.length}</div>*/}
+                            <div className="sub">{totalBien} bien{totalBien > 1 ? "s" : ""}</div>
                         </div>
                         <div className="col-2">
                             <div className="sub">{elem.email}</div>

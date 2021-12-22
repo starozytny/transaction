@@ -29,6 +29,7 @@ export class Owners extends Component {
             societies: props.societies ? JSON.parse(props.societies) : [],
             agencies: props.agencies ? JSON.parse(props.agencies) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
+            biens: props.biens ? JSON.parse(props.biens) : [],
             isClient: props.isClient ? props.isClient : false
         }
 
@@ -55,6 +56,7 @@ export class Owners extends Component {
                            onDeleteAll={this.layout.current.handleDeleteGroup}
                            onSearch={this.handleSearch}
                            isClient={this.state.isClient}
+                           biens={this.state.biens}
                            data={currentData} />
     }
 

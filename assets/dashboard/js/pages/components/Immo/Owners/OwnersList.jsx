@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 
-import Routing                    from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
-
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
-import {Button, ButtonIcon, ButtonIconDropdown} from "@dashboardComponents/Tools/Button";
+import {Button, ButtonIcon}       from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
 
 import { OwnersItem }   from "./OwnersItem";
