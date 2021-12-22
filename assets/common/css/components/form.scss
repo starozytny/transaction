@@ -82,16 +82,13 @@
     margin-bottom: 4px;
   }
 
-  & > .form-group:not(:last-child){
+  & > .form-files,
+  & > .form-group{
     margin-bottom: 8px;
   }
 
   & > .line:last-child{
     margin-bottom: 0;
-  }
-
-  & + .line{
-    margin-top: 12px;
   }
 }
 
