@@ -26,6 +26,10 @@ class DataImmo extends DataConstructor
     {
         return $value != "" ? (int) $value : null;
     }
+    private function setToFalseEmpty($value): ?int
+    {
+        return $value != "" ? (int) $value == 1 : ImBien::ANSWER_UNKNOWN;
+    }
 
     /**
      * @throws Exception
@@ -138,8 +142,8 @@ class DataImmo extends DataConstructor
     public function setDataFeature(ImFeature $obj, $data): ImFeature
     {
         return ($obj)
-            ->setIsMeuble($this->setToNullInteger($data->isMeuble))
-            ->setIsNew($this->setToNullInteger($data->isNew))
+            ->setIsMeuble($this->setToFalseEmpty($data->isMeuble))
+            ->setIsNew($this->setToFalseEmpty($data->isNew))
             ->setDispoAt($this->createDate($data->dispoAt))
             ->setBuildAt($this->setToNullInteger($data->buildAt))
             ->setFloor(trim($data->floor))
@@ -147,7 +151,7 @@ class DataImmo extends DataConstructor
             ->setCodeHeater($this->setToNullInteger($data->codeHeater))
             ->setCodeHeater0($this->setToNullInteger($data->codeHeater0))
             ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
-            ->setIsWcSeparate($this->setToNullInteger($data->isWcSeparate))
+            ->setIsWcSeparate($this->setToFalseEmpty($data->isWcSeparate))
             ->setExposition($this->setToNullInteger($data->exposition))
         ;
     }
@@ -155,20 +159,20 @@ class DataImmo extends DataConstructor
     public function setDataAdvantage(ImAdvantage $obj, $data): ImAdvantage
     {
         return ($obj)
-            ->setHasGarden($this->setToNullInteger($data->hasGarden))
-            ->setHasTerrace($this->setToNullInteger($data->hasTerrace))
-            ->setHasPool($this->setToNullInteger($data->hasPool))
-            ->setHasCave($this->setToNullInteger($data->hasCave))
-            ->setHasDigicode($this->setToNullInteger($data->hasDigicode))
-            ->setHasInterphone($this->setToNullInteger($data->hasInterphone))
-            ->setHasGuardian($this->setToNullInteger($data->hasGuardian))
-            ->setHasAlarme($this->setToNullInteger($data->hasAlarme))
-            ->setHasLift($this->setToNullInteger($data->hasLift))
-            ->setHasClim($this->setToNullInteger($data->hasClim))
-            ->setHasCalme($this->setToNullInteger($data->hasCalme))
-            ->setHasInternet($this->setToNullInteger($data->hasInternet))
-            ->setHasHandi($this->setToNullInteger($data->hasHandi))
-            ->setHasFibre($this->setToNullInteger($data->hasFibre))
+            ->setHasGarden($this->setToFalseEmpty($data->hasGarden))
+            ->setHasTerrace($this->setToFalseEmpty($data->hasTerrace))
+            ->setHasPool($this->setToFalseEmpty($data->hasPool))
+            ->setHasCave($this->setToFalseEmpty($data->hasCave))
+            ->setHasDigicode($this->setToFalseEmpty($data->hasDigicode))
+            ->setHasInterphone($this->setToFalseEmpty($data->hasInterphone))
+            ->setHasGuardian($this->setToFalseEmpty($data->hasGuardian))
+            ->setHasAlarme($this->setToFalseEmpty($data->hasAlarme))
+            ->setHasLift($this->setToFalseEmpty($data->hasLift))
+            ->setHasClim($this->setToFalseEmpty($data->hasClim))
+            ->setHasCalme($this->setToFalseEmpty($data->hasCalme))
+            ->setHasInternet($this->setToFalseEmpty($data->hasInternet))
+            ->setHasHandi($this->setToFalseEmpty($data->hasHandi))
+            ->setHasFibre($this->setToFalseEmpty($data->hasFibre))
             ->setSituation(trim($data->situation))
             ->setSousType($this->setToNullInteger($data->sousType))
             ->setSol($this->setToNullInteger($data->sol))
@@ -181,9 +185,9 @@ class DataImmo extends DataConstructor
     public function setDataDiag(ImDiag $obj, $data): ImDiag
     {
         return ($obj)
-            ->setBeforeJuly($this->setToNullInteger($data->beforeJuly))
-            ->setIsVirgin($this->setToNullInteger($data->isVirgin))
-            ->setIsSend($this->setToNullInteger($data->isSend))
+            ->setBeforeJuly($this->setToFalseEmpty($data->beforeJuly))
+            ->setIsVirgin($this->setToFalseEmpty($data->isVirgin))
+            ->setIsSend($this->setToFalseEmpty($data->isSend))
             ->setCreatedAtDpe($this->createDate($data->createdAtDpe))
             ->setReferenceDpe($this->setToNullInteger($data->referenceDpe))
             ->setDpeLetter($this->setToNullInteger($data->dpeLetter))
