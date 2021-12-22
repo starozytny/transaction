@@ -23,8 +23,8 @@ class ImBien extends DataEntity
     const AD_VENTE              = 0;
     const AD_LOCATION           = 1;
     const AD_VIAGER             = 2;
-    const AD_CESSION_BAIL       = 3;
-    const AD_PDT_INVEST         = 4;
+    const AD_PDT_INVEST         = 3;
+    const AD_CESSION_BAIL       = 4;
     const AD_LOCATION_VAC       = 5;
     const AD_VENTE_PRESTIGE     = 6;
     const AD_FOND_COMMERCE      = 7;
@@ -231,7 +231,7 @@ class ImBien extends DataEntity
      */
     public function getTypeAdString(): string
     {
-        $data = ["Vente", "Location", "Viager", "Cession bail", "Produit d'investissement", "Location vacances", "Vente prestige", "Fond de commerce"];
+        $data = ["Vente", "Location", "Viager", "Produit d'investissement", "Cession bail", "Location vacances", "Vente prestige", "Fond de commerce"];
 
         return $data[$this->codeTypeAd];
     }
