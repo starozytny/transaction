@@ -310,6 +310,10 @@ class DataImmo extends DataConstructor
         if(!$society){
             throw new Exception("Société introuvable.");
         }
+        $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+        if(!$negotiator){
+            throw new Exception("Négociateur introuvable.");
+        }
 
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
         $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
@@ -331,6 +335,7 @@ class DataImmo extends DataConstructor
 
         return ($obj)
             ->setSociety($society)
+            ->setNegotiator($negotiator)
             ->setCode($code)
             ->setLastname($lastname)
             ->setFirstname($firstname)
