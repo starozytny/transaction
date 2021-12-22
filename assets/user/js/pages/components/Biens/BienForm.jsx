@@ -137,7 +137,7 @@ export function BienFormulaire ({ type, element, negotiators })
         honoraireTtc={element ? setValueEmptyIfNull(financial, financial.honoraireTtc) : ""}
         honoraireBail={element ? setValueEmptyIfNull(financial, financial.honoraireBail) : ""}
         edl={element ? setValueEmptyIfNull(financial, financial.edl) : ""}
-        typeCharges={element ? setValueEmptyIfNull(financial, financial.typeCharges) : ""}
+        typeCharges={element ? setValueEmptyIfNull(financial, financial.typeCharges) : 0}
         totalGeneral={element ? setValueEmptyIfNull(financial, financial.totalGeneral) : ""}
         typeBail={element ? setValueEmptyIfNull(financial, financial.typeBail) : ""}
         durationBail={element ? setValueEmptyIfNull(financial, financial.durationBail) : ""}

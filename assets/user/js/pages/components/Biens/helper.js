@@ -1,5 +1,26 @@
 function getItems (type, prefix) {
     switch (type) {
+        case "bails":
+            return [
+                { value: 0, label: 'Habitation',     identifiant: 'habitation' },
+                { value: 1, label: 'Commercial',     identifiant: 'commercial' },
+                { value: 2, label: 'Meublé',         identifiant: 'meublé' },
+                { value: 3, label: 'Professionnel',  identifiant: 'professionnel' },
+                { value: 4, label: 'Garage',         identifiant: 'garage' },
+            ];
+        case "charges":
+            return [
+                { value: 0, label: 'Régularisation annuelle',  identifiant: 'regularisation' },
+                { value: 1, label: 'Charges forfaitaires',     identifiant: 'charges-fo' },
+                { value: 2, label: 'Remboursement sur ??',     identifiant: 'remboursement' },
+            ];
+        case "calculs":
+            return [
+                { value: 0, label: 'Pas de taxe',                               identifiant: 'no-taxe' },
+                { value: 1, label: 'TVA/Loyer',                                 identifiant: 'tva-l' },
+                { value: 2, label: 'TVA/Loyer + Ordures ménagères',             identifiant: 'tva-l-o' },
+                { value: 3, label: 'TVA/Loyer + Ordures ménagères + Charges',   identifiant: 'tva-l-o-c' },
+            ];
         case "diags":
             return [
                 { value: 0, label: 'A', identifiant: 'diag-' + prefix + '-a' },
