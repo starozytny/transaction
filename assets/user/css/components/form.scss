@@ -13,6 +13,8 @@
 .line{
   label{
     color: var(--grey3);
+    text-transform: initial;
+    @include fontSemibold();
   }
 }
 

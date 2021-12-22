@@ -42,11 +42,6 @@
   }
 }
 
-.line label{
-  text-transform: initial;
-  @include fontSemibold();
-}
-
 .step-section{
   & > .line:not(.line-buttons){
     padding-bottom: 32px;

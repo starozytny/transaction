@@ -233,6 +233,10 @@ export class OwnerForm extends Component {
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
+                <div className="line-separator">
+                    <div className="title">Informations générales</div>
+                </div>
+
                 {!isClient && <div className="line">
                     <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
                                           placeholder={"Sélectionner la société"}
@@ -242,43 +246,68 @@ export class OwnerForm extends Component {
                     </SelectReactSelectize>
                 </div>}
 
-                <div className="line line-2">
-                    <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>Nom</Input>
-                    <Input valeur={firstname} identifiant="firstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
-                </div>
-
-                <div className="line line-2">
+                <div className="line">
                     <Radiobox items={civilityItems} identifiant="civility" valeur={civility} errors={errors} onChange={this.handleChange}>
                         Civilité
                     </Radiobox>
-                    <Input valeur={email} identifiant="email" errors={errors} onChange={this.handleChange} type="email" >Adresse e-mail</Input>
-                </div>
-
-                <div className="line line-3">
-                    <Input valeur={phone1} identifiant="phone1" errors={errors} onChange={this.handleChange}>Téléphone 1</Input>
-                    <Input valeur={phone2} identifiant="phone2" errors={errors} onChange={this.handleChange}>Téléphone 2</Input>
-                    <Input valeur={phone3} identifiant="phone3" errors={errors} onChange={this.handleChange}>Téléphone 3</Input>
                 </div>
 
                 <div className="line line-2">
-                    <Input valeur={address} identifiant="address" errors={errors} onChange={this.handleChange}>Adresse</Input>
-                    <Input valeur={complement} identifiant="complement" errors={errors} onChange={this.handleChange}>Complément</Input>
+                    <div className="form-group">
+                        <div className="line line-2">
+                            <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>Nom</Input>
+                            <Input valeur={firstname} identifiant="firstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
+                        </div>
+
+                        <div className="line">
+                            <Select items={selectCategory} identifiant="category" valeur={category} errors={errors} onChange={this.handleChange}>
+                                Catégorie de propriétaire
+                            </Select>
+                        </div>
+                    </div>
+                    <div className="form-group" />
                 </div>
 
-                <div className="line line-3">
-                    <Input valeur={zipcode} identifiant="zipcode" errors={errors} onChange={this.handleChange}>Code postal</Input>
-                    <Input valeur={city} identifiant="city" errors={errors} onChange={this.handleChange}>Ville</Input>
-                    <Input valeur={country} identifiant="country" errors={errors} onChange={this.handleChange}>Pays</Input>
+                <div className="line line-2">
+                    <div className="form-group">
+                        <div className="line-separator">
+                            <div className="title">Localisation</div>
+                        </div>
+
+                        <div className="line line-2">
+                            <Input valeur={address} identifiant="address" errors={errors} onChange={this.handleChange}>Adresse</Input>
+                            <Input valeur={complement} identifiant="complement" errors={errors} onChange={this.handleChange}>Complément</Input>
+                        </div>
+
+                        <div className="line line-3">
+                            <Input valeur={zipcode} identifiant="zipcode" errors={errors} onChange={this.handleChange}>Code postal</Input>
+                            <Input valeur={city} identifiant="city" errors={errors} onChange={this.handleChange}>Ville</Input>
+                            <Input valeur={country} identifiant="country" errors={errors} onChange={this.handleChange}>Pays</Input>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="line-separator">
+                            <div className="title">Contact</div>
+                        </div>
+
+                        <div className="line">
+                            <Input valeur={email} identifiant="email" errors={errors} onChange={this.handleChange} type="email" >Adresse e-mail</Input>
+                        </div>
+
+                        <div className="line line-3">
+                            <Input valeur={phone1} identifiant="phone1" errors={errors} onChange={this.handleChange}>Téléphone 1</Input>
+                            <Input valeur={phone2} identifiant="phone2" errors={errors} onChange={this.handleChange}>Téléphone 2</Input>
+                            <Input valeur={phone3} identifiant="phone3" errors={errors} onChange={this.handleChange}>Téléphone 3</Input>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="line line-critere">
                     <Input identifiant="critere" valeur={critere} errors={errors} onChange={this.handleChange}>Critère</Input>
                 </div>
 
-                <div className="line">
-                    <Select items={selectCategory} identifiant="category" valeur={category} errors={errors} onChange={this.handleChange}>
-                        Catégorie de propriétaire
-                    </Select>
+                <div className="line-separator">
+                    <div className="title">Co-indivisaire</div>
                 </div>
 
                 <div className="line">
@@ -289,23 +318,29 @@ export class OwnerForm extends Component {
 
                 {parseInt(isCoIndivisaire) === 1 && <>
                     <div className="line line-2">
-                        <Input valeur={coLastname} identifiant="coLastname" errors={errors} onChange={this.handleChange}>Nom</Input>
-                        <Input valeur={coFirstname} identifiant="coFirstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
+                        <div className="form-group">
+                            <div className="line line-2">
+                                <Input valeur={coLastname} identifiant="coLastname" errors={errors} onChange={this.handleChange}>Nom</Input>
+                                <Input valeur={coFirstname} identifiant="coFirstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
+                            </div>
+
+                            <div className="line line-2">
+                                <Input valeur={coPhone} identifiant="coPhone" errors={errors} onChange={this.handleChange}>Téléphone</Input>
+                                <Input valeur={coEmail} identifiant="coEmail" errors={errors} onChange={this.handleChange} type="email" >Adresse e-mail</Input>
+                            </div>
+
+                            <div className="line line-3">
+                                <Input valeur={coAddress} identifiant="coAddress" errors={errors} onChange={this.handleChange}>Adresse</Input>
+                                <Input valeur={coZipcode} identifiant="coZipcode" errors={errors} onChange={this.handleChange}>Code postal</Input>
+                                <Input valeur={coCity} identifiant="coCity" errors={errors} onChange={this.handleChange}>Ville</Input>
+                            </div>
+                        </div>
+                        <div className="form-group" />
                     </div>
 
-                    <div className="line line-2">
-                        <Input valeur={coPhone} identifiant="coPhone" errors={errors} onChange={this.handleChange}>Téléphone</Input>
-                        <Input valeur={coEmail} identifiant="coEmail" errors={errors} onChange={this.handleChange} type="email" >Adresse e-mail</Input>
-                    </div>
-
-                    <div className="line line-3">
-                        <Input valeur={coAddress} identifiant="coAddress" errors={errors} onChange={this.handleChange}>Adresse</Input>
-                        <Input valeur={coZipcode} identifiant="coZipcode" errors={errors} onChange={this.handleChange}>Code postal</Input>
-                        <Input valeur={coCity} identifiant="coCity" errors={errors} onChange={this.handleChange}>Ville</Input>
-                    </div>
                 </>}
 
-                <div className="line">
+                <div className="line line-buttons">
                     <div className="form-button">
                         <Button isSubmit={true}>{context === "create" ? TXT_CREATE_BUTTON_FORM : TXT_UPDATE_BUTTON_FORM}</Button>
                     </div>
