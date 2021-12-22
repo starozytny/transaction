@@ -148,10 +148,10 @@ class DataImmo extends DataConstructor
             ->setBuildAt($this->setToNullInteger($data->buildAt))
             ->setFloor(trim($data->floor))
             ->setNbFloor($this->setToNullInteger($data->nbFloor))
-            ->setCodeHeater($data->codeHeater)
-            ->setCodeHeater0($data->codeHeater0)
-            ->setCodeKitchen($data->codeKitchen)
-            ->setCodeWater($data->codeWater)
+            ->setCodeHeater($this->setToNullInteger($data->codeHeater))
+            ->setCodeHeater0($this->setToNullInteger($data->codeHeater0))
+            ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
+            ->setCodeWater($this->setToNullInteger($data->codeWater))
             ->setIsWcSeparate($this->setToUnknownEmpty($data->isWcSeparate))
             ->setExposition($this->setToNullInteger($data->exposition))
         ;
@@ -233,6 +233,18 @@ class DataImmo extends DataConstructor
             ->setTotalGeneral($this->setToNullFloat($data->totalGeneral))
             ->setTypeBail($this->setToNullInteger($data->typeBail))
             ->setDurationBail($this->setToNullFloat($data->durationBail))
+            ->setChargesMensuelles($this->setToNullFloat($data->chargesMensuelles))
+            ->setNotaire($this->setToNullFloat($data->notaire))
+            ->setFoncier($this->setToNullFloat($data->foncier))
+            ->setTaxeHabitation($this->setToNullFloat($data->taxeHabitation))
+            ->setHonoraireChargeDe($this->setToNullFloat($data->honoraireChargeDe))
+            ->setHonorairePourcentage($this->setToNullFloat($data->honorairePourcentage))
+            ->setPriceHorsAcquereur($this->setToNullFloat($data->prixHorsAcquereur))
+            ->setIsCopro($data->isCopro)
+            ->setNbLot($this->setToNullFloat($data->nbLot))
+            ->setChargesLot($this->setToNullFloat($data->chargesLot))
+            ->setIsSyndicProcedure($data->isSyndicProcedure)
+            ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
         ;
     }
 
