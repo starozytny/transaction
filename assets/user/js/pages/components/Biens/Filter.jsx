@@ -25,8 +25,10 @@ export class Filter extends Component {
         super(props);
 
         this.state = {
-            filtersAd: [0, 1],
-            filtersBien: [0, 1, 2, 3],
+            filtersAd: [],
+            filtersBien: [],
+            // filtersAd: [0, 1],
+            // filtersBien: [0, 1, 2, 3],
             filtersMandat: [],
         }
     }

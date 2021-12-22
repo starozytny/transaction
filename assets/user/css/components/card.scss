@@ -248,6 +248,16 @@
       .references{
         font-size: 15px;
       }
+
+      .infos{
+        .col-1{
+          width: calc(100% - (45% - 12px) - 100px);
+        }
+
+        .col-2{
+          width: calc(45% - 12px);
+        }
+      }
     }
   }
 }

@@ -6,6 +6,8 @@ import { HelpBubble }       from "@dashboardComponents/Tools/HelpBubble";
 import { Selector }         from "@dashboardComponents/Layout/Selector";
 import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
+import Sanitaze from "@commonComponents/functions/sanitaze";
+
 export class AdCard extends Component {
     constructor(props) {
         super();
@@ -57,8 +59,8 @@ export class AdCard extends Component {
                                     <span className="online" />
                                 </div>
                                 <div className="address">
-                                    <div>17 rue de la République</div>
-                                    <div>13001, Marseille</div>
+                                    <div>{el.localisation.address}</div>
+                                    <div>{el.localisation.zipcode}, {el.localisation.city}</div>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +70,7 @@ export class AdCard extends Component {
                                 <div className="status">Mandat {el.typeMandatString}</div>
                             </div>
                             <div className="identifier">
-                                <div className="price">590 € cc/mois</div>
+                                <div className="price">{Sanitaze.toFormatCurrency(el.financial.price)} cc/mois</div>
                                 <div className="carac">{el.area.total}m² - {el.number.piece} pièce{el.number.piece > 1 ? "s" : ""}</div>
                             </div>
                         </div>

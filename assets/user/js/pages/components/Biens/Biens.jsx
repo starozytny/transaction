@@ -69,9 +69,12 @@ export class Biens extends Component {
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "biens.pagination",
+            classes: "",
             filters: [
-                [0, 1], // type ad
-                [0, 1, 2, 3], // type bien
+                // [0, 1], // type ad
+                // [0, 1, 2, 3], // type bien
+                [],
+                [],
                 [], //type mandat
             ]
         }
