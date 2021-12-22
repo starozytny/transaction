@@ -22,10 +22,10 @@
   }
 
   .line-separator{
-    margin-top: 8px;
+    margin-top: 12px;
 
     .title{
-      margin-top: 16px;
+      margin-top: 12px;
       margin-bottom: 12px;
       background-color: var(--fondContent);
       padding: 12px;
@@ -88,6 +88,10 @@
 
   & > .line:last-child{
     margin-bottom: 0;
+  }
+
+  & + .line{
+    margin-top: 12px;
   }
 }
 
