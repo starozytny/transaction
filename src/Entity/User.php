@@ -120,14 +120,14 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $notifications;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Society::class, fetch="EAGER", inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"admin:read"})
      */
     private $society;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"admin:read"})
      */

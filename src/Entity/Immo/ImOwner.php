@@ -186,13 +186,13 @@ class ImOwner extends DataEntity
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="owners")
+     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="owners")
      * @Groups({"admin:read", "user:read"})
      */
     private $negotiator;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="imOwners")
+     * @ORM\ManyToOne(targetEntity=Society::class, fetch="EAGER", inversedBy="imOwners")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"admin:read", "user:read"})
      */
