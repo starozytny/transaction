@@ -6,7 +6,6 @@ import { DatePick } from "@dashboardComponents/Tools/DatePicker";
 import { Button }   from "@dashboardComponents/Tools/Button";
 
 import helper from "@userPages/components/Biens/helper";
-import {Alert} from "@dashboardComponents/Tools/Alert";
 
 export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, errors,
                           hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian,
@@ -15,8 +14,8 @@ export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                           beforeJuly, isVirgin, isSend, createdAtDpe, referenceDpe, dpeLetter, 
                           gesLetter, dpeValue, gesValue, minAnnual, maxAnnual }) 
 {
-    let soustypeItems = helper.getItems("water");
-    let solItems = helper.getItems("water");
+    let soustypeItems = helper.getItems("soustypes");
+    let solItems = helper.getItems("sols");
     let diag0Items = helper.getItems("diags", 0);
     let diag1Items = helper.getItems("diags", 1);
 

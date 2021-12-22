@@ -30,7 +30,7 @@ export function Step5({ step, onChange, onChangeSelect, onNext, errors,
                     Type de calcul *
                 </SelectReactSelectize>
                 <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChange}>
-                    <span>Prix/Loyer/Prix de cession *</span>
+                    <span>Loyer *</span>
                 </Input>
             </div>
             <div className="line line-2">
