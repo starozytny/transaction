@@ -59,12 +59,12 @@ export function Step5({ step, onChange, onChangeSelect, onNext, errors,
                     <span>Caution</span>
                 </Input>
                 <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
-                    <span>Honoraire TTC *</span>
+                    <span>Honoraires TTC *</span>
                 </Input>
             </div>
             <div className="line line-2">
                 <Input type="number" step="any" identifiant="honoraireBail" valeur={honoraireBail} errors={errors} onChange={onChange}>
-                    <span>Honoraire rédaction bail</span>
+                    <span>Honoraires rédaction bail</span>
                 </Input>
                 <Input type="number" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChange}>
                     <span>- dont état des lieux *</span>

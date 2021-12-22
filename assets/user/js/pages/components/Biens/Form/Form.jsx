@@ -17,6 +17,7 @@ import { Step2 } from "@userPages/components/Biens/Steps/Step2";
 import { Step3 } from "@userPages/components/Biens/Steps/Step3";
 import { Step4 } from "@userPages/components/Biens/Steps/Step4";
 import { Step5 } from "@userPages/components/Biens/Steps/Step5";
+import { Step5Vente } from "@userPages/components/Biens/Steps/Step5Vente";
 
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
@@ -154,7 +155,7 @@ export class Form extends Component {
 
     render () {
         const { negotiators } = this.props;
-        const { step, contentHelpBubble } = this.state;
+        const { step, contentHelpBubble, codeTypeAd } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -208,7 +209,7 @@ export class Form extends Component {
 
                         <Step1 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
-                               negotiators={negotiators} />
+                               onOpenHelp={this.handleOpenHelp} negotiators={negotiators} />
 
                         <Step2 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
@@ -220,8 +221,11 @@ export class Form extends Component {
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                onChangeZipcode={this.handleChangeZipcode} />
 
-                        <Step5 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
-                               onChangeSelect={this.handleChangeSelect} />
+                        {parseInt(codeTypeAd) === 0 ? <Step5Vente {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                                                             onChangeSelect={this.handleChangeSelect} />
+                            : <Step5 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                                     onChangeSelect={this.handleChangeSelect} />}
+
 
                         <div className="step-section active">
                             <div className="line line-buttons">

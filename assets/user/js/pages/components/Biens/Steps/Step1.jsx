@@ -7,7 +7,7 @@ import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 import helper from "@userPages/components/Biens/helper";
 import Sort from "@commonComponents/functions/sort";
 
-export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, errors,
+export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, onOpenHelp, errors,
                           codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator })
 {
     let typeAdItems = helper.getItems("ads");
@@ -42,7 +42,7 @@ export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, err
             >
                 <span>Libellé de l'annonce *</span>
                 <div className="input-label-help">
-                    <ButtonIcon icon="question" onClick={() => this.handleOpenHelp("libelle")}>Aide</ButtonIcon>
+                    <ButtonIcon icon="question" onClick={() => onOpenHelp("libelle")}>Aide</ButtonIcon>
                 </div>
             </Input>
         </div>
