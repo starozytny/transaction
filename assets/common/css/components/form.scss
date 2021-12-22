@@ -23,12 +23,15 @@
 
   .line-separator{
     margin-top: 24px;
-    margin-bottom: 12px;
-    background-color: var(--fondContent);
-    padding: 12px;
-    @include fontSemibold();
-    text-transform: uppercase;
     width: calc(100% - 24px);
+
+    .title{
+      margin-bottom: 12px;
+      background-color: var(--fondContent);
+      padding: 12px;
+      @include fontSemibold();
+      text-transform: uppercase;
+    }
   }
 }
 
