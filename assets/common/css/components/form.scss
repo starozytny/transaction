@@ -27,6 +27,7 @@
     padding: 12px;
     @include fontSemibold();
     text-transform: uppercase;
+    width: calc(100% - 24px);
   }
 }
 
@@ -73,7 +74,7 @@
   width: 100%;
 
   &:not(:last-child){
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   & > .form-group:not(:last-child){
@@ -539,6 +540,28 @@ select{
 @media (min-width:1280px) {
   .form {
     padding: 24px;
+  }
+
+  .line.line-2{
+    & > .form-group:first-child{
+      margin-right: 12px;
+    }
+    & > .form-group:last-child{
+      margin-left: 12px;
+    }
+  }
+
+  .line.line-3,
+  .line.line-4{
+    & > .form-group:not(:last-child){
+      margin-right: 24px;
+    }
+  }
+
+  .form-button{
+    & > *:not(:last-child){
+      margin-right: 24px;
+    }
   }
 }
 
