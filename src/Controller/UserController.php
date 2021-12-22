@@ -156,11 +156,19 @@ class UserController extends AbstractController
      */
     public function owners(ImOwnerRepository $repository, SerializerInterface $serializer): Response
     {
+        $em = $this->doctrine->getManager();
         /** @var User $user */
         $user = $this->getUser();
         $objs = $repository->findBy(['society' => $user->getSociety()]);
-        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
 
-        return $this->render('user/pages/owners/index.html.twig', ['data' => $objs]);
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('user/pages/owners/index.html.twig', [
+            'data' => $objs,
+            'user' => $user,
+            'negotiators' => $negotiators,
+        ]);
     }
 }

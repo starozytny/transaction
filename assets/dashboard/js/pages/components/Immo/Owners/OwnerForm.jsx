@@ -135,7 +135,6 @@ export class OwnerForm extends Component {
             }
         }
 
-        console.log(nego)
         this.setState({ [name]: e !== undefined ? e.value : "", negotiator: nego })
     }
 
@@ -249,11 +248,18 @@ export class OwnerForm extends Component {
         let selectSociety = [];
         let selectAgency = [];
         let selectNegotiator = [];
-        if(context !== "profil" && !isClient){
+        if(!isClient){
             let selectorsData = Helper.selectorsImmo(societies, society, agencies, agency, negotiators, negotiator);
             selectSociety = selectorsData[0];
             selectAgency = selectorsData[1];
             selectNegotiator = selectorsData[2];
+        }else{
+            negotiators.forEach(elem => {
+                let add = agency === "" ? true : (elem.agency.id === agency);
+                if(add){
+                    selectNegotiator.push({ value: elem.id, label: elem.fullname, identifiant: "nego-" + elem.id })
+                }
+            })
         }
 
         return <>

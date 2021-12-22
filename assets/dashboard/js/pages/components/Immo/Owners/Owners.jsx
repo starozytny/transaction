@@ -24,6 +24,8 @@ export class Owners extends Component {
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "societies.pagination",
+            idAgency: parseInt(props.agencyId),
+            idSociety: parseInt(props.societyId),
             societies: props.societies ? JSON.parse(props.societies) : [],
             agencies: props.agencies ? JSON.parse(props.agencies) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
@@ -57,14 +59,16 @@ export class Owners extends Component {
     }
 
     handleContentCreate = (changeContext) => {
-        const { societies, agencies, negotiators, isClient } = this.state;
+        const { societies, agencies, negotiators, idSociety, idAgency, isClient } = this.state;
         return <OwnerFormulaire type="create" societies={societies} agencies={agencies} negotiators={negotiators} isClient={isClient}
+                                societyId={idSociety} agencyId={idAgency}
                                 onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
-        const { societies, agencies, negotiators, isClient } = this.state;
-        return <OwnerFormulaire type="update" societies={societies} agencies={agencies} negotiators={negotiators} isClient={isClient} element={element}
+        const { societies, agencies, negotiators, idSociety, idAgency, isClient } = this.state;
+        return <OwnerFormulaire type="update" societies={societies} agencies={agencies} negotiators={negotiators} isClient={isClient}
+                                societyId={idSociety} agencyId={idAgency} element={element}
                                 onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
