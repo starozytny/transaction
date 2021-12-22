@@ -11,6 +11,8 @@
     @include flex(row, center, flex-start);
     @include fontSemibold();
     color: var(--grey2);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 
     &:not(:last-child){
       margin-bottom: 12px;
@@ -23,6 +25,10 @@
       background-color: var(--grey);
       width: 24px; height: 24px;
       margin-right: 8px;
+    }
+
+    &:hover{
+      color: var(--txt);
     }
 
     &.active{

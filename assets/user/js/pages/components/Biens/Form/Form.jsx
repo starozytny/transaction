@@ -65,13 +65,14 @@ export class Form extends Component {
         Helper.setCityFromZipcode(this, e, arrayPostalCode ? arrayPostalCode : arrayZipcodeSave)
     }
 
-    handleNext = (stepClicked, stepInitial = null) => {
+    handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
             areaTotal, piece } = this.state;
 
         let paramsToValidate = [];
-        if(stepInitial == null){
-            switch (stepClicked){
+        if(stepInitial === null || fromMenu === true){
+            let stepValue = fromMenu ? stepInitial + 1 : stepClicked;
+            switch (stepValue){
                 case 3:
                     paramsToValidate = [
                         {type: "text",      id: 'areaTotal',      value: areaTotal},
@@ -91,6 +92,7 @@ export class Form extends Component {
                 default:
                     break;
             }
+
         }
 
         // validate global
@@ -100,7 +102,7 @@ export class Form extends Component {
         if(!validate.code){
             Formulaire.showErrors(this, validate);
         }else{
-            this.setState({ step: stepClicked })
+            this.setState({ errors: [], step: stepClicked })
         }
     }
 
@@ -108,6 +110,10 @@ export class Form extends Component {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
+
+        // TODO : ----------------------------------
+        // TODO : recheck all data before send
+        // TODO : ----------------------------------
 
         let self = this;
         Formulaire.loader(true);
@@ -157,7 +163,7 @@ export class Form extends Component {
             {id: 4, label: "Localisation"},
             {id: 5, label: "Financier"},
             {id: 6, label: "Photos"},
-            {id: 7, label: "Propriétaire"},
+            {id: 7, label: "Contact"},
             {id: 8, label: "Publication"},
         ];
 
@@ -169,7 +175,8 @@ export class Form extends Component {
                 active = " active";
                 stepTitle = "Etape " + el.id + " : " + el.label;
             }
-            stepsItems.push(<div className={"item" + active} key={el.id} onClick={() => this.handleNext(el.id, step)}>
+
+            stepsItems.push(<div className={"item" + active} key={el.id} onClick={() => this.handleNext(el.id, step, true)}>
                 <span className="number">{el.id}</span>
                 <span className="label">{el.label}</span>
             </div>)
