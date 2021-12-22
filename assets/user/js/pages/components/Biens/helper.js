@@ -1,5 +1,11 @@
 function getItems (type, prefix) {
     switch (type) {
+        case "honoraires":
+            return [
+                { value: 0, label: 'Acquéreur',             identifiant: 'acquereur' },
+                { value: 1, label: 'Vendeur',               identifiant: 'vendeur' },
+                { value: 2, label: 'Acquéreur et vendeur',  identifiant: 'acquereur-vendeur' },
+            ];
         case "sols":
             return [
                 { value: 0, label: 'Carrelage',             identifiant: 'carrelage' },
@@ -19,9 +25,9 @@ function getItems (type, prefix) {
             ];
         case "charges":
             return [
-                { value: 0, label: 'Régularisation annuelle',  identifiant: 'regularisation' },
-                { value: 1, label: 'Charges forfaitaires',     identifiant: 'charges-fo' },
-                { value: 2, label: 'Remboursement sur ??',     identifiant: 'remboursement' },
+                { value: 0, label: 'Forfaitaires mensuelles',     identifiant: 'charges-fo' },
+                { value: 1, label: 'Prévisionnelles mensuelles avec régularisation annuelle',  identifiant: 'regularisation' },
+                { value: 2, label: 'Remboursement annuel par le locataire',     identifiant: 'remboursement' },
             ];
         case "calculs":
             return [

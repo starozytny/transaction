@@ -11,6 +11,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImFinancial
 {
+    const VENTE_CHARGES_ACQUEREUR = 0;
+    const VENTE_CHARGES_VENDEUR = 1;
+    const VENTE_CHARGES_ACQUEREUR_VENDEUR = 2;
+
+    const LOCATION_CHARGES_FORFAIT = 0;
+    const LOCATION_CHARGES_REGULARISATION = 1;
+    const LOCATION_CHARGES_REMBOURSEMENT = 2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -102,6 +110,79 @@ class ImFinancial
      * @Groups({"user:read"})
      */
     private $durationBail;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $priceHorsAcquereur;
+
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $chargesMensuelles;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $foncier;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $taxeHabitation;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $notaire;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
+     */
+    private $honoraireChargeDe = self::VENTE_CHARGES_ACQUEREUR;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $honorairePourcentage;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"user:read"})
+     */
+    private $isCopro = false;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $nbLot;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $chargesLot;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"user:read"})
+     */
+    private $isSyndicProcedure = false;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $detailsProcedure;
 
     public function getId(): ?int
     {
@@ -272,6 +353,150 @@ class ImFinancial
     public function setDurationBail(?int $durationBail): self
     {
         $this->durationBail = $durationBail;
+
+        return $this;
+    }
+
+    public function getChargesMensuelles(): ?float
+    {
+        return $this->chargesMensuelles;
+    }
+
+    public function setChargesMensuelles(?float $chargesMensuelles): self
+    {
+        $this->chargesMensuelles = $chargesMensuelles;
+
+        return $this;
+    }
+
+    public function getFoncier(): ?float
+    {
+        return $this->foncier;
+    }
+
+    public function setFoncier(?float $foncier): self
+    {
+        $this->foncier = $foncier;
+
+        return $this;
+    }
+
+    public function getTaxeHabitation(): ?float
+    {
+        return $this->taxeHabitation;
+    }
+
+    public function setTaxeHabitation(?float $taxeHabitation): self
+    {
+        $this->taxeHabitation = $taxeHabitation;
+
+        return $this;
+    }
+
+    public function getNotaire(): ?float
+    {
+        return $this->notaire;
+    }
+
+    public function setNotaire(?float $notaire): self
+    {
+        $this->notaire = $notaire;
+
+        return $this;
+    }
+
+    public function getHonoraireChargeDe(): ?int
+    {
+        return $this->honoraireChargeDe;
+    }
+
+    public function setHonoraireChargeDe(int $honoraireChargeDe): self
+    {
+        $this->honoraireChargeDe = $honoraireChargeDe;
+
+        return $this;
+    }
+
+    public function getHonorairePourcentage(): ?float
+    {
+        return $this->honorairePourcentage;
+    }
+
+    public function setHonorairePourcentage(?float $honorairePourcentage): self
+    {
+        $this->honorairePourcentage = $honorairePourcentage;
+
+        return $this;
+    }
+
+    public function getIsCopro(): ?bool
+    {
+        return $this->isCopro;
+    }
+
+    public function setIsCopro(bool $isCopro): self
+    {
+        $this->isCopro = $isCopro;
+
+        return $this;
+    }
+
+    public function getNbLot(): ?int
+    {
+        return $this->nbLot;
+    }
+
+    public function setNbLot(?int $nbLot): self
+    {
+        $this->nbLot = $nbLot;
+
+        return $this;
+    }
+
+    public function getChargesLot(): ?float
+    {
+        return $this->chargesLot;
+    }
+
+    public function setChargesLot(?float $chargesLot): self
+    {
+        $this->chargesLot = $chargesLot;
+
+        return $this;
+    }
+
+    public function getIsSyndicProcedure(): ?bool
+    {
+        return $this->isSyndicProcedure;
+    }
+
+    public function setIsSyndicProcedure(bool $isSyndicProcedure): self
+    {
+        $this->isSyndicProcedure = $isSyndicProcedure;
+
+        return $this;
+    }
+
+    public function getDetailsProcedure(): ?string
+    {
+        return $this->detailsProcedure;
+    }
+
+    public function setDetailsProcedure(?string $detailsProcedure): self
+    {
+        $this->detailsProcedure = $detailsProcedure;
+
+        return $this;
+    }
+
+    public function getPriceHorsAcquereur(): ?float
+    {
+        return $this->priceHorsAcquereur;
+    }
+
+    public function setPriceHorsAcquereur(?float $priceHorsAcquereur): self
+    {
+        $this->priceHorsAcquereur = $priceHorsAcquereur;
 
         return $this;
     }
