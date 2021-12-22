@@ -61,8 +61,23 @@
 
   .react-selectize,
   .steps > .item.active .number,
+  .react-selectize.dropdown-menu.default .option-wrapper .simple-option,
   .checkbox-item.checked > label, .radiobox-item.checked > label{
     color: var(--txt);
+  }
+
+  .simple-select.react-selectize .dropdown-menu.default.react-selectize.simple-select {
+    background-color: var(--fondContent);
+  }
+
+  .simple-select.react-selectize.default.root-node.open .react-selectize-control,
+  .react-selectize.dropdown-menu.default .option-wrapper.highlight{
+    background-color: var(--fond);
+  }
+
+  .simple-select.react-selectize.default.root-node.open .react-selectize-control,
+  .react-selectize.dropdown-menu.default:not(.flipped){
+    border-color: var(--txt);
   }
 }
 
