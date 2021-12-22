@@ -32,7 +32,7 @@ export class UserContent extends Component {
         let content;
         switch (context){
             case "negotiators":
-                content = <div id="profil-negotiators"><Negotiators donnees={negotiators} idAgency={idAgency} isUser={isUser}/></div>
+                content = <div id="profil-negotiators"><Negotiators donnees={negotiators} idAgency={idAgency} isUser={isUser} isClient={true}/></div>
                 break;
             case "agencies":
                 content = <div id="profil-agencies"><Agencies donnees={agencies} idSociety={idSociety} idAgency={idAgency} isUser={isUser}/></div>
