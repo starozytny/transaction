@@ -22,12 +22,12 @@ export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, 
 {
     let title = "Ajouter un utilisateur";
     let url = Routing.generate(URL_CREATE_ELEMENT);
-    let msg = "Félicitation ! Vous avez ajouté un nouveau utilisateur !"
+    let msg = "Félicitations ! Vous avez ajouté un nouveau utilisateur !"
 
     if(type === "update" || type === "profil"){
         title = "Modifier " + element.username;
         url = Routing.generate(URL_UPDATE_GROUP, {'id': element.id});
-        msg = "Félicitation ! La mise à jour s'est réalisée avec succès !";
+        msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
 
     let form = <Form
