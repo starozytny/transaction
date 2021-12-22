@@ -92,9 +92,10 @@ class BienController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
+        dump($data);
+
         $area = $this->setProperty($em, "area", $type == "create" ? new ImArea() : $obj->getArea(),
-            $data, $apiResponse, $validator, $dataEntity
-        );
+            $data, $apiResponse, $validator, $dataEntity);
         if(!$area instanceof ImArea){
             return $area;
         }

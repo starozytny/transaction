@@ -26,7 +26,7 @@ class DataImmo extends DataConstructor
     {
         return $value != "" ? (int) $value : null;
     }
-    private function setToFalseEmpty($value): ?int
+    private function setToUnknownEmpty($value): ?int
     {
         return $value != "" ? (int) $value == 1 : ImBien::ANSWER_UNKNOWN;
     }
@@ -142,8 +142,8 @@ class DataImmo extends DataConstructor
     public function setDataFeature(ImFeature $obj, $data): ImFeature
     {
         return ($obj)
-            ->setIsMeuble($this->setToFalseEmpty($data->isMeuble))
-            ->setIsNew($this->setToFalseEmpty($data->isNew))
+            ->setIsMeuble($this->setToUnknownEmpty($data->isMeuble))
+            ->setIsNew($this->setToUnknownEmpty($data->isNew))
             ->setDispoAt($this->createDate($data->dispoAt))
             ->setBuildAt($this->setToNullInteger($data->buildAt))
             ->setFloor(trim($data->floor))
@@ -151,7 +151,7 @@ class DataImmo extends DataConstructor
             ->setCodeHeater($this->setToNullInteger($data->codeHeater))
             ->setCodeHeater0($this->setToNullInteger($data->codeHeater0))
             ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
-            ->setIsWcSeparate($this->setToFalseEmpty($data->isWcSeparate))
+            ->setIsWcSeparate($this->setToUnknownEmpty($data->isWcSeparate))
             ->setExposition($this->setToNullInteger($data->exposition))
         ;
     }
@@ -159,20 +159,20 @@ class DataImmo extends DataConstructor
     public function setDataAdvantage(ImAdvantage $obj, $data): ImAdvantage
     {
         return ($obj)
-            ->setHasGarden($this->setToFalseEmpty($data->hasGarden))
-            ->setHasTerrace($this->setToFalseEmpty($data->hasTerrace))
-            ->setHasPool($this->setToFalseEmpty($data->hasPool))
-            ->setHasCave($this->setToFalseEmpty($data->hasCave))
-            ->setHasDigicode($this->setToFalseEmpty($data->hasDigicode))
-            ->setHasInterphone($this->setToFalseEmpty($data->hasInterphone))
-            ->setHasGuardian($this->setToFalseEmpty($data->hasGuardian))
-            ->setHasAlarme($this->setToFalseEmpty($data->hasAlarme))
-            ->setHasLift($this->setToFalseEmpty($data->hasLift))
-            ->setHasClim($this->setToFalseEmpty($data->hasClim))
-            ->setHasCalme($this->setToFalseEmpty($data->hasCalme))
-            ->setHasInternet($this->setToFalseEmpty($data->hasInternet))
-            ->setHasHandi($this->setToFalseEmpty($data->hasHandi))
-            ->setHasFibre($this->setToFalseEmpty($data->hasFibre))
+            ->setHasGarden($this->setToUnknownEmpty($data->hasGarden))
+            ->setHasTerrace($this->setToUnknownEmpty($data->hasTerrace))
+            ->setHasPool($this->setToUnknownEmpty($data->hasPool))
+            ->setHasCave($this->setToUnknownEmpty($data->hasCave))
+            ->setHasDigicode($this->setToUnknownEmpty($data->hasDigicode))
+            ->setHasInterphone($this->setToUnknownEmpty($data->hasInterphone))
+            ->setHasGuardian($this->setToUnknownEmpty($data->hasGuardian))
+            ->setHasAlarme($this->setToUnknownEmpty($data->hasAlarme))
+            ->setHasLift($this->setToUnknownEmpty($data->hasLift))
+            ->setHasClim($this->setToUnknownEmpty($data->hasClim))
+            ->setHasCalme($this->setToUnknownEmpty($data->hasCalme))
+            ->setHasInternet($this->setToUnknownEmpty($data->hasInternet))
+            ->setHasHandi($this->setToUnknownEmpty($data->hasHandi))
+            ->setHasFibre($this->setToUnknownEmpty($data->hasFibre))
             ->setSituation(trim($data->situation))
             ->setSousType($this->setToNullInteger($data->sousType))
             ->setSol($this->setToNullInteger($data->sol))
@@ -185,9 +185,9 @@ class DataImmo extends DataConstructor
     public function setDataDiag(ImDiag $obj, $data): ImDiag
     {
         return ($obj)
-            ->setBeforeJuly($this->setToFalseEmpty($data->beforeJuly))
-            ->setIsVirgin($this->setToFalseEmpty($data->isVirgin))
-            ->setIsSend($this->setToFalseEmpty($data->isSend))
+            ->setBeforeJuly($this->setToUnknownEmpty($data->beforeJuly))
+            ->setIsVirgin($this->setToUnknownEmpty($data->isVirgin))
+            ->setIsSend($this->setToUnknownEmpty($data->isSend))
             ->setCreatedAtDpe($this->createDate($data->createdAtDpe))
             ->setReferenceDpe($this->setToNullInteger($data->referenceDpe))
             ->setDpeLetter($this->setToNullInteger($data->dpeLetter))
@@ -202,24 +202,24 @@ class DataImmo extends DataConstructor
     public function setDataLocalisation(ImLocalisation $obj, $data): ImLocalisation
     {
         return ($obj)
-            ->setHideAddress($this->setToNullInteger($data->hideAddress))
-            ->setHideMap($this->setToNullInteger($data->hideMap))
+            ->setHideAddress($data->hideAddress)
+            ->setHideMap($data->hideMap)
             ->setAddress(trim($data->address))
             ->setZipcode(trim($data->zipcode))
             ->setCity(trim($data->city))
             ->setCountry(trim($data->country))
             ->setDepartement(trim($data->departement))
             ->setQuartier(trim($data->quartier))
-            ->setLat(trim($data->lat))
-            ->setLon(trim($data->lon))
+            ->setLat((float) $data->lat)
+            ->setLon((float) $data->lon)
         ;
     }
 
     public function setDataFinancial(ImFinancial $obj, $data): ImFinancial
     {
         return ($obj)
-            ->setTypeCalcul($this->setToNullInteger($data->typeCalcul))
-            ->setPrice($this->setToNullFloat($data->price))
+            ->setTypeCalcul($data->typeCalcul)
+            ->setPrice((float) $data->price)
             ->setProvisionCharges($this->setToNullFloat($data->provisionCharges))
             ->setProvisionOrdures($this->setToNullFloat($data->provisionOrdures))
             ->setTva($this->setToNullFloat($data->tva))
@@ -227,8 +227,8 @@ class DataImmo extends DataConstructor
             ->setCaution($this->setToNullFloat($data->caution))
             ->setHonoraireTtc($this->setToNullFloat($data->honoraireTtc))
             ->setHonoraireBail($this->setToNullFloat($data->honoraireBail))
-            ->setEdl($this->setToNullFloat($data->Edl))
-            ->setTypeCalcul($this->setToNullInteger($data->typeCalcul))
+            ->setEdl($this->setToNullFloat($data->edl))
+            ->setTypeCharges($this->setToNullInteger($data->typeCalcul))
             ->setTotalGeneral($this->setToNullFloat($data->totalGeneral))
             ->setTypeBail($this->setToNullInteger($data->typeBail))
             ->setDurationBail($this->setToNullFloat($data->durationBail))

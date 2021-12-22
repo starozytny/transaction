@@ -118,11 +118,11 @@ export class Form extends Component {
         let self = this;
         Formulaire.loader(true);
 
-        let formData = new FormData();
-        formData.append("data", JSON.stringify(this.state));
-
         arrayZipcodeSave = this.state.arrayPostalCode;
         delete this.state.arrayPostalCode;
+
+        let formData = new FormData();
+        formData.append("data", JSON.stringify(this.state));
 
         axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
             .then(function (response) {

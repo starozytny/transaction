@@ -29,6 +29,7 @@ export function BienFormulaire ({ type, element, negotiators })
     let advantage = element ? element.advantage : null;
     let diag = element ? element.diag : null;
     let localisation = element ? element.localisation : null;
+    let financial = element ? element.financial : null;
 
     let form = <Form
         title={title}
@@ -112,6 +113,21 @@ export function BienFormulaire ({ type, element, negotiators })
         lat={element ? setValueEmptyIfNull(localisation, localisation.lat) : ""}
         lon={element ? setValueEmptyIfNull(localisation, localisation.lon) : ""}
         hideMap={element ? setValueEmptyIfNull(localisation, localisation.hideMap) : 0}
+
+        typeCalcul={element ? setValueEmptyIfNull(financial, financial.typeCalcul) : 0}
+        price={element ? setValueEmptyIfNull(financial, financial.price) : ""}
+        provisionCharges={element ? setValueEmptyIfNull(financial, financial.provisionCharges) : ""}
+        provisionOrdures={element ? setValueEmptyIfNull(financial, financial.provisionOrdures) : ""}
+        tva={element ? setValueEmptyIfNull(financial, financial.tva) : ""}
+        totalTerme={element ? setValueEmptyIfNull(financial, financial.totalTerme) : ""}
+        caution={element ? setValueEmptyIfNull(financial, financial.caution) : ""}
+        honoraireTtc={element ? setValueEmptyIfNull(financial, financial.honoraireTtc) : ""}
+        honoraireBail={element ? setValueEmptyIfNull(financial, financial.honoraireBail) : ""}
+        edl={element ? setValueEmptyIfNull(financial, financial.edl) : ""}
+        typeCharges={element ? setValueEmptyIfNull(financial, financial.typeCharges) : ""}
+        totalGeneral={element ? setValueEmptyIfNull(financial, financial.totalGeneral) : ""}
+        typeBail={element ? setValueEmptyIfNull(financial, financial.typeBail) : ""}
+        durationBail={element ? setValueEmptyIfNull(financial, financial.durationBail) : ""}
 
         messageSuccess={msg}
 
