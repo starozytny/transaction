@@ -20,6 +20,10 @@ class ImBien extends DataEntity
     const ANSWER_YES = 1;
     const ANSWER_UNKNOWN = 99;
 
+    const STATUS_INACTIF = 0;
+    const STATUS_ACTIF = 1;
+    const STATUS_ARCHIVE = 2;
+
     const AD_VENTE              = 0;
     const AD_LOCATION           = 1;
     const AD_VIAGER             = 2;
@@ -111,6 +115,24 @@ class ImBien extends DataEntity
      * @ORM\Column(type="string", length=255)
      */
     private $identifiant;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"user:read"})
+     */
+    private $isPublished = false;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
+     */
+    private $status = self::STATUS_INACTIF;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"user:read"})
+     */
+    private $isDraft = false;
 
     /**
      * @ORM\OneToOne(targetEntity=ImArea::class, fetch="EAGER", cascade={"persist", "remove"})
@@ -514,6 +536,42 @@ class ImBien extends DataEntity
     public function setOwner(?ImOwner $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getIsPublished(): ?bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished(bool $isPublished): self
+    {
+        $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getIsDraft(): ?bool
+    {
+        return $this->isDraft;
+    }
+
+    public function setIsDraft(bool $isDraft): self
+    {
+        $this->isDraft = $isDraft;
 
         return $this;
     }

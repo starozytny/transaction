@@ -175,6 +175,18 @@ class FakeBiensCreate extends Command
                 "totalGeneral" => (string) $fake->randomFloat(2),
                 "typeBail" => $fake->numberBetween(0, 3),
                 "durationBail" => (string) $fake->numberBetween(0,5),
+                "chargesMensuelles" => (string) $fake->randomFloat(2),
+                "notaire" => (string) $fake->randomFloat(2),
+                "foncier" => (string) $fake->randomFloat(2),
+                "taxeHabitation" => (string) $fake->randomFloat(2),
+                "honoraireChargeDe" => $fake->numberBetween(0,2),
+                "honorairePourcentage" => (string) $fake->randomFloat(2),
+                "prixHorsAcquereur" => (string) $fake->randomFloat(2),
+                "isCopro" => $fake->numberBetween(0,1),
+                "nbLot" => $fake->numberBetween(0, 500),
+                "chargesLot" => (string) $fake->randomFloat(2),
+                "isSyndicProcedure" => $fake->numberBetween(0,1),
+                "detailsProcedure" => $fake->sentence,
             ];
 
             $data = json_decode(json_encode($data));
@@ -200,13 +212,28 @@ class FakeBiensCreate extends Command
                 $owner = $choicesOwners[$fake->numberBetween(0,count($choicesOwners) - 1)];
             }
 
+            $isDraft = $fake->numberBetween(0, 1);
+
             $obj = ($obj)
                 ->setUser($user)
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(uniqid().bin2hex(random_bytes(8)) . random_int(100,999))
                 ->setAgency($user->getAgency())
                 ->setOwner($owner)
+                ->setIsPublished($fake->numberBetween(0, 1))
+                ->setIsDraft($isDraft)
             ;
+
+            if($isDraft == 0){
+                $obj = ($obj)
+                    ->setIsPublished(false)
+                    ->setStatus(ImBien::STATUS_INACTIF)
+                ;
+            }else{
+                $obj = ($obj)
+                    ->setStatus($fake->numberBetween(0, 2))
+                ;
+            }
 
             $this->em->persist($obj);
         }
