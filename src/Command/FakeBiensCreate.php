@@ -12,7 +12,6 @@ use App\Entity\Immo\ImFinancial;
 use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
-use App\Entity\Immo\ImOwner;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Service\Data\DataImmo;
@@ -67,9 +66,9 @@ class FakeBiensCreate extends Command
         ]);
 
         $society = $this->em->getRepository(Society::class)->findOneBy(['name' => "Logilink"]);
-        $agencies = $society->getImAgencies();
+        $agencies = $this->em->getRepository(ImAgency::class)->findBy(['society' => $society]);
         $nbAgencies = count($agencies);
-        $negotiators = $this->em->getRepository(ImNegotiator::class)->findAll();
+        $negotiators = $this->em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
         $nbNegotiators = count($negotiators);
         $users = $this->em->getRepository(User::class)->findBy(['society' => $society]);
         $nbUsers = count($users);

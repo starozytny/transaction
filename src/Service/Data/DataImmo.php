@@ -20,11 +20,11 @@ class DataImmo extends DataConstructor
 {
     private function setToNullFloat($value): ?float
     {
-        return $value != "" ? (float) $value : null;
+        return $value === "" ? null : (float) $value;
     }
     private function setToNullInteger($value): ?int
     {
-        return $value != "" ? (int) $value : null;
+        return $value === "" ? null : (int) $value;
     }
     private function setToUnknownEmpty($value): ?int
     {
@@ -148,9 +148,10 @@ class DataImmo extends DataConstructor
             ->setBuildAt($this->setToNullInteger($data->buildAt))
             ->setFloor(trim($data->floor))
             ->setNbFloor($this->setToNullInteger($data->nbFloor))
-            ->setCodeHeater($this->setToNullInteger($data->codeHeater))
-            ->setCodeHeater0($this->setToNullInteger($data->codeHeater0))
-            ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
+            ->setCodeHeater($data->codeHeater)
+            ->setCodeHeater0($data->codeHeater0)
+            ->setCodeKitchen($data->codeKitchen)
+            ->setCodeWater($data->codeWater)
             ->setIsWcSeparate($this->setToUnknownEmpty($data->isWcSeparate))
             ->setExposition($this->setToNullInteger($data->exposition))
         ;

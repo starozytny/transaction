@@ -7,8 +7,21 @@ import { Form } from "@userPages/components/Biens/Form/Form";
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_biens_update";
 
+function setValueBoolean (parentValue, value) {
+    return parentValue ? (value ? 1 : 0) : 0;
+}
+
 function setValueEmptyIfNull (parentValue, value) {
-    return parentValue ? value : ""
+    if(parentValue){
+        if(value === 0){
+            return value;
+        }
+        if(value){
+            return value;
+        }
+    }
+
+    return ""
 }
 
 export function BienFormulaire ({ type, element, negotiators })
@@ -94,7 +107,7 @@ export function BienFormulaire ({ type, element, negotiators })
         beforeJuly={element ? setValueEmptyIfNull(diag, diag.beforeJuly) : 1}
         isVirgin={element ? setValueEmptyIfNull(diag, diag.isVirgin) : 0}
         isSend={element ? setValueEmptyIfNull(diag, diag.isSend) : 0}
-        createdAtDpe={element ?  (setValueEmptyIfNull(feature, feature.createdAtDpeJavascript) !== "" ? new Date(feature.createdAtDpeJavascript) : "" ) : ""}
+        createdAtDpe={element ?  (setValueEmptyIfNull(diag, diag.createdAtDpeJavascript) !== "" ? new Date(diag.createdAtDpeJavascript) : "" ) : ""}
         referenceDpe={element ? setValueEmptyIfNull(diag, diag.referenceDpe) : ""}
         dpeLetter={element ? setValueEmptyIfNull(diag, diag.dpeLetter) : ""}
         gesLetter={element ? setValueEmptyIfNull(diag, diag.gesLetter) : ""}
@@ -104,7 +117,7 @@ export function BienFormulaire ({ type, element, negotiators })
         maxAnnual={element ? setValueEmptyIfNull(diag, diag.maxAnnual) : ""}
 
         address={element ? setValueEmptyIfNull(localisation, localisation.address) : ""}
-        hideAddress={element ? setValueEmptyIfNull(localisation, localisation.hideAddress) : 0}
+        hideAddress={element ? setValueBoolean(localisation, localisation.hideAddress) : 0}
         zipcode={element ? setValueEmptyIfNull(localisation, localisation.zipcode) : ""}
         city={element ? setValueEmptyIfNull(localisation, localisation.city) : ""}
         country={element ? setValueEmptyIfNull(localisation, localisation.country) : ""}
@@ -112,7 +125,7 @@ export function BienFormulaire ({ type, element, negotiators })
         quartier={element ? setValueEmptyIfNull(localisation, localisation.quartier) : ""}
         lat={element ? setValueEmptyIfNull(localisation, localisation.lat) : ""}
         lon={element ? setValueEmptyIfNull(localisation, localisation.lon) : ""}
-        hideMap={element ? setValueEmptyIfNull(localisation, localisation.hideMap) : 0}
+        hideMap={element ? setValueBoolean(localisation, localisation.hideMap) : 0}
 
         typeCalcul={element ? setValueEmptyIfNull(financial, financial.typeCalcul) : 0}
         price={element ? setValueEmptyIfNull(financial, financial.price) : ""}

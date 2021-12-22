@@ -153,6 +153,7 @@ class ImBien extends DataEntity
     /**
      * @ORM\OneToOne(targetEntity=ImAdvantage::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
      */
     private $advantage;
 

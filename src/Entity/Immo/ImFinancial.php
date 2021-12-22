@@ -93,11 +93,13 @@ class ImFinancial
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
      */
     private $typeBail;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
      */
     private $durationBail;
 

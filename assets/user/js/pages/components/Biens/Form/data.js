@@ -1,4 +1,5 @@
 function getDataState (props) {
+    console.log(props.createdAtDpe)
     return {
         codeTypeAd: props.codeTypeAd,
         codeTypeBien: props.codeTypeBien,
