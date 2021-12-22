@@ -9,6 +9,7 @@ import { Button }   from "@dashboardComponents/Tools/Button";
 import helper from "@userPages/components/Biens/helper";
 
 export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, errors,
+                          codeTypeAd, codeTypeBien,
                           areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
                           piece, room, bathroom, wc, balcony, parking, box,
                           dispoAt, buildAt, isMeuble, isNew, floor, nbFloor, codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0 })
@@ -96,22 +97,25 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                 <label>Caractéristique</label>
             </div>
             <div className="line line-2">
+                <Input type="number" min={1200} identifiant="buildAt" valeur={buildAt} errors={errors} onChange={onChange}>
+                    <span>Année de construction</span>
+                </Input>
                 <DatePick identifiant="dispoAt" valeur={dispoAt} errors={errors}
                           onChange={(e) => onChangeDate("dispoAt", e)}>
                     Date disponible
                 </DatePick>
-                <Input type="number" min={1200} identifiant="buildAt" valeur={buildAt} errors={errors} onChange={onChange}>
-                    <span>Année de construction</span>
-                </Input>
             </div>
 
             <div className="line line-2">
-                <Radiobox items={helper.getItems("answers", 0)} identifiant="isMeuble" valeur={isMeuble} errors={errors} onChange={onChange}>
-                    Meublé ?
-                </Radiobox>
                 <Radiobox items={helper.getItems("answers", 1)} identifiant="isNew" valeur={isNew} errors={errors} onChange={onChange}>
                     Refait à neuf ?
                 </Radiobox>
+                {(parseInt(codeTypeAd) === 1 && parseInt(codeTypeBien) !== 2 && parseInt(codeTypeBien) !== 3) && <>
+                    <Radiobox items={helper.getItems("answers", 0)} identifiant="isMeuble" valeur={isMeuble} errors={errors} onChange={onChange}>
+                        Meublé ?
+                    </Radiobox>
+                </>}
+
             </div>
             <div className="line line-2">
                 <Input identifiant="floor" valeur={floor} errors={errors} onChange={onChange}>
