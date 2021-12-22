@@ -73,7 +73,7 @@ class DataImmo extends DataConstructor
             ->setLibelle(trim($libelle))
             ->setCodeTypeMandat((int) $codeTypeMandat)
             ->setNegotiator($negotiator)
-            ->setReference(substr(mb_strtoupper(uniqid().bin2hex(random_bytes(1))), 0, 10))
+            ->setReference(substr(mb_strtoupper(uniqid().bin2hex(random_bytes(1))), 0, 10).random_int(100,999))
             ->setArea($area)
             ->setNumber($number)
             ->setFeature($feature)
