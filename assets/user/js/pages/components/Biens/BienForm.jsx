@@ -142,6 +142,19 @@ export function BienFormulaire ({ type, element, negotiators })
         typeBail={element ? setValueEmptyIfNull(financial, financial.typeBail) : ""}
         durationBail={element ? setValueEmptyIfNull(financial, financial.durationBail) : ""}
 
+        chargesMensuelles={element ? setValueEmptyIfNull(financial, financial.chargesMensuelles) : ""}
+        notaire={element ? setValueEmptyIfNull(financial, financial.notaire) : ""}
+        foncier={element ? setValueEmptyIfNull(financial, financial.foncier) : ""}
+        taxeHabitation={element ? setValueEmptyIfNull(financial, financial.taxeHabitation) : ""}
+        honoraireChargeDe={element ? setValueEmptyIfNull(financial, financial.honoraireChargeDe) : ""}
+        honorairePourcentage={element ? setValueEmptyIfNull(financial, financial.honorairePourcentage) : ""}
+        prixHorsAcquereur={element ? setValueEmptyIfNull(financial, financial.prixHorsAcquereur) : ""}
+        isCopro={element ? setValueBoolean(financial, financial.isCopro) : 0}
+        nbLot={element ? setValueEmptyIfNull(financial, financial.nbLot) : ""}
+        chargesLot={element ? setValueEmptyIfNull(financial, financial.chargesLot) : ""}
+        isSyndicProcedure={element ? setValueBoolean(financial, financial.isSyndicProcedure) : 0}
+        detailsProcedure={element ? setValueEmptyIfNull(financial, financial.detailsProcedure) : ""}
+
         messageSuccess={msg}
 
         negotiators={negotiators}
