@@ -124,7 +124,7 @@ class ImBien extends DataEntity
     private $agency;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="biens")
+     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="biens")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"user:read"})
      */

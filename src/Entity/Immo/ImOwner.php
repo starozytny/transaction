@@ -108,12 +108,6 @@ class ImOwner extends DataEntity
     private $country;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="owners")
-     * @Groups({"admin:read", "user:read"})
-     */
-    private $negotiator;
-
-    /**
      * @ORM\Column(type="boolean")
      * @Groups({"admin:read", "user:read"})
      */
@@ -186,10 +180,16 @@ class ImOwner extends DataEntity
     private $coEmail;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"admin:read", "user:read"})
      */
     private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="owners")
+     * @Groups({"admin:read", "user:read"})
+     */
+    private $negotiator;
 
     /**
      * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="imOwners")
@@ -199,7 +199,8 @@ class ImOwner extends DataEntity
     private $society;
 
     /**
-     * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="owner")
+     * @ORM\OneToMany(targetEntity=ImBien::class, fetch="EAGER", mappedBy="owner")
+     * @Groups({"admin:read", "user:read"})
      */
     private $biens;
 
@@ -541,7 +542,7 @@ class ImOwner extends DataEntity
         return $this->category;
     }
 
-    public function setCategory(int $category): self
+    public function setCategory(?int $category): self
     {
         $this->category = $category;
 

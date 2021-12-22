@@ -12,7 +12,7 @@ export class OwnersItem extends Component {
 
             <div className="item-content">
                 <div className="item-body">
-                    <div className="infos infos-col-3">
+                    <div className="infos infos-col-4">
                         <div className="col-1">
                             <div className="badges">
                                 <div className="badge">{elem.code}</div>
@@ -25,6 +25,7 @@ export class OwnersItem extends Component {
                                 <span>{elem.fullname}</span>
                             </div>
                             {!isClient && <div className="sub">{elem.society.fullname}</div>}
+                            <div>{elem.biens.length}</div>
                         </div>
                         <div className="col-2">
                             <div className="sub">{elem.email}</div>
@@ -32,7 +33,10 @@ export class OwnersItem extends Component {
                             <div className="sub">{elem.phone2}</div>
                             <div className="sub">{elem.phone3}</div>
                         </div>
-                        <div className="col-3 actions">
+                        <div className="col-3">
+                            <div className="sub">{elem.negotiator ? elem.negotiator.fullname : "/"}</div>
+                        </div>
+                        <div className="col-4 actions">
                             {!elem.isGerance && <>
                                 <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>

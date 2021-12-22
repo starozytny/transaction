@@ -36,8 +36,8 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
         context={type}
         url={url}
         society={element ? element.society.id : societyId}
-        agency={element ? element.agency.id : agencyId}
-        negotiator={element ? element.negotiator.id : ""}
+        agency={element ? (element.negotiator ? element.negotiator.agency.id : agencyId) : agencyId}
+        negotiator={element ? (element.negotiator ? element.negotiator.id : "") : ""}
         lastname={element ? element.lastname : ""}
         firstname={element ? element.firstname : ""}
         civility={element ? element.civility : 3}
@@ -52,7 +52,7 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
         country={element ? element.country : "France"}
         category={element ? element.category : ""}
 
-        isCoIndivisaire={element ? element.isCoIndivisaire : 0}
+        isCoIndivisaire={element ? (element.isCoIndivisaire ? 1 : 0) : 0}
         coLastname={element ? element.coLastname : ""}
         coFirstname={element ? element.coFirstname : ""}
         coPhone={element ? element.coPhone : ""}
@@ -79,31 +79,31 @@ export class OwnerForm extends Component {
         super(props);
 
         this.state = {
-            society: props.society,
-            agency: props.agency,
-            negotiator: props.negotiator,
-            lastname: props.lastname,
-            firstname: props.firstname,
-            civility: props.civility,
-            phone1: props.phone1,
-            phone2: props.phone2,
-            phone3: props.phone3,
-            email: props.email,
-            address: props.address,
-            complement: props.complement,
-            zipcode: props.zipcode,
-            city: props.city,
-            country: props.country,
-            category: props.category,
+            society: props.society ? props.society : "",
+            agency: props.agency ? props.agency : "",
+            negotiator: props.negotiator ? props.negotiator : "",
+            lastname: props.lastname ? props.lastname : "",
+            firstname: props.firstname ? props.firstname : "",
+            civility: props.civility ? props.civility : "",
+            phone1: props.phone1 ? props.phone1 : "",
+            phone2: props.phone2 ? props.phone2 : "",
+            phone3: props.phone3 ? props.phone3 : "",
+            email: props.email ? props.email : "",
+            address: props.address ? props.address : "",
+            complement: props.complement ? props.complement : "",
+            zipcode: props.zipcode ? props.zipcode : "",
+            city: props.city ? props.city : "",
+            country: props.country ? props.country : "",
+            category: props.category ? props.category : "",
 
-            isCoIndivisaire: props.isCoIndivisaire,
-            coLastname: props.lastname,
-            coFirstname: props.firstname,
-            coPhone: props.phone1,
-            coEmail: props.email,
-            coAddress: props.address,
-            coZipcode: props.zipcode,
-            coCity: props.city,
+            isCoIndivisaire: props.isCoIndivisaire ? props.isCoIndivisaire : 0,
+            coLastname: props.lastname ? props.lastname : "",
+            coFirstname: props.firstname ? props.firstname : "",
+            coPhone: props.phone1 ? props.phone1 : "",
+            coEmail: props.email ? props.email : "",
+            coAddress: props.address ? props.address : "",
+            coZipcode: props.zipcode ? props.zipcode : "",
+            coCity: props.city ? props.city : "",
 
             errors: [],
             success: false,
@@ -135,7 +135,12 @@ export class OwnerForm extends Component {
             }
         }
 
-        this.setState({ [name]: e !== undefined ? e.value : "", negotiator: nego })
+        if(name !== "negotiator"){
+            this.setState({ [name]: e !== undefined ? e.value : "", negotiator: nego })
+        }else{
+            this.setState({ [name]: e !== undefined ? e.value : ""})
+        }
+
     }
 
     handleSubmit = (e) => {
@@ -261,6 +266,8 @@ export class OwnerForm extends Component {
                 }
             })
         }
+
+        console.log(this.state)
 
         return <>
             <form onSubmit={this.handleSubmit}>
