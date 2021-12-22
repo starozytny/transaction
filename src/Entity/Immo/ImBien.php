@@ -178,6 +178,11 @@ class ImBien extends DataEntity
      */
     private $financial;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ImOwner::class, inversedBy="biens")
+     */
+    private $owner;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -494,6 +499,18 @@ class ImBien extends DataEntity
     public function setFinancial(ImFinancial $financial): self
     {
         $this->financial = $financial;
+
+        return $this;
+    }
+
+    public function getOwner(): ?ImOwner
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?ImOwner $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }

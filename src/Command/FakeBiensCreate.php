@@ -12,6 +12,7 @@ use App\Entity\Immo\ImFinancial;
 use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
+use App\Entity\Immo\ImOwner;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Service\Data\DataImmo;
@@ -72,6 +73,8 @@ class FakeBiensCreate extends Command
         $nbNegotiators = count($negotiators);
         $users = $this->em->getRepository(User::class)->findBy(['society' => $society]);
         $nbUsers = count($users);
+        $owners = $this->em->getRepository(ImOwner::class)->findBy(['society' => $society]);
+        $nbOwners = count($owners);
 
         if($nbAgencies == 0 || $nbNegotiators == 0 || $nbUsers == 0){
             $io->text("Veuillez créer un ou des agences/négociateurs/utilisateurs avant de lancer cette commande.");
@@ -192,6 +195,10 @@ class FakeBiensCreate extends Command
                 ->setIdentifiant(uniqid().bin2hex(random_bytes(8)) . random_int(100,999))
                 ->setAgency($user->getAgency())
             ;
+
+            do{
+                $owner = $owners[$fake->numberBetween(0,$nbOwners - 1)];
+            }while($owner->getNegotiator() && $owner->getNegotiator()->getAgency()->getId() !== $user->getAgency()->getId());
 
             $this->em->persist($obj);
         }

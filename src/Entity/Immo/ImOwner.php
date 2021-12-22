@@ -5,6 +5,8 @@ namespace App\Entity\Immo;
 use App\Entity\DataEntity;
 use App\Entity\Society;
 use App\Repository\Immo\ImOwnerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -195,6 +197,16 @@ class ImOwner extends DataEntity
      * @Groups({"admin:read", "user:read"})
      */
     private $society;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="owner")
+     */
+    private $biens;
+
+    public function __construct()
+    {
+        $this->biens = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -589,6 +601,36 @@ class ImOwner extends DataEntity
     public function setSociety(?Society $society): self
     {
         $this->society = $society;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImBien[]
+     */
+    public function getBiens(): Collection
+    {
+        return $this->biens;
+    }
+
+    public function addBien(ImBien $bien): self
+    {
+        if (!$this->biens->contains($bien)) {
+            $this->biens[] = $bien;
+            $bien->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBien(ImBien $bien): self
+    {
+        if ($this->biens->removeElement($bien)) {
+            // set the owning side to null (unless already changed)
+            if ($bien->getOwner() === $this) {
+                $bien->setOwner(null);
+            }
+        }
 
         return $this;
     }
