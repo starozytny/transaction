@@ -2,6 +2,7 @@ import React from "react";
 
 import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 
+import { Alert }    from "@dashboardComponents/Tools/Alert";
 import { DatePick } from "@dashboardComponents/Tools/DatePicker";
 import { Button }   from "@dashboardComponents/Tools/Button";
 
@@ -19,13 +20,20 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
     let waterItems = helper.getItems("water");
 
     return <div className={"step-section" + (step === 2 ? " active" : "")}>
+        <div className="line-infos">
+            <Alert iconCustom="exclamation" type="reverse">
+                (*) Champs obligatoires. <br/><br/>
+                Une fiche bien remplie permet un meilleur référencement de l'agence
+                auprès des moteurs de recherche tel que Google. Donc, plus de visiteurs qui verront cette annonce.
+            </Alert>
+        </div>
         <div className="line special-line">
             <div className="form-group">
                 <label>Surfaces (m²)</label>
             </div>
             <div className="line line-infinite">
                 <Input type="number" step="any" min={0} identifiant="areaTotal" valeur={areaTotal} errors={errors} onChange={onChange}>
-                    <span>Totale</span>
+                    <span>Totale *</span>
                 </Input>
                 <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={onChange}>
                     <span>Habitable</span>
@@ -60,7 +68,7 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
             </div>
             <div className="line line-infinite">
                 <Input type="number" min={0} identifiant="piece" valeur={piece} errors={errors} onChange={onChange}>
-                    <span>Pièces</span>
+                    <span>Pièces *</span>
                 </Input>
                 <Input type="number" min={0} identifiant="room" valeur={room} errors={errors} onChange={onChange}>
                     <span>Chambres</span>

@@ -120,7 +120,7 @@ export function BienFormulaire ({ type, element, negotiators })
         hideAddress={element ? setValueBoolean(localisation, localisation.hideAddress) : 0}
         zipcode={element ? setValueEmptyIfNull(localisation, localisation.zipcode) : ""}
         city={element ? setValueEmptyIfNull(localisation, localisation.city) : ""}
-        country={element ? setValueEmptyIfNull(localisation, localisation.country) : ""}
+        country={element ? setValueEmptyIfNull(localisation, localisation.country) : "France"}
         departement={element ? setValueEmptyIfNull(localisation, localisation.departement) : ""}
         quartier={element ? setValueEmptyIfNull(localisation, localisation.quartier) : ""}
         lat={element ? setValueEmptyIfNull(localisation, localisation.lat) : ""}

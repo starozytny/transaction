@@ -6,6 +6,7 @@ import { DatePick } from "@dashboardComponents/Tools/DatePicker";
 import { Button }   from "@dashboardComponents/Tools/Button";
 
 import helper from "@userPages/components/Biens/helper";
+import {Alert} from "@dashboardComponents/Tools/Alert";
 
 export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, errors,
                           hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian,

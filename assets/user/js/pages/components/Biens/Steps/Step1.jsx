@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
-
+import { Alert }              from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import helper from "@userPages/components/Biens/helper";
@@ -21,15 +21,18 @@ export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, err
     })
 
     return <div className={"step-section" + (step === 1 ? " active" : "")}>
+        <div className="line-infos">
+            <Alert iconCustom="exclamation" type="reverse">(*) Champs obligatoires.</Alert>
+        </div>
         <div className="line special-line">
             <Radiobox items={typeAdItems} identifiant="codeTypeAd" valeur={codeTypeAd} errors={errors} onChange={onChange}>
-                Type d'annonce
+                Type d'annonce *
             </Radiobox>
         </div>
 
         <div className="line special-line">
             <Radiobox items={typeBienItems} identifiant="codeTypeBien" valeur={codeTypeBien} errors={errors} onChange={onChange}>
-                Type de bien
+                Type de bien *
             </Radiobox>
         </div>
 
@@ -37,7 +40,7 @@ export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, err
             <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={onChange}
                    placeholder="Exemple : Appartement T1 Centre ville (max 64 caractères)"
             >
-                <span>Libellé de l'annonce</span>
+                <span>Libellé de l'annonce *</span>
                 <div className="input-label-help">
                     <ButtonIcon icon="question" onClick={() => this.handleOpenHelp("libelle")}>Aide</ButtonIcon>
                 </div>
@@ -46,14 +49,14 @@ export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, err
 
         <div className="line special-line">
             <Radiobox items={typeMandatItems} identifiant="codeTypeMandat" valeur={codeTypeMandat} errors={errors} onChange={onChange}>
-                Type de mandat
+                Type de mandat *
             </Radiobox>
         </div>
 
         <div className="line line-2">
             <SelectReactSelectize items={negociateurs} identifiant="negotiator" valeur={negotiator} errors={errors}
                                   onChange={(e) => onChangeSelect('negotiator', e)}>
-                Négociateur
+                Négociateur *
             </SelectReactSelectize>
         </div>
 

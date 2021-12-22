@@ -2,6 +2,7 @@ import React from "react";
 
 import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 
+import { Alert }    from "@dashboardComponents/Tools/Alert";
 import { Button }   from "@dashboardComponents/Tools/Button";
 
 import helper from "@userPages/components/Biens/helper";
@@ -16,6 +17,9 @@ export function Step5({ step, onChange, onChangeSelect, onNext, errors,
     let bailsItems = helper.getItems("bails")
 
     return <div className={"step-section" + (step === 5 ? " active" : "")}>
+        <div className="line-infos">
+            <Alert iconCustom="exclamation" type="reverse">(*) Champs obligatoires.</Alert>
+        </div>
         <div className="line special-line">
             <div className="form-group">
                 <label>Financier</label>
@@ -23,10 +27,10 @@ export function Step5({ step, onChange, onChangeSelect, onNext, errors,
             <div className="line line-2">
                 <SelectReactSelectize items={calculItems} identifiant="typeCalcul" valeur={typeCalcul} errors={errors}
                                       onChange={(e) => onChangeSelect('typeCalcul', e)}>
-                    Type de calcul
+                    Type de calcul *
                 </SelectReactSelectize>
                 <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChange}>
-                    <span>Prix/Loyer/Prix de cession</span>
+                    <span>Prix/Loyer/Prix de cession *</span>
                 </Input>
             </div>
             <div className="line line-2">
@@ -55,7 +59,7 @@ export function Step5({ step, onChange, onChangeSelect, onNext, errors,
                     <span>Caution</span>
                 </Input>
                 <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
-                    <span>Honoraire TTC</span>
+                    <span>Honoraire TTC *</span>
                 </Input>
             </div>
             <div className="line line-2">
@@ -63,13 +67,13 @@ export function Step5({ step, onChange, onChangeSelect, onNext, errors,
                     <span>Honoraire rédaction bail</span>
                 </Input>
                 <Input type="number" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChange}>
-                    <span>- dont état des lieux</span>
+                    <span>- dont état des lieux *</span>
                 </Input>
             </div>
             <div className="line line-2">
                 <SelectReactSelectize items={chargesItems} identifiant="typeCharges" valeur={typeCharges} errors={errors}
                                       onChange={(e) => onChangeSelect('typeCharges', e)}>
-                    Type de calcul
+                    Type de charges
                 </SelectReactSelectize>
                 <div className="form-group">
                     <label>Total général</label>
