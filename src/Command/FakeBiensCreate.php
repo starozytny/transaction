@@ -151,7 +151,7 @@ class FakeBiensCreate extends Command
                 "gesValue" => (string) $fake->numberBetween(0, 350),
                 "minAnnual" => (string) $fake->numberBetween(0, 10000),
                 "maxAnnual" => (string) $fake->numberBetween(0, 10000),
-                "address" => $fake->address,
+                "address" => $fake->streetName,
                 "hideAddress" => $fake->numberBetween(0, 1),
                 "zipcode" => $fake->postcode,
                 "city" => $fake->city,

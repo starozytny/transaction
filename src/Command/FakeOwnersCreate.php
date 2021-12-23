@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Society;
@@ -40,7 +41,7 @@ class FakeOwnersCreate extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [ImOwner::class]);
+        $this->databaseService->resetTable($io, [ImBien::class, ImOwner::class]);
 
         $societies = $this->em->getRepository(Society::class)->findAll();
         $nbSocieties = count($societies);
@@ -72,7 +73,7 @@ class FakeOwnersCreate extends Command
                 ->setPhone2($fake->e164PhoneNumber)
                 ->setPhone3($fake->e164PhoneNumber)
                 ->setEmail($fake->email)
-                ->setAddress($fake->address)
+                ->setAddress($fake->streetName)
                 ->setZipcode($fake->postcode)
                 ->setCity($fake->city)
                 ->setCountry($fake->country)
@@ -95,7 +96,7 @@ class FakeOwnersCreate extends Command
                     ->setCoFirstname($fake->firstName)
                     ->setCoPhone($fake->e164PhoneNumber)
                     ->setCoEmail($fake->email)
-                    ->setCoAddress($fake->address)
+                    ->setCoAddress($fake->streetName)
                     ->setCoZipcode($fake->postcode)
                     ->setCoCity($fake->city)
                 ;
