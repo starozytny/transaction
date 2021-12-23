@@ -7,7 +7,7 @@ import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
-export function Step6({ step, onChangeFile, onNext, errors,
+export function Step6({ step, onChangeFile, onSwitchTrashFile, onNext, errors,
                       photos })
 {
     return <div className={"step-section" + (step === 6 ? " active" : "")}>
@@ -40,7 +40,7 @@ export function Step6({ step, onChangeFile, onNext, errors,
 
                         let src = el.is64 ? el.file : "path/" . el.file;
 
-                        return (<div className="item" key={index}>
+                        return (<div className={"item" + (el.isTrash ? " trash" : "")} key={index}>
                             <div className="item-content">
                                 <div className="item-body item-body-image">
                                     <div className="item-image">
@@ -49,7 +49,7 @@ export function Step6({ step, onChangeFile, onNext, errors,
                                     <div className="infos infos-col-4">
                                         <div className="col-1">
                                             <div className="name">
-                                                {el.name}
+                                                {!el.isTrash ? (el.legend ? el.legend : <ButtonIcon icon="tag" text="Ajouter une légende" />) : "Supprimée"}
                                             </div>
                                         </div>
                                         <div className="col-2">
@@ -59,8 +59,8 @@ export function Step6({ step, onChangeFile, onNext, errors,
                                             {Sanitaze.toFormatBytesToSize(el.size)}
                                         </div>
                                         <div className="col-4 actions">
-                                            <ButtonIcon icon="tag">Légende</ButtonIcon>
-                                            <ButtonIcon icon="trash">Supprimer</ButtonIcon>
+                                            {el.isTrash ? <ButtonIcon icon="refresh" onClick={() => onSwitchTrashFile(el)}>Annuler la suppression</ButtonIcon>
+                                                : <ButtonIcon icon="trash" onClick={() => onSwitchTrashFile(el)}>Supprimer</ButtonIcon>}
                                         </div>
                                     </div>
                                 </div>

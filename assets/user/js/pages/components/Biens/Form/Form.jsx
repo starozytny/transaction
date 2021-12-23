@@ -31,10 +31,11 @@ function getBase64(file, self, rank) {
         self.setState({ photos: [...self.state.photos, ...[{
             file: reader.result,
             name: file.name,
-            legend: file.name,
+            legend: "",
             size: file.size,
             rank: rank,
-            is64: true
+            is64: true,
+            isTrash: false
         }]] })
     };
     reader.onerror = function (error) {
@@ -54,6 +55,9 @@ export class Form extends Component {
         this.handleChangeFile = this.handleChangeFile.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
+
+        this.handleSwitchTrashFile = this.handleSwitchTrashFile.bind(this);
+
         this.handleNext = this.handleNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleOpenHelp = this.handleOpenHelp.bind(this);
@@ -99,6 +103,21 @@ export class Form extends Component {
                 }
             })
         }
+    }
+
+    handleSwitchTrashFile = (el) => {
+        const { photos } = this.state;
+
+        let nPhotos = [];
+        photos.forEach(elem => {
+            if(elem.rank === el.rank){
+                elem.isTrash = !elem.isTrash;
+            }
+
+            nPhotos.push(elem)
+        })
+
+        this.setState({ photos: nPhotos })
     }
 
     handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
@@ -271,7 +290,8 @@ export class Form extends Component {
                             : <Step5Vente {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                           onChangeSelect={this.handleChangeSelect} />}
 
-                        <Step6 {...this.state} onNext={this.handleNext} onChangeFile={this.handleChangeFile} />
+                        <Step6 {...this.state} onNext={this.handleNext} onChangeFile={this.handleChangeFile}
+                               onSwitchTrashFile={this.handleSwitchTrashFile}/>
 
                         <div className="step-section active">
                             <div className="line line-buttons">
