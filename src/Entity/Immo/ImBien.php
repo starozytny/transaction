@@ -220,10 +220,16 @@ class ImBien extends DataEntity
      */
     private $mainPhoto;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImTenant::class, mappedBy="bien")
+     */
+    private $tenants;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
         $this->photos = new ArrayCollection();
+        $this->tenants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -638,6 +644,36 @@ class ImBien extends DataEntity
     public function setMainPhoto(?ImPhoto $mainPhoto): self
     {
         $this->mainPhoto = $mainPhoto;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImTenant[]
+     */
+    public function getTenants(): Collection
+    {
+        return $this->tenants;
+    }
+
+    public function addTenant(ImTenant $tenant): self
+    {
+        if (!$this->tenants->contains($tenant)) {
+            $this->tenants[] = $tenant;
+            $tenant->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTenant(ImTenant $tenant): self
+    {
+        if ($this->tenants->removeElement($tenant)) {
+            // set the owning side to null (unless already changed)
+            if ($tenant->getBien() === $this) {
+                $tenant->setBien(null);
+            }
+        }
 
         return $this;
     }

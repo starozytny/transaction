@@ -77,7 +77,8 @@ class FakeBiensCreate extends Command
         $nbOwners = count($owners);
 
         if($nbAgencies == 0 || $nbNegotiators == 0 || $nbUsers == 0){
-            $io->text("Veuillez créer un ou des agences/négociateurs/utilisateurs avant de lancer cette commande.");
+            $io->text("Veuillez créer un ou des agences/négociateurs/utilisateurs avant de lancer cette commande : " .
+                " Agences : " . $nbAgencies . " Negos : " . $nbNegotiators . " Users : " . $nbUsers);
             return Command::FAILURE;
         }
 

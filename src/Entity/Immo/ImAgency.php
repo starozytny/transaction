@@ -195,11 +195,23 @@ class ImAgency
      */
     private $negotiators;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImTenant::class, mappedBy="agency")
+     */
+    private $tenants;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ImOwner::class, mappedBy="agency")
+     */
+    private $owners;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->negotiators = new ArrayCollection();
+        $this->tenants = new ArrayCollection();
+        $this->owners = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -612,6 +624,66 @@ class ImAgency
             // set the owning side to null (unless already changed)
             if ($negotiator->getAgency() === $this) {
                 $negotiator->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImTenant[]
+     */
+    public function getTenants(): Collection
+    {
+        return $this->tenants;
+    }
+
+    public function addTenant(ImTenant $tenant): self
+    {
+        if (!$this->tenants->contains($tenant)) {
+            $this->tenants[] = $tenant;
+            $tenant->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTenant(ImTenant $tenant): self
+    {
+        if ($this->tenants->removeElement($tenant)) {
+            // set the owning side to null (unless already changed)
+            if ($tenant->getAgency() === $this) {
+                $tenant->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImOwner[]
+     */
+    public function getOwners(): Collection
+    {
+        return $this->owners;
+    }
+
+    public function addOwner(ImOwner $owner): self
+    {
+        if (!$this->owners->contains($owner)) {
+            $this->owners[] = $owner;
+            $owner->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOwner(ImOwner $owner): self
+    {
+        if ($this->owners->removeElement($owner)) {
+            // set the owning side to null (unless already changed)
+            if ($owner->getAgency() === $this) {
+                $owner->setAgency(null);
             }
         }
 

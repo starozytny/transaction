@@ -203,6 +203,12 @@ class ImOwner extends DataEntity
      */
     private $biens;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="owners")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $agency;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
@@ -631,6 +637,18 @@ class ImOwner extends DataEntity
                 $bien->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAgency(): ?ImAgency
+    {
+        return $this->agency;
+    }
+
+    public function setAgency(?ImAgency $agency): self
+    {
+        $this->agency = $agency;
 
         return $this;
     }
