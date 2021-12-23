@@ -23,6 +23,7 @@ import { Step6 } from "@userPages/components/Biens/Steps/Step6";
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
 let arrayZipcodeSave = [];
+let initRank = null;
 
 function getBase64(file, self, rank) {
     let reader = new FileReader();
@@ -57,6 +58,9 @@ export class Form extends Component {
         this.handleChangeDate = this.handleChangeDate.bind(this);
 
         this.handleSwitchTrashFile = this.handleSwitchTrashFile.bind(this);
+        this.handleDragStart = this.handleDragStart.bind(this);
+        this.handleDragLeave = this.handleDragLeave.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
 
         this.handleNext = this.handleNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -112,6 +116,44 @@ export class Form extends Component {
         photos.forEach(elem => {
             if(elem.rank === el.rank){
                 elem.isTrash = !elem.isTrash;
+            }
+
+            nPhotos.push(elem)
+        })
+
+        this.setState({ photos: nPhotos })
+    }
+
+    handleDragStart = (e, rank) => {
+        initRank = rank;
+    }
+
+    handleDragLeave = (e) => {
+        let elements = document.querySelectorAll(".item-drag");
+
+        elements.forEach(el => {
+            if(el !== e.currentTarget){
+                el.classList.remove("grab-over");
+            }else{
+                e.currentTarget.classList.add("grab-over");
+            }
+        })
+
+
+        e.preventDefault()
+    }
+
+    handleDrop = (e, rank) => {
+        const { photos } = this.state;
+
+        e.currentTarget.classList.remove("grab-over");
+
+        let nPhotos = [];
+        photos.forEach(elem => {
+            if(elem.rank === rank){
+                elem.rank = initRank;
+            }else if(elem.rank === initRank){
+                elem.rank = rank;
             }
 
             nPhotos.push(elem)
@@ -291,7 +333,8 @@ export class Form extends Component {
                                           onChangeSelect={this.handleChangeSelect} />}
 
                         <Step6 {...this.state} onNext={this.handleNext} onChangeFile={this.handleChangeFile}
-                               onSwitchTrashFile={this.handleSwitchTrashFile}/>
+                               onSwitchTrashFile={this.handleSwitchTrashFile}
+                               onDragStart={this.handleDragStart} onDrop={this.handleDrop} onDragLeave={this.handleDragLeave}/>
 
                         <div className="step-section active">
                             <div className="line line-buttons">

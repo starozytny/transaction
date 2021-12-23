@@ -128,7 +128,14 @@
   }
 }
 
+.grab-over{
+  background-color: var(--grey);
+}
+
 .form-bien{
+  .item-drag{
+    cursor: grab;
+  }
   .item{
     .name{
       .btn-icon{

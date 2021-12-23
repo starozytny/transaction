@@ -6,10 +6,14 @@ import { Alert }    from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
+import Sort     from "@commonComponents/functions/sort";
 
 export function Step6({ step, onChangeFile, onSwitchTrashFile, onNext, errors,
-                      photos })
+                          onDragStart, onDragLeave, onDrop, photos })
 {
+
+    photos.sort(Sort.compareRank)
+
     return <div className={"step-section" + (step === 6 ? " active" : "")}>
         <div className="line-infos">
             <Alert iconCustom="exclamation" type="reverse">
@@ -40,7 +44,13 @@ export function Step6({ step, onChangeFile, onSwitchTrashFile, onNext, errors,
 
                         let src = el.is64 ? el.file : "path/" . el.file;
 
-                        return (<div className={"item" + (el.isTrash ? " trash" : "")} key={index}>
+                        return (<div className={"item-drag item" + (el.isTrash ? " trash" : "")} key={index}
+                                     draggable="true"
+                                     onDragStart={(e) => onDragStart(e, el.rank)}
+                                     onDragOver={(e) => e.preventDefault()}
+                                     onDragEnter={onDragLeave}
+                                     onDrop={(e) => onDrop(e, el.rank)}
+                        >
                             <div className="item-content">
                                 <div className="item-body item-body-image">
                                     <div className="item-image">
