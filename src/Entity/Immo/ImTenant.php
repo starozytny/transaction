@@ -98,7 +98,8 @@ class ImTenant extends DataEntity
     private $birthday;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBien::class, inversedBy="tenants")
+     * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="tenants")
+     * @Groups({"admin:read", "user:read"})
      */
     private $bien;
 

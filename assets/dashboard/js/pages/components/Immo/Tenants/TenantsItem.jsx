@@ -29,10 +29,9 @@ export class TenantsItem extends Component {
                             <div className="sub">{elem.negotiator ? elem.negotiator.fullname : "/"}</div>
                         </div>
                         <div className="col-4 actions">
-                            {!elem.isGerance && <>
-                                <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                                <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
-                            </>}
+                            {elem.bien && <ButtonIcon icon="home">Bien</ButtonIcon>}
+                            <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
+                            <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>
                     </div>
                 </div>
