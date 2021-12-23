@@ -39,7 +39,7 @@ export function Step6({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, o
             <Alert iconCustom="exclamation" type="reverse">
                 Les photos peuvent avoir un poids maximum de 1Mb  afin de ne pas réduire le temps de chargement. <br/>
                 Pour réduire le poids de vos photos, vous pouvez redimensionner
-                la taille et/ou utiliser le compresseur en ligne suivant : <a href="https://tinyjpg.fr">tinyjpg.fr</a>
+                la taille et/ou utiliser le compresseur en ligne suivant : <a href="https://tinyjpg.com" target="_blank">tinyjpg.com</a>
             </Alert>
         </div>
         <div className="line special-line">
