@@ -3,16 +3,16 @@ import React, { Component } from 'react';
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
 
-import { OwnersList }       from "./OwnersList";
-import { OwnerFormulaire }  from "./OwnerForm";
+import { TenantsList }       from "./TenantsList";
+import { TenantFormulaire }  from "./TenantForm";
 
 const URL_DELETE_ELEMENT = 'api_owners_delete';
 const URL_DELETE_GROUP   = 'api_owners_delete_group';
-const MSG_DELETE_ELEMENT = 'Supprimer ce propriétaire ?';
-const MSG_DELETE_GROUP   = 'Aucun propriétaire sélectionnés.';
+const MSG_DELETE_ELEMENT = 'Supprimer ce locataire ?';
+const MSG_DELETE_GROUP   = 'Aucun locataire sélectionnés.';
 const SORTER = Sort.compareLastname;
 
-export class Owners extends Component {
+export class Tenants extends Component {
     constructor(props) {
         super(props);
 
@@ -29,7 +29,6 @@ export class Owners extends Component {
             societies: props.societies ? JSON.parse(props.societies) : [],
             agencies: props.agencies ? JSON.parse(props.agencies) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
-            biens: props.biens ? JSON.parse(props.biens) : [],
             isClient: props.isClient ? props.isClient : false
         }
 
@@ -51,25 +50,24 @@ export class Owners extends Component {
     handleSearch = (search) => { this.layout.current.handleSearch(search, "owner"); }
 
     handleContentList = (currentData, changeContext) => {
-        return <OwnersList onChangeContext={changeContext}
-                           onDelete={this.layout.current.handleDelete}
-                           onDeleteAll={this.layout.current.handleDeleteGroup}
-                           onSearch={this.handleSearch}
-                           isClient={this.state.isClient}
-                           biens={this.state.biens}
-                           data={currentData} />
+        return <TenantsList onChangeContext={changeContext}
+                            onDelete={this.layout.current.handleDelete}
+                            onDeleteAll={this.layout.current.handleDeleteGroup}
+                            onSearch={this.handleSearch}
+                            isClient={this.state.isClient}
+                            data={currentData} />
     }
 
     handleContentCreate = (changeContext) => {
         const { societies, agencies, negotiators, idSociety, idAgency, isClient } = this.state;
-        return <OwnerFormulaire type="create" societies={societies} agencies={agencies} negotiators={negotiators} isClient={isClient}
+        return <TenantFormulaire type="create" societies={societies} agencies={agencies} negotiators={negotiators} isClient={isClient}
                                 societyId={idSociety} agencyId={idAgency}
                                 onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
         const { societies, agencies, negotiators, idSociety, idAgency, isClient } = this.state;
-        return <OwnerFormulaire type="update" societies={societies} agencies={agencies} negotiators={negotiators} isClient={isClient}
+        return <TenantFormulaire type="update" societies={societies} agencies={agencies} negotiators={negotiators} isClient={isClient}
                                 societyId={idSociety} agencyId={idAgency} element={element}
                                 onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }

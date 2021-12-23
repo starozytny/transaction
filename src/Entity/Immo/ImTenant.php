@@ -2,78 +2,93 @@
 
 namespace App\Entity\Immo;
 
+use App\Entity\DataEntity;
 use App\Repository\Immo\ImTenantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImTenantRepository::class)
  */
-class ImTenant
+class ImTenant extends DataEntity
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read", "user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"admin:read", "user:read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read", "user:read"})
      */
     private $civility;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $phone1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $phone2;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $phone3;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $complement;
 
     /**
      * @ORM\Column(type="string", length=40, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $country;
 
@@ -88,13 +103,15 @@ class ImTenant
     private $bien;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="tenants")
+     * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="tenants")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"admin:read", "user:read"})
      */
     private $agency;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="tenants")
+     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="tenants")
+     * @Groups({"admin:read", "user:read"})
      */
     private $negotiator;
 
@@ -125,6 +142,17 @@ class ImTenant
         $this->firstname = $firstname;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getCivilityString(): string
+    {
+        $civilities = ["Mr", "Mme", "Société", "Mr ou Mme", "Mr et Mme"];
+
+        return $civilities[$this->civility];
     }
 
     public function getCivility(): ?int
@@ -293,5 +321,32 @@ class ImTenant
         $this->negotiator = $negotiator;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getFullnameCivility(): string
+    {
+        return $this->getFullNameString($this->lastname, $this->firstname, $this->getCivilityString());
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getFullname(): string
+    {
+        return $this->getFullNameString($this->lastname, $this->firstname);
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getFullAddress(): string
+    {
+        return $this->getFullAddressString($this->address, $this->zipcode, $this->city, $this->complement, $this->country);
     }
 }

@@ -4,9 +4,13 @@
 @import "./split/user/card";
 
 #owners{
-  @include toolbarCreateSearch("208px");
+  @include toolbarCreateSearch(208);
 }
 
 #negotiators{
-  @include toolbarCreateSearch("210px");
+  @include toolbarCreateSearch(210);
+}
+
+#tenants{
+  @include toolbarCreateSearch(186);
 }

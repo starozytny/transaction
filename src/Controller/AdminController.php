@@ -192,12 +192,14 @@ class AdminController extends AbstractController
         $societies = $this->getAllData(Society::class, $serializer);
         $agencies = $this->getAllData(ImAgency::class, $serializer);
         $negotiators = $this->getAllData(ImNegotiator::class, $serializer);
+        $biens = $this->getAllData(ImBien::class, $serializer);
 
         return $this->render('admin/pages/immo/owners.html.twig', [
             'donnees' => $objs,
             'societies' => $societies,
             'agencies' => $agencies,
             'negotiators' => $negotiators,
+            'biens' => $biens,
         ]);
     }
 

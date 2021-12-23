@@ -8,6 +8,7 @@ import { render } from "react-dom";
 import { Agency } from "@dashboardPages/components/Immo/Agencies/Agency";
 import { Negotiators }  from "@dashboardPages/components/Immo/Negociators/Negotiators";
 import { Owners }       from "@dashboardPages/components/Immo/Owners/Owners";
+import { Tenants }      from "@dashboardPages/components/Immo/Tenants/Tenants";
 
 Routing.setRoutingData(routes);
 
@@ -24,4 +25,9 @@ if(el){
 el = document.getElementById("owners");
 if(el){
     render(<Owners {...el.dataset} />, el)
+}
+
+el = document.getElementById("tenants");
+if(el){
+    render(<Tenants {...el.dataset} />, el)
 }
