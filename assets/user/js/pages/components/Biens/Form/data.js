@@ -107,7 +107,9 @@ function getDataState (props) {
         detailsProcedure: props.detailsProcedure,
 
         photos: props.photos,
+        photo: null,
 
+        contentAside: "",
         contentHelpBubble: "",
         arrayPostalCode: [],
         errors: [],

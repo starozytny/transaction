@@ -51,16 +51,20 @@ export class Form extends Component {
         this.state = DataState.getDataState(props);
 
         this.helpBubble = React.createRef();
+        this.aside = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeFile = this.handleChangeFile.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
+        this.handleChangeLegend = this.handleChangeLegend.bind(this);
 
         this.handleSwitchTrashFile = this.handleSwitchTrashFile.bind(this);
         this.handleDragStart = this.handleDragStart.bind(this);
         this.handleDragLeave = this.handleDragLeave.bind(this);
         this.handleDrop = this.handleDrop.bind(this);
+        this.handleOpenAside = this.handleOpenAside.bind(this);
+        this.handleSaveLegend = this.handleSaveLegend.bind(this);
 
         this.handleNext = this.handleNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -74,7 +78,6 @@ export class Form extends Component {
 
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
-
         this.setState({[name]: value});
 
         // PREREMPLIR le libellé
@@ -82,6 +85,11 @@ export class Form extends Component {
             && (ARRAY_STRING_BIENS.includes(libelle) || libelle === "")){
             this.setState({ libelle: ARRAY_STRING_BIENS[value] })
         }
+    }
+
+    handleChangeLegend = (e, el) => {
+        el.legend = e.currentTarget.value;
+        this.setState({ photo: el })
     }
 
     handleChangeFile = (e) => {
@@ -107,59 +115,6 @@ export class Form extends Component {
                 }
             })
         }
-    }
-
-    handleSwitchTrashFile = (el) => {
-        const { photos } = this.state;
-
-        let nPhotos = [];
-        photos.forEach(elem => {
-            if(elem.rank === el.rank){
-                elem.isTrash = !elem.isTrash;
-            }
-
-            nPhotos.push(elem)
-        })
-
-        this.setState({ photos: nPhotos })
-    }
-
-    handleDragStart = (e, rank) => {
-        initRank = rank;
-    }
-
-    handleDragLeave = (e) => {
-        let elements = document.querySelectorAll(".item-drag");
-
-        elements.forEach(el => {
-            if(el !== e.currentTarget){
-                el.classList.remove("grab-over");
-            }else{
-                e.currentTarget.classList.add("grab-over");
-            }
-        })
-
-
-        e.preventDefault()
-    }
-
-    handleDrop = (e, rank) => {
-        const { photos } = this.state;
-
-        e.currentTarget.classList.remove("grab-over");
-
-        let nPhotos = [];
-        photos.forEach(elem => {
-            if(elem.rank === rank){
-                elem.rank = initRank;
-            }else if(elem.rank === initRank){
-                elem.rank = rank;
-            }
-
-            nPhotos.push(elem)
-        })
-
-        this.setState({ photos: nPhotos })
     }
 
     handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
@@ -259,6 +214,82 @@ export class Form extends Component {
         this.helpBubble.current.handleOpen();
     }
 
+    handleSwitchTrashFile = (el) => {
+        const { photos } = this.state;
+
+        let nPhotos = [];
+        photos.forEach(elem => {
+            if(elem.rank === el.rank){
+                elem.isTrash = !elem.isTrash;
+            }
+
+            nPhotos.push(elem)
+        })
+
+        this.setState({ photos: nPhotos })
+    }
+
+    handleDragStart = (e, rank) => {
+        initRank = rank;
+    }
+
+    handleDragLeave = (e) => {
+        let elements = document.querySelectorAll(".item-drag");
+
+        elements.forEach(el => {
+            if(el !== e.currentTarget){
+                el.classList.remove("grab-over");
+            }else{
+                e.currentTarget.classList.add("grab-over");
+            }
+        })
+
+
+        e.preventDefault()
+    }
+
+    handleDrop = (e, rank) => {
+        const { photos } = this.state;
+
+        e.currentTarget.classList.remove("grab-over");
+
+        let nPhotos = [];
+        photos.forEach(elem => {
+            if(elem.rank === rank){
+                elem.rank = initRank;
+            }else if(elem.rank === initRank){
+                elem.rank = rank;
+            }
+
+            nPhotos.push(elem)
+        })
+
+        this.setState({ photos: nPhotos })
+    }
+
+    handleOpenAside = (el) => {
+        this.setState({ photo: el });
+        this.aside.current.handleOpen("Légende de " + el.name);
+    }
+
+    handleSaveLegend = (e) => {
+        e.preventDefault();
+
+        const { photo, photos } = this.state;
+
+        let nPhotos = [];
+        photos.forEach(elem => {
+            if(elem.rank === photo.rank){
+                elem.legend = photo.legend;
+            }
+
+            nPhotos.push(elem)
+        })
+
+        this.setState({ photos: nPhotos });
+        this.aside.current.handleClose();
+    }
+
     render () {
         const { negotiators } = this.props;
         const { step, contentHelpBubble, codeTypeAd } = this.state;
@@ -333,8 +364,9 @@ export class Form extends Component {
                                           onChangeSelect={this.handleChangeSelect} />}
 
                         <Step6 {...this.state} onNext={this.handleNext} onChangeFile={this.handleChangeFile}
-                               onSwitchTrashFile={this.handleSwitchTrashFile}
-                               onDragStart={this.handleDragStart} onDrop={this.handleDrop} onDragLeave={this.handleDragLeave}/>
+                               onSwitchTrashFile={this.handleSwitchTrashFile} onChangeLegend={this.handleChangeLegend}
+                               onDragStart={this.handleDragStart} onDrop={this.handleDrop} onDragLeave={this.handleDragLeave}
+                               refAside={this.aside} onOpenAside={this.handleOpenAside} onSaveLegend={this.handleSaveLegend} />
 
                         <div className="step-section active">
                             <div className="line line-buttons">

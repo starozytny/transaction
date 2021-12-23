@@ -2,17 +2,37 @@ import React from "react";
 
 import { Input } from "@dashboardComponents/Tools/Fields";
 
-import { Alert }    from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { Alert } from "@dashboardComponents/Tools/Alert";
+import { Aside } from "@dashboardComponents/Tools/Aside";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
 import Sort     from "@commonComponents/functions/sort";
 
-export function Step6({ step, onChangeFile, onSwitchTrashFile, onNext, errors,
-                          onDragStart, onDragLeave, onDrop, photos })
+export function Step6({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, onNext, errors,
+                          refAside, onOpenAside, onSaveLegend,
+                          onDragStart, onDragLeave, onDrop, photo, photos })
 {
-
-    photos.sort(Sort.compareRank)
+    photos.sort(Sort.compareRank);
+    let contentAside = "";
+    if(photo){
+        let srcFormPhoto = photo.is64 ? photo.file : "path/" . photo.file;
+        contentAside = <div>
+            <div className="line">
+                <div className="legend-photo">
+                    <img src={srcFormPhoto} alt="Photo to edit"/>
+                </div>
+            </div>
+            <div className="line">
+                <Input identifiant="photo" valeur={photo.legend} errors={errors} onChange={(e) => onChangeLegend(e, photo)}>
+                    <span>Légende de l'image</span>
+                </Input>
+            </div>
+            <div className="line">
+                <Button onClick={onSaveLegend}>Enregistrer</Button>
+            </div>
+        </div>
+    }
 
     return <div className={"step-section" + (step === 6 ? " active" : "")}>
         <div className="line-infos">
@@ -28,7 +48,7 @@ export function Step6({ step, onChangeFile, onSwitchTrashFile, onNext, errors,
             </div>
             <div className="items-table">
                 <div className="items items-default">
-                    <div className="item item-header">
+                    {(photos && photos.length !== 0) && <div className="item item-header">
                         <div className="item-content">
                             <div className="item-body item-body-image">
                                 <div className="infos infos-col-4">
@@ -39,13 +59,13 @@ export function Step6({ step, onChangeFile, onSwitchTrashFile, onNext, errors,
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>}
                     {photos.map((el, index) => {
 
                         let src = el.is64 ? el.file : "path/" . el.file;
 
-                        return (<div className={"item-drag item" + (el.isTrash ? " trash" : "")} key={index}
-                                     draggable="true"
+                        return (<div className={"item-drag item" + (el.isTrash ? " trash" : "")}
+                                     draggable="true" key={index}
                                      onDragStart={(e) => onDragStart(e, el.rank)}
                                      onDragOver={(e) => e.preventDefault()}
                                      onDragEnter={onDragLeave}
@@ -58,8 +78,12 @@ export function Step6({ step, onChangeFile, onSwitchTrashFile, onNext, errors,
                                     </div>
                                     <div className="infos infos-col-4">
                                         <div className="col-1">
-                                            <div className="name">
-                                                {!el.isTrash ? (el.legend ? el.legend : <ButtonIcon icon="tag" text="Ajouter une légende" />) : "Supprimée"}
+                                            <div className="name name-legend">
+                                                {!el.isTrash ?
+                                                    (el.legend ?
+                                                        <><ButtonIcon icon="pencil" onClick={() => onOpenAside(el)} >Modifier</ButtonIcon><span>{el.legend}</span></>
+                                                        : <ButtonIcon icon="tag" text="Ajouter une légende" onClick={() => onOpenAside(el)}/>)
+                                                    : "Supprimée"}
                                             </div>
                                         </div>
                                         <div className="col-2">
@@ -88,6 +112,8 @@ export function Step6({ step, onChangeFile, onSwitchTrashFile, onNext, errors,
                     <span>Photos</span>
                 </Input>
             </div>
+
+            <Aside ref={refAside} content={contentAside}>Légende</Aside>
         </div>
 
         <div className="line line-buttons">

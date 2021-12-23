@@ -132,6 +132,17 @@
   background-color: var(--grey);
 }
 
+.legend-photo{
+  max-width: 126px;
+  margin-bottom: 24px;
+}
+
+.name-legend {
+  .tooltip{
+    min-width: 60px;
+  }
+}
+
 .form-bien{
   .item-drag{
     cursor: grab;
