@@ -36,7 +36,7 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
         context={type}
         url={url}
         society={element ? element.society.id : societyId}
-        agency={element ? (element.negotiator ? element.negotiator.agency.id : agencyId) : agencyId}
+        agency={element ? element.agency.id : agencyId}
         negotiator={element ? (element.negotiator ? element.negotiator.id : "") : ""}
         lastname={element ? element.lastname : ""}
         firstname={element ? element.firstname : ""}
@@ -266,8 +266,6 @@ export class OwnerForm extends Component {
                 }
             })
         }
-
-        console.log(this.state)
 
         return <>
             <form onSubmit={this.handleSubmit}>

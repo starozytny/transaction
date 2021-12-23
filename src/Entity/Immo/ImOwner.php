@@ -204,8 +204,9 @@ class ImOwner extends DataEntity
     private $biens;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="owners")
+     * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="owners")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"admin:read", "user:read"})
      */
     private $agency;
 
