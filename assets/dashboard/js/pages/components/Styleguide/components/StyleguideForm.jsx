@@ -50,6 +50,7 @@ export class StyleguideForm extends Component {
         this.inputFiles = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeFile = this.handleChangeFile.bind(this);
         this.handleChangePostalCodeCity = this.handleChangePostalCodeCity.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
@@ -74,6 +75,18 @@ export class StyleguideForm extends Component {
         }
 
         this.setState({ [name]: value })
+    }
+
+    handleChangeFile = (e) => {
+        let files = e.target.files;
+        let self = this;
+        if(files){
+            Array.prototype.forEach.call(files, (file) => {
+                if (/\.(jpe?g|png|gif)$/i.test(file.name)){
+                    //getBase64(file, self, rank);
+                }
+            })
+        }
     }
 
     handleChangeSelect = (e) => { this.setState({ fruit: e !== undefined ? e.value : "" }) }
