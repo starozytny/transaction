@@ -106,6 +106,8 @@ function getDataState (props) {
         isSyndicProcedure: props.isSyndicProcedure,
         detailsProcedure: props.detailsProcedure,
 
+        photos: props.photos,
+
         contentHelpBubble: "",
         arrayPostalCode: [],
         errors: [],

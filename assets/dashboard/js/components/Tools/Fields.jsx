@@ -14,7 +14,7 @@ export function Input (props) {
     }
 
     if(type === "file"){
-        content = <input type={type} multiple={isMultiple} name={identifiant} id={identifiant} placeholder={placeholder} value={valeur} onChange={onChange}/>
+        content = <input type={type} multiple={isMultiple} name={identifiant} id={identifiant} placeholder={placeholder} onChange={onChange}/>
     }
 
     return (<ClassiqueStructure {...props} content={content} label={children} />)

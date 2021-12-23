@@ -24,6 +24,24 @@ const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "
 
 let arrayZipcodeSave = [];
 
+function getBase64(file, self, rank) {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+        self.setState({ photos: [...self.state.photos, ...[{
+            file: reader.result,
+            name: file.name,
+            legend: file.name,
+            size: file.size,
+            rank: rank,
+            is64: true
+        }]] })
+    };
+    reader.onerror = function (error) {
+        toastr.error('Error: ', error);
+    };
+}
+
 export class Form extends Component {
     constructor(props) {
         super(props);
@@ -33,6 +51,7 @@ export class Form extends Component {
         this.helpBubble = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeFile = this.handleChangeFile.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleNext = this.handleNext.bind(this);
@@ -54,6 +73,23 @@ export class Form extends Component {
         if(name === "codeTypeBien" && libelle !== ARRAY_STRING_BIENS[value]
             && (ARRAY_STRING_BIENS.includes(libelle) || libelle === "")){
             this.setState({ libelle: ARRAY_STRING_BIENS[value] })
+        }
+    }
+
+    handleChangeFile = (e) => {
+        const { photos } = this.state;
+
+        let files = e.target.files;
+        let self = this;
+
+        let rank = photos.length + 1;
+        if(files){
+            Array.prototype.forEach.call(files, (file) => {
+                if (/\.(jpe?g|png|gif)$/i.test(file.name)){
+                    getBase64(file, self, rank);
+                    rank++;
+                }
+            })
         }
     }
 
@@ -227,7 +263,7 @@ export class Form extends Component {
                             : <Step5Vente {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                           onChangeSelect={this.handleChangeSelect} />}
 
-                        <Step6 {...this.state} onNext={this.handleNext} onChange={this.handleChange} />
+                        <Step6 {...this.state} onNext={this.handleNext} onChangeFile={this.handleChangeFile} />
 
                         <div className="step-section active">
                             <div className="line line-buttons">

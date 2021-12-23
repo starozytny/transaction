@@ -24,7 +24,7 @@ function setValueEmptyIfNull (parentValue, value) {
     return ""
 }
 
-export function BienFormulaire ({ type, element, negotiators })
+export function BienFormulaire ({ type, element, negotiators, photos = [] })
 {
     let title = "Ajouter un bien";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -154,6 +154,8 @@ export function BienFormulaire ({ type, element, negotiators })
         chargesLot={element ? setValueEmptyIfNull(financial, financial.chargesLot) : ""}
         isSyndicProcedure={element ? setValueBoolean(financial, financial.isSyndicProcedure) : 0}
         detailsProcedure={element ? setValueEmptyIfNull(financial, financial.detailsProcedure) : ""}
+
+        photos={photos}
 
         messageSuccess={msg}
 

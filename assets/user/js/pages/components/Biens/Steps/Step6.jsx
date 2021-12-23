@@ -3,10 +3,11 @@ import React from "react";
 import { Input } from "@dashboardComponents/Tools/Fields";
 
 import { Alert }    from "@dashboardComponents/Tools/Alert";
-import {Button, ButtonIcon} from "@dashboardComponents/Tools/Button";
-import {Selector} from "@dashboardComponents/Layout/Selector";
+import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
-export function Step6({ step, onChange, onNext, errors,
+import Sanitaze from "@commonComponents/functions/sanitaze";
+
+export function Step6({ step, onChangeFile, onNext, errors,
                       photos })
 {
     return <div className={"step-section" + (step === 6 ? " active" : "")}>
@@ -26,22 +27,52 @@ export function Step6({ step, onChange, onNext, errors,
                     <div className="item item-header">
                         <div className="item-content">
                             <div className="item-body item-body-image">
-                                <div className="infos infos-col-5">
-                                    <div className="col-1">Ordre</div>
-                                    <div className="col-2">Photo</div>
-                                    <div className="col-3">Légende</div>
-                                    <div className="col-4">Taille</div>
-                                    <div className="col-5 actions">Actions</div>
+                                <div className="infos infos-col-4">
+                                    <div className="col-1">Photo</div>
+                                    <div className="col-2">Ordre</div>
+                                    <div className="col-3">Taille</div>
+                                    <div className="col-4 actions">Actions</div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {photos.map((el, index) => {
+
+                        let src = el.is64 ? el.file : "path/" . el.file;
+
+                        return (<div className="item" key={index}>
+                            <div className="item-content">
+                                <div className="item-body item-body-image">
+                                    <div className="item-image">
+                                        <img src={src} alt={el.legend} />
+                                    </div>
+                                    <div className="infos infos-col-4">
+                                        <div className="col-1">
+                                            <div className="name">
+                                                {el.name}
+                                            </div>
+                                        </div>
+                                        <div className="col-2">
+                                            {el.rank}
+                                        </div>
+                                        <div className="col-3">
+                                            {Sanitaze.toFormatBytesToSize(el.size)}
+                                        </div>
+                                        <div className="col-4 actions">
+                                            <ButtonIcon icon="tag">Légende</ButtonIcon>
+                                            <ButtonIcon icon="trash">Supprimer</ButtonIcon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>)
+                    })}
                 </div>
             </div>
             <div className="line line-3">
                 <div className="form-group" />
                 <div className="form-group" />
-                <Input type="file" identifiant="photos" isMultiple={true} valeur={photos} errors={errors} onChange={onChange}>
+                <Input type="file" identifiant="photos" isMultiple={true} valeur={photos} errors={errors} onChange={onChangeFile}>
                     <span>Photos</span>
                 </Input>
             </div>

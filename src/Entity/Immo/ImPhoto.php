@@ -28,7 +28,7 @@ class ImPhoto
     private $legend;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="float")
      */
     private $size;
 
@@ -72,12 +72,12 @@ class ImPhoto
         return $this;
     }
 
-    public function getSize(): ?string
+    public function getSize(): ?float
     {
         return $this->size;
     }
 
-    public function setSize(?string $size): self
+    public function setSize(?float $size): self
     {
         $this->size = $size;
 
