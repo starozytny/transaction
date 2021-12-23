@@ -19,7 +19,6 @@ export function Input (props) {
 
     return (<ClassiqueStructure {...props} content={content} label={children} />)
 }
-
 /***************************************
  * TEXTAREA Classique
  ***************************************/
