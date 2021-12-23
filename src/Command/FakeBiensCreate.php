@@ -13,6 +13,7 @@ use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImTenant;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Service\Data\DataImmo;
@@ -54,6 +55,22 @@ class FakeBiensCreate extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        $society = $this->em->getRepository(Society::class)->findOneBy(['name' => "Logilink"]);
+        $agencies = $this->em->getRepository(ImAgency::class)->findBy(['society' => $society]);
+        $nbAgencies = count($agencies);
+        $negotiators = $this->em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
+        $nbNegotiators = count($negotiators);
+        $users = $this->em->getRepository(User::class)->findBy(['society' => $society]);
+        $nbUsers = count($users);
+        $owners = $this->em->getRepository(ImOwner::class)->findBy(['society' => $society]);
+        $tenants = $this->em->getRepository(ImTenant::class)->findBy(['agency' => $agencies]);
+
+        foreach($tenants as $tenant){
+            $tenant->setBien(null);
+        }
+
+        $this->em->flush();
+
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
             ImBien::class,
@@ -65,16 +82,6 @@ class FakeBiensCreate extends Command
             ImLocalisation::class,
             ImNumber::class
         ]);
-
-        $society = $this->em->getRepository(Society::class)->findOneBy(['name' => "Logilink"]);
-        $agencies = $this->em->getRepository(ImAgency::class)->findBy(['society' => $society]);
-        $nbAgencies = count($agencies);
-        $negotiators = $this->em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
-        $nbNegotiators = count($negotiators);
-        $users = $this->em->getRepository(User::class)->findBy(['society' => $society]);
-        $nbUsers = count($users);
-        $owners = $this->em->getRepository(ImOwner::class)->findBy(['society' => $society]);
-        $nbOwners = count($owners);
 
         if($nbAgencies == 0 || $nbNegotiators == 0 || $nbUsers == 0){
             $io->text("Veuillez créer un ou des agences/négociateurs/utilisateurs avant de lancer cette commande : " .
@@ -211,6 +218,30 @@ class FakeBiensCreate extends Command
             $owner = null;
             if(count($choicesOwners) > 0){
                 $owner = $choicesOwners[$fake->numberBetween(0,count($choicesOwners) - 1)];
+            }
+
+            $choicesTenants = [];
+            foreach($tenants as $te){
+                if($te->getAgency()->getId() == $user->getAgency()->getId()){
+                    $choicesTenants[] = $te;
+                }
+            }
+
+            if($fake->numberBetween(0,1) == 1 && count($choicesTenants) > 0){
+                shuffle($choicesTenants);
+
+                $limit = $fake->numberBetween(0, count($choicesTenants) - 1);
+
+                $finalTenants = [];
+                if($limit > 0){
+                    for($j = 0 ; $j < $limit ; $j++){
+                        $finalTenants[] = $choicesTenants[$j];
+                    }
+                }
+
+                foreach ($finalTenants as $te){
+                    $obj->addTenant($te);
+                }
             }
 
             $isDraft = $fake->numberBetween(0, 1);

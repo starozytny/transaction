@@ -93,6 +93,11 @@ class ImTenant
      */
     private $agency;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="tenants")
+     */
+    private $negotiator;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -274,6 +279,18 @@ class ImTenant
     public function setAgency(?ImAgency $agency): self
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function getNegotiator(): ?ImNegotiator
+    {
+        return $this->negotiator;
+    }
+
+    public function setNegotiator(?ImNegotiator $negotiator): self
+    {
+        $this->negotiator = $negotiator;
 
         return $this;
     }

@@ -94,10 +94,16 @@ class ImNegotiator
      */
     private $owners;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImTenant::class, mappedBy="negotiator")
+     */
+    private $tenants;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
         $this->owners = new ArrayCollection();
+        $this->tenants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -299,6 +305,36 @@ class ImNegotiator
             // set the owning side to null (unless already changed)
             if ($owner->getNegotiator() === $this) {
                 $owner->setNegotiator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImTenant[]
+     */
+    public function getTenants(): Collection
+    {
+        return $this->tenants;
+    }
+
+    public function addTenant(ImTenant $tenant): self
+    {
+        if (!$this->tenants->contains($tenant)) {
+            $this->tenants[] = $tenant;
+            $tenant->setNegotiator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTenant(ImTenant $tenant): self
+    {
+        if ($this->tenants->removeElement($tenant)) {
+            // set the owning side to null (unless already changed)
+            if ($tenant->getNegotiator() === $this) {
+                $tenant->setNegotiator(null);
             }
         }
 
