@@ -5,7 +5,8 @@ import { SimpleSelect } from 'react-selectize';
  * INPUT Classique
  ***************************************/
 export function Input (props) {
-    const { type="text", identifiant, valeur, onChange, children, placeholder, min="", max="", step=1, isMultiple=false } = props;
+    const { type="text", identifiant, valeur, onChange, children, placeholder, min="", max="", step=1,
+        isMultiple=false, acceptFiles="" } = props;
 
     let content = <input type={type} name={identifiant} id={identifiant} placeholder={placeholder} value={valeur} onChange={onChange}/>
 
@@ -14,7 +15,7 @@ export function Input (props) {
     }
 
     if(type === "file"){
-        content = <input type={type} multiple={isMultiple} name={identifiant} id={identifiant} placeholder={placeholder} value={valeur} onChange={onChange}/>
+        content = <input type={type} multiple={isMultiple} name={identifiant} id={identifiant} accept={acceptFiles} onChange={onChange}/>
     }
 
     return (<ClassiqueStructure {...props} content={content} label={children} />)
