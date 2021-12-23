@@ -4,7 +4,7 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import {Input, Radiobox, Select, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
+import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
@@ -22,9 +22,9 @@ export function TenantFormulaire ({ type, onChangeContext, onUpdateList, element
                                      societies, societyId = "", agencies, agencyId = "",
                                      negotiators })
 {
-    let title = "Ajouter un propriétaire";
+    let title = "Ajouter un locataire";
     let url = Routing.generate(URL_CREATE_ELEMENT);
-    let msg = "Félicitations ! Vous avez ajouté une nouveau propriétaire !"
+    let msg = "Félicitations ! Vous avez ajouté un nouveau locataire !"
 
     if(type === "update"){
         title = "Modifier " + element.lastname + " " + element.firstname;
@@ -50,16 +50,6 @@ export function TenantFormulaire ({ type, onChangeContext, onUpdateList, element
         zipcode={element ? element.zipcode : ""}
         city={element ? element.city : ""}
         country={element ? element.country : "France"}
-        category={element ? element.category : ""}
-
-        isCoIndivisaire={element ? (element.isCoIndivisaire ? 1 : 0) : 0}
-        coLastname={element ? element.coLastname : ""}
-        coFirstname={element ? element.coFirstname : ""}
-        coPhone={element ? element.coPhone : ""}
-        coEmail={element ? element.coEmail : ""}
-        coAddress={element ? element.coAddress : ""}
-        coZipcode={element ? element.coZipcode : ""}
-        coCity={element ? element.coCity : ""}
 
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
@@ -94,16 +84,6 @@ export class TenantForm extends Component {
             zipcode: props.zipcode ? props.zipcode : "",
             city: props.city ? props.city : "",
             country: props.country ? props.country : "",
-            category: props.category ? props.category : "",
-
-            isCoIndivisaire: props.isCoIndivisaire ? props.isCoIndivisaire : 0,
-            coLastname: props.lastname ? props.lastname : "",
-            coFirstname: props.firstname ? props.firstname : "",
-            coPhone: props.phone1 ? props.phone1 : "",
-            coEmail: props.email ? props.email : "",
-            coAddress: props.address ? props.address : "",
-            coZipcode: props.zipcode ? props.zipcode : "",
-            coCity: props.city ? props.city : "",
 
             errors: [],
             success: false,
@@ -147,7 +127,7 @@ export class TenantForm extends Component {
         e.preventDefault();
 
         const { context, url, messageSuccess } = this.props;
-        const { critere, society, lastname, phone1, phone2, phone3, email } = this.state;
+        const { critere, society, agency, lastname, phone1, phone2, phone3, email } = this.state;
 
         if(critere !== ""){
             toastr.error("Veuillez rafraichir la page.");
@@ -156,6 +136,7 @@ export class TenantForm extends Component {
 
             let paramsToValidate = [
                 {type: "text",       id: 'society',   value: society},
+                {type: "text",       id: 'agency',    value: agency},
                 {type: "text",       id: 'lastname',  value: lastname},
                 {type: "text",       id: 'email',     value: email},
                 {type: "atLeastOne", id: 'phone1',    value: phone1, idCheck: 'phone2', valueCheck: phone2},
@@ -201,15 +182,6 @@ export class TenantForm extends Component {
                                 zipcode: "",
                                 city: "",
                                 country: "",
-                                category: "",
-                                isCoIndivisaire: 0,
-                                coLastname: "",
-                                coFirstname: "",
-                                coPhone: "",
-                                coEmail: "",
-                                coAddress: "",
-                                coZipcode: "",
-                                coCity: "",
                             })
                         }
                     })
@@ -227,13 +199,7 @@ export class TenantForm extends Component {
     render () {
         const { context, societies, agencies, negotiators, isClient } = this.props;
         const { critere, errors, success, society, agency, negotiator, lastname, firstname, civility, phone1, phone2, phone3,
-            email, address, complement, zipcode, city, country, category,
-            isCoIndivisaire, coLastname, coFirstname, coPhone, coEmail, coAddress, coZipcode, coCity,  } = this.state;
-
-        let coindivisaireItems = [
-            {value: 1, label: "Oui", identifiant: "oui"},
-            {value: 0, label: "Non", identifiant: "no"},
-        ]
+            email, address, complement, zipcode, city, country  } = this.state;
 
         let civilityItems = [
             {value: 0, label: "Mr",         identifiant: "mr"},
@@ -241,13 +207,6 @@ export class TenantForm extends Component {
             {value: 2, label: "Société",    identifiant: "societe"},
             {value: 3, label: "Mr ou Mme",  identifiant: "mr-ou-mme"},
             {value: 4, label: "Mr et Mme",  identifiant: "me-et-mme"},
-        ]
-
-        let selectCategory = [
-            {value: 0, label: "Habitation",             identifiant: "habitation"},
-            {value: 1, label: "Des murs",               identifiant: "des-murs"},
-            {value: 2, label: "Du fond de commerce",    identifiant: "commerce"},
-            {value: 3, label: "Location",               identifiant: "location"},
         ]
 
         let selectSociety = [];
@@ -287,12 +246,6 @@ export class TenantForm extends Component {
                         <div className="line line-2">
                             <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>Nom</Input>
                             <Input valeur={firstname} identifiant="firstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
-                        </div>
-
-                        <div className="line">
-                            <Select items={selectCategory} identifiant="category" valeur={category} errors={errors} onChange={this.handleChange}>
-                                Catégorie de propriétaire
-                            </Select>
                         </div>
                     </div>
                     <div className="form-group">
@@ -364,40 +317,6 @@ export class TenantForm extends Component {
                 <div className="line line-critere">
                     <Input identifiant="critere" valeur={critere} errors={errors} onChange={this.handleChange}>Critère</Input>
                 </div>
-
-                <div className="line-separator">
-                    <div className="title">Co-indivisaire</div>
-                </div>
-
-                <div className="line">
-                    <Radiobox items={coindivisaireItems} identifiant="isCoIndivisaire" valeur={isCoIndivisaire} errors={errors} onChange={this.handleChange}>
-                        Co-indivisaire ?
-                    </Radiobox>
-                </div>
-
-                {parseInt(isCoIndivisaire) === 1 && <>
-                    <div className="line line-2">
-                        <div className="form-group">
-                            <div className="line line-2">
-                                <Input valeur={coLastname} identifiant="coLastname" errors={errors} onChange={this.handleChange}>Nom</Input>
-                                <Input valeur={coFirstname} identifiant="coFirstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
-                            </div>
-
-                            <div className="line line-2">
-                                <Input valeur={coPhone} identifiant="coPhone" errors={errors} onChange={this.handleChange}>Téléphone</Input>
-                                <Input valeur={coEmail} identifiant="coEmail" errors={errors} onChange={this.handleChange} type="email" >Adresse e-mail</Input>
-                            </div>
-
-                            <div className="line line-3">
-                                <Input valeur={coAddress} identifiant="coAddress" errors={errors} onChange={this.handleChange}>Adresse</Input>
-                                <Input valeur={coZipcode} identifiant="coZipcode" errors={errors} onChange={this.handleChange}>Code postal</Input>
-                                <Input valeur={coCity} identifiant="coCity" errors={errors} onChange={this.handleChange}>Ville</Input>
-                            </div>
-                        </div>
-                        <div className="form-group" />
-                    </div>
-
-                </>}
 
                 <div className="line line-buttons">
                     <div className="form-button">

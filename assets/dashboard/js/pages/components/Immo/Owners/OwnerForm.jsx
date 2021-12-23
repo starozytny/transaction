@@ -24,7 +24,7 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
 {
     let title = "Ajouter un propriétaire";
     let url = Routing.generate(URL_CREATE_ELEMENT);
-    let msg = "Félicitations ! Vous avez ajouté une nouveau propriétaire !"
+    let msg = "Félicitations ! Vous avez ajouté un nouveau propriétaire !"
 
     if(type === "update"){
         title = "Modifier " + element.lastname + " " + element.firstname;
