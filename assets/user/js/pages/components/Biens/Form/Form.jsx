@@ -85,9 +85,17 @@ export class Form extends Component {
         let rank = photos.length + 1;
         if(files){
             Array.prototype.forEach.call(files, (file) => {
-                if (/\.(jpe?g|png|gif)$/i.test(file.name)){
-                    getBase64(file, self, rank);
-                    rank++;
+                if(rank <= 20){
+                    if(file.size > 1048576){
+                        toastr.error("Le fichier est trop gros.")
+                    }else{
+                        if (/\.(jpe?g|png|gif)$/i.test(file.name)){
+                            getBase64(file, self, rank);
+                            rank++;
+                        }
+                    }
+                }else{
+                    toastr.error("Vous avez atteint la limite max de photos.")
                 }
             })
         }

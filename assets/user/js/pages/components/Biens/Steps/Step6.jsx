@@ -72,7 +72,9 @@ export function Step6({ step, onChangeFile, onNext, errors,
             <div className="line line-3">
                 <div className="form-group" />
                 <div className="form-group" />
-                <Input type="file" identifiant="photos" isMultiple={true} valeur={photos} errors={errors} onChange={onChangeFile}>
+                <Input type="file" identifiant="photos" isMultiple={true} valeur={photos}
+                       acceptFiles={"image/*"}
+                       errors={errors} onChange={onChangeFile}>
                     <span>Photos</span>
                 </Input>
             </div>
