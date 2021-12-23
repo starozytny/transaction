@@ -5,6 +5,8 @@ namespace App\Entity\Immo;
 use App\Entity\DataEntity;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -208,9 +210,20 @@ class ImBien extends DataEntity
      */
     private $owner;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImPhoto::class, mappedBy="bien")
+     */
+    private $photos;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ImPhoto::class, cascade={"persist", "remove"})
+     */
+    private $mainPhoto;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
+        $this->photos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -583,6 +596,48 @@ class ImBien extends DataEntity
     public function setIsDraft(bool $isDraft): self
     {
         $this->isDraft = $isDraft;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImPhoto[]
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(ImPhoto $photo): self
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos[] = $photo;
+            $photo->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(ImPhoto $photo): self
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getBien() === $this) {
+                $photo->setBien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMainPhoto(): ?ImPhoto
+    {
+        return $this->mainPhoto;
+    }
+
+    public function setMainPhoto(?ImPhoto $mainPhoto): self
+    {
+        $this->mainPhoto = $mainPhoto;
 
         return $this;
     }
