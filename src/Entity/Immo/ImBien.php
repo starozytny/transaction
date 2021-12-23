@@ -552,6 +552,17 @@ class ImBien extends DataEntity
         return $this;
     }
 
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getStatusString(): string
+    {
+        $status = ["Inactif", "Active", "Archive"];
+
+        return $status[$this->status];
+    }
+
     public function getStatus(): ?int
     {
         return $this->status;

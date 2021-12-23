@@ -50,13 +50,13 @@ export class AdCard extends Component {
                     <div className="infos">
                         <div className="col-1">
                             <div className="badges">
-                                <div className={"status status-" + status}>{statusName}</div>
+                                <div className={"status status-" + el.status}>{el.statusString}</div>
                                 <div className="status">{el.typeBienString}</div>
                             </div>
                             <div className="identifier">
                                 <div className="title">
                                     <span>{el.libelle}</span>
-                                    <span className="online" />
+                                    {el.isPublished && <span className="online" />}
                                 </div>
                                 <div className="address">
                                     <div>{el.localisation.address}</div>
