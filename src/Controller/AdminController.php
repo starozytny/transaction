@@ -7,6 +7,7 @@ use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImTenant;
 use App\Entity\Notification;
 use App\Entity\Settings;
 use App\Entity\Society;
@@ -193,6 +194,24 @@ class AdminController extends AbstractController
         $negotiators = $this->getAllData(ImNegotiator::class, $serializer);
 
         return $this->render('admin/pages/immo/owners.html.twig', [
+            'donnees' => $objs,
+            'societies' => $societies,
+            'agencies' => $agencies,
+            'negotiators' => $negotiators,
+        ]);
+    }
+
+    /**
+     * @Route("/immobilier/locataires", name="tenants_index")
+     */
+    public function tenants(SerializerInterface $serializer): Response
+    {
+        $objs = $this->getAllData(ImTenant::class, $serializer);
+        $societies = $this->getAllData(Society::class, $serializer);
+        $agencies = $this->getAllData(ImAgency::class, $serializer);
+        $negotiators = $this->getAllData(ImNegotiator::class, $serializer);
+
+        return $this->render('admin/pages/immo/tenants.html.twig', [
             'donnees' => $objs,
             'societies' => $societies,
             'agencies' => $agencies,
