@@ -6,6 +6,7 @@ import { DatePick } from "@dashboardComponents/Tools/DatePicker";
 import { Button }   from "@dashboardComponents/Tools/Button";
 
 import helper from "@userPages/components/Biens/helper";
+import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, errors,
                           hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian,
@@ -159,13 +160,6 @@ export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, er
             </div>
         </div>
 
-        <div className="line line-buttons">
-            <Button type="reverse" onClick={() => onNext(2, 3)}>Etape précédente</Button>
-            <div/>
-            <div className="btns-submit">
-                <Button type="warning">Enregistrer le brouillon</Button>
-                <Button onClick={() => onNext(4)}>Etape suivante</Button>
-            </div>
-        </div>
+        <FormActions onNext={onNext} currentStep={3} />
     </div>
 }

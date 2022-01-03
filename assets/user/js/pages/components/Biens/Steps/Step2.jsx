@@ -7,6 +7,7 @@ import { DatePick } from "@dashboardComponents/Tools/DatePicker";
 import { Button }   from "@dashboardComponents/Tools/Button";
 
 import helper from "@userPages/components/Biens/helper";
+import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, errors,
                           codeTypeAd, codeTypeBien,
@@ -157,13 +158,6 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                 </Radiobox>
             </div>
         </div>
-        <div className="line line-buttons">
-            <Button type="reverse" onClick={() => onNext(1, 2)}>Etape précédente</Button>
-            <div/>
-            <div className="btns-submit">
-                <Button type="warning">Enregistrer le brouillon</Button>
-                <Button onClick={() => onNext(3)}>Etape suivante</Button>
-            </div>
-        </div>
+        <FormActions onNext={onNext} currentStep={2} />
     </div>
 }

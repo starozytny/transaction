@@ -14,6 +14,7 @@ import {
     OwnerMainInfos,
     OwnerNegotiator,
 } from "@dashboardPages/components/Immo/Owners/OwnersItem";
+import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step7({ step, onChange, onOpenAside, onNext, errors, owners, owner })
 {
@@ -74,13 +75,6 @@ export function Step7({ step, onChange, onOpenAside, onNext, errors, owners, own
             </div>
         </div>
 
-        <div className="line line-buttons">
-            <Button type="reverse" onClick={() => onNext(6, 7)}>Etape précédente</Button>
-            <div/>
-            <div className="btns-submit">
-                <Button type="warning">Enregistrer le brouillon</Button>
-                <Button onClick={() => onNext(8)}>Etape suivante</Button>
-            </div>
-        </div>
+        <FormActions onNext={onNext} currentStep={7} />
     </div>
 }

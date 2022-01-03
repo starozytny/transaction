@@ -6,6 +6,7 @@ import { Alert }    from "@dashboardComponents/Tools/Alert";
 import { Button }   from "@dashboardComponents/Tools/Button";
 
 import helper from "@userPages/components/Biens/helper";
+import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step4({ step, onChange, onChangeZipcode, onNext, errors,
                       address, hideAddress, zipcode, city, country, departement, quartier, lat, lon, hideMap })
@@ -67,13 +68,6 @@ export function Step4({ step, onChange, onChangeZipcode, onNext, errors,
             </div>
         </div>
 
-        <div className="line line-buttons">
-            <Button type="reverse" onClick={() => onNext(3, 4)}>Etape précédente</Button>
-            <div/>
-            <div className="btns-submit">
-                <Button type="warning">Enregistrer le brouillon</Button>
-                <Button onClick={() => onNext(5)}>Etape suivante</Button>
-            </div>
-        </div>
+        <FormActions onNext={onNext} currentStep={4} />
     </div>
 }

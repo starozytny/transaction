@@ -7,6 +7,7 @@ import { Button }   from "@dashboardComponents/Tools/Button";
 
 import helper from "@userPages/components/Biens/helper";
 import Sanitaze from "@commonComponents/functions/sanitaze";
+import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step5({ step, onChange, onChangeSelect, onNext, errors,
                       typeCalcul, price, provisionCharges, provisionOrdures, tva, totalTerme, caution, honoraireTtc,
@@ -91,13 +92,6 @@ export function Step5({ step, onChange, onChangeSelect, onNext, errors,
             </div>
         </div>
 
-        <div className="line line-buttons">
-            <Button type="reverse" onClick={() => onNext(4, 5)}>Etape précédente</Button>
-            <div/>
-            <div className="btns-submit">
-                <Button type="warning">Enregistrer le brouillon</Button>
-                <Button onClick={() => onNext(6)}>Etape suivante</Button>
-            </div>
-        </div>
+        <FormActions onNext={onNext} currentStep={5} />
     </div>
 }

@@ -8,6 +8,7 @@ import { Aside } from "@dashboardComponents/Tools/Aside";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
 import Sort     from "@commonComponents/functions/sort";
+import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step6({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, onNext, errors,
                           refAside, onOpenAside, onSaveLegend,
@@ -116,13 +117,6 @@ export function Step6({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, o
             <Aside ref={refAside} content={contentAside}>Légende</Aside>
         </div>
 
-        <div className="line line-buttons">
-            <Button type="reverse" onClick={() => onNext(5, 6)}>Etape précédente</Button>
-            <div/>
-            <div className="btns-submit">
-                <Button type="warning">Enregistrer le brouillon</Button>
-                <Button onClick={() => onNext(7)}>Etape suivante</Button>
-            </div>
-        </div>
+        <FormActions onNext={onNext} currentStep={6} />
     </div>
 }

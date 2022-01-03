@@ -20,8 +20,9 @@ import { Step5 } from "@userPages/components/Biens/Steps/Step5";
 import { Step5Vente } from "@userPages/components/Biens/Steps/Step5Vente";
 import { Step6 } from "@userPages/components/Biens/Steps/Step6";
 import { Step7 } from "@userPages/components/Biens/Steps/Step7";
-import {Aside} from "@dashboardComponents/Tools/Aside";
-import {Owners} from "@dashboardPages/components/Immo/Owners/Owners";
+
+import { Aside }  from "@dashboardComponents/Tools/Aside";
+import { Owners}  from "@dashboardPages/components/Immo/Owners/Owners";
 
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
@@ -417,4 +418,15 @@ export class Form extends Component {
             <HelpBubble ref={this.helpBubble} content={contentHelpBubble}>Aide</HelpBubble>
         </div>
     }
+}
+
+export function FormActions ({ onNext, currentStep }) {
+    return <div className="line line-buttons">
+        <Button type="reverse" onClick={() => onNext(currentStep - 1, currentStep)}>Etape précédente</Button>
+        <div/>
+        <div className="btns-submit">
+            <Button type="warning">Enregistrer le brouillon</Button>
+            <Button onClick={() => onNext(currentStep + 1)}>Etape suivante</Button>
+        </div>
+    </div>
 }
