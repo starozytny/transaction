@@ -8,6 +8,7 @@ use App\Entity\Immo\ImNegotiator;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImOwnerRepository;
+use App\Repository\Immo\ImTenantRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -173,6 +174,27 @@ class UserController extends AbstractController
             'user' => $user,
             'negotiators' => $negotiators,
             'biens' => $biens,
+        ]);
+    }
+
+    /**
+     * @Route("/locataires", name="tenants")
+     */
+    public function tenants(ImTenantRepository $repository, SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $objs = $repository->findBy(['agency' => $user->getAgency()]);
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('user/pages/tenants/index.html.twig', [
+            'data' => $objs,
+            'user' => $user,
+            'negotiators' => $negotiators
         ]);
     }
 }
