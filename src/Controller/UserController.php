@@ -67,18 +67,18 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
-        $owners = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
-        $tenants = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgency()]);
+        $allOwners = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
+        $allTenants = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgency()]);
 
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
-        $owners = $serializer->serialize($owners, 'json', ['groups' => User::ADMIN_READ]);
-        $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
+        $allOwners = $serializer->serialize($allOwners, 'json', ['groups' => User::ADMIN_READ]);
+        $allTenants = $serializer->serialize($allTenants, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render($route, [
             'element' => $element,
             'negotiators' => $negotiators,
-            'owners' => $owners,
-            'tenants' => $tenants,
+            'allOwners' => $allOwners,
+            'allTenants' => $allTenants,
             'user' => $user,
         ]);
     }

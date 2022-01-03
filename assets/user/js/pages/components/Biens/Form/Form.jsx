@@ -59,7 +59,9 @@ export class Form extends Component {
         this.helpBubble = React.createRef();
         this.aside0 = React.createRef();
         this.aside1 = React.createRef();
+        this.aside2 = React.createRef();
         this.owner = React.createRef();
+        this.tenant = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeFile = this.handleChangeFile.bind(this);
@@ -74,6 +76,7 @@ export class Form extends Component {
         this.handleOpenAside = this.handleOpenAside.bind(this);
         this.handleSaveLegend = this.handleSaveLegend.bind(this);
         this.handleSelectOwner = this.handleSelectOwner.bind(this);
+        this.handleSelectTenant = this.handleSelectTenant.bind(this);
 
         this.handleNext = this.handleNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -204,7 +207,7 @@ export class Form extends Component {
                 let data = response.data;
                 toastr.info(messageSuccess);
 
-                self.setState({ owners: arrayOwnersSave, tenants: arrayTenantsSave })
+                self.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
                 //message success + redirect to index
             })
             .catch(function (error) {
@@ -284,6 +287,9 @@ export class Form extends Component {
 
     handleOpenAside = (type, el) => {
         switch (type) {
+            case "tenant-select":
+                this.aside2.current.handleOpen();
+                break;
             case "owner-select":
                 this.aside1.current.handleOpen();
                 break;
@@ -321,9 +327,13 @@ export class Form extends Component {
         this.setState({ owner: owner.id });
     }
 
+    handleSelectTenant = (tenant) => {
+        this.aside2.current.handleClose();
+    }
+
     render () {
         const { negotiators, societyId, agencyId } = this.props;
-        const { step, contentHelpBubble, codeTypeAd, owner, owners, tenants } = this.state;
+        const { step, contentHelpBubble, codeTypeAd, owner, allOwners, tenants, allTenants } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -351,7 +361,7 @@ export class Form extends Component {
             </div>)
         })}
 
-        let contentAside1 = <Owners ref={this.owner} donnees={JSON.stringify(owners)} negotiators={JSON.stringify(negotiators)}
+        let contentAside1 = <Owners ref={this.owner} donnees={JSON.stringify(allOwners)} negotiators={JSON.stringify(negotiators)}
                                     societyId={societyId} agencyId={agencyId} isClient={true}
                                     owner={owner} isFormBien={true} onSelectOwner={this.handleSelectOwner}/>
 
@@ -406,7 +416,7 @@ export class Form extends Component {
                         <Step7 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                refAside1={this.aside1} onOpenAside={this.handleOpenAside}
-                               owners={owners} />
+                               owners={allOwners} />
 
                         <div className="step-section active">
                             <div className="line line-buttons">

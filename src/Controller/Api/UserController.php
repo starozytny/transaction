@@ -14,6 +14,7 @@ use App\Service\SettingsService;
 use App\Service\ValidatorService;
 use DateTime;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -88,6 +89,7 @@ class UserController extends AbstractController
      * @param NotificationService $notificationService
      * @param DataUser $dataEntity
      * @return JsonResponse
+     * @throws Exception
      */
     public function create(Request $request, ValidatorService $validator, ApiResponse $apiResponse, UserPasswordHasherInterface $passwordHasher,
                            FileUploader $fileUploader, NotificationService $notificationService, DataUser $dataEntity): JsonResponse

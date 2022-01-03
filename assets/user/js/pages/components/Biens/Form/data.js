@@ -116,8 +116,9 @@ function getDataState (props) {
         photo: null,
 
         owner: props.owner,
-        owners: props.owners,
         tenants: props.tenants,
+        allOwners: props.allOwners,
+        allTenants: props.allTenants,
 
         contentAside: "",
         contentHelpBubble: "",
@@ -131,7 +132,7 @@ function getOwners (self) {
     axios.get(Routing.generate('api_owners_user_agency'), {})
         .then(function (response) {
             let data = response.data;
-            self.setState({ owners: data })
+            self.setState({ allOwners: data })
         })
         .catch(function (error) {
             Formulaire.displayErrors(self, error);

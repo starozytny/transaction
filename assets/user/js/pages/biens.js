@@ -22,8 +22,8 @@ if(el){
                            societyId={parseInt(el.dataset.societyId)}
                            agencyId={parseInt(el.dataset.agencyId)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
-                           owners={JSON.parse(el.dataset.owners)}
-                           tenants={JSON.parse(el.dataset.tenants)} />, el)
+                           allOwners={JSON.parse(el.dataset.allOwners)}
+                           allTenants={JSON.parse(el.dataset.allTenants)} />, el)
 }
 
 el = document.getElementById("update-bien");
@@ -32,6 +32,6 @@ if(el){
                            societyId={parseInt(el.dataset.societyId)}
                            agencyId={parseInt(el.dataset.agencyId)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
-                           owners={JSON.parse(el.dataset.owners)}
-                           tenants={JSON.parse(el.dataset.tenants)} />, el)
+                           allOwners={JSON.parse(el.dataset.allOwners)}
+                           allTenants={JSON.parse(el.dataset.allTenants)} />, el)
 }
