@@ -107,7 +107,7 @@ export function BienFormulaire ({ type, element, negotiators, photos = [] })
         beforeJuly={element ? setValueEmptyIfNull(diag, diag.beforeJuly) : 1}
         isVirgin={element ? setValueEmptyIfNull(diag, diag.isVirgin) : 0}
         isSend={element ? setValueEmptyIfNull(diag, diag.isSend) : 0}
-        createdAtDpe={element ?  (setValueEmptyIfNull(diag, diag.createdAtDpeJavascript) !== "" ? new Date(diag.createdAtDpeJavascript) : "" ) : ""}
+        createdAtDpe={element ? (setValueEmptyIfNull(diag, diag.createdAtDpeJavascript) !== "" ? new Date(diag.createdAtDpeJavascript) : "" ) : ""}
         referenceDpe={element ? setValueEmptyIfNull(diag, diag.referenceDpe) : ""}
         dpeLetter={element ? setValueEmptyIfNull(diag, diag.dpeLetter) : ""}
         gesLetter={element ? setValueEmptyIfNull(diag, diag.gesLetter) : ""}

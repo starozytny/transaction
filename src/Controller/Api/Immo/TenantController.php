@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImTenant;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
@@ -18,9 +19,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
 
 /**
- * @Route("/api/owners", name="api_owners_")
+ * @Route("/api/tenants", name="api_tenants_")
  */
-class OwnerController extends AbstractController
+class TenantController extends AbstractController
 {
     private $doctrine;
 
@@ -32,7 +33,7 @@ class OwnerController extends AbstractController
     /**
      * @throws Exception
      */
-    public function submitForm($type, ImOwner $obj, Request $request, ApiResponse $apiResponse,
+    public function submitForm($type, ImTenant $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
         $em = $this->doctrine->getManager();
@@ -42,7 +43,7 @@ class OwnerController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataOwner($obj, $data);
+        $obj = $dataEntity->setDataTenant($obj, $data);
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
@@ -56,7 +57,7 @@ class OwnerController extends AbstractController
     }
 
     /**
-     * Create an owner
+     * Create a tenant
      *
      * @Route("/", name="create", options={"expose"=true}, methods={"POST"})
      *
@@ -65,7 +66,7 @@ class OwnerController extends AbstractController
      *     description="Returns a message"
      * )
      *
-     * @OA\Tag(name="Owners")
+     * @OA\Tag(name="Tenants")
      *
      * @param Request $request
      * @param ApiResponse $apiResponse
@@ -76,11 +77,11 @@ class OwnerController extends AbstractController
      */
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
-        return $this->submitForm("create", new ImOwner(), $request, $apiResponse, $validator, $dataEntity);
+        return $this->submitForm("create", new ImTenant(), $request, $apiResponse, $validator, $dataEntity);
     }
 
     /**
-     * Update an owner
+     * Update an tenant
      *
      * @Route("/{id}", name="update", options={"expose"=true}, methods={"POST"})
      *
@@ -89,9 +90,9 @@ class OwnerController extends AbstractController
      *     description="Returns a message"
      * )
      *
-     * @OA\Tag(name="Owners")
+     * @OA\Tag(name="Tenants")
      *
-     * @param ImOwner $obj
+     * @param ImTenant $obj
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -99,17 +100,13 @@ class OwnerController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(ImOwner $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+    public function update(ImTenant $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
-        if($obj->getIsGerance()){
-            return $apiResponse->apiJsonResponseBadRequest("Vous ne pouvez pas modifier ce propriétaire venant de la gérance.");
-        }
-
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
 
     /**
-     * Delete an owner
+     * Delete a tenant
      *
      * @Route("/{id}", name="delete", options={"expose"=true}, methods={"DELETE"})
      *
@@ -118,24 +115,19 @@ class OwnerController extends AbstractController
      *     description="Returns a message"
      * )
      *
-     * @OA\Tag(name="Owners")
+     * @OA\Tag(name="Tenants")
      *
-     * @param ImOwner $obj
-     * @param ApiResponse $apiResponse
+     * @param ImTenant $obj
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(ImOwner $obj, ApiResponse $apiResponse, DataService $dataService): JsonResponse
+    public function delete(ImTenant $obj, DataService $dataService): JsonResponse
     {
-        if($obj->getIsGerance()){
-            return $apiResponse->apiJsonResponseBadRequest("Vous ne pouvez pas supprimer ce propriétaire venant de la gérance.");
-        }
-
         return $dataService->delete($obj);
     }
 
     /**
-     * Admin - Delete a group of owners
+     * Admin - Delete a group of tenants
      *
      * @Security("is_granted('ROLE_ADMIN')")
      *
@@ -146,7 +138,7 @@ class OwnerController extends AbstractController
      *     description="Return message successful",
      * )
      *
-     * @OA\Tag(name="Owners")
+     * @OA\Tag(name="Tenants")
      *
      * @param Request $request
      * @param DataService $dataService
@@ -154,6 +146,6 @@ class OwnerController extends AbstractController
      */
     public function deleteSelected(Request $request, DataService $dataService): JsonResponse
     {
-        return $dataService->deleteSelected(ImOwner::class, json_decode($request->getContent()));
+        return $dataService->deleteSelected(ImTenant::class, json_decode($request->getContent()));
     }
 }

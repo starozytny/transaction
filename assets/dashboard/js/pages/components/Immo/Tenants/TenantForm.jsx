@@ -12,9 +12,10 @@ import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
+import {DatePick} from "@dashboardComponents/Tools/DatePicker";
 
-const URL_CREATE_ELEMENT     = "api_owners_create";
-const URL_UPDATE_GROUP       = "api_owners_update";
+const URL_CREATE_ELEMENT     = "api_tenants_create";
+const URL_UPDATE_GROUP       = "api_tenants_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
@@ -32,10 +33,12 @@ export function TenantFormulaire ({ type, onChangeContext, onUpdateList, element
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
 
+    console.log(element)
+
     let form = <TenantForm
         context={type}
         url={url}
-        society={element ? element.society.id : societyId}
+        society={element ? element.agency.society.id : societyId}
         agency={element ? element.agency.id : agencyId}
         negotiator={element ? (element.negotiator ? element.negotiator.id : "") : ""}
         lastname={element ? element.lastname : ""}
@@ -50,6 +53,7 @@ export function TenantFormulaire ({ type, onChangeContext, onUpdateList, element
         zipcode={element ? element.zipcode : ""}
         city={element ? element.city : ""}
         country={element ? element.country : "France"}
+        birthday={element ? (element.birthdayJavascript ? new Date(element.birthdayJavascript) : "") : ""}
 
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
@@ -84,6 +88,7 @@ export class TenantForm extends Component {
             zipcode: props.zipcode ? props.zipcode : "",
             city: props.city ? props.city : "",
             country: props.country ? props.country : "",
+            birthday: props.birthday ? props.birthday : "",
 
             errors: [],
             success: false,
@@ -92,6 +97,7 @@ export class TenantForm extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
+        this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -122,6 +128,8 @@ export class TenantForm extends Component {
         }
 
     }
+
+    handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -182,6 +190,7 @@ export class TenantForm extends Component {
                                 zipcode: "",
                                 city: "",
                                 country: "",
+                                birthday: ""
                             })
                         }
                     })
@@ -199,7 +208,7 @@ export class TenantForm extends Component {
     render () {
         const { context, societies, agencies, negotiators, isClient } = this.props;
         const { critere, errors, success, society, agency, negotiator, lastname, firstname, civility, phone1, phone2, phone3,
-            email, address, complement, zipcode, city, country  } = this.state;
+            email, address, complement, zipcode, city, country, birthday } = this.state;
 
         let civilityItems = [
             {value: 0, label: "Mr",         identifiant: "mr"},
@@ -246,6 +255,10 @@ export class TenantForm extends Component {
                         <div className="line line-2">
                             <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>Nom</Input>
                             <Input valeur={firstname} identifiant="firstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
+                        </div>
+
+                        <div className="line">
+                            <DatePick identifiant="birthday" valeur={birthday} errors={errors} onChange={(e) => this.handleChangeDate("birthday", e)}>Date de naissance</DatePick>
                         </div>
                     </div>
                     <div className="form-group">

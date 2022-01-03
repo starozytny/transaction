@@ -13,6 +13,7 @@ use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImTenant;
 use App\Entity\Society;
 use Exception;
 
@@ -359,11 +360,45 @@ class DataImmo extends DataConstructor
             ->setPhone2(trim($data->phone2))
             ->setPhone3(trim($data->phone3))
             ->setAddress(trim($data->address))
+            ->setComplement(trim($data->complent))
             ->setZipcode(trim($data->zipcode))
             ->setCity(trim($data->city))
             ->setCountry(trim($data->country))
             ->setCategory($this->setToNullInteger($data->category))
             ->setIsCoIndivisaire($isCoIndivisaire)
+        ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataTenant(ImTenant $obj, $data): ImTenant
+    {
+        $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
+        if(!$agency){
+            throw new Exception("Agence introuvable.");
+        }
+        $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+
+        $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
+        $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
+
+        return ($obj)
+            ->setAgency($agency)
+            ->setNegotiator($negotiator)
+            ->setLastname($lastname)
+            ->setFirstname($firstname)
+            ->setCivility((int) $data->civility)
+            ->setEmail(trim($data->email))
+            ->setPhone1(trim($data->phone1))
+            ->setPhone2(trim($data->phone2))
+            ->setPhone3(trim($data->phone3))
+            ->setAddress(trim($data->address))
+            ->setComplement(trim($data->complement))
+            ->setZipcode(trim($data->zipcode))
+            ->setCity(trim($data->city))
+            ->setCountry(trim($data->country))
+            ->setBirthday($this->createDate($data->birthday))
         ;
     }
 }

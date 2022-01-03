@@ -276,6 +276,15 @@ class ImTenant extends DataEntity
         return $this;
     }
 
+    /**
+     * @return string|null
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getBirthdayJavascript(): ?string
+    {
+        return $this->setDateJavascript($this->birthday);
+    }
+
     public function getBirthday(): ?\DateTimeInterface
     {
         return $this->birthday;

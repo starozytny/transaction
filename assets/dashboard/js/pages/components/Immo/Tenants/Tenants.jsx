@@ -6,8 +6,8 @@ import Sort              from "@commonComponents/functions/sort";
 import { TenantsList }       from "./TenantsList";
 import { TenantFormulaire }  from "./TenantForm";
 
-const URL_DELETE_ELEMENT = 'api_owners_delete';
-const URL_DELETE_GROUP   = 'api_owners_delete_group';
+const URL_DELETE_ELEMENT = 'api_tenants_delete';
+const URL_DELETE_GROUP   = 'api_tenants_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer ce locataire ?';
 const MSG_DELETE_GROUP   = 'Aucun locataire sélectionnés.';
 const SORTER = Sort.compareLastname;
