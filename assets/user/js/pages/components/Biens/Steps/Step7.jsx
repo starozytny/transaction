@@ -1,14 +1,11 @@
 import React from "react";
 
-import { Input } from "@dashboardComponents/Tools/Fields";
+import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
+import { Button }       from "@dashboardComponents/Tools/Button";
+import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
-import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
-import { Alert } from "@dashboardComponents/Tools/Alert";
-import { Aside } from "@dashboardComponents/Tools/Aside";
-import { FormActions } from "@userPages/components/Biens/Form/Form";
-
-import Sanitaze from "@commonComponents/functions/sanitaze";
-import Sort     from "@commonComponents/functions/sort";
+import helper   from "@userPages/components/Biens/helper";
 
 import {
     OwnerContact,
@@ -21,7 +18,9 @@ import {
     TenantNegotiator
 } from "@dashboardPages/components/Immo/Tenants/TenantsItem";
 
-export function Step7({ step, onChange, onOpenAside, onNext, errors, allOwners, owner, tenants })
+export function Step7({ step, onChange, onChangeSelect, onChangeDate, onOpenAside, onNext, errors, allOwners,
+                          owner, tenants,
+                          inform, lastname, phone1, email, visiteAt, visiteTo, keysNumber, keysWhere })
 {
     let itemOwner = null;
     if(owner){
@@ -31,6 +30,8 @@ export function Step7({ step, onChange, onOpenAside, onNext, errors, allOwners, 
             }
         })
     }
+
+    let informItems = helper.getItems("informs")
 
     return <div className={"step-section" + (step === 7 ? " active" : "")}>
         <div className="line special-line contact-line">
@@ -126,6 +127,59 @@ export function Step7({ step, onChange, onOpenAside, onNext, errors, allOwners, 
                         })}
                     </div>
                 </div>}
+            </div>
+        </div>
+
+        <div className="line special-line">
+            <div className="form-group">
+                <label>Confidentiel</label>
+            </div>
+            <div className="line">
+                <SelectReactSelectize items={informItems} identifiant="inform" valeur={inform} errors={errors}
+                                      onChange={(e) => onChangeSelect('inform', e)}>
+                    Qui prévenir ?
+                </SelectReactSelectize>
+            </div>
+            {inform === 3 && <div className="line line-3">
+                <Input identifiant="lastname" valeur={lastname} errors={errors} onChange={onChange}>
+                    <span>Nom</span>
+                </Input>
+                <Input identifiant="phone1" valeur={phone1} errors={errors} onChange={onChange} type="number">
+                    <span>Téléphone</span>
+                </Input>
+                <Input identifiant="email" valeur={email} errors={errors} onChange={onChange} type="email">
+                    <span>Email</span>
+                </Input>
+            </div>}
+            <div className="line" />
+            <div className="line line-2">
+                <div className="form-group">
+                    <div className="line line-2">
+                        <DatePick identifiant="visiteAt" valeur={visiteAt} errors={errors}
+                                  onChange={(e) => onChangeDate("visiteAt", e)}>
+                            Date de la visite
+                        </DatePick>
+                        <Input valeur={visiteTo} identifiant="visiteTo" errors={errors} onChange={onChange}>
+                            Lieu de la visite
+                        </Input>
+                    </div>
+                </div>
+
+                <div className="form-group" />
+            </div>
+            <div className="line line-2">
+                <div className="form-group">
+                    <div className="line line-2">
+                        <Input valeur={keysNumber} identifiant="keysNumber" errors={errors} onChange={onChange} type="number">
+                            Nombre de clés
+                        </Input>
+                        <Input valeur={keysWhere} identifiant="keysWhere" errors={errors} onChange={onChange}>
+                            Où trouver les clés
+                        </Input>
+                    </div>
+                </div>
+
+                <div className="form-group" />
             </div>
         </div>
 

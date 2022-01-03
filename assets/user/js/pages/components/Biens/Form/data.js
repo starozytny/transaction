@@ -120,6 +120,15 @@ function getDataState (props) {
         allOwners: props.allOwners,
         allTenants: props.allTenants,
 
+        inform: props.inform,
+        lastname: props.lastname,
+        phone1: props.phone1,
+        email: props.email,
+        visiteAt: props.visiteAt,
+        visiteTo: props.visiteTo,
+        keysNumber: props.keysNumber,
+        keysWhere: props.keysWhere,
+
         contentAside: "",
         contentHelpBubble: "",
         arrayPostalCode: [],

@@ -5,6 +5,7 @@ namespace App\Controller\Api\Immo;
 use App\Entity\Immo\ImAdvantage;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImConfidential;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
@@ -42,6 +43,9 @@ class BienController extends AbstractController
     public function setProperty($em, $type, $obj, $data, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
     {
         switch ($type){
+            case "confidential":
+                $obj = $dataEntity->setDataConfidential($obj, $data);
+                break;
             case "financial":
                 $obj = $dataEntity->setDataFinancial($obj, $data);
                 break;
@@ -88,6 +92,7 @@ class BienController extends AbstractController
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
 
+        dump($data);
         if ($data === null) {
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
@@ -134,7 +139,13 @@ class BienController extends AbstractController
             return $financial;
         }
 
-        $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage, $diag, $localisation, $financial);
+        $confidential = $this->setProperty($em, "confidential", $type == "create" ? new ImConfidential() : $obj->getConfidential(),
+            $data, $apiResponse, $validator, $dataEntity);
+        if(!$confidential instanceof ImConfidential){
+            return $confidential;
+        }
+
+        $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage, $diag, $localisation, $financial, $confidential);
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }
