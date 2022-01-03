@@ -2,11 +2,10 @@ import React from "react";
 
 import { Input, Radiobox } from "@dashboardComponents/Tools/Fields";
 
-import { Alert }    from "@dashboardComponents/Tools/Alert";
-import { Button }   from "@dashboardComponents/Tools/Button";
+import { Alert }        from "@dashboardComponents/Tools/Alert";
+import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/helper";
-import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step4({ step, onChange, onChangeZipcode, onNext, errors,
                       address, hideAddress, zipcode, city, country, departement, quartier, lat, lon, hideMap })

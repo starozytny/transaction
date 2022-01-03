@@ -5,6 +5,7 @@ import { Input } from "@dashboardComponents/Tools/Fields";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 import { Alert } from "@dashboardComponents/Tools/Alert";
 import { Aside } from "@dashboardComponents/Tools/Aside";
+import { FormActions } from "@userPages/components/Biens/Form/Form";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
 import Sort     from "@commonComponents/functions/sort";
@@ -14,7 +15,6 @@ import {
     OwnerMainInfos,
     OwnerNegotiator,
 } from "@dashboardPages/components/Immo/Owners/OwnersItem";
-import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step7({ step, onChange, onOpenAside, onNext, errors, owners, owner })
 {

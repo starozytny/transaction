@@ -2,12 +2,11 @@ import React from "react";
 
 import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 
-import { Alert }    from "@dashboardComponents/Tools/Alert";
-import { Button }   from "@dashboardComponents/Tools/Button";
+import { Alert }        from "@dashboardComponents/Tools/Alert";
+import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/helper";
 import Sanitaze from "@commonComponents/functions/sanitaze";
-import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step5({ step, onChange, onChangeSelect, onNext, errors,
                       typeCalcul, price, provisionCharges, provisionOrdures, tva, totalTerme, caution, honoraireTtc,

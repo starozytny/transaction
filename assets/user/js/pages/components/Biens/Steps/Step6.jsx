@@ -3,12 +3,12 @@ import React from "react";
 import { Input } from "@dashboardComponents/Tools/Fields";
 
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
-import { Alert } from "@dashboardComponents/Tools/Alert";
-import { Aside } from "@dashboardComponents/Tools/Aside";
+import { Alert }        from "@dashboardComponents/Tools/Alert";
+import { Aside }        from "@dashboardComponents/Tools/Aside";
+import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
 import Sort     from "@commonComponents/functions/sort";
-import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step6({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, onNext, errors,
                           refAside, onOpenAside, onSaveLegend,

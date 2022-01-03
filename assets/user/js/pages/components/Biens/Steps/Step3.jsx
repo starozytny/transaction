@@ -2,11 +2,10 @@ import React from "react";
 
 import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 
-import { DatePick } from "@dashboardComponents/Tools/DatePicker";
-import { Button }   from "@dashboardComponents/Tools/Button";
+import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
+import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/helper";
-import {FormActions} from "@userPages/components/Biens/Form/Form";
 
 export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, errors,
                           hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian,
