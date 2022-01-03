@@ -19,11 +19,19 @@ if(el){
 el = document.getElementById("create-bien");
 if(el){
     render(<BienFormulaire type="create"
-                           negotiators={JSON.parse(el.dataset.negotiators)} />, el)
+                           societyId={parseInt(el.dataset.societyId)}
+                           agencyId={parseInt(el.dataset.agencyId)}
+                           negotiators={JSON.parse(el.dataset.negotiators)}
+                           owners={JSON.parse(el.dataset.owners)}
+                           tenants={JSON.parse(el.dataset.tenants)} />, el)
 }
 
 el = document.getElementById("update-bien");
 if(el){
     render(<BienFormulaire type="update" element={JSON.parse(el.dataset.element)}
-                           negotiators={JSON.parse(el.dataset.negotiators)} />, el)
+                           societyId={parseInt(el.dataset.societyId)}
+                           agencyId={parseInt(el.dataset.agencyId)}
+                           negotiators={JSON.parse(el.dataset.negotiators)}
+                           owners={JSON.parse(el.dataset.owners)}
+                           tenants={JSON.parse(el.dataset.tenants)} />, el)
 }

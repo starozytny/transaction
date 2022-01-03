@@ -3,7 +3,9 @@
 {% set page_title %}Modifier un bien{% endset %}
 
 {% block main_content %}
-    <div id="update-bien" data-element="{{ element }}" data-negotiators="{{ negotiators }}">
+    <div id="update-bien" data-element="{{ element }}"
+         data-negotiators="{{ negotiators }}" data-owners="{{ owners }}" data-tenants="{{ tenants }}"
+         data-society-id="{{ user.society.id }}" data-agency-id="{{ user.agency.id }}">
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

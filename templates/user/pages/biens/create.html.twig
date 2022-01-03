@@ -3,7 +3,8 @@
 {% set page_title %}Ajouter un bien{% endset %}
 
 {% block main_content %}
-    <div id="create-bien" data-negotiators="{{ negotiators }}">
+    <div id="create-bien" data-negotiators="{{ negotiators }}" data-owners="{{ owners }}" data-tenants="{{ tenants }}"
+         data-society-id="{{ user.society.id }}" data-agency-id="{{ user.agency.id }}">
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

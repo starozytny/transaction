@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
+use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImTenant;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImOwnerRepository;
@@ -65,12 +67,19 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+        $owners = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
+        $tenants = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgency()]);
 
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+        $owners = $serializer->serialize($owners, 'json', ['groups' => User::ADMIN_READ]);
+        $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render($route, [
             'element' => $element,
-            'negotiators' => $negotiators
+            'negotiators' => $negotiators,
+            'owners' => $owners,
+            'tenants' => $tenants,
+            'user' => $user,
         ]);
     }
 
@@ -161,7 +170,7 @@ class UserController extends AbstractController
         $em = $this->doctrine->getManager();
         /** @var User $user */
         $user = $this->getUser();
-        $objs = $repository->findBy(['society' => $user->getSociety()]);
+        $objs = $repository->findBy(['agency' => $user->getAgency()]);
         $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $objs]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
 

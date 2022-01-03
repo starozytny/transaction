@@ -19,6 +19,9 @@ import { Step4 } from "@userPages/components/Biens/Steps/Step4";
 import { Step5 } from "@userPages/components/Biens/Steps/Step5";
 import { Step5Vente } from "@userPages/components/Biens/Steps/Step5Vente";
 import { Step6 } from "@userPages/components/Biens/Steps/Step6";
+import { Step7 } from "@userPages/components/Biens/Steps/Step7";
+import {Aside} from "@dashboardComponents/Tools/Aside";
+import {Owners} from "@dashboardPages/components/Immo/Owners/Owners";
 
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
@@ -51,7 +54,8 @@ export class Form extends Component {
         this.state = DataState.getDataState(props);
 
         this.helpBubble = React.createRef();
-        this.aside = React.createRef();
+        this.aside0 = React.createRef();
+        this.aside1 = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeFile = this.handleChangeFile.bind(this);
@@ -267,9 +271,17 @@ export class Form extends Component {
         this.setState({ photos: nPhotos })
     }
 
-    handleOpenAside = (el) => {
-        this.setState({ photo: el });
-        this.aside.current.handleOpen("Légende de " + el.name);
+    handleOpenAside = (type, el) => {
+        switch (type) {
+            case "owner-select":
+                this.aside1.current.handleOpen();
+                break;
+            default:
+                this.setState({ photo: el });
+                this.aside0.current.handleOpen("Légende de " + el.name);
+                break;
+        }
+
     }
 
     handleSaveLegend = (e) => {
@@ -291,7 +303,7 @@ export class Form extends Component {
     }
 
     render () {
-        const { negotiators } = this.props;
+        const { negotiators, owners, tenants, societyId, agencyId } = this.props;
         const { step, contentHelpBubble, codeTypeAd } = this.state;
 
         let steps = [
@@ -319,6 +331,9 @@ export class Form extends Component {
                 <span className="label">{el.label}</span>
             </div>)
         })}
+
+        let contentAside1 = <Owners donnees={JSON.stringify(owners)} negotiators={JSON.stringify(negotiators)}
+                                    societyId={societyId} agencyId={agencyId} isClient={true} isFormBien={true} />
 
         return <div className="page-default">
             <div className="page-col-1">
@@ -366,7 +381,11 @@ export class Form extends Component {
                         <Step6 {...this.state} onNext={this.handleNext} onChangeFile={this.handleChangeFile}
                                onSwitchTrashFile={this.handleSwitchTrashFile} onChangeLegend={this.handleChangeLegend}
                                onDragStart={this.handleDragStart} onDrop={this.handleDrop} onDragLeave={this.handleDragLeave}
-                               refAside={this.aside} onOpenAside={this.handleOpenAside} onSaveLegend={this.handleSaveLegend} />
+                               refAside={this.aside0} onOpenAside={this.handleOpenAside} onSaveLegend={this.handleSaveLegend} />
+
+                        <Step7 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
+                               refAside1={this.aside1} onOpenAside={this.handleOpenAside} />
 
                         <div className="step-section active">
                             <div className="line line-buttons">
@@ -378,6 +397,10 @@ export class Form extends Component {
                             </div>
                         </div>
                     </form>
+
+                    <div className="owner-aside">
+                        <Aside ref={this.aside1} content={contentAside1}>Sélectionner un propriétaire</Aside>
+                    </div>
                 </section>
             </div>
 

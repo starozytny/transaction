@@ -5,7 +5,7 @@ import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class OwnersItem extends Component {
     render () {
-        const { isClient, biens, elem, onDelete, onSelectors, onChangeContext } = this.props;
+        const { isClient, isFormBien, biens, elem, onDelete, onSelectors, onChangeContext } = this.props;
 
         let totalBien = 0;
         biens.forEach(bien => {
@@ -16,10 +16,13 @@ export class OwnersItem extends Component {
 
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
+            {isFormBien && <div className="selector">
+                <label className={"item-selector"}/>
+            </div>}
 
             <div className="item-content">
                 <div className="item-body">
-                    <div className="infos infos-col-4">
+                    <div className={"infos infos-col-" + (isFormBien ? "3" : "4")}>
                         <div className="col-1">
                             <div className="badges">
                                 <div className="badge">{elem.code}</div>
@@ -32,16 +35,17 @@ export class OwnersItem extends Component {
                                 <span>{elem.fullname}</span>
                             </div>
                             {!isClient && <div className="sub">{elem.society.fullname}</div>}
-                            {/*<div>{elem.biens.length}</div>*/}
-                            <div className="sub">{totalBien} bien{totalBien > 1 ? "s" : ""}</div>
+                            {biens.length !== 0 && <div className="sub">{totalBien} bien{totalBien > 1 ? "s" : ""}</div>}
                         </div>
-                        <div className="col-2">
+
+                        {!isFormBien && <div className="col-2">
                             <div className="sub">{elem.email}</div>
                             <div className="sub">{elem.phone1}</div>
                             <div className="sub">{elem.phone2}</div>
                             <div className="sub">{elem.phone3}</div>
-                        </div>
-                        <div className="col-3">
+                        </div>}
+
+                        <div className={isFormBien ? "col-2" : "col-3"}>
                             <div className="sub">{elem.negotiator ? elem.negotiator.fullname : "/"}</div>
                         </div>
                         <div className="col-4 actions">

@@ -82,7 +82,7 @@ export function Step6({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, o
                                                 {!el.isTrash ?
                                                     (el.legend ?
                                                         <><ButtonIcon icon="pencil" onClick={() => onOpenAside(el)} >Modifier</ButtonIcon><span>{el.legend}</span></>
-                                                        : <ButtonIcon icon="tag" text="Ajouter une légende" onClick={() => onOpenAside(el)}/>)
+                                                        : <ButtonIcon icon="tag" text="Ajouter une légende" onClick={() => onOpenAside("photo", el)}/>)
                                                     : "Supprimée"}
                                             </div>
                                         </div>

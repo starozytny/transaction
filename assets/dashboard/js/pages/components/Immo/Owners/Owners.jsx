@@ -30,7 +30,8 @@ export class Owners extends Component {
             agencies: props.agencies ? JSON.parse(props.agencies) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             biens: props.biens ? JSON.parse(props.biens) : [],
-            isClient: props.isClient ? props.isClient : false
+            isClient: props.isClient ? props.isClient : false,
+            isFormBien: props.isFormBien ? props.isFormBien : false,
         }
 
         this.layout = React.createRef();
@@ -56,6 +57,7 @@ export class Owners extends Component {
                            onDeleteAll={this.layout.current.handleDeleteGroup}
                            onSearch={this.handleSearch}
                            isClient={this.state.isClient}
+                           isFormBien={this.state.isFormBien}
                            biens={this.state.biens}
                            data={currentData} />
     }
