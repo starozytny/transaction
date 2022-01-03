@@ -66,6 +66,14 @@ class DataImmo extends DataConstructor
             ]];
         }
 
+        $owner = null;
+        if($data->owner){
+            $owner = $this->em->getRepository(ImOwner::class)->findOneBy(['id' => $data->owner]);
+            if(!$owner){
+                return ['message' => 'Un problème est survenue au niveau du propriétaire.'];
+            }
+        }
+
         // Création de l'objet
         return ($obj)
             ->setSlug(null)
@@ -82,6 +90,7 @@ class DataImmo extends DataConstructor
             ->setDiag($diag)
             ->setLocalisation($localisation)
             ->setFinancial($financial)
+            ->setOwner($owner)
         ;
     }
 

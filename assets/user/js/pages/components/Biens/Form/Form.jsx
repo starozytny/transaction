@@ -27,6 +27,8 @@ import { Owners}  from "@dashboardPages/components/Immo/Owners/Owners";
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
 let arrayZipcodeSave = [];
+let arrayOwnersSave = [];
+let arrayTenantsSave = [];
 let initRank = null;
 
 function getBase64(file, self, rank) {
@@ -189,6 +191,10 @@ export class Form extends Component {
 
         arrayZipcodeSave = this.state.arrayPostalCode;
         delete this.state.arrayPostalCode;
+        arrayOwnersSave = this.state.owners;
+        delete this.state.owners;
+        arrayTenantsSave = this.state.tenants;
+        delete this.state.tenants;
 
         let formData = new FormData();
         formData.append("data", JSON.stringify(this.state));
@@ -197,6 +203,8 @@ export class Form extends Component {
             .then(function (response) {
                 let data = response.data;
                 toastr.info(messageSuccess);
+
+                self.setState({ owners: arrayOwnersSave, tenants: arrayTenantsSave })
                 //message success + redirect to index
             })
             .catch(function (error) {
