@@ -96,7 +96,7 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
 
         <div className="line special-line">
             <div className="form-group">
-                <label>Caractéristique</label>
+                <label>Caractéristiques</label>
             </div>
 
             {(parseInt(codeTypeAd) === 1 && parseInt(codeTypeBien) !== 2 && parseInt(codeTypeBien) !== 3) && <div className="line">
@@ -122,8 +122,9 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                 <Radiobox items={occupationItems} identifiant="busy" valeur={busy} errors={errors} onChange={onChange}>
                     Occupation
                 </Radiobox>
-
             </div>
+        </div>
+        <div className="line special-line">
             <div className="line line-2">
                 <Input identifiant="floor" valeur={floor} errors={errors} onChange={onChange}>
                     <span>Etage</span>
@@ -132,6 +133,8 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                     <span>Nombre d'étages</span>
                 </Input>
             </div>
+        </div>
+        <div className="line special-line">
             <div className="line line-2">
                 <SelectReactSelectize items={chauffage0Items} identifiant="codeHeater0" valeur={codeHeater0} errors={errors}
                                       onChange={(e) => onChangeSelect('codeHeater0', e)}>
@@ -152,6 +155,9 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                     Type d'eau chaude
                 </SelectReactSelectize>
             </div>
+        </div>
+
+        <div className="line special-line">
             <div className="line line-2">
                 <Radiobox items={helper.getItems("answers", 2)} identifiant="isWcSeparate" valeur={isWcSeparate} errors={errors} onChange={onChange}>
                     WC séparé ?
@@ -164,6 +170,7 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                 </Radiobox>
             </div>
         </div>
+
         <FormActions onNext={onNext} currentStep={2} />
     </div>
 }
