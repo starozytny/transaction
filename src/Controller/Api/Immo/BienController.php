@@ -92,7 +92,6 @@ class BienController extends AbstractController
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
 
-        dump($data);
         if ($data === null) {
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
