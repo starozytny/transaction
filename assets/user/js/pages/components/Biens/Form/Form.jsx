@@ -365,7 +365,7 @@ export class Form extends Component {
             {id: 4, label: "Localisation"},
             {id: 5, label: "Financier"},
             {id: 6, label: "Photos"},
-            {id: 7, label: "Contact"},
+            {id: 7, label: "Confidentiel"},
             {id: 8, label: "Publication"},
         ];
 

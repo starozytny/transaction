@@ -1,5 +1,11 @@
 function getItems (type, prefix) {
     switch (type) {
+        case "occupations":
+            return [
+                { value: 0, label: 'Libre',                     identifiant: 'libre' },
+                { value: 1, label: 'Occupé - propriétaire',   identifiant: 'busy-owner' },
+                { value: 2, label: 'Occupé - locataire(s)',   identifiant: 'busy-tenants' },
+            ];
         case "honoraires":
             return [
                 { value: 0, label: 'Acquéreur',             identifiant: 'acquereur' },

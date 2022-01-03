@@ -31,6 +31,10 @@ class DataImmo extends DataConstructor
     {
         return $value != "" ? (int) $value == 1 : ImBien::ANSWER_UNKNOWN;
     }
+    private function setToZeroEmpty($value): ?int
+    {
+        return $value != "" ? (int) $value : ImBien::BUSY_NONE;
+    }
 
     /**
      * @throws Exception
@@ -155,6 +159,7 @@ class DataImmo extends DataConstructor
             ->setIsMeuble($this->setToUnknownEmpty($data->isMeuble))
             ->setIsNew($this->setToUnknownEmpty($data->isNew))
             ->setDispoAt($this->createDate($data->dispoAt))
+            ->setBusy($this->setToZeroEmpty($data->busy))
             ->setBuildAt($this->setToNullInteger($data->buildAt))
             ->setFloor(trim($data->floor))
             ->setNbFloor($this->setToNullInteger($data->nbFloor))

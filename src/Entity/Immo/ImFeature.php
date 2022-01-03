@@ -91,6 +91,12 @@ class ImFeature extends DataEntity
      */
     private $exposition = ImBien::ANSWER_UNKNOWN;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
+     */
+    private $busy = ImBien::BUSY_NONE;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -245,6 +251,18 @@ class ImFeature extends DataEntity
     public function setCodeHeater0(?int $codeHeater0): self
     {
         $this->codeHeater0 = $codeHeater0;
+
+        return $this;
+    }
+
+    public function getBusy(): ?int
+    {
+        return $this->busy;
+    }
+
+    public function setBusy(int $busy): self
+    {
+        $this->busy = $busy;
 
         return $this;
     }

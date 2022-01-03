@@ -121,6 +121,7 @@ class FakeBiensCreate extends Command
                 "box" => (string) $fake->randomDigit(),
                 "dispoAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "buildAt" => $fake->numberBetween(1600, 2021),
+                "busy" => $fake->numberBetween(0, 2),
                 "isMeuble" => $answers[$fake->numberBetween(0,2)],
                 "isNew" => $answers[$fake->numberBetween(0,2)],
                 "floor" => (string) $fake->randomDigit(),

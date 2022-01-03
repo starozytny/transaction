@@ -12,13 +12,15 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                           codeTypeAd, codeTypeBien,
                           areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
                           piece, room, bathroom, wc, balcony, parking, box,
-                          dispoAt, buildAt, isMeuble, isNew, floor, nbFloor, codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0 })
+                          dispoAt, busy, buildAt, isMeuble, isNew, floor, nbFloor,
+                          codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0 })
 {
     let expositionItems = helper.getItems("expositions");
     let chauffage0Items = helper.getItems("chauffages-0");
     let chauffage1Items = helper.getItems("chauffages-1");
     let cuisineItems = helper.getItems("cuisines");
     let waterItems = helper.getItems("water");
+    let occupationItems = helper.getItems("occupations");
 
     return <div className={"step-section" + (step === 2 ? " active" : "")}>
         <div className="line-infos">
@@ -96,25 +98,30 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
             <div className="form-group">
                 <label>Caractéristique</label>
             </div>
+
+            {(parseInt(codeTypeAd) === 1 && parseInt(codeTypeBien) !== 2 && parseInt(codeTypeBien) !== 3) && <div className="line">
+                <Radiobox items={helper.getItems("answers", 0)} identifiant="isMeuble" valeur={isMeuble} errors={errors} onChange={onChange}>
+                    Meublé ?
+                </Radiobox>
+            </div>}
+
             <div className="line line-2">
                 <Input type="number" min={1200} identifiant="buildAt" valeur={buildAt} errors={errors} onChange={onChange}>
                     <span>Année de construction</span>
                 </Input>
+                <Radiobox items={helper.getItems("answers", 1)} identifiant="isNew" valeur={isNew} errors={errors} onChange={onChange}>
+                    Refait à neuf ?
+                </Radiobox>
+            </div>
+
+            <div className="line line-2">
                 <DatePick identifiant="dispoAt" valeur={dispoAt} errors={errors}
                           onChange={(e) => onChangeDate("dispoAt", e)}>
                     Date disponible
                 </DatePick>
-            </div>
-
-            <div className="line line-2">
-                <Radiobox items={helper.getItems("answers", 1)} identifiant="isNew" valeur={isNew} errors={errors} onChange={onChange}>
-                    Refait à neuf ?
+                <Radiobox items={occupationItems} identifiant="busy" valeur={busy} errors={errors} onChange={onChange}>
+                    Occupation
                 </Radiobox>
-                {(parseInt(codeTypeAd) === 1 && parseInt(codeTypeBien) !== 2 && parseInt(codeTypeBien) !== 3) && <>
-                    <Radiobox items={helper.getItems("answers", 0)} identifiant="isMeuble" valeur={isMeuble} errors={errors} onChange={onChange}>
-                        Meublé ?
-                    </Radiobox>
-                </>}
 
             </div>
             <div className="line line-2">

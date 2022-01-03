@@ -74,6 +74,7 @@ export function BienFormulaire ({ type, element, tenants, negotiators, allOwners
         box={element ? setValueEmptyIfNull(number, number.box) : ""}
 
         dispoAt={element ? (setValueEmptyIfNull(feature, feature.dispoAtJavascript) !== "" ? new Date(feature.dispoAtJavascript) : "" ) : ""}
+        busy={element ? setValueEmptyIfNull(feature, feature.busy) : 0}
         buildAt={element ? setValueEmptyIfNull(feature, feature.buildAt) : ""}
         isMeuble={element ? setValueEmptyIfNull(feature, feature.isMeuble) : 99}
         isNew={element ? setValueEmptyIfNull(feature, feature.isNew) : 99}

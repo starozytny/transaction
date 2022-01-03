@@ -1,5 +1,4 @@
 const axios  = require("axios");
-const toastr = require("toastr");
 const Routing = require("@publicFolder/bundles/fosjsrouting/js/router.min.js");
 
 const Formulaire = require("@dashboardComponents/functions/Formulaire");
@@ -31,6 +30,7 @@ function getDataState (props) {
         box: props.box,
 
         dispoAt: props.dispoAt,
+        busy: props.busy,
         buildAt: props.buildAt,
         isMeuble: props.isMeuble,
         isNew: props.isNew,

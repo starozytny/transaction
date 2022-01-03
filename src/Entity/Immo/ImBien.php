@@ -47,6 +47,10 @@ class ImBien extends DataEntity
     const BIEN_TERRAIN_MAISON   = 8;
     const BIEN_DIVERS           = 9;
 
+    const BUSY_NONE = 0;
+    const BUSY_OWNER = 1;
+    const BUSY_TENANT = 2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
