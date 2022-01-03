@@ -60,7 +60,7 @@ class UserController extends AbstractController
     /**
      * Common return createBien and updateBien
      */
-    private function formBien(SerializerInterface $serializer, $route, $element = null): Response
+    private function formBien(SerializerInterface $serializer, $route, $element = null, $tenants = "[]"): Response
     {
         $em = $this->doctrine->getManager();
 
@@ -76,6 +76,7 @@ class UserController extends AbstractController
 
         return $this->render($route, [
             'element' => $element,
+            'tenants' => $tenants,
             'negotiators' => $negotiators,
             'allOwners' => $allOwners,
             'allTenants' => $allTenants,
@@ -94,12 +95,15 @@ class UserController extends AbstractController
     /**
      * @Route("/modifier-un-bien/{slug}",options={"expose"=true},  name="biens_update")
      */
-    public function updateBien($slug, ImBienRepository $repository, SerializerInterface $serializer): Response
+    public function updateBien($slug, ImBienRepository $repository, ImTenantRepository $tenantRepository, SerializerInterface $serializer): Response
     {
         $element = $repository->findOneBy(["slug" => $slug]);
-        $element = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
+        $tenants = $tenantRepository->findBy(["bien" => $element]);
 
-        return $this->formBien($serializer, 'user/pages/biens/update.html.twig', $element);
+        $element = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
+        $tenants = $serializer->serialize($tenants, 'json', ['groups' => ImBien::BIEN_TENANTS_READ]);
+
+        return $this->formBien($serializer, 'user/pages/biens/update.html.twig', $element, $tenants);
     }
 
     /**

@@ -16,7 +16,7 @@ class ImTenant extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "bien:read"})
+     * @Groups({"admin:read", "user:read", "bien-tenants:read"})
      */
     private $id;
 
@@ -99,7 +99,7 @@ class ImTenant extends DataEntity
 
     /**
      * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="tenants")
-     * @Groups({"admin:read", "user:read", "bien:read"})
+     * @Groups({"admin:read", "user:read", "bien-tenants:read"})
      */
     private $bien;
 
