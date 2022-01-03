@@ -194,22 +194,21 @@ export class Form extends Component {
         Formulaire.loader(true);
 
         arrayZipcodeSave = this.state.arrayPostalCode;
+        arrayOwnersSave = this.state.allOwners;
+        arrayTenantsSave = this.state.allTenants;
         delete this.state.arrayPostalCode;
-        arrayOwnersSave = this.state.owners;
-        delete this.state.owners;
-        arrayTenantsSave = this.state.tenants;
-        delete this.state.tenants;
+        delete this.state.allOwners;
+        delete this.state.allTenants;
 
         let formData = new FormData();
         formData.append("data", JSON.stringify(this.state));
+
+        this.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
 
         axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
             .then(function (response) {
                 let data = response.data;
                 toastr.info(messageSuccess);
-
-                self.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
-                //message success + redirect to index
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error);
@@ -369,6 +368,8 @@ export class Form extends Component {
             {id: 8, label: "Publication"},
         ];
 
+        console.log(allOwners)
+
         let stepTitle = "Etape 1 : Informations globales";
         let stepsItems = [];
         {steps.forEach(el => {
@@ -443,7 +444,7 @@ export class Form extends Component {
                         <Step7 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                refAside1={this.aside1} onOpenAside={this.handleOpenAside}
-                               owners={allOwners} />
+                               allOwners={allOwners} />
 
                         <div className="step-section active">
                             <div className="line line-buttons">

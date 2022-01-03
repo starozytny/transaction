@@ -99,7 +99,7 @@ class ValidatorService
 
     private function validateText($value)
     {
-        if($value == ""){
+        if($value !== 0 && $value == ""){
             return 'Ce champ doit être renseigné';
         }
         return 1;

@@ -101,7 +101,7 @@ class UserController extends AbstractController
         $tenants = $tenantRepository->findBy(["bien" => $element]);
 
         $element = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
-        $tenants = $serializer->serialize($tenants, 'json', ['groups' => ImBien::BIEN_TENANTS_READ]);
+        $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->formBien($serializer, 'user/pages/biens/update.html.twig', $element, $tenants);
     }

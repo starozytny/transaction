@@ -78,6 +78,18 @@ class DataImmo extends DataConstructor
             }
         }
 
+        if($data->tenants){
+            $idTenants = [];
+            foreach($data->tenants as $te){
+                $idTenants[] = $te->id;
+            }
+
+            $tenants = $this->em->getRepository(ImTenant::class)->findBy(['id' => $idTenants]);
+            foreach($tenants as $tenant){
+                $obj->addTenant($tenant);
+            }
+        }
+
         // Création de l'objet
         return ($obj)
             ->setSlug(null)

@@ -15,13 +15,17 @@ import {
     OwnerMainInfos,
     OwnerNegotiator,
 } from "@dashboardPages/components/Immo/Owners/OwnersItem";
-import {TenantContact, TenantMainInfos, TenantNegotiator} from "@dashboardPages/components/Immo/Tenants/TenantsItem";
+import {
+    TenantContact,
+    TenantMainInfos,
+    TenantNegotiator
+} from "@dashboardPages/components/Immo/Tenants/TenantsItem";
 
-export function Step7({ step, onChange, onOpenAside, onNext, errors, owners, owner, tenants })
+export function Step7({ step, onChange, onOpenAside, onNext, errors, allOwners, owner, tenants })
 {
     let itemOwner = null;
     if(owner){
-        owners.forEach(ow => {
+        allOwners.forEach(ow => {
             if(ow.id === owner){
                 itemOwner = ow;
             }
@@ -97,7 +101,7 @@ export function Step7({ step, onChange, onOpenAside, onNext, errors, owners, own
                             </div>
                         </div>
                         {tenants.map(tenant => {
-                            return <div className="item">
+                            return <div className="item" key={tenant.id}>
                                 <div className="item-content">
                                     <div className="item-body">
                                         <div className="infos infos-col-4">
