@@ -109,6 +109,8 @@ function getDataState (props) {
         photos: props.photos,
         photo: null,
 
+        owner: props.owner,
+
         contentAside: "",
         contentHelpBubble: "",
         arrayPostalCode: [],

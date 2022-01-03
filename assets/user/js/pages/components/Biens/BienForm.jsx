@@ -157,6 +157,8 @@ export function BienFormulaire ({ type, element, negotiators, owners, tenants, s
 
         photos={photos}
 
+        owner={element ? (element.owner ? element.owner : "") : ""}
+
         messageSuccess={msg}
 
         negotiators={negotiators}

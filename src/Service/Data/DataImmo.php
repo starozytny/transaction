@@ -360,7 +360,7 @@ class DataImmo extends DataConstructor
             ->setPhone2(trim($data->phone2))
             ->setPhone3(trim($data->phone3))
             ->setAddress(trim($data->address))
-            ->setComplement(trim($data->complent))
+            ->setComplement(trim($data->complement))
             ->setZipcode(trim($data->zipcode))
             ->setCity(trim($data->city))
             ->setCountry(trim($data->country))

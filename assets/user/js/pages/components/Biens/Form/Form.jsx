@@ -56,6 +56,7 @@ export class Form extends Component {
         this.helpBubble = React.createRef();
         this.aside0 = React.createRef();
         this.aside1 = React.createRef();
+        this.owner = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeFile = this.handleChangeFile.bind(this);
@@ -69,6 +70,7 @@ export class Form extends Component {
         this.handleDrop = this.handleDrop.bind(this);
         this.handleOpenAside = this.handleOpenAside.bind(this);
         this.handleSaveLegend = this.handleSaveLegend.bind(this);
+        this.handleSelectOwner = this.handleSelectOwner.bind(this);
 
         this.handleNext = this.handleNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -299,12 +301,18 @@ export class Form extends Component {
         })
 
         this.setState({ photos: nPhotos });
-        this.aside.current.handleClose();
+        this.aside0.current.handleClose();
+    }
+
+    handleSelectOwner = (owner) => {
+        this.setState({ owner: owner.id });
+        this.owner.current.handleUpdateSelectOwner(owner.id);
+        this.aside1.current.handleClose();
     }
 
     render () {
         const { negotiators, owners, tenants, societyId, agencyId } = this.props;
-        const { step, contentHelpBubble, codeTypeAd } = this.state;
+        const { step, contentHelpBubble, codeTypeAd, owner } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -332,8 +340,9 @@ export class Form extends Component {
             </div>)
         })}
 
-        let contentAside1 = <Owners donnees={JSON.stringify(owners)} negotiators={JSON.stringify(negotiators)}
-                                    societyId={societyId} agencyId={agencyId} isClient={true} isFormBien={true} />
+        let contentAside1 = <Owners ref={this.owner} donnees={JSON.stringify(owners)} negotiators={JSON.stringify(negotiators)}
+                                    societyId={societyId} agencyId={agencyId} isClient={true}
+                                    owner={owner} isFormBien={true} onSelectOwner={this.handleSelectOwner}/>
 
         return <div className="page-default">
             <div className="page-col-1">
@@ -385,7 +394,8 @@ export class Form extends Component {
 
                         <Step7 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
-                               refAside1={this.aside1} onOpenAside={this.handleOpenAside} />
+                               refAside1={this.aside1} onOpenAside={this.handleOpenAside}
+                               owners={owners} />
 
                         <div className="step-section active">
                             <div className="line line-buttons">

@@ -32,6 +32,7 @@ export class Owners extends Component {
             biens: props.biens ? JSON.parse(props.biens) : [],
             isClient: props.isClient ? props.isClient : false,
             isFormBien: props.isFormBien ? props.isFormBien : false,
+            owner: props.owner ? (props.owner !== "" ? parseInt(props.owner) : "") : "",
         }
 
         this.layout = React.createRef();
@@ -41,6 +42,7 @@ export class Owners extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
+        this.handleUpdateSelectOwner = this.handleUpdateSelectOwner.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
     }
@@ -51,6 +53,8 @@ export class Owners extends Component {
 
     handleSearch = (search) => { this.layout.current.handleSearch(search, "owner"); }
 
+    handleUpdateSelectOwner = (owner) => { this.setState({ owner }) }
+
     handleContentList = (currentData, changeContext) => {
         return <OwnersList onChangeContext={changeContext}
                            onDelete={this.layout.current.handleDelete}
@@ -58,6 +62,8 @@ export class Owners extends Component {
                            onSearch={this.handleSearch}
                            isClient={this.state.isClient}
                            isFormBien={this.state.isFormBien}
+                           owner={this.state.owner}
+                           onSelectOwner={this.props.onSelectOwner ? this.props.onSelectOwner : null}
                            biens={this.state.biens}
                            data={currentData} />
     }
