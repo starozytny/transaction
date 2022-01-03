@@ -23,6 +23,7 @@ import { Step7 } from "@userPages/components/Biens/Steps/Step7";
 
 import { Aside }  from "@dashboardComponents/Tools/Aside";
 import { Owners}  from "@dashboardPages/components/Immo/Owners/Owners";
+import {Tenants} from "@dashboardPages/components/Immo/Tenants/Tenants";
 
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
@@ -328,7 +329,29 @@ export class Form extends Component {
     }
 
     handleSelectTenant = (tenant) => {
-        this.aside2.current.handleClose();
+        const { tenants } = this.state;
+
+        let find = false;
+        let nTenants = [];
+        tenants.forEach(te => {
+            if(te.id === tenant.id){
+                find = true;
+            }else{
+                nTenants.push(te);
+            }
+        })
+
+        if(!find){
+            nTenants = tenants;
+            nTenants.push(tenant);
+            toastr.info("Locataire ajouté.");
+        }else{
+            toastr.info("Locataire enlevé.");
+        }
+
+        this.tenant.current.handleUpdateSelectTenants(nTenants);
+        DataState.getTenants(this);
+        this.setState({ tenants: nTenants });
     }
 
     render () {
@@ -364,6 +387,10 @@ export class Form extends Component {
         let contentAside1 = <Owners ref={this.owner} donnees={JSON.stringify(allOwners)} negotiators={JSON.stringify(negotiators)}
                                     societyId={societyId} agencyId={agencyId} isClient={true}
                                     owner={owner} isFormBien={true} onSelectOwner={this.handleSelectOwner}/>
+
+        let contentAside2 = <Tenants ref={this.tenant} donnees={JSON.stringify(allTenants)} negotiators={JSON.stringify(negotiators)}
+                                    societyId={societyId} agencyId={agencyId} isClient={true}
+                                    tenants={tenants} isFormBien={true} onSelectTenant={this.handleSelectTenant}/>
 
         return <div className="page-default">
             <div className="page-col-1">
@@ -429,8 +456,9 @@ export class Form extends Component {
                         </div>
                     </form>
 
-                    <div className="owner-aside">
+                    <div className="contact-aside">
                         <Aside ref={this.aside1} content={contentAside1}>Sélectionner un propriétaire</Aside>
+                        <Aside ref={this.aside2} content={contentAside2}>Sélectionner un locataire</Aside>
                     </div>
                 </section>
             </div>

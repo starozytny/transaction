@@ -15,8 +15,9 @@ import {
     OwnerMainInfos,
     OwnerNegotiator,
 } from "@dashboardPages/components/Immo/Owners/OwnersItem";
+import {TenantContact, TenantMainInfos, TenantNegotiator} from "@dashboardPages/components/Immo/Tenants/TenantsItem";
 
-export function Step7({ step, onChange, onOpenAside, onNext, errors, owners, owner })
+export function Step7({ step, onChange, onOpenAside, onNext, errors, owners, owner, tenants })
 {
     let itemOwner = null;
     if(owner){
@@ -28,7 +29,7 @@ export function Step7({ step, onChange, onOpenAside, onNext, errors, owners, own
     }
 
     return <div className={"step-section" + (step === 7 ? " active" : "")}>
-        <div className="line special-line owner-line">
+        <div className="line special-line contact-line">
             <div className="form-group">
                 <label>Propriétaire</label>
 
@@ -70,6 +71,55 @@ export function Step7({ step, onChange, onOpenAside, onNext, errors, owners, own
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>}
+            </div>
+        </div>
+
+        <div className="line special-line contact-line">
+            <div className="form-group">
+                <label>Locataire(s)</label>
+
+                <Button type="default" onClick={() => onOpenAside("tenant-select")}>Sélectionner/ajouter un locataire</Button>
+
+                {tenants.length !== 0 && <div className="items-table">
+                    <div className="items items-default">
+                        <div className="item item-header">
+                            <div className="item-content">
+                                <div className="item-body">
+                                    <div className="infos infos-col-4">
+                                        <div className="col-1">Locataire</div>
+                                        <div className="col-2">Contact</div>
+                                        <div className="col-3">Négociateur</div>
+                                        <div className="col-4 actions" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {tenants.map(tenant => {
+                            return <div className="item">
+                                <div className="item-content">
+                                    <div className="item-body">
+                                        <div className="infos infos-col-4">
+                                            <div className="col-1">
+                                                <TenantMainInfos elem={tenant} />
+                                            </div>
+
+                                            <div className="col-2">
+                                                <TenantContact elem={tenant} />
+                                            </div>
+
+                                            <div className="col-3">
+                                                <TenantNegotiator elem={tenant} />
+                                            </div>
+                                            <div className="col-4 actions">
+                                                <div className="sub">Sélectionné</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        })}
                     </div>
                 </div>}
             </div>

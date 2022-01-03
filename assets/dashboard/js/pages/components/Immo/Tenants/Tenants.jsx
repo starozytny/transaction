@@ -29,7 +29,9 @@ export class Tenants extends Component {
             societies: props.societies ? JSON.parse(props.societies) : [],
             agencies: props.agencies ? JSON.parse(props.agencies) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
-            isClient: props.isClient ? props.isClient : false
+            isClient: props.isClient ? props.isClient : false,
+            isFormBien: props.isFormBien ? props.isFormBien : false,
+            tenants: props.tenants ? (props.tenants !== "" ? props.tenants : []) : [],
         }
 
         this.layout = React.createRef();
@@ -37,9 +39,10 @@ export class Tenants extends Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleUpdateSelectTenants = this.handleUpdateSelectTenants.bind(this);
+
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
-
         this.handleContentList = this.handleContentList.bind(this);
     }
 
@@ -49,12 +52,17 @@ export class Tenants extends Component {
 
     handleSearch = (search) => { this.layout.current.handleSearch(search, "tenant"); }
 
+    handleUpdateSelectTenants = (tenants) => { this.setState({ tenants }) }
+
     handleContentList = (currentData, changeContext) => {
         return <TenantsList onChangeContext={changeContext}
                             onDelete={this.layout.current.handleDelete}
                             onDeleteAll={this.layout.current.handleDeleteGroup}
                             onSearch={this.handleSearch}
                             isClient={this.state.isClient}
+                            isFormBien={this.state.isFormBien}
+                            onSelectTenant={this.props.onSelectTenant}
+                            tenants={this.state.tenants}
                             data={currentData} />
     }
 

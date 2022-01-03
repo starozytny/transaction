@@ -5,6 +5,7 @@ namespace App\Controller\Api\Immo;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImTenant;
 use App\Entity\User;
+use App\Repository\Immo\ImTenantRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
@@ -28,6 +29,32 @@ class TenantController extends AbstractController
     public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+
+    /**
+     * get tenants of user agency
+     *
+     * @Route("/user-agency", name="user_agency", options={"expose"=true}, methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message"
+     * )
+     *
+     * @OA\Tag(name="Tenants")
+     *
+     * @param ImTenantRepository $repository
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function index(ImTenantRepository $repository, ApiResponse $apiResponse): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $objs = $repository->findBy(['agency' => $user->getAgency()]);
+
+        return $apiResponse->apiJsonResponse($objs, User::ADMIN_READ);
     }
 
     /**

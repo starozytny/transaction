@@ -142,7 +142,22 @@ function getOwners (self) {
         })
 }
 
+function getTenants (self) {
+    axios.get(Routing.generate('api_tenants_user_agency'), {})
+        .then(function (response) {
+            let data = response.data;
+            self.setState({ allTenants: data })
+        })
+        .catch(function (error) {
+            Formulaire.displayErrors(self, error);
+        })
+        .then(() => {
+            Formulaire.loader(false);
+        })
+}
+
 module.exports = {
     getDataState,
-    getOwners
+    getOwners,
+    getTenants
 }

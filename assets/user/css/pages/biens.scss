@@ -12,15 +12,19 @@
   }
 }
 
-.owner-line{
+.contact-line{
   .items-table{
     width: 100%;
     margin-top: 24px;
   }
 }
 
-.owner-aside{
-  @include toolbarCreateSearch(224)
+.contact-aside{
+  @include toolbarCreateSearch(224);
+  
+  .selector, .col-1, .col-2, .col-3{
+    cursor: pointer;
+  }
 }
 
 //                      __   _____ __    ___    __
@@ -43,7 +47,7 @@
 //                     | |  |_|\___/_____|  |_|    | |
 //                     |__|                       |__|
 @media (min-width: 1024px) {
-  .owner-aside {
+  .contact-aside {
     .aside{
       width: 80%;
     }
