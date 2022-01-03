@@ -47,7 +47,7 @@ export class Tenants extends Component {
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "owner"); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "tenant"); }
 
     handleContentList = (currentData, changeContext) => {
         return <TenantsList onChangeContext={changeContext}

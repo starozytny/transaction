@@ -33,8 +33,6 @@ export function TenantFormulaire ({ type, onChangeContext, onUpdateList, element
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
 
-    console.log(element)
-
     let form = <TenantForm
         context={type}
         url={url}
