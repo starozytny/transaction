@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
-import {Button, ButtonIcon}       from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
 
 import { OwnersItem }   from "./OwnersItem";

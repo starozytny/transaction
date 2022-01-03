@@ -1,3 +1,9 @@
+const axios  = require("axios");
+const toastr = require("toastr");
+const Routing = require("@publicFolder/bundles/fosjsrouting/js/router.min.js");
+
+const Formulaire = require("@dashboardComponents/functions/Formulaire");
+
 function getDataState (props) {
     return {
         codeTypeAd: props.codeTypeAd,
@@ -110,6 +116,8 @@ function getDataState (props) {
         photo: null,
 
         owner: props.owner,
+        owners: props.owners,
+        tenants: props.tenants,
 
         contentAside: "",
         contentHelpBubble: "",
@@ -119,6 +127,21 @@ function getDataState (props) {
     }
 }
 
+function getOwners (self) {
+    axios.get(Routing.generate('api_owners_user_agency'), {})
+        .then(function (response) {
+            let data = response.data;
+            self.setState({ owners: data })
+        })
+        .catch(function (error) {
+            Formulaire.displayErrors(self, error);
+        })
+        .then(() => {
+            Formulaire.loader(false);
+        })
+}
+
 module.exports = {
-    getDataState
+    getDataState,
+    getOwners
 }

@@ -306,14 +306,16 @@ export class Form extends Component {
     }
 
     handleSelectOwner = (owner) => {
-        this.setState({ owner: owner.id });
         this.owner.current.handleUpdateSelectOwner(owner.id);
         this.aside1.current.handleClose();
+
+        DataState.getOwners(this);
+        this.setState({ owner: owner.id });
     }
 
     render () {
-        const { negotiators, owners, tenants, societyId, agencyId } = this.props;
-        const { step, contentHelpBubble, codeTypeAd, owner } = this.state;
+        const { negotiators, societyId, agencyId } = this.props;
+        const { step, contentHelpBubble, codeTypeAd, owner, owners, tenants } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
