@@ -26,6 +26,12 @@
 }
 
 .dark-mode{
+  #toast-container{
+    .toast-message, .toast-close-button{
+      color: var(--alpha);
+    }
+  }
+
   .swal2-popup,
   .swal2-popup.swal2-modal.swal2-icon-warning.swal2-show{
     background-color: var(--fond);
