@@ -6,6 +6,7 @@ use App\Entity\Immo\ImAdvantage;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImConfidential;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
@@ -80,7 +81,8 @@ class FakeBiensCreate extends Command
             ImFeature::class,
             ImFinancial::class,
             ImLocalisation::class,
-            ImNumber::class
+            ImNumber::class,
+            ImConfidential::class,
         ]);
 
         if($nbAgencies == 0 || $nbNegotiators == 0 || $nbUsers == 0){
@@ -196,10 +198,20 @@ class FakeBiensCreate extends Command
                 "chargesLot" => (string) $fake->randomFloat(2),
                 "isSyndicProcedure" => $fake->numberBetween(0,1),
                 "detailsProcedure" => $fake->sentence,
+                "inform" => $fake->numberBetween(0, 3),
+                "lastname" => $fake->lastName,
+                "phone1" => $fake->e164PhoneNumber,
+                "email" => $fake->email,
+                "visiteAt" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
+                "visiteTo" => $fake->streetName,
+                "keysNumber" => $fake->randomNumber(1),
+                "keysWhere" => $fake->streetName,
+
             ];
 
             $data = json_decode(json_encode($data));
 
+            $confidential = $this->dataImmo->setDataConfidential(new ImConfidential(), $data);
             $financial = $this->dataImmo->setDataFinancial(new ImFinancial(), $data);
             $localisation = $this->dataImmo->setDataLocalisation(new ImLocalisation(), $data);
             $diag = $this->dataImmo->setDataDiag(new ImDiag(), $data);
@@ -208,7 +220,7 @@ class FakeBiensCreate extends Command
             $number = $this->dataImmo->setDataNumber(new ImNumber(), $data);
             $area = $this->dataImmo->setDataArea(new ImArea(), $data);
 
-            $obj = $this->dataImmo->setDataBien(new ImBien(), $data, $area, $number, $feature, $advantage, $diag, $localisation, $financial);
+            $obj = $this->dataImmo->setDataBien(new ImBien(), $data, $area, $number, $feature, $advantage, $diag, $localisation, $financial, $confidential);
 
             $choicesOwners = [];
             foreach($owners as $ow){

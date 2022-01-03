@@ -6,6 +6,7 @@ use App\Entity\Immo\ImAdvantage;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImConfidential;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
@@ -40,7 +41,8 @@ class DataImmo extends DataConstructor
      * @throws Exception
      */
     public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature,
-                                ImAdvantage $advantage, ImDiag $diag, ImLocalisation $localisation, ImFinancial $financial)
+                                ImAdvantage $advantage, ImDiag $diag, ImLocalisation $localisation,
+                                ImFinancial $financial, ImConfidential $confidential)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -71,14 +73,14 @@ class DataImmo extends DataConstructor
         }
 
         $owner = null;
-        if($data->owner){
+        if(isset($data->owner) && $data->owner){
             $owner = $this->em->getRepository(ImOwner::class)->findOneBy(['id' => $data->owner]);
             if(!$owner){
                 return ['message' => 'Un problème est survenue au niveau du propriétaire.'];
             }
         }
 
-        if($data->tenants){
+        if(isset($data->tenants) && $data->tenants){
             $idTenants = [];
             foreach($data->tenants as $te){
                 $idTenants[] = $te->id;
@@ -107,6 +109,7 @@ class DataImmo extends DataConstructor
             ->setLocalisation($localisation)
             ->setFinancial($financial)
             ->setOwner($owner)
+            ->setConfidential($confidential)
         ;
     }
 
@@ -264,7 +267,7 @@ class DataImmo extends DataConstructor
             ->setNotaire($this->setToNullFloat($data->notaire))
             ->setFoncier($this->setToNullFloat($data->foncier))
             ->setTaxeHabitation($this->setToNullFloat($data->taxeHabitation))
-            ->setHonoraireChargeDe($this->setToNullFloat($data->honoraireChargeDe))
+            ->setHonoraireChargeDe($this->setToNullInteger($data->honoraireChargeDe))
             ->setHonorairePourcentage($this->setToNullFloat($data->honorairePourcentage))
             ->setPriceHorsAcquereur($this->setToNullFloat($data->prixHorsAcquereur))
             ->setIsCopro($data->isCopro)
@@ -272,6 +275,23 @@ class DataImmo extends DataConstructor
             ->setChargesLot($this->setToNullFloat($data->chargesLot))
             ->setIsSyndicProcedure($data->isSyndicProcedure)
             ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
+        ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataConfidential(ImConfidential $obj, $data): ImConfidential
+    {
+        return ($obj)
+            ->setInform($this->setToZeroEmpty($data->inform))
+            ->setLastname($this->sanitizeData->sanitizeString($data->lastname))
+            ->setPhone1(trim($data->phone1))
+            ->setEmail(trim($data->email))
+            ->setVisiteAt($this->createDate($data->visiteAt))
+            ->setVisiteTo(trim($data->visiteTo))
+            ->setKeysNumber($this->setToNullInteger($data->keysNumber))
+            ->setKeysWhere(trim($data->keysWhere))
         ;
     }
 

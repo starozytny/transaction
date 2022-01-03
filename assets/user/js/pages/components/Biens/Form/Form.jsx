@@ -368,8 +368,6 @@ export class Form extends Component {
             {id: 8, label: "Publication"},
         ];
 
-        console.log(allOwners)
-
         let stepTitle = "Etape 1 : Informations globales";
         let stepsItems = [];
         {steps.forEach(el => {

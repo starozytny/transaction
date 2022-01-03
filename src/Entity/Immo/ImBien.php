@@ -229,6 +229,13 @@ class ImBien extends DataEntity
      */
     private $tenants;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ImConfidential::class, fetch="EAGER", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
+     */
+    private $confidential;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -678,6 +685,18 @@ class ImBien extends DataEntity
                 $tenant->setBien(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getConfidential(): ?ImConfidential
+    {
+        return $this->confidential;
+    }
+
+    public function setConfidential(ImConfidential $confidential): self
+    {
+        $this->confidential = $confidential;
 
         return $this;
     }
