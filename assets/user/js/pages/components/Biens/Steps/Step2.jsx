@@ -8,6 +8,8 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/helper";
 
+const CURRENT_STEP = 2;
+
 export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, errors,
                           codeTypeAd, codeTypeBien,
                           areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
@@ -22,7 +24,7 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
     let waterItems = helper.getItems("water");
     let occupationItems = helper.getItems("occupations");
 
-    return <div className={"step-section" + (step === 2 ? " active" : "")}>
+    return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
             <Alert iconCustom="exclamation" type="reverse">
                 (*) Champs obligatoires. <br/><br/>
@@ -30,6 +32,36 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                 auprès des moteurs de recherche tel que Google. Donc, plus de visiteurs qui verront cette annonce.
             </Alert>
         </div>
+
+        <div className="line special-line">
+            <div className="form-group">
+                <label>Nombre de ...</label>
+            </div>
+            <div className="line line-infinite">
+                <Input type="number" min={0} identifiant="piece" valeur={piece} errors={errors} onChange={onChange}>
+                    <span>Pièces *</span>
+                </Input>
+                <Input type="number" min={0} identifiant="room" valeur={room} errors={errors} onChange={onChange}>
+                    <span>Chambres</span>
+                </Input>
+                <Input type="number" min={0} identifiant="bathroom" valeur={bathroom} errors={errors} onChange={onChange}>
+                    <span>Salles de bain</span>
+                </Input>
+                <Input type="number" min={0} identifiant="wc" valeur={wc} errors={errors} onChange={onChange}>
+                    <span>WC</span>
+                </Input>
+                <Input type="number" min={0} identifiant="balcony" valeur={balcony} errors={errors} onChange={onChange}>
+                    <span>Blacons</span>
+                </Input>
+                <Input type="number" min={0} identifiant="parking" valeur={parking} errors={errors} onChange={onChange}>
+                    <span>Parkings</span>
+                </Input>
+                <Input type="number" min={0} identifiant="box" valeur={box} errors={errors} onChange={onChange}>
+                    <span>Boxes</span>
+                </Input>
+            </div>
+        </div>
+
         <div className="line special-line">
             <div className="form-group">
                 <label>Surfaces (m²)</label>
@@ -61,35 +93,6 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
                 </Input>
                 <Input type="number" step="any" min={0} identifiant="areaDining" valeur={areaDining} errors={errors} onChange={onChange}>
                     <span>Salle à manger</span>
-                </Input>
-            </div>
-        </div>
-
-        <div className="line special-line">
-            <div className="form-group">
-                <label>Nombre de ...</label>
-            </div>
-            <div className="line line-infinite">
-                <Input type="number" min={0} identifiant="piece" valeur={piece} errors={errors} onChange={onChange}>
-                    <span>Pièces *</span>
-                </Input>
-                <Input type="number" min={0} identifiant="room" valeur={room} errors={errors} onChange={onChange}>
-                    <span>Chambres</span>
-                </Input>
-                <Input type="number" min={0} identifiant="bathroom" valeur={bathroom} errors={errors} onChange={onChange}>
-                    <span>Salles de bain</span>
-                </Input>
-                <Input type="number" min={0} identifiant="wc" valeur={wc} errors={errors} onChange={onChange}>
-                    <span>WC</span>
-                </Input>
-                <Input type="number" min={0} identifiant="balcony" valeur={balcony} errors={errors} onChange={onChange}>
-                    <span>Blacons</span>
-                </Input>
-                <Input type="number" min={0} identifiant="parking" valeur={parking} errors={errors} onChange={onChange}>
-                    <span>Parkings</span>
-                </Input>
-                <Input type="number" min={0} identifiant="box" valeur={box} errors={errors} onChange={onChange}>
-                    <span>Boxes</span>
                 </Input>
             </div>
         </div>
@@ -171,6 +174,6 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
             </div>
         </div>
 
-        <FormActions onNext={onNext} currentStep={2} />
+        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
     </div>
 }

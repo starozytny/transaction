@@ -1,188 +1,124 @@
 import React from "react";
 
-import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
-import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
-import { Button }       from "@dashboardComponents/Tools/Button";
+import { Input } from "@dashboardComponents/Tools/Fields";
+
+import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { Alert }        from "@dashboardComponents/Tools/Alert";
+import { Aside }        from "@dashboardComponents/Tools/Aside";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
-import helper   from "@userPages/components/Biens/helper";
+import Sanitaze from "@commonComponents/functions/sanitaze";
+import Sort     from "@commonComponents/functions/sort";
 
-import {
-    OwnerContact,
-    OwnerMainInfos,
-    OwnerNegotiator,
-} from "@dashboardPages/components/Immo/Owners/OwnersItem";
-import {
-    TenantContact,
-    TenantMainInfos,
-    TenantNegotiator
-} from "@dashboardPages/components/Immo/Tenants/TenantsItem";
+const CURRENT_STEP = 7;
 
-export function Step7({ step, onChange, onChangeSelect, onChangeDate, onOpenAside, onNext, errors, allOwners,
-                          owner, tenants,
-                          inform, lastname, phone1, email, visiteAt, visiteTo, keysNumber, keysWhere })
+export function Step7({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, onNext, errors,
+                          refAside, onOpenAside, onSaveLegend,
+                          onDragStart, onDragLeave, onDrop, photo, photos })
 {
-    let itemOwner = null;
-    if(owner){
-        allOwners.forEach(ow => {
-            if(ow.id === owner){
-                itemOwner = ow;
-            }
-        })
-    }
-
-    let informItems = helper.getItems("informs")
-
-    return <div className={"step-section" + (step === 7 ? " active" : "")}>
-        <div className="line special-line contact-line">
-            <div className="form-group">
-                <label>Propriétaire</label>
-
-                <Button type="default" onClick={() => onOpenAside("owner-select")}>Sélectionner/ajouter un propriétaire</Button>
-
-                {itemOwner && <div className="items-table">
-                    <div className="items items-default">
-                        <div className="item item-header">
-                            <div className="item-content">
-                                <div className="item-body">
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">Propriétaire</div>
-                                        <div className="col-2">Contact</div>
-                                        <div className="col-3">Négociateur</div>
-                                        <div className="col-4 actions" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="item">
-                            <div className="item-content">
-                                <div className="item-body">
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">
-                                            <OwnerMainInfos elem={itemOwner} />
-                                        </div>
-
-                                        <div className="col-2">
-                                            <OwnerContact elem={itemOwner} />
-                                        </div>
-
-                                        <div className="col-3">
-                                            <OwnerNegotiator elem={itemOwner} />
-                                        </div>
-                                        <div className="col-4 actions">
-                                            <div className="sub">Sélectionné</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>}
-            </div>
-        </div>
-
-        <div className="line special-line contact-line">
-            <div className="form-group">
-                <label>Locataire(s)</label>
-
-                <Button type="default" onClick={() => onOpenAside("tenant-select")}>Sélectionner/ajouter un locataire</Button>
-
-                {tenants.length !== 0 && <div className="items-table">
-                    <div className="items items-default">
-                        <div className="item item-header">
-                            <div className="item-content">
-                                <div className="item-body">
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">Locataire</div>
-                                        <div className="col-2">Contact</div>
-                                        <div className="col-3">Négociateur</div>
-                                        <div className="col-4 actions" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {tenants.map(tenant => {
-                            return <div className="item" key={tenant.id}>
-                                <div className="item-content">
-                                    <div className="item-body">
-                                        <div className="infos infos-col-4">
-                                            <div className="col-1">
-                                                <TenantMainInfos elem={tenant} />
-                                            </div>
-
-                                            <div className="col-2">
-                                                <TenantContact elem={tenant} />
-                                            </div>
-
-                                            <div className="col-3">
-                                                <TenantNegotiator elem={tenant} />
-                                            </div>
-                                            <div className="col-4 actions">
-                                                <div className="sub">Sélectionné</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        })}
-                    </div>
-                </div>}
-            </div>
-        </div>
-
-        <div className="line special-line">
-            <div className="form-group">
-                <label>Confidentiel</label>
+    photos.sort(Sort.compareRank);
+    let contentAside = "";
+    if(photo){
+        let srcFormPhoto = photo.is64 ? photo.file : "path/" . photo.file;
+        contentAside = <div>
+            <div className="line">
+                <div className="legend-photo">
+                    <img src={srcFormPhoto} alt="Photo to edit"/>
+                </div>
             </div>
             <div className="line">
-                <SelectReactSelectize items={informItems} identifiant="inform" valeur={inform} errors={errors}
-                                      onChange={(e) => onChangeSelect('inform', e)}>
-                    Qui prévenir ?
-                </SelectReactSelectize>
+                <Input identifiant="photo" valeur={photo.legend} errors={errors} onChange={(e) => onChangeLegend(e, photo)}>
+                    <span>Légende de l'image</span>
+                </Input>
             </div>
-            {inform === 3 && <div className="line line-3">
-                <Input identifiant="lastname" valeur={lastname} errors={errors} onChange={onChange}>
-                    <span>Nom</span>
-                </Input>
-                <Input identifiant="phone1" valeur={phone1} errors={errors} onChange={onChange} type="number">
-                    <span>Téléphone</span>
-                </Input>
-                <Input identifiant="email" valeur={email} errors={errors} onChange={onChange} type="email">
-                    <span>Email</span>
-                </Input>
-            </div>}
-            <div className="line" />
-            <div className="line line-2">
-                <div className="form-group">
-                    <div className="line line-2">
-                        <DatePick identifiant="visiteAt" valeur={visiteAt} errors={errors}
-                                  onChange={(e) => onChangeDate("visiteAt", e)}>
-                            Date de la visite
-                        </DatePick>
-                        <Input valeur={visiteTo} identifiant="visiteTo" errors={errors} onChange={onChange}>
-                            Lieu de la visite
-                        </Input>
-                    </div>
-                </div>
-
-                <div className="form-group" />
-            </div>
-            <div className="line line-2">
-                <div className="form-group">
-                    <div className="line line-2">
-                        <Input valeur={keysNumber} identifiant="keysNumber" errors={errors} onChange={onChange} type="number">
-                            Nombre de clés
-                        </Input>
-                        <Input valeur={keysWhere} identifiant="keysWhere" errors={errors} onChange={onChange}>
-                            Où trouver les clés
-                        </Input>
-                    </div>
-                </div>
-
-                <div className="form-group" />
+            <div className="line">
+                <Button onClick={onSaveLegend}>Enregistrer</Button>
             </div>
         </div>
+    }
 
-        <FormActions onNext={onNext} currentStep={7} />
+    return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
+        <div className="line-infos">
+            <Alert iconCustom="exclamation" type="reverse">
+                Les photos peuvent avoir un poids maximum de 1Mb  afin de ne pas réduire le temps de chargement. <br/>
+                Pour réduire le poids de vos photos, vous pouvez redimensionner
+                la taille et/ou utiliser le compresseur en ligne suivant : <a href="https://tinyjpg.com" target="_blank">tinyjpg.com</a>
+            </Alert>
+        </div>
+        <div className="line special-line">
+            <div className="form-group">
+                <label>Photos</label>
+            </div>
+            <div className="items-table">
+                <div className="items items-default">
+                    {(photos && photos.length !== 0) && <div className="item item-header">
+                        <div className="item-content">
+                            <div className="item-body item-body-image">
+                                <div className="infos infos-col-4">
+                                    <div className="col-1">Photo</div>
+                                    <div className="col-2">Ordre</div>
+                                    <div className="col-3">Taille</div>
+                                    <div className="col-4 actions">Actions</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>}
+                    {photos.map((el, index) => {
+
+                        let src = el.is64 ? el.file : "path/" . el.file;
+
+                        return (<div className={"item-drag item" + (el.isTrash ? " trash" : "")}
+                                     draggable="true" key={index}
+                                     onDragStart={(e) => onDragStart(e, el.rank)}
+                                     onDragOver={(e) => e.preventDefault()}
+                                     onDragEnter={onDragLeave}
+                                     onDrop={(e) => onDrop(e, el.rank)}
+                        >
+                            <div className="item-content">
+                                <div className="item-body item-body-image">
+                                    <div className="item-image">
+                                        <img src={src} alt={el.legend} />
+                                    </div>
+                                    <div className="infos infos-col-4">
+                                        <div className="col-1">
+                                            <div className="name name-legend">
+                                                {!el.isTrash ?
+                                                    (el.legend ?
+                                                        <><ButtonIcon icon="pencil" onClick={() => onOpenAside(el)} >Modifier</ButtonIcon><span>{el.legend}</span></>
+                                                        : <ButtonIcon icon="tag" text="Ajouter une légende" onClick={() => onOpenAside("photo", el)}/>)
+                                                    : "Supprimée"}
+                                            </div>
+                                        </div>
+                                        <div className="col-2">
+                                            {el.rank}
+                                        </div>
+                                        <div className="col-3">
+                                            {Sanitaze.toFormatBytesToSize(el.size)}
+                                        </div>
+                                        <div className="col-4 actions">
+                                            {el.isTrash ? <ButtonIcon icon="refresh" onClick={() => onSwitchTrashFile(el)}>Annuler la suppression</ButtonIcon>
+                                                : <ButtonIcon icon="trash" onClick={() => onSwitchTrashFile(el)}>Supprimer</ButtonIcon>}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>)
+                    })}
+                </div>
+            </div>
+            <div className="line line-3">
+                <div className="form-group" />
+                <div className="form-group" />
+                <Input type="file" identifiant="photos" isMultiple={true} valeur={photos}
+                       acceptFiles={"image/*"}
+                       errors={errors} onChange={onChangeFile}>
+                    <span>Photos</span>
+                </Input>
+            </div>
+
+            <Aside ref={refAside} content={contentAside}>Légende</Aside>
+        </div>
+
+        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
     </div>
 }

@@ -15,11 +15,11 @@ import { Button }       from "@dashboardComponents/Tools/Button";
 import { Step1 } from "@userPages/components/Biens/Steps/Step1";
 import { Step2 } from "@userPages/components/Biens/Steps/Step2";
 import { Step3 } from "@userPages/components/Biens/Steps/Step3";
-import { Step4 } from "@userPages/components/Biens/Steps/Step4";
 import { Step5 } from "@userPages/components/Biens/Steps/Step5";
-import { Step5Vente } from "@userPages/components/Biens/Steps/Step5Vente";
 import { Step6 } from "@userPages/components/Biens/Steps/Step6";
+import { Step6Vente } from "@userPages/components/Biens/Steps/Step6Vente";
 import { Step7 } from "@userPages/components/Biens/Steps/Step7";
+import { Step8 } from "@userPages/components/Biens/Steps/Step8";
 
 import { Aside }  from "@dashboardComponents/Tools/Aside";
 import { Owners}  from "@dashboardPages/components/Immo/Owners/Owners";
@@ -361,11 +361,12 @@ export class Form extends Component {
             {id: 1, label: "Informations globales"},
             {id: 2, label: "Details du bien (1/2)"},
             {id: 3, label: "Details du bien (2/2)"},
-            {id: 4, label: "Localisation"},
-            {id: 5, label: "Financier"},
-            {id: 6, label: "Photos"},
-            {id: 7, label: "Confidentiel"},
-            {id: 8, label: "Publication"},
+            {id: 4, label: "Details des pièces"},
+            {id: 5, label: "Localisation"},
+            {id: 6, label: "Financier"},
+            {id: 7, label: "Photos"},
+            {id: 8, label: "Confidentiel"},
+            {id: 9, label: "Publication"},
         ];
 
         let stepTitle = "Etape 1 : Informations globales";
@@ -425,21 +426,21 @@ export class Form extends Component {
                         <Step3 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
-                        <Step4 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                        <Step5 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                onChangeZipcode={this.handleChangeZipcode} />
 
-                        {parseInt(codeTypeAd) === 1 ? <Step5 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                        {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                                              onChangeSelect={this.handleChangeSelect} />
-                            : <Step5Vente {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                            : <Step6Vente {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                           onChangeSelect={this.handleChangeSelect} />}
 
-                        <Step6 {...this.state} onNext={this.handleNext} onChangeFile={this.handleChangeFile}
+                        <Step7 {...this.state} onNext={this.handleNext} onChangeFile={this.handleChangeFile}
                                onSwitchTrashFile={this.handleSwitchTrashFile} onChangeLegend={this.handleChangeLegend}
                                onDragStart={this.handleDragStart} onDrop={this.handleDrop} onDragLeave={this.handleDragLeave}
                                refAside={this.aside0} onOpenAside={this.handleOpenAside} onSaveLegend={this.handleSaveLegend} />
 
-                        <Step7 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                        <Step8 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                refAside1={this.aside1} onOpenAside={this.handleOpenAside}
                                allOwners={allOwners} />

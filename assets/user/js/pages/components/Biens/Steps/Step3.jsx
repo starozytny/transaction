@@ -7,6 +7,8 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/helper";
 
+const CURRENT_STEP = 3;
+
 export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, errors,
                           hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian,
                           hasAlarme, hasLift, hasClim, hasCalme, hasInternet,
@@ -19,7 +21,7 @@ export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, er
     let diag0Items = helper.getItems("diags", 0);
     let diag1Items = helper.getItems("diags", 1);
 
-    return <div className={"step-section" + (step === 3 ? " active" : "")}>
+    return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line special-line">
             <div className="form-group">
                 <label>Les avantages</label>
@@ -159,6 +161,6 @@ export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, er
             </div>
         </div>
 
-        <FormActions onNext={onNext} currentStep={3} />
+        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
     </div>
 }

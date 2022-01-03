@@ -1,122 +1,98 @@
 import React from "react";
 
-import { Input } from "@dashboardComponents/Tools/Fields";
+import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 
-import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 import { Alert }        from "@dashboardComponents/Tools/Alert";
-import { Aside }        from "@dashboardComponents/Tools/Aside";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
+import helper from "@userPages/components/Biens/helper";
 import Sanitaze from "@commonComponents/functions/sanitaze";
-import Sort     from "@commonComponents/functions/sort";
 
-export function Step6({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, onNext, errors,
-                          refAside, onOpenAside, onSaveLegend,
-                          onDragStart, onDragLeave, onDrop, photo, photos })
+const CURRENT_STEP = 6;
+
+export function Step6({ step, onChange, onChangeSelect, onNext, errors,
+                      typeCalcul, price, provisionCharges, provisionOrdures, tva, totalTerme, caution, honoraireTtc,
+                          honoraireBail, edl, typeCharges, totalGeneral, typeBail, durationBail })
 {
-    photos.sort(Sort.compareRank);
-    let contentAside = "";
-    if(photo){
-        let srcFormPhoto = photo.is64 ? photo.file : "path/" . photo.file;
-        contentAside = <div>
-            <div className="line">
-                <div className="legend-photo">
-                    <img src={srcFormPhoto} alt="Photo to edit"/>
-                </div>
-            </div>
-            <div className="line">
-                <Input identifiant="photo" valeur={photo.legend} errors={errors} onChange={(e) => onChangeLegend(e, photo)}>
-                    <span>Légende de l'image</span>
-                </Input>
-            </div>
-            <div className="line">
-                <Button onClick={onSaveLegend}>Enregistrer</Button>
-            </div>
-        </div>
-    }
+    let calculItems = helper.getItems("calculs")
+    let chargesItems = helper.getItems("charges")
+    let bailsItems = helper.getItems("bails")
 
-    return <div className={"step-section" + (step === 6 ? " active" : "")}>
+    return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
-            <Alert iconCustom="exclamation" type="reverse">
-                Les photos peuvent avoir un poids maximum de 1Mb  afin de ne pas réduire le temps de chargement. <br/>
-                Pour réduire le poids de vos photos, vous pouvez redimensionner
-                la taille et/ou utiliser le compresseur en ligne suivant : <a href="https://tinyjpg.com" target="_blank">tinyjpg.com</a>
-            </Alert>
+            <Alert iconCustom="exclamation" type="reverse">(*) Champs obligatoires.</Alert>
         </div>
         <div className="line special-line">
             <div className="form-group">
-                <label>Photos</label>
+                <label>Financier</label>
             </div>
-            <div className="items-table">
-                <div className="items items-default">
-                    {(photos && photos.length !== 0) && <div className="item item-header">
-                        <div className="item-content">
-                            <div className="item-body item-body-image">
-                                <div className="infos infos-col-4">
-                                    <div className="col-1">Photo</div>
-                                    <div className="col-2">Ordre</div>
-                                    <div className="col-3">Taille</div>
-                                    <div className="col-4 actions">Actions</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>}
-                    {photos.map((el, index) => {
-
-                        let src = el.is64 ? el.file : "path/" . el.file;
-
-                        return (<div className={"item-drag item" + (el.isTrash ? " trash" : "")}
-                                     draggable="true" key={index}
-                                     onDragStart={(e) => onDragStart(e, el.rank)}
-                                     onDragOver={(e) => e.preventDefault()}
-                                     onDragEnter={onDragLeave}
-                                     onDrop={(e) => onDrop(e, el.rank)}
-                        >
-                            <div className="item-content">
-                                <div className="item-body item-body-image">
-                                    <div className="item-image">
-                                        <img src={src} alt={el.legend} />
-                                    </div>
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">
-                                            <div className="name name-legend">
-                                                {!el.isTrash ?
-                                                    (el.legend ?
-                                                        <><ButtonIcon icon="pencil" onClick={() => onOpenAside(el)} >Modifier</ButtonIcon><span>{el.legend}</span></>
-                                                        : <ButtonIcon icon="tag" text="Ajouter une légende" onClick={() => onOpenAside("photo", el)}/>)
-                                                    : "Supprimée"}
-                                            </div>
-                                        </div>
-                                        <div className="col-2">
-                                            {el.rank}
-                                        </div>
-                                        <div className="col-3">
-                                            {Sanitaze.toFormatBytesToSize(el.size)}
-                                        </div>
-                                        <div className="col-4 actions">
-                                            {el.isTrash ? <ButtonIcon icon="refresh" onClick={() => onSwitchTrashFile(el)}>Annuler la suppression</ButtonIcon>
-                                                : <ButtonIcon icon="trash" onClick={() => onSwitchTrashFile(el)}>Supprimer</ButtonIcon>}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>)
-                    })}
-                </div>
-            </div>
-            <div className="line line-3">
-                <div className="form-group" />
-                <div className="form-group" />
-                <Input type="file" identifiant="photos" isMultiple={true} valeur={photos}
-                       acceptFiles={"image/*"}
-                       errors={errors} onChange={onChangeFile}>
-                    <span>Photos</span>
+            <div className="line line-2">
+                <SelectReactSelectize items={calculItems} identifiant="typeCalcul" valeur={typeCalcul} errors={errors}
+                                      onChange={(e) => onChangeSelect('typeCalcul', e)}>
+                    Type de calcul *
+                </SelectReactSelectize>
+                <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChange}>
+                    <span>Loyer *</span>
                 </Input>
             </div>
-
-            <Aside ref={refAside} content={contentAside}>Légende</Aside>
+            <div className="line line-2">
+                <Input type="number" step="any" identifiant="provisionCharges" valeur={provisionCharges} errors={errors} onChange={onChange}>
+                    <span>Provision pour charges</span>
+                </Input>
+                <Input type="number" step="any" identifiant="provisionOrdures" valeur={provisionOrdures} errors={errors} onChange={onChange}>
+                    <span>Provision ordures ménagères</span>
+                </Input>
+            </div>
+            <div className="line line-2">
+                <div className="form-group">
+                    <label>Montant T.V.A</label>
+                    <div>{Sanitaze.toFormatCurrency(tva)}</div>
+                </div>
+                <div className="form-group">
+                    <label>Total Terme</label>
+                    <div>{Sanitaze.toFormatCurrency(totalTerme)}</div>
+                </div>
+            </div>
         </div>
 
-        <FormActions onNext={onNext} currentStep={6} />
+        <div className="line special-line">
+            <div className="line line-2">
+                <Input type="number" step="any" identifiant="caution" valeur={caution} errors={errors} onChange={onChange}>
+                    <span>Caution</span>
+                </Input>
+                <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
+                    <span>Honoraires TTC *</span>
+                </Input>
+            </div>
+            <div className="line line-2">
+                <Input type="number" step="any" identifiant="honoraireBail" valeur={honoraireBail} errors={errors} onChange={onChange}>
+                    <span>Honoraires rédaction bail</span>
+                </Input>
+                <Input type="number" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChange}>
+                    <span>- dont état des lieux *</span>
+                </Input>
+            </div>
+            <div className="line line-2">
+                <SelectReactSelectize items={chargesItems} identifiant="typeCharges" valeur={typeCharges} errors={errors}
+                                      onChange={(e) => onChangeSelect('typeCharges', e)}>
+                    Type de charges
+                </SelectReactSelectize>
+                <div className="form-group">
+                    <label>Total général</label>
+                    <div>{Sanitaze.toFormatCurrency(totalGeneral)}</div>
+                </div>
+            </div>
+            <div className="line line-2">
+                <SelectReactSelectize items={bailsItems} identifiant="typeBail" valeur={typeBail} errors={errors}
+                                      onChange={(e) => onChangeSelect('typeBail', e)}>
+                    Type de bail
+                </SelectReactSelectize>
+                <Input type="number" identifiant="durationBail" valeur={durationBail} errors={errors} onChange={onChange}>
+                    <span>Durée du bail en mois</span>
+                </Input>
+            </div>
+        </div>
+
+        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
     </div>
 }

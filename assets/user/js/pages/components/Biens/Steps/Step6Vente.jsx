@@ -8,14 +8,16 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 import helper from "@userPages/components/Biens/helper";
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
-export function Step5Vente({ step, onChange, onChangeSelect, onNext, errors,
+const CURRENT_STEP = 6
+
+export function Step6Vente({ step, onChange, onChangeSelect, onNext, errors,
                         price, chargesMensuelles, notaire, foncier, taxeHabitation, totalTerme, honoraireChargeDe,
                         honorairePourcentage, honoraireTtc, totalGeneral, prixHorsAcquereur,
                         isCopro, nbLot, chargesLot, isSyndicProcedure, detailsProcedure })
 {
     let honoraireItems = helper.getItems("honoraires");
 
-    return <div className={"step-section" + (step === 5 ? " active" : "")}>
+    return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
             <Alert iconCustom="exclamation" type="reverse">(*) Champs obligatoires.</Alert>
         </div>
@@ -107,6 +109,6 @@ export function Step5Vente({ step, onChange, onChangeSelect, onNext, errors,
             </div>
         </div>
 
-        <FormActions onNext={onNext} currentStep={5} />
+        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
     </div>
 }

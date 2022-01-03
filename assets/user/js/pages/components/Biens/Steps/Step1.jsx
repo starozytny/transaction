@@ -7,6 +7,8 @@ import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 import helper from "@userPages/components/Biens/helper";
 import Sort from "@commonComponents/functions/sort";
 
+const CURRENT_STEP = 1;
+
 export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, onOpenHelp, errors,
                           codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator })
 {
@@ -20,7 +22,7 @@ export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, onO
         negociateurs.push({ value: ne.id, label: "#" + ne.code + " - " + ne.fullname, identifiant: "neg-" + ne.id })
     })
 
-    return <div className={"step-section" + (step === 1 ? " active" : "")}>
+    return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
             <Alert iconCustom="exclamation" type="reverse">(*) Champs obligatoires.</Alert>
         </div>

@@ -1,96 +1,74 @@
 import React from "react";
 
-import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import { Input, Radiobox } from "@dashboardComponents/Tools/Fields";
 
 import { Alert }        from "@dashboardComponents/Tools/Alert";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/helper";
-import Sanitaze from "@commonComponents/functions/sanitaze";
 
-export function Step5({ step, onChange, onChangeSelect, onNext, errors,
-                      typeCalcul, price, provisionCharges, provisionOrdures, tva, totalTerme, caution, honoraireTtc,
-                          honoraireBail, edl, typeCharges, totalGeneral, typeBail, durationBail })
+const CURRENT_STEP = 5;
+
+export function Step5({ step, onChange, onChangeZipcode, onNext, errors,
+                      address, hideAddress, zipcode, city, country, departement, quartier, lat, lon, hideMap })
 {
-    let calculItems = helper.getItems("calculs")
-    let chargesItems = helper.getItems("charges")
-    let bailsItems = helper.getItems("bails")
 
-    return <div className={"step-section" + (step === 5 ? " active" : "")}>
+    return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
             <Alert iconCustom="exclamation" type="reverse">(*) Champs obligatoires.</Alert>
         </div>
+
         <div className="line special-line">
             <div className="form-group">
-                <label>Financier</label>
+                <label>Localisation</label>
             </div>
             <div className="line line-2">
-                <SelectReactSelectize items={calculItems} identifiant="typeCalcul" valeur={typeCalcul} errors={errors}
-                                      onChange={(e) => onChangeSelect('typeCalcul', e)}>
-                    Type de calcul *
-                </SelectReactSelectize>
-                <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChange}>
-                    <span>Loyer *</span>
+                <Input identifiant="address" valeur={address} errors={errors} onChange={onChange}>
+                    <span>Adresse *</span>
+                </Input>
+                <Radiobox items={helper.getItems("answers-simple", 0)} identifiant="hideAddress" valeur={hideAddress} errors={errors} onChange={onChange}>
+                    Masquer l'adresse
+                </Radiobox>
+            </div>
+            <div className="line line-3">
+                <Input identifiant="zipcode" valeur={zipcode} errors={errors} onChange={onChangeZipcode}>
+                    <span>Code postal *</span>
+                </Input>
+                <Input identifiant="city" valeur={city} errors={errors} onChange={onChange}>
+                    <span>Ville *</span>
+                </Input>
+                <Input identifiant="country" valeur={country} errors={errors} onChange={onChange}>
+                    <span>Pays *</span>
                 </Input>
             </div>
-            <div className="line line-2">
-                <Input type="number" step="any" identifiant="provisionCharges" valeur={provisionCharges} errors={errors} onChange={onChange}>
-                    <span>Provision pour charges</span>
+            <div className="line line-3">
+                <Input identifiant="departement" valeur={departement} errors={errors} onChange={onChange}>
+                    <span>Département</span>
                 </Input>
-                <Input type="number" step="any" identifiant="provisionOrdures" valeur={provisionOrdures} errors={errors} onChange={onChange}>
-                    <span>Provision ordures ménagères</span>
+                <Input identifiant="quartier" valeur={quartier} errors={errors} onChange={onChange}>
+                    <span>Quartier</span>
                 </Input>
-            </div>
-            <div className="line line-2">
-                <div className="form-group">
-                    <label>Montant T.V.A</label>
-                    <div>{Sanitaze.toFormatCurrency(tva)}</div>
-                </div>
-                <div className="form-group">
-                    <label>Total Terme</label>
-                    <div>{Sanitaze.toFormatCurrency(totalTerme)}</div>
-                </div>
+                <div className="form-group" />
             </div>
         </div>
 
         <div className="line special-line">
-            <div className="line line-2">
-                <Input type="number" step="any" identifiant="caution" valeur={caution} errors={errors} onChange={onChange}>
-                    <span>Caution</span>
-                </Input>
-                <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
-                    <span>Honoraires TTC *</span>
-                </Input>
+            <div className="form-group">
+                <label>Géolocalisation</label>
             </div>
-            <div className="line line-2">
-                <Input type="number" step="any" identifiant="honoraireBail" valeur={honoraireBail} errors={errors} onChange={onChange}>
-                    <span>Honoraires rédaction bail</span>
+            <div className="line line-3">
+                <Input type="number" step="any" identifiant="lat" valeur={lat} errors={errors} onChange={onChange}>
+                    <span>Latitude</span>
                 </Input>
-                <Input type="number" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChange}>
-                    <span>- dont état des lieux *</span>
+                <Input type="number" step="any" identifiant="lon" valeur={lon} errors={errors} onChange={onChange}>
+                    <span>Longitude</span>
                 </Input>
-            </div>
-            <div className="line line-2">
-                <SelectReactSelectize items={chargesItems} identifiant="typeCharges" valeur={typeCharges} errors={errors}
-                                      onChange={(e) => onChangeSelect('typeCharges', e)}>
-                    Type de charges
-                </SelectReactSelectize>
-                <div className="form-group">
-                    <label>Total général</label>
-                    <div>{Sanitaze.toFormatCurrency(totalGeneral)}</div>
-                </div>
-            </div>
-            <div className="line line-2">
-                <SelectReactSelectize items={bailsItems} identifiant="typeBail" valeur={typeBail} errors={errors}
-                                      onChange={(e) => onChangeSelect('typeBail', e)}>
-                    Type de bail
-                </SelectReactSelectize>
-                <Input type="number" identifiant="durationBail" valeur={durationBail} errors={errors} onChange={onChange}>
-                    <span>Durée du bail en mois</span>
-                </Input>
+                <Radiobox items={helper.getItems("answers-simple", 1)} identifiant="hideMap" valeur={hideMap} errors={errors} onChange={onChange}>
+                    Masquer la géolocalisation
+                </Radiobox>
             </div>
         </div>
 
-        <FormActions onNext={onNext} currentStep={5} />
+        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
     </div>
 }
