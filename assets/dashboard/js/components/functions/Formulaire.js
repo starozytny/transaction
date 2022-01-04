@@ -234,6 +234,10 @@ function setValueToForm (parentValue, value, defaultValue = "") {
     return parentValue ? setValueEmptyIfNull(value, defaultValue) : defaultValue
 }
 
+function setValueToFormSubParent (parentValue, subParent, value, defaultValue = "") {
+    return parentValue ? (subParent === null ? defaultValue : setValueEmptyIfNull(value, defaultValue)) : defaultValue
+}
+
 module.exports = {
     loader,
     displayErrors,
@@ -251,5 +255,6 @@ module.exports = {
     showErrors,
     switchFunction,
     setValueEmptyIfNull,
-    setValueToForm
+    setValueToForm,
+    setValueToFormSubParent
 }
