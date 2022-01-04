@@ -236,6 +236,13 @@ class ImBien extends DataEntity
      */
     private $confidential;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ImAdvert::class, fetch="EAGER", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
+     */
+    private $advert;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -697,6 +704,18 @@ class ImBien extends DataEntity
     public function setConfidential(ImConfidential $confidential): self
     {
         $this->confidential = $confidential;
+
+        return $this;
+    }
+
+    public function getAdvert(): ?ImAdvert
+    {
+        return $this->advert;
+    }
+
+    public function setAdvert(ImAdvert $advert): self
+    {
+        $this->advert = $advert;
 
         return $this;
     }

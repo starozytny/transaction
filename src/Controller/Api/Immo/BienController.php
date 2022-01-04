@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImAdvantage;
+use App\Entity\Immo\ImAdvert;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImConfidential;
@@ -96,55 +97,64 @@ class BienController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $area = $this->setProperty($em, "area", $type == "create" ? new ImArea() : $obj->getArea(),
-            $data, $apiResponse, $validator, $dataEntity);
-        if(!$area instanceof ImArea){
-            return $area;
+        $tab = [
+            [ "type" => "area",         "new" => new ImArea(),          "existe" => $obj->getArea() ],
+            [ "type" => "number",       "new" => new ImNumber(),        "existe" => $obj->getNumber() ],
+            [ "type" => "feature",      "new" => new ImFeature(),       "existe" => $obj->getFeature() ],
+            [ "type" => "advantage",    "new" => new ImAdvantage(),     "existe" => $obj->getAdvantage() ],
+            [ "type" => "diag",         "new" => new ImDiag(),          "existe" => $obj->getDiag() ],
+            [ "type" => "localisation", "new" => new ImLocalisation(),  "existe" => $obj->getLocalisation() ],
+            [ "type" => "financial",    "new" => new ImFinancial(),     "existe" => $obj->getFinancial() ],
+            [ "type" => "advert",       "new" => new ImAdvert(),        "existe" => $obj->getAdvert() ],
+        ];
+
+        $area = null; $number = null; $feature = null; $advantage = null; $diag = null; $localisation = null;
+        $financial = null; $confidential = null; $advert = null;
+        foreach($tab as $item){
+            $donnee = $this->setProperty($em, $item["type"], $type == "create" ? $item["new"] : $item["existe"],
+                $data, $apiResponse, $validator, $dataEntity);
+            switch ($item["type"]){
+                case "advert":
+                    if(!$donnee instanceof ImAdvert){ return $donnee; }
+                    $advert = $donnee;
+                    break;
+                case "confidential":
+                    if(!$donnee instanceof ImConfidential){ return $donnee; }
+                    $confidential = $donnee;
+                    break;
+                case "financial":
+                    if(!$donnee instanceof ImFinancial){ return $donnee; }
+                    $financial = $donnee;
+                    break;
+                case "localisation":
+                    if(!$donnee instanceof ImLocalisation){ return $donnee; }
+                    $localisation = $donnee;
+                    break;
+                case "diag":
+                    if(!$donnee instanceof ImDiag){ return $donnee; }
+                    $diag = $donnee;
+                    break;
+                case "advantage":
+                    if(!$donnee instanceof ImAdvantage){ return $donnee; }
+                    $advantage = $donnee;
+                    break;
+                case "feature":
+                    if(!$donnee instanceof ImFeature){ return $donnee; }
+                    $feature = $donnee;
+                    break;
+                case "number":
+                    if(!$donnee instanceof ImNumber){ return $donnee; }
+                    $number = $donnee;
+                    break;
+                default:
+                    if(!$donnee instanceof ImArea){ return $donnee; }
+                    $area = $donnee;
+                    break;
+            }
         }
 
-        $number = $this->setProperty($em, "number", $type == "create" ? new ImNumber() : $obj->getNumber(),
-            $data, $apiResponse, $validator, $dataEntity);
-        if(!$number instanceof ImNumber){
-            return $number;
-        }
-
-        $feature = $this->setProperty($em, "feature", $type == "create" ? new ImFeature() : $obj->getFeature(),
-            $data, $apiResponse, $validator, $dataEntity);
-        if(!$feature instanceof ImFeature){
-            return $feature;
-        }
-
-        $advantage = $this->setProperty($em, "advantage", $type == "create" ? new ImAdvantage() : $obj->getAdvantage(),
-            $data, $apiResponse, $validator, $dataEntity);
-        if(!$advantage instanceof ImAdvantage){
-            return $advantage;
-        }
-
-        $diag = $this->setProperty($em, "diag", $type == "create" ? new ImDiag() : $obj->getDiag(),
-            $data, $apiResponse, $validator, $dataEntity);
-        if(!$diag instanceof ImDiag){
-            return $diag;
-        }
-
-        $localisation = $this->setProperty($em, "localisation", $type == "create" ? new ImLocalisation() : $obj->getLocalisation(),
-            $data, $apiResponse, $validator, $dataEntity);
-        if(!$localisation instanceof ImLocalisation){
-            return $localisation;
-        }
-
-        $financial = $this->setProperty($em, "financial", $type == "create" ? new ImFinancial() : $obj->getFinancial(),
-            $data, $apiResponse, $validator, $dataEntity);
-        if(!$financial instanceof ImFinancial){
-            return $financial;
-        }
-
-        $confidential = $this->setProperty($em, "confidential", $type == "create" ? new ImConfidential() : $obj->getConfidential(),
-            $data, $apiResponse, $validator, $dataEntity);
-        if(!$confidential instanceof ImConfidential){
-            return $confidential;
-        }
-
-        $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage, $diag, $localisation, $financial, $confidential);
+        $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage, $diag,
+            $localisation, $financial, $confidential, $advert);
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }

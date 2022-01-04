@@ -3,6 +3,7 @@
 namespace App\Service\Data;
 
 use App\Entity\Immo\ImAdvantage;
+use App\Entity\Immo\ImAdvert;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
@@ -42,7 +43,7 @@ class DataImmo extends DataConstructor
      */
     public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature,
                                 ImAdvantage $advantage, ImDiag $diag, ImLocalisation $localisation,
-                                ImFinancial $financial, ImConfidential $confidential)
+                                ImFinancial $financial, ImConfidential $confidential, ImAdvert $advert)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -110,6 +111,7 @@ class DataImmo extends DataConstructor
             ->setFinancial($financial)
             ->setOwner($owner)
             ->setConfidential($confidential)
+            ->setAdvert($advert)
         ;
     }
 
@@ -292,6 +294,15 @@ class DataImmo extends DataConstructor
             ->setVisiteTo(trim($data->visiteTo))
             ->setKeysNumber($this->setToNullInteger($data->keysNumber))
             ->setKeysWhere(trim($data->keysWhere))
+        ;
+    }
+
+    public function setDataAdvert(ImAdvert $obj, $data): ImAdvert
+    {
+        return ($obj)
+            ->setTypeAdvert($this->setToZeroEmpty($data->typeAdvert))
+            ->setContentSimple(trim($data->contentSimple))
+            ->setContentFull(trim($data->contentFull))
         ;
     }
 

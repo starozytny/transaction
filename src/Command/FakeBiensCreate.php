@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Immo\ImAdvantage;
+use App\Entity\Immo\ImAdvert;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
@@ -206,11 +207,15 @@ class FakeBiensCreate extends Command
                 "visiteTo" => $fake->streetName,
                 "keysNumber" => $fake->randomNumber(1),
                 "keysWhere" => $fake->streetName,
+                "typeAdvert" => $fake->numberBetween(0, 2),
+                "contentSimple" => $fake->sentence(255),
+                "contentFull" => $fake->text
 
             ];
 
             $data = json_decode(json_encode($data));
 
+            $advert = $this->dataImmo->setDataAdvert(new ImAdvert(), $data);
             $confidential = $this->dataImmo->setDataConfidential(new ImConfidential(), $data);
             $financial = $this->dataImmo->setDataFinancial(new ImFinancial(), $data);
             $localisation = $this->dataImmo->setDataLocalisation(new ImLocalisation(), $data);
@@ -220,7 +225,8 @@ class FakeBiensCreate extends Command
             $number = $this->dataImmo->setDataNumber(new ImNumber(), $data);
             $area = $this->dataImmo->setDataArea(new ImArea(), $data);
 
-            $obj = $this->dataImmo->setDataBien(new ImBien(), $data, $area, $number, $feature, $advantage, $diag, $localisation, $financial, $confidential);
+            $obj = $this->dataImmo->setDataBien(new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
+                $localisation, $financial, $confidential, $advert);
 
             $choicesOwners = [];
             foreach($owners as $ow){
