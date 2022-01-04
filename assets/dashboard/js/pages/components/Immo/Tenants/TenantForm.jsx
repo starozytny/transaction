@@ -4,7 +4,7 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import { Input, Radiobox }     from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { DatePick }            from "@dashboardComponents/Tools/DatePicker";
@@ -13,6 +13,9 @@ import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
+
+import { SelecteurNegociateur } from "@dashboardPages/components/Immo/Elements/Selecteur";
+import { LocalisationContact }  from "@dashboardPages/components/Immo/Elements/Contact";
 
 const URL_CREATE_ELEMENT     = "api_tenants_create";
 const URL_UPDATE_GROUP       = "api_tenants_update";
@@ -204,32 +207,14 @@ export class TenantForm extends Component {
     }
 
     render () {
-        const { context, societies, agencies, negotiators, isClient } = this.props;
-        const { critere, errors, success, society, agency, negotiator, lastname, firstname, civility, phone1, phone2, phone3,
-            email, address, complement, zipcode, city, country, birthday } = this.state;
+        const { context } = this.props;
+        const { critere, errors, success, society, agency, negotiator, lastname, firstname, civility, birthday } = this.state;
 
         let civilityItems = [
             {value: 0, label: "Mr",         identifiant: "mr"},
             {value: 1, label: "Mme",        identifiant: "mme"},
             {value: 2, label: "Société",    identifiant: "societe"},
         ]
-
-        let selectSociety = [];
-        let selectAgency = [];
-        let selectNegotiator = [];
-        if(!isClient){
-            let selectorsData = Helper.selectorsImmo(societies, society, agencies, agency, negotiators, negotiator);
-            selectSociety = selectorsData[0];
-            selectAgency = selectorsData[1];
-            selectNegotiator = selectorsData[2];
-        }else{
-            negotiators.forEach(elem => {
-                let add = agency === "" ? true : (elem.agency.id === agency);
-                if(add){
-                    selectNegotiator.push({ value: elem.id, label: elem.fullname, identifiant: "nego-" + elem.id })
-                }
-            })
-        }
 
         return <>
             <form onSubmit={this.handleSubmit}>
@@ -265,66 +250,13 @@ export class TenantForm extends Component {
                         <div className="line-separator">
                             <div className="title">Négociateur</div>
                         </div>
-
-                        {!isClient && <div className="line">
-                            <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
-                                                  placeholder={"Sélectionner la société"}
-                                                  errors={errors} onChange={(e) => this.handleChangeSelect("society", e)}
-                            >
-                                Société
-                            </SelectReactSelectize>
-                            <SelectReactSelectize items={selectAgency} identifiant="agency" valeur={agency}
-                                                  placeholder={"Sélectionner l'agence"}
-                                                  errors={errors} onChange={(e) => this.handleChangeSelect("agency", e)}
-                            >
-                                Agence
-                            </SelectReactSelectize>
-                        </div>}
-
-                        {(society && agency) ? <div className="line">
-                            <SelectReactSelectize items={selectNegotiator} identifiant="negotiator" valeur={negotiator}
-                                                  placeholder={"Sélectionner le négociateur"}
-                                                  errors={errors} onChange={(e) => this.handleChangeSelect("negotiator", e)}
-                            >
-                                Négociateur
-                            </SelectReactSelectize>
-                        </div> : <Alert type="reverse">Veuillez choisir la société et l'agence avant de pouvoir affecter un négociateur.</Alert>}
-
+                        <SelecteurNegociateur {...this.props} onChangeSelect={this.handleChangeSelect} errors={errors}
+                                              society={society} agency={agency} negotiator={negotiator}/>
                     </div>
                 </div>
 
                 <div className="line line-2">
-                    <div className="form-group">
-                        <div className="line-separator">
-                            <div className="title">Localisation</div>
-                        </div>
-
-                        <div className="line line-2">
-                            <Input valeur={address} identifiant="address" errors={errors} onChange={this.handleChange}>Adresse</Input>
-                            <Input valeur={complement} identifiant="complement" errors={errors} onChange={this.handleChange}>Complément</Input>
-                        </div>
-
-                        <div className="line line-3">
-                            <Input valeur={zipcode} identifiant="zipcode" errors={errors} onChange={this.handleChange}>Code postal</Input>
-                            <Input valeur={city} identifiant="city" errors={errors} onChange={this.handleChange}>Ville</Input>
-                            <Input valeur={country} identifiant="country" errors={errors} onChange={this.handleChange}>Pays</Input>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="line-separator">
-                            <div className="title">Contact</div>
-                        </div>
-
-                        <div className="line">
-                            <Input valeur={email} identifiant="email" errors={errors} onChange={this.handleChange} type="email" >Adresse e-mail</Input>
-                        </div>
-
-                        <div className="line line-3">
-                            <Input valeur={phone1} identifiant="phone1" errors={errors} onChange={this.handleChange}>Téléphone 1</Input>
-                            <Input valeur={phone2} identifiant="phone2" errors={errors} onChange={this.handleChange}>Téléphone 2</Input>
-                            <Input valeur={phone3} identifiant="phone3" errors={errors} onChange={this.handleChange}>Téléphone 3</Input>
-                        </div>
-                    </div>
+                    <LocalisationContact {...this.state} onChange={this.handleChange} />
                 </div>
 
                 <div className="line line-critere">
