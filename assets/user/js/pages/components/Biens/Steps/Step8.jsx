@@ -134,13 +134,15 @@ export function Step8({ step, onChange, onChangeSelect, onChangeDate, onOpenAsid
 
         <div className="line special-line">
             <div className="form-group">
-                <label>Confidentiel</label>
+                <label>Contact</label>
             </div>
-            <div className="line">
+            <div className="line line-3">
+                <div className="form-group" />
                 <SelectReactSelectize items={informItems} identifiant="inform" valeur={inform} errors={errors}
                                       onChange={(e) => onChangeSelect('inform', e)}>
                     Qui prévenir ?
                 </SelectReactSelectize>
+                <div className="form-group" />
             </div>
             {inform === 3 && <div className="line line-3">
                 <Input identifiant="lastname" valeur={lastname} errors={errors} onChange={onChange}>
@@ -153,7 +155,8 @@ export function Step8({ step, onChange, onChangeSelect, onChangeDate, onOpenAsid
                     <span>Email</span>
                 </Input>
             </div>}
-            <div className="line" />
+        </div>
+        <div className="line special-line">
             <div className="line line-2">
                 <div className="form-group">
                     <div className="line line-2">
