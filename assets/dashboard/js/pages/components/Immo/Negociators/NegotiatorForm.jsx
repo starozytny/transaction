@@ -7,6 +7,7 @@ import Routing                 from '@publicFolder/bundles/fosjsrouting/js/route
 import { Input, Select, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
+import { Drop }                from "@dashboardComponents/Tools/Drop";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
 import Validateur              from "@commonComponents/functions/validateur";
@@ -42,6 +43,7 @@ export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, ele
         email={element ? element.email : ""}
         transport={element ? element.transport : ""}
         immatriculation={element ? element.immatriculation : ""}
+        avatar={element ? element.avatar : null}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
@@ -67,10 +69,13 @@ export class NegotiatorForm extends Component {
             email: props.email,
             transport: props.transport,
             immatriculation: props.immatriculation,
+            avatar: props.avatar,
             errors: [],
             success: false,
             critere: ""
         }
+
+        this.inputAvatar = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
@@ -105,6 +110,9 @@ export class NegotiatorForm extends Component {
                 {type: "atLeastOne", id: 'phone',     value: phone, idCheck: 'phone2', valueCheck: phone2},
             ];
 
+            let inputAvatar = this.inputAvatar.current;
+            let avatar = inputAvatar ? inputAvatar.drop.current.files : [];
+
             // validate global
             let validate = Validateur.validateur(paramsToValidate)
             if(!validate.code){
@@ -114,6 +122,10 @@ export class NegotiatorForm extends Component {
                 let self = this;
 
                 let formData = new FormData();
+                if(avatar[0]){
+                    formData.append('avatar', avatar[0].file);
+                }
+
                 formData.append("data", JSON.stringify(this.state));
 
                 axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
@@ -138,6 +150,7 @@ export class NegotiatorForm extends Component {
                                 email: "",
                                 transport: "",
                                 immatriculation: "",
+                                avatar: null
                             })
                         }
                     })
@@ -154,7 +167,7 @@ export class NegotiatorForm extends Component {
 
     render () {
         const { context, agencies, isClient } = this.props;
-        const { critere, errors, success, agency, lastname, firstname, phone, phone2, email, transport, immatriculation } = this.state;
+        const { critere, errors, success, agency, lastname, firstname, phone, phone2, email, transport, immatriculation, avatar } = this.state;
 
         let selectAgency = [];
         if(!isClient){
@@ -187,6 +200,12 @@ export class NegotiatorForm extends Component {
                 </div>}
 
                 <div className="line line-2">
+                    <Drop ref={this.inputAvatar} identifiant="avatar" file={avatar} folder="avatars" errors={errors} accept={"image/*"} maxFiles={1}
+                          label="Téléverser un avatar" labelError="Seules les images sont acceptées.">Avatar (facultatif)</Drop>
+                    <div className="form-group" />
+                </div>
+
+                <div className="line line-2">
                     <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>Nom</Input>
                     <Input valeur={firstname} identifiant="firstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
                 </div>
@@ -197,13 +216,13 @@ export class NegotiatorForm extends Component {
                     <Input valeur={phone2} identifiant="phone2" errors={errors} onChange={this.handleChange}>Téléphone 2</Input>
                 </div>
 
+                <div className="line line-critere">
+                    <Input identifiant="critere" valeur={critere} errors={errors} onChange={this.handleChange}>Critère</Input>
+                </div>
+
                 <div className="line line-2">
                     <Select items={selectTransport} identifiant="transport" valeur={transport} errors={errors} onChange={this.handleChange}>Transport</Select>
                     <Input valeur={immatriculation} identifiant="immatriculation" errors={errors} onChange={this.handleChange}>Immatriculation</Input>
-                </div>
-
-                <div className="line line-critere">
-                    <Input identifiant="critere" valeur={critere} errors={errors} onChange={this.handleChange}>Critère</Input>
                 </div>
 
                 <div className="line">

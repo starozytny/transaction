@@ -23,6 +23,8 @@ use OpenApi\Annotations as OA;
  */
 class NegotiatorController extends AbstractController
 {
+    const FOLDER_AVATARS = "negotiators";
+
     private $doctrine;
 
     public function __construct(ManagerRegistry $doctrine)
@@ -34,7 +36,7 @@ class NegotiatorController extends AbstractController
      * @throws Exception
      */
     public function submitForm($type, ImNegotiator $obj, Request $request, ApiResponse $apiResponse,
-                               ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+                               ValidatorService $validator, DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
@@ -44,6 +46,16 @@ class NegotiatorController extends AbstractController
         }
 
         $obj = $dataEntity->setDataNegotiator($obj, $data);
+
+        $file = $request->files->get('avatar');
+        if ($file) {
+            if($type === "create"){
+                $fileName = $fileUploader->upload($file, self::FOLDER_AVATARS);
+            }else{
+                $fileName = $fileUploader->replaceFile($file, $obj->getAvatar(),self::FOLDER_AVATARS);
+            }
+            $obj->setAvatar($fileName);
+        }
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
@@ -79,7 +91,7 @@ class NegotiatorController extends AbstractController
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
-        return $this->submitForm("create", new ImNegotiator(), $request, $apiResponse, $validator, $dataEntity);
+        return $this->submitForm("create", new ImNegotiator(), $request, $apiResponse, $validator, $dataEntity, $fileUploader);
     }
 
     /**
@@ -106,7 +118,7 @@ class NegotiatorController extends AbstractController
     public function update(ImNegotiator $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
-        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
+        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $fileUploader);
     }
 
     /**

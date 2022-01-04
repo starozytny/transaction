@@ -6,6 +6,7 @@ namespace App\Service\Data;
 
 use App\Entity\User;
 use App\Service\ApiResponse;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
