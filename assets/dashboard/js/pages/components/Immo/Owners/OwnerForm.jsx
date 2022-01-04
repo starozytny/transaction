@@ -50,7 +50,7 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
         zipcode={element ? element.zipcode : ""}
         city={element ? element.city : ""}
         country={element ? element.country : "France"}
-        category={element ? element.category : ""}
+        category={element ? (element.category ? element.category : "") : ""}
 
         isCoIndivisaire={element ? (element.isCoIndivisaire ? 1 : 0) : 0}
         coLastname={element ? element.coLastname : ""}
@@ -79,31 +79,31 @@ export class OwnerForm extends Component {
         super(props);
 
         this.state = {
-            society: props.society ? props.society : "",
-            agency: props.agency ? props.agency : "",
-            negotiator: props.negotiator ? props.negotiator : "",
-            lastname: props.lastname ? props.lastname : "",
-            firstname: props.firstname ? props.firstname : "",
-            civility: props.civility ? props.civility : "",
-            phone1: props.phone1 ? props.phone1 : "",
-            phone2: props.phone2 ? props.phone2 : "",
-            phone3: props.phone3 ? props.phone3 : "",
-            email: props.email ? props.email : "",
-            address: props.address ? props.address : "",
-            complement: props.complement ? props.complement : "",
-            zipcode: props.zipcode ? props.zipcode : "",
-            city: props.city ? props.city : "",
-            country: props.country ? props.country : "",
-            category: props.category ? props.category : "",
+            society: props.society,
+            agency: props.agency,
+            negotiator: props.negotiator,
+            lastname: props.lastname,
+            firstname: props.firstname,
+            civility: props.civility ,
+            phone1: props.phone1,
+            phone2: props.phone2,
+            phone3: props.phone3,
+            email: props.email,
+            address: props.address,
+            complement: props.complement,
+            zipcode: props.zipcode,
+            city: props.city,
+            country: props.country,
+            category: props.category,
 
-            isCoIndivisaire: props.isCoIndivisaire ? props.isCoIndivisaire : 0,
-            coLastname: props.lastname ? props.lastname : "",
-            coFirstname: props.firstname ? props.firstname : "",
-            coPhone: props.phone1 ? props.phone1 : "",
-            coEmail: props.email ? props.email : "",
-            coAddress: props.address ? props.address : "",
-            coZipcode: props.zipcode ? props.zipcode : "",
-            coCity: props.city ? props.city : "",
+            isCoIndivisaire: props.isCoIndivisaire,
+            coLastname: props.lastname,
+            coFirstname: props.firstname,
+            coPhone: props.phone1,
+            coEmail: props.email,
+            coAddress: props.address,
+            coZipcode: props.zipcode,
+            coCity: props.city,
 
             errors: [],
             success: false,
@@ -191,7 +191,7 @@ export class OwnerForm extends Component {
                                 negotiator: "",
                                 lastname: "",
                                 firstname: "",
-                                civility: 3,
+                                civility: 2,
                                 phone1: "",
                                 phone2: "",
                                 phone3: "",
@@ -238,9 +238,7 @@ export class OwnerForm extends Component {
         let civilityItems = [
             {value: 0, label: "Mr",         identifiant: "mr"},
             {value: 1, label: "Mme",        identifiant: "mme"},
-            {value: 2, label: "Société",    identifiant: "societe"},
-            {value: 3, label: "Mr ou Mme",  identifiant: "mr-ou-mme"},
-            {value: 4, label: "Mr et Mme",  identifiant: "me-et-mme"},
+            {value: 2, label: "Société",    identifiant: "societe"}
         ]
 
         let selectCategory = [

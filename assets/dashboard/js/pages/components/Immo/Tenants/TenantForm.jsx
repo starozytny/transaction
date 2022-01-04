@@ -7,12 +7,12 @@ import Routing                 from '@publicFolder/bundles/fosjsrouting/js/route
 import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
+import { DatePick }            from "@dashboardComponents/Tools/DatePicker";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
-import {DatePick} from "@dashboardComponents/Tools/DatePicker";
 
 const URL_CREATE_ELEMENT     = "api_tenants_create";
 const URL_UPDATE_GROUP       = "api_tenants_update";
@@ -41,7 +41,7 @@ export function TenantFormulaire ({ type, onChangeContext, onUpdateList, element
         negotiator={element ? (element.negotiator ? element.negotiator.id : "") : ""}
         lastname={element ? element.lastname : ""}
         firstname={element ? element.firstname : ""}
-        civility={element ? element.civility : 3}
+        civility={element ? element.civility : 2}
         phone1={element ? element.phone1 : ""}
         phone2={element ? element.phone2 : ""}
         phone3={element ? element.phone3 : ""}
@@ -71,22 +71,22 @@ export class TenantForm extends Component {
         super(props);
 
         this.state = {
-            society: props.society ? props.society : "",
-            agency: props.agency ? props.agency : "",
-            negotiator: props.negotiator ? props.negotiator : "",
-            lastname: props.lastname ? props.lastname : "",
-            firstname: props.firstname ? props.firstname : "",
-            civility: props.civility ? props.civility : "",
-            phone1: props.phone1 ? props.phone1 : "",
-            phone2: props.phone2 ? props.phone2 : "",
-            phone3: props.phone3 ? props.phone3 : "",
-            email: props.email ? props.email : "",
-            address: props.address ? props.address : "",
-            complement: props.complement ? props.complement : "",
-            zipcode: props.zipcode ? props.zipcode : "",
-            city: props.city ? props.city : "",
-            country: props.country ? props.country : "",
-            birthday: props.birthday ? props.birthday : "",
+            society: props.society,
+            agency: props.agency,
+            negotiator: props.negotiator,
+            lastname: props.lastname,
+            firstname: props.firstname,
+            civility: props.civility,
+            phone1: props.phone1,
+            phone2: props.phone2,
+            phone3: props.phone3,
+            email: props.email,
+            address: props.address,
+            complement: props.complement,
+            zipcode: props.zipcode,
+            city: props.city,
+            country: props.country,
+            birthday: props.birthday,
 
             errors: [],
             success: false,
@@ -178,7 +178,7 @@ export class TenantForm extends Component {
                                 negotiator: "",
                                 lastname: "",
                                 firstname: "",
-                                civility: 3,
+                                civility: 2,
                                 phone1: "",
                                 phone2: "",
                                 phone3: "",
@@ -212,8 +212,6 @@ export class TenantForm extends Component {
             {value: 0, label: "Mr",         identifiant: "mr"},
             {value: 1, label: "Mme",        identifiant: "mme"},
             {value: 2, label: "Société",    identifiant: "societe"},
-            {value: 3, label: "Mr ou Mme",  identifiant: "mr-ou-mme"},
-            {value: 4, label: "Mr et Mme",  identifiant: "me-et-mme"},
         ]
 
         let selectSociety = [];

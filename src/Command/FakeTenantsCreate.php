@@ -71,7 +71,7 @@ class FakeTenantsCreate extends Command
                 ->setAgency($agency)
                 ->setLastname(mb_strtoupper($lastname))
                 ->setFirstname($firstname)
-                ->setCivility($fake->numberBetween(0, 4))
+                ->setCivility($fake->numberBetween(0, 2))
                 ->setPhone1($fake->e164PhoneNumber)
                 ->setPhone2($fake->e164PhoneNumber)
                 ->setPhone3($fake->e164PhoneNumber)

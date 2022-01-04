@@ -241,5 +241,5 @@ module.exports = {
     updateValueCheckbox,
     updatePerPage,
     showErrors,
-    switchFunction
+    switchFunction,
 }
