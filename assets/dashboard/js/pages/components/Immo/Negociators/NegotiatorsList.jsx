@@ -25,7 +25,7 @@ export class NegotiatorsList extends Component {
                         <div className="item item-header">
                             {!isClient && <div className="item-header-selector" />}
                             <div className="item-content">
-                                <div className="item-body">
+                                <div className="item-body item-body-image">
                                     <div className="infos infos-col-3">
                                         <div className="col-1">Negociateur</div>
                                         <div className="col-2">Informations</div>

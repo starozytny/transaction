@@ -135,11 +135,12 @@ class NegotiatorController extends AbstractController
      *
      * @param ImNegotiator $obj
      * @param DataService $dataService
+     * @param FileUploader $fileUploader
      * @return JsonResponse
      */
-    public function delete(ImNegotiator $obj, DataService $dataService): JsonResponse
+    public function delete(ImNegotiator $obj, DataService $dataService, FileUploader $fileUploader): JsonResponse
     {
-        return $dataService->delete($obj);
+        return $dataService->deleteWithImg($obj, $obj->getAvatar(), $fileUploader, self::FOLDER_AVATARS);
     }
 
     /**
@@ -157,11 +158,31 @@ class NegotiatorController extends AbstractController
      * @OA\Tag(name="Negociateurs")
      *
      * @param Request $request
-     * @param DataService $dataService
+     * @param ApiResponse $apiResponse
+     * @param FileUploader $fileUploader
      * @return JsonResponse
      */
-    public function deleteSelected(Request $request, DataService $dataService): JsonResponse
+    public function deleteSelected(Request $request, ApiResponse $apiResponse, FileUploader $fileUploader): JsonResponse
     {
-        return $dataService->deleteSelected(ImNegotiator::class, json_decode($request->getContent()));
+        $em = $this->doctrine->getManager();
+        $data = json_decode($request->getContent());
+
+        $objs = $em->getRepository(ImNegotiator::class)->findBy(['id' => $data]);
+
+        $avatars = [];
+        if ($objs) {
+            foreach ($objs as $obj) {
+                $avatars[] = $obj->getAvatar();
+                $em->remove($obj);
+            }
+        }
+
+        $em->flush();
+
+        foreach($avatars as $avatar){
+            $fileUploader->deleteFile($avatar, self::FOLDER_AVATARS);
+        }
+
+        return $apiResponse->apiJsonResponseSuccessful("Supression de la sélection réussie !");
     }
 }

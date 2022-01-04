@@ -101,6 +101,7 @@ class ImNegotiator
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read", "user:read"})
      */
     private $avatar;
 
@@ -344,6 +345,15 @@ class ImNegotiator
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read", "user:read"})
+     */
+    public function getAvatarFile(): string
+    {
+        return $this->avatar ? "/negotiators/" . $this->avatar : "https://robohash.org/" . $this->id . "?size=64x64";
     }
 
     public function getAvatar(): ?string

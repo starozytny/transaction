@@ -81,7 +81,7 @@ export class AdCard extends Component {
                             </div>
                             <div className="negociateur" onClick={this.handleOpenHelp}>
                                 <div className="avatar">
-                                    <img src={`https://robohash.org/${el.negotiator.fullname}?size=64x64`} alt="Avatar" />
+                                    <img src={el.negotiator.avatarFile} alt="Avatar" />
                                 </div>
                                 <span className="tooltip">{el.negotiator.fullname}</span>
                             </div>

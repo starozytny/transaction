@@ -20,7 +20,10 @@ export class NegotiatorsItem extends Component {
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
 
             <div className="item-content">
-                <div className="item-body">
+                <div className="item-body item-body-image">
+                    <div className="item-image">
+                        <img src={elem.avatarFile} alt={`Avatar de ${elem.fullname}`}/>
+                    </div>
                     <div className="infos infos-col-3">
                         <div className="col-1">
                             <div className="name">
