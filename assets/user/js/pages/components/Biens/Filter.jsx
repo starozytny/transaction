@@ -30,7 +30,10 @@ export class Filter extends Component {
             // filtersAd: [0, 1],
             // filtersBien: [0, 1, 2, 3],
             filtersMandat: [],
+
         }
+
+        this.handleFilter = this.handleFilter.bind(this);
     }
 
     handleFilter = (type, value) => {
@@ -71,12 +74,35 @@ export class Filter extends Component {
     }
 }
 
+class Title extends Component {
+    constructor(props) {
+        super();
+
+        this.state = {
+            status: "minus"
+        }
+
+        this.handleDisplay = this.handleDisplay.bind(this);
+    }
+
+    handleDisplay = (status) => {
+        this.setState({ status: status === "minus" ? "add" : "minus" })
+    }
+
+    render () {
+        const { title } = this.props;
+        const { status } = this.state;
+
+        return <div className={"title " + status} onClick={() => this.handleDisplay(status)}>
+            <span>{title}</span>
+            <span className={"icon-" + status} />
+        </div>
+    }
+}
+
 function ItemFilter ({ type, title, itemsFilters, filters, onFilter }) {
     return  <div className="item">
-        <div className="title">
-            <span>{title}</span>
-            <span className="icon-minus" />
-        </div>
+        <Title title={title}/>
         <div className="items-filter">
             {itemsFilters.map(el => {
                 return <ItemFilterBox type={type} el={el} filters={filters} onFilter={onFilter} key={el.value}/>
