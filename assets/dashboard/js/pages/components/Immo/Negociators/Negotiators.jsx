@@ -25,6 +25,7 @@ export class Negotiators extends Component {
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "negotiators.pagination",
             agencies: props.agencies ? JSON.parse(props.agencies) : [],
+            biens: props.biens ? JSON.parse(props.biens) : [],
             isClient: props.isClient ? props.isClient : false,
             isUser: props.isUser ? props.isUser : false,
         }
@@ -53,6 +54,7 @@ export class Negotiators extends Component {
                                 onSearch={this.handleSearch}
                                 isClient={this.state.isClient}
                                 isUser={this.state.isUser}
+                                biens={this.state.biens}
                                 data={currentData} />
     }
 

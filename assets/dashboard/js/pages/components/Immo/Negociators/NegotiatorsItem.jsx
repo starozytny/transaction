@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 
+import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class NegotiatorsItem extends Component {
     render () {
-        const { isClient, isUser, elem, onDelete, onChangeContext, onSelectors } = this.props
+        const { isClient, isUser, biens, elem, onDelete, onChangeContext, onSelectors } = this.props
+
+        let totalBien = 0;
+        biens.forEach(bien => {
+            if(bien.negotiator && bien.negotiator.id === elem.id){
+                totalBien++;
+            }
+        })
 
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
@@ -25,8 +34,13 @@ export class NegotiatorsItem extends Component {
                             {elem.phone && <div className="sub">{elem.phone}</div>}
                             {elem.phone2 && <div className="sub">{elem.phone2}</div>}
                             {elem.fullTransportString !== null ? <div className="sub">{elem.fullTransportString}</div> : ""}
+                            {biens.length !== 0 && <div className="sub">{totalBien} bien{totalBien > 1 ? "s" : ""}</div>}
                         </div>
                         <div className="col-3 actions">
+                            {(biens.length !== 0 && totalBien !== 0) &&
+                                <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'fn': elem.id})}>
+                                    Biens
+                                </ButtonIcon>}
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             {!isUser && <>
                                 <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>

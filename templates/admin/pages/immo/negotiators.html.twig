@@ -4,7 +4,7 @@
 {% set submenuActive = "Négociateurs" %}
 
 {% block main_content %}
-    <div id="negotiators" data-donnees="{{ donnees }}" data-agencies="{{ agencies }}">
+    <div id="negotiators" data-donnees="{{ donnees }}" data-agencies="{{ agencies }}" data-biens="{{ biens }}">
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

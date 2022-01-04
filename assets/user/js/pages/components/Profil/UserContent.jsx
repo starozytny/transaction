@@ -17,6 +17,7 @@ export class UserContent extends Component {
             users: props.users,
             agencies: props.agencies,
             negotiators: props.negotiators,
+            biens: props.biens,
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -27,12 +28,12 @@ export class UserContent extends Component {
     }
 
     render () {
-        const { context, id, idAgency, idSociety, isUser, users, agencies, negotiators } = this.state;
+        const { context, id, idAgency, idSociety, isUser, users, agencies, negotiators, biens } = this.state;
 
         let content;
         switch (context){
             case "negotiators":
-                content = <div id="profil-negotiators"><Negotiators donnees={negotiators} idAgency={idAgency} isUser={isUser} isClient={true}/></div>
+                content = <div id="profil-negotiators"><Negotiators donnees={negotiators} biens={biens} idAgency={idAgency} isUser={isUser} isClient={true}/></div>
                 break;
             case "agencies":
                 content = <div id="profil-agencies"><Agencies donnees={agencies} idSociety={idSociety} idAgency={idAgency} isUser={isUser}/></div>

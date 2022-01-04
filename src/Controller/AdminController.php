@@ -176,10 +176,12 @@ class AdminController extends AbstractController
     {
         $objs = $this->getAllData(ImNegotiator::class, $serializer);
         $agencies = $this->getAllData(ImAgency::class, $serializer);
+        $biens = $this->getAllData(ImBien::class, $serializer, User::USER_READ);
 
         return $this->render('admin/pages/immo/negotiators.html.twig', [
             'donnees' => $objs,
             'agencies' => $agencies,
+            'biens' => $biens,
         ]);
     }
 
