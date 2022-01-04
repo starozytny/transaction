@@ -226,8 +226,12 @@ function updateValueCheckbox(e, items, value){
     return (e.currentTarget.checked) ? [...items, ...[value]] : items.filter(v => v !== value)
 }
 
-function setValueEmptyIfNull (value) {
-    return value === null ? "" : value;
+function setValueEmptyIfNull (value, defaultValue = "") {
+    return value === null ? defaultValue : value;
+}
+
+function setValueToForm (parentValue, value, defaultValue = "") {
+    return parentValue ? setValueEmptyIfNull(value, defaultValue) : defaultValue
 }
 
 module.exports = {
@@ -246,5 +250,6 @@ module.exports = {
     updatePerPage,
     showErrors,
     switchFunction,
-    setValueEmptyIfNull
+    setValueEmptyIfNull,
+    setValueToForm
 }
