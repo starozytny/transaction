@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
 
@@ -33,7 +35,10 @@ export class TenantsItem extends Component {
                             <TenantNegotiator elem={elem} />
                         </div>
                         <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
-                            {(elem.bien && !isFormBien) && <ButtonIcon icon="home">Bien</ButtonIcon>}
+                            {(elem.bien && !isFormBien) &&
+                                <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'ft': elem.bien.id})}>
+                                    Bien
+                            </ButtonIcon>}
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
                         </div>
