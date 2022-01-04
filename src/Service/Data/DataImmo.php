@@ -31,11 +31,11 @@ class DataImmo extends DataConstructor
     }
     private function setToUnknownEmpty($value): ?int
     {
-        return $value != "" ? (int) $value == 1 : ImBien::ANSWER_UNKNOWN;
+        return $value !== 99 && $value !== "" ? (int) $value == 1 : ImBien::ANSWER_UNKNOWN;
     }
     private function setToZeroEmpty($value): ?int
     {
-        return $value != "" ? (int) $value : ImBien::BUSY_NONE;
+        return $value !== 0 && $value !== "" ? (int) $value : ImBien::BUSY_NONE;
     }
 
     /**
