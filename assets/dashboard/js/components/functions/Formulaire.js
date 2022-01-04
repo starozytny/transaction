@@ -234,14 +234,6 @@ function setDateOrEmptyIfNull (value, defaultValue = "") {
     return value ? new Date(value) : defaultValue;
 }
 
-function setValueToForm (parentValue, value, defaultValue = "") {
-    return parentValue ? setValueEmptyIfNull(value, defaultValue) : defaultValue
-}
-
-function setDateToForm (parentValue, value, defaultValue = "") {
-    return parentValue ? setDateOrEmptyIfNull(value, defaultValue) : defaultValue
-}
-
 module.exports = {
     loader,
     displayErrors,
@@ -259,6 +251,5 @@ module.exports = {
     showErrors,
     switchFunction,
     setValueEmptyIfNull,
-    setValueToForm,
-    setDateToForm
+    setDateOrEmptyIfNull
 }
