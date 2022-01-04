@@ -37,6 +37,16 @@ class DataService
         return $this->apiResponse->apiJsonResponse($obj, $groups);
     }
 
+    public function deleteWithImg($obj, $img, FileUploader $fileUploader, $folder): JsonResponse
+    {
+        $this->em->remove($obj);
+        $this->em->flush();
+
+        $fileUploader->deleteFile($img, $folder);
+
+        return $this->apiResponse->apiJsonResponseSuccessful("Supression réussie !");
+    }
+
     public function delete($obj, $isSeen = false, $messageError = "Vous n'avez pas lu ce message."): JsonResponse
     {
         if($isSeen){
