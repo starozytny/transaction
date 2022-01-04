@@ -27,12 +27,10 @@ export class Filter extends Component {
         super(props);
 
         this.state = {
-            filtersAd: [],
-            filtersBien: [],
-            // filtersAd: [0, 1],
-            // filtersBien: [0, 1, 2, 3],
-            filtersMandat: [],
-            filterOwner: ""
+            filtersAd: props.filters[0],
+            filtersBien: props.filters[1],
+            filtersMandat: props.filters[2],
+            filterOwner: props.filters[3],
         }
 
         this.handleFilter = this.handleFilter.bind(this);
@@ -81,8 +79,6 @@ export class Filter extends Component {
         const { owners } = this.props;
         const { filtersAd, filtersBien, filtersMandat, filterOwner } = this.state;
 
-        console.log(owners);
-
         let itemsFiltersAd = helper.getItems("ads");
         let itemsFiltersBien = helper.getItems("biens");
         let itemsFiltersMandat = helper.getItems("mandats");
@@ -91,8 +87,7 @@ export class Filter extends Component {
             <ItemFilter type="ad"     title="Annonce"      itemsFilters={itemsFiltersAd}     filters={filtersAd} onFilter={this.handleFilter}/>
             <ItemFilter type="bien"   title="Type de bien" itemsFilters={itemsFiltersBien}   filters={filtersBien} onFilter={this.handleFilter}/>
             <ItemFilter type="mandat" title="Mandat"       itemsFilters={itemsFiltersMandat} filters={filtersMandat} onFilter={this.handleFilter}/>
-            <ItemFilterSelectize title="Propriétaire" items={owners} identifiant="filterOwner" valeur={filterOwner} onChangeSelect={this.handleChangeSelect}
-                             placeholder="Par code, nom ou prénom" />
+            <ItemFilterSelectize title="Propriétaire" items={owners} identifiant="filterOwner" valeur={filterOwner} onChangeSelect={this.handleChangeSelect} />
         </div>
     }
 }

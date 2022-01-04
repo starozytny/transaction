@@ -14,6 +14,7 @@ use App\Repository\Immo\ImTenantRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -49,12 +50,16 @@ class UserController extends AbstractController
     /**
      * @Route("/biens", options={"expose"=true}, name="biens")
      */
-    public function biens(ImBienRepository $repository, SerializerInterface $serializer): Response
+    public function biens(Request $request, ImBienRepository $repository, SerializerInterface $serializer): Response
     {
+        $filterOwner = $request->query->get('fo');
         $objs = $repository->findAll();
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
 
-        return $this->render('user/pages/biens/index.html.twig', ['data' => $objs]);
+        return $this->render('user/pages/biens/index.html.twig', [
+            'data' => $objs,
+            'filterOwner' => $filterOwner
+        ]);
     }
 
     /**

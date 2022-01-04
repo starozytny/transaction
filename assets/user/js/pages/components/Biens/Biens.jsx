@@ -93,7 +93,7 @@ export class Biens extends Component {
                 [],
                 [],
                 [], //type mandat
-                "", //owner
+                props.filterOwner ? parseInt(props.filterOwner) : "", //owner
             ]
         }
 

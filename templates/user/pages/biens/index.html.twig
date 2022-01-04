@@ -3,7 +3,9 @@
 {% set page_title %}Liste des biens{% endset %}
 
 {% block main_content %}
-    <div id="list-biens" data-donnees="{{ data }}">
+    <div id="list-biens" data-donnees="{{ data }}"
+         data-filter-owner="{{ filterOwner }}"
+    >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}
