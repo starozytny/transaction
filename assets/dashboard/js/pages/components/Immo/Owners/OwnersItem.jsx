@@ -38,6 +38,7 @@ export class OwnersItem extends Component {
                         </div>
                         <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
                             {!elem.isGerance && <>
+                                {(biens.length !== 0 && totalBien !== 0) && <ButtonIcon icon="layer">Biens</ButtonIcon>}
                                 <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
                             </>}
