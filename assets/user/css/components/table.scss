@@ -44,6 +44,8 @@
   .items-default{
 
     .infos{
+      align-items: flex-start;
+
       .actions{
         .btn-icon{
           [class^="icon-"]{

@@ -50,15 +50,21 @@ class UserController extends AbstractController
     /**
      * @Route("/biens", options={"expose"=true}, name="biens")
      */
-    public function biens(Request $request, ImBienRepository $repository, SerializerInterface $serializer): Response
+    public function biens(Request $request, ImBienRepository $repository, ImTenantRepository $tenantRepository,
+                          SerializerInterface $serializer): Response
     {
         $filterOwner = $request->query->get('fo');
+        $filterTenant = $request->query->get('ft');
         $objs = $repository->findAll();
+        $tenants = $tenantRepository->findBy(['bien' => $objs]);
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+        $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/biens/index.html.twig', [
             'data' => $objs,
-            'filterOwner' => $filterOwner
+            'tenants' => $tenants,
+            'filterOwner' => $filterOwner,
+            'filterTenant' => $filterTenant,
         ]);
     }
 

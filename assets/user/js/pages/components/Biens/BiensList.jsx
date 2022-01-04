@@ -10,7 +10,7 @@ import { Filter } from "./Filter";
 
 export class BiensList extends Component {
     render () {
-        const { data, onDelete, filters, onGetFilters } = this.props;
+        const { data, onDelete, filters, onGetFilters, tenants } = this.props;
 
         let items = [], owners = [], noDuplicateOwners = [];
         data.forEach(el => {
@@ -33,7 +33,7 @@ export class BiensList extends Component {
                             <span>Filtres :</span>
                         </div>
                         <div className="content-col-1">
-                            <Filter onGetFilters={onGetFilters} filters={filters} owners={owners}/>
+                            <Filter onGetFilters={onGetFilters} filters={filters} tenants={tenants} owners={owners}/>
                         </div>
                     </div>
                 </div>

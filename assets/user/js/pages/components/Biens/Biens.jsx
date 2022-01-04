@@ -22,6 +22,11 @@ function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
             })
         }else{
             switch (subType) {
+                case "tenant":
+                    if(el.id === initTab){
+                        newTable.push(el)
+                    }
+                    break;
                 default:
                     if(comparateur && comparateur.id === initTab){
                         newTable.push(el)
@@ -37,16 +42,18 @@ function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
     return newTable;
 }
 
-function filterFunction(dataImmuable, filters){
+function filterFunction(dataImmuable, filters, tenants){
     let newData = [];
     let newData1 = [];
     let newData2 = [];
     let newData3 = [];
+    let newData4 = [];
 
     let filtersAd = filters[0];
     let filtersBien = filters[1];
     let filtersMandat = filters[2];
     let filterOwner = filters[3];
+    let filterTenant = filters[4];
 
     if(filters.length === 0) {
         newData = dataImmuable
@@ -64,10 +71,14 @@ function filterFunction(dataImmuable, filters){
         })
 
         newData2.forEach(el => {
-            newData3 = setNewTab("input", filterOwner, el, el.owner, newData3)
+            newData3 = setNewTab("select", filterOwner, el, el.owner, newData3, "owner")
         })
 
-        newData = newData3
+        newData3.forEach(el => {
+            newData4 = setNewTab("select", filterTenant, el, el.tenants, newData4, "tenant")
+        })
+
+        newData = newData4
     }
 
     return newData;
@@ -94,6 +105,7 @@ export class Biens extends Component {
                 [],
                 [], //type mandat
                 props.filterOwner ? parseInt(props.filterOwner) : "", //owner
+                props.filterTenant ? parseInt(props.filterTenant) : "", //tenant - value == bienId
             ]
         }
 
@@ -120,6 +132,7 @@ export class Biens extends Component {
                             onDeleteAll={this.layout.current.handleDeleteGroup}
                             filters={filters}
                             onGetFilters={this.handleGetFilters}
+                            tenants={JSON.parse(this.props.tenants)}
                             data={currentData} />
     }
 

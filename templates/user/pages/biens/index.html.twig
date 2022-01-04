@@ -4,7 +4,9 @@
 
 {% block main_content %}
     <div id="list-biens" data-donnees="{{ data }}"
+         data-tenants="{{ tenants }}"
          data-filter-owner="{{ filterOwner }}"
+         data-filter-tenant="{{ filterTenant }}"
     >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
