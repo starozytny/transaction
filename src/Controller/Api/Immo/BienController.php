@@ -44,6 +44,9 @@ class BienController extends AbstractController
     public function setProperty($em, $type, $obj, $data, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
     {
         switch ($type){
+            case "advert":
+                $obj = $dataEntity->setDataAdvert($obj, $data);
+                break;
             case "confidential":
                 $obj = $dataEntity->setDataConfidential($obj, $data);
                 break;
@@ -105,6 +108,7 @@ class BienController extends AbstractController
             [ "type" => "diag",         "new" => new ImDiag(),          "existe" => $obj->getDiag() ],
             [ "type" => "localisation", "new" => new ImLocalisation(),  "existe" => $obj->getLocalisation() ],
             [ "type" => "financial",    "new" => new ImFinancial(),     "existe" => $obj->getFinancial() ],
+            [ "type" => "confidential", "new" => new ImConfidential(),  "existe" => $obj->getConfidential() ],
             [ "type" => "advert",       "new" => new ImAdvert(),        "existe" => $obj->getAdvert() ],
         ];
 

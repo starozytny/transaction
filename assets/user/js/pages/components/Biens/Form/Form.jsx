@@ -20,6 +20,7 @@ import { Step6 } from "@userPages/components/Biens/Steps/Step6";
 import { Step6Vente } from "@userPages/components/Biens/Steps/Step6Vente";
 import { Step7 } from "@userPages/components/Biens/Steps/Step7";
 import { Step8 } from "@userPages/components/Biens/Steps/Step8";
+import { Step9 } from "@userPages/components/Biens/Steps/Step9";
 
 import { Aside }  from "@dashboardComponents/Tools/Aside";
 import { Owners}  from "@dashboardPages/components/Immo/Owners/Owners";
@@ -392,6 +393,8 @@ export class Form extends Component {
                                     societyId={societyId} agencyId={agencyId} isClient={true}
                                     tenants={tenants} isFormBien={true} onSelectTenant={this.handleSelectTenant}/>
 
+        console.log(this.state)
+
         return <div className="page-default">
             <div className="page-col-1">
                 <div className="comeback">
@@ -444,6 +447,9 @@ export class Form extends Component {
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                refAside1={this.aside1} onOpenAside={this.handleOpenAside}
                                allOwners={allOwners} />
+
+                        <Step9 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                               negotiators={negotiators} />
 
                         <div className="step-section active">
                             <div className="line line-buttons">

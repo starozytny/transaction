@@ -22,7 +22,7 @@ export class AdCard extends Component {
     }
 
     render () {
-        const { el, onDelete, status, statusName } = this.props;
+        const { el, onDelete } = this.props;
 
         let items = [
             {data: <a href="/">Envoyer un mail</a>},

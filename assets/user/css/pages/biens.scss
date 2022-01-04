@@ -12,21 +12,6 @@
   }
 }
 
-.contact-line{
-  .items-table{
-    width: 100%;
-    margin-top: 24px;
-  }
-}
-
-.contact-aside{
-  @include toolbarCreateSearch(224);
-  
-  .selector, .col-1, .col-2, .col-3{
-    cursor: pointer;
-  }
-}
-
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
@@ -37,20 +22,6 @@
   .page-default .tab-col-2 + button,
   .page-default .tab-col-2 + a{
     width: 278px;
-  }
-}
-
-//                      __   _  ___ ____  _  _     __
-//                     | _| / |/ _ \___ \| || |   |_ |
-//    _____ _____ _____| |  | | | | |__) | || |_   | |_____ _____ _____
-//   |_____|_____|_____| |  | | |_| / __/|__   _|  | |_____|_____|_____|
-//                     | |  |_|\___/_____|  |_|    | |
-//                     |__|                       |__|
-@media (min-width: 1024px) {
-  .contact-aside {
-    .aside{
-      width: 80%;
-    }
   }
 }
 

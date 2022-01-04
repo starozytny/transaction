@@ -163,6 +163,47 @@
   }
 }
 
+.contact-line{
+  .items-table{
+    width: 100%;
+    margin-top: 24px;
+  }
+}
+
+.contact-aside{
+  @include toolbarCreateSearch(224);
+
+  .selector, .col-1, .col-2, .col-3{
+    cursor: pointer;
+  }
+}
+
+.synthese-bloc{
+  .card-ad{
+    .card-main{
+      width: 100%;
+    }
+
+    .negociateur{
+      cursor: initial;
+    }
+
+    .card-footer{
+      & > div{
+        margin-bottom: 12px;
+      }
+      .footer-actions{
+        width: 100%;
+        margin-bottom: 0;
+
+        .createdAt{
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
@@ -198,7 +239,37 @@
       width: 100%;
     }
   }
+
+  .synthese-bloc{
+    .card-ad{
+      .card-footer{
+        @include flex(row, flex-start, flex-start);
+        flex-wrap: wrap;
+
+        & > div{
+          width: 50%;
+        }
+        .footer-actions{
+        }
+      }
+    }
+  }
 }
+
+//                      __   _  ___ ____  _  _     __
+//                     | _| / |/ _ \___ \| || |   |_ |
+//    _____ _____ _____| |  | | | | |__) | || |_   | |_____ _____ _____
+//   |_____|_____|_____| |  | | |_| / __/|__   _|  | |_____|_____|_____|
+//                     | |  |_|\___/_____|  |_|    | |
+//                     |__|                       |__|
+@media (min-width: 1024px) {
+  .contact-aside {
+    .aside{
+      width: 80%;
+    }
+  }
+}
+
 
 //                      __   _ ____  ___   ___    __
 //                     | _| / |___ \( _ ) / _ \  |_ |

@@ -44,6 +44,7 @@ export function BienFormulaire ({ type, element, tenants, negotiators, allOwners
     let localisation = element ? element.localisation : null;
     let financial = element ? element.financial : null;
     let confidential = element ? element.confidential : null;
+    let advert = element ? element.advert : null;
 
     let form = <Form
         title={title}
@@ -170,6 +171,10 @@ export function BienFormulaire ({ type, element, tenants, negotiators, allOwners
         visiteTo={element ? setValueEmptyIfNull(confidential, confidential.visiteTo) : ""}
         keysNumber={element ? setValueEmptyIfNull(confidential, confidential.keysNumber) : ""}
         keysWhere={element ? setValueEmptyIfNull(confidential, confidential.keysWhere) : ""}
+
+        typeAdvert={element ? setValueEmptyIfNull(advert, advert.typeAdvert) : 0}
+        contentSimple={element ? setValueEmptyIfNull(advert, advert.contentSimple) : ""}
+        contentFull={element ? setValueEmptyIfNull(advert, advert.contentFull) : ""}
 
         messageSuccess={msg}
 

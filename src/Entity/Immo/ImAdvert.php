@@ -4,31 +4,40 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImAdvertRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImAdvertRepository::class)
  */
 class ImAdvert
 {
+    const TYPE_NONE = 0;
+    const TYPE_AFFAIRE = 1;
+    const TYPE_HEART = 2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
-    private $typeAdvert;
+    private $typeAdvert = self::TYPE_NONE;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"user:read"})
      */
     private $contentSimple;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"user:read"})
      */
     private $contentFull;
 

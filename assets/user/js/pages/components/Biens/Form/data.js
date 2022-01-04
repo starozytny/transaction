@@ -129,11 +129,15 @@ function getDataState (props) {
         keysNumber: props.keysNumber,
         keysWhere: props.keysWhere,
 
+        typeAdvert: props.typeAdvert,
+        contentSimple: props.contentSimple,
+        contentFull: props.contentFull,
+
         contentAside: "",
         contentHelpBubble: "",
         arrayPostalCode: [],
         errors: [],
-        step: 8
+        step: 9
     }
 }
 
