@@ -42,18 +42,20 @@ function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
     return newTable;
 }
 
-function filterFunction(dataImmuable, filters, tenants){
+function filterFunction(dataImmuable, filters){
     let newData = [];
     let newData1 = [];
     let newData2 = [];
     let newData3 = [];
     let newData4 = [];
+    let newData5 = [];
 
     let filtersAd = filters[0];
     let filtersBien = filters[1];
     let filtersMandat = filters[2];
     let filterOwner = filters[3];
     let filterTenant = filters[4];
+    let filterNego = filters[5];
 
     if(filters.length === 0) {
         newData = dataImmuable
@@ -78,7 +80,11 @@ function filterFunction(dataImmuable, filters, tenants){
             newData4 = setNewTab("select", filterTenant, el, el.tenants, newData4, "tenant")
         })
 
-        newData = newData4
+        newData4.forEach(el => {
+            newData5 = setNewTab("select", filterNego, el, el.negotiator, newData5, "nego")
+        })
+
+        newData = newData5
     }
 
     return newData;
@@ -106,6 +112,7 @@ export class Biens extends Component {
                 [], //type mandat
                 props.filterOwner ? parseInt(props.filterOwner) : "", //owner
                 props.filterTenant ? parseInt(props.filterTenant) : "", //tenant - value == bienId
+                props.filterNego ? parseInt(props.filterNego) : "", //negotiator
             ]
         }
 

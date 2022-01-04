@@ -9,6 +9,7 @@ use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImTenant;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
+use App\Repository\Immo\ImNegotiatorRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImTenantRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -55,8 +56,11 @@ class UserController extends AbstractController
     {
         $filterOwner = $request->query->get('fo');
         $filterTenant = $request->query->get('ft');
+        $filterNego = $request->query->get('fn');
+
         $objs = $repository->findAll();
         $tenants = $tenantRepository->findBy(['bien' => $objs]);
+
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
         $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
 
@@ -65,6 +69,7 @@ class UserController extends AbstractController
             'tenants' => $tenants,
             'filterOwner' => $filterOwner,
             'filterTenant' => $filterTenant,
+            'filterNego' => $filterNego,
         ]);
     }
 

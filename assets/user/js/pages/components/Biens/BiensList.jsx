@@ -8,21 +8,27 @@ import { Alert }  from "@dashboardComponents/Tools/Alert";
 import { AdCard } from "./AdCard";
 import { Filter } from "./Filter";
 
+function getItemsSelect (data, noDuplication, el, pref) {
+    if(el){
+        if(!noDuplication.includes(el.id)){
+            noDuplication.push(el.id);
+            data.push({ value: el.id, label: el.fullname, identifiant: pref + "-" + el.id })
+        }
+    }
+
+    return data;
+}
+
 export class BiensList extends Component {
     render () {
         const { data, onDelete, filters, onGetFilters, tenants } = this.props;
 
-        let items = [], owners = [], noDuplicateOwners = [];
+        let items = [], owners = [], negotiators = [], noDuplicateOwners = [], noDuplicateNegotiators = [];
         data.forEach(el => {
             items.push(<AdCard el={el} onDelete={onDelete} status={1} statusName="Actif" key={el.id}/>)
 
-            if(el.owner){
-                let owner = el.owner;
-                if(!noDuplicateOwners.includes(owner.id)){
-                    noDuplicateOwners.push(owner.id);
-                    owners.push({ value: owner.id, label: owner.fullname, identifiant: "owner-" + owner.id })
-                }
-            }
+            owners = getItemsSelect(owners, noDuplicateOwners, el.owner, "owner");
+            negotiators = getItemsSelect(negotiators, noDuplicateNegotiators, el.negotiator, "nego");
         })
 
         return <div className="main-content list-biens">
@@ -33,7 +39,7 @@ export class BiensList extends Component {
                             <span>Filtres :</span>
                         </div>
                         <div className="content-col-1">
-                            <Filter onGetFilters={onGetFilters} filters={filters} tenants={tenants} owners={owners}/>
+                            <Filter onGetFilters={onGetFilters} filters={filters} tenants={tenants} owners={owners} negotiators={negotiators}/>
                         </div>
                     </div>
                 </div>
