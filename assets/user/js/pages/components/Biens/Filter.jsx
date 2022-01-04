@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
+import { Input } from "@dashboardComponents/Tools/Fields";
+
 import Helper from "@commonComponents/functions/helper";
-import helper   from "./helper";
+import helper from "./helper";
 
 function updateTab(initTable, value, newTable) {
     let find = false;
@@ -30,20 +32,25 @@ export class Filter extends Component {
             // filtersAd: [0, 1],
             // filtersBien: [0, 1, 2, 3],
             filtersMandat: [],
-
+            filterOwner: ""
         }
 
         this.handleFilter = this.handleFilter.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     handleFilter = (type, value) => {
-        const { filtersAd, filtersBien, filtersMandat } = this.state;
+        const { filtersAd, filtersBien, filtersMandat, filterOwner } = this.state;
 
         let nFiltersAd = filtersAd;
         let nFiltersBien = filtersBien;
         let nFiltersMandat = filtersMandat;
+        let nFilterOwner = filterOwner;
 
         switch (type){
+            case "filterOwner":
+                nFilterOwner = value;
+                break;
             case "mandat":
                 nFiltersMandat = updateTab(filtersMandat, value, nFiltersMandat);
                 break;
@@ -55,12 +62,20 @@ export class Filter extends Component {
                 break;
         }
 
-        this.setState({ filtersAd: nFiltersAd, filtersBien: nFiltersBien, filtersMandat: nFiltersMandat });
-        this.props.onGetFilters([nFiltersAd, nFiltersBien, nFiltersMandat])
+        this.setState({ filtersAd: nFiltersAd, filtersBien: nFiltersBien, filtersMandat: nFiltersMandat, filterOwner: nFilterOwner });
+        this.props.onGetFilters([nFiltersAd, nFiltersBien, nFiltersMandat, nFilterOwner])
+    }
+
+    handleChange = (e) => {
+        let name = e.currentTarget.name;
+        let value = e.currentTarget.value;
+
+        // this.setState({ [name]: value });
+        this.handleFilter(name, value);
     }
 
     render () {
-        const { filtersAd, filtersBien, filtersMandat } = this.state;
+        const { filtersAd, filtersBien, filtersMandat, filterOwner } = this.state;
 
         let itemsFiltersAd = helper.getItems("ads");
         let itemsFiltersBien = helper.getItems("biens");
@@ -70,8 +85,39 @@ export class Filter extends Component {
             <ItemFilter type="ad"     title="Annonce"      itemsFilters={itemsFiltersAd}     filters={filtersAd} onFilter={this.handleFilter}/>
             <ItemFilter type="bien"   title="Type de bien" itemsFilters={itemsFiltersBien}   filters={filtersBien} onFilter={this.handleFilter}/>
             <ItemFilter type="mandat" title="Mandat"       itemsFilters={itemsFiltersMandat} filters={filtersMandat} onFilter={this.handleFilter}/>
+            <ItemFilterInput title="Propriétaire" identifiant="filterOwner" valeur={filterOwner} onChange={this.handleChange}
+                             placeholder="Par code, nom ou prénom" />
         </div>
     }
+}
+
+function ItemFilterInput ({ title, identifiant, valeur, onChange, placeholder }) {
+    return  <div className="item">
+        <Title title={title}/>
+        <div className="items-filter">
+            <Input identifiant={identifiant} valeur={valeur} errors={[]} onChange={onChange} placeholder={placeholder} />
+        </div>
+    </div>
+}
+
+
+function ItemFilter ({ type, title, itemsFilters, filters, onFilter }) {
+    return  <div className="item">
+        <Title title={title}/>
+        <div className="items-filter">
+            {itemsFilters.map(el => {
+                return <ItemFilterBox type={type} el={el} filters={filters} onFilter={onFilter} key={el.value}/>
+            })}
+        </div>
+    </div>
+}
+
+function ItemFilterBox ({ type, el, filters, onFilter }) {
+    return <div className={"item-filter" + Helper.setActive(filters, el.value)}
+                onClick={() => onFilter(type, el.value)}>
+        <div className="box" />
+        <div>{el.label}</div>
+    </div>
 }
 
 class Title extends Component {
@@ -98,23 +144,4 @@ class Title extends Component {
             <span className={"icon-" + status} />
         </div>
     }
-}
-
-function ItemFilter ({ type, title, itemsFilters, filters, onFilter }) {
-    return  <div className="item">
-        <Title title={title}/>
-        <div className="items-filter">
-            {itemsFilters.map(el => {
-                return <ItemFilterBox type={type} el={el} filters={filters} onFilter={onFilter} key={el.value}/>
-            })}
-        </div>
-    </div>
-}
-
-function ItemFilterBox ({ type, el, filters, onFilter }) {
-    return <div className={"item-filter" + Helper.setActive(filters, el.value)}
-                onClick={() => onFilter(type, el.value)}>
-        <div className="box" />
-        <div>{el.label}</div>
-    </div>
 }

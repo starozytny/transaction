@@ -12,13 +12,28 @@ const MSG_DELETE_ELEMENT    = 'Supprimer ce bien ?';
 const MSG_DELETE_GROUP      = 'Aucun message sélectionné.';
 const SORTER = Sort.compareCreatedAt;
 
-function setNewTab(initTab, el, comparateur, newTable) {
+function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
     if(initTab.length !== 0){
-        initTab.forEach(filter => {
-            if(filter === comparateur){
-                newTable.push(el);
+        if(type === "array"){
+            initTab.forEach(filter => {
+                if(filter === comparateur){
+                    newTable.push(el);
+                }
+            })
+        }else{
+            let initValue = initTab.toLowerCase();
+            switch (subType) {
+                default:
+                    if(comparateur && (comparateur.code.toLowerCase().startsWith(initValue)
+                        || comparateur.firstname.toLowerCase().startsWith(initValue)
+                        || comparateur.lastname.toLowerCase().startsWith(initValue))
+                    ){
+                        newTable.push(el)
+                    }
+                    break;
             }
-        })
+
+        }
     }else{
         newTable.push(el)
     }
@@ -30,27 +45,33 @@ function filterFunction(dataImmuable, filters){
     let newData = [];
     let newData1 = [];
     let newData2 = [];
+    let newData3 = [];
 
     let filtersAd = filters[0];
     let filtersBien = filters[1];
     let filtersMandat = filters[2];
+    let filterOwner = filters[3];
 
     if(filters.length === 0) {
         newData = dataImmuable
     }else{
         dataImmuable.forEach(el => {
-            newData = setNewTab(filtersAd, el, el.codeTypeAd, newData);
+            newData = setNewTab("array", filtersAd, el, el.codeTypeAd, newData);
         })
 
         newData.forEach(el => {
-            newData1 = setNewTab(filtersBien, el, el.codeTypeBien, newData1);
+            newData1 = setNewTab("array", filtersBien, el, el.codeTypeBien, newData1);
         })
 
         newData1.forEach(el => {
-            newData2 = setNewTab(filtersMandat, el, el.codeTypeMandat, newData2);
+            newData2 = setNewTab("array", filtersMandat, el, el.codeTypeMandat, newData2);
         })
 
-        newData = newData2
+        newData2.forEach(el => {
+            newData3 = setNewTab("input", filterOwner, el, el.owner, newData3)
+        })
+
+        newData = newData3
     }
 
     return newData;
@@ -76,6 +97,7 @@ export class Biens extends Component {
                 [],
                 [],
                 [], //type mandat
+                "", //owner
             ]
         }
 
