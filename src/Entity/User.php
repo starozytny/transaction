@@ -23,6 +23,8 @@ use OpenApi\Annotations as OA;
  */
 class User extends DataEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const FOLDER_AVATARS = "avatars";
+
     const ADMIN_READ = ['admin:read'];
     const USER_READ = ['user:read'];
     const VISITOR_READ = ['visitor:read'];
@@ -522,5 +524,14 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     public function getFullname(): string
     {
         return $this->getFullNameString($this->lastname, $this->firstname);
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getAvatarFile(): string
+    {
+        return $this->avatar ? "/avatars/" . $this->avatar : "https://robohash.org/" . $this->id . "?size=64x64";
     }
 }
