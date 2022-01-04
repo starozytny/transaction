@@ -36,23 +36,22 @@ export function TenantFormulaire ({ type, onChangeContext, onUpdateList, element
     let form = <TenantForm
         context={type}
         url={url}
-
-        society={Formulaire.setValueToForm(element, element.society.id, societyId)}
-        agency={Formulaire.setValueToForm(element, element.agency.id, agencyId)}
+        society={element ? element.agency.society.id : societyId}
+        agency={element ? element.agency.id : agencyId}
         negotiator={element ? (element.negotiator ? element.negotiator.id : "") : ""}
-        lastname={Formulaire.setValueToForm(element, element.lastname, "")}
-        firstname={Formulaire.setValueToForm(element, element.firstname, "")}
-        civility={Formulaire.setValueToForm(element, element.civility, 2)}
-        phone1={Formulaire.setValueToForm(element, element.phone1, "")}
-        phone2={Formulaire.setValueToForm(element, element.phone2, "")}
-        phone3={Formulaire.setValueToForm(element, element.phone3, "")}
-        email={Formulaire.setValueToForm(element, element.email, "")}
-        address={Formulaire.setValueToForm(element, element.address, "")}
-        complement={Formulaire.setValueToForm(element, element.complement, "")}
-        zipcode={Formulaire.setValueToForm(element, element.zipcode, "")}
-        city={Formulaire.setValueToForm(element, element.city, "")}
-        country={Formulaire.setValueToForm(element, element.country, "France")}
-        birthday={Formulaire.setDateToForm(element, element.birthdayJavascript, "")}
+        lastname={element ? Formulaire.setValueEmptyIfNull(element.lastname) : ""}
+        firstname={element ? Formulaire.setValueEmptyIfNull(element.firstname) : ""}
+        civility={element ? Formulaire.setValueEmptyIfNull(element.civility, 2) : 2}
+        phone1={element ? Formulaire.setValueEmptyIfNull(element.phone1) : ""}
+        phone2={element ? Formulaire.setValueEmptyIfNull(element.phone2) : ""}
+        phone3={element ? Formulaire.setValueEmptyIfNull(element.phone3) : ""}
+        email={element ? Formulaire.setValueEmptyIfNull(element.email) : ""}
+        address={element ? Formulaire.setValueEmptyIfNull(element.address) : ""}
+        complement={element ? Formulaire.setValueEmptyIfNull(element.complement) : ""}
+        zipcode={element ? Formulaire.setValueEmptyIfNull(element.zipcode) : ""}
+        city={element ? Formulaire.setValueEmptyIfNull(element.city) : ""}
+        country={element ? Formulaire.setValueEmptyIfNull(element.country, "France") : "France"}
+        birthday={element ? Formulaire.setDateOrEmptyIfNull(element.birthdayJavascript, "") : ""}
 
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
@@ -251,7 +250,11 @@ export class TenantForm extends Component {
 
                         <div className="line line-2">
                             <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>Nom</Input>
-                            <Input valeur={firstname} identifiant="firstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
+                            {civility === 2 ? <div className="form-group"/>
+                                : <Input valeur={firstname} identifiant="firstname" errors={errors}
+                                         onChange={this.handleChange}>Prénom</Input>
+                            }
+
                         </div>
 
                         <div className="line">
