@@ -40,7 +40,7 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
         negotiator={element ? (element.negotiator ? element.negotiator.id : "") : ""}
         lastname={Formulaire.setValueToForm(element, element.lastname, "")}
         firstname={Formulaire.setValueToForm(element, element.firstname, "")}
-        civility={Formulaire.setValueToForm(element, element.civility, 3)}
+        civility={Formulaire.setValueToForm(element, element.civility, 2)}
         phone1={Formulaire.setValueToForm(element, element.phone1, "")}
         phone2={Formulaire.setValueToForm(element, element.phone2, "")}
         phone3={Formulaire.setValueToForm(element, element.phone3, "")}
