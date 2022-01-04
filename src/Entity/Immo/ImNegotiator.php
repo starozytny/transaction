@@ -13,6 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImNegotiator
 {
+    const FOLDER_AVATARS = "negotiators";
+
     const TRANSPORT_UNKNOWN = 0;
     const TRANSPORT_PIED = 1;
     const TRANSPORT_COMMUN = 2;

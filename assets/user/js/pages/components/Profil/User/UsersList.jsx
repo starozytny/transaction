@@ -50,7 +50,7 @@ export class UsersList extends Component {
                     <div className="items items-default">
                         <div className="item item-header">
                             <div className="item-content">
-                                <div className="item-body">
+                                <div className="item-body item-body-image">
                                     <div className="infos infos-col-3">
                                         <div className="col-1">Equipe</div>
                                         <div className="col-2">Identifiant</div>

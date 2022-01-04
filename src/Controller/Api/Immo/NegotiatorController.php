@@ -23,8 +23,6 @@ use OpenApi\Annotations as OA;
  */
 class NegotiatorController extends AbstractController
 {
-    const FOLDER_AVATARS = "negotiators";
-
     private $doctrine;
 
     public function __construct(ManagerRegistry $doctrine)
@@ -50,9 +48,9 @@ class NegotiatorController extends AbstractController
         $file = $request->files->get('avatar');
         if ($file) {
             if($type === "create"){
-                $fileName = $fileUploader->upload($file, self::FOLDER_AVATARS);
+                $fileName = $fileUploader->upload($file, ImNegotiator::FOLDER_AVATARS);
             }else{
-                $fileName = $fileUploader->replaceFile($file, $obj->getAvatar(),self::FOLDER_AVATARS);
+                $fileName = $fileUploader->replaceFile($file, $obj->getAvatar(),ImNegotiator::FOLDER_AVATARS);
             }
             $obj->setAvatar($fileName);
         }
@@ -140,7 +138,7 @@ class NegotiatorController extends AbstractController
      */
     public function delete(ImNegotiator $obj, DataService $dataService, FileUploader $fileUploader): JsonResponse
     {
-        return $dataService->deleteWithImg($obj, $obj->getAvatar(), $fileUploader, self::FOLDER_AVATARS);
+        return $dataService->deleteWithImg($obj, $obj->getAvatar(), $fileUploader, ImNegotiator::FOLDER_AVATARS);
     }
 
     /**
@@ -180,7 +178,7 @@ class NegotiatorController extends AbstractController
         $em->flush();
 
         foreach($avatars as $avatar){
-            $fileUploader->deleteFile($avatar, self::FOLDER_AVATARS);
+            $fileUploader->deleteFile($avatar, ImNegotiator::FOLDER_AVATARS);
         }
 
         return $apiResponse->apiJsonResponseSuccessful("Supression de la sélection réussie !");

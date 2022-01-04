@@ -528,7 +528,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
 
     /**
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     public function getAvatarFile(): string
     {
