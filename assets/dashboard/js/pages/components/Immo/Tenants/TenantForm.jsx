@@ -234,12 +234,11 @@ export class TenantForm extends Component {
                         </div>
 
                         <div className="line line-2">
-                            <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>Nom</Input>
-                            {civility === 2 ? <div className="form-group"/>
-                                : <Input valeur={firstname} identifiant="firstname" errors={errors}
-                                         onChange={this.handleChange}>Prénom</Input>
-                            }
-
+                            <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>
+                                {parseInt(civility) !== 2 ? "Nom" : "Raison sociale"}
+                            </Input>
+                            {parseInt(civility) !== 2 ? <Input valeur={firstname} identifiant="firstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
+                                : <div className="form-group" />}
                         </div>
 
                         <div className="line">
