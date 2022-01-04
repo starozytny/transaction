@@ -29,7 +29,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UserController extends AbstractController
 {
-    const FOLDER_AVATARS = "avatars";
+    const FOLDER_AVATARS = User::FOLDER_AVATARS;
     const ICON = "user";
 
     private $doctrine;
@@ -295,7 +295,7 @@ class UserController extends AbstractController
                     return $apiResponse->apiJsonResponseBadRequest('Vous ne pouvez pas vous supprimer.');
                 }
 
-                array_push($avatars, $obj->getAvatar());
+                $avatars[] = $obj->getAvatar();
 
                 $em->remove($obj);
             }
