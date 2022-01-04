@@ -15,6 +15,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImAgency
 {
+    const FOLDER_LOGO = "immo/logos";
+    const FOLDER_TARIF = "immo/tarifs";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

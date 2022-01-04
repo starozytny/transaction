@@ -27,9 +27,6 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class AgencyController extends AbstractController
 {
-    const FOLDER_LOGO = "immo/logos";
-    const FOLDER_TARIF = "immo/tarifs";
-
     private $doctrine;
 
     public function __construct(ManagerRegistry $doctrine)
@@ -113,13 +110,13 @@ class AgencyController extends AbstractController
 
         $file = $request->files->get('logo');
         if ($file) {
-            $fileName = $fileUploader->upload($file, self::FOLDER_LOGO);
+            $fileName = $fileUploader->upload($file, ImAgency::FOLDER_LOGO);
             $obj->setLogo($fileName);
         }
 
         $file = $request->files->get('tarif');
         if ($file) {
-            $fileName = $fileUploader->upload($file, self::FOLDER_TARIF);
+            $fileName = $fileUploader->upload($file, ImAgency::FOLDER_TARIF);
             $obj->setTarif($fileName);
         }
 
@@ -179,13 +176,13 @@ class AgencyController extends AbstractController
 
         $file = $request->files->get('logo');
         if ($file) {
-            $fileName = $fileUploader->replaceFile($file, $obj->getLogo(),self::FOLDER_LOGO);
+            $fileName = $fileUploader->replaceFile($file, $obj->getLogo(),ImAgency::FOLDER_LOGO);
             $obj->setLogo($fileName);
         }
 
         $file = $request->files->get('tarif');
         if ($file) {
-            $fileName = $fileUploader->replaceFile($file, $obj->getTarif(),self::FOLDER_TARIF);
+            $fileName = $fileUploader->replaceFile($file, $obj->getTarif(),ImAgency::FOLDER_TARIF);
             $obj->setTarif($fileName);
         }
 
@@ -219,13 +216,16 @@ class AgencyController extends AbstractController
      * @param ImmoService $immoService
      * @return JsonResponse
      */
-    public function delete(ApiResponse $apiResponse, ImAgency $obj, ImmoService $immoService): JsonResponse
+    public function delete(ApiResponse $apiResponse, ImAgency $obj, ImmoService $immoService, FileUploader $fileUploader): JsonResponse
     {
         $em = $this->doctrine->getManager();
 
         $immoService->deleteAgency($obj);
 
         $em->flush();
+
+        $fileUploader->deleteFile($obj->getLogo(), ImAgency::FOLDER_LOGO);
+        $fileUploader->deleteFile($obj->getTarif(), ImAgency::FOLDER_TARIF);
         return $apiResponse->apiJsonResponseSuccessful("Supression réussie !");
     }
 
