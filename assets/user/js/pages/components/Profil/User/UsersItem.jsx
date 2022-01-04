@@ -18,11 +18,11 @@ export class UsersItem extends Component {
                         <div className="col-1">
                             <div className="name">
                                 <span>{elem.lastname} {elem.firstname}</span>
-                                {elem.highRoleCode !== 0 && <div className="role">{elem.highRole}</div>}
                             </div>
                             <div className="sub">{elem.agency.name}</div>
                         </div>
                         <div className="col-2">
+                            {elem.highRoleCode !== 0 && <div className="role">{elem.highRole}</div>}
                             <div className="sub">{elem.username}</div>
                             <div className="sub">{elem.email}</div>
                         </div>
