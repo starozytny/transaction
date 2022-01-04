@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import {Input, SelectReactSelectize, TextArea} from "@dashboardComponents/Tools/Fields";
 import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
 import {Button, ButtonIcon, ButtonIconDropdown} from "@dashboardComponents/Tools/Button";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
@@ -35,7 +35,7 @@ function toString (tab, value) {
     return label;
 }
 
-export function Step9({ step, onChange, onNext, error, negotiator, negotiators,
+export function Step9({ step, onChange, onChangeSelect, onNext, errors, negotiator, negotiators,
                         typeAdvert, contentSimple, contentFull,
                         codeTypeBien, codeTypeAd, codeTypeMandat, libelle, address, zipcode, city, price, areaTotal, piece,
                         areaGarden, areaTerrace, room, balcony, parking, box, dispoAt, busy,
@@ -43,7 +43,7 @@ export function Step9({ step, onChange, onNext, error, negotiator, negotiators,
                         hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian, hasAlarme,
                         hasLift, hasClim, hasCalme, hasInternet, hasHandi, hasFibre, situation,
                         dpeLetter, gesLetter, dpeValue, gesValue,
-                        provisionCharges, caution, honoraireTtc, honoraireBail, edl, chargesMensuelles, notaire, foncier })
+                        provisionCharges, caution, honoraireTtc, edl, chargesMensuelles, notaire, foncier })
 {
     let typeAdItems = helper.getItems("ads");
     let typeBienItems = helper.getItems("biens");
@@ -54,6 +54,7 @@ export function Step9({ step, onChange, onNext, error, negotiator, negotiators,
     let chauffage1Items = helper.getItems("chauffages-1");
     let cuisineItems = helper.getItems("cuisines");
     let occupationItems = helper.getItems("occupations");
+    let advertItems = helper.getItems("adverts");
 
     let nego = null;
     negotiators.forEach(n => {
@@ -76,7 +77,7 @@ export function Step9({ step, onChange, onNext, error, negotiator, negotiators,
 
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
-        <div className="line special-line contact-line">
+        <div className="line special-line">
             <div className="form-group">
                 <label>Synthèse</label>
             </div>
@@ -180,6 +181,31 @@ export function Step9({ step, onChange, onNext, error, negotiator, negotiators,
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div className="line special-line">
+            <div className="form-group">
+                <label>Publicité</label>
+            </div>
+            <div className="line line-3">
+                <div className="form-group" />
+                <SelectReactSelectize items={advertItems} identifiant="typeAdvert" valeur={typeAdvert} errors={errors}
+                                      onChange={(e) => onChangeSelect('typeAdvert', e)}>
+                    Type de publicité
+                </SelectReactSelectize>
+                <div className="form-group" />
+            </div>
+
+            <div className="line">
+                <TextArea identifiant="contentSimple" valeur={contentSimple} errors={errors} onChange={onChange}>
+                    Description simple
+                </TextArea>
+            </div>
+            <div className="line">
+                <TextArea identifiant="contentFull" valeur={contentFull} errors={errors} onChange={onChange}>
+                    Description complète
+                </TextArea>
             </div>
         </div>
 

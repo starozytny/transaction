@@ -449,7 +449,7 @@ export class Form extends Component {
                                allOwners={allOwners} />
 
                         <Step9 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
-                               negotiators={negotiators} />
+                               onChangeSelect={this.handleChangeSelect} negotiators={negotiators} />
 
                         <div className="step-section active">
                             <div className="line line-buttons">

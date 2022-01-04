@@ -208,8 +208,8 @@ class FakeBiensCreate extends Command
                 "keysNumber" => $fake->randomNumber(1),
                 "keysWhere" => $fake->streetName,
                 "typeAdvert" => $fake->numberBetween(0, 2),
-                "contentSimple" => $fake->sentence(255),
-                "contentFull" => $fake->text
+                "contentSimple" => $fake->text,
+                "contentFull" => $fake->sentence(255)
 
             ];
 

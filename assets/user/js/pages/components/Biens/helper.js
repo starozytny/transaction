@@ -1,5 +1,11 @@
 function getItems (type, prefix) {
     switch (type) {
+        case "adverts":
+            return [
+                { value: 0, label: 'Classique',       identifiant: 'classique' },
+                { value: 1, label: 'Bonne affaire',   identifiant: 'bonne-affaire' },
+                { value: 2, label: 'Coup de coeur',   identifiant: 'heart' },
+            ];
         case "informs":
             return [
                 { value: 0, label: 'Personne',       identifiant: 'inform-nobody' },
