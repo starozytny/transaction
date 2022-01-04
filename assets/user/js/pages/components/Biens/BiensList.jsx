@@ -12,9 +12,17 @@ export class BiensList extends Component {
     render () {
         const { data, onDelete, onGetFilters } = this.props;
 
-        let items = [];
+        let items = [], owners = [], noDuplicateOwners = [];
         data.forEach(el => {
             items.push(<AdCard el={el} onDelete={onDelete} status={1} statusName="Actif" key={el.id}/>)
+
+            if(el.owner){
+                let owner = el.owner;
+                if(!noDuplicateOwners.includes(owner.id)){
+                    noDuplicateOwners.push(owner.id);
+                    owners.push({ value: owner.id, label: owner.fullname, identifiant: "owner-" + owner.id })
+                }
+            }
         })
 
         return <div className="main-content list-biens">
@@ -25,7 +33,7 @@ export class BiensList extends Component {
                             <span>Filtres :</span>
                         </div>
                         <div className="content-col-1">
-                            <Filter onGetFilters={onGetFilters}/>
+                            <Filter onGetFilters={onGetFilters} owners={owners}/>
                         </div>
                     </div>
                 </div>

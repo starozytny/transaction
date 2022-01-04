@@ -21,13 +21,9 @@ function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
                 }
             })
         }else{
-            let initValue = initTab.toLowerCase();
             switch (subType) {
                 default:
-                    if(comparateur && (comparateur.code.toLowerCase().startsWith(initValue)
-                        || comparateur.firstname.toLowerCase().startsWith(initValue)
-                        || comparateur.lastname.toLowerCase().startsWith(initValue))
-                    ){
+                    if(comparateur && comparateur.id === initTab){
                         newTable.push(el)
                     }
                     break;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Input } from "@dashboardComponents/Tools/Fields";
+import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 
 import Helper from "@commonComponents/functions/helper";
 import helper from "./helper";
@@ -49,6 +49,7 @@ export class Filter extends Component {
 
         switch (type){
             case "filterOwner":
+                console.log(value)
                 nFilterOwner = value;
                 break;
             case "mandat":
@@ -69,13 +70,18 @@ export class Filter extends Component {
     handleChange = (e) => {
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
-
-        // this.setState({ [name]: value });
         this.handleFilter(name, value);
     }
 
+    handleChangeSelect = (name, e) => {
+        this.handleFilter(name, e !== undefined ? e.value : "");
+    }
+
     render () {
+        const { owners } = this.props;
         const { filtersAd, filtersBien, filtersMandat, filterOwner } = this.state;
+
+        console.log(owners);
 
         let itemsFiltersAd = helper.getItems("ads");
         let itemsFiltersBien = helper.getItems("biens");
@@ -85,10 +91,20 @@ export class Filter extends Component {
             <ItemFilter type="ad"     title="Annonce"      itemsFilters={itemsFiltersAd}     filters={filtersAd} onFilter={this.handleFilter}/>
             <ItemFilter type="bien"   title="Type de bien" itemsFilters={itemsFiltersBien}   filters={filtersBien} onFilter={this.handleFilter}/>
             <ItemFilter type="mandat" title="Mandat"       itemsFilters={itemsFiltersMandat} filters={filtersMandat} onFilter={this.handleFilter}/>
-            <ItemFilterInput title="Propriétaire" identifiant="filterOwner" valeur={filterOwner} onChange={this.handleChange}
+            <ItemFilterSelectize title="Propriétaire" items={owners} identifiant="filterOwner" valeur={filterOwner} onChangeSelect={this.handleChangeSelect}
                              placeholder="Par code, nom ou prénom" />
         </div>
     }
+}
+
+function ItemFilterSelectize ({ title, items, identifiant, valeur, onChangeSelect, placeholder }) {
+    return  <div className="item">
+        <Title title={title}/>
+        <div className="items-filter">
+            <SelectReactSelectize items={items} identifiant={identifiant} valeur={valeur} errors={[]}
+                                  onChange={(e) => onChangeSelect(identifiant, e)} placeholder={placeholder} />
+        </div>
+    </div>
 }
 
 function ItemFilterInput ({ title, identifiant, valeur, onChange, placeholder }) {
@@ -99,7 +115,6 @@ function ItemFilterInput ({ title, identifiant, valeur, onChange, placeholder })
         </div>
     </div>
 }
-
 
 function ItemFilter ({ type, title, itemsFilters, filters, onFilter }) {
     return  <div className="item">
