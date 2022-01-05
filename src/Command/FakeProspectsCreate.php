@@ -81,7 +81,7 @@ class FakeProspectsCreate extends Command
                 "negotiator" => $negotiator,
                 "lastname" => $fake->lastName,
                 "firstname" => $fake->firstName,
-                "civility" => $fake->numberBetween(0, 2),
+                "civility" => $fake->numberBetween(0, 1),
                 "email" => $fake->email,
                 "phone1" => $fake->e164PhoneNumber,
                 "phone2" => $fake->e164PhoneNumber,

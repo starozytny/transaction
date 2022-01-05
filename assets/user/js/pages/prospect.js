@@ -5,11 +5,11 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min';
 
 import React from "react";
 import { render } from "react-dom";
-import { Tenants } from "@dashboardPages/components/Immo/Tenants/Tenants";
+import { Prospects } from "@dashboardPages/components/Immo/Prospects/Prospects";
 
 Routing.setRoutingData(routes);
 
 let el = document.getElementById("list-prospects");
 if(el){
-    render(<Tenants {...el.dataset} isClient={true} />, el)
+    render(<Prospects {...el.dataset} isClient={true} />, el)
 }

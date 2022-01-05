@@ -44,7 +44,7 @@ export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, eleme
         negotiator={element ? (element.negotiator ? element.negotiator.id : "") : ""}
         lastname={element ? Formulaire.setValueEmptyIfNull(element.lastname) : ""}
         firstname={element ? Formulaire.setValueEmptyIfNull(element.firstname) : ""}
-        civility={element ? Formulaire.setValueEmptyIfNull(element.civility, 2) : 2}
+        civility={element ? Formulaire.setValueEmptyIfNull(element.civility, 0) : 0}
         phone1={element ? Formulaire.setValueEmptyIfNull(element.phone1) : ""}
         phone2={element ? Formulaire.setValueEmptyIfNull(element.phone2) : ""}
         phone3={element ? Formulaire.setValueEmptyIfNull(element.phone3) : ""}
@@ -187,7 +187,7 @@ export class ProspectForm extends Component {
                                 negotiator: "",
                                 lastname: "",
                                 firstname: "",
-                                civility: 2,
+                                civility: 0,
                                 phone1: "",
                                 phone2: "",
                                 phone3: "",
@@ -222,8 +222,7 @@ export class ProspectForm extends Component {
 
         let civilityItems = [
             {value: 0, label: "Mr",      identifiant: "mr"},
-            {value: 1, label: "Mme",     identifiant: "mme"},
-            {value: 2, label: "Société", identifiant: "societe"},
+            {value: 1, label: "Mme",     identifiant: "mme"}
         ]
 
         let typeItems = [
@@ -259,11 +258,8 @@ export class ProspectForm extends Component {
                         </div>
 
                         <div className="line line-2">
-                            <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>
-                                {parseInt(civility) !== 2 ? "Nom" : "Raison sociale"}
-                            </Input>
-                            {parseInt(civility) !== 2 ? <Input valeur={firstname} identifiant="firstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
-                                : <div className="form-group" />}
+                            <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange}>Nom</Input>
+                            <Input valeur={firstname} identifiant="firstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
                         </div>
 
                         <div className="line">

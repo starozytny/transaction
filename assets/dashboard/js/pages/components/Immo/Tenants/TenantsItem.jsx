@@ -52,7 +52,7 @@ export class TenantsItem extends Component {
 export function TenantMainInfos ({ elem, isClient }) {
     return <>
         <div className="name">
-            <span>{elem.lastname}</span>
+            <span>{elem.lastname} {elem.firstname}</span>
         </div>
         {!isClient && <div className="sub">{elem.agency.name}</div>}
     </>
