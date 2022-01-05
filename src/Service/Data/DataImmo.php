@@ -15,6 +15,7 @@ use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Society;
 use Exception;
@@ -457,5 +458,38 @@ class DataImmo extends DataConstructor
             ->setCountry($this->sanitizeData->trimData($data->country))
             ->setBirthday($this->createDate($data->birthday))
         ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataProspect(ImProspect $obj, $data): ImProspect
+    {
+        $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
+        if(!$agency){
+            throw new Exception("Agence introuvable.");
+        }
+        $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+
+
+        $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
+        $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
+
+        return ($obj)
+            ->setAgency($agency)
+            ->setNegotiator($negotiator)
+            ->setLastname($lastname)
+            ->setFirstname($firstname)
+            ->setCivility((int) $data->civility)
+            ->setEmail($this->sanitizeData->trimData($data->email))
+            ->setPhone1($this->sanitizeData->trimData($data->phone1))
+            ->setPhone2($this->sanitizeData->trimData($data->phone2))
+            ->setPhone3($this->sanitizeData->trimData($data->phone3))
+            ->setAddress($this->sanitizeData->trimData($data->address))
+            ->setComplement($this->sanitizeData->trimData($data->complement))
+            ->setZipcode($this->sanitizeData->trimData($data->zipcode))
+            ->setCity($this->sanitizeData->trimData($data->city))
+            ->setBirthday($this->createDate($data->birthday))
+            ;
     }
 }

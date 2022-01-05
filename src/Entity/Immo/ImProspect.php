@@ -11,6 +11,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ImProspect extends DataEntity
 {
+    const TYPE_NONE = 0;
+    const TYPE_LOCATION = 1;
+    const TYPE_VENTE = 2;
+    const TYPE_INVEST = 3;
+    const TYPE_AUTRE = 4;
+
+    const STATUS_NONE = 0;
+    const STATUS_SEARCH = 1;
+    const STATUS_VALIDATE = 2;
+    const STATUS_ARCHIVE = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -91,12 +102,12 @@ class ImProspect extends DataEntity
     /**
      * @ORM\Column(type="integer")
      */
-    private $type;
+    private $type = self::TYPE_NONE;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $status;
+    private $status = self::STATUS_SEARCH;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="prospects")
