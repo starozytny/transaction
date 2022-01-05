@@ -3,94 +3,75 @@
 namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
-use App\Repository\Immo\ImTenantRepository;
+use App\Repository\Immo\ImProspectRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=ImTenantRepository::class)
+ * @ORM\Entity(repositoryClass=ImProspectRepository::class)
  */
-class ImTenant extends DataEntity
+class ImProspect extends DataEntity
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read", "user:read"})
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @ORM\Column(type="string", length=255)
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read"})
      */
     private $civility;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read"})
      */
     private $phone1;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @ORM\Column(type="string", length=60, nullable=true)
      */
     private $phone2;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read"})
      */
     private $phone3;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
      */
     private $complement;
 
     /**
-     * @ORM\Column(type="string", length=40, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
      */
     private $city;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
-     */
-    private $country;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -98,23 +79,34 @@ class ImTenant extends DataEntity
     private $birthday;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="tenants")
-     * @Groups({"admin:read", "user:read"})
+     * @ORM\Column(type="datetime")
      */
-    private $bien;
+    private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="tenants")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read", "user:read"})
+     * @ORM\Column(type="date", nullable=true)
      */
-    private $agency;
+    private $lastContactAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="tenants")
-     * @Groups({"admin:read", "user:read"})
+     * @ORM\Column(type="integer")
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="prospects")
      */
     private $negotiator;
+
+    public function __construct()
+    {
+        $this->createdAt = $this->initNewDate();
+    }
 
     public function getId(): ?int
     {
@@ -138,22 +130,11 @@ class ImTenant extends DataEntity
         return $this->firstname;
     }
 
-    public function setFirstname(?string $firstname): self
+    public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     * @Groups({"admin:read", "user:read"})
-     */
-    public function getCivilityString(): string
-    {
-        $civilities = ["Mr", "Mme", "Société", "Mr ou Mme", "Mr et Mme"];
-
-        return $civilities[$this->civility];
     }
 
     public function getCivility(): ?int
@@ -264,21 +245,8 @@ class ImTenant extends DataEntity
         return $this;
     }
 
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?string $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
     /**
      * @return string|null
-     * @Groups({"admin:read", "user:read"})
      */
     public function getBirthdayJavascript(): ?string
     {
@@ -297,26 +265,58 @@ class ImTenant extends DataEntity
         return $this;
     }
 
-    public function getBien(): ?ImBien
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->bien;
+        return $this->createdAt;
     }
 
-    public function setBien(?ImBien $bien): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->bien = $bien;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getAgency(): ?ImAgency
+    /**
+     * @return string|null
+     */
+    public function getLastContactAtJavascript(): ?string
     {
-        return $this->agency;
+        return $this->setDateJavascript($this->lastContactAt);
     }
 
-    public function setAgency(?ImAgency $agency): self
+    public function getLastContactAt(): ?\DateTimeInterface
     {
-        $this->agency = $agency;
+        return $this->lastContactAt;
+    }
+
+    public function setLastContactAt(?\DateTimeInterface $lastContactAt): self
+    {
+        $this->lastContactAt = $lastContactAt;
+
+        return $this;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(int $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
@@ -331,32 +331,5 @@ class ImTenant extends DataEntity
         $this->negotiator = $negotiator;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     * @Groups({"admin:read", "user:read"})
-     */
-    public function getFullnameCivility(): string
-    {
-        return $this->getFullNameString($this->lastname, $this->firstname, $this->getCivilityString());
-    }
-
-    /**
-     * @return string
-     * @Groups({"admin:read", "user:read"})
-     */
-    public function getFullname(): string
-    {
-        return $this->getFullNameString($this->lastname, $this->firstname);
-    }
-
-    /**
-     * @return string
-     * @Groups({"admin:read", "user:read"})
-     */
-    public function getFullAddress(): string
-    {
-        return $this->getFullAddressString($this->address, $this->zipcode, $this->city, $this->complement, $this->country);
     }
 }

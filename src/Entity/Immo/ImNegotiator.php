@@ -107,11 +107,17 @@ class ImNegotiator
      */
     private $avatar;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImProspect::class, mappedBy="negotiator")
+     */
+    private $prospects;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
         $this->owners = new ArrayCollection();
         $this->tenants = new ArrayCollection();
+        $this->prospects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -366,6 +372,36 @@ class ImNegotiator
     public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImProspect[]
+     */
+    public function getProspects(): Collection
+    {
+        return $this->prospects;
+    }
+
+    public function addProspect(ImProspect $prospect): self
+    {
+        if (!$this->prospects->contains($prospect)) {
+            $this->prospects[] = $prospect;
+            $prospect->setNegotiator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspect(ImProspect $prospect): self
+    {
+        if ($this->prospects->removeElement($prospect)) {
+            // set the owning side to null (unless already changed)
+            if ($prospect->getNegotiator() === $this) {
+                $prospect->setNegotiator(null);
+            }
+        }
 
         return $this;
     }
