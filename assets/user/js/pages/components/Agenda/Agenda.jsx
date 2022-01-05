@@ -47,8 +47,6 @@ export class Agenda extends Component {
     render () {
         const { data, initialView } = this.state;
 
-        console.log(data)
-
         let events = [];
         data.forEach(elem => {
             events.push({
@@ -59,9 +57,9 @@ export class Agenda extends Component {
                 allDay: elem.allDay,
                 extendedProps: {
                     where: elem.location,
-                    comment: elem.comment
+                    comment: elem.comment,
                 },
-                classNames: "event-" + elem.id
+                classNames: "event event-" + elem.status
             })
         })
 
