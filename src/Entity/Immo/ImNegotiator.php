@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImNegotiator
 {
-    const FOLDER_AVATARS = "negotiators";
+    const FOLDER_AVATARS = "immo/negotiators/";
 
     const TRANSPORT_UNKNOWN = 0;
     const TRANSPORT_PIED = 1;
@@ -355,7 +355,7 @@ class ImNegotiator
      */
     public function getAvatarFile(): string
     {
-        return $this->avatar ? "/negotiators/" . $this->avatar : "https://robohash.org/" . $this->id . "?size=64x64";
+        return $this->avatar ? "/" . self::FOLDER_AVATARS . $this->avatar : "https://robohash.org/" . $this->id . "?size=64x64";
     }
 
     public function getAvatar(): ?string

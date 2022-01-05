@@ -15,8 +15,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImAgency
 {
-    const FOLDER_LOGO = "immo/logos";
-    const FOLDER_TARIF = "immo/tarifs";
+    const FOLDER_LOGO = "immo/logos/";
+    const FOLDER_TARIF = "immo/tarifs/";
 
     /**
      * @ORM\Id
@@ -691,5 +691,14 @@ class ImAgency
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getLogoFile(): string
+    {
+        return $this->logo ? self::FOLDER_LOGO . $this->logo : "https://robohash.org/" . $this->id . "?size=120x120";
     }
 }

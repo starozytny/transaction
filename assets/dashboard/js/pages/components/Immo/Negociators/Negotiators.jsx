@@ -59,14 +59,16 @@ export class Negotiators extends Component {
     }
 
     handleContentCreate = (changeContext) => {
+        const { idAgency } = this.props;
         const { agencies, isClient, isUser } = this.state;
-        return <NegotiatorFormulaire type="create" agencies={agencies} isClient={isClient} isUser={isUser}
+        return <NegotiatorFormulaire type="create" agencies={agencies} agencyId={idAgency} isClient={isClient} isUser={isUser}
                                      onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
+        const { idAgency } = this.props;
         const { agencies, isClient, isUser } = this.state;
-        return <NegotiatorFormulaire type="update" agencies={agencies} isClient={isClient} isUser={isUser} element={element}
+        return <NegotiatorFormulaire type="update" agencies={agencies} agencyId={idAgency} isClient={isClient} isUser={isUser} element={element}
                                      onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 

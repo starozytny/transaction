@@ -115,6 +115,7 @@ export class NegotiatorForm extends Component {
 
             // validate global
             let validate = Validateur.validateur(paramsToValidate)
+            console.log(validate)
             if(!validate.code){
                 Formulaire.showErrors(this, validate);
             }else{
