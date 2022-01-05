@@ -151,9 +151,7 @@ class ImTenant extends DataEntity
      */
     public function getCivilityString(): string
     {
-        $civilities = ["Mr", "Mme", "Société", "Mr ou Mme", "Mr et Mme"];
-
-        return $civilities[$this->civility];
+        return $this->setCivilityString($this->civility);
     }
 
     public function getCivility(): ?int

@@ -9,6 +9,7 @@ import { Agency } from "@dashboardPages/components/Immo/Agencies/Agency";
 import { Negotiators }  from "@dashboardPages/components/Immo/Negociators/Negotiators";
 import { Owners }       from "@dashboardPages/components/Immo/Owners/Owners";
 import { Tenants }      from "@dashboardPages/components/Immo/Tenants/Tenants";
+import { Prospects }    from "@dashboardPages/components/Immo/Prospects/Prospects";
 
 Routing.setRoutingData(routes);
 
@@ -30,4 +31,9 @@ if(el){
 el = document.getElementById("tenants");
 if(el){
     render(<Tenants {...el.dataset} />, el)
+}
+
+el = document.getElementById("prospects");
+if(el){
+    render(<Prospects {...el.dataset} />, el)
 }
