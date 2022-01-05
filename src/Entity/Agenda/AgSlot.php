@@ -2,6 +2,7 @@
 
 namespace App\Entity\Agenda;
 
+use App\Entity\DataEntity;
 use App\Entity\User;
 use App\Repository\Agenda\AgSlotRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,8 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=AgSlotRepository::class)
  */
-class AgSlot
+class AgSlot extends DataEntity
 {
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+    const STATUS_CANCEL = 2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,7 +29,7 @@ class AgSlot
     private $name;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $startAt;
 
@@ -36,7 +41,7 @@ class AgSlot
     /**
      * @ORM\Column(type="boolean")
      */
-    private $allDay;
+    private $allDay = false;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -74,6 +79,11 @@ class AgSlot
      */
     private $creator;
 
+    public function __construct()
+    {
+        $this->createdAt = $this->initNewDate();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,7 +106,7 @@ class AgSlot
         return $this->startAt;
     }
 
-    public function setStartAt(\DateTimeInterface $startAt): self
+    public function setStartAt(?\DateTimeInterface $startAt): self
     {
         $this->startAt = $startAt;
 
