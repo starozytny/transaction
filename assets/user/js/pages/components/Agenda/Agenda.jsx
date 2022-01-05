@@ -19,15 +19,15 @@ export class Agenda extends Component {
     render () {
         const { initialView } = this.state;
 
-        return <div className="main-content">
+        return <div id="calendar" className="main-content">
             <FullCalendar
                 locale={frLocale}
                 plugins={[ dayGridPlugin, timeGridPlugin, listPlugin ]}
                 initialView={initialView}
-                hiddenDays={[ 0 ]} // hide sunday
+                hiddenDays={[ 0 ]}
                 slotMinTime={"07:00:00"}
                 slotMaxTime={"23:00:00"}
-                allDayText={"Journée"}
+                allDayText={""}
                 headerToolbar={{
                     left: 'timeGridDay,timeGridWeek',
                     center: 'title',

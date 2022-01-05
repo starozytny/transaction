@@ -85,6 +85,15 @@
   .react-selectize.dropdown-menu.default:not(.flipped){
     border-color: var(--txt);
   }
+
+  .fc-theme-standard .fc-scrollgrid{
+    background-color: var(--fond);
+  }
+
+  .fc-theme-standard .fc-scrollgrid,
+  .fc-theme-standard td, .fc-theme-standard th{
+    border-color: var(--grey2);
+  }
 }
 
 //                      __   _____ __    ___    __
