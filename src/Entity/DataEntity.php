@@ -75,6 +75,18 @@ class DataEntity
      * @param $date
      * @return string|null
      */
+    public function setDateAgenda($date): ?string
+    {
+        date_default_timezone_set('Europe/Paris');
+        return $date != null ? date_format($date, 'Y-m-d H:i:s') : null;
+    }
+
+    /**
+     * return format for new Date JS
+     *
+     * @param $date
+     * @return string|null
+     */
     public function setDateJavascript($date): ?string
     {
         date_default_timezone_set('Europe/Paris');

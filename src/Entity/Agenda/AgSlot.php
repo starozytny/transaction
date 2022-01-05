@@ -6,6 +6,7 @@ use App\Entity\DataEntity;
 use App\Entity\User;
 use App\Repository\Agenda\AgSlotRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AgSlotRepository::class)
@@ -20,11 +21,13 @@ class AgSlot extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
      */
     private $name;
 
@@ -40,16 +43,19 @@ class AgSlot extends DataEntity
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"user:read"})
      */
     private $allDay = false;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read"})
      */
     private $location;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"user:read"})
      */
     private $comment;
 
@@ -65,17 +71,20 @@ class AgSlot extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"user:read"})
      */
     private $persons;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="agSlots")
+     * @ORM\ManyToOne(targetEntity=User::class, fetch="EAGER", inversedBy="agSlots")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
      */
     private $creator;
 
@@ -101,6 +110,15 @@ class AgSlot extends DataEntity
         return $this;
     }
 
+    /**
+     * @return string|null
+     * @Groups({"user:read"})
+     */
+    public function getStartAtAgenda(): ?string
+    {
+        return $this->setDateAgenda($this->startAt);
+    }
+
     public function getStartAt(): ?\DateTimeInterface
     {
         return $this->startAt;
@@ -111,6 +129,15 @@ class AgSlot extends DataEntity
         $this->startAt = $startAt;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"user:read"})
+     */
+    public function getEndAtAgenda(): ?string
+    {
+        return $this->setDateAgenda($this->endAt);
     }
 
     public function getEndAt(): ?\DateTimeInterface
