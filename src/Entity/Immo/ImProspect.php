@@ -407,4 +407,36 @@ class ImProspect extends DataEntity
     {
         return $this->getFullAddressString($this->address, $this->zipcode, $this->city, $this->complement);
     }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getTypeString(): string
+    {
+        $types = ["Aucun", "Location", "Vente", "Investisseur", "Autre"];
+
+        return $types[$this->type];
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getStatusString(): string
+    {
+        $status = ["Aucun", "En recherche", "En place", "Archive"];
+
+        return $status[$this->status];
+    }
+
+    /**
+     * How long ago a user was logged for the last time.
+     *
+     * @Groups({"admin:read"})
+     */
+    public function getLastContactAtAgo(): ?string
+    {
+        return $this->getHowLongAgo($this->lastContactAt);
+    }
 }

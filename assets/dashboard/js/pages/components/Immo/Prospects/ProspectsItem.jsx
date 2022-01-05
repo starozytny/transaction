@@ -13,7 +13,7 @@ export class ProspectsItem extends Component {
 
             <div className="item-content">
                 <div className="item-body">
-                    <div className="infos infos-col-4">
+                    <div className="infos infos-col-5">
                         <div className="col-1">
                             <TenantMainInfos elem={elem} isClient={isClient} />
                         </div>
@@ -22,6 +22,11 @@ export class ProspectsItem extends Component {
                         </div>
                         <div className="col-3">
                             <TenantNegotiator elem={elem} />
+                            {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
+                        </div>
+                        <div className="col-5">
+                            <div className="role">{elem.statusString}</div>
+                            <div className="sub">Type : {elem.typeString}</div>
                         </div>
                         <div className="col-4 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>

@@ -455,7 +455,6 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     }
 
     /**
-<<<<<<< HEAD
      * Like C. CHHUN
      */
     public function getShortFullName(): string
