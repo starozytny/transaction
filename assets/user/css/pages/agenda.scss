@@ -58,8 +58,21 @@
   }
 
   // event card
+  .fc-daygrid-event-harness > .fc-daygrid-event,
   .fc-timegrid-event-harness > .fc-timegrid-event,
   .fc-list-event{
+    .time{
+      padding: 4px 4px 0 4px;
+    }
+
+    .title, .sub{
+      padding: 0 4px;
+    }
+
+    .title{
+      @include fontSemibold();
+      padding-top: 1px;
+    }
   }
 }
 //                      __   _____ __    ___    __

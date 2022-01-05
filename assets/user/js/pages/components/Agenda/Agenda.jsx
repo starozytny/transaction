@@ -103,9 +103,9 @@ function addEventElement (bloc, event) {
         let start = Sanitaze.toFormatTimeHoursMinutes(event.start);
         let end = event.end ? " - " + Sanitaze.toFormatTimeHoursMinutes(event.end) : "";
 
-        bloc.insertAdjacentHTML('beforeend', '<div class="title">'+ start + end +'</div>')
+        bloc.insertAdjacentHTML('beforeend', '<div class="time">'+ start + end +'</div>')
     }
 
-    bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + event.title + '</div>')
+    bloc.insertAdjacentHTML('beforeend', '<div class="title">' + event.title + '</div>')
     bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.where + '</div>')
 }
