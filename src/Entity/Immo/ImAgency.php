@@ -208,6 +208,11 @@ class ImAgency
      */
     private $owners;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImProspect::class, mappedBy="agency")
+     */
+    private $prospects;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
@@ -215,6 +220,7 @@ class ImAgency
         $this->negotiators = new ArrayCollection();
         $this->tenants = new ArrayCollection();
         $this->owners = new ArrayCollection();
+        $this->prospects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -700,5 +706,35 @@ class ImAgency
     public function getLogoFile(): string
     {
         return $this->logo ? self::FOLDER_LOGO . $this->logo : "https://robohash.org/" . $this->id . "?size=120x120";
+    }
+
+    /**
+     * @return Collection|ImProspect[]
+     */
+    public function getProspects(): Collection
+    {
+        return $this->prospects;
+    }
+
+    public function addProspect(ImProspect $prospect): self
+    {
+        if (!$this->prospects->contains($prospect)) {
+            $this->prospects[] = $prospect;
+            $prospect->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspect(ImProspect $prospect): self
+    {
+        if ($this->prospects->removeElement($prospect)) {
+            // set the owning side to null (unless already changed)
+            if ($prospect->getAgency() === $this) {
+                $prospect->setAgency(null);
+            }
+        }
+
+        return $this;
     }
 }

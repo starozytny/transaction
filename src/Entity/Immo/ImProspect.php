@@ -103,6 +103,12 @@ class ImProspect extends DataEntity
      */
     private $negotiator;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="prospects")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $agency;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -329,6 +335,18 @@ class ImProspect extends DataEntity
     public function setNegotiator(?ImNegotiator $negotiator): self
     {
         $this->negotiator = $negotiator;
+
+        return $this;
+    }
+
+    public function getAgency(): ?ImAgency
+    {
+        return $this->agency;
+    }
+
+    public function setAgency(?ImAgency $agency): self
+    {
+        $this->agency = $agency;
 
         return $this;
     }
