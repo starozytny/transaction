@@ -32,7 +32,8 @@ export class Agenda extends Component {
     }
 
     handleOpenAside = (context, elem) => {
-        let title = context === "update" ? elem.title : "Ajouter un évènement à " + Sanitaze.toFormatTimeHoursMinutes(elem.date);
+        let time = context === "create" ? Sanitaze.toFormatTimeHoursMinutes(elem.date) : "";
+        let title = context === "update" ? elem.title : "Ajouter un évènement " + (time === "00h00" ? "pour la journée" : "à " + time);
 
         let element = elem;
         if(context === "update"){
