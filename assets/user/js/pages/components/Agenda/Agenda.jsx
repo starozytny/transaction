@@ -100,7 +100,6 @@ function addEventElement (bloc, event) {
     let props = event.extendedProps;
 
     if(!event.allDay){
-        console.log(event)
         let start = Sanitaze.toFormatTimeHoursMinutes(event.start);
         let end = event.end ? " - " + Sanitaze.toFormatTimeHoursMinutes(event.end) : "";
 
