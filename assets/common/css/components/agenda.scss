@@ -26,6 +26,14 @@
     background-color: var(--primaryShadow);
   }
 
+  .fc .fc-timeGridDay-view{
+    .fc-timegrid-col.fc-day-today,
+    .fc-daygrid-day.fc-day-today{
+      background-color: transparent;
+    }
+  }
+
+
   .fc .fc-timegrid-axis-cushion,
   .fc .fc-timegrid-slot-label-cushion{
     padding: 0 7px 0 5px;
