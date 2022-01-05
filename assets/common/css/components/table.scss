@@ -3,20 +3,39 @@
   padding: 4px 8px 2px 8px;
   background: var(--primaryShadow);
   border-radius: 4px;
-  font-size: 12px;
-  opacity: 0.5;
+  font-size: 14px;
+  opacity: 0.8;
+  color: var(--alpha);
+  @include fontSemibold();
+}
 
-  &.default{
-    background-color: var(--grey);
+.badge, .role{
+  font-size: 14px;
+  color: var(--alpha);
+
+  $status:
+          "0" var(--danger),
+          "1" var(--primary),
+          "2" var(--warning),
+          "3" var(--grey3),
+          "default" var(--grey),
+          "danger" var(--danger),
+          "warning" var(--warning),
+          "primary" var(--primary),
+;
+
+  @each $number, $bg in $status {
+    &.badge-#{$number},
+    &.role-#{$number}{
+      background-color: $bg;
+    }
   }
-  &.danger{
-    background-color: var(--danger);
-  }
-  &.warning{
-    background-color: var(--warning);
-  }
-  &.primary{
-    background-color: var(--primary);
+}
+
+.items-table{
+  .badge + .sub,
+  .role + .sub{
+    margin-top: 8px;
   }
 }
 
