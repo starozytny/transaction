@@ -4,7 +4,7 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import {Input, Radiobox, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
+import { Input, Radiobox }     from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { DatePick }            from "@dashboardComponents/Tools/DatePicker";
@@ -17,8 +17,8 @@ import Formulaire              from "@dashboardComponents/functions/Formulaire";
 import { SelecteurNegociateur } from "@dashboardPages/components/Immo/Elements/Selecteur";
 import { LocalisationContact }  from "@dashboardPages/components/Immo/Elements/Contact";
 
-const URL_CREATE_ELEMENT     = "api_tenants_create";
-const URL_UPDATE_GROUP       = "api_tenants_update";
+const URL_CREATE_ELEMENT     = "api_prospects_create";
+const URL_UPDATE_GROUP       = "api_prospects_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
@@ -26,12 +26,12 @@ export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, eleme
                                      societies, societyId = "", agencies, agencyId = "",
                                      negotiators })
 {
-    let title = "Ajouter un locataire";
+    let title = "Ajouter un prospect";
     let url = Routing.generate(URL_CREATE_ELEMENT);
-    let msg = "Félicitations ! Vous avez ajouté un nouveau locataire !"
+    let msg = "Félicitations ! Vous avez ajouté un nouveau prospect !"
 
     if(type === "update"){
-        title = "Modifier " + element.lastname + " " + element.firstname;
+        title = "Modifier " + element.fullname;
         url = Routing.generate(URL_UPDATE_GROUP, {'id': element.id});
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }

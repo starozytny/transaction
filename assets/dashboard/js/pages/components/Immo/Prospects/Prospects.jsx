@@ -6,8 +6,8 @@ import Sort              from "@commonComponents/functions/sort";
 import { ProspectsList }       from "./ProspectsList";
 import { ProspectFormulaire }  from "./ProspectForm";
 
-const URL_DELETE_ELEMENT = 'api_tenants_delete';
-const URL_DELETE_GROUP   = 'api_tenants_delete_group';
+const URL_DELETE_ELEMENT = 'api_prospects_delete';
+const URL_DELETE_GROUP   = 'api_prospects_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer ce prospect ?';
 const MSG_DELETE_GROUP   = 'Aucun prospect sélectionnés.';
 const SORTER = Sort.compareLastname;
