@@ -9,6 +9,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 import Sanitaze          from "@commonComponents/functions/sanitaze";
 import {Aside} from "@dashboardComponents/Tools/Aside";
+import {AgendaFormulaire} from "@userPages/components/Agenda/AgendaForm";
 
 export class Agenda extends Component {
     constructor(props) {
@@ -30,10 +31,28 @@ export class Agenda extends Component {
         this.handleEventDidMount = this.handleEventDidMount.bind(this);
     }
 
-    handleOpenAside = (context, element) => {
+    handleOpenAside = (context, elem) => {
+        let title = context === "update" ? elem.title : "Ajouter un évènement à " + Sanitaze.toFormatTimeHoursMinutes(elem.date);
+
+        let element = elem;
+        if(context === "update"){
+            let props = elem.extendedProps;
+            element = {
+                id: elem.id,
+                name: elem.title,
+                allDay: elem.allDay,
+                startAtJavascript: props.startAtJavascript,
+                endAtJavascript: props.endAtJavascript,
+                location: props.location,
+                comment: props.comment,
+                persons: props.persons,
+                status: props.status,
+            }
+        }
+
         this.setState({ context, element })
-        this.aside.current.handleOpen(context === "update" ? element.title :
-            "Ajouter un évènement à " + Sanitaze.toFormatTimeHoursMinutes(element.date));
+        this.aside.current.handleOpen(title);
+
     }
 
     // init event
@@ -65,7 +84,7 @@ export class Agenda extends Component {
                 contentAside = <div>Ajouter</div>
                 break;
             case "update":
-                contentAside = <div>Modifier {element.title}</div>
+                contentAside = <AgendaFormulaire type="update" element={element} />
                 break;
             default:
                 break;
@@ -73,6 +92,8 @@ export class Agenda extends Component {
 
         let events = [];
         data.forEach(elem => {
+
+            console.log(elem)
 
             // console.log(JSON.parse(elem.persons)) // get persons
 
@@ -85,6 +106,10 @@ export class Agenda extends Component {
                 extendedProps: {
                     where: elem.location,
                     comment: elem.comment,
+                    persons: elem.persons,
+                    startAtJavascript: elem.startAtJavascript,
+                    endAtJavascript: elem.endAtJavascript,
+                    status: elem.status
                 },
                 classNames: "event event-" + elem.status
             })

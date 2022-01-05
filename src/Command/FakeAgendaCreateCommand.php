@@ -70,20 +70,20 @@ class FakeAgendaCreateCommand extends Command
                 "location" => $fake->streetName,
                 "comment" => $fake->sentence,
                 "persons" => '{
-                  "user": [
-                    {
-                      "id": 1
-                    },
-                    {
-                      "id": 2
-                    }
-                  ],
-                  "other": [
-                    {
-                      "id": 1
-                    }  
-                  ]
-                }'
+"user": [
+{
+  "id": 1
+},
+{
+  "id": 2
+}
+],
+"other": [
+{
+  "id": 1
+}  
+]
+}'
             ];
 
             $data = json_decode(json_encode($data));

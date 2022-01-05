@@ -119,6 +119,15 @@ class AgSlot extends DataEntity
         return $this->setDateAgenda($this->startAt);
     }
 
+    /**
+     * @return string|null
+     * @Groups({"user:read"})
+     */
+    public function getStartAtJavascript(): ?string
+    {
+        return $this->setDateJavascript($this->startAt);
+    }
+
     public function getStartAt(): ?\DateTimeInterface
     {
         return $this->startAt;
@@ -138,6 +147,15 @@ class AgSlot extends DataEntity
     public function getEndAtAgenda(): ?string
     {
         return $this->setDateAgenda($this->endAt);
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"user:read"})
+     */
+    public function getEndAtJavascript(): ?string
+    {
+        return $this->setDateJavascript($this->endAt);
     }
 
     public function getEndAt(): ?\DateTimeInterface
