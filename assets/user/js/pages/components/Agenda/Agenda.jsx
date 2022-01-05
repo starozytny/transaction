@@ -8,20 +8,32 @@ import listPlugin        from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 
 import Sanitaze          from "@commonComponents/functions/sanitaze";
+import {Aside} from "@dashboardComponents/Tools/Aside";
 
 export class Agenda extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            context: "list",
             data: JSON.parse(props.donnees),
             initialView: (window.matchMedia("(min-width: 768px)").matches) ? "timeGridWeek" : "timeGridDay"
         }
+
+        this.aside = React.createRef();
+
+        this.handleOpenAside = this.handleOpenAside.bind(this);
 
         this.handleDateClick = this.handleDateClick.bind(this);
         this.handleEventClick = this.handleEventClick.bind(this);
         this.handleEventDrop = this.handleEventDrop.bind(this);
         this.handleEventDidMount = this.handleEventDidMount.bind(this);
+    }
+
+    handleOpenAside = (context, element) => {
+        this.setState({ context, element })
+        this.aside.current.handleOpen(context === "update" ? element.title :
+            "Ajouter un évènement à " + Sanitaze.toFormatTimeHoursMinutes(element.date));
     }
 
     // init event
@@ -36,19 +48,34 @@ export class Agenda extends Component {
 
     // edit event
     handleEventClick = (e) => {
-        console.log(e)
+        this.handleOpenAside("update", e.event)
     }
 
     // click in case empty
     handleDateClick = (e) => {
-        console.log(e)
+        this.handleOpenAside("create", e)
     }
 
     render () {
-        const { data, initialView } = this.state;
+        const { context, data, initialView, element } = this.state;
+
+        let contentAside;
+        switch (context){
+            case "create":
+                contentAside = <div>Ajouter</div>
+                break;
+            case "update":
+                contentAside = <div>Modifier {element.title}</div>
+                break;
+            default:
+                break;
+        }
 
         let events = [];
         data.forEach(elem => {
+
+            // console.log(JSON.parse(elem.persons)) // get persons
+
             events.push({
                 id: elem.id,
                 title: elem.name,
@@ -86,6 +113,8 @@ export class Agenda extends Component {
                 eventClick={this.handleEventClick}
                 dateClick={this.handleDateClick}
             />
+
+            <Aside ref={this.aside} content={contentAside} />
         </div>
     }
 }
