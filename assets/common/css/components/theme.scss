@@ -94,6 +94,19 @@
   .fc-theme-standard td, .fc-theme-standard th{
     border-color: var(--grey2);
   }
+
+  #calendar{
+    .fc-timegrid-event-harness-inset .fc-timegrid-event {
+      box-shadow: none;
+    }
+    .event{
+      background-color: var(--fondContent);
+
+      .status{
+        opacity: 0.9;
+      }
+    }
+  }
 }
 
 //                      __   _____ __    ___    __

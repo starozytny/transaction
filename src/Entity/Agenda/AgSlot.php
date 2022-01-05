@@ -265,4 +265,15 @@ class AgSlot extends DataEntity
 
         return $this;
     }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getStatusString(): string
+    {
+        $status = ["Inactif", "Actif", "Annulé"];
+
+        return $status[$this->status];
+    }
 }

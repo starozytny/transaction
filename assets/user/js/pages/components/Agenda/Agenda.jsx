@@ -92,11 +92,7 @@ export class Agenda extends Component {
 
         let events = [];
         data.forEach(elem => {
-
-            console.log(elem)
-
             // console.log(JSON.parse(elem.persons)) // get persons
-
             events.push({
                 id: elem.id,
                 title: elem.name,
@@ -109,7 +105,8 @@ export class Agenda extends Component {
                     persons: elem.persons,
                     startAtJavascript: elem.startAtJavascript,
                     endAtJavascript: elem.endAtJavascript,
-                    status: elem.status
+                    status: elem.status,
+                    statusString: elem.statusString,
                 },
                 classNames: "event event-" + elem.status
             })
@@ -148,6 +145,8 @@ function addEventElement (bloc, event) {
     bloc.innerHTML = "";
 
     let props = event.extendedProps;
+
+    bloc.insertAdjacentHTML('beforeend', '<div class="status status-' + props.status + '">' + props.statusString + '</div>')
 
     if(!event.allDay){
         let start = Sanitaze.toFormatTimeHoursMinutes(event.start);
