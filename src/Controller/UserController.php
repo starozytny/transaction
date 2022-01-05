@@ -44,4 +44,12 @@ class UserController extends AbstractController
         $data = $serializer->serialize($data, 'json', ['groups' => User::ADMIN_READ]);
         return $this->render('user/pages/profil/update.html.twig',  ['donnees' => $data]);
     }
+
+    /**
+     * @Route("/agenda", name="agenda")
+     */
+    public function agenda(): Response
+    {
+        return $this->render('user/pages/agenda/index.html.twig');
+    }
 }

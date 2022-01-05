@@ -68,6 +68,7 @@ Encore
     .addEntry('dashboard_notifications', './assets/dashboard/js/pages/notifications.js')
 
     .addEntry('user_profil', './assets/user/js/pages/profil.js')
+    .addEntry('user_agenda', './assets/user/js/pages/agenda.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')
