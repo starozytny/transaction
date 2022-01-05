@@ -95,4 +95,11 @@ class DataEntity
         $civility = $civility != null && $civility != "" ? $civility . " " : "";
         return $civility . $lastname . " " . $firstname;
     }
+
+    public function setCivilityString($civility)
+    {
+        $civilities = ["Mr", "Mme", "Société", "Mr ou Mme", "Mr et Mme"];
+
+        return $civilities[$civility];
+    }
 }
