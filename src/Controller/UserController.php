@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\Agenda\AgSlotRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,8 +49,13 @@ class UserController extends AbstractController
     /**
      * @Route("/agenda", name="agenda")
      */
-    public function agenda(): Response
+    public function agenda(AgSlotRepository $repository, SerializerInterface $serializer): Response
     {
-        return $this->render('user/pages/agenda/index.html.twig');
+        $objs = $repository->findBy(['creator' => $this->getUser()]);
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/agenda/index.html.twig', [
+            'donnees' => $objs
+        ]);
     }
 }

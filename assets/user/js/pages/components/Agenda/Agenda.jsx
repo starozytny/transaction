@@ -14,6 +14,7 @@ export class Agenda extends Component {
         super(props);
 
         this.state = {
+            data: JSON.parse(props.donnees),
             initialView: (window.matchMedia("(min-width: 768px)").matches) ? "timeGridWeek" : "timeGridDay"
         }
 
@@ -44,7 +45,25 @@ export class Agenda extends Component {
     }
 
     render () {
-        const { initialView } = this.state;
+        const { data, initialView } = this.state;
+
+        console.log(data)
+
+        let events = [];
+        data.forEach(elem => {
+            events.push({
+                id: elem.id,
+                title: elem.name,
+                start: elem.startAtAgenda,
+                end: elem.endAtAgenda,
+                allDay: elem.allDay,
+                extendedProps: {
+                    where: elem.location,
+                    comment: elem.comment
+                },
+                classNames: "event-" + elem.id
+            })
+        })
 
         return <div id="calendar" className="main-content">
             <FullCalendar
@@ -63,28 +82,7 @@ export class Agenda extends Component {
                 eventMinHeight={60}
                 editable={true}
                 droppable={true}
-                events={[
-                    {
-                        id: 1,
-                        title: "event 1",
-                        date: "2022-01-05", // Sanitaze.toFormatDataAgenda(start)
-                        allDay: true,
-                        extendedProps: {
-                            where: "Chez moi",
-                        },
-                        classNames: "event-1"
-                    },
-                    {
-                        id: 2,
-                        title: "event 2",
-                        start: "2022-01-06 10:00:00",
-                        end: "2022-01-06 10:30:00",
-                        extendedProps: {
-                            where: "Chez Logilink",
-                        },
-                        classNames: "event-2"
-                    }
-                ]}
+                events={events}
                 eventDidMount={this.handleEventDidMount}
                 eventDrop={this.handleEventDrop}
                 eventClick={this.handleEventClick}
