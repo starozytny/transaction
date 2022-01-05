@@ -91,6 +91,7 @@ class FakeProspectsCreate extends Command
                 "zipcode" => $fake->postcode,
                 "city" => $fake->city,
                 "birthday" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
+                "lastContactAt" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
                 "type" => $fake->numberBetween(0, 4),
                 "status" => $fake->numberBetween(0, 3),
             ];
@@ -98,8 +99,6 @@ class FakeProspectsCreate extends Command
             $data = json_decode(json_encode($data));
 
             $new = $this->dataImmo->setDataProspect(new ImProspect(), $data);
-
-            $new = $new->setLastContactAt($fake->numberBetween(0, 1) == 1 ? new \DateTime($fake->date("Y-m-d")) : null);
 
             $this->em->persist($new);
         }

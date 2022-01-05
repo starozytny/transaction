@@ -4,7 +4,7 @@ import axios                   from "axios";
 import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Radiobox }     from "@dashboardComponents/Tools/Fields";
+import {Input, Radiobox, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { DatePick }            from "@dashboardComponents/Tools/DatePicker";
@@ -55,6 +55,9 @@ export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, eleme
         city={element ? Formulaire.setValueEmptyIfNull(element.city) : ""}
         country={element ? Formulaire.setValueEmptyIfNull(element.country, "France") : "France"}
         birthday={element ? Formulaire.setDateOrEmptyIfNull(element.birthdayJavascript, "") : ""}
+        lastContactAt={element ? Formulaire.setDateOrEmptyIfNull(element.lastContactAtJavascript, "") : ""}
+        type={element ? Formulaire.setValueEmptyIfNull(element.type, 0) : 0}
+        status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
 
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
@@ -90,6 +93,9 @@ export class ProspectForm extends Component {
             city: props.city,
             country: props.country,
             birthday: props.birthday,
+            lastContactAt: props.lastContactAt,
+            type: props.type,
+            status: props.status,
 
             errors: [],
             success: false,
@@ -191,7 +197,10 @@ export class ProspectForm extends Component {
                                 zipcode: "",
                                 city: "",
                                 country: "",
-                                birthday: ""
+                                birthday: "",
+                                lastContactAt: "",
+                                type: 0,
+                                status: 1
                             })
                         }
                     })
@@ -208,12 +217,28 @@ export class ProspectForm extends Component {
 
     render () {
         const { context } = this.props;
-        const { critere, errors, success, society, agency, negotiator, lastname, firstname, civility, birthday } = this.state;
+        const { critere, errors, success, society, agency, negotiator, lastname, firstname, civility, birthday,
+            lastContactAt, type, status } = this.state;
 
         let civilityItems = [
-            {value: 0, label: "Mr",         identifiant: "mr"},
-            {value: 1, label: "Mme",        identifiant: "mme"},
-            {value: 2, label: "Société",    identifiant: "societe"},
+            {value: 0, label: "Mr",      identifiant: "mr"},
+            {value: 1, label: "Mme",     identifiant: "mme"},
+            {value: 2, label: "Société", identifiant: "societe"},
+        ]
+
+        let typeItems = [
+            {value: 0, label: "Aucun",          identifiant: "aucun-0"},
+            {value: 1, label: "Location",       identifiant: "location"},
+            {value: 2, label: "Vente",          identifiant: "vente"},
+            {value: 3, label: "Investisseur",   identifiant: "investisseur"},
+            {value: 4, label: "Autre",          identifiant: "autre"},
+        ]
+
+        let statusItems = [
+            {value: 0, label: "Aucun",        identifiant: "aucun-1"},
+            {value: 1, label: "En recherche", identifiant: "en-search"},
+            {value: 2, label: "En place",     identifiant: "en-place"},
+            {value: 3, label: "Archive",      identifiant: "en-archive"},
         ]
 
         return <>
@@ -244,6 +269,17 @@ export class ProspectForm extends Component {
                         <div className="line">
                             <DatePick identifiant="birthday" valeur={birthday} errors={errors} onChange={(e) => this.handleChangeDate("birthday", e)}>Date de naissance</DatePick>
                         </div>
+
+                        <div className="line">
+                            <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>
+                                Type de prospect
+                            </Radiobox>
+                        </div>
+                        <div className="line">
+                            <Radiobox items={statusItems} identifiant="status" valeur={status} errors={errors} onChange={this.handleChange}>
+                                Statut
+                            </Radiobox>
+                        </div>
                     </div>
                     <div className="form-group">
                         <div className="line-separator">
@@ -256,6 +292,13 @@ export class ProspectForm extends Component {
 
                 <div className="line line-2">
                     <LocalisationContact {...this.state} onChange={this.handleChange} />
+                </div>
+
+                <div className="line line-2">
+                    <div className="form-group" />
+                    <DatePick identifiant="lastContactAt" valeur={lastContactAt} errors={errors} onChange={(e) => this.handleChangeDate("lastContactAt", e)}>
+                        Dernier contact
+                    </DatePick>
                 </div>
 
                 <div className="line line-critere">

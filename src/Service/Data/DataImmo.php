@@ -387,6 +387,7 @@ class DataImmo extends DataConstructor
         }
         $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
 
+        $civility = (int) $data->civility;
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
         $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
         $code = mb_strtoupper(substr($lastname, 0, 1) . substr($firstname, 0, 1)) . time();
@@ -411,8 +412,8 @@ class DataImmo extends DataConstructor
             ->setNegotiator($negotiator)
             ->setCode($code)
             ->setLastname($lastname)
-            ->setFirstname($firstname)
-            ->setCivility((int) $data->civility)
+            ->setFirstname($civility != 2 ? $firstname : null)
+            ->setCivility($civility)
             ->setEmail($this->sanitizeData->trimData($data->email))
             ->setPhone1($this->sanitizeData->trimData($data->phone1))
             ->setPhone2($this->sanitizeData->trimData($data->phone2))
@@ -438,6 +439,7 @@ class DataImmo extends DataConstructor
         }
         $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
 
+        $civility = (int) $data->civility;
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
         $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
 
@@ -445,8 +447,8 @@ class DataImmo extends DataConstructor
             ->setAgency($agency)
             ->setNegotiator($negotiator)
             ->setLastname($lastname)
-            ->setFirstname($firstname)
-            ->setCivility((int) $data->civility)
+            ->setFirstname($civility != 2 ? $firstname : null)
+            ->setCivility($civility)
             ->setEmail($this->sanitizeData->trimData($data->email))
             ->setPhone1($this->sanitizeData->trimData($data->phone1))
             ->setPhone2($this->sanitizeData->trimData($data->phone2))
@@ -471,7 +473,6 @@ class DataImmo extends DataConstructor
         }
         $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
 
-
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
         $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
 
@@ -490,6 +491,9 @@ class DataImmo extends DataConstructor
             ->setZipcode($this->sanitizeData->trimData($data->zipcode))
             ->setCity($this->sanitizeData->trimData($data->city))
             ->setBirthday($this->createDate($data->birthday))
-            ;
+            ->setLastContactAt($this->createDate($data->lastContactAt))
+            ->setType((int) $data->type)
+            ->setStatus((int) $data->status)
+        ;
     }
 }
