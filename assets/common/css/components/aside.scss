@@ -34,6 +34,8 @@
   @include scrollbar();
 
   .form{
+    padding: 0;
+
     form{
       & > .alert{
         width: calc(100% - 24px);
@@ -107,6 +109,12 @@
 @media (min-width:1280px) {
   .aside{
     width: 35%;
+  }
+
+  .aside-content {
+    .form {
+      padding: 0;
+    }
   }
 }
 
