@@ -72,12 +72,34 @@ function toFormatBytesToSize(bytes) {
     return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 }
 
+function addZeroToNumber (data) {
+    return data > 9 ? data : "0" + data;
+}
+
+function toFormatDataAgenda (start) {
+    return start.getFullYear() + "-" + addZeroToNumber(start.getMonth() + 1) + "-" + addZeroToNumber(start.getUTCDate()) + "T"
+        + addZeroToNumber(start.getHours()) + ":" + addZeroToNumber(start.getMinutes()) + ":00"
+}
+
+function toFormatDateTimeMidString(date, timezone="UTC"){
+    return addZeroToNumber(date.getUTCDate()) + "/" + addZeroToNumber(date.getMonth() + 1) + "/" + date.getFullYear() + " à "
+        + addZeroToNumber(date.getHours()) + "h" + addZeroToNumber(date.getMinutes())
+}
+
+function toFormatTimeHoursMinutes(date){
+    return addZeroToNumber(date.getHours()) + "h" + addZeroToNumber(date.getMinutes())
+}
+
 module.exports = {
     sanitizeString,
+    addZeroToNumber,
     toFormatTime,
     toFormatDate,
     toFormatDateTime,
     toFormatPhone,
     toFormatCurrency,
-    toFormatBytesToSize
+    toFormatBytesToSize,
+    toFormatDataAgenda,
+    toFormatDateTimeMidString,
+    toFormatTimeHoursMinutes
 }
