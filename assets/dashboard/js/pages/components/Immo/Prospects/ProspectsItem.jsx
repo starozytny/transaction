@@ -22,13 +22,13 @@ export class ProspectsItem extends Component {
                         </div>
                         <div className="col-3">
                             <TenantNegotiator elem={elem} />
+                        </div>
+                        <div className="col-4">
+                            <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
+                            <div className="sub">Type de prospect : {elem.typeString}</div>
                             {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
                         </div>
-                        <div className="col-5">
-                            <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
-                            <div className="sub">Type : {elem.typeString}</div>
-                        </div>
-                        <div className="col-4 actions">
+                        <div className="col-5 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>
