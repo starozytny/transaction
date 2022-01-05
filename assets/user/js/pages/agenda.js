@@ -5,10 +5,11 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min';
 
 import React from "react";
 import { render } from "react-dom";
+import { Agenda } from "@userPages/components/Agenda/Agenda";
 
 Routing.setRoutingData(routes);
 
 let el = document.getElementById("agenda");
 if(el){
-    render(<div className="main-content">Hello</div>, el)
+    render(<Agenda {...el.dataset} />, el)
 }
