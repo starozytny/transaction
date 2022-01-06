@@ -12,6 +12,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 import Sanitaze          from "@commonComponents/functions/sanitaze";
 
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
+import Formulaire from "@dashboardComponents/functions/Formulaire";
+import UpdateList from "@dashboardComponents/functions/updateList";
 
 export class Agenda extends Component {
     constructor(props) {
@@ -26,6 +28,7 @@ export class Agenda extends Component {
         this.aside = React.createRef();
 
         this.handleOpenAside = this.handleOpenAside.bind(this);
+        this.handleUpdateList = this.handleUpdateList.bind(this);
 
         this.handleDateClick = this.handleDateClick.bind(this);
         this.handleEventClick = this.handleEventClick.bind(this);
@@ -55,7 +58,18 @@ export class Agenda extends Component {
 
         this.setState({ context, element })
         this.aside.current.handleOpen(title);
+    }
 
+    handleUpdateList = (element, newContext=null) => {
+        const { data, context } = this.state
+
+        let nContext = (newContext !== null) ? newContext : context;
+        let newData = UpdateList.update(nContext, data, element);
+
+        this.setState({
+            data: newData,
+            element: element
+        })
     }
 
     // init event
@@ -84,10 +98,10 @@ export class Agenda extends Component {
         let contentAside;
         switch (context){
             case "create":
-                contentAside = <AgendaFormulaire type="create" />
+                contentAside = <AgendaFormulaire type="create" onUpdateList={this.handleUpdateList} />
                 break;
             case "update":
-                contentAside = <AgendaFormulaire type="update" element={element} />
+                contentAside = <AgendaFormulaire type="update" onUpdateList={this.handleUpdateList} element={element} />
                 break;
             default:
                 break;

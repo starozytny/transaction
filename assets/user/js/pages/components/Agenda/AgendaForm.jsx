@@ -17,7 +17,7 @@ const URL_UPDATE_GROUP       = "api_agenda_slots_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function AgendaFormulaire ({ type, element })
+export function AgendaFormulaire ({ type, onUpdateList, element })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
@@ -38,6 +38,7 @@ export function AgendaFormulaire ({ type, element })
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
         persons={element ? Formulaire.setValueEmptyIfNull(element.persons, {}) : {}}
+        onUpdateList={onUpdateList}
         messageSuccess={msg}
         key={element ? element.id : 0}
     />
@@ -115,6 +116,9 @@ export class Form extends Component {
                 .then(function (response) {
                     let data = response.data;
                     Helper.toTop();
+                    if(self.props.onUpdateList){
+                        self.props.onUpdateList(data);
+                    }
                     self.setState({ success: messageSuccess, errors: [] });
                     if(context === "create"){
                         self.setState( {
