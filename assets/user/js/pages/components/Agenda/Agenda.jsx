@@ -18,7 +18,7 @@ import { Button }        from "@dashboardComponents/Tools/Button";
 
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
 
-const URL_DELETE_ELEMENT = 'api_agenda_slots_delete';
+const URL_DELETE_ELEMENT = 'api_agenda_events_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer cet évènement ?';
 
 export class Agenda extends Component {

@@ -17,9 +17,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
 
 /**
- * @Route("/api/agenda/slots", name="api_agenda_slots_")
+ * @Route("/api/agenda/events", name="api_agenda_events_")
  */
-class SlotController extends AbstractController
+class EventController extends AbstractController
 {
     private $doctrine;
 
@@ -63,7 +63,7 @@ class SlotController extends AbstractController
     }
 
     /**
-     * Create a slot
+     * Create an event
      *
      * @Route("/", name="create", options={"expose"=true}, methods={"POST"})
      *
@@ -87,7 +87,7 @@ class SlotController extends AbstractController
     }
 
     /**
-     * Update a slot
+     * Update an event
      *
      * @Route("/{id}", name="update", options={"expose"=true}, methods={"PUT"})
      *
@@ -112,7 +112,7 @@ class SlotController extends AbstractController
     }
 
     /**
-     * Delete a slot
+     * Delete an event
      *
      * @Route("/{id}", name="delete", options={"expose"=true}, methods={"DELETE"})
      *
