@@ -158,7 +158,6 @@ export class Agenda extends Component {
 
         let events = [];
         data.forEach(elem => {
-            // console.log(JSON.parse(elem.persons)) // get persons
             events.push({
                 id: elem.id,
                 title: elem.name,
@@ -168,7 +167,7 @@ export class Agenda extends Component {
                 extendedProps: {
                     location: elem.location,
                     comment: elem.comment,
-                    persons: JSON.parse(elem.persons),
+                    persons: elem.persons,
                     startAtJavascript: elem.startAtJavascript,
                     endAtJavascript: elem.endAtJavascript,
                     status: elem.status,

@@ -59,27 +59,27 @@ class UserController extends AbstractController
 
         $data = [];
         foreach($objs as $obj){
-            $persons = json_decode($obj->getPersons());
+            $persons = $obj->getPersons();
 
             if($obj->getCreator()->getId() == $user->getId()){
                 $data[] = $obj;
             }else{
-                if(isset($persons->users)){
-                    if(count($persons->users) !== 0){
-                        foreach($persons->users as $el){
-                            if($el->value == $user->getId()){
-                                $data[] = $obj;
-                            }
+                if(count($persons["users"]) !== 0){
+                    foreach($persons["users"] as $el){
+                        if($el->value == $user->getId()){
+                            $data[] = $obj;
                         }
-                    }else{
-                        $data[] = $obj;
                     }
+                }else{
+                    $data[] = $obj;
                 }
             }
         }
 
         $objs = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
         $users = $serializer->serialize($users, 'json', ['groups' => User::USER_READ]);
+
+        dump($objs);
 
         return $this->render('user/pages/agenda/index.html.twig', [
             'donnees' => $objs,

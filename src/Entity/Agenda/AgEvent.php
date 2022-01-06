@@ -87,7 +87,7 @@ class AgEvent extends DataEntity
     private $status;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      * @Groups({"user:read"})
      */
     private $persons;
@@ -254,18 +254,6 @@ class AgEvent extends DataEntity
         return $this;
     }
 
-    public function getPersons(): ?string
-    {
-        return $this->persons;
-    }
-
-    public function setPersons(?string $persons): self
-    {
-        $this->persons = $persons;
-
-        return $this;
-    }
-
     public function getCreator(): ?User
     {
         return $this->creator;
@@ -305,14 +293,21 @@ class AgEvent extends DataEntity
         return $this;
     }
 
-    /**
-     * @return string
-     * @Groups({"user:read"})
-     */
-    public function getVisibilityString(): string
+    public function getPersons(): ?array
     {
-        $visibilities = ["Moi seul", "Tout le monde", "Utilisateur", "Manager"];
+        $persons = $this->persons;
+        // guarantee every user at least has ROLE_USER
+        $persons[] = [
+            "users" => []
+        ];
 
-        return $visibilities[$this->visibility];
+        return $this->persons;
+    }
+
+    public function setPersons(?array $persons): self
+    {
+        $this->persons = $persons;
+
+        return $this;
     }
 }

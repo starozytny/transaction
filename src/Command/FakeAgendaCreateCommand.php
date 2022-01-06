@@ -72,7 +72,7 @@ class FakeAgendaCreateCommand extends Command
                 "status" => $fake->numberBetween(0, 2),
                 "location" => $fake->streetName,
                 "comment" => $fake->sentence,
-                "users" => json_decode(json_encode($users)),
+                "users" => $users,
                 "visibilities" => [$fake->numberBetween(0, 3)],
             ];
 
