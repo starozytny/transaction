@@ -61,8 +61,7 @@ class FakeAgendaCreateCommand extends Command
             }
 
             $users = [
-                ["value" => 153, "label" => "SHANBORA Dev"],
-                ["value" => 154, "label" => "STAROZYTNY Admin"],
+                ["value" => $user->getId(), "label" => $user->getFullname()],
             ];
 
             $data = [
