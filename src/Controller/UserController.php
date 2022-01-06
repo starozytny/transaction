@@ -61,15 +61,19 @@ class UserController extends AbstractController
         foreach($objs as $obj){
             $persons = json_decode($obj->getPersons());
 
-            if(isset($persons->users)){
-                if(count($persons->users) !== 0){
-                    foreach($persons->users as $el){
-                        if($el->value == $user->getId()){
-                            $data[] = $obj;
+            if($obj->getCreator()->getId() == $user->getId()){
+                $data[] = $obj;
+            }else{
+                if(isset($persons->users)){
+                    if(count($persons->users) !== 0){
+                        foreach($persons->users as $el){
+                            if($el->value == $user->getId()){
+                                $data[] = $obj;
+                            }
                         }
+                    }else{
+                        $data[] = $obj;
                     }
-                }else{
-                    $data[] = $obj;
                 }
             }
         }
