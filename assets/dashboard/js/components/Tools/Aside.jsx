@@ -6,19 +6,22 @@ export class Aside extends Component {
 
         this.state = {
             title: null,
-            active: false
+            active: false,
+            content: props.content ? props.content : null
         }
 
         this.handleOpen = this.handleOpen.bind(this)
         this.handleClose = this.handleClose.bind(this)
+        this.handleChangeContent = this.handleChangeContent.bind(this)
     }
 
     handleOpen = (title) => { this.setState({ active: true, title: title }) }
     handleClose = () => { this.setState({ active: false }) }
+    handleChangeContent = (content) => { this.setState({ content }) }
 
     render () {
-        const { content, children } = this.props
-        const { active, title } = this.state
+        const { children } = this.props
+        const { content, active, title } = this.state
 
         return <div className={`aside ${active}`}>
             <div className="aside-overlay" onClick={this.handleClose} />
