@@ -51,7 +51,7 @@ export class Agenda extends Component {
         if(context === "update"){
             let props = elem.extendedProps;
             element = {
-                id: elem.id,
+                id: parseInt(elem.id),
                 name: elem.title,
                 allDay: elem.allDay,
                 startAtJavascript: props.startAtJavascript,
@@ -102,7 +102,7 @@ export class Agenda extends Component {
     handleAdd = () => { this.handleOpenAside("create") }
 
     handleDelete = (element) => { // id is string
-        let url = Routing.generate(URL_DELETE_ELEMENT, {'id': parseInt(element.id)})
+        let url = Routing.generate(URL_DELETE_ELEMENT, {'id': element.id})
         Formulaire.axiosDeleteElement(this, element, url, MSG_DELETE_ELEMENT, 'Cette action est irréversible.');
     }
 
