@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\Agenda\AgSlot;
+use App\Entity\Agenda\AgEvent;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -120,9 +120,9 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $notifications;
 
     /**
-     * @ORM\OneToMany(targetEntity=AgSlot::class, mappedBy="creator")
+     * @ORM\OneToMany(targetEntity=AgEvent::class, mappedBy="creator")
      */
-    private $agSlots;
+    private $agEvents;
 
     /**
      * @throws Exception
@@ -132,7 +132,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
         $this->createdAt = $this->initNewDate();
         $this->token = $this->initToken();
         $this->notifications = new ArrayCollection();
-        $this->agSlots = new ArrayCollection();
+        $this->agEvents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -455,29 +455,29 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     }
 
     /**
-     * @return Collection|AgSlot[]
+     * @return Collection|AgEvent[]
      */
-    public function getAgSlots(): Collection
+    public function getAgEvents(): Collection
     {
-        return $this->agSlots;
+        return $this->agEvents;
     }
 
-    public function addAgSlot(AgSlot $agSlot): self
+    public function addAgSlot(AgEvent $agEvent): self
     {
-        if (!$this->agSlots->contains($agSlot)) {
-            $this->agSlots[] = $agSlot;
-            $agSlot->setCreator($this);
+        if (!$this->agEvents->contains($agEvent)) {
+            $this->agEvents[] = $agEvent;
+            $agEvent->setCreator($this);
         }
 
         return $this;
     }
 
-    public function removeAgSlot(AgSlot $agSlot): self
+    public function removeAgEvents(AgEvent $agEvent): self
     {
-        if ($this->agSlots->removeElement($agSlot)) {
+        if ($this->agEvents->removeElement($agEvent)) {
             // set the owning side to null (unless already changed)
-            if ($agSlot->getCreator() === $this) {
-                $agSlot->setCreator(null);
+            if ($agEvent->getCreator() === $this) {
+                $agEvent->setCreator(null);
             }
         }
 

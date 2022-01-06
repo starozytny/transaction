@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Repository\Agenda\AgSlotRepository;
+use App\Repository\Agenda\AgEventRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,7 +50,7 @@ class UserController extends AbstractController
     /**
      * @Route("/agenda", name="agenda")
      */
-    public function agenda(UserRepository $userRepository, AgSlotRepository $repository, SerializerInterface $serializer): Response
+    public function agenda(UserRepository $userRepository, AgEventRepository $repository, SerializerInterface $serializer): Response
     {
         $objs = $repository->findBy(['creator' => $this->getUser()]);
 

@@ -2,10 +2,10 @@
 
 namespace App\Controller\Api\Agenda;
 
-use App\Entity\Agenda\AgSlot;
+use App\Entity\Agenda\AgEvent;
 use App\Entity\User;
 use App\Service\ApiResponse;
-use App\Service\Data\Agenda\DataSlot;
+use App\Service\Data\Agenda\DataEvent;
 use App\Service\Data\DataService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -31,8 +31,8 @@ class EventController extends AbstractController
     /**
      * @throws Exception
      */
-    public function submitForm($type, AgSlot $obj, Request $request, ApiResponse $apiResponse,
-                               ValidatorService $validator, DataSlot $dataEntity): JsonResponse
+    public function submitForm($type, AgEvent $obj, Request $request, ApiResponse $apiResponse,
+                               ValidatorService $validator, DataEvent $dataEntity): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
@@ -41,7 +41,7 @@ class EventController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataSlot($obj, $data);
+        $obj = $dataEntity->setDataEvent($obj, $data);
 
         if($type == "create"){
             /** @var User $user */
@@ -77,13 +77,13 @@ class EventController extends AbstractController
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
-     * @param DataSlot $dataEntity
+     * @param DataEvent $dataEntity
      * @return JsonResponse
      * @throws Exception
      */
-    public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataSlot $dataEntity): JsonResponse
+    public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataEvent $dataEntity): JsonResponse
     {
-        return $this->submitForm("create", new AgSlot(), $request, $apiResponse, $validator, $dataEntity);
+        return $this->submitForm("create", new AgEvent(), $request, $apiResponse, $validator, $dataEntity);
     }
 
     /**
@@ -98,15 +98,15 @@ class EventController extends AbstractController
      *
      * @OA\Tag(name="Agenda")
      *
-     * @param AgSlot $obj
+     * @param AgEvent $obj
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
-     * @param DataSlot $dataEntity
+     * @param DataEvent $dataEntity
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(AgSlot $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataSlot $dataEntity): JsonResponse
+    public function update(AgEvent $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataEvent $dataEntity): JsonResponse
     {
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
@@ -123,11 +123,11 @@ class EventController extends AbstractController
      *
      * @OA\Tag(name="Agenda")
      *
-     * @param AgSlot $obj
+     * @param AgEvent $obj
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(AgSlot $obj, DataService $dataService): JsonResponse
+    public function delete(AgEvent $obj, DataService $dataService): JsonResponse
     {
         return $dataService->delete($obj);
     }

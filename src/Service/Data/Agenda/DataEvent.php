@@ -4,16 +4,16 @@
 namespace App\Service\Data\Agenda;
 
 
-use App\Entity\Agenda\AgSlot;
+use App\Entity\Agenda\AgEvent;
 use App\Service\Data\DataConstructor;
 use Exception;
 
-class DataSlot extends DataConstructor
+class DataEvent extends DataConstructor
 {
     /**
      * @throws Exception
      */
-    public function setDataSlot(AgSlot $obj, $data): AgSlot
+    public function setDataEvent(AgEvent $obj, $data): AgEvent
     {
         $persons = [];
         $persons["users"] = $data->users ?: [];

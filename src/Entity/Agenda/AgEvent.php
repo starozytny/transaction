@@ -4,14 +4,14 @@ namespace App\Entity\Agenda;
 
 use App\Entity\DataEntity;
 use App\Entity\User;
-use App\Repository\Agenda\AgSlotRepository;
+use App\Repository\Agenda\AgEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=AgSlotRepository::class)
+ * @ORM\Entity(repositoryClass=AgEventRepository::class)
  */
-class AgSlot extends DataEntity
+class AgEvent extends DataEntity
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
@@ -82,7 +82,7 @@ class AgSlot extends DataEntity
     private $persons;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, fetch="EAGER", inversedBy="agSlots")
+     * @ORM\ManyToOne(targetEntity=User::class, fetch="EAGER", inversedBy="agEvents")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"user:read"})
      */

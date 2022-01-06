@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Entity\Agenda\AgSlot;
+use App\Entity\Agenda\AgEvent;
 use App\Entity\User;
-use App\Service\Data\Agenda\DataSlot;
+use App\Service\Data\Agenda\DataEvent;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -21,15 +21,15 @@ class FakeAgendaCreateCommand extends Command
 
     private $em;
     private $databaseService;
-    private $dataSlot;
+    private $dataEvent;
 
-    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService, DataSlot $dataSlot)
+    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService, DataEvent $dataEvent)
     {
         parent::__construct();
 
         $this->em = $entityManager;
         $this->databaseService = $databaseService;
-        $this->dataSlot = $dataSlot;
+        $this->dataEvent = $dataEvent;
     }
 
     /**
@@ -39,7 +39,7 @@ class FakeAgendaCreateCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [AgSlot::class]);
+        $this->databaseService->resetTable($io, [AgEvent::class]);
 
         $user = $this->em->getRepository(User::class)->findOneBy(['username' => 'shanbo']);
         if(!$user){
@@ -80,7 +80,7 @@ class FakeAgendaCreateCommand extends Command
 
             $data = json_decode(json_encode($data));
 
-            $new = $this->dataSlot->setDataSlot(new AgSlot(), $data);
+            $new = $this->dataEvent->setDataEvent(new AgEvent(), $data);
             $new->setCreator($user);
 
             $this->em->persist($new);
