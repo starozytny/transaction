@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\Agenda\AgEventRepository;
 use App\Repository\UserRepository;
+use App\Service\Agenda\EventService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -50,36 +51,17 @@ class UserController extends AbstractController
     /**
      * @Route("/agenda", name="agenda")
      */
-    public function agenda(UserRepository $userRepository, AgEventRepository $repository, SerializerInterface $serializer): Response
+    public function agenda(UserRepository $userRepository, AgEventRepository $repository, SerializerInterface $serializer, EventService $eventService): Response
     {
         /** @var User $user */
         $user = $this->getUser();
         $objs = $repository->findAll();
         $users = $userRepository->findAll();
 
-        $data = [];
-        foreach($objs as $obj){
-            $persons = $obj->getPersons();
-
-            if($obj->getCreator()->getId() == $user->getId()){
-                $data[] = $obj;
-            }else{
-                if(count($persons["users"]) !== 0){
-                    foreach($persons["users"] as $el){
-                        if($el->value == $user->getId()){
-                            $data[] = $obj;
-                        }
-                    }
-                }else{
-                    $data[] = $obj;
-                }
-            }
-        }
+        $data = $eventService->getEvents($objs, $user);
 
         $objs = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
         $users = $serializer->serialize($users, 'json', ['groups' => User::USER_READ]);
-
-        dump($objs);
 
         return $this->render('user/pages/agenda/index.html.twig', [
             'donnees' => $objs,

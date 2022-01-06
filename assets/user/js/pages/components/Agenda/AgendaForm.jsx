@@ -37,8 +37,6 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
     let startAt = element ? Formulaire.setDateOrEmptyIfNull(element.startAtJavascript, "") : "";
     let allDay = element ? Formulaire.setValueEmptyIfNull(element.allDay === true ? [1] : [0], [0]) : [0];
 
-    console.log(element.visibilities)
-
     let form = <Form
         context={type}
         url={url}
@@ -111,8 +109,15 @@ export class Form extends Component {
         if(name === "visibilities"){
             value = parseInt(value);
 
-            let nVisibilities = (visibilities[1] === 1 || visibilities[1] === 2) ? [0] : visibilities;
-            value = (value === 1 || value === 2) ? [0, value] : Formulaire.updateValueCheckbox(e, nVisibilities, value);
+            let nVisibilities = visibilities;
+            if(value !== 1 && value !== 2){
+                nVisibilities = visibilities.filter(v => {return v !== 1})
+                nVisibilities = nVisibilities.filter(v => {return v !== 2})
+            }else if(value === 1 || value === 2){
+                nVisibilities = [];
+            }
+
+            value = Formulaire.updateValueCheckbox(e, nVisibilities, value);
         }
 
         this.setState({ [name]: value })
@@ -192,6 +197,7 @@ export class Form extends Component {
         const { errors, success, name, startAt, endAt, allDay, location, comment, status, users, visibilities } = this.state;
 
         let checkboxItems = [
+            { value: 0, label: 'Personnes concernées',    identifiant: 'v-related' },
             { value: 1, label: 'Moi seulement',           identifiant: 'v-only-me' },
             { value: 2, label: 'Tout le monde',           identifiant: 'v-all' },
             { value: 3, label: 'Tous les utilisateurs',   identifiant: 'v-users' },
@@ -268,12 +274,6 @@ export class Form extends Component {
                     >
                         Utilisateurs concernés
                     </SelectizeMultiple>
-                </div>
-
-                <div className="line">
-                    <div className="form-group">
-                        <Alert type="reverse">Les personnes concernées verront obligatoirement le rendez-vous.</Alert>
-                    </div>
                 </div>
 
                 <div className="line">
