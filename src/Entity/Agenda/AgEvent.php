@@ -17,6 +17,11 @@ class AgEvent extends DataEntity
     const STATUS_ACTIVE = 1;
     const STATUS_CANCEL = 2;
 
+    const VISIBILITY_ONLY_ME = 0;
+    const VISIBILITY_ALL = 1;
+    const VISIBILITY_UTILISATEUR = 2;
+    const VISIBILITY_MANAGER = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,6 +29,12 @@ class AgEvent extends DataEntity
      * @Groups({"user:read"})
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="json")
+     * @Groups({"user:read"})
+     */
+    private $visibilities = self::VISIBILITY_ONLY_ME;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -276,5 +287,32 @@ class AgEvent extends DataEntity
         $status = ["Inactif", "Actif", "Annulé"];
 
         return $status[$this->status];
+    }
+
+    public function getVisibilities(): array
+    {
+        $visibilities = $this->visibilities;
+        // guarantee every user at least has ROLE_USER
+        $visibilities[] = self::VISIBILITY_ONLY_ME;
+
+        return array_unique($visibilities);
+    }
+
+    public function setVisibilities(array $visibilities): self
+    {
+        $this->visibilities = $visibilities;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getVisibilityString(): string
+    {
+        $visibilities = ["Moi seul", "Tout le monde", "Utilisateur", "Manager"];
+
+        return $visibilities[$this->visibility];
     }
 }

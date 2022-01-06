@@ -26,6 +26,7 @@ class DataEvent extends DataConstructor
             ->setLocation($this->sanitizeData->trimData($data->location))
             ->setComment($this->sanitizeData->trimData($data->comment))
             ->setStatus((int) $data->status)
+            ->setVisibilities($data->visibilities)
             ->setPersons($this->sanitizeData->trimData(json_encode($persons)))
         ;
     }
