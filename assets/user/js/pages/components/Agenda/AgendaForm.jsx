@@ -37,6 +37,8 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
     let startAt = element ? Formulaire.setDateOrEmptyIfNull(element.startAtJavascript, "") : "";
     let allDay = element ? Formulaire.setValueEmptyIfNull(element.allDay === true ? [1] : [0], [0]) : [0];
 
+    console.log(element.visibilities)
+
     let form = <Form
         context={type}
         url={url}

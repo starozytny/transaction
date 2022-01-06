@@ -65,6 +65,7 @@ export class Agenda extends Component {
                 comment: props.comment,
                 persons: props.persons,
                 status: props.status,
+                visibilities: props.visibilities,
             }
         }
 
@@ -172,6 +173,7 @@ export class Agenda extends Component {
                     endAtJavascript: elem.endAtJavascript,
                     status: elem.status,
                     statusString: elem.statusString,
+                    visibilities: elem.visibilities,
                 },
                 classNames: "event event-" + elem.status
             })
