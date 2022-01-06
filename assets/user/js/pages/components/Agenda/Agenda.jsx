@@ -227,8 +227,12 @@ function addEventElement (bloc, event, users) {
     }
 
     bloc.insertAdjacentHTML('beforeend', '<div class="title">' + event.title + '</div>')
-    bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.location + '</div>')
-    bloc.insertAdjacentHTML('beforeend', '<div class="sub comment">' + props.comment + '</div>')
+    if(props.location){
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.location + '</div>')
+    }
+    if(props.comment){
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub comment">' + props.comment + '</div>')
+    }
 
     //persons
     let persons = props.persons;
