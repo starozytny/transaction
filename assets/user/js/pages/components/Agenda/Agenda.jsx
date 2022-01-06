@@ -104,7 +104,7 @@ export class Agenda extends Component {
         let contentAside;
         switch (context){
             case "create":
-                contentAside = <AgendaFormulaire type="create" users={users} onUpdateList={this.handleUpdateList} />
+                contentAside = <AgendaFormulaire type="create" users={users} onUpdateList={this.handleUpdateList} custom={element}/>
                 break;
             case "update":
                 contentAside = <AgendaFormulaire type="update" users={users} onUpdateList={this.handleUpdateList} element={element} />

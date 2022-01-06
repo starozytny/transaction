@@ -24,7 +24,7 @@ const URL_UPDATE_GROUP       = "api_agenda_slots_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function AgendaFormulaire ({ type, onUpdateList, element, users })
+export function AgendaFormulaire ({ type, onUpdateList, custom, element, users })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
@@ -34,13 +34,16 @@ export function AgendaFormulaire ({ type, onUpdateList, element, users })
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
 
+    let startAt = element ? Formulaire.setDateOrEmptyIfNull(element.startAtJavascript, "") : "";
+    let allDay = element ? Formulaire.setValueEmptyIfNull(element.allDay === true ? [1] : [0], [0]) : [0];
+
     let form = <Form
         context={type}
         url={url}
         name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
-        startAt={element ? Formulaire.setDateOrEmptyIfNull(element.startAtJavascript, "") : ""}
+        startAt={custom ? custom.date : startAt}
         endAt={element ? Formulaire.setDateOrEmptyIfNull(element.endAtJavascript, "") : ""}
-        allDay={element ? Formulaire.setValueEmptyIfNull(element.allDay === true ? [1] : [0], [0]) : [0]}
+        allDay={custom ? (custom.allDay === true ? [1] : [0]) : allDay}
         location={element ? Formulaire.setValueEmptyIfNull(element.location) : ""}
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
@@ -48,7 +51,7 @@ export function AgendaFormulaire ({ type, onUpdateList, element, users })
         onUpdateList={onUpdateList}
         messageSuccess={msg}
         users={users}
-        key={element ? element.id : 0}
+        key={element ? element.id : (custom ? custom.dateStr : 0)}
     />
 
     return <div className="form">
@@ -88,10 +91,6 @@ export class Form extends Component {
         this.handleChangeSelectMultipleAdd = this.handleChangeSelectMultipleAdd.bind(this);
         this.handleChangeSelectMultipleDel = this.handleChangeSelectMultipleDel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        Helper.toTop();
     }
 
     handleChange = (e) => {
