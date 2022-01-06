@@ -101,7 +101,7 @@ export class StyleguideForm extends Component {
     }
 
     handleChangeSelectMultipleDel = (name, valeur) => {
-        let valeurs = [name].filter(v => v.value !== valeur.value);
+        let valeurs = this.state.users.filter(v => v.value !== valeur.value);
         this.setState({ [name]: valeurs });
         this.selectMultiple.current.handleUpdateValeurs(valeurs);
     }
