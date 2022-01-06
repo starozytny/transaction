@@ -10,6 +10,7 @@ import { Button }              from "@dashboardComponents/Tools/Button";
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
+import {DatePick, DateTimePick} from "@dashboardComponents/Tools/DatePicker";
 
 const URL_CREATE_ELEMENT     = "api_users_create";
 const URL_UPDATE_GROUP       = "api_users_update";
@@ -30,8 +31,8 @@ export function AgendaFormulaire ({ type, element })
         context={type}
         url={url}
         name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
-        startAtJavascript={element ? Formulaire.setDateOrEmptyIfNull(element.startAtJavascript, "") : ""}
-        endAtJavascript={element ? Formulaire.setDateOrEmptyIfNull(element.endAtJavascript, "") : ""}
+        startAt={element ? Formulaire.setDateOrEmptyIfNull(element.startAtJavascript, "") : ""}
+        endAt={element ? Formulaire.setDateOrEmptyIfNull(element.endAtJavascript, "") : ""}
         allDay={element ? Formulaire.setValueEmptyIfNull(element.allDay === true ? [1] : [0], [0]) : [0]}
         location={element ? Formulaire.setValueEmptyIfNull(element.location) : ""}
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
@@ -52,8 +53,8 @@ export class Form extends Component {
 
         this.state = {
             name: props.name,
-            startAtJavascript: props.startAtJavascript,
-            endAtJavascript: props.endAtJavascript,
+            startAt: props.startAt,
+            endAt: props.endAt,
             allDay: props.allDay,
             location: props.location,
             comment: props.comment,
@@ -66,6 +67,7 @@ export class Form extends Component {
         this.inputAvatar = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -83,6 +85,8 @@ export class Form extends Component {
 
         this.setState({ [name]: value })
     }
+
+    handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -136,9 +140,9 @@ export class Form extends Component {
                     if(context === "create"){
                         self.setState( {
                             name: "",
-                            startAtJavascript: "",
-                            endAtJavascript: "",
-                            allDay: 0,
+                            startAt: "",
+                            endAt: "",
+                            allDay: [0],
                             location: "",
                             comment: "",
                             status: 1,
@@ -158,7 +162,7 @@ export class Form extends Component {
 
     render () {
         const { context } = this.props;
-        const { errors, success, name, startAtJavascript, endAtJavascript, allDay, location, comment, status } = this.state;
+        const { errors, success, name, startAt, endAt, allDay, location, comment, status } = this.state;
 
         let statusItems = [
             {value: 0, label: "Inactif", identifiant: "s-inactif"},
@@ -185,7 +189,25 @@ export class Form extends Component {
                 </div>
 
                 <div className="line">
-                    <Checkbox isSwitcher={true} items={switcherItems} identifiant="allDay" valeur={allDay} errors={errors} onChange={this.handleChange}>Toute la journée</Checkbox>
+                    <Checkbox isSwitcher={true} items={switcherItems} identifiant="allDay" valeur={allDay} errors={errors} onChange={this.handleChange}>
+                        Toute la journée
+                    </Checkbox>
+                </div>
+
+                <div className="line line-2">
+                    {allDay[0] === 1 ? <>
+                            <DatePick identifiant="startAt" valeur={startAt} errors={errors} onChange={(e) => this.handleChangeDate("startAt", e)}>
+                                Jour du rendez-vous
+                            </DatePick>
+                            <div className="form-group" />
+                        </> : <>
+                        <DateTimePick identifiant="startAt" valeur={startAt} errors={errors} onChange={(e) => this.handleChangeDate("startAt", e)}>
+                            Début du rendez-vous
+                        </DateTimePick>
+                        <DateTimePick identifiant="endAt" valeur={endAt} errors={errors} onChange={(e) => this.handleChangeDate("endAt", e)}>
+                            Fin du rendez-vous
+                        </DateTimePick>
+                    </>}
                 </div>
 
                 <div className="line">
