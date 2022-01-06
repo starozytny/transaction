@@ -12,7 +12,6 @@ import interactionPlugin from '@fullcalendar/interaction';
 import Sanitaze          from "@commonComponents/functions/sanitaze";
 
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
-import Formulaire from "@dashboardComponents/functions/Formulaire";
 import UpdateList from "@dashboardComponents/functions/updateList";
 
 export class Agenda extends Component {

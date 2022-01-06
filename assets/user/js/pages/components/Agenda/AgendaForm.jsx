@@ -37,7 +37,7 @@ export function AgendaFormulaire ({ type, onUpdateList, element })
         location={element ? Formulaire.setValueEmptyIfNull(element.location) : ""}
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
-        persons={element ? Formulaire.setValueEmptyIfNull(element.persons, {}) : {}}
+        persons={element ? Formulaire.setValueEmptyIfNull(JSON.parse(element.persons), {}) : {}}
         onUpdateList={onUpdateList}
         messageSuccess={msg}
         key={element ? element.id : 0}

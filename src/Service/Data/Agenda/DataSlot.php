@@ -23,7 +23,7 @@ class DataSlot extends DataConstructor
             ->setLocation($this->sanitizeData->trimData($data->location))
             ->setComment($this->sanitizeData->trimData($data->comment))
             ->setStatus((int) $data->status)
-            ->setPersons($this->sanitizeData->trimData($data->persons))
+            ->setPersons($this->sanitizeData->trimData(json_encode($data->persons)))
         ;
     }
 }
