@@ -13,6 +13,7 @@ import UpdateList        from "@dashboardComponents/functions/updateList";
 import { Aside } from "@dashboardComponents/Tools/Aside";
 
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
+import {Button} from "@dashboardComponents/Tools/Button";
 
 export class Agenda extends Component {
     constructor(props) {
@@ -37,8 +38,11 @@ export class Agenda extends Component {
     }
 
     handleOpenAside = (context, elem) => {
-        let time = context === "create" ? Sanitaze.toFormatTimeHoursMinutes(elem.date) : "";
-        let title = context === "update" ? elem.title : "Ajouter un évènement " + (time === "00h00" ? "pour la journée" : "à " + time);
+        let title = "Ajouter un évènement";
+        if(elem) {
+            let time = context === "create" ? Sanitaze.toFormatTimeHoursMinutes(elem.date) : "";
+            title = context === "update" ? elem.title : "Ajouter un évènement " + (time === "00h00" ? "pour la journée" : "à " + time);
+        }
 
         let element = elem;
         if(context === "update"){
@@ -92,6 +96,8 @@ export class Agenda extends Component {
         this.handleOpenAside("create", e)
     }
 
+    handleAdd = () => { this.handleOpenAside("create") }
+
     render () {
         const { context, data, initialView, element, users } = this.state;
 
@@ -130,6 +136,11 @@ export class Agenda extends Component {
         })
 
         return <div id="calendar" className="main-content">
+            <div className="toolbar">
+                <div className="item">
+                    <Button onClick={this.handleAdd}>Ajouter un évènement</Button>
+                </div>
+            </div>
             <FullCalendar
                 locale={frLocale}
                 initialView={initialView}
