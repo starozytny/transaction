@@ -258,25 +258,25 @@ class UserController extends AbstractController
      */
     public function agenda(UserRepository $userRepository, AgEventRepository $repository, SerializerInterface $serializer): Response
     {
-        $objs = $repository->findBy(['creator' => $this->getUser()]);
-
-//        $userIds = [];
-//        foreach($objs as $obj){
-//            $persons = json_decode($obj->getPersons());
-//
-//            if(isset($persons->users)){
-//                foreach($persons->users as $el){
-//                    if(!in_array($el->value, $userIds)){
-//                        $userIds[] = $el->value;
-//                    }
-//
-//                }
-//            }
-//        }
-//        $users = $userRepository->findBy(['id' => $userIds]);
+        /** @var User $user */
+        $user = $this->getUser();
+        $objs = $repository->findAll();
         $users = $userRepository->findAll();
 
-        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+        $data = [];
+        foreach($objs as $obj){
+            $persons = json_decode($obj->getPersons());
+
+            if(isset($persons->users)){
+                foreach($persons->users as $el){
+                    if($el->value == $user->getId()){
+                        $data[] = $obj;
+                    }
+                }
+            }
+        }
+
+        $objs = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
         $users = $serializer->serialize($users, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/agenda/index.html.twig', [
