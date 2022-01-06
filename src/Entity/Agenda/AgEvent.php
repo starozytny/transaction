@@ -35,7 +35,7 @@ class AgEvent extends DataEntity
      * @ORM\Column(type="json")
      * @Groups({"user:read"})
      */
-    private $visibilities = self::VISIBILITY_ONLY_ME;
+    private $visibilities = [self::VISIBILITY_ONLY_ME];
 
     /**
      * @ORM\Column(type="string", length=255)
