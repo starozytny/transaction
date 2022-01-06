@@ -17,10 +17,11 @@ class AgEvent extends DataEntity
     const STATUS_ACTIVE = 1;
     const STATUS_CANCEL = 2;
 
-    const VISIBILITY_ONLY_ME = 0;
-    const VISIBILITY_ALL = 1;
-    const VISIBILITY_UTILISATEUR = 2;
-    const VISIBILITY_MANAGER = 3;
+    const VISIBILITY_RELATED = 0;
+    const VISIBILITY_ONLY_ME = 1;
+    const VISIBILITY_ALL = 2;
+    const VISIBILITY_UTILISATEURS = 3;
+    const VISIBILITY_MANAGERS = 4;
 
     /**
      * @ORM\Id
@@ -281,7 +282,7 @@ class AgEvent extends DataEntity
     {
         $visibilities = $this->visibilities;
         // guarantee every user at least has ROLE_USER
-        $visibilities[] = self::VISIBILITY_ONLY_ME;
+        $visibilities[] = self::VISIBILITY_RELATED;
 
         return array_unique($visibilities);
     }
