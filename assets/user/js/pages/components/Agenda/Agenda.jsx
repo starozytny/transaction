@@ -10,10 +10,10 @@ import interactionPlugin from '@fullcalendar/interaction';
 import Sanitaze          from "@commonComponents/functions/sanitaze";
 import UpdateList        from "@dashboardComponents/functions/updateList";
 
-import { Aside } from "@dashboardComponents/Tools/Aside";
+import { Aside }         from "@dashboardComponents/Tools/Aside";
+import { Button }        from "@dashboardComponents/Tools/Button";
 
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
-import {Button} from "@dashboardComponents/Tools/Button";
 
 export class Agenda extends Component {
     constructor(props) {
