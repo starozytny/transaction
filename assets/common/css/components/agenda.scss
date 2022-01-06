@@ -87,9 +87,11 @@
       @include flex(row, flex-start, flex-start);
       flex-wrap: wrap;
       margin-top: 2px;
+      margin-left: 24px;
 
-      & > .person:not(:first-child){
+      & > .person{
         transform: translateX(-10px);
+        margin-left: -10px;
       }
     }
 
