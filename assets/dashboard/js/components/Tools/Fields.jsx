@@ -1,5 +1,6 @@
-import React from "react";
-import { SimpleSelect } from 'react-selectize';
+import React, { Component } from "react";
+
+import { MultiSelect, SimpleSelect } from 'react-selectize';
 
 /***************************************
  * INPUT Classique
@@ -126,6 +127,40 @@ export function SelectReactSelectize(props) {
     </>
 
     return (<ClassiqueStructure {...props} content={content} label={children} />)
+}
+
+export class SelectizeMultiple extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            items: props.items,
+            valeurs: props.valeur
+        }
+
+        this.handleUpdateValeurs = this.handleUpdateValeurs.bind(this);
+    }
+
+    handleUpdateValeurs = (valeurs) => { this.setState({ valeurs }) }
+
+    render () {
+        const { identifiant, onChangeAdd, onChangeDel, children, placeholder } = this.props;
+        const { items, valeurs } = this.state;
+
+        let content = <>
+                <MultiSelect defaultValues={valeurs} options={items} values={valeurs} placeholder={placeholder} onValuesChange={onChangeAdd}
+                         renderValue = {function(item){
+                             return <div className="simple-value" onClick={() => onChangeDel(item)}>
+                                 <span className="icon-cancel"/>
+                                 <span>{item.label}</span>
+                             </div>
+                         }}
+                />
+                <input type="hidden" name={identifiant} value={valeurs}/>
+            </>
+
+        return <ClassiqueStructure {...this.props} content={content} label={children} />
+    }
 }
 
 /***************************************

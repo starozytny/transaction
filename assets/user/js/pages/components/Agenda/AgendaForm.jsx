@@ -3,7 +3,14 @@ import React, { Component } from 'react';
 import axios                   from "axios";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Checkbox, Radiobox, TextArea, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import {
+    Input,
+    Checkbox,
+    Radiobox,
+    TextArea,
+    SelectizeMultiple
+} from "@dashboardComponents/Tools/Fields";
+
 import { DatePick, DateTimePick } from "@dashboardComponents/Tools/DatePicker";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
@@ -53,6 +60,13 @@ export class Form extends Component {
     constructor(props) {
         super(props);
 
+        let users = [];
+        if(props.persons.users){
+            props.persons.users.forEach(el => {
+                users.push({value: el.value, label: el.label})
+            })
+        }
+
         this.state = {
             name: props.name,
             startAt: props.startAt,
@@ -62,15 +76,17 @@ export class Form extends Component {
             comment: props.comment,
             status: props.status,
             persons: props.persons,
+            users: users,
             errors: [],
             success: false
         }
 
-        this.inputAvatar = React.createRef();
+        this.selectMultiple = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
-        this.handleChangeSelect = this.handleChangeSelect.bind(this);
+        this.handleChangeSelectMultipleAdd = this.handleChangeSelectMultipleAdd.bind(this);
+        this.handleChangeSelectMultipleDel = this.handleChangeSelectMultipleDel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -91,8 +107,15 @@ export class Form extends Component {
 
     handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
 
-    handleChangeSelect = (name, e) => {
-        console.log(e)
+    handleChangeSelectMultipleAdd = (name, valeurs) => {
+        this.setState({ [name]: valeurs })
+        this.selectMultiple.current.handleUpdateValeurs(valeurs);
+    }
+
+    handleChangeSelectMultipleDel = (name, valeur) => {
+        let valeurs = this.state.users.filter(v => v.value !== valeur.value);
+        this.setState({ [name]: valeurs });
+        this.selectMultiple.current.handleUpdateValeurs(valeurs);
     }
 
     handleSubmit = (e) => {
@@ -209,12 +232,14 @@ export class Form extends Component {
                 </div>
 
                 <div className="line">
-                    <SelectReactSelectize items={selectUsers} identifiant="users" valeur={users}
-                                          placeholder={"Sélectionner un/des utilisateurs"}
-                                          errors={errors} onChange={(e) => this.handleChangeSelect("users", e)}
+                    <SelectizeMultiple ref={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}
+                                       placeholder={"Sélectionner un/des utilisateurs"}
+                                       errors={errors}
+                                       onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("users", e)}
+                                       onChangeDel={(e) => this.handleChangeSelectMultipleDel("users", e)}
                     >
                         Utilisateurs concernés
-                    </SelectReactSelectize>
+                    </SelectizeMultiple>
                 </div>
 
                 <div className="line">
