@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { Aside } from "@dashboardComponents/Tools/Aside";
+
 import frLocale          from '@fullcalendar/core/locales/fr';
 import FullCalendar      from "@fullcalendar/react";
 import dayGridPlugin     from '@fullcalendar/daygrid';
@@ -8,8 +10,8 @@ import listPlugin        from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 
 import Sanitaze          from "@commonComponents/functions/sanitaze";
-import {Aside} from "@dashboardComponents/Tools/Aside";
-import {AgendaFormulaire} from "@userPages/components/Agenda/AgendaForm";
+
+import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
 
 export class Agenda extends Component {
     constructor(props) {
@@ -158,4 +160,5 @@ function addEventElement (bloc, event) {
 
     bloc.insertAdjacentHTML('beforeend', '<div class="title">' + event.title + '</div>')
     bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.location + '</div>')
+    bloc.insertAdjacentHTML('beforeend', '<div class="sub comment">' + props.comment + '</div>')
 }

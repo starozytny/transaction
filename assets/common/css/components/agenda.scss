@@ -3,10 +3,6 @@
   .fc .fc-scroller,
   .fc .fc-scroller-liquid-absolute{
     @include scrollbar();
-
-    &::-webkit-scrollbar {
-      width: 17px;
-    }
   }
 
   .fc-view-harness.fc-view-harness-active{
@@ -79,6 +75,10 @@
       @include fontSemibold();
       padding-top: 1px;
     }
+
+    .comment{
+
+    }
   }
 
   .event{
@@ -87,6 +87,12 @@
     background-color: var(--fond);
     border: 1px solid var(--grey);
     border-radius: 4px;
+    overflow: auto;
+    @include scrollbar();
+
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
 
     $status:
             "0" var(--danger),
