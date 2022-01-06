@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import Routing           from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import frLocale          from '@fullcalendar/core/locales/fr';
 import FullCalendar      from "@fullcalendar/react";
 import dayGridPlugin     from '@fullcalendar/daygrid';
@@ -7,13 +9,17 @@ import timeGridPlugin    from '@fullcalendar/timegrid';
 import listPlugin        from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 
-import Sanitaze          from "@commonComponents/functions/sanitaze";
+import Formulaire        from "@dashboardComponents/functions/Formulaire";
 import UpdateList        from "@dashboardComponents/functions/updateList";
+import Sanitaze          from "@commonComponents/functions/sanitaze";
 
 import { Aside }         from "@dashboardComponents/Tools/Aside";
 import { Button }        from "@dashboardComponents/Tools/Button";
 
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
+
+const URL_DELETE_ELEMENT = 'api_agenda_slots_delete';
+const MSG_DELETE_ELEMENT = 'Supprimer cet évènement ?';
 
 export class Agenda extends Component {
     constructor(props) {
@@ -30,6 +36,7 @@ export class Agenda extends Component {
 
         this.handleOpenAside = this.handleOpenAside.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
 
         this.handleDateClick = this.handleDateClick.bind(this);
         this.handleEventClick = this.handleEventClick.bind(this);
@@ -94,16 +101,22 @@ export class Agenda extends Component {
 
     handleAdd = () => { this.handleOpenAside("create") }
 
+    handleDelete = (element) => { // id is string
+        let url = Routing.generate(URL_DELETE_ELEMENT, {'id': parseInt(element.id)})
+        Formulaire.axiosDeleteElement(this, element, url, MSG_DELETE_ELEMENT, 'Cette action est irréversible.');
+    }
+
     render () {
         const { context, data, initialView, element, users } = this.state;
 
         let contentAside;
         switch (context){
             case "create":
-                contentAside = <AgendaFormulaire type="create" users={users} onUpdateList={this.handleUpdateList} custom={element}/>
+                contentAside = <AgendaFormulaire type="create" custom={element} users={users} onUpdateList={this.handleUpdateList} />
                 break;
             case "update":
-                contentAside = <AgendaFormulaire type="update" users={users} onUpdateList={this.handleUpdateList} element={element} />
+                contentAside = <AgendaFormulaire type="update" element={element} users={users}
+                                                 onUpdateList={this.handleUpdateList} onDelete={() => this.handleDelete(element)} />
                 break;
             default:
                 break;

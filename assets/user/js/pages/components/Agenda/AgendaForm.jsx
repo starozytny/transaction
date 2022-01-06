@@ -24,7 +24,7 @@ const URL_UPDATE_GROUP       = "api_agenda_slots_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function AgendaFormulaire ({ type, onUpdateList, custom, element, users })
+export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, element, users })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
@@ -49,6 +49,7 @@ export function AgendaFormulaire ({ type, onUpdateList, custom, element, users }
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
         persons={element ? Formulaire.setValueEmptyIfNull(element.persons, []) : []}
         onUpdateList={onUpdateList}
+        onDelete={onDelete}
         messageSuccess={msg}
         users={users}
         key={element ? element.id : (custom ? custom.dateStr : 0)}
@@ -173,7 +174,7 @@ export class Form extends Component {
     }
 
     render () {
-        const { context } = this.props;
+        const { context, onDelete } = this.props;
         const { errors, success, name, startAt, endAt, allDay, location, comment, status, users } = this.state;
 
         let statusItems = [
@@ -190,6 +191,12 @@ export class Form extends Component {
         })
 
         return <>
+            {context === "update" && <div className="toolbar">
+                <div className="item">
+                    <Button type="danger" onClick={onDelete}>Supprimer l'évènement</Button>
+                </div>
+            </div>}
+
             <form onSubmit={this.handleSubmit}>
 
                 {success !== false && <Alert type="info">{success}</Alert>}
