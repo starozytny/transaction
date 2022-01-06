@@ -112,6 +112,49 @@ class EventController extends AbstractController
     }
 
     /**
+     * Update an event date
+     *
+     * @Route("/update-date/{id}", name="update_date", options={"expose"=true}, methods={"PUT"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message"
+     * )
+     *
+     * @OA\Tag(name="Agenda")
+     *
+     * @param AgEvent $obj
+     * @param Request $request
+     * @param ApiResponse $apiResponse
+     * @param ValidatorService $validator
+     * @param DataEvent $dataEntity
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function updateDate(AgEvent $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataEvent $dataEntity): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $data = json_decode($request->getContent());
+
+        if ($data === null) {
+            return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
+        }
+
+        $obj = $dataEntity->setDataEventDate($obj, $data);
+        $obj->setUpdatedAt(new \DateTime());
+
+        $noErrors = $validator->validate($obj);
+        if ($noErrors !== true) {
+            return $apiResponse->apiJsonResponseValidationFailed($noErrors);
+        }
+
+        $em->persist($obj);
+        $em->flush();
+
+        return $apiResponse->apiJsonResponse($obj, User::USER_READ);
+    }
+
+    /**
      * Delete an event
      *
      * @Route("/{id}", name="delete", options={"expose"=true}, methods={"DELETE"})

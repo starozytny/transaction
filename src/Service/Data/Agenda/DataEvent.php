@@ -29,4 +29,15 @@ class DataEvent extends DataConstructor
             ->setPersons($this->sanitizeData->trimData(json_encode($persons)))
         ;
     }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataEventDate(AgEvent $obj, $data): AgEvent
+    {
+        return ($obj)
+            ->setStartAt($this->createDate($data->startAt))
+            ->setEndAt($this->createDate($data->endAt))
+        ;
+    }
 }

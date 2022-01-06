@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 
+import axios             from "axios";
+import toastr            from "toastr";
+import Swal              from "sweetalert2";
+import SwalOptions       from "@commonComponents/functions/swalOptions";
 import Routing           from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import frLocale          from '@fullcalendar/core/locales/fr';
@@ -20,6 +24,7 @@ import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
 
 const URL_DELETE_ELEMENT = 'api_agenda_events_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer cet évènement ?';
+const URL_UPDATE_ELEMENT_DATE = 'api_agenda_events_update_date';
 
 export class Agenda extends Component {
     constructor(props) {
@@ -86,7 +91,36 @@ export class Agenda extends Component {
 
     // move event
     handleEventDrop = (e) => {
-        addEventElement(e.el, e.event, this.state.users);
+        const self = this;
+        Swal.fire(SwalOptions.options("Déplacer le rendez-vous", ""
+            + e.event.title + "<br><br>"
+            + "<u>Ancien date</u> : " + Sanitaze.toFormatDateTimeMidString(e.oldEvent.start) + "<br><br>"
+            + "<u>Nouvelle date</u> : " + Sanitaze.toFormatDateTimeMidString(e.event.start)
+        ))
+            .then((result) => {
+                if (result.isConfirmed) {
+                    Formulaire.loader(true);
+                    axios({ method: "PUT", url: Routing.generate(URL_UPDATE_ELEMENT_DATE, {'id': e.event.id}), data: {
+                            startAt: e.event.start,
+                            endAt: e.event.end
+                        }})
+                        .then(function (response) {
+                            toastr.info("Données mises à jour");
+                            addEventElement(e.el, e.event, self.state.users);
+                        })
+                        .catch(function (error) {
+                            toastr.error("Une erreur est survenue.");
+                            e.revert();
+                        })
+                        .then(function () {
+                            Formulaire.loader(false);
+                        })
+                    ;
+                }else{
+                    e.revert();
+                }
+            })
+        ;
     }
 
     // edit event
