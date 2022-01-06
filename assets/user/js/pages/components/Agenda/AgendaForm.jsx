@@ -26,8 +26,6 @@ export function AgendaFormulaire ({ type, element })
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
 
-    console.log(element.allDay)
-
     let form = <Form
         context={type}
         url={url}
@@ -40,6 +38,7 @@ export function AgendaFormulaire ({ type, element })
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
         persons={element ? Formulaire.setValueEmptyIfNull(element.persons, {}) : {}}
         messageSuccess={msg}
+        key={element ? element.id : 0}
     />
 
     return <div className="form">
