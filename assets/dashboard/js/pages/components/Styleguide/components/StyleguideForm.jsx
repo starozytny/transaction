@@ -8,8 +8,10 @@ import { DatePick, DateTimePick, TimePick }            from "@dashboardComponent
 import { Drop }                                        from "@dashboardComponents/Tools/Drop"
 import { Button }                                      from "@dashboardComponents/Tools/Button";
 import { Trumb }                                       from "@dashboardComponents/Tools/Trumb";
-import { Checkbox, Input, Radiobox, Select, TextArea,
-    SelectReactSelectize }                             from "@dashboardComponents/Tools/Fields";
+import {
+    Checkbox, Input, Radiobox, Select, TextArea,
+    SelectReactSelectize, SelectizeMultiple
+} from "@dashboardComponents/Tools/Fields";
 
 import Validator    from "@commonComponents/functions/validateur";
 import Helper       from "@commonComponents/functions/helper";
@@ -35,7 +37,8 @@ export class StyleguideForm extends Component {
             city: "",
             fruit: "",
             faq: { value: "", html: "" }, // faq: { value: props.faq ? props.faq : "", html: props.faq ? props.faq : "" },
-            question: []
+            question: [],
+            users: []
         }
 
         // In ENTITY
@@ -48,6 +51,7 @@ export class StyleguideForm extends Component {
 
         this.inputAvatar = React.createRef();
         this.inputFiles = React.createRef();
+        this.selectMultiple = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeFile = this.handleChangeFile.bind(this);
@@ -89,7 +93,18 @@ export class StyleguideForm extends Component {
         }
     }
 
-    handleChangeSelect = (e) => { this.setState({ fruit: e !== undefined ? e.value : "" }) }
+    handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
+
+    handleChangeSelectMultipleAdd = (name, valeurs) => {
+        this.setState({ [name]: valeurs })
+        this.selectMultiple.current.handleUpdateValeurs(valeurs);
+    }
+
+    handleChangeSelectMultipleDel = (name, valeur) => {
+        let valeurs = this.state.users.filter(v => v.value !== valeur.value);
+        this.setState({ [name]: valeurs });
+        this.selectMultiple.current.handleUpdateValeurs(valeurs);
+    }
 
     handleChangePostalCodeCity = (e) => {
         const { arrayPostalCode } = this.state;
@@ -172,7 +187,7 @@ export class StyleguideForm extends Component {
 
     render () {
         const { errors, username, email, message, roles, sexe, pays, birthday,
-            createAt, arrived, postalCode, city, fruit, faq, question } = this.state;
+            createAt, arrived, postalCode, city, fruit, faq, question, users } = this.state;
 
         let checkboxItems = [
             { value: 'ROLE_USER', label: 'Utilisateur', identifiant: 'utilisateur' },
@@ -191,6 +206,12 @@ export class StyleguideForm extends Component {
         ]
 
         let selectFruitItems = [
+            { value: 0, label: 'Orange', identifiant: 'orange' },
+            { value: 1, label: 'Pomme', identifiant: 'pomme' },
+            { value: 2, label: 'Mangue', identifiant: 'mangue' },
+        ]
+
+        let selectUsers = [
             { value: 0, label: 'Orange', identifiant: 'orange' },
             { value: 1, label: 'Pomme', identifiant: 'pomme' },
             { value: 2, label: 'Mangue', identifiant: 'mangue' },
@@ -256,7 +277,10 @@ export class StyleguideForm extends Component {
                             </div>
 
                             <div className="line">
-                                <SelectReactSelectize items={selectFruitItems} identifiant="fruit" placeholder={"Sélectionner votre fruit"} valeur={fruit} errors={errors} onChange={this.handleChangeSelect}>Votre fruit préféré ?</SelectReactSelectize>
+                                <SelectReactSelectize items={selectFruitItems} identifiant="fruit" placeholder={"Sélectionner votre fruit"}
+                                                      valeur={fruit} errors={errors} onChange={(e) => this.handleChangeSelect('fruit', e)}>
+                                    Votre fruit préféré ?
+                                </SelectReactSelectize>
                             </div>
 
                             <div className="line line-3">
@@ -279,6 +303,18 @@ export class StyleguideForm extends Component {
 
                             <div className="line">
                                 <Checkbox isSwitcher={true} items={switcherItems} identifiant="question" valeur={question} errors={errors} onChange={this.handleChange}>Question ?</Checkbox>
+                            </div>
+
+                            <div className="line line-2">
+                                <SelectizeMultiple ref={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}
+                                                   placeholder={"Sélectionner un/des utilisateurs"}
+                                                   errors={errors}
+                                                   onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("users", e)}
+                                                   onChangeDel={(e) => this.handleChangeSelectMultipleDel("users", e)}
+                                >
+                                    Utilisateurs concernés
+                                </SelectizeMultiple>
+                                <div className="form-group" />
                             </div>
 
                             <div className="form-button">

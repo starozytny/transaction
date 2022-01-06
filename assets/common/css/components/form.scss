@@ -224,7 +224,7 @@ select{
 
   &.checked > label{
     border: 1px solid var(--primary);
-    background-color: var(--apha);
+    background-color: var(--alpha);
     color: var(--primary);
     opacity: 1;
 
@@ -385,10 +385,10 @@ select{
     color: var(--error);
   }
   input, textarea, select,
-    .react-selectize.default.root-node .react-selectize-control .react-selectize-placeholder,
-    .react-selectize.default.root-node:not(.open) .react-selectize-control,
-    .simple-select.react-selectize.default.root-node.open .react-selectize-control,
-    .trumbowyg-box, .trumbowyg-editor,
+  .react-selectize.default.root-node .react-selectize-control .react-selectize-placeholder,
+  .react-selectize.default.root-node:not(.open) .react-selectize-control,
+  .simple-select.react-selectize.default.root-node.open .react-selectize-control,
+  .trumbowyg-box, .trumbowyg-editor,
   {
     border-color: var(--error);
     color: var(--error);
@@ -444,6 +444,20 @@ select{
     opacity: 0.8;
   }
 }
+
+.multi-select.react-selectize.default.root-node .simple-value{
+  border-radius: 4px;
+
+  [class^="icon-"]{
+    font-size: 10px;
+    transform: translate(2px, -1px);
+  }
+
+  span{
+    padding: 3px 4px 2px 4px;
+  }
+}
+
 // **************************************
 // DARK-MODE
 // STYLE
