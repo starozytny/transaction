@@ -82,7 +82,7 @@ export class Agenda extends Component {
         let contentAside;
         switch (context){
             case "create":
-                contentAside = <div>Ajouter</div>
+                contentAside = <AgendaFormulaire type="create" />
                 break;
             case "update":
                 contentAside = <AgendaFormulaire type="update" element={element} />
@@ -101,7 +101,7 @@ export class Agenda extends Component {
                 end: elem.endAtAgenda,
                 allDay: elem.allDay,
                 extendedProps: {
-                    where: elem.location,
+                    location: elem.location,
                     comment: elem.comment,
                     persons: elem.persons,
                     startAtJavascript: elem.startAtJavascript,
@@ -157,5 +157,5 @@ function addEventElement (bloc, event) {
     }
 
     bloc.insertAdjacentHTML('beforeend', '<div class="title">' + event.title + '</div>')
-    bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.where + '</div>')
+    bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.location + '</div>')
 }

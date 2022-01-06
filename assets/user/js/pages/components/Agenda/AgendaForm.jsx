@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import axios                   from "axios";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Checkbox }     from "@dashboardComponents/Tools/Fields";
+import {Input, Checkbox, Radiobox, TextArea} from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 
@@ -18,15 +18,15 @@ const TXT_UPDATE_BUTTON_FORM = "Modifier l'utilisateur";
 
 export function AgendaFormulaire ({ type, element })
 {
-    let title = "Ajouter un évènement";
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
 
     if(type === "update"){
-        title = "Modifier " + element.name;
         url = Routing.generate(URL_UPDATE_GROUP, {'id': element.id});
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
+
+    console.log(element.allDay)
 
     let form = <Form
         context={type}
@@ -34,7 +34,7 @@ export function AgendaFormulaire ({ type, element })
         name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
         startAtJavascript={element ? Formulaire.setDateOrEmptyIfNull(element.startAtJavascript, "") : ""}
         endAtJavascript={element ? Formulaire.setDateOrEmptyIfNull(element.endAtJavascript, "") : ""}
-        allDay={element ? Formulaire.setValueEmptyIfNull(element.allDay, 0) : 0}
+        allDay={element ? Formulaire.setValueEmptyIfNull(element.allDay === true ? [1] : [0], [0]) : [0]}
         location={element ? Formulaire.setValueEmptyIfNull(element.location) : ""}
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
@@ -43,7 +43,6 @@ export function AgendaFormulaire ({ type, element })
     />
 
     return <div className="form">
-        <h2>{title}</h2>
         {form}
     </div>
 }
@@ -75,7 +74,16 @@ export class Form extends Component {
         Helper.toTop();
     }
 
-    handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
+    handleChange = (e) => {
+        let name = e.currentTarget.name;
+        let value = e.currentTarget.value;
+
+        if(name === "allDay"){
+            value = (e.currentTarget.checked) ? [1] : [0] // parseInt because work with int this time
+        }
+
+        this.setState({ [name]: value })
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -128,13 +136,14 @@ export class Form extends Component {
                     self.setState({ success: messageSuccess, errors: [] });
                     if(context === "create"){
                         self.setState( {
-                            username: '',
-                            firstname: '',
-                            lastname: '',
-                            email: '',
-                            roles: [],
-                            password: '',
-                            passwordConfirm: '',
+                            name: "",
+                            startAtJavascript: "",
+                            endAtJavascript: "",
+                            allDay: 0,
+                            location: "",
+                            comment: "",
+                            status: 1,
+                            persons: "",
                         })
                     }
                 })
@@ -150,12 +159,39 @@ export class Form extends Component {
 
     render () {
         const { context } = this.props;
-        const { errors, success } = this.state;
+        const { errors, success, name, startAtJavascript, endAtJavascript, allDay, location, comment, status } = this.state;
+
+        let statusItems = [
+            {value: 0, label: "Inactif", identifiant: "s-inactif"},
+            {value: 1, label: "Actif",   identifiant: "s-actif"},
+            {value: 2, label: "Annulé",  identifiant: "s-cancel"},
+        ]
+
+        let switcherItems = [ { value: 1, label: 'oui', identifiant: 'oui' } ]
 
         return <>
             <form onSubmit={this.handleSubmit}>
 
                 {success !== false && <Alert type="info">{success}</Alert>}
+
+                <div className="line">
+                    <Radiobox items={statusItems} identifiant="status" valeur={status} errors={errors} onChange={this.handleChange}>
+                        Statut
+                    </Radiobox>
+                </div>
+
+                <div className="line line-2">
+                    <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Intitulé</Input>
+                    <Input valeur={location} identifiant="location" errors={errors} onChange={this.handleChange}>Lieu de rendez-vous</Input>
+                </div>
+
+                <div className="line">
+                    <Checkbox isSwitcher={true} items={switcherItems} identifiant="allDay" valeur={allDay} errors={errors} onChange={this.handleChange}>Toute la journée</Checkbox>
+                </div>
+
+                <div className="line">
+                    <TextArea identifiant="comment" valeur={comment} errors={errors} onChange={this.handleChange}>Commentaire</TextArea>
+                </div>
 
                 <div className="line">
                     <div className="form-button">
