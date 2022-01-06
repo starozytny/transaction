@@ -148,7 +148,7 @@ export class SelectizeMultiple extends Component {
         const { items, valeurs } = this.state;
 
         let content = <>
-                <MultiSelect defaultValues={valeurs} options={items} values={valeurs} placeholder={placeholder} onValuesChange={onChangeAdd}
+            <MultiSelect defaultValues={valeurs} options={items} values={valeurs} placeholder={placeholder} onValuesChange={onChangeAdd}
                          renderValue = {function(item){
                              return <div className="simple-value" onClick={() => onChangeDel(item)}>
                                  <span className="icon-cancel"/>
