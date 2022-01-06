@@ -19,7 +19,7 @@ class DataSlot extends DataConstructor
             ->setName($this->sanitizeData->sanitizeString($data->name))
             ->setStartAt($this->createDate($data->startAt))
             ->setEndAt($this->createDate($data->endAt))
-            ->setAllDay((int) $data->allDay)
+            ->setAllDay((int) $data->allDay[0])
             ->setLocation($this->sanitizeData->trimData($data->location))
             ->setComment($this->sanitizeData->trimData($data->comment))
             ->setStatus((int) $data->status)

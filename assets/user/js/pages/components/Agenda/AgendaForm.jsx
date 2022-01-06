@@ -3,19 +3,19 @@ import React, { Component } from 'react';
 import axios                   from "axios";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import {Input, Checkbox, Radiobox, TextArea} from "@dashboardComponents/Tools/Fields";
+import { Input, Checkbox, Radiobox, TextArea } from "@dashboardComponents/Tools/Fields";
+import { DatePick, DateTimePick } from "@dashboardComponents/Tools/DatePicker";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
-import {DatePick, DateTimePick} from "@dashboardComponents/Tools/DatePicker";
 
-const URL_CREATE_ELEMENT     = "api_users_create";
-const URL_UPDATE_GROUP       = "api_users_update";
-const TXT_CREATE_BUTTON_FORM = "Ajouter l'utilisateur";
-const TXT_UPDATE_BUTTON_FORM = "Modifier l'utilisateur";
+const URL_CREATE_ELEMENT     = "api_agenda_slots_create";
+const URL_UPDATE_GROUP       = "api_agenda_slots_update";
+const TXT_CREATE_BUTTON_FORM = "Enregistrer";
+const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function AgendaFormulaire ({ type, element })
 {
@@ -92,27 +92,16 @@ export class Form extends Component {
         e.preventDefault();
 
         const { context, url, messageSuccess } = this.props;
-        const { username, firstname, lastname, password, passwordConfirm, email, roles } = this.state;
+        const { name, startAt } = this.state;
 
         this.setState({ success: false})
 
-        let paramsToValidate = [
-            {type: "text", id: 'username',  value: username},
-            {type: "text", id: 'firstname', value: firstname},
-            {type: "text", id: 'lastname',  value: lastname},
-            {type: "email", id: 'email',    value: email},
-            {type: "array", id: 'roles',    value: roles}
-        ];
-        if(context === "create" || context === "profil"){
-            if(password !== ""){
-                paramsToValidate = [...paramsToValidate,
-                    ...[{type: "password", id: 'password', value: password, idCheck: 'passwordConfirm', valueCheck: passwordConfirm}]
-                ];
-            }
-        }
+        let method = context === "create" ? "POST" : "PUT";
 
-        let inputAvatar = this.inputAvatar.current;
-        let avatar = inputAvatar ? inputAvatar.drop.current.files : [];
+        let paramsToValidate = [
+            {type: "text", id: 'name',  value: name},
+            {type: "text", id: 'startAt', value: startAt}
+        ];
 
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
@@ -122,20 +111,10 @@ export class Form extends Component {
             Formulaire.loader(true);
             let self = this;
 
-            let formData = new FormData();
-            if(avatar[0]){
-                formData.append('avatar', avatar[0].file);
-            }
-
-            formData.append("data", JSON.stringify(this.state));
-
-            axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
+            axios({ method: method, url: url, data: this.state })
                 .then(function (response) {
                     let data = response.data;
                     Helper.toTop();
-                    if(self.props.onUpdateList){
-                        self.props.onUpdateList(data);
-                    }
                     self.setState({ success: messageSuccess, errors: [] });
                     if(context === "create"){
                         self.setState( {

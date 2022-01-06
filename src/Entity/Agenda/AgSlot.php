@@ -225,6 +225,7 @@ class AgSlot extends DataEntity
 
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
+        $updatedAt->setTimezone(new \DateTimeZone("Europe/Paris"));
         $this->updatedAt = $updatedAt;
 
         return $this;
