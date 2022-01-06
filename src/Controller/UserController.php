@@ -54,20 +54,21 @@ class UserController extends AbstractController
     {
         $objs = $repository->findBy(['creator' => $this->getUser()]);
 
-        $userIds = [];
-        foreach($objs as $obj){
-            $persons = json_decode($obj->getPersons());
-
-            if(isset($persons->users)){
-                foreach($persons->users as $el){
-                    if(!in_array($el->value, $userIds)){
-                        $userIds[] = $el->value;
-                    }
-
-                }
-            }
-        }
-        $users = $userRepository->findBy(['id' => $userIds]);
+//        $userIds = [];
+//        foreach($objs as $obj){
+//            $persons = json_decode($obj->getPersons());
+//
+//            if(isset($persons->users)){
+//                foreach($persons->users as $el){
+//                    if(!in_array($el->value, $userIds)){
+//                        $userIds[] = $el->value;
+//                    }
+//
+//                }
+//            }
+//        }
+//        $users = $userRepository->findBy(['id' => $userIds]);
+        $users = $userRepository->findAll();
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
         $users = $serializer->serialize($users, 'json', ['groups' => User::USER_READ]);

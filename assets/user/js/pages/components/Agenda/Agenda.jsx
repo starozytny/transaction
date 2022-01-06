@@ -183,7 +183,7 @@ function addEventElement (bloc, event, users) {
     if(persons.users){
         persons.users.forEach(person => {
             users.forEach(user => {
-                if(person === user.id){
+                if(person.value === user.id){
                     data0.push(user)
                 }
             })

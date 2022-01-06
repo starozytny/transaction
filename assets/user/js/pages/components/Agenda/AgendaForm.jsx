@@ -44,7 +44,7 @@ export function AgendaFormulaire ({ type, onUpdateList, element, users })
         location={element ? Formulaire.setValueEmptyIfNull(element.location) : ""}
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
-        persons={element ? Formulaire.setValueEmptyIfNull(element.persons, {}) : {}}
+        persons={element ? Formulaire.setValueEmptyIfNull(element.persons, []) : []}
         onUpdateList={onUpdateList}
         messageSuccess={msg}
         users={users}
@@ -158,7 +158,8 @@ export class Form extends Component {
                             location: "",
                             comment: "",
                             status: 1,
-                            persons: "",
+                            persons: [],
+                            users: [],
                         })
                     }
                 })

@@ -15,6 +15,9 @@ class DataSlot extends DataConstructor
      */
     public function setDataSlot(AgSlot $obj, $data): AgSlot
     {
+        $persons = [];
+        $persons["users"] = $data->users ?: [];
+
         return ($obj)
             ->setName($this->sanitizeData->sanitizeString($data->name))
             ->setStartAt($this->createDate($data->startAt))
@@ -23,7 +26,7 @@ class DataSlot extends DataConstructor
             ->setLocation($this->sanitizeData->trimData($data->location))
             ->setComment($this->sanitizeData->trimData($data->comment))
             ->setStatus((int) $data->status)
-            ->setPersons($this->sanitizeData->trimData(json_encode($data->persons)))
+            ->setPersons($this->sanitizeData->trimData(json_encode($persons)))
         ;
     }
 }

@@ -60,10 +60,10 @@ class FakeAgendaCreateCommand extends Command
                 $end = $end->format("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z");
             }
 
-            $persons = [
+            $users = [
                 "users" => [
-                    ["value" => 153, "label" => "Shanbo"],
-                    ["value" => 154, "label" => "Starozytny"],
+                    ["value" => 153, "label" => "SHANBORA Dev"],
+                    ["value" => 154, "label" => "STAROZYTNY Admin"],
                 ]
             ];
 
@@ -75,7 +75,7 @@ class FakeAgendaCreateCommand extends Command
                 "status" => $fake->numberBetween(0, 2),
                 "location" => $fake->streetName,
                 "comment" => $fake->sentence,
-                "persons" => json_decode(json_encode($persons))
+                "users" => json_decode(json_encode($users))
             ];
 
             $data = json_decode(json_encode($data));
