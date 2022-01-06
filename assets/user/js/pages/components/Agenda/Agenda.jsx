@@ -7,7 +7,6 @@ import timeGridPlugin    from '@fullcalendar/timegrid';
 import listPlugin        from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 
-import parse             from "html-react-parser";
 import Sanitaze          from "@commonComponents/functions/sanitaze";
 import UpdateList        from "@dashboardComponents/functions/updateList";
 
@@ -94,15 +93,15 @@ export class Agenda extends Component {
     }
 
     render () {
-        const { context, data, initialView, element } = this.state;
+        const { context, data, initialView, element, users } = this.state;
 
         let contentAside;
         switch (context){
             case "create":
-                contentAside = <AgendaFormulaire type="create" onUpdateList={this.handleUpdateList} />
+                contentAside = <AgendaFormulaire type="create" users={users} onUpdateList={this.handleUpdateList} />
                 break;
             case "update":
-                contentAside = <AgendaFormulaire type="update" onUpdateList={this.handleUpdateList} element={element} />
+                contentAside = <AgendaFormulaire type="update" users={users} onUpdateList={this.handleUpdateList} element={element} />
                 break;
             default:
                 break;

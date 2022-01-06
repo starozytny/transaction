@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import axios                   from "axios";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, Checkbox, Radiobox, TextArea } from "@dashboardComponents/Tools/Fields";
+import { Input, Checkbox, Radiobox, TextArea, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { DatePick, DateTimePick } from "@dashboardComponents/Tools/DatePicker";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
@@ -17,7 +17,7 @@ const URL_UPDATE_GROUP       = "api_agenda_slots_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function AgendaFormulaire ({ type, onUpdateList, element })
+export function AgendaFormulaire ({ type, onUpdateList, element, users })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
@@ -40,6 +40,7 @@ export function AgendaFormulaire ({ type, onUpdateList, element })
         persons={element ? Formulaire.setValueEmptyIfNull(element.persons, {}) : {}}
         onUpdateList={onUpdateList}
         messageSuccess={msg}
+        users={users}
         key={element ? element.id : 0}
     />
 
@@ -69,6 +70,7 @@ export class Form extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -88,6 +90,10 @@ export class Form extends Component {
     }
 
     handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
+
+    handleChangeSelect = (name, e) => {
+        console.log(e)
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -145,7 +151,7 @@ export class Form extends Component {
 
     render () {
         const { context } = this.props;
-        const { errors, success, name, startAt, endAt, allDay, location, comment, status } = this.state;
+        const { errors, success, name, startAt, endAt, allDay, location, comment, status, users } = this.state;
 
         let statusItems = [
             {value: 0, label: "Inactif", identifiant: "s-inactif"},
@@ -154,6 +160,11 @@ export class Form extends Component {
         ]
 
         let switcherItems = [ { value: 1, label: 'oui', identifiant: 'oui' } ]
+
+        let selectUsers = [];
+        this.props.users.forEach(el => {
+            selectUsers.push({ value: el.id, label: el.fullname, identifiant: "user-" + el.id })
+        })
 
         return <>
             <form onSubmit={this.handleSubmit}>
@@ -195,6 +206,15 @@ export class Form extends Component {
 
                 <div className="line">
                     <TextArea identifiant="comment" valeur={comment} errors={errors} onChange={this.handleChange}>Commentaire</TextArea>
+                </div>
+
+                <div className="line">
+                    <SelectReactSelectize items={selectUsers} identifiant="users" valeur={users}
+                                          placeholder={"Sélectionner un/des utilisateurs"}
+                                          errors={errors} onChange={(e) => this.handleChangeSelect("users", e)}
+                    >
+                        Utilisateurs concernés
+                    </SelectReactSelectize>
                 </div>
 
                 <div className="line">
