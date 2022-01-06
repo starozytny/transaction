@@ -1,3 +1,8 @@
 @import "../vars/vars";
+@import "~react-selectize/dist/index.min.css";
 
 @import "../../../common/css/components/agenda";
+
+.form{
+  border: none;
+}
