@@ -9,21 +9,21 @@ use Exception;
 
 class DataConstructor
 {
-    protected $validator;
     protected $em;
+    protected $validator;
     protected $sanitizeData;
 
     public function __construct(EntityManagerInterface $entityManager, ValidatorService $validator, SanitizeData $sanitizeData)
     {
-        $this->validator = $validator;
         $this->em = $entityManager;
+        $this->validator = $validator;
         $this->sanitizeData = $sanitizeData;
     }
 
     /**
      * @throws Exception
      */
-    public function createDate($date, $timezone="Europe/Paris"): ?\DateTime
+    protected function createDate($date, $timezone="Europe/Paris"): ?\DateTime
     {
         if($date == null || $date == ""){
             return null;

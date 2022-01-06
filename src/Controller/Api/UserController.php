@@ -156,6 +156,7 @@ class UserController extends AbstractController
      * @param FileUploader $fileUploader
      * @param DataUser $dataEntity
      * @return JsonResponse
+     * @throws Exception
      */
     public function update(Request $request, ValidatorService $validator, NotificationService $notificationService,
                            UserPasswordHasherInterface $passwordHasher, ApiResponse $apiResponse, User $obj,

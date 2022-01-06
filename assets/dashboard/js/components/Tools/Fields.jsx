@@ -155,9 +155,9 @@ export class SelectizeMultiple extends Component {
                                  <span>{item.label}</span>
                              </div>
                          }}
-            />
-            <input type="hidden" name={identifiant} value={valeurs}/>
-        </>
+                />
+                <input type="hidden" name={identifiant} value={valeurs}/>
+            </>
 
         return <ClassiqueStructure {...this.props} content={content} label={children} />
     }

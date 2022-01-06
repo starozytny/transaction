@@ -9,12 +9,13 @@ use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImTenant;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
-use App\Repository\Immo\ImNegotiatorRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
 use App\Repository\Immo\ImTenantRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Repository\Agenda\AgEventRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -249,6 +250,38 @@ class UserController extends AbstractController
             'data' => $objs,
             'user' => $user,
             'negotiators' => $negotiators
+        ]);
+    }
+
+    /**
+     * @Route("/agenda", name="agenda")
+     */
+    public function agenda(UserRepository $userRepository, AgEventRepository $repository, SerializerInterface $serializer): Response
+    {
+        $objs = $repository->findBy(['creator' => $this->getUser()]);
+
+//        $userIds = [];
+//        foreach($objs as $obj){
+//            $persons = json_decode($obj->getPersons());
+//
+//            if(isset($persons->users)){
+//                foreach($persons->users as $el){
+//                    if(!in_array($el->value, $userIds)){
+//                        $userIds[] = $el->value;
+//                    }
+//
+//                }
+//            }
+//        }
+//        $users = $userRepository->findBy(['id' => $userIds]);
+        $users = $userRepository->findAll();
+
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+        $users = $serializer->serialize($users, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/agenda/index.html.twig', [
+            'donnees' => $objs,
+            'users' => $users
         ]);
     }
 }
