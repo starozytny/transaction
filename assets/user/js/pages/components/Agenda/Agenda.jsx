@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import { Aside } from "@dashboardComponents/Tools/Aside";
-
 import frLocale          from '@fullcalendar/core/locales/fr';
 import FullCalendar      from "@fullcalendar/react";
 import dayGridPlugin     from '@fullcalendar/daygrid';
@@ -9,10 +7,13 @@ import timeGridPlugin    from '@fullcalendar/timegrid';
 import listPlugin        from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 
+import parse             from "html-react-parser";
 import Sanitaze          from "@commonComponents/functions/sanitaze";
+import UpdateList        from "@dashboardComponents/functions/updateList";
+
+import { Aside } from "@dashboardComponents/Tools/Aside";
 
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
-import UpdateList from "@dashboardComponents/functions/updateList";
 
 export class Agenda extends Component {
     constructor(props) {
@@ -20,7 +21,8 @@ export class Agenda extends Component {
 
         this.state = {
             context: "list",
-            data: JSON.parse(props.donnees),
+            data: props.donnees ? JSON.parse(props.donnees) : [],
+            users: props.users ? JSON.parse(props.users) : [],
             initialView: (window.matchMedia("(min-width: 768px)").matches) ? "timeGridWeek" : "timeGridDay"
         }
 
@@ -73,12 +75,12 @@ export class Agenda extends Component {
 
     // init event
     handleEventDidMount = (e) => {
-        addEventElement(e.el, e.event);
+        addEventElement(e.el, e.event, this.state.users);
     }
 
     // move event
     handleEventDrop = (e) => {
-        addEventElement(e.el, e.event);
+        addEventElement(e.el, e.event, this.state.users);
     }
 
     // edit event
@@ -118,7 +120,7 @@ export class Agenda extends Component {
                 extendedProps: {
                     location: elem.location,
                     comment: elem.comment,
-                    persons: elem.persons,
+                    persons: JSON.parse(elem.persons),
                     startAtJavascript: elem.startAtJavascript,
                     endAtJavascript: elem.endAtJavascript,
                     status: elem.status,
@@ -157,7 +159,7 @@ export class Agenda extends Component {
     }
 }
 
-function addEventElement (bloc, event) {
+function addEventElement (bloc, event, users) {
     bloc.innerHTML = "";
 
     let props = event.extendedProps;
@@ -174,4 +176,31 @@ function addEventElement (bloc, event) {
     bloc.insertAdjacentHTML('beforeend', '<div class="title">' + event.title + '</div>')
     bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.location + '</div>')
     bloc.insertAdjacentHTML('beforeend', '<div class="sub comment">' + props.comment + '</div>')
+
+    //persons
+    let persons = props.persons;
+
+    let data0 = [];
+    if(persons.users){
+        persons.users.forEach(person => {
+            users.forEach(user => {
+                if(person === user.id){
+                    data0.push(user)
+                }
+            })
+        })
+    }
+
+    if(data0.length !== 0){
+        let items = data0.map(elem => {
+            return '<div class="person">' +
+                '<img src="'+ elem.avatarFile +'" alt="'+ elem.lastname +'">' +
+                '</div>'
+        })
+
+        bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
+            items.join("") +
+        '</div>')
+    }
+
 }

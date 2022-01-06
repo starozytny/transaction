@@ -60,30 +60,22 @@ class FakeAgendaCreateCommand extends Command
                 $end = $end->format("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z");
             }
 
+            $persons = [
+                "users" => [
+                    153,
+                    154,
+                ]
+            ];
 
             $data = [
                 "name" => $fake->lastName,
                 "startAt" => $start->format("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "endAt" => $end,
-                "allDay" => $allDay,
+                "allDay" => [$allDay],
                 "status" => $fake->numberBetween(0, 2),
                 "location" => $fake->streetName,
                 "comment" => $fake->sentence,
-                "persons" => '{
-"user": [
-{
-  "id": 1
-},
-{
-  "id": 2
-}
-],
-"other": [
-{
-  "id": 1
-}  
-]
-}'
+                "persons" => json_decode(json_encode($persons))
             ];
 
             $data = json_decode(json_encode($data));

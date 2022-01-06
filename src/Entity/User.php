@@ -36,7 +36,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     private $id;
 
@@ -438,7 +438,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
 
     /**
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     public function getFullname(): string
     {
@@ -447,7 +447,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
 
     /**
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     public function getAvatarFile(): string
     {

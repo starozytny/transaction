@@ -63,6 +63,8 @@
   .fc-daygrid-event-harness > .fc-daygrid-event,
   .fc-timegrid-event-harness > .fc-timegrid-event,
   .fc-list-event{
+    padding-bottom: 4px;
+
     .time{
       padding: 4px 4px 0 4px;
     }
@@ -77,7 +79,27 @@
     }
 
     .comment{
+      opacity: 0.85;
+      margin-top: 1px;
+    }
 
+    .persons{
+      @include flex(row, flex-start, flex-start);
+      flex-wrap: wrap;
+      margin-top: 2px;
+
+      & > .person:not(:first-child){
+        transform: translateX(-10px);
+      }
+    }
+
+    .person{
+      img{
+        width: 24px; height: 24px;
+        border-radius: 50px;
+        box-shadow: 0 2px 6px var(--greyShadow);
+        background-color: var(--alpha);
+      }
     }
   }
 
@@ -139,7 +161,7 @@
   #calendar {
 
     .fc-view-harness.fc-view-harness-active{
-      min-height: 140vh;
+      min-height: 200vh;
     }
 
     .fc-toolbar {
