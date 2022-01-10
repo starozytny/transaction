@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import parse from "html-react-parser";
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class VisitsItem extends Component {
@@ -17,7 +18,7 @@ export class VisitsItem extends Component {
                             <div className="name">
                                 {event.name}
                             </div>
-                            <div className="sub">{event.fullDate}</div>
+                            <div className="sub">{parse(event.fullDate)}</div>
                             {event.location && <div className="sub">{event.location}</div>}
                             {event.comment && <div className="sub">{event.comment}</div>}
                         </div>
