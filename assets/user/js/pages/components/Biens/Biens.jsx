@@ -140,6 +140,8 @@ export class Biens extends Component {
                             filters={filters}
                             onGetFilters={this.handleGetFilters}
                             tenants={JSON.parse(this.props.tenants)}
+                            pageStatus={parseInt(this.props.pageStatus)}
+                            pageDraft={parseInt(this.props.pageDraft)}
                             data={currentData} />
     }
 

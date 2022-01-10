@@ -45,13 +45,25 @@
       cursor: pointer;
       transition: all 0.2s ease-in-out;
 
+      & > a{
+        color: var(--grey2);
+      }
+
       &:not(.active):hover{
         color: var(--txt);
+
+        & > a{
+          color: var(--txt);
+        }
       }
 
       &.active{
         color: var(--txt);
         border-bottom: 2px solid var(--primary);
+
+        & > a{
+          color: var(--txt);
+        }
       }
     }
   }

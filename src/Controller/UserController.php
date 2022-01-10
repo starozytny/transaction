@@ -58,11 +58,29 @@ class UserController extends AbstractController
     public function biens(Request $request, ImBienRepository $repository, ImTenantRepository $tenantRepository,
                           SerializerInterface $serializer): Response
     {
+        $status = $request->query->get('st');
+        $draft = $request->query->get('dr');
         $filterOwner = $request->query->get('fo');
         $filterTenant = $request->query->get('ft');
         $filterNego = $request->query->get('fn');
 
-        $objs = $repository->findAll();
+        if($status == null){
+            $objs = $repository->findAll();
+        }else{
+            $objs = $repository->findBy(['status' => (int) $status]);
+        }
+
+        if($draft == 1){
+            $data = [];
+            foreach ($objs as $obj){
+                if($obj->getIsDraft()){
+                    $data[] = $obj;
+                }
+            }
+
+            $objs = $data;
+        }
+
         $tenants = $tenantRepository->findBy(['bien' => $objs]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
@@ -74,6 +92,8 @@ class UserController extends AbstractController
             'filterOwner' => $filterOwner,
             'filterTenant' => $filterTenant,
             'filterNego' => $filterNego,
+            'st' => $status,
+            'dr' => $draft
         ]);
     }
 

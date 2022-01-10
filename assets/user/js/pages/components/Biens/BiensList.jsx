@@ -21,7 +21,7 @@ function getItemsSelect (data, noDuplication, el, pref) {
 
 export class BiensList extends Component {
     render () {
-        const { data, onDelete, filters, onGetFilters, tenants } = this.props;
+        const { pageStatus, pageDraft, data, onDelete, filters, onGetFilters, tenants } = this.props;
 
         let items = [], owners = [], negotiators = [], noDuplicateOwners = [], noDuplicateNegotiators = [];
         data.forEach(el => {
@@ -46,11 +46,11 @@ export class BiensList extends Component {
                 <div className="page-col-2">
                     <div className="title-col-2">
                         <div className="tab-col-2">
-                            <div className="item active">Tous</div>
-                            <div className="item">Actif</div>
-                            <div className="item">Inactif</div>
-                            <div className="item">Brouillon</div>
-                            <div className="item">Archive</div>
+                            <div className={"item" + ((pageStatus && !pageDraft) ? " active" : "")}><a href={Routing.generate('user_biens')}>Tous</a></div>
+                            <div className={"item" + (pageStatus === 1 ? " active" : "")}><a href={Routing.generate('user_biens', {'st': 1})}>Actif</a></div>
+                            <div className={"item" + (pageStatus === 0 ? " active" : "")}><a href={Routing.generate('user_biens', {'st': 0})}>Inactif</a></div>
+                            <div className={"item" + (pageDraft === 1 ? " active" : "")}><a href={Routing.generate('user_biens', {'dr': 1})}>Brouillon</a></div>
+                            <div className={"item" + (pageStatus === 2 ? " active" : "")}><a href={Routing.generate('user_biens', {'st': 2})}>Archive</a></div>
                         </div>
                         <Button type="primary" element="a" onClick={Routing.generate('user_biens_create')}>Ajouter un bien</Button>
                     </div>
