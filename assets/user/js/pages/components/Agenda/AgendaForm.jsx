@@ -24,7 +24,7 @@ const URL_UPDATE_GROUP       = "api_agenda_events_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, element, users })
+export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, element, users, managers, negotiators, owners, tenants })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
@@ -52,7 +52,13 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         onUpdateList={onUpdateList}
         onDelete={onDelete}
         messageSuccess={msg}
+
         users={users}
+        managers={managers}
+        negotiators={negotiators}
+        owners={owners}
+        tenants={tenants}
+
         key={element ? element.id : (custom ? custom.dateStr : 0)}
     />
 
@@ -65,13 +71,6 @@ export class Form extends Component {
     constructor(props) {
         super(props);
 
-        let users = [];
-        if(props.persons.users){
-            props.persons.users.forEach(el => {
-                users.push({value: el.value, label: el.label})
-            })
-        }
-
         this.state = {
             name: props.name,
             startAt: props.startAt,
@@ -82,12 +81,20 @@ export class Form extends Component {
             status: props.status,
             visibilities: props.visibilities,
             persons: props.persons,
-            users: users,
+            users: getPersonsData(props.persons ? props.persons.users : []),
+            managers: getPersonsData(props.persons ? props.persons.managers : []),
+            negotiators: getPersonsData(props.persons ? props.persons.negotiators : []),
+            owners: getPersonsData(props.persons ? props.persons.owners : []),
+            tenants: getPersonsData(props.persons ? props.persons.tenants : []),
             errors: [],
             success: false
         }
 
         this.selectMultiple = React.createRef();
+        this.selectMultiple1 = React.createRef();
+        this.selectMultiple2 = React.createRef();
+        this.selectMultiple3 = React.createRef();
+        this.selectMultiple4 = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
@@ -126,14 +133,25 @@ export class Form extends Component {
     handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
 
     handleChangeSelectMultipleAdd = (name, valeurs) => {
+        const { users, managers, negotiators, owners, tenants } = this.state;
+
+        let donnees = getDataSelecteurFromName(this, name, users, managers, negotiators, owners, tenants);
+        let selecteur = donnees[0];
+
         this.setState({ [name]: valeurs })
-        this.selectMultiple.current.handleUpdateValeurs(valeurs);
+        selecteur.handleUpdateValeurs(valeurs);
     }
 
     handleChangeSelectMultipleDel = (name, valeur) => {
-        let valeurs = this.state.users.filter(v => v.value !== valeur.value);
+        const { users, managers, negotiators, owners, tenants } = this.state;
+
+        let donnees = getDataSelecteurFromName(this, name, users, managers, negotiators, owners, tenants);
+        let selecteur = donnees[0];
+        let data = donnees[1];
+
+        let valeurs = data.filter(v => v.value !== valeur.value);
         this.setState({ [name]: valeurs });
-        this.selectMultiple.current.handleUpdateValeurs(valeurs);
+        selecteur.handleUpdateValeurs(valeurs);
     }
 
     handleSubmit = (e) => {
@@ -194,7 +212,8 @@ export class Form extends Component {
 
     render () {
         const { context, onDelete } = this.props;
-        const { errors, success, name, startAt, endAt, allDay, location, comment, status, users, visibilities } = this.state;
+        const { errors, success, name, startAt, endAt, allDay, location, comment, status, visibilities,
+            users, managers, negotiators, owners, tenants  } = this.state;
 
         let checkboxItems = [
             { value: 0, label: 'Personnes concernées',    identifiant: 'v-related' },
@@ -212,10 +231,11 @@ export class Form extends Component {
 
         let switcherItems = [ { value: 1, label: 'oui', identifiant: 'oui' } ]
 
-        let selectUsers = [];
-        this.props.users.forEach(el => {
-            selectUsers.push({ value: el.id, label: el.fullname, identifiant: "user-" + el.id })
-        })
+        let selectUsers         = getSelectData(this.props.users, "user");
+        let selectManagers      = getSelectData(this.props.managers, "mana");
+        let selectNegotiators   = getSelectData(this.props.negotiators, "nego");
+        let selectOwners        = getSelectData(this.props.owners, "own");
+        let selectTenants       = getSelectData(this.props.tenants, "tenant");
 
         return <>
             {context === "update" && <div className="toolbar">
@@ -261,25 +281,42 @@ export class Form extends Component {
                     </>}
                 </div>
 
-                <div className="line">
-                    <TextArea identifiant="comment" valeur={comment} errors={errors} onChange={this.handleChange}>Commentaire</TextArea>
-                </div>
-
-                <div className="line">
-                    <SelectizeMultiple ref={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}
-                                       placeholder={"Sélectionner un/des utilisateurs"}
-                                       errors={errors}
-                                       onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("users", e)}
-                                       onChangeDel={(e) => this.handleChangeSelectMultipleDel("users", e)}
-                    >
+                <div className="line line-2">
+                    <Selecteur refSelecteur={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}
+                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
                         Utilisateurs concernés
-                    </SelectizeMultiple>
+                    </Selecteur>
+                    <Selecteur refSelecteur={this.selectMultiple1} items={selectManagers} identifiant="managers" valeur={managers}
+                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                        Managers concernés
+                    </Selecteur>
+                </div>
+                <div className="line line-2">
+                    <Selecteur refSelecteur={this.selectMultiple2} items={selectNegotiators} identifiant="negotiators" valeur={negotiators}
+                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                        Negociateurs concernés
+                    </Selecteur>
+                    <div className="form-group" />
+                </div>
+                <div className="line line-2">
+                    <Selecteur refSelecteur={this.selectMultiple3} items={selectOwners} identifiant="owners" valeur={owners}
+                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                        Propriétaires concernés
+                    </Selecteur>
+                    <Selecteur refSelecteur={this.selectMultiple4} items={selectTenants} identifiant="tenants" valeur={tenants}
+                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                        Locataires concernés
+                    </Selecteur>
                 </div>
 
                 <div className="line">
                     <Checkbox items={checkboxItems} identifiant="visibilities" valeur={visibilities} errors={errors} onChange={this.handleChange}>
                         Qui peut voir ce rendez-vous ?
                     </Checkbox>
+                </div>
+
+                <div className="line">
+                    <TextArea identifiant="comment" valeur={comment} errors={errors} onChange={this.handleChange}>Commentaire</TextArea>
                 </div>
 
                 <div className="line">
@@ -290,4 +327,64 @@ export class Form extends Component {
             </form>
         </>
     }
+}
+
+function Selecteur ({ refSelecteur, items, identifiant, valeur, errors, onChangeAdd, onChangeDel, children }) {
+    return <>
+        <SelectizeMultiple ref={refSelecteur} items={items} identifiant={identifiant} valeur={valeur}
+                           errors={errors}
+                           onChangeAdd={(e) => onChangeAdd(identifiant, e)}
+                           onChangeDel={(e) => onChangeDel(identifiant, e)}
+        >
+            {children} concernés
+        </SelectizeMultiple>
+    </>
+}
+
+function getSelectData (data, pre) {
+    let tab = [];
+    data.forEach(el => {
+        tab.push({ value: el.id, label: el.fullname, identifiant: pre + "-" + el.id })
+    })
+
+    return tab
+}
+
+function getPersonsData (data) {
+    let tab = [];
+    if(data){
+        data.forEach(el => {
+            tab.push({value: el.value, label: el.label})
+        })
+    }
+
+    return tab;
+}
+
+function getDataSelecteurFromName (self, name, users, managers, negotiators, owners, tenants) {
+    let data, selecteur;
+    switch (name){
+        case "tenants":
+            data = tenants
+            selecteur = self.selectMultiple4.current;
+            break;
+        case "owners":
+            data = owners
+            selecteur = self.selectMultiple3.current;
+            break;
+        case "negotiators":
+            data = negotiators
+            selecteur = self.selectMultiple2.current;
+            break;
+        case "managers":
+            data = managers
+            selecteur = self.selectMultiple1.current;
+            break;
+        default:
+            data = users;
+            selecteur = self.selectMultiple.current;
+            break;
+    }
+
+    return [selecteur, data]
 }

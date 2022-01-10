@@ -16,7 +16,7 @@ class ImTenant extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     private $id;
 
@@ -342,7 +342,7 @@ class ImTenant extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     public function getFullname(): string
     {

@@ -58,9 +58,12 @@ export class Agenda extends Component {
         axios({ method: "GET", url: Routing.generate(URL_GET_DATA), data: {}})
             .then(function (response) {
                 let data = response.data;
-                console.log(data)
                 let users = JSON.parse(data.users)
-                self.setState({ users: users })
+                let managers = JSON.parse(data.managers)
+                let negotiators = JSON.parse(data.negotiators)
+                let owners = JSON.parse(data.owners)
+                let tenants = JSON.parse(data.tenants)
+                self.setState({ users, managers, negotiators, owners, tenants })
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error)
@@ -166,15 +169,18 @@ export class Agenda extends Component {
     }
 
     render () {
-        const { context, loadPageError, loadData, data, initialView, element, users } = this.state;
+        const { context, loadPageError, loadData, data, initialView, element,
+            users, managers, negotiators, owners, tenants } = this.state;
 
         let contentAside;
         switch (context){
             case "create":
-                contentAside = <AgendaFormulaire type="create" custom={element} users={users} onUpdateList={this.handleUpdateList} />
+                contentAside = <AgendaFormulaire type="create" custom={element} onUpdateList={this.handleUpdateList}
+                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants} />
                 break;
             case "update":
-                contentAside = <AgendaFormulaire type="update" element={element} users={users}
+                contentAside = <AgendaFormulaire type="update" element={element}
+                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
                                                  onUpdateList={this.handleUpdateList} onDelete={() => this.handleDelete(element)} />
                 break;
             default:
