@@ -105,7 +105,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/ajouter-un-bien", options={"expose"=true}, name="biens_create")
+     * @Route("/biens/ajouter-un-bien", options={"expose"=true}, name="biens_create")
      */
     public function createBien(SerializerInterface $serializer): Response
     {
@@ -113,7 +113,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/modifier-un-bien/{slug}",options={"expose"=true}, name="biens_update")
+     * @Route("/biens/modifier-un-bien/{slug}",options={"expose"=true}, name="biens_update")
      */
     public function updateBien($slug, ImBienRepository $repository, ImTenantRepository $tenantRepository, SerializerInterface $serializer): Response
     {
@@ -127,7 +127,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/visite/{slug}", options={"expose"=true}, name="visits_bien_index")
+     * @Route("/biens/visite/{slug}", options={"expose"=true}, name="visits_bien_index")
      */
     public function visitsBien($slug, ImBienRepository $repository, ImVisitRepository $visitRepository, SerializerInterface $serializer): Response
     {

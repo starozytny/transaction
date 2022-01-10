@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import { Alert }                  from "@dashboardComponents/Tools/Alert";
-import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
+import { Alert }      from "@dashboardComponents/Tools/Alert";
+import { Button }     from "@dashboardComponents/Tools/Button";
 
-import { VisitsItem }             from "./VisitsItem";
+import { VisitsItem } from "./VisitsItem";
 
 export class VisitsList extends Component {
     render () {
@@ -22,10 +22,11 @@ export class VisitsList extends Component {
                         <div className="item item-header">
                             <div className="item-content">
                                 <div className="item-body">
-                                    <div className="infos infos-col-3">
-                                        <div className="col-1">Date</div>
-                                        <div className="col-2">Statut</div>
-                                        <div className="col-3 actions">Actions</div>
+                                    <div className="infos infos-col-4">
+                                        <div className="col-1">Visite</div>
+                                        <div className="col-2">Personnes</div>
+                                        <div className="col-3">Statut</div>
+                                        <div className="col-4 actions">Actions</div>
                                     </div>
 
                                 </div>

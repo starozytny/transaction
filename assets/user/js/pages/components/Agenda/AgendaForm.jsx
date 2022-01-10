@@ -26,7 +26,7 @@ const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelete, custom, element, users, managers, negotiators,
-                                      owners, tenants, prospects, biens, bienId ="", url_create=null, url_update=null })
+                                      owners, tenants, prospects, biens, bienId ="", url_create=null, url_update=null, params_update={} })
 {
     let title = "Ajouter une visite";
     let url = Routing.generate(url_create ? url_create : URL_CREATE_ELEMENT);
@@ -34,7 +34,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelet
 
     if(type === "update"){
         title = "Modifier " + element.name;
-        url = Routing.generate(url_update ? url_update : URL_UPDATE_GROUP, {'id': element.id});
+        url = Routing.generate(url_update ? url_update : URL_UPDATE_GROUP, url_update ? params_update : {'id': element.id});
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
 
@@ -53,7 +53,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelet
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
         visibilities={element ? Formulaire.setValueEmptyIfNull(element.visibilities, [0]) : [0]}
         persons={element ? Formulaire.setValueEmptyIfNull(element.persons, []) : []}
-        bien={element ? (element.bien ? element.bien.id : bienId) : bienId}
+        bien={element ? (element.bien ? element.bien : bienId) : bienId}
         onUpdateList={onUpdateList}
         onDelete={onDelete}
         messageSuccess={msg}

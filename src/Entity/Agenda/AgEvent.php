@@ -132,7 +132,15 @@ class AgEvent extends DataEntity
 
     /**
      * @return string|null
-     * @Groups({"agenda:read", "visit:read"})
+     */
+    public function getStartAtString(): ?string
+    {
+        return $this->getFullDateString($this->startAt, 'llll');
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"agenda:read"})
      */
     public function getStartAtAgenda(): ?string
     {
@@ -162,7 +170,15 @@ class AgEvent extends DataEntity
 
     /**
      * @return string|null
-     * @Groups({"agenda:read", "visit:read"})
+     */
+    public function getEndAtString(): ?string
+    {
+        return $this->getFullDateString($this->startAt, 'llll');
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"agenda:read"})
      */
     public function getEndAtAgenda(): ?string
     {
@@ -188,6 +204,17 @@ class AgEvent extends DataEntity
         $this->endAt = $endAt;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"visit:read"})
+     */
+    public function getFullDate(): string
+    {
+        $start = $this->getStartAtString();
+        $end = $this->getEndAtString();
+        return $start . (($end && $this->endAt !== $this->startAt) ? " à " . $end : "");
     }
 
     public function getAllDay(): ?bool
