@@ -53,15 +53,16 @@
     padding: 2px 10px;
 
     $status:
-            "0" var(--danger),
-            "1" var(--primary),
-            "2" var(--warning),
-            "3" var(--grey3)
+            "0" var(--danger) "pointer",
+            "1" var(--primary) "pointer",
+            "2" var(--warning) "initial",
+            "3" var(--grey3) "initial"
     ;
 
-    @each $number, $bg in $status {
+    @each $number, $bg, $cursor in $status {
       &.status-#{$number}{
         background-color: $bg;
+        cursor: #{$cursor};
       }
     }
   }
