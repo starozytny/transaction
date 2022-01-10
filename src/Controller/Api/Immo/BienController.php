@@ -100,6 +100,13 @@ class BienController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
+        if($type === "create" && $data->id){
+            $obj = $em->getRepository(ImBien::class)->find($data->id);
+            if(!$obj){
+                return $apiResponse->apiJsonResponseBadRequest('Le bien est introuvable, veuillez contacter le support pour résoudre cette erreur.');
+            }
+        }
+
         $tab = [
             [ "type" => "area",         "new" => new ImArea(),          "existe" => $obj->getArea() ],
             [ "type" => "number",       "new" => new ImNumber(),        "existe" => $obj->getNumber() ],
@@ -187,7 +194,7 @@ class BienController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponseSuccessful("Success");
+        return $apiResponse->apiJsonResponse($obj, User::USER_READ);
     }
 
     /**

@@ -10,7 +10,7 @@ import helper from "@userPages/components/Biens/helper";
 
 const CURRENT_STEP = 2;
 
-export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, errors,
+export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, onDraft, errors,
                           codeTypeAd, codeTypeBien,
                           areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
                           piece, room, bathroom, wc, balcony, parking, box,
@@ -174,6 +174,6 @@ export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, er
             </div>
         </div>
 
-        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
+        <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
     </div>
 }

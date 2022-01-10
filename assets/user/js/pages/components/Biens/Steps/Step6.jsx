@@ -10,7 +10,7 @@ import Sanitaze from "@commonComponents/functions/sanitaze";
 
 const CURRENT_STEP = 6;
 
-export function Step6({ step, onChange, onChangeSelect, onNext, errors,
+export function Step6({ step, onChange, onChangeSelect, onNext, onDraft, errors,
                       typeCalcul, price, provisionCharges, provisionOrdures, tva, totalTerme, caution, honoraireTtc,
                           honoraireBail, edl, typeCharges, totalGeneral, typeBail, durationBail })
 {
@@ -93,6 +93,6 @@ export function Step6({ step, onChange, onChangeSelect, onNext, errors,
             </div>
         </div>
 
-        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
+        <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
     </div>
 }

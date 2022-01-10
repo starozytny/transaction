@@ -115,22 +115,15 @@ class DataImmo extends DataConstructor
             ->setOwner($owner)
             ->setConfidential($confidential)
             ->setAdvert($advert)
+            ->setIsDraft((int) $data->isDraft)
         ;
     }
 
     /**
      * @throws Exception
      */
-    public function setDataArea(ImArea $obj, $data)
+    public function setDataArea(ImArea $obj, $data): ImArea
     {
-        $paramsToValidate = [
-            ['type' => 'text', 'name' => 'areaTotal', 'value' => $data->areaTotal],
-        ];
-        $noErrors = $this->validator->validateCustom($paramsToValidate);
-        if ($noErrors !== true) {
-            return $noErrors;
-        }
-
         // Création de l'objet
         return ($obj)
             ->setTotal((float) $data->areaTotal)
@@ -148,16 +141,8 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataNumber(ImNumber $obj, $data)
+    public function setDataNumber(ImNumber $obj, $data): ImNumber
     {
-        $paramsToValidate = [
-            ['type' => 'text', 'name' => 'piece',  'value' => $data->piece],
-        ];
-        $noErrors = $this->validator->validateCustom($paramsToValidate);
-        if ($noErrors !== true) {
-            return $noErrors;
-        }
-
         // Création de l'objet
         return ($obj)
             ->setPiece((int) $data->piece)
@@ -305,7 +290,7 @@ class DataImmo extends DataConstructor
         return ($obj)
             ->setTypeAdvert($this->setToZeroEmpty($data->typeAdvert))
             ->setContentSimple($this->sanitizeData->trimData($data->contentSimple))
-            ->setContentFull($this->sanitizeData->trimData($data->contentFull))
+            ->setContentFull($data->contentFull ? $this->sanitizeData->trimData($data->contentFull) : "")
         ;
     }
 

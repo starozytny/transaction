@@ -12,7 +12,7 @@ import Sort     from "@commonComponents/functions/sort";
 
 const CURRENT_STEP = 7;
 
-export function Step7({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, onNext, errors,
+export function Step7({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, onNext, onDraft, errors,
                           refAside, onOpenAside, onSaveLegend,
                           onDragStart, onDragLeave, onDrop, photo, photos })
 {
@@ -119,6 +119,6 @@ export function Step7({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, o
             <Aside ref={refAside} content={contentAside}>Légende</Aside>
         </div>
 
-        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
+        <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
     </div>
 }

@@ -9,7 +9,7 @@ import Sort from "@commonComponents/functions/sort";
 
 const CURRENT_STEP = 1;
 
-export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, onOpenHelp, errors,
+export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, onDraft, onOpenHelp, errors,
                           codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator })
 {
     let typeAdItems = helper.getItems("ads");
@@ -65,7 +65,7 @@ export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, onO
         <div className="line line-buttons">
             <div/>
             <div className="btns-submit">
-                <Button type="warning">Enregistrer le brouillon</Button>
+                <Button type="warning" onClick={onDraft}>Enregistrer le brouillon</Button>
                 <Button onClick={() => onNext(2)}>Etape suivante</Button>
             </div>
         </div>

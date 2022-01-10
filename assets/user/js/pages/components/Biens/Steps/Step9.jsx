@@ -35,7 +35,7 @@ function toString (tab, value) {
     return label;
 }
 
-export function Step9({ step, onChange, onChangeSelect, onNext, errors, negotiator, negotiators,
+export function Step9({ step, onChange, onChangeSelect, onNext, onDraft, errors, negotiator, negotiators,
                         typeAdvert, contentSimple, contentFull,
                         codeTypeBien, codeTypeAd, codeTypeMandat, libelle, address, zipcode, city, price, areaTotal, piece,
                         areaGarden, areaTerrace, room, balcony, parking, box, dispoAt, busy,
@@ -209,6 +209,6 @@ export function Step9({ step, onChange, onChangeSelect, onNext, errors, negotiat
             </div>
         </div>
 
-        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
+        <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
     </div>
 }

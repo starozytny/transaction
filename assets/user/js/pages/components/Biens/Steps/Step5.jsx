@@ -9,7 +9,7 @@ import helper from "@userPages/components/Biens/helper";
 
 const CURRENT_STEP = 5;
 
-export function Step5({ step, onChange, onChangeZipcode, onNext, errors,
+export function Step5({ step, onChange, onChangeZipcode, onNext, onDraft, errors,
                       address, hideAddress, zipcode, city, country, departement, quartier, lat, lon, hideMap })
 {
 
@@ -69,6 +69,6 @@ export function Step5({ step, onChange, onChangeZipcode, onNext, errors,
             </div>
         </div>
 
-        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
+        <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
     </div>
 }

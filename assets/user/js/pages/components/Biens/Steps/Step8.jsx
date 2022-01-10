@@ -20,7 +20,7 @@ import {
 
 const CURRENT_STEP = 8;
 
-export function Step8({ step, onChange, onChangeSelect, onChangeDate, onOpenAside, onNext, errors, allOwners,
+export function Step8({ step, onChange, onChangeSelect, onChangeDate, onOpenAside, onNext, onDraft, errors, allOwners,
                           owner, tenants,
                           inform, lastname, phone1, email, visiteAt, visiteTo, keysNumber, keysWhere })
 {
@@ -188,6 +188,6 @@ export function Step8({ step, onChange, onChangeSelect, onChangeDate, onOpenAsid
             </div>
         </div>
 
-        <FormActions onNext={onNext} currentStep={CURRENT_STEP} />
+        <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
     </div>
 }

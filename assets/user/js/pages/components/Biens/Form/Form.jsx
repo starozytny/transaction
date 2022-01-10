@@ -182,42 +182,64 @@ export class Form extends Component {
         }
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = (e, isDraft) => {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
+        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator } = this.state;
 
         // TODO : ----------------------------------
         // TODO : recheck all data before send
         // TODO : ----------------------------------
+        let paramsToValidate = [
+            {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
+            {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
+            {type: "text",      id: 'libelle',        value: libelle},
+            {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
+            {type: "text",      id: 'negotiator',     value: negotiator},
+            {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
+        ];
 
-        let self = this;
-        Formulaire.loader(true);
+        // validate global
+        let validate = Validateur.validateur(paramsToValidate);
 
-        arrayZipcodeSave = this.state.arrayPostalCode;
-        arrayOwnersSave = this.state.allOwners;
-        arrayTenantsSave = this.state.allTenants;
-        delete this.state.arrayPostalCode;
-        delete this.state.allOwners;
-        delete this.state.allTenants;
+        Helper.toTop();
+        if(!validate.code){
+            Formulaire.showErrors(this, validate);
+        }else{
+            let self = this;
+            Formulaire.loader(true);
 
-        let formData = new FormData();
-        formData.append("data", JSON.stringify(this.state));
+            arrayZipcodeSave = this.state.arrayPostalCode;
+            arrayOwnersSave = this.state.allOwners;
+            arrayTenantsSave = this.state.allTenants;
+            delete this.state.arrayPostalCode;
+            delete this.state.allOwners;
+            delete this.state.allTenants;
 
-        this.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
+            this.state.isDraft = isDraft;
 
-        axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
-            .then(function (response) {
-                let data = response.data;
-                toastr.info(messageSuccess);
-            })
-            .catch(function (error) {
-                Formulaire.displayErrors(self, error);
-            })
-            .then(() => {
-                Formulaire.loader(false);
-            })
-        ;
+            let formData = new FormData();
+            formData.append("data", JSON.stringify(this.state));
+
+            this.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
+
+            axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
+                .then(function (response) {
+                    let data = response.data;
+                    toastr.info(messageSuccess);
+                    if(isDraft){
+                        self.setState({ id: data.id })
+                    }
+                })
+                .catch(function (error) {
+                    Formulaire.displayErrors(self, error);
+                })
+                .then(() => {
+                    Formulaire.loader(false);
+                })
+            ;
+        }
     }
 
     handleOpenHelp = (type) => {
@@ -393,8 +415,6 @@ export class Form extends Component {
                                     societyId={societyId} agencyId={agencyId} isClient={true}
                                     tenants={tenants} isFormBien={true} onSelectTenant={this.handleSelectTenant}/>
 
-        console.log(this.state)
-
         return <div className="page-default">
             <div className="page-col-1">
                 <div className="comeback">
@@ -414,52 +434,59 @@ export class Form extends Component {
                     <div className="tab-col-2">
                         <div className="item active">{stepTitle}</div>
                     </div>
-                    <Button type="warning">Enregistrer le brouillon</Button>
+                    <Button type="warning" onClick={(e) => this.handleSubmit(e, true)}>Enregistrer le brouillon</Button>
                 </div>
                 <section>
-                    <form className="form-bien" onSubmit={this.handleSubmit}>
+                    <form className="form-bien" onSubmit={(e) => this.handleSubmit(e, false)}>
 
-                        <Step1 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                        <Step1 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                               onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                onOpenHelp={this.handleOpenHelp} negotiators={negotiators} />
 
-                        <Step2 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                        <Step2 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                               onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
-                        <Step3 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                        <Step3 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                               onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
-                        <Step5 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                        <Step5 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                               onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                onChangeZipcode={this.handleChangeZipcode} />
 
-                        {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                        {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                                                             onNext={this.handleNext} onChange={this.handleChange}
                                                              onChangeSelect={this.handleChangeSelect} />
                             : <Step6Vente {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                           onChangeSelect={this.handleChangeSelect} />}
 
-                        <Step7 {...this.state} onNext={this.handleNext} onChangeFile={this.handleChangeFile}
+                        <Step7 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                               onNext={this.handleNext} onChangeFile={this.handleChangeFile}
                                onSwitchTrashFile={this.handleSwitchTrashFile} onChangeLegend={this.handleChangeLegend}
                                onDragStart={this.handleDragStart} onDrop={this.handleDrop} onDragLeave={this.handleDragLeave}
                                refAside={this.aside0} onOpenAside={this.handleOpenAside} onSaveLegend={this.handleSaveLegend} />
 
-                        <Step8 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                        <Step8 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                               onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                refAside1={this.aside1} onOpenAside={this.handleOpenAside}
                                allOwners={allOwners} />
 
-                        <Step9 {...this.state} onNext={this.handleNext} onChange={this.handleChange}
+                        <Step9 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                               onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} negotiators={negotiators} />
 
-                        <div className="step-section active">
+                        {step === 9 && <div className="step-section active">
                             <div className="line line-buttons">
-                                <div />
-                                <div />
                                 <div className="btns-submit">
                                     <Button isSubmit={true}>Enregistrer le bien</Button>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
+
                     </form>
 
                     <div className="contact-aside">
