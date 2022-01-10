@@ -64,6 +64,7 @@ class AgendaController extends AbstractController
         }
 
         $users = $serializer->serialize($users, 'json', ['groups' => User::AGENDA_READ]);
+
         $managers = $serializer->serialize($managers, 'json', ['groups' => User::AGENDA_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::AGENDA_READ]);
         $owners = $serializer->serialize($owners, 'json', ['groups' => User::AGENDA_READ]);
