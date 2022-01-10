@@ -66,7 +66,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     private $lastname;
 
@@ -448,7 +448,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     public function getAvatarFile(): string
     {
