@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Agenda\AgEvent;
+use App\Entity\Immo\ImBien;
 use App\Entity\User;
 use App\Service\Data\Agenda\DataEvent;
 use App\Service\DatabaseService;
@@ -46,10 +47,15 @@ class FakeAgendaCreateCommand extends Command
             $io->text("Veuillez créer l'user SHANBO avant de lancer cette commande.");
             return Command::FAILURE;
         }
+        $bien = $this->em->getRepository(ImBien::class)->findOneBy(['agency' => $user->getAgency()]);
+        if(!$bien){
+            $io->text("Veuillez créer un bien lié à l'agence de Shanbo avant de lancer cette commande.");
+            return Command::FAILURE;
+        }
 
-        $io->title('Création de 5 events');
+        $io->title('Création de 10 events');
         $fake = Factory::create();
-        for($i=0; $i<5 ; $i++) {
+        for($i=0; $i<10 ; $i++) {
 
             $allDay = !($fake->numberBetween(0, 1) == 0);
             $start = $fake->dateTimeInInterval('-3 days', '+3 days');
