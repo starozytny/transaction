@@ -54,7 +54,7 @@ class ImBien extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     private $id;
 
@@ -718,5 +718,14 @@ class ImBien extends DataEntity
         $this->advert = $advert;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"agenda:read"})
+     */
+    public function getFullname(): string
+    {
+        return "#" . $this->reference . " - " . $this->libelle;
     }
 }

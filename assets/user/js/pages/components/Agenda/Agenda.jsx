@@ -63,7 +63,8 @@ export class Agenda extends Component {
                 let negotiators = JSON.parse(data.negotiators)
                 let owners = JSON.parse(data.owners)
                 let tenants = JSON.parse(data.tenants)
-                self.setState({ users, managers, negotiators, owners, tenants })
+                let prospects = JSON.parse(data.prospects)
+                self.setState({ users, managers, negotiators, owners, tenants, prospects })
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error)
@@ -114,14 +115,14 @@ export class Agenda extends Component {
 
     // init event
     handleEventDidMount = (e) => {
-        const { users, managers, negotiators, owners, tenants } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
 
-        addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants);
+        addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects);
     }
 
     // move event
     handleEventDrop = (e) => {
-        const { users, managers, negotiators, owners, tenants } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
 
         const self = this;
         Swal.fire(SwalOptions.options("Déplacer le rendez-vous", ""
@@ -138,7 +139,7 @@ export class Agenda extends Component {
                         }})
                         .then(function (response) {
                             toastr.info("Données mises à jour");
-                            addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants);
+                            addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects);
                         })
                         .catch(function (error) {
                             toastr.error("Une erreur est survenue.");
@@ -174,17 +175,20 @@ export class Agenda extends Component {
 
     render () {
         const { context, loadPageError, loadData, data, initialView, element,
-            users, managers, negotiators, owners, tenants } = this.state;
+            users, managers, negotiators, owners, tenants, prospects } = this.state;
 
         let contentAside;
         switch (context){
             case "create":
                 contentAside = <AgendaFormulaire type="create" custom={element} onUpdateList={this.handleUpdateList}
-                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants} />
+                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
+                                                 prospects={prospects}
+                                                 />
                 break;
             case "update":
                 contentAside = <AgendaFormulaire type="update" element={element}
                                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
+                                                 prospects={prospects}
                                                  onUpdateList={this.handleUpdateList} onDelete={() => this.handleDelete(element)} />
                 break;
             default:
@@ -214,7 +218,7 @@ export class Agenda extends Component {
         })
 
         return <>
-            {loadPageError ? <PageError /> : <div id="calendar" className="main-content">
+            {loadPageError ? <div className="main-content"><PageError /></div> : <div id="calendar" className="main-content">
                 {loadData ? <LoaderElement /> : <>
                     <div className="toolbar">
                         <div className="item">
@@ -251,7 +255,7 @@ export class Agenda extends Component {
     }
 }
 
-function addEventElement (bloc, event, users, managers, negotiators, owners, tenants) {
+function addEventElement (bloc, event, users, managers, negotiators, owners, tenants, prospects) {
     bloc.innerHTML = "";
 
     let props = event.extendedProps;
@@ -281,6 +285,7 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
     let data2 = getDataPerson(persons.negotiators, negotiators);
     let data3 = getDataPerson(persons.owners, owners);
     let data4 = getDataPerson(persons.tenants, tenants);
+    let data5 = getDataPerson(persons.prospects, prospects);
 
     if(data0.length !== 0){
         let items0 = getPersonAvatar(data0);
@@ -288,6 +293,7 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
         let items2 = getPersonAvatar(data2);
         let items3 = getPersonTotal(data3, "propriétaire");
         let items4 = getPersonTotal(data4, "locataire");
+        let items5 = getPersonTotal(data5, "prospect");
 
         bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
             items0.join("") +
@@ -307,6 +313,11 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
             bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
                 items4 +
             '</div>')
+        }
+        if(data5.length > 0){
+            bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
+                items5 +
+                '</div>')
         }
     }
 
