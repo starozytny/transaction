@@ -134,7 +134,7 @@ class UserController extends AbstractController
         $element = $repository->findOneBy(["slug" => $slug]);
         $visits = $visitRepository->findBy(['bien' => $element]);
 
-        $visits = $serializer->serialize($visits, 'json', ['groups' => User::USER_READ]);
+        $visits = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
 
         return $this->render("user/pages/visits/index.html.twig", [
             'elem' => $element,

@@ -61,20 +61,7 @@ export class Agenda extends Component {
 
         let element = elem;
         if(context === "update"){
-            let props = elem.extendedProps;
-            element = {
-                id: parseInt(elem.id),
-                name: elem.title,
-                allDay: elem.allDay,
-                startAtJavascript: props.startAtJavascript,
-                endAtJavascript: props.endAtJavascript,
-                location: props.location,
-                comment: props.comment,
-                persons: props.persons,
-                status: props.status,
-                visibilities: props.visibilities,
-                bien: props.bien
-            }
+            element = AgendaData.createElement(elem);
         }
 
         this.setState({ context, element })
@@ -177,25 +164,7 @@ export class Agenda extends Component {
 
         let events = [];
         data.forEach(elem => {
-            events.push({
-                id: elem.id,
-                title: elem.name,
-                start: elem.startAtAgenda,
-                end: elem.endAtAgenda,
-                allDay: elem.allDay,
-                extendedProps: {
-                    location: elem.location,
-                    comment: elem.comment,
-                    persons: elem.persons,
-                    startAtJavascript: elem.startAtJavascript,
-                    endAtJavascript: elem.endAtJavascript,
-                    status: elem.status,
-                    statusString: elem.statusString,
-                    visibilities: elem.visibilities,
-                    visit: elem.imVisit
-                },
-                classNames: "event event-" + elem.status
-            })
+            events.push(AgendaData.createEventStructure(elem, elem.imVisit))
         })
 
         return <>

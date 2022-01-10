@@ -50,7 +50,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
         visibilities={element ? Formulaire.setValueEmptyIfNull(element.visibilities, [0]) : [0]}
         persons={element ? Formulaire.setValueEmptyIfNull(element.persons, []) : []}
-        bien={element ? (element.imVisit.bien ? element.imVisit.bien.id : bienId) : bienId}
+        bien={element ? (element.bien ? element.bien.id : bienId) : bienId}
         onUpdateList={onUpdateList}
         onDelete={onDelete}
         messageSuccess={msg}

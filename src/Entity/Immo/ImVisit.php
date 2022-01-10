@@ -12,25 +12,26 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImVisit
 {
+    const VISIT_READ = ["visit:read"];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user:read", "agenda:read"})
+     * @Groups({"visit:read", "agenda:read"})
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=AgEvent::class, inversedBy="imVisit", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read"})
+     * @Groups({"visit:read"})
      */
     private $agEvent;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="visits")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"agenda:read"})
+     * @Groups({"visit:read", "agenda:read"})
      */
     private $bien;
 

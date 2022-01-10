@@ -59,7 +59,10 @@ export class Visits extends Component {
     handleContentUpdate = (changeContext, element) => {
         const { users, managers, negotiators, owners, tenants, prospects, biens } = this.state;
 
-        return <AgendaFormulaire type="update" element={element.agEvent}
+        let elem = AgendaData.createEventStructure(element.agEvent, element);
+        element = AgendaData.createElement(elem);
+
+        return <AgendaFormulaire type="update" element={element}
                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
                                  prospects={prospects} biens={biens} bienId={parseInt(this.props.bienId)}
                                  onUpdateList={this.handleUpdateList} url_update={'api_visits_update'} />

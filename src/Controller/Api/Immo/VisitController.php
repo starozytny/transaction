@@ -44,27 +44,24 @@ class VisitController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
+        /** @var User $user */
+        $user = $this->getUser();
+
         $bien = $em->getRepository(ImBien::class)->find($data->bien);
         if (!$bien){
             return $apiResponse->apiJsonResponseBadRequest('Une erreur est survenue. Aucun bien lié à cette visite.');
         }
 
         $event = $dataEvent->setDataEvent($event, $data);
+        $event = $dataEvent->setCreatorAndUpdate($type, $event, $user);
         $obj = $dataEntity->setDataVisit($obj, $event, $bien);
-
-        if($type == "create"){
-            /** @var User $user */
-            $user = $this->getUser();
-            $event->setCreator($user);
-        }else{
-            $event->setUpdatedAt(new \DateTime());
-        }
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
         }
 
+        $em->persist($event);
         $em->persist($obj);
         $em->flush();
 

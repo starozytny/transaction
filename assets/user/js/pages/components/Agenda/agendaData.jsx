@@ -27,6 +27,50 @@ function getData(self, url) {
     ;
 }
 
+function createEventStructure(elem, visit) {
+    return {
+        id: elem.id,
+        title: elem.name,
+        start: elem.startAtAgenda,
+        end: elem.endAtAgenda,
+        allDay: elem.allDay,
+        extendedProps: {
+            location: elem.location,
+            comment: elem.comment,
+            persons: elem.persons,
+            startAtJavascript: elem.startAtJavascript,
+            endAtJavascript: elem.endAtJavascript,
+            status: elem.status,
+            statusString: elem.statusString,
+            visibilities: elem.visibilities,
+            visit: visit ? visit.id : null,
+            bien: visit ? visit.bien : null,
+        },
+        classNames: "event event-" + elem.status
+    }
+}
+
+function createElement(elem) {
+    let props = elem.extendedProps;
+
+    return {
+        id: parseInt(elem.id),
+        name: elem.title,
+        allDay: elem.allDay,
+        startAtJavascript: props.startAtJavascript,
+        endAtJavascript: props.endAtJavascript,
+        location: props.location,
+        comment: props.comment,
+        persons: props.persons,
+        status: props.status,
+        visibilities: props.visibilities,
+        visit: props.visit,
+        bien: props.bien ? props.bien.id : null
+    }
+}
+
 module.exports = {
-    getData
+    getData,
+    createElement,
+    createEventStructure
 }

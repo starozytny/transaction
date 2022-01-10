@@ -55,7 +55,7 @@ class ImBien extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "agenda:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "visit:read"})
      */
     private $id;
 
