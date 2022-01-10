@@ -27,6 +27,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     const ADMIN_READ = ['admin:read'];
     const USER_READ = ['user:read'];
     const VISITOR_READ = ['visitor:read'];
+    const AGENDA_READ = ['agenda:read'];
 
     const CODE_ROLE_USER = 0;
     const CODE_ROLE_DEVELOPER = 1;
@@ -36,7 +37,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     private $id;
 
@@ -438,7 +439,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     public function getFullname(): string
     {

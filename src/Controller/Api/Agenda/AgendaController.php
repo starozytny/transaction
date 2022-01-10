@@ -43,9 +43,16 @@ class AgendaController extends AbstractController
     {
         $em = $this->doctrine->getManager();
 
-        $users = $em->getRepository(User::class)->findAll();
+        $allUsers = $em->getRepository(User::class)->findAll();
 
-        $users = $serializer->serialize($users, 'json', ['groups' => User::USER_READ]);
+        $users = [];
+        foreach($allUsers as $user){
+            if($user->getHighRoleCode() === User::CODE_ROLE_USER){
+                $users[] = $user;
+            }
+        }
+
+        $users = $serializer->serialize($users, 'json', ['groups' => User::AGENDA_READ]);
 
         return $apiResponse->apiJsonResponse([
             "users" => $users
