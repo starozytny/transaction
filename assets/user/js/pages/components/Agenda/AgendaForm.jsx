@@ -49,7 +49,6 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
         visibilities={element ? Formulaire.setValueEmptyIfNull(element.visibilities, [0]) : [0]}
-        bien={element ? (element.bien ? element.bien.id : "") : ""}
         persons={element ? Formulaire.setValueEmptyIfNull(element.persons, []) : []}
         onUpdateList={onUpdateList}
         onDelete={onDelete}
@@ -84,7 +83,6 @@ export class Form extends Component {
             comment: props.comment,
             status: props.status,
             visibilities: props.visibilities,
-            bien: props.bien,
             persons: props.persons,
             users: getPersonsData(props.persons ? props.persons.users : []),
             managers: getPersonsData(props.persons ? props.persons.managers : []),
@@ -227,7 +225,7 @@ export class Form extends Component {
 
     render () {
         const { context, onDelete } = this.props;
-        const { errors, success, name, startAt, endAt, allDay, location, comment, status, visibilities, bien,
+        const { errors, success, name, startAt, endAt, allDay, location, comment, status, visibilities,
             users, managers, negotiators, owners, tenants, prospects } = this.state;
 
         let checkboxItems = [
@@ -252,8 +250,6 @@ export class Form extends Component {
         let selectOwners        = getSelectData(this.props.owners, "own");
         let selectTenants       = getSelectData(this.props.tenants, "tenant");
         let selectProspects     = getSelectData(this.props.prospects, "pros");
-        let selectBiens         = getSelectData(this.props.biens, "bien");
-
         return <>
             {context === "update" && <div className="toolbar">
                 <div className="item">
@@ -296,12 +292,6 @@ export class Form extends Component {
                             Fin du rendez-vous
                         </DateTimePick>
                     </>}
-                </div>
-
-                <div className="line">
-                    <SelectReactSelectize items={selectBiens} identifiant="bien" valeur={bien} errors={errors} onChange={(e) => this.handleChangeSelect('bien', e)}>
-                        Bien concerné
-                    </SelectReactSelectize>
                 </div>
 
                 <div className="line line-2">

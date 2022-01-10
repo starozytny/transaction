@@ -4,6 +4,7 @@ namespace App\Entity\Agenda;
 
 use App\Entity\DataEntity;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Repository\Agenda\AgEventRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -102,10 +103,10 @@ class AgEvent extends DataEntity
     private $creator;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="agEvents")
+     * @ORM\OneToOne(targetEntity=ImVisit::class, fetch="EAGER", mappedBy="agEvent", cascade={"persist", "remove"})
      * @Groups({"agenda:read"})
      */
-    private $bien;
+    private $imVisit;
 
     public function __construct()
     {
@@ -319,14 +320,19 @@ class AgEvent extends DataEntity
         return $this;
     }
 
-    public function getBien(): ?ImBien
+    public function getImVisit(): ?ImVisit
     {
-        return $this->bien;
+        return $this->imVisit;
     }
 
-    public function setBien(?ImBien $bien): self
+    public function setImVisit(ImVisit $imVisit): self
     {
-        $this->bien = $bien;
+        // set the owning side of the relation if necessary
+        if ($imVisit->getAgEvent() !== $this) {
+            $imVisit->setAgEvent($this);
+        }
+
+        $this->imVisit = $imVisit;
 
         return $this;
     }

@@ -214,7 +214,7 @@ export class Agenda extends Component {
                     status: elem.status,
                     statusString: elem.statusString,
                     visibilities: elem.visibilities,
-                    bien: elem.bien
+                    visit: elem.imVisit
                 },
                 classNames: "event event-" + elem.status
             })
@@ -275,9 +275,6 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
     bloc.insertAdjacentHTML('beforeend', '<div class="title">' + event.title + '</div>')
     if(props.location){
         bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.location + '</div>')
-    }
-    if(props.bien){
-        bloc.insertAdjacentHTML('beforeend', '<div class="sub comment">' + props.bien.fullname + '</div>')
     }
     if(props.comment){
         bloc.insertAdjacentHTML('beforeend', '<div class="sub comment">' + props.comment + '</div>')

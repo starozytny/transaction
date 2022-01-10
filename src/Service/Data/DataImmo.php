@@ -2,6 +2,7 @@
 
 namespace App\Service\Data;
 
+use App\Entity\Agenda\AgEvent;
 use App\Entity\Immo\ImAdvantage;
 use App\Entity\Immo\ImAdvert;
 use App\Entity\Immo\ImAgency;
@@ -17,6 +18,7 @@ use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImTenant;
+use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
 use Exception;
 
@@ -494,6 +496,17 @@ class DataImmo extends DataConstructor
             ->setLastContactAt($this->createDate($data->lastContactAt))
             ->setType((int) $data->type)
             ->setStatus((int) $data->status)
+        ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataVisit(ImVisit $obj, AgEvent $event, ImBien $bien): ImVisit
+    {
+        return ($obj)
+            ->setAgEvent($event)
+            ->setBien($bien)
         ;
     }
 }

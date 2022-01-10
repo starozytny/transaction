@@ -245,16 +245,16 @@ class ImBien extends DataEntity
     private $advert;
 
     /**
-     * @ORM\OneToMany(targetEntity=AgEvent::class, mappedBy="bien")
+     * @ORM\OneToMany(targetEntity=ImVisit::class, mappedBy="bien")
      */
-    private $agEvents;
+    private $visits;
 
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
         $this->photos = new ArrayCollection();
         $this->tenants = new ArrayCollection();
-        $this->agEvents = new ArrayCollection();
+        $this->visits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -737,29 +737,29 @@ class ImBien extends DataEntity
     }
 
     /**
-     * @return Collection|AgEvent[]
+     * @return Collection|ImVisit[]
      */
-    public function getAgEvents(): Collection
+    public function getVisits(): Collection
     {
-        return $this->agEvents;
+        return $this->visits;
     }
 
-    public function addAgEvent(AgEvent $agEvent): self
+    public function addVisit(ImVisit $visit): self
     {
-        if (!$this->agEvents->contains($agEvent)) {
-            $this->agEvents[] = $agEvent;
-            $agEvent->setBien($this);
+        if (!$this->visits->contains($visit)) {
+            $this->visits[] = $visit;
+            $visit->setBien($this);
         }
 
         return $this;
     }
 
-    public function removeAgEvent(AgEvent $agEvent): self
+    public function removeVisit(ImVisit $visit): self
     {
-        if ($this->agEvents->removeElement($agEvent)) {
+        if ($this->visits->removeElement($visit)) {
             // set the owning side to null (unless already changed)
-            if ($agEvent->getBien() === $this) {
-                $agEvent->setBien(null);
+            if ($visit->getBien() === $this) {
+                $visit->setBien(null);
             }
         }
 

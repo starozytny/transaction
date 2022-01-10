@@ -6,7 +6,9 @@ namespace App\Service\Data\Agenda;
 
 use App\Entity\Agenda\AgEvent;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImVisit;
 use App\Service\Data\DataConstructor;
+use App\Service\Data\DataImmo;
 use Exception;
 
 class DataEvent extends DataConstructor
@@ -23,13 +25,6 @@ class DataEvent extends DataConstructor
         $persons["owners"]          = $data->owners ?: [];
         $persons["tenants"]         = $data->tenants ?: [];
         $persons["prospects"]       = $data->prospects ?: [];
-
-
-        dump($data);
-        if($data->bien){
-            $bien = $this->em->getRepository(ImBien::class)->find($data->bien);
-            $obj->setBien($bien);
-        }
 
         return ($obj)
             ->setName($this->sanitizeData->sanitizeString($data->name))
