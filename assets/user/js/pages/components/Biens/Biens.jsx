@@ -144,9 +144,9 @@ export class Biens extends Component {
     }
 
     render () {
-        return <>
+        return <div className="main-content">
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
                     onContentList={this.handleContentList}/>
-        </>
+        </div>
     }
 }

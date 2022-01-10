@@ -107,7 +107,8 @@
     border-radius: 4px;
     background-color: var(--alpha);
     border: 1px solid var(--grey);
-    width: calc(100% - 13px - 12px);
+    //width: calc(100% - 13px - 12px);
+    width: calc(100% - 2px);
   }
 
   .card-body{

@@ -12,6 +12,11 @@
   }
 }
 
+.input-page,
+.pagination,{
+  justify-content: center;
+}
+
 .person{
   margin-bottom: 4px;
 }
@@ -40,5 +45,10 @@
     .card-ad{
       margin-bottom: 24px;
     }
+  }
+
+  .input-page,
+  .pagination,{
+    margin-left: 278px;
   }
 }

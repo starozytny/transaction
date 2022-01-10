@@ -31,7 +31,7 @@ export class BiensList extends Component {
             negotiators = getItemsSelect(negotiators, noDuplicateNegotiators, el.negotiator, "nego");
         })
 
-        return <div className="main-content list-biens">
+        return <div className="list-biens">
             <div className="page-default">
                 <div className="page-col-1">
                     <div className="body-col-1">
