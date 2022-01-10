@@ -27,14 +27,12 @@ export class Page extends Component {
         let hPagination = (havePagination && data && data.length !== 0);
 
         return <>
-            {haveLoadPageError && <PageError />}
-            <div className={classes}>
+            {haveLoadPageError ? <PageError /> : <div className={classes}>
                 {children}
                 <Pagination ref={this.pagination} havePagination={hPagination} perPage={perPage} taille={taille} items={data}
                             onUpdate={(items) => this.props.onUpdate(items)} sessionName={sessionName}
                             onChangeCurrentPage={onChangeCurrentPage}/>
-            </div>
-
+            </div>}
         </>
     }
 }
