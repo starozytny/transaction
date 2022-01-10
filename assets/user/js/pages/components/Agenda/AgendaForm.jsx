@@ -25,7 +25,7 @@ const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, element, users, managers, negotiators,
-                                      owners, tenants, prospects, biens })
+                                      owners, tenants, prospects, biens, isFromVisit=false })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
@@ -61,6 +61,8 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         tenants={tenants}
         prospects={prospects}
         biens={biens}
+
+        isFromVisit={isFromVisit}
 
         key={element ? element.id : (custom ? custom.dateStr : 0)}
     />
@@ -224,7 +226,7 @@ export class Form extends Component {
     }
 
     render () {
-        const { context, onDelete } = this.props;
+        const { context, onDelete, isFromVisit } = this.props;
         const { errors, success, name, startAt, endAt, allDay, location, comment, status, visibilities,
             users, managers, negotiators, owners, tenants, prospects } = this.state;
 
@@ -267,6 +269,15 @@ export class Form extends Component {
                     </Radiobox>
                 </div>
 
+
+                <div className="line">
+                    <div className="form-group">
+                        <div className="line-separator">
+                            <div className="title">Évènement</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="line line-2">
                     <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Intitulé</Input>
                     <Input valeur={location} identifiant="location" errors={errors} onChange={this.handleChange}>Lieu de rendez-vous</Input>
@@ -292,6 +303,14 @@ export class Form extends Component {
                             Fin du rendez-vous
                         </DateTimePick>
                     </>}
+                </div>
+
+                <div className="line">
+                    <div className="form-group">
+                        <div className="line-separator">
+                            <div className="title">Personnes concernées</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="line line-2">
@@ -329,6 +348,14 @@ export class Form extends Component {
                     <Checkbox items={checkboxItems} identifiant="visibilities" valeur={visibilities} errors={errors} onChange={this.handleChange}>
                         Qui peut voir ce rendez-vous ?
                     </Checkbox>
+                </div>
+
+                <div className="line">
+                    <div className="form-group">
+                        <div className="line-separator">
+                            <div className="title">Détails de l'évènement</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="line">

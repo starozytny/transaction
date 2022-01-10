@@ -52,7 +52,7 @@ export class Visits extends Component {
 
         return <AgendaFormulaire type="create" onUpdateList={this.handleUpdateList} onChangeContext={changeContext}
                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                 prospects={prospects} biens={biens}
+                                 prospects={prospects} biens={biens} isFromVisit={true}
         />
     }
 
