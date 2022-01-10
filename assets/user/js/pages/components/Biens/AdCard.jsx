@@ -33,8 +33,11 @@ export class AdCard extends Component {
     handleChangeStatus = (elem, status) => {
         let title = "";
         switch (parseInt(status)){
+            case 1:
+                title = "Transférer ce bien en actif ?";
+                break;
             case 0:
-                title = "Désarchiver ce bien ?";
+                title = elem.status === 2 ? "Désarchiver ce bien ?" : "Transférer ce bien en inactif ?";
                 break;
             default:
                 title = "Transférer ce bien aux archives ?";
@@ -94,7 +97,8 @@ export class AdCard extends Component {
                     <div className="infos">
                         <div className="col-1">
                             <div className="badges">
-                                <div className={"status status-" + el.status}>{el.statusString}</div>
+                                <div className={"status status-" + el.status}
+                                     onClick={(el.status === 1 || el.status === 0) ? () => this.handleChangeStatus(el, el.status === 1 ? 0 : 1) : null}>{el.statusString}</div>
                                 <div className="status">{el.typeBienString}</div>
                             </div>
                             <div className="identifier">
