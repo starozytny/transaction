@@ -3,6 +3,34 @@
 .card-ad{
   @include flex(row, center, flex-start);
 
+  .isDraft{
+    position: absolute;
+    top: 0; left: 0;
+    display: block;
+    width: calc(100% - 2px); height: calc(100% - 2px);
+    background: repeating-linear-gradient(
+                    -45deg,
+                    var(--overlay),
+                    var(--overlay) 10px,
+                    var(--greyShadow) 10px,
+                    var(--greyShadow) 20px
+    );
+    border: 1px solid var(--alpha);
+    border-radius: 4px;
+    @include flex(row, center, center);
+    @include fontSemibold();
+    font-size: 18px;
+    z-index: 1000;
+
+    & > div{
+      background-color: var(--warning);
+      color: var(--alpha);
+      padding: 4px 12px;
+      border-radius: 4px;
+      opacity: 0.8;
+    }
+  }
+
   .image{
     width: 100%;
     height: 120px;
@@ -78,6 +106,7 @@
   }
 
   .card-body{
+    position: relative;
 
     .infos{
       padding: 12px;

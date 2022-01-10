@@ -96,6 +96,12 @@ class DataImmo extends DataConstructor
             }
         }
 
+        $isDraft = (int) $data->isDraft;
+
+        if($isDraft){
+            $obj->setStatus(ImBien::STATUS_INACTIF);
+        }
+
         // Création de l'objet
         return ($obj)
             ->setSlug(null)
@@ -115,7 +121,7 @@ class DataImmo extends DataConstructor
             ->setOwner($owner)
             ->setConfidential($confidential)
             ->setAdvert($advert)
-            ->setIsDraft((int) $data->isDraft)
+            ->setIsDraft($isDraft)
         ;
     }
 

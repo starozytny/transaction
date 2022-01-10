@@ -40,10 +40,12 @@ export class AdCard extends Component {
 
 
         return <div className="card-ad">
-            <Selector id={el.id} />
+            {/*<Selector id={el.id} />*/}
 
             <div className="card-main">
                 <div className="card-body">
+                    {el.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
+
                     <div className="image">
                         <img src="/build/user/images/menu.jpg" alt="illustration"/>
                     </div>

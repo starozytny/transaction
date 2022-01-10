@@ -182,7 +182,7 @@ export class Form extends Component {
         }
     }
 
-    handleSubmit = (e, isDraft) => {
+    handleSubmit = (e, isDraft = true) => {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
@@ -434,48 +434,48 @@ export class Form extends Component {
                     <div className="tab-col-2">
                         <div className="item active">{stepTitle}</div>
                     </div>
-                    <Button type="warning" onClick={(e) => this.handleSubmit(e, true)}>Enregistrer le brouillon</Button>
+                    <Button type="warning" onClick={this.handleSubmit}>Enregistrer le brouillon</Button>
                 </div>
                 <section>
                     <form className="form-bien" onSubmit={(e) => this.handleSubmit(e, false)}>
 
-                        <Step1 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                        <Step1 {...this.state} onDraft={this.handleSubmit}
                                onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                onOpenHelp={this.handleOpenHelp} negotiators={negotiators} />
 
-                        <Step2 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                        <Step2 {...this.state} onDraft={this.handleSubmit}
                                onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
-                        <Step3 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                        <Step3 {...this.state} onDraft={this.handleSubmit}
                                onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
-                        <Step5 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                        <Step5 {...this.state} onDraft={this.handleSubmit}
                                onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                onChangeZipcode={this.handleChangeZipcode} />
 
-                        {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                        {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onDraft={this.handleSubmit}
                                                              onNext={this.handleNext} onChange={this.handleChange}
                                                              onChangeSelect={this.handleChangeSelect} />
                             : <Step6Vente {...this.state} onNext={this.handleNext} onChange={this.handleChange}
                                           onChangeSelect={this.handleChangeSelect} />}
 
-                        <Step7 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                        <Step7 {...this.state} onDraft={this.handleSubmit}
                                onNext={this.handleNext} onChangeFile={this.handleChangeFile}
                                onSwitchTrashFile={this.handleSwitchTrashFile} onChangeLegend={this.handleChangeLegend}
                                onDragStart={this.handleDragStart} onDrop={this.handleDrop} onDragLeave={this.handleDragLeave}
                                refAside={this.aside0} onOpenAside={this.handleOpenAside} onSaveLegend={this.handleSaveLegend} />
 
-                        <Step8 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                        <Step8 {...this.state} onDraft={this.handleSubmit}
                                onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                refAside1={this.aside1} onOpenAside={this.handleOpenAside}
                                allOwners={allOwners} />
 
-                        <Step9 {...this.state} onDraft={(e) => this.handleSubmit(e, true)}
+                        <Step9 {...this.state} onDraft={this.handleSubmit}
                                onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} negotiators={negotiators} />
 
@@ -501,12 +501,12 @@ export class Form extends Component {
     }
 }
 
-export function FormActions ({ onNext, currentStep }) {
+export function FormActions ({ onNext, onDraft, currentStep }) {
     return <div className="line line-buttons">
         <Button type="reverse" onClick={() => onNext(currentStep - 1, currentStep)}>Etape précédente</Button>
         <div/>
         <div className="btns-submit">
-            <Button type="warning">Enregistrer le brouillon</Button>
+            <Button type="warning" onClick={onDraft}>Enregistrer le brouillon</Button>
             <Button onClick={() => onNext(currentStep + 1)}>Etape suivante</Button>
         </div>
     </div>

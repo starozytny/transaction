@@ -138,7 +138,7 @@ function getDataState (props) {
         arrayPostalCode: [],
         errors: [],
         step: 1,
-        isDraft: false,
+        isDraft: true,
         id: null
     }
 }
