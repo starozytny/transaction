@@ -16,6 +16,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import Formulaire        from "@dashboardComponents/functions/Formulaire";
 import UpdateList        from "@dashboardComponents/functions/updateList";
 import Sanitaze          from "@commonComponents/functions/sanitaze";
+import AgendaData        from "./agendaData";
 
 import { Aside }         from "@dashboardComponents/Tools/Aside";
 import { Button }        from "@dashboardComponents/Tools/Button";
@@ -53,30 +54,7 @@ export class Agenda extends Component {
         this.handleEventDidMount = this.handleEventDidMount.bind(this);
     }
 
-    componentDidMount = () => {
-        const self = this;
-        axios({ method: "GET", url: Routing.generate(URL_GET_DATA), data: {}})
-            .then(function (response) {
-                let data = response.data;
-                let users = JSON.parse(data.users)
-                let managers = JSON.parse(data.managers)
-                let negotiators = JSON.parse(data.negotiators)
-                let owners = JSON.parse(data.owners)
-                let tenants = JSON.parse(data.tenants)
-                let prospects = JSON.parse(data.prospects)
-                let biens = JSON.parse(data.biens)
-                self.setState({ users, managers, negotiators, owners, tenants, prospects, biens })
-            })
-            .catch(function (error) {
-                Formulaire.displayErrors(self, error)
-                self.setState({ loadPageError: true });
-            })
-            .then(function () {
-                Formulaire.loader(false);
-                self.setState({ loadData: false });
-            })
-        ;
-    }
+    componentDidMount = () => { AgendaData.getData(this, URL_GET_DATA); }
 
     handleOpenAside = (context, elem) => {
         let title = context === "update" ? elem.title : "Ajouter un évènement";
