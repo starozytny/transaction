@@ -24,21 +24,21 @@ class EventService
 
                 // check visibilities of event
                 $checkAll = false;
-                $checkRelatedPeople = false;
+                $checkRelatedPeople = true;
                 $checkUsers = false;
                 foreach($obj->getVisibilities() as $visibility){
                     switch ($visibility){
                         case AgEvent::VISIBILITY_UTILISATEURS;
                             $checkUsers = true;
-                            $checkRelatedPeople = true;
                             break;
                         case AgEvent::VISIBILITY_RELATED:
-                            $checkRelatedPeople = true;
                             break;
                         case AgEvent::VISIBILITY_ALL:
                             $checkAll = true;
+                            $checkRelatedPeople = false;
                             break;
                         default: // only me
+                            $checkRelatedPeople = false;
                             break;
                     }
                 }
@@ -52,13 +52,11 @@ class EventService
                 }
 
                 if($checkRelatedPeople){
-                    if(count($persons["users"]) !== 0){
-                        foreach($persons["users"] as $el){
-                            if($el->value == $user->getId()){ // event related to user
-                                if(!$alreadyAdded) {
-                                    $data[] = $obj;
-                                    $alreadyAdded = true;
-                                }
+                    foreach($persons["users"] as $el){
+                        if($el->value == $user->getId()){ // event related to user
+                            if(!$alreadyAdded) {
+                                $data[] = $obj;
+                                $alreadyAdded = true;
                             }
                         }
                     }
@@ -67,7 +65,7 @@ class EventService
 
                 if($checkUsers){
                     if($user->getHighRoleCode() == User::CODE_ROLE_USER){
-                        if(!$alreadyAdded) { // event related to anybody
+                        if(!$alreadyAdded) {
                             $data[] = $obj;
                             $alreadyAdded = true;
                         }
