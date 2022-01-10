@@ -58,6 +58,7 @@ export class Agenda extends Component {
         axios({ method: "GET", url: Routing.generate(URL_GET_DATA), data: {}})
             .then(function (response) {
                 let data = response.data;
+                console.log(data)
                 let users = JSON.parse(data.users)
                 self.setState({ users: users })
             })

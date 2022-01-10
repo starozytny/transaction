@@ -2,6 +2,9 @@
 
 namespace App\Controller\Api\Agenda;
 
+use App\Entity\Immo\ImNegotiator;
+use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImTenant;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -43,12 +46,35 @@ class AgendaController extends AbstractController
     {
         $em = $this->doctrine->getManager();
 
-        $users = $em->getRepository(User::class)->findAll();
+        /** @var User $user */
+        $user = $this->getUser();
 
-        $users = $serializer->serialize($users, 'json', ['groups' => User::USER_READ]);
+        $allUsers = $em->getRepository(User::class)->findAll();
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+        $owners = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
+        $tenants = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgency()]);
+
+        $users = []; $managers = [];
+        foreach($allUsers as $user){
+            if($user->getHighRoleCode() === User::CODE_ROLE_USER){
+                $users[] = $user;
+            }elseif ($user->getHighRoleCode() === User::CODE_ROLE_MANAGER){
+                $managers[] = $user;
+            }
+        }
+
+        $users = $serializer->serialize($users, 'json', ['groups' => User::AGENDA_READ]);
+        $managers = $serializer->serialize($managers, 'json', ['groups' => User::AGENDA_READ]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::AGENDA_READ]);
+        $owners = $serializer->serialize($owners, 'json', ['groups' => User::AGENDA_READ]);
+        $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::AGENDA_READ]);
 
         return $apiResponse->apiJsonResponse([
-            "users" => $users
+            "users" => $users,
+            "managers" => $managers,
+            "negotiators" => $negotiators,
+            "owners" => $owners,
+            "tenants" => $tenants,
         ]);
     }
 }

@@ -29,6 +29,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     const ADMIN_READ = ['admin:read'];
     const USER_READ = ['user:read'];
     const VISITOR_READ = ['visitor:read'];
+    const AGENDA_READ = ['agenda:read'];
 
     const CODE_ROLE_USER = 0;
     const CODE_ROLE_DEVELOPER = 1;
