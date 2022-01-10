@@ -21,8 +21,8 @@ import { Aside }         from "@dashboardComponents/Tools/Aside";
 import { Button }        from "@dashboardComponents/Tools/Button";
 
 import { PageError }        from "@dashboardComponents/Layout/PageError";
+import { LoaderElement }    from "@dashboardComponents/Layout/Loader";
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
-import {LoaderElement} from "@dashboardComponents/Layout/Loader";
 
 const URL_DELETE_ELEMENT = 'api_agenda_events_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer cet évènement ?';
@@ -114,11 +114,15 @@ export class Agenda extends Component {
 
     // init event
     handleEventDidMount = (e) => {
-        addEventElement(e.el, e.event, this.state.users);
+        const { users, managers, negotiators, owners, tenants } = this.state;
+
+        addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants);
     }
 
     // move event
     handleEventDrop = (e) => {
+        const { users, managers, negotiators, owners, tenants } = this.state;
+
         const self = this;
         Swal.fire(SwalOptions.options("Déplacer le rendez-vous", ""
             + e.event.title + "<br><br>"
@@ -134,7 +138,7 @@ export class Agenda extends Component {
                         }})
                         .then(function (response) {
                             toastr.info("Données mises à jour");
-                            addEventElement(e.el, e.event, self.state.users);
+                            addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants);
                         })
                         .catch(function (error) {
                             toastr.error("Une erreur est survenue.");
@@ -247,7 +251,7 @@ export class Agenda extends Component {
     }
 }
 
-function addEventElement (bloc, event, users) {
+function addEventElement (bloc, event, users, managers, negotiators, owners, tenants) {
     bloc.innerHTML = "";
 
     let props = event.extendedProps;
@@ -272,27 +276,65 @@ function addEventElement (bloc, event, users) {
     //persons
     let persons = props.persons;
 
-    let data0 = [];
-    if(persons.users){
-        persons.users.forEach(person => {
-            users.forEach(user => {
-                if(person.value === user.id){
-                    data0.push(user)
+    let data0 = getDataPerson(persons.users, users);
+    let data1 = getDataPerson(persons.managers, managers);
+    let data2 = getDataPerson(persons.negotiators, negotiators);
+    let data3 = getDataPerson(persons.owners, owners);
+    let data4 = getDataPerson(persons.tenants, tenants);
+
+    if(data0.length !== 0){
+        let items0 = getPersonAvatar(data0);
+        let items1 = getPersonAvatar(data1);
+        let items2 = getPersonAvatar(data2);
+        let items3 = getPersonTotal(data3, "propriétaire");
+        let items4 = getPersonTotal(data4, "locataire");
+
+        bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
+            items0.join("") +
+        '</div>')
+        bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
+            items1.join("") +
+        '</div>')
+        bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
+            items2.join("") +
+        '</div>')
+        if(data3.length > 0){
+            bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
+                items3 +
+            '</div>')
+        }
+        if(data4.length > 0){
+            bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
+                items4 +
+            '</div>')
+        }
+    }
+
+}
+
+function getDataPerson (data, correspondance) {
+    let tab = [];
+    if(data){
+        data.forEach(person => {
+            correspondance.forEach(item => {
+                if(person.value === item.id){
+                    tab.push(item)
                 }
             })
         })
     }
 
-    if(data0.length !== 0){
-        let items = data0.map(elem => {
-            return '<div class="person">' +
-                '<img src="'+ elem.avatarFile +'" alt="'+ elem.lastname +'">' +
-                '</div>'
-        })
+    return tab;
+}
 
-        bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
-            items.join("") +
-        '</div>')
-    }
+function getPersonAvatar (data) {
+    return data.map(elem => {
+        return '<div class="person">' +
+            '<img src="'+ elem.avatarFile +'" alt="'+ elem.lastname +'">' +
+        '</div>'
+    })
+}
 
+function getPersonTotal (data, name) {
+    return data.length + " " + name + (data.length > 1 ? "s" : "");
 }

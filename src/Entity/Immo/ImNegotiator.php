@@ -39,7 +39,7 @@ class ImNegotiator
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "agenda:read"})
      */
     private $lastname;
 
@@ -357,7 +357,7 @@ class ImNegotiator
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     public function getAvatarFile(): string
     {

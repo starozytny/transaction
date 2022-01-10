@@ -16,7 +16,11 @@ class DataEvent extends DataConstructor
     public function setDataEvent(AgEvent $obj, $data): AgEvent
     {
         $persons = [];
-        $persons["users"] = $data->users ?: [];
+        $persons["users"]           = $data->users ?: [];
+        $persons["managers"]        = $data->managers ?: [];
+        $persons["negotiators"]     = $data->negotiators ?: [];
+        $persons["owners"]          = $data->owners ?: [];
+        $persons["tenants"]         = $data->tenants ?: [];
 
         return ($obj)
             ->setName($this->sanitizeData->sanitizeString($data->name))

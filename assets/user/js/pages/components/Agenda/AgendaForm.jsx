@@ -197,6 +197,10 @@ export class Form extends Component {
                             visibilities: [],
                             persons: [],
                             users: [],
+                            managers: [],
+                            negotiators: [],
+                            owners: [],
+                            tenants: [],
                         })
                     }
                 })
