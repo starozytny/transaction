@@ -1,12 +1,20 @@
 import React, { Component } from "react";
 
+import axios        from "axios";
+import toastr       from "toastr";
+import Swal         from "sweetalert2";
+import SwalOptions  from "@commonComponents/functions/swalOptions";
 import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { HelpBubble }       from "@dashboardComponents/Tools/HelpBubble";
 import { Selector }         from "@dashboardComponents/Layout/Selector";
 import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
-import Sanitaze from "@commonComponents/functions/sanitaze";
+import Sanitaze     from "@commonComponents/functions/sanitaze";
+import Formulaire   from "@dashboardComponents/functions/Formulaire";
+
+
+const URL_CHANGE_STATUS = 'api_biens_status';
 
 export class AdCard extends Component {
     constructor(props) {
@@ -15,10 +23,43 @@ export class AdCard extends Component {
         this.helpBubble = React.createRef();
 
         this.handleOpenHelp = this.handleOpenHelp.bind(this);
+        this.handleChangeStatus = this.handleChangeStatus.bind(this);
     }
 
     handleOpenHelp = () => {
         this.helpBubble.current.handleOpen();
+    }
+
+    handleChangeStatus = (elem, status) => {
+        let title = "";
+        switch (parseInt(status)){
+            case 0:
+                title = "Désarchiver ce bien ?";
+                break;
+            default:
+                title = "Transférer ce bien aux archives ?";
+                break;
+        }
+
+        const self = this;
+        Swal.fire(SwalOptions.options(title, "" ))
+            .then((result) => {
+                if (result.isConfirmed) {
+                    Formulaire.loader(true);
+                    axios({ method: "PUT", url: Routing.generate(URL_CHANGE_STATUS, {'id': elem.id, 'status': status}), data: {} })
+                        .then(function (response) {
+                            self.props.onUpdateList(response.data, "update");
+                        })
+                        .catch(function (error) {
+                            Formulaire.displayErrors(this, error)
+                        })
+                        .then(function () {
+                            Formulaire.loader(false);
+                        })
+                    ;
+                }
+            })
+        ;
     }
 
     render () {
@@ -99,7 +140,8 @@ export class AdCard extends Component {
                         </div>
                         <div className="actions">
                             <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
-                            <ButtonIcon icon="archive">Archive</ButtonIcon>
+                            {el.status !== 2 ? <ButtonIcon icon="archive" onClick={() => this.handleChangeStatus(el, 2)}>Archive</ButtonIcon>
+                                : <ButtonIcon icon="layer" onClick={() => this.handleChangeStatus(el, 0)}>Désarchiver</ButtonIcon>}
                             <ButtonIcon icon="trash" onClick={() => onDelete(el)}>Supprimer</ButtonIcon>
                             <ButtonIconDropdown icon="dropdown" items={items}>Autres</ButtonIconDropdown>
                         </div>

@@ -135,14 +135,15 @@ export class Biens extends Component {
 
     handleContentList = (currentData, changeContext, getFilters, filters) => {
         return <BiensList onChangeContext={changeContext}
-                            onDelete={this.layout.current.handleDelete}
-                            onDeleteAll={this.layout.current.handleDeleteGroup}
-                            filters={filters}
-                            onGetFilters={this.handleGetFilters}
-                            tenants={JSON.parse(this.props.tenants)}
-                            pageStatus={this.props.pageStatus !== "" ? parseInt(this.props.pageStatus) : false}
-                            pageDraft={this.props.pageStatus !== "" ? parseInt(this.props.pageDraft) : false}
-                            data={currentData} />
+                          onDelete={this.layout.current.handleDelete}
+                          onDeleteAll={this.layout.current.handleDeleteGroup}
+                          filters={filters}
+                          onGetFilters={this.handleGetFilters}
+                          tenants={JSON.parse(this.props.tenants)}
+                          pageStatus={this.props.pageStatus !== "" ? parseInt(this.props.pageStatus) : false}
+                          pageDraft={this.props.pageStatus !== "" ? parseInt(this.props.pageDraft) : false}
+                          onUpdateList={this.handleUpdateList}
+                          data={currentData} />
     }
 
     render () {

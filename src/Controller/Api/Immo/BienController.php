@@ -251,6 +251,33 @@ class BienController extends AbstractController
     }
 
     /**
+     * Update a status
+     *
+     * @Route("/{id}/{status}", name="status", options={"expose"=true}, methods={"PUT"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message"
+     * )
+     *
+     * @OA\Tag(name="Bien")
+     *
+     * @param ImBien $obj
+     * @param $status
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function status(ImBien $obj, $status, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $obj->setStatus($status);
+
+        $em->flush();
+        return $apiResponse->apiJsonResponse($obj, User::USER_READ);
+    }
+
+
+    /**
      * Delete a bien
      *
      * @Route("/{id}", name="delete", options={"expose"=true}, methods={"DELETE"})

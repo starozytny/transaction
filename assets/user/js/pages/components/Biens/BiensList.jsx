@@ -21,11 +21,11 @@ function getItemsSelect (data, noDuplication, el, pref) {
 
 export class BiensList extends Component {
     render () {
-        const { pageStatus, pageDraft, data, onDelete, filters, onGetFilters, tenants } = this.props;
+        const { pageStatus, pageDraft, data, onDelete, filters, onGetFilters, tenants, onUpdateList } = this.props;
 
         let items = [], owners = [], negotiators = [], noDuplicateOwners = [], noDuplicateNegotiators = [];
         data.forEach(el => {
-            items.push(<AdCard el={el} onDelete={onDelete} status={1} statusName="Actif" key={el.id}/>)
+            items.push(<AdCard el={el} onDelete={onDelete} onUpdateList={onUpdateList} key={el.id}/>)
 
             owners = getItemsSelect(owners, noDuplicateOwners, el.owner, "owner");
             negotiators = getItemsSelect(negotiators, noDuplicateNegotiators, el.negotiator, "nego");
