@@ -25,13 +25,13 @@ const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, element, users, managers, negotiators,
-                                      owners, tenants, prospects, biens, isFromVisit=false })
+                                      owners, tenants, prospects, biens, bienId ="", url_create=null, url_update=null })
 {
-    let url = Routing.generate(URL_CREATE_ELEMENT);
+    let url = Routing.generate(url_create ? url_create : URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
 
     if(type === "update"){
-        url = Routing.generate(URL_UPDATE_GROUP, {'id': element.id});
+        url = Routing.generate(url_update ? url_update : URL_UPDATE_GROUP, {'id': element.id});
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
 
@@ -50,6 +50,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
         visibilities={element ? Formulaire.setValueEmptyIfNull(element.visibilities, [0]) : [0]}
         persons={element ? Formulaire.setValueEmptyIfNull(element.persons, []) : []}
+        bien={element ? (element.imVisit.bien ? element.imVisit.bien.id : bienId) : bienId}
         onUpdateList={onUpdateList}
         onDelete={onDelete}
         messageSuccess={msg}
@@ -61,8 +62,6 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         tenants={tenants}
         prospects={prospects}
         biens={biens}
-
-        isFromVisit={isFromVisit}
 
         key={element ? element.id : (custom ? custom.dateStr : 0)}
     />
@@ -92,6 +91,7 @@ export class Form extends Component {
             owners: getPersonsData(props.persons ? props.persons.owners : []),
             tenants: getPersonsData(props.persons ? props.persons.tenants : []),
             prospects: getPersonsData(props.prospects ? props.persons.prospects : []),
+            bien: props.bien,
             errors: [],
             success: false
         }
@@ -212,6 +212,7 @@ export class Form extends Component {
                             owners: [],
                             tenants: [],
                             prospects: [],
+                            bien: ""
                         })
                     }
                 })
@@ -226,7 +227,7 @@ export class Form extends Component {
     }
 
     render () {
-        const { context, onDelete, isFromVisit } = this.props;
+        const { context, onDelete } = this.props;
         const { errors, success, name, startAt, endAt, allDay, location, comment, status, visibilities,
             users, managers, negotiators, owners, tenants, prospects } = this.state;
 
@@ -253,7 +254,7 @@ export class Form extends Component {
         let selectTenants       = getSelectData(this.props.tenants, "tenant");
         let selectProspects     = getSelectData(this.props.prospects, "pros");
         return <>
-            {context === "update" && <div className="toolbar">
+            {(context === "update" && onDelete) && <div className="toolbar">
                 <div className="item">
                     <Button type="danger" onClick={onDelete}>Supprimer l'évènement</Button>
                 </div>

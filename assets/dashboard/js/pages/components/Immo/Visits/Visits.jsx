@@ -5,10 +5,9 @@ import { Layout }        from "@dashboardComponents/Layout/Page";
 import AgendaData from "@userPages/components/Agenda/agendaData";
 
 import { VisitsList }       from "./VisitsList";
-import { VisitFormulaire }  from "./VisitForm";
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
 
-const URL_DELETE_ELEMENT = 'api_prospects_delete';
+const URL_DELETE_ELEMENT = 'api_agenda_events_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer cette visite ?';
 const URL_GET_DATA       = 'api_agenda_data_persons';
 
@@ -52,12 +51,18 @@ export class Visits extends Component {
 
         return <AgendaFormulaire type="create" onUpdateList={this.handleUpdateList} onChangeContext={changeContext}
                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                 prospects={prospects} biens={biens} isFromVisit={true}
+                                 prospects={prospects} biens={biens} bienId={parseInt(this.props.bienId)}
+                                 url_create={'api_visits_create'}
         />
     }
 
     handleContentUpdate = (changeContext, element) => {
-        return <VisitFormulaire type="update" element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        const { users, managers, negotiators, owners, tenants, prospects, biens } = this.state;
+
+        return <AgendaFormulaire type="update" element={element.agEvent}
+                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
+                                 prospects={prospects} biens={biens} bienId={parseInt(this.props.bienId)}
+                                 onUpdateList={this.handleUpdateList} url_update={'api_visits_update'} />
     }
 
     render () {

@@ -5,10 +5,7 @@ namespace App\Service\Data\Agenda;
 
 
 use App\Entity\Agenda\AgEvent;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImVisit;
 use App\Service\Data\DataConstructor;
-use App\Service\Data\DataImmo;
 use Exception;
 
 class DataEvent extends DataConstructor
