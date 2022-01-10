@@ -8,6 +8,7 @@ import { render } from "react-dom";
 
 import { Biens }          from "./components/Biens/Biens";
 import { BienFormulaire } from "./components/Biens/BienForm";
+import { Visits }         from "@dashboardPages/components/Immo/Visits/Visits";
 
 Routing.setRoutingData(routes);
 
@@ -35,4 +36,9 @@ if(el){
                            negotiators={JSON.parse(el.dataset.negotiators)}
                            allOwners={JSON.parse(el.dataset.allOwners)}
                            allTenants={JSON.parse(el.dataset.allTenants)} />, el)
+}
+
+el = document.getElementById("list-visits");
+if(el){
+    render(<Visits {...el.dataset} />, el)
 }
