@@ -204,4 +204,9 @@ class ImLocalisation extends DataEntity
 
         return $this;
     }
+
+    public function getFullAddress(): string
+    {
+        return $this->getFullAddressString($this->address, $this->zipcode, $this->city);
+    }
 }

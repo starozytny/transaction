@@ -8,7 +8,7 @@ import {
     Checkbox,
     Radiobox,
     TextArea,
-    SelectizeMultiple
+    SelectizeMultiple, SelectReactSelectize
 } from "@dashboardComponents/Tools/Fields";
 
 import { DatePick, DateTimePick } from "@dashboardComponents/Tools/DatePicker";
@@ -24,7 +24,8 @@ const URL_UPDATE_GROUP       = "api_agenda_events_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, element, users, managers, negotiators, owners, tenants, prospects })
+export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, element, users, managers, negotiators,
+                                      owners, tenants, prospects, biens })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
@@ -48,6 +49,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
         visibilities={element ? Formulaire.setValueEmptyIfNull(element.visibilities, [0]) : [0]}
+        bien={element ? (element.bien ? element.bien.id : "") : ""}
         persons={element ? Formulaire.setValueEmptyIfNull(element.persons, []) : []}
         onUpdateList={onUpdateList}
         onDelete={onDelete}
@@ -59,6 +61,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         owners={owners}
         tenants={tenants}
         prospects={prospects}
+        biens={biens}
 
         key={element ? element.id : (custom ? custom.dateStr : 0)}
     />
@@ -81,6 +84,7 @@ export class Form extends Component {
             comment: props.comment,
             status: props.status,
             visibilities: props.visibilities,
+            bien: props.bien,
             persons: props.persons,
             users: getPersonsData(props.persons ? props.persons.users : []),
             managers: getPersonsData(props.persons ? props.persons.managers : []),
@@ -101,6 +105,7 @@ export class Form extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleChangeSelectMultipleAdd = this.handleChangeSelectMultipleAdd.bind(this);
         this.handleChangeSelectMultipleDel = this.handleChangeSelectMultipleDel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -134,6 +139,8 @@ export class Form extends Component {
     }
 
     handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
+
+    handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
 
     handleChangeSelectMultipleAdd = (name, valeurs) => {
         const { users, managers, negotiators, owners, tenants, prospects } = this.state;
@@ -220,7 +227,7 @@ export class Form extends Component {
 
     render () {
         const { context, onDelete } = this.props;
-        const { errors, success, name, startAt, endAt, allDay, location, comment, status, visibilities,
+        const { errors, success, name, startAt, endAt, allDay, location, comment, status, visibilities, bien,
             users, managers, negotiators, owners, tenants, prospects } = this.state;
 
         let checkboxItems = [
@@ -245,6 +252,7 @@ export class Form extends Component {
         let selectOwners        = getSelectData(this.props.owners, "own");
         let selectTenants       = getSelectData(this.props.tenants, "tenant");
         let selectProspects     = getSelectData(this.props.prospects, "pros");
+        let selectBiens         = getSelectData(this.props.biens, "bien");
 
         return <>
             {context === "update" && <div className="toolbar">
@@ -290,6 +298,11 @@ export class Form extends Component {
                     </>}
                 </div>
 
+                <div className="line">
+                    <SelectReactSelectize items={selectBiens} identifiant="bien" valeur={bien} errors={errors} onChange={(e) => this.handleChangeSelect('bien', e)}>
+                        Bien concerné
+                    </SelectReactSelectize>
+                </div>
 
                 <div className="line line-2">
                     <Selecteur refSelecteur={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}

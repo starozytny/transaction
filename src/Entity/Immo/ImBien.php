@@ -2,6 +2,7 @@
 
 namespace App\Entity\Immo;
 
+use App\Entity\Agenda\AgEvent;
 use App\Entity\DataEntity;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
@@ -243,11 +244,17 @@ class ImBien extends DataEntity
      */
     private $advert;
 
+    /**
+     * @ORM\OneToMany(targetEntity=AgEvent::class, mappedBy="bien")
+     */
+    private $agEvents;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
         $this->photos = new ArrayCollection();
         $this->tenants = new ArrayCollection();
+        $this->agEvents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -726,6 +733,36 @@ class ImBien extends DataEntity
      */
     public function getFullname(): string
     {
-        return "#" . $this->reference . " - " . $this->libelle;
+        return "#" . $this->reference . " - " . $this->libelle . " | " . $this->getLocalisation()->getFullAddress();
+    }
+
+    /**
+     * @return Collection|AgEvent[]
+     */
+    public function getAgEvents(): Collection
+    {
+        return $this->agEvents;
+    }
+
+    public function addAgEvent(AgEvent $agEvent): self
+    {
+        if (!$this->agEvents->contains($agEvent)) {
+            $this->agEvents[] = $agEvent;
+            $agEvent->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgEvent(AgEvent $agEvent): self
+    {
+        if ($this->agEvents->removeElement($agEvent)) {
+            // set the owning side to null (unless already changed)
+            if ($agEvent->getBien() === $this) {
+                $agEvent->setBien(null);
+            }
+        }
+
+        return $this;
     }
 }

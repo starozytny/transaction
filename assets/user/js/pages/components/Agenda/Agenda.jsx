@@ -64,7 +64,8 @@ export class Agenda extends Component {
                 let owners = JSON.parse(data.owners)
                 let tenants = JSON.parse(data.tenants)
                 let prospects = JSON.parse(data.prospects)
-                self.setState({ users, managers, negotiators, owners, tenants, prospects })
+                let biens = JSON.parse(data.biens)
+                self.setState({ users, managers, negotiators, owners, tenants, prospects, biens })
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error)
@@ -94,6 +95,7 @@ export class Agenda extends Component {
                 persons: props.persons,
                 status: props.status,
                 visibilities: props.visibilities,
+                bien: props.bien
             }
         }
 
@@ -175,20 +177,20 @@ export class Agenda extends Component {
 
     render () {
         const { context, loadPageError, loadData, data, initialView, element,
-            users, managers, negotiators, owners, tenants, prospects } = this.state;
+            users, managers, negotiators, owners, tenants, prospects, biens } = this.state;
 
         let contentAside;
         switch (context){
             case "create":
                 contentAside = <AgendaFormulaire type="create" custom={element} onUpdateList={this.handleUpdateList}
                                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 prospects={prospects}
+                                                 prospects={prospects} biens={biens}
                                                  />
                 break;
             case "update":
                 contentAside = <AgendaFormulaire type="update" element={element}
                                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 prospects={prospects}
+                                                 prospects={prospects} biens={biens}
                                                  onUpdateList={this.handleUpdateList} onDelete={() => this.handleDelete(element)} />
                 break;
             default:
@@ -212,6 +214,7 @@ export class Agenda extends Component {
                     status: elem.status,
                     statusString: elem.statusString,
                     visibilities: elem.visibilities,
+                    bien: elem.bien
                 },
                 classNames: "event event-" + elem.status
             })
@@ -272,6 +275,9 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
     bloc.insertAdjacentHTML('beforeend', '<div class="title">' + event.title + '</div>')
     if(props.location){
         bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.location + '</div>')
+    }
+    if(props.bien){
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub comment">' + props.bien.fullname + '</div>')
     }
     if(props.comment){
         bloc.insertAdjacentHTML('beforeend', '<div class="sub comment">' + props.comment + '</div>')
