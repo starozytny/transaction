@@ -39,7 +39,7 @@ export class AdCard extends Component {
         </div>
 
 
-        return <div className="card-ad">
+        return <div className={"card-ad" + (el.isDraft ? " card-draft" : "")}>
             {/*<Selector id={el.id} />*/}
 
             <div className="card-main">
