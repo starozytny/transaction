@@ -7,11 +7,13 @@ use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImTenant;
+use App\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
 use App\Repository\Immo\ImTenantRepository;
+use App\Repository\Immo\ImVisitRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Repository\Agenda\AgEventRepository;
@@ -111,7 +113,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/modifier-un-bien/{slug}",options={"expose"=true},  name="biens_update")
+     * @Route("/modifier-un-bien/{slug}",options={"expose"=true}, name="biens_update")
      */
     public function updateBien($slug, ImBienRepository $repository, ImTenantRepository $tenantRepository, SerializerInterface $serializer): Response
     {
@@ -122,6 +124,22 @@ class UserController extends AbstractController
         $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->formBien($serializer, 'user/pages/biens/update.html.twig', $element, $tenants);
+    }
+
+    /**
+     * @Route("/visite/{slug}", options={"expose"=true}, name="visits_bien_index")
+     */
+    public function visitsBien($slug, ImBienRepository $repository, ImVisitRepository $visitRepository, SerializerInterface $serializer): Response
+    {
+        $element = $repository->findOneBy(["slug" => $slug]);
+        $visits = $visitRepository->findBy(['bien' => $element]);
+
+        $visits = $serializer->serialize($visits, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render("user/pages/visits/index.html.twig", [
+            'elem' => $element,
+            'data' => $visits
+        ]);
     }
 
     /**

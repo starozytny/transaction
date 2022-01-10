@@ -108,8 +108,9 @@ nav{
       color: var(--grey2);
       opacity: 1;
       border-radius: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 4px;
       z-index: 5;
+      padding: 8px 12px;
 
       &:hover{
         transform: translateX(0);

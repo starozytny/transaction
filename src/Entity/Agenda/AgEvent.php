@@ -18,6 +18,7 @@ class AgEvent extends DataEntity
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_CANCEL = 2;
+    const STATUS_OVER = 3;
 
     const VISIBILITY_RELATED = 0;
     const VISIBILITY_ONLY_ME = 1;
@@ -29,7 +30,7 @@ class AgEvent extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"agenda:read"})
+     * @Groups({"user:read", "agenda:read"})
      */
     private $id;
 
@@ -41,7 +42,7 @@ class AgEvent extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"agenda:read"})
+     * @Groups({"user:read", "agenda:read"})
      */
     private $name;
 
@@ -63,13 +64,13 @@ class AgEvent extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"agenda:read"})
+     * @Groups({"user:read", "agenda:read"})
      */
     private $location;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"agenda:read"})
+     * @Groups({"user:read", "agenda:read"})
      */
     private $comment;
 
@@ -85,13 +86,13 @@ class AgEvent extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"agenda:read"})
+     * @Groups({"user:read", "agenda:read"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Groups({"agenda:read"})
+     * @Groups({"user:read", "agenda:read"})
      */
     private $persons;
 
@@ -132,7 +133,7 @@ class AgEvent extends DataEntity
 
     /**
      * @return string|null
-     * @Groups({"agenda:read"})
+     * @Groups({"user:read", "agenda:read"})
      */
     public function getStartAtAgenda(): ?string
     {
@@ -162,7 +163,7 @@ class AgEvent extends DataEntity
 
     /**
      * @return string|null
-     * @Groups({"agenda:read"})
+     * @Groups({"user:read", "agenda:read"})
      */
     public function getEndAtAgenda(): ?string
     {
@@ -277,11 +278,11 @@ class AgEvent extends DataEntity
 
     /**
      * @return string
-     * @Groups({"agenda:read"})
+     * @Groups({"user:read", "agenda:read"})
      */
     public function getStatusString(): string
     {
-        $status = ["Inactif", "Actif", "Annulé"];
+        $status = ["Inactif", "Actif", "Annulé", "Fini"];
 
         return $status[$this->status];
     }

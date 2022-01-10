@@ -16,13 +16,14 @@ class ImVisit
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"agenda:read"})
+     * @Groups({"user:read", "agenda:read"})
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=AgEvent::class, inversedBy="imVisit", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
      */
     private $agEvent;
 
