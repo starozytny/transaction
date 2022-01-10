@@ -53,7 +53,7 @@ class DataEntity
      * @param string $format
      * @return string|null
      */
-    public function getFullDateString($date, string $format = "ll", $subHours = true): ?string
+    public function getFullDateString($date, string $format = "ll"): ?string
     {
         if($date){
             $frenchFactory = new Factory([
@@ -61,9 +61,7 @@ class DataEntity
                 'timezone' => 'Europe/Paris'
             ]);
             $time = Carbon::instance($date);
-            if($subHours){
-                $time->subHours(1);
-            }
+            $time->subHours(1);
 
             return $frenchFactory->make($time)->isoFormat($format);
         }
