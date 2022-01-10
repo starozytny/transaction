@@ -17,6 +17,12 @@ class AgEvent extends DataEntity
     const STATUS_ACTIVE = 1;
     const STATUS_CANCEL = 2;
 
+    const VISIBILITY_RELATED = 0;
+    const VISIBILITY_ONLY_ME = 1;
+    const VISIBILITY_ALL = 2;
+    const VISIBILITY_UTILISATEURS = 3;
+    const VISIBILITY_MANAGERS = 4;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,6 +30,12 @@ class AgEvent extends DataEntity
      * @Groups({"user:read"})
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="json")
+     * @Groups({"user:read"})
+     */
+    private $visibilities = [self::VISIBILITY_ONLY_ME];
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -76,7 +88,7 @@ class AgEvent extends DataEntity
     private $status;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      * @Groups({"user:read"})
      */
     private $persons;
@@ -243,18 +255,6 @@ class AgEvent extends DataEntity
         return $this;
     }
 
-    public function getPersons(): ?string
-    {
-        return $this->persons;
-    }
-
-    public function setPersons(?string $persons): self
-    {
-        $this->persons = $persons;
-
-        return $this;
-    }
-
     public function getCreator(): ?User
     {
         return $this->creator;
@@ -276,5 +276,39 @@ class AgEvent extends DataEntity
         $status = ["Inactif", "Actif", "Annulé"];
 
         return $status[$this->status];
+    }
+
+    public function getVisibilities(): array
+    {
+        $visibilities = $this->visibilities;
+        // guarantee every user at least has ROLE_USER
+        $visibilities[] = self::VISIBILITY_RELATED;
+
+        return array_unique($visibilities);
+    }
+
+    public function setVisibilities(array $visibilities): self
+    {
+        $this->visibilities = $visibilities;
+
+        return $this;
+    }
+
+    public function getPersons(): ?array
+    {
+        $persons = $this->persons;
+        // guarantee every user at least has ROLE_USER
+        $persons[] = [
+            "users" => []
+        ];
+
+        return $this->persons;
+    }
+
+    public function setPersons(?array $persons): self
+    {
+        $this->persons = $persons;
+
+        return $this;
     }
 }

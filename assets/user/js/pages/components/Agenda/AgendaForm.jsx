@@ -47,6 +47,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         location={element ? Formulaire.setValueEmptyIfNull(element.location) : ""}
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
+        visibilities={element ? Formulaire.setValueEmptyIfNull(element.visibilities, [0]) : [0]}
         persons={element ? Formulaire.setValueEmptyIfNull(element.persons, []) : []}
         onUpdateList={onUpdateList}
         onDelete={onDelete}
@@ -79,6 +80,7 @@ export class Form extends Component {
             location: props.location,
             comment: props.comment,
             status: props.status,
+            visibilities: props.visibilities,
             persons: props.persons,
             users: users,
             errors: [],
@@ -95,11 +97,27 @@ export class Form extends Component {
     }
 
     handleChange = (e) => {
+        const { visibilities } = this.state;
+
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
 
         if(name === "allDay"){
             value = (e.currentTarget.checked) ? [1] : [0] // parseInt because work with int this time
+        }
+
+        if(name === "visibilities"){
+            value = parseInt(value);
+
+            let nVisibilities = visibilities;
+            if(value !== 1 && value !== 2){
+                nVisibilities = visibilities.filter(v => {return v !== 1})
+                nVisibilities = nVisibilities.filter(v => {return v !== 2})
+            }else if(value === 1 || value === 2){
+                nVisibilities = [];
+            }
+
+            value = Formulaire.updateValueCheckbox(e, nVisibilities, value);
         }
 
         this.setState({ [name]: value })
@@ -158,6 +176,7 @@ export class Form extends Component {
                             location: "",
                             comment: "",
                             status: 1,
+                            visibilities: [],
                             persons: [],
                             users: [],
                         })
@@ -175,7 +194,15 @@ export class Form extends Component {
 
     render () {
         const { context, onDelete } = this.props;
-        const { errors, success, name, startAt, endAt, allDay, location, comment, status, users } = this.state;
+        const { errors, success, name, startAt, endAt, allDay, location, comment, status, users, visibilities } = this.state;
+
+        let checkboxItems = [
+            { value: 0, label: 'Personnes concernées',    identifiant: 'v-related' },
+            { value: 1, label: 'Moi seulement',           identifiant: 'v-only-me' },
+            { value: 2, label: 'Tout le monde',           identifiant: 'v-all' },
+            { value: 3, label: 'Tous les utilisateurs',   identifiant: 'v-users' },
+            { value: 4, label: 'Tous les managers',       identifiant: 'v-managers' },
+        ]
 
         let statusItems = [
             {value: 0, label: "Inactif", identifiant: "s-inactif"},
@@ -247,6 +274,12 @@ export class Form extends Component {
                     >
                         Utilisateurs concernés
                     </SelectizeMultiple>
+                </div>
+
+                <div className="line">
+                    <Checkbox items={checkboxItems} identifiant="visibilities" valeur={visibilities} errors={errors} onChange={this.handleChange}>
+                        Qui peut voir ce rendez-vous ?
+                    </Checkbox>
                 </div>
 
                 <div className="line">

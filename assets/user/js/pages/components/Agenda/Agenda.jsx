@@ -65,6 +65,7 @@ export class Agenda extends Component {
                 comment: props.comment,
                 persons: props.persons,
                 status: props.status,
+                visibilities: props.visibilities,
             }
         }
 
@@ -158,7 +159,6 @@ export class Agenda extends Component {
 
         let events = [];
         data.forEach(elem => {
-            // console.log(JSON.parse(elem.persons)) // get persons
             events.push({
                 id: elem.id,
                 title: elem.name,
@@ -168,11 +168,12 @@ export class Agenda extends Component {
                 extendedProps: {
                     location: elem.location,
                     comment: elem.comment,
-                    persons: JSON.parse(elem.persons),
+                    persons: elem.persons,
                     startAtJavascript: elem.startAtJavascript,
                     endAtJavascript: elem.endAtJavascript,
                     status: elem.status,
                     statusString: elem.statusString,
+                    visibilities: elem.visibilities,
                 },
                 classNames: "event event-" + elem.status
             })
@@ -227,8 +228,12 @@ function addEventElement (bloc, event, users) {
     }
 
     bloc.insertAdjacentHTML('beforeend', '<div class="title">' + event.title + '</div>')
-    bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.location + '</div>')
-    bloc.insertAdjacentHTML('beforeend', '<div class="sub comment">' + props.comment + '</div>')
+    if(props.location){
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' + props.location + '</div>')
+    }
+    if(props.comment){
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub comment">' + props.comment + '</div>')
+    }
 
     //persons
     let persons = props.persons;

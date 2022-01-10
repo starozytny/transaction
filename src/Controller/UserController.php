@@ -16,6 +16,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Repository\Agenda\AgEventRepository;
 use App\Repository\UserRepository;
+use App\Service\Agenda\EventService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -256,29 +257,14 @@ class UserController extends AbstractController
     /**
      * @Route("/agenda", name="agenda")
      */
-    public function agenda(UserRepository $userRepository, AgEventRepository $repository, SerializerInterface $serializer): Response
+    public function agenda(UserRepository $userRepository, AgEventRepository $repository, SerializerInterface $serializer, EventService $eventService): Response
     {
         /** @var User $user */
         $user = $this->getUser();
         $objs = $repository->findAll();
         $users = $userRepository->findAll();
 
-        $data = [];
-        foreach($objs as $obj){
-            $persons = json_decode($obj->getPersons());
-
-            if(isset($persons->users)){
-                if(count($persons->users) !== 0){
-                    foreach($persons->users as $el){
-                        if($el->value == $user->getId()){
-                            $data[] = $obj;
-                        }
-                    }
-                }else{
-                    $data[] = $obj;
-                }
-            }
-        }
+        $data = $eventService->getEvents($objs, $user);
 
         $objs = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
         $users = $serializer->serialize($users, 'json', ['groups' => User::USER_READ]);
