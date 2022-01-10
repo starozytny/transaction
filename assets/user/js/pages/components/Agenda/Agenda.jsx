@@ -21,8 +21,8 @@ import { Aside }         from "@dashboardComponents/Tools/Aside";
 import { Button }        from "@dashboardComponents/Tools/Button";
 
 import { PageError }        from "@dashboardComponents/Layout/PageError";
+import { LoaderElement }    from "@dashboardComponents/Layout/Loader";
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
-import {LoaderElement} from "@dashboardComponents/Layout/Loader";
 
 const URL_DELETE_ELEMENT = 'api_agenda_events_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer cet évènement ?';
@@ -265,27 +265,41 @@ function addEventElement (bloc, event, users) {
     //persons
     let persons = props.persons;
 
-    let data0 = [];
-    if(persons.users){
-        persons.users.forEach(person => {
-            users.forEach(user => {
-                if(person.value === user.id){
-                    data0.push(user)
+    let data0 = getDataPerson(persons.users, users);
+
+    if(data0.length !== 0){
+        let items0 = getPersonAvatar(data0);
+
+        bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
+            items0.join("") +
+        '</div>')
+    }
+
+}
+
+function getDataPerson (data, correspondance) {
+    let tab = [];
+    if(data){
+        data.forEach(person => {
+            correspondance.forEach(item => {
+                if(person.value === item.id){
+                    tab.push(item)
                 }
             })
         })
     }
 
-    if(data0.length !== 0){
-        let items = data0.map(elem => {
-            return '<div class="person">' +
-                '<img src="'+ elem.avatarFile +'" alt="'+ elem.lastname +'">' +
-                '</div>'
-        })
+    return tab;
+}
 
-        bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
-            items.join("") +
-        '</div>')
-    }
+function getPersonAvatar (data) {
+    return data.map(elem => {
+        return '<div class="person">' +
+            '<img src="'+ elem.avatarFile +'" alt="'+ elem.lastname +'">' +
+            '</div>'
+    })
+}
 
+function getPersonTotal (data, name) {
+    return data.length + " " + name + (data.length > 1 ? "s" : "");
 }

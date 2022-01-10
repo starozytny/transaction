@@ -65,13 +65,6 @@ export class Form extends Component {
     constructor(props) {
         super(props);
 
-        let users = [];
-        if(props.persons.users){
-            props.persons.users.forEach(el => {
-                users.push({value: el.value, label: el.label})
-            })
-        }
-
         this.state = {
             name: props.name,
             startAt: props.startAt,
@@ -82,7 +75,7 @@ export class Form extends Component {
             status: props.status,
             visibilities: props.visibilities,
             persons: props.persons,
-            users: users,
+            users: getPersonsData(props.persons ? props.persons.users : []),
             errors: [],
             success: false
         }
@@ -126,14 +119,25 @@ export class Form extends Component {
     handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
 
     handleChangeSelectMultipleAdd = (name, valeurs) => {
+        const { users } = this.state;
+
+        let donnees = getDataSelecteurFromName(this, name, users);
+        let selecteur = donnees[0];
+
         this.setState({ [name]: valeurs })
-        this.selectMultiple.current.handleUpdateValeurs(valeurs);
+        selecteur.handleUpdateValeurs(valeurs);
     }
 
     handleChangeSelectMultipleDel = (name, valeur) => {
-        let valeurs = this.state.users.filter(v => v.value !== valeur.value);
+        const { users } = this.state;
+
+        let donnees = getDataSelecteurFromName(this, name, users);
+        let selecteur = donnees[0];
+        let data = donnees[1];
+
+        let valeurs = data.filter(v => v.value !== valeur.value);
         this.setState({ [name]: valeurs });
-        this.selectMultiple.current.handleUpdateValeurs(valeurs);
+        selecteur.handleUpdateValeurs(valeurs);
     }
 
     handleSubmit = (e) => {
@@ -212,10 +216,7 @@ export class Form extends Component {
 
         let switcherItems = [ { value: 1, label: 'oui', identifiant: 'oui' } ]
 
-        let selectUsers = [];
-        this.props.users.forEach(el => {
-            selectUsers.push({ value: el.id, label: el.fullname, identifiant: "user-" + el.id })
-        })
+        let selectUsers = getSelectData(this.props.users, "user");
 
         return <>
             {context === "update" && <div className="toolbar">
@@ -266,14 +267,10 @@ export class Form extends Component {
                 </div>
 
                 <div className="line">
-                    <SelectizeMultiple ref={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}
-                                       placeholder={"Sélectionner un/des utilisateurs"}
-                                       errors={errors}
-                                       onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("users", e)}
-                                       onChangeDel={(e) => this.handleChangeSelectMultipleDel("users", e)}
-                    >
+                    <Selecteur refSelecteur={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}
+                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
                         Utilisateurs concernés
-                    </SelectizeMultiple>
+                    </Selecteur>
                 </div>
 
                 <div className="line">
@@ -290,4 +287,49 @@ export class Form extends Component {
             </form>
         </>
     }
+}
+
+
+function Selecteur ({ refSelecteur, items, identifiant, valeur, errors, onChangeAdd, onChangeDel, children }) {
+    return <>
+        <SelectizeMultiple ref={refSelecteur} items={items} identifiant={identifiant} valeur={valeur}
+                           errors={errors}
+                           onChangeAdd={(e) => onChangeAdd(identifiant, e)}
+                           onChangeDel={(e) => onChangeDel(identifiant, e)}
+        >
+            {children} concernés
+        </SelectizeMultiple>
+    </>
+}
+
+function getSelectData (data, pre) {
+    let tab = [];
+    data.forEach(el => {
+        tab.push({ value: el.id, label: el.fullname, identifiant: pre + "-" + el.id })
+    })
+
+    return tab
+}
+
+function getPersonsData (data) {
+    let tab = [];
+    if(data){
+        data.forEach(el => {
+            tab.push({value: el.value, label: el.label})
+        })
+    }
+
+    return tab;
+}
+
+function getDataSelecteurFromName (self, name, users) {
+    let data, selecteur;
+    switch (name){
+        default:
+            data = users;
+            selecteur = self.selectMultiple.current;
+            break;
+    }
+
+    return [selecteur, data]
 }
