@@ -18,19 +18,22 @@ import { Button }              from "@dashboardComponents/Tools/Button";
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
+import {FormLayout} from "@dashboardComponents/Layout/Elements";
 
 const URL_CREATE_ELEMENT     = "api_agenda_events_create";
 const URL_UPDATE_GROUP       = "api_agenda_events_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, element, users, managers, negotiators,
+export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelete, custom, element, users, managers, negotiators,
                                       owners, tenants, prospects, biens, bienId ="", url_create=null, url_update=null })
 {
+    let title = "Ajouter une visite";
     let url = Routing.generate(url_create ? url_create : URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
 
     if(type === "update"){
+        title = "Modifier " + element.name;
         url = Routing.generate(url_update ? url_update : URL_UPDATE_GROUP, {'id': element.id});
         msg = "Félicitations ! La mise à jour s'est réalisée avec succès !";
     }
@@ -66,9 +69,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         key={element ? element.id : (custom ? custom.dateStr : 0)}
     />
 
-    return <div className="form">
-        {form}
-    </div>
+    return onChangeContext ? <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout> : <div className="form">{form}</div>
 }
 
 export class Form extends Component {
