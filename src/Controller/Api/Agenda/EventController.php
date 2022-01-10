@@ -41,15 +41,11 @@ class EventController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataEvent($obj, $data);
+        /** @var User $user */
+        $user = $this->getUser();
 
-        if($type == "create"){
-            /** @var User $user */
-            $user = $this->getUser();
-            $obj->setCreator($user);
-        }else{
-            $obj->setUpdatedAt(new \DateTime());
-        }
+        $obj = $dataEntity->setDataEvent($obj, $data);
+        $obj = $dataEntity->setCreatorAndUpdate($type, $obj, $user);
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
