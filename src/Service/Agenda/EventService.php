@@ -26,8 +26,12 @@ class EventService
                 $checkAll = false;
                 $checkRelatedPeople = true;
                 $checkUsers = false;
+                $checkManager = false;
                 foreach($obj->getVisibilities() as $visibility){
                     switch ($visibility){
+                        case AgEvent::VISIBILITY_MANAGERS;
+                            $checkManager = true;
+                            break;
                         case AgEvent::VISIBILITY_UTILISATEURS;
                             $checkUsers = true;
                             break;
@@ -64,11 +68,19 @@ class EventService
 
 
                 if($checkUsers){
-                    if($user->getHighRoleCode() == User::CODE_ROLE_USER){
-                        if(!$alreadyAdded) {
-                            $data[] = $obj;
-                            $alreadyAdded = true;
-                        }
+                    if(!$alreadyAdded) {
+                        $data[] = $obj;
+                        $alreadyAdded = true;
+                    }
+                }
+
+                if($checkManager){
+                    if(($user->getHighRoleCode() === User::CODE_ROLE_MANAGER
+                            || $user->getHighRoleCode() === User::CODE_ROLE_DEVELOPER
+                            || $user->getHighRoleCode() === User::CODE_ROLE_ADMIN
+                        ) && !$alreadyAdded) {
+                        $data[] = $obj;
+                        $alreadyAdded = true;
                     }
                 }
             }
