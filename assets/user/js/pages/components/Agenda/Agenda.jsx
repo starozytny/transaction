@@ -20,11 +20,14 @@ import Sanitaze          from "@commonComponents/functions/sanitaze";
 import { Aside }         from "@dashboardComponents/Tools/Aside";
 import { Button }        from "@dashboardComponents/Tools/Button";
 
+import { PageError }        from "@dashboardComponents/Layout/PageError";
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
+import {LoaderElement} from "@dashboardComponents/Layout/Loader";
 
 const URL_DELETE_ELEMENT = 'api_agenda_events_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer cet évènement ?';
 const URL_UPDATE_ELEMENT_DATE = 'api_agenda_events_update_date';
+const URL_GET_DATA            = 'api_agenda_data_persons';
 
 export class Agenda extends Component {
     constructor(props) {
@@ -32,8 +35,9 @@ export class Agenda extends Component {
 
         this.state = {
             context: "list",
+            loadPageError: false,
+            loadData: true,
             data: props.donnees ? JSON.parse(props.donnees) : [],
-            users: props.users ? JSON.parse(props.users) : [],
             initialView: (window.matchMedia("(min-width: 768px)").matches) ? "timeGridWeek" : "timeGridDay"
         }
 
@@ -47,6 +51,25 @@ export class Agenda extends Component {
         this.handleEventClick = this.handleEventClick.bind(this);
         this.handleEventDrop = this.handleEventDrop.bind(this);
         this.handleEventDidMount = this.handleEventDidMount.bind(this);
+    }
+
+    componentDidMount = () => {
+        const self = this;
+        axios({ method: "GET", url: Routing.generate(URL_GET_DATA), data: {}})
+            .then(function (response) {
+                let data = response.data;
+                let users = JSON.parse(data.users)
+                self.setState({ users: users })
+            })
+            .catch(function (error) {
+                Formulaire.displayErrors(self, error)
+                self.setState({ loadPageError: true });
+            })
+            .then(function () {
+                Formulaire.loader(false);
+                self.setState({ loadData: false });
+            })
+        ;
     }
 
     handleOpenAside = (context, elem) => {
@@ -142,7 +165,7 @@ export class Agenda extends Component {
     }
 
     render () {
-        const { context, data, initialView, element, users } = this.state;
+        const { context, loadPageError, loadData, data, initialView, element, users } = this.state;
 
         let contentAside;
         switch (context){
@@ -179,37 +202,41 @@ export class Agenda extends Component {
             })
         })
 
-        return <div id="calendar" className="main-content">
-            <div className="toolbar">
-                <div className="item">
-                    <Button onClick={this.handleAdd}>Ajouter un évènement</Button>
-                </div>
-            </div>
-            <FullCalendar
-                locale={frLocale}
-                initialView={initialView}
-                plugins={[ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin ]}
-                headerToolbar={{
-                    left: 'timeGridDay,timeGridWeek',
-                    center: 'title',
-                    right: 'prev,next'
-                }}
-                allDayText={""}
-                hiddenDays={[ 0 ]}
-                slotMinTime={"08:00:00"}
-                slotMaxTime={"22:00:00"}
-                eventMinHeight={60}
-                editable={true}
-                droppable={true}
-                events={events}
-                eventDidMount={this.handleEventDidMount}
-                eventDrop={this.handleEventDrop}
-                eventClick={this.handleEventClick}
-                dateClick={this.handleDateClick}
-            />
+        return <>
+            {loadPageError ? <PageError /> : <div id="calendar" className="main-content">
+                {loadData ? <LoaderElement /> : <>
+                    <div className="toolbar">
+                        <div className="item">
+                            <Button onClick={this.handleAdd}>Ajouter un évènement</Button>
+                        </div>
+                    </div>
+                    <FullCalendar
+                        locale={frLocale}
+                        initialView={initialView}
+                        plugins={[ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin ]}
+                        headerToolbar={{
+                            left: 'timeGridDay,timeGridWeek',
+                            center: 'title',
+                            right: 'prev,next'
+                        }}
+                        allDayText={""}
+                        hiddenDays={[ 0 ]}
+                        slotMinTime={"08:00:00"}
+                        slotMaxTime={"22:00:00"}
+                        eventMinHeight={60}
+                        editable={true}
+                        droppable={true}
+                        events={events}
+                        eventDidMount={this.handleEventDidMount}
+                        eventDrop={this.handleEventDrop}
+                        eventClick={this.handleEventClick}
+                        dateClick={this.handleDateClick}
+                    />
 
-            <Aside ref={this.aside} content={contentAside} />
-        </div>
+                    <Aside ref={this.aside} content={contentAside} />
+                </>}
+            </div>}
+        </>
     }
 }
 

@@ -15,7 +15,6 @@ use App\Repository\Immo\ImTenantRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Repository\Agenda\AgEventRepository;
-use App\Repository\UserRepository;
 use App\Service\Agenda\EventService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -257,21 +256,16 @@ class UserController extends AbstractController
     /**
      * @Route("/agenda", name="agenda")
      */
-    public function agenda(UserRepository $userRepository, AgEventRepository $repository, SerializerInterface $serializer, EventService $eventService): Response
+    public function agenda(AgEventRepository $repository, SerializerInterface $serializer, EventService $eventService): Response
     {
         /** @var User $user */
         $user = $this->getUser();
         $objs = $repository->findAll();
-        $users = $userRepository->findAll();
-
         $data = $eventService->getEvents($objs, $user);
-
         $objs = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
-        $users = $serializer->serialize($users, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/agenda/index.html.twig', [
             'donnees' => $objs,
-            'users' => $users
         ]);
     }
 }
