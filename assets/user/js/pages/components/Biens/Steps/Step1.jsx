@@ -1,16 +1,16 @@
 import React from "react";
 
-import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
-import { Alert }              from "@dashboardComponents/Tools/Alert";
-import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import { Alert }  from "@dashboardComponents/Tools/Alert";
+import { Button } from "@dashboardComponents/Tools/Button";
 
 import helper from "@userPages/components/Biens/helper";
 import Sort from "@commonComponents/functions/sort";
 
 const CURRENT_STEP = 1;
 
-export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, onDraft, onOpenHelp, errors,
-                          codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator })
+export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, onDraft, errors,
+                          codeTypeAd, codeTypeBien, codeTypeMandat, negotiator })
 {
     let typeAdItems = helper.getItems("ads");
     let typeBienItems = helper.getItems("biens");
@@ -36,17 +36,6 @@ export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, onD
             <Radiobox items={typeBienItems} identifiant="codeTypeBien" valeur={codeTypeBien} errors={errors} onChange={onChange}>
                 Type de bien *
             </Radiobox>
-        </div>
-
-        <div className="line special-line">
-            <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={onChange}
-                   placeholder="Exemple : Appartement T1 Centre ville (max 64 caractères)"
-            >
-                <span>Libellé de l'annonce *</span>
-                <div className="input-label-help">
-                    <ButtonIcon icon="question" onClick={() => onOpenHelp("libelle")}>Aide</ButtonIcon>
-                </div>
-            </Input>
         </div>
 
         <div className="line special-line">

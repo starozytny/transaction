@@ -127,9 +127,10 @@ function getItems (type, prefix) {
             ]
         case "mandats":
             return [
-                { value: 0, label: 'Simple',            identifiant: 'simple' },
-                { value: 1, label: 'Exclusif',          identifiant: 'exclusif' },
-                { value: 2, label: 'Semi-exclusif',     identifiant: 'semi-exclusif' },
+                { value: 0, label: 'Aucun',             identifiant: 'mandat-none' },
+                { value: 1, label: 'Simple',            identifiant: 'simple' },
+                { value: 2, label: 'Exclusif',          identifiant: 'exclusif' },
+                { value: 3, label: 'Semi-exclusif',     identifiant: 'semi-exclusif' },
             ];
         case "biens":
             return [

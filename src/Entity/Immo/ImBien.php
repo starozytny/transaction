@@ -350,7 +350,7 @@ class ImBien extends DataEntity
      */
     public function getTypeMandatString(): string
     {
-        $data = ["Simple", "Exclusif", "Semi-exclusif"];
+        $data = ["Aucun", "Simple", "Exclusif", "Semi-exclusif"];
 
         return $data[$this->codeTypeMandat];
     }

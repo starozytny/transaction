@@ -53,11 +53,11 @@ export function BienFormulaire ({ type, element, tenants, negotiators, allOwners
 
         codeTypeAd={element ? element.codeTypeAd : ""}
         codeTypeBien={element ? element.codeTypeBien : ""}
-        libelle={element ? element.libelle : ""}
-        codeTypeMandat={element ? element.codeTypeMandat : ""}
+        libelle={element ? element.libelle : "Brouillon"}
+        codeTypeMandat={element ? element.codeTypeMandat : 0}
         negotiator={element ? element.negotiator.id : ""}
 
-        areaTotal={element ? setValueEmptyIfNull(area, area.total) : ""}
+        areaTotal={element ? setValueEmptyIfNull(area, area.total) : 0}
         areaHabitable={element ? setValueEmptyIfNull(area, area.habitable) : ""}
         areaLand={element ? setValueEmptyIfNull(area, area.land) : ""}
         areaGarden={element ? setValueEmptyIfNull(area, area.garden) : ""}
@@ -67,7 +67,7 @@ export function BienFormulaire ({ type, element, tenants, negotiators, allOwners
         areaLiving={element ? setValueEmptyIfNull(area, area.living) : ""}
         areaDining={element ? setValueEmptyIfNull(area, area.dining) : ""}
 
-        piece={element ? setValueEmptyIfNull(number, number.piece) : ""}
+        piece={element ? setValueEmptyIfNull(number, number.piece) : 0}
         room={element ? setValueEmptyIfNull(number, number.room) : ""}
         bathroom={element ? setValueEmptyIfNull(number, number.bathroom) : ""}
         wc={element ? setValueEmptyIfNull(number, number.wc) : ""}

@@ -36,7 +36,7 @@ function toString (tab, value) {
 }
 
 export function Step9({ step, onChange, onChangeSelect, onNext, onDraft, errors, negotiator, negotiators,
-                        typeAdvert, contentSimple, contentFull,
+                        typeAdvert, contentSimple, contentFull, onOpenHelp,
                         codeTypeBien, codeTypeAd, codeTypeMandat, libelle, address, zipcode, city, price, areaTotal, piece,
                         areaGarden, areaTerrace, room, balcony, parking, box, dispoAt, busy,
                         isMeuble, isNew, floor, nbFloor, codeHeater0, codeHeater, codeKitchen, exposition,
@@ -182,6 +182,17 @@ export function Step9({ step, onChange, onChangeSelect, onNext, onDraft, errors,
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div className="line special-line">
+            <Input identifiant="libelle" valeur={libelle} errors={errors} onChange={onChange}
+                   placeholder="Exemple : Appartement T1 Centre ville (max 64 caractères)"
+            >
+                <span>Libellé de l'annonce *</span>
+                <div className="input-label-help">
+                    <ButtonIcon icon="question" onClick={() => onOpenHelp("libelle")}>Aide</ButtonIcon>
+                </div>
+            </Input>
         </div>
 
         <div className="line special-line">

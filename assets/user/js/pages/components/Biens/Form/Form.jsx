@@ -88,17 +88,12 @@ export class Form extends Component {
     componentDidMount = () => { Helper.getPostalCodes(this); }
 
     handleChange = (e) => {
-        const { libelle } = this.state;
+        this.setState({[e.currentTarget.name]: e.currentTarget.value});
 
-        let name = e.currentTarget.name;
-        let value = e.currentTarget.value;
-        this.setState({[name]: value});
-
-        // PREREMPLIR le libellé
-        if(name === "codeTypeBien" && libelle !== ARRAY_STRING_BIENS[value]
-            && (ARRAY_STRING_BIENS.includes(libelle) || libelle === "")){
-            this.setState({ libelle: ARRAY_STRING_BIENS[value] })
-        }
+        // if(name === "codeTypeBien" && libelle !== ARRAY_STRING_BIENS[value]
+        //     && (ARRAY_STRING_BIENS.includes(libelle) || libelle === "")){
+        //     this.setState({ libelle: ARRAY_STRING_BIENS[value] })
+        // }
     }
 
     handleChangeLegend = (e, el) => {
@@ -161,8 +156,7 @@ export class Form extends Component {
                         {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
                         {type: "text",      id: 'libelle',        value: libelle},
                         {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
-                        {type: "text",      id: 'negotiator',     value: negotiator},
-                        {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
+                        {type: "text",      id: 'negotiator',     value: negotiator}
                     ];
                     break;
                 default:
@@ -442,7 +436,7 @@ export class Form extends Component {
                         <Step1 {...this.state} onDraft={this.handleSubmit}
                                onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
-                               onOpenHelp={this.handleOpenHelp} negotiators={negotiators} />
+                               negotiators={negotiators} />
 
                         <Step2 {...this.state} onDraft={this.handleSubmit}
                                onNext={this.handleNext} onChange={this.handleChange}
@@ -475,7 +469,7 @@ export class Form extends Component {
                                refAside1={this.aside1} onOpenAside={this.handleOpenAside}
                                allOwners={allOwners} />
 
-                        <Step9 {...this.state} onDraft={this.handleSubmit}
+                        <Step9 {...this.state} onDraft={this.handleSubmit} onOpenHelp={this.handleOpenHelp}
                                onNext={this.handleNext} onChange={this.handleChange}
                                onChangeSelect={this.handleChangeSelect} negotiators={negotiators} />
 

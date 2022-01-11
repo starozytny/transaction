@@ -104,7 +104,7 @@ class FakeBiensCreate extends Command
                 "codeTypeAd" => (string) $fake->numberBetween(0, 7),
                 "codeTypeBien" => (string) $fake->numberBetween(0, 9),
                 "libelle" => $fake->name,
-                "codeTypeMandat" => (string) $fake->numberBetween(0, 2),
+                "codeTypeMandat" => (string) $fake->numberBetween(0, 3),
                 "negotiator" => $negotiator->getId(),
                 "areaTotal" => (string) $fake->randomFloat(2),
                 "areaHabitable" => (string) $fake->randomFloat(2),
