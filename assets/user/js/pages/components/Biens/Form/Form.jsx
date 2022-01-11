@@ -33,6 +33,16 @@ let arrayOwnersSave = [];
 let arrayTenantsSave = [];
 let initRank = null;
 
+function consequenceValueToBoolean(self, name, value, compareName, compareValue, toName, booleanValue=99) {
+    if(name === compareName){
+        if(value > compareValue){
+            self.setState({ [toName]: 1 })
+        }else{
+            self.setState({ [toName]: booleanValue })
+        }
+    }
+}
+
 function getBase64(file, self, rank) {
     let reader = new FileReader();
     reader.readAsDataURL(file);
@@ -91,7 +101,14 @@ export class Form extends Component {
     componentDidMount = () => { Helper.getPostalCodes(this); }
 
     handleChange = (e) => {
-        this.setState({[e.currentTarget.name]: e.currentTarget.value});
+        let name = e.currentTarget.name;
+        let value = e.currentTarget.value;
+
+        consequenceValueToBoolean(this, name, parseFloat(value), "areaGarden", 0, "hasGarden");
+        consequenceValueToBoolean(this, name, parseFloat(value), "areaTerrace", 0, "hasTerrace");
+        consequenceValueToBoolean(this, name, parseFloat(value), "areaCave", 0, "hasCave");
+
+        this.setState({[name]: value});
     }
 
     handleChangeLegend = (e, el) => {

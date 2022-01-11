@@ -67,7 +67,7 @@ export function BienFormulaire ({ type, element, tenants, rooms, negotiators, al
         areaLiving={element ? setValueEmptyIfNull(area, area.living) : ""}
         areaDining={element ? setValueEmptyIfNull(area, area.dining) : ""}
 
-        piece={element ? setValueEmptyIfNull(number, number.piece) : 0}
+        piece={element ? setValueEmptyIfNull(number, number.piece) : 1}
         room={element ? setValueEmptyIfNull(number, number.room) : ""}
         bathroom={element ? setValueEmptyIfNull(number, number.bathroom) : ""}
         wc={element ? setValueEmptyIfNull(number, number.wc) : ""}

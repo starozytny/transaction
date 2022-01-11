@@ -114,8 +114,6 @@ export class Step4 extends Component {
 
         let typeInt = typeRoom !== "" ? parseInt(typeRoom) : "";
 
-        console.log(rooms)
-
         let contentAside = <div key={uid}>
             <div className="line line-2">
                 <SelectReactSelectize items={roomItems} identifiant="typeRoom" valeur={typeRoom} errors={errors}
