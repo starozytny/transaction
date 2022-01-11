@@ -10,6 +10,7 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 import helper      from "@userPages/components/Biens/helper";
 import Validateur  from "@commonComponents/functions/validateur";
 import Formulaire  from "@dashboardComponents/functions/Formulaire";
+import {Alert} from "@dashboardComponents/Tools/Alert";
 
 const CURRENT_STEP = 4;
 const ARRAY_STRING = ["Autre", "Balcon", "Box", "Cave", "Chambre", "Cuisine", "Jardin", "Parking",
@@ -212,7 +213,7 @@ export class Step4 extends Component {
                 </div>
                 <div className="items-table">
                     <div className="items items-default">
-                        {(rooms && rooms.length !== 0) && <div className="item item-header">
+                        <div className="item item-header">
                             <div className="item-content">
                                 <div className="item-body">
                                     <div className="infos infos-col-4">
@@ -223,8 +224,8 @@ export class Step4 extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>}
-                        {rooms.map((el, index) => {
+                        </div>
+                        {rooms && rooms.length !== 0 ? rooms.map((el, index) => {
                             let solString = "";
                             solItems.forEach(item => {
                                 if(item.value === el.sol){
@@ -263,7 +264,7 @@ export class Step4 extends Component {
                                     </div>
                                 </div>
                             </div>)
-                        })}
+                        }) : <Alert>Aucune pièce renseignée.</Alert>}
                     </div>
                 </div>
             </div>
