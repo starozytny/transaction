@@ -5,6 +5,7 @@ import toastr   from "toastr";
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import Helper       from "@commonComponents/functions/helper";
+import helper       from "@userPages/components/Biens/helper";
 import Validateur   from "@commonComponents/functions/validateur";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
 import DataState    from "./data";
@@ -79,6 +80,7 @@ export class Form extends Component {
         this.handleSaveLegend = this.handleSaveLegend.bind(this);
         this.handleSelectOwner = this.handleSelectOwner.bind(this);
         this.handleSelectTenant = this.handleSelectTenant.bind(this);
+        this.handleSelectRooms = this.handleSelectRooms.bind(this);
 
         this.handleNext = this.handleNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -171,66 +173,6 @@ export class Form extends Component {
         }
     }
 
-    handleSubmit = (e, isDraft = true) => {
-        e.preventDefault();
-
-        const { url, messageSuccess } = this.props;
-        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator } = this.state;
-
-        // TODO : ----------------------------------
-        // TODO : recheck all data before send
-        // TODO : ----------------------------------
-        let paramsToValidate = [
-            {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
-            {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
-            {type: "text",      id: 'libelle',        value: libelle},
-            {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
-            {type: "text",      id: 'negotiator',     value: negotiator},
-            {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
-        ];
-
-        // validate global
-        let validate = Validateur.validateur(paramsToValidate);
-
-        Helper.toTop();
-        if(!validate.code){
-            Formulaire.showErrors(this, validate);
-        }else{
-            let self = this;
-            Formulaire.loader(true);
-
-            arrayZipcodeSave = this.state.arrayPostalCode;
-            arrayOwnersSave = this.state.allOwners;
-            arrayTenantsSave = this.state.allTenants;
-            delete this.state.arrayPostalCode;
-            delete this.state.allOwners;
-            delete this.state.allTenants;
-
-            this.state.isDraft = isDraft;
-
-            let formData = new FormData();
-            formData.append("data", JSON.stringify(this.state));
-
-            this.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
-
-            axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
-                .then(function (response) {
-                    let data = response.data;
-                    toastr.info(messageSuccess);
-                    if(isDraft){
-                        self.setState({ id: data.id })
-                    }
-                })
-                .catch(function (error) {
-                    Formulaire.displayErrors(self, error);
-                })
-                .then(() => {
-                    Formulaire.loader(false);
-                })
-            ;
-        }
-    }
-
     handleOpenHelp = (type) => {
         let content = "";
         switch (type) {
@@ -300,7 +242,7 @@ export class Form extends Component {
     handleOpenAside = (type, el) => {
         switch (type) {
             case "room":
-                this.aside3.current.handleOpen(el ? "Modifier " : "Ajouter une pièce");
+                this.aside3.current.handleOpen(el ? "Modifier " + el.name : "Ajouter une pièce");
                 break;
             case "tenant-select":
                 this.aside2.current.handleOpen();
@@ -345,27 +287,81 @@ export class Form extends Component {
     handleSelectTenant = (tenant) => {
         const { tenants } = this.state;
 
-        let find = false;
-        let nTenants = [];
-        tenants.forEach(te => {
-            if(te.id === tenant.id){
-                find = true;
-            }else{
-                nTenants.push(te);
-            }
-        })
-
-        if(!find){
-            nTenants = tenants;
-            nTenants.push(tenant);
-            toastr.info("Locataire ajouté.");
-        }else{
-            toastr.info("Locataire enlevé.");
-        }
+        let nTenants = helper.addOrRemove(tenants, tenant, "Locataire ajouté.", "Locataire enlevé.");
 
         this.tenant.current.handleUpdateSelectTenants(nTenants);
         DataState.getTenants(this);
         this.setState({ tenants: nTenants });
+    }
+
+    handleSelectRooms = (room, isUpdate=false) => {
+        const { rooms } = this.state;
+
+        let nRooms = helper.addOrRemove(rooms, room, "Pièce ajoutée.", "Pièce enlevée.", isUpdate, "Pièce modifiée.");
+        this.setState({ rooms: nRooms });
+        if(isUpdate){
+            this.aside3.current.handleClose();
+        }
+    }
+
+    handleSubmit = (e, isDraft = true) => {
+        e.preventDefault();
+
+        const { url, messageSuccess } = this.props;
+        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator } = this.state;
+
+        // TODO : ----------------------------------
+        // TODO : recheck all data before send
+        // TODO : ----------------------------------
+        let paramsToValidate = [
+            {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
+            {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
+            {type: "text",      id: 'libelle',        value: libelle},
+            {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
+            {type: "text",      id: 'negotiator',     value: negotiator},
+            {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
+        ];
+
+        // validate global
+        let validate = Validateur.validateur(paramsToValidate);
+
+        Helper.toTop();
+        if(!validate.code){
+            Formulaire.showErrors(this, validate);
+        }else{
+            let self = this;
+            Formulaire.loader(true);
+
+            arrayZipcodeSave = this.state.arrayPostalCode;
+            arrayOwnersSave = this.state.allOwners;
+            arrayTenantsSave = this.state.allTenants;
+            delete this.state.arrayPostalCode;
+            delete this.state.allOwners;
+            delete this.state.allTenants;
+
+            this.state.isDraft = isDraft;
+
+            let formData = new FormData();
+            formData.append("data", JSON.stringify(this.state));
+
+            this.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
+
+            axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
+                .then(function (response) {
+                    let data = response.data;
+                    toastr.info(messageSuccess);
+                    if(isDraft){
+                        self.setState({ id: data.id })
+                    }
+                })
+                .catch(function (error) {
+                    Formulaire.displayErrors(self, error);
+                })
+                .then(() => {
+                    Formulaire.loader(false);
+                })
+            ;
+        }
     }
 
     render () {
@@ -442,6 +438,7 @@ export class Form extends Component {
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
                         <Step4 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                               onSelectRooms={this.handleSelectRooms}
                                refAside={this.aside3} onOpenAside={this.handleOpenAside} />
 
                         <Step5 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}

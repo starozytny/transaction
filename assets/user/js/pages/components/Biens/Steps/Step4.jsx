@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-import toastr  from "toastr";
+import { uid } from 'uid';
 
 import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
-import { Button }       from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 import { Aside }        from "@dashboardComponents/Tools/Aside";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
@@ -21,6 +21,8 @@ export class Step4 extends Component {
         super();
 
         this.state = {
+            context: "create",
+            uid: uid(),
             type: "",
             name: "",
             area: "",
@@ -37,6 +39,7 @@ export class Step4 extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
     }
 
     handleChange = (e) => { this.setState({ [e.currentTarget.name]: e.currentTarget.value }) }
@@ -66,10 +69,32 @@ export class Step4 extends Component {
         this.setState({ [input]: value, name: nameRoom })
     }
 
+    handleUpdate = (room) => {
+        this.setState({
+            context: "update",
+            uid: room.uid,
+            type: room.type,
+            name: room.name,
+            area: room.area,
+            sol: room.sol,
+            hasBalcony: room.hasBalcony,
+            hasTerrace: room.hasTerrace,
+            hasGarden: room.hasGarden,
+            areaBalcony: room.areaBalcony,
+            areaTerrace: room.areaTerrace,
+            areaGarden: room.areaGarden,
+        });
+
+        let label = document.querySelector("label[for='type'] + .react-selectize .simple-value > span");
+        if(label){ label.innerHTML = "Cuisine"; }
+
+        this.props.onOpenAside("room", room);
+    }
+
     handleClick = (e) => {
         e.preventDefault();
 
-        const { type, name } = this.state;
+        const { context, type, name } = this.state;
 
         this.setState({ errors: [], success: false })
 
@@ -83,28 +108,34 @@ export class Step4 extends Component {
         if(!validate.code){
             Formulaire.showErrors(this, validate);
         }else{
-            toastr.info("Pièce ajoutée avec succès !");
+            let room = this.state;
+            this.props.onSelectRooms(room, context === "update")
+
             let label = document.querySelector("label[for='type'] + .react-selectize .simple-value > span");
-            if(label){
-                label.innerHTML = "";
-            }
+            if(label){ label.innerHTML = ""; }
+            label = document.querySelector("label[for='sol'] + .react-selectize .simple-value > span");
+            if(label){ label.innerHTML = ""; }
+
             this.setState({
-                type: "",
+                context: "create",
+                uid: uid(),
+                type: 0,
                 name: "",
                 area: "",
-                sol: "",
+                sol: 0,
                 hasBalcony: 99,
                 hasTerrace: 99,
                 hasGarden: 99,
                 areaBalcony: "",
                 areaTerrace: "",
                 areaGarden: "",
-            })
+            });
+
         }
     }
 
     render () {
-        const { step, onNext, onDraft, refAside, onOpenAside } = this.props;
+        const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, rooms } = this.props;
 
         const { errors, type, name, area, sol,
             hasBalcony, hasTerrace, hasGarden, areaBalcony, areaTerrace, areaGarden } = this.state;
@@ -178,6 +209,62 @@ export class Step4 extends Component {
             <div className="line special-line">
                 <div className="form-group">
                     <label>Les pièces</label>
+                </div>
+                <div className="items-table">
+                    <div className="items items-default">
+                        {(rooms && rooms.length !== 0) && <div className="item item-header">
+                            <div className="item-content">
+                                <div className="item-body">
+                                    <div className="infos infos-col-4">
+                                        <div className="col-1">Pièce</div>
+                                        <div className="col-2">Informations</div>
+                                        <div className="col-3">Détails</div>
+                                        <div className="col-4 actions">Actions</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>}
+                        {rooms.map((el, index) => {
+                            let solString = "";
+                            solItems.forEach(item => {
+                                if(item.value === el.sol){
+                                    solString = item.label
+                                }
+                            })
+
+                            return (<div className="item" key={index}>
+                                <div className="item-content">
+                                    <div className="item-body">
+                                        <div className="infos infos-col-4">
+                                            <div className="col-1">
+                                                <div className="sub">{el.uid}</div>
+                                                <div className="name">{el.name}</div>
+                                            </div>
+                                            <div className="col-2">
+                                                {el.area && <div className="sub">{el.area} m²</div>}
+                                                {el.sol && <div className="sub">{solString}</div>}
+                                            </div>
+                                            <div className="col-3">
+                                                {parseInt(el.hasBalcony) === 1 && <div className="sub">
+                                                    Balcon{el.areaBalcony !== "" ? " : " + el.areaBalcony + " m²" : ""}
+                                                </div>}
+                                                {parseInt(el.hasTerrace) === 1 && <div className="sub">
+                                                    Terrasse{el.areaTerrace !== "" ? " : " + el.areaTerrace + " m²" : ""}
+                                                </div>}
+                                                {parseInt(el.hasGarden) === 1 && <div className="sub">
+                                                    Jardin{el.areaGarden !== "" ? " : " + el.areaGarden + " m²" : ""}
+                                                </div>}
+                                            </div>
+                                            <div className="col-4 actions">
+                                                <ButtonIcon icon="pencil" onClick={() => this.handleUpdate(el)}>Modifier</ButtonIcon>
+                                                <ButtonIcon icon="trash" onClick={() => onSelectRooms(el)}>Supprimer</ButtonIcon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>)
+                        })}
+                    </div>
                 </div>
             </div>
 

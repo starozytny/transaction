@@ -74,6 +74,11 @@ class ImRoom
      */
     private $bien;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $uid;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -207,6 +212,18 @@ class ImRoom
     public function setBien(?ImBien $bien): self
     {
         $this->bien = $bien;
+
+        return $this;
+    }
+
+    public function getUid(): ?string
+    {
+        return $this->uid;
+    }
+
+    public function setUid(string $uid): self
+    {
+        $this->uid = $uid;
 
         return $this;
     }
