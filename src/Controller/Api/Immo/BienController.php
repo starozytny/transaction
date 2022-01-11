@@ -12,6 +12,7 @@ use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
 use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNumber;
+use App\Entity\Immo\ImRoom;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
@@ -164,8 +165,10 @@ class BienController extends AbstractController
             }
         }
 
+        $rooms = $dataEntity->setDataRooms($data, $type == "create" ? [] : $obj->getRooms());
+
         $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage, $diag,
-            $localisation, $financial, $confidential, $advert);
+            $localisation, $financial, $confidential, $advert, $rooms);
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }

@@ -17,6 +17,7 @@ use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
+use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
@@ -46,7 +47,7 @@ class DataImmo extends DataConstructor
      */
     public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature,
                                 ImAdvantage $advantage, ImDiag $diag, ImLocalisation $localisation,
-                                ImFinancial $financial, ImConfidential $confidential, ImAdvert $advert)
+                                ImFinancial $financial, ImConfidential $confidential, ImAdvert $advert, array $rooms)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -100,6 +101,10 @@ class DataImmo extends DataConstructor
 
         if($isDraft){
             $obj->setStatus(ImBien::STATUS_INACTIF);
+        }
+
+        foreach($rooms as $room){
+            $obj->addRoom($room);
         }
 
         // Création de l'objet
@@ -297,6 +302,42 @@ class DataImmo extends DataConstructor
             ->setTypeAdvert($this->setToZeroEmpty($data->typeAdvert))
             ->setContentSimple($this->sanitizeData->trimData($data->contentSimple))
             ->setContentFull($data->contentFull ? $this->sanitizeData->trimData($data->contentFull) : "")
+        ;
+    }
+
+    public function setDataRooms($data, $rooms): array
+    {
+        foreach ($rooms as $room){
+            $this->em->remove($room);
+        }
+
+        $tab = [];
+        if(is_array($data->rooms)){
+            foreach($data->rooms as $room){
+                $new = $this->setDataRoom($room);
+
+                $this->em->persist($new);
+                $tab[] = $new;
+            }
+        }
+
+        return $tab;
+    }
+
+    private function setDataRoom($data): ImRoom
+    {
+        return (new ImRoom())
+            ->setUid($data->uid)
+            ->setTypeRoom((int) $data->type)
+            ->setName($this->sanitizeData->trimData($data->name))
+            ->setArea($this->setToNullFloat($data->area))
+            ->setSol($this->setToNullInteger($data->sol))
+            ->setHasBalcony((int) $data->hasBalcony)
+            ->setHasTerrace((int) $data->hasTerrace)
+            ->setHasGarden((int) $data->hasGarden)
+            ->setAreaBalcony($this->setToNullFloat($data->areaBalcony))
+            ->setAreaTerrace($this->setToNullFloat($data->areaTerrace))
+            ->setAreaGarden($this->setToNullFloat($data->areaGarden))
         ;
     }
 
