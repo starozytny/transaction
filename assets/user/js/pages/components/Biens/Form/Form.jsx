@@ -27,8 +27,6 @@ import { Aside }   from "@dashboardComponents/Tools/Aside";
 import { Owners}   from "@dashboardPages/components/Immo/Owners/Owners";
 import { Tenants } from "@dashboardPages/components/Immo/Tenants/Tenants";
 
-const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
-
 let arrayZipcodeSave = [];
 let arrayOwnersSave = [];
 let arrayTenantsSave = [];
@@ -91,11 +89,6 @@ export class Form extends Component {
 
     handleChange = (e) => {
         this.setState({[e.currentTarget.name]: e.currentTarget.value});
-
-        // if(name === "codeTypeBien" && libelle !== ARRAY_STRING_BIENS[value]
-        //     && (ARRAY_STRING_BIENS.includes(libelle) || libelle === "")){
-        //     this.setState({ libelle: ARRAY_STRING_BIENS[value] })
-        // }
     }
 
     handleChangeLegend = (e, el) => {

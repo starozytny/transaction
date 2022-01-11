@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 
-import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import toastr  from "toastr";
 
+import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Button }       from "@dashboardComponents/Tools/Button";
 import { Aside }        from "@dashboardComponents/Tools/Aside";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
-import helper from "@userPages/components/Biens/helper";
+import helper      from "@userPages/components/Biens/helper";
+import Validateur  from "@commonComponents/functions/validateur";
+import Formulaire  from "@dashboardComponents/functions/Formulaire";
 
 const CURRENT_STEP = 4;
 const ARRAY_STRING = ["Autre", "Balcon", "Box", "Cave", "Chambre", "Cuisine", "Jardin", "Parking",
@@ -28,11 +31,12 @@ export class Step4 extends Component {
             areaBalcony: "",
             areaTerrace: "",
             areaGarden: "",
-            errors: []
+            errors: [],
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     handleChange = (e) => { this.setState({ [e.currentTarget.name]: e.currentTarget.value }) }
@@ -62,10 +66,48 @@ export class Step4 extends Component {
         this.setState({ [input]: value, name: nameRoom })
     }
 
+    handleClick = (e) => {
+        e.preventDefault();
+
+        const { type, name } = this.state;
+
+        this.setState({ errors: [], success: false })
+
+        let paramsToValidate = [
+            {type: "text", id: 'type', value: type},
+            {type: "text", id: 'name', value: name},
+        ];
+
+        // validate global
+        let validate = Validateur.validateur(paramsToValidate);
+        if(!validate.code){
+            Formulaire.showErrors(this, validate);
+        }else{
+            toastr.info("Pièce ajoutée avec succès !");
+            let label = document.querySelector("label[for='type'] + .react-selectize .simple-value > span");
+            if(label){
+                label.innerHTML = "";
+            }
+            this.setState({
+                type: "",
+                name: "",
+                area: "",
+                sol: "",
+                hasBalcony: 99,
+                hasTerrace: 99,
+                hasGarden: 99,
+                areaBalcony: "",
+                areaTerrace: "",
+                areaGarden: "",
+            })
+        }
+    }
+
     render () {
         const { step, onNext, onDraft, refAside, onOpenAside } = this.props;
 
-        const { errors, type, name, area, sol, hasBalcony, hasTerrace, hasGarden, areaBalcony, areaTerrace, areaGarden } = this.state;
+        const { errors, type, name, area, sol,
+            hasBalcony, hasTerrace, hasGarden, areaBalcony, areaTerrace, areaGarden } = this.state;
 
         let roomItems = helper.getItems("rooms");
         let solItems = helper.getItems("sols");
@@ -128,7 +170,7 @@ export class Step4 extends Component {
             </>}
 
             <div className="line line-buttons">
-                <Button>Enregistrer</Button>
+                <Button onClick={this.handleClick}>Enregistrer</Button>
             </div>
         </div>
 
