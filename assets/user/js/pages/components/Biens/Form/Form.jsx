@@ -4,29 +4,29 @@ import axios    from "axios";
 import toastr   from "toastr";
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import Helper       from "@commonComponents/functions/helper";
-import helper       from "@userPages/components/Biens/helper";
-import Validateur   from "@commonComponents/functions/validateur";
-import Formulaire   from "@dashboardComponents/functions/Formulaire";
-import DataState    from "./data";
+import helper           from "@userPages/components/Biens/helper";
+import Helper           from "@commonComponents/functions/helper";
+import Validateur       from "@commonComponents/functions/validateur";
+import Formulaire       from "@dashboardComponents/functions/Formulaire";
+import DataState        from "./data";
 
 import { HelpBubble }   from "@dashboardComponents/Tools/HelpBubble";
 import { Button }       from "@dashboardComponents/Tools/Button";
+import { Aside }        from "@dashboardComponents/Tools/Aside";
 
-import { Step1 } from "@userPages/components/Biens/Steps/Step1";
-import { Step2 } from "@userPages/components/Biens/Steps/Step2";
-import { Step3 } from "@userPages/components/Biens/Steps/Step3";
-import { Step4 } from "@userPages/components/Biens/Steps/Step4";
-import { Step5 } from "@userPages/components/Biens/Steps/Step5";
-import { Step6 } from "@userPages/components/Biens/Steps/Step6";
-import { Step6Vente } from "@userPages/components/Biens/Steps/Step6Vente";
-import { Step7 } from "@userPages/components/Biens/Steps/Step7";
-import { Step8 } from "@userPages/components/Biens/Steps/Step8";
-import { Step9 } from "@userPages/components/Biens/Steps/Step9";
+import { Step1 }        from "@userPages/components/Biens/Steps/Step1";
+import { Step2 }        from "@userPages/components/Biens/Steps/Step2";
+import { Step3 }        from "@userPages/components/Biens/Steps/Step3";
+import { Step4 }        from "@userPages/components/Biens/Steps/Step4";
+import { Step5 }        from "@userPages/components/Biens/Steps/Step5";
+import { Step6 }        from "@userPages/components/Biens/Steps/Step6";
+import { Step6Vente }   from "@userPages/components/Biens/Steps/Step6Vente";
+import { Step7 }        from "@userPages/components/Biens/Steps/Step7";
+import { Step8 }        from "@userPages/components/Biens/Steps/Step8";
+import { Step9 }        from "@userPages/components/Biens/Steps/Step9";
 
-import { Aside }   from "@dashboardComponents/Tools/Aside";
-import { Owners}   from "@dashboardPages/components/Immo/Owners/Owners";
-import { Tenants } from "@dashboardPages/components/Immo/Tenants/Tenants";
+import { Owners}        from "@dashboardPages/components/Immo/Owners/Owners";
+import { Tenants }      from "@dashboardPages/components/Immo/Tenants/Tenants";
 
 let arrayZipcodeSave = [];
 let arrayOwnersSave = [];
