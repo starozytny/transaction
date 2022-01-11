@@ -33,6 +33,10 @@ let arrayOwnersSave = [];
 let arrayTenantsSave = [];
 let initRank = null;
 
+function getValueFloat(value){
+    return value !== "" ? parseFloat(value) : 0;
+}
+
 function consequenceValueToBoolean(self, name, value, compareName, compareValue, toName, booleanValue=99) {
     if(name === compareName){
         if(value > parseFloat(compareValue)){
@@ -71,6 +75,35 @@ function consequenceValueToRooms(self, name, value, rooms, compareName, codeType
         }
 
         self.setState({ rooms: nRooms })
+    }
+}
+
+function calculateFinancial(self, name, value, codeTypeAd,
+                            price, notaire, honoraireTtc, honorairePourcentage) {
+    if(codeTypeAd !== 1){
+        let nPrice      = name === "price" ? value : price;
+        let nNotaire    = name === "notaire" ? value : notaire;
+        let nHonoTtc    = name === "honoraireTtc" ? value : honoraireTtc;
+        let nHonoPour   = name === "honorairePourcentage" ? value : honorairePourcentage;
+
+        let nPriceHoAcq = getValueFloat(nPrice) + getValueFloat(nNotaire);
+
+        if(name === "price" || name === "honorairePourcentage"){
+            nHonoTtc = (getValueFloat(nPrice) * getValueFloat(nHonoPour)) / 100
+            self.setState({ honoraireTtc: nHonoTtc })
+        }
+
+        if(name === "honoraireTtc"){
+            nHonoPour = (getValueFloat(nHonoTtc)/getValueFloat(nPrice)) * 100;
+            self.setState({ honorairePourcentage: nHonoPour })
+        }
+
+        if(name === "price" || name === "notaire" || name === "honoraireTtc" || name === "honorairePourcentage"){
+            let totalGeneral = getValueFloat(nPrice) + getValueFloat(nNotaire) + getValueFloat(nHonoTtc);
+            self.setState({ totalGeneral: totalGeneral, prixHorsAcquereur: nPriceHoAcq })
+        }
+    }else{
+
     }
 }
 
@@ -133,7 +166,7 @@ export class Form extends Component {
     componentDidMount = () => { Helper.getPostalCodes(this); }
 
     handleChange = (e) => {
-        const { rooms } = this.state;
+        const { codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage } = this.state;
 
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
@@ -148,6 +181,8 @@ export class Form extends Component {
         consequenceValueToRooms(this, name, value, rooms, "wc",         12, elStep);
         consequenceValueToRooms(this, name, value, rooms, "balcony",    1, elStep);
         consequenceValueToRooms(this, name, value, rooms, "box",        2, elStep);
+
+        calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage)
 
         this.setState({[name]: value});
     }

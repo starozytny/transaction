@@ -11,7 +11,7 @@ import Sanitaze from "@commonComponents/functions/sanitaze";
 const CURRENT_STEP = 6
 
 export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSelect,
-                        price, chargesMensuelles, notaire, foncier, taxeHabitation, totalTerme, honoraireChargeDe,
+                        price, chargesMensuelles, notaire, foncier, taxeHabitation, honoraireChargeDe,
                         honorairePourcentage, honoraireTtc, totalGeneral, prixHorsAcquereur,
                         isCopro, nbLot, chargesLot, isSyndicProcedure, detailsProcedure })
 {
@@ -37,10 +37,7 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSe
                 <Input type="number" step="any" identifiant="notaire" valeur={notaire} errors={errors} onChange={onChange}>
                     <span>Frais notaire</span>
                 </Input>
-                <div className="form-group">
-                    <label>Total Terme</label>
-                    <div>{Sanitaze.toFormatCurrency(totalTerme)}</div>
-                </div>
+                <div className="form-group" />
             </div>
             <div className="line line-2">
                 <Input type="number" step="any" identifiant="foncier" valeur={foncier} errors={errors} onChange={onChange}>
@@ -58,28 +55,25 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSe
                                       onChange={(e) => onChangeSelect('honoraireChargeDe', e)}>
                     Honoraires à la charge *
                 </SelectReactSelectize>
-                <Input type="number" step="any" identifiant="honorairePourcentage" valeur={honorairePourcentage} errors={errors} onChange={onChange}>
-                    <span>Pourcentage des honoraires *</span>
+                <Input type="number" step="any" identifiant="honorairePourcentage" valeur={honorairePourcentage} errors={errors} onChange={onChange} placeholder="%">
+                    <span>Pourcentage des honoraires (%) *</span>
                 </Input>
                 <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
                     <span>Honoraires TTC *</span>
                 </Input>
             </div>
             <div className="line line-3">
-                <div className="form-group" />
+                {(honoraireChargeDe === 0 || honoraireChargeDe === 2) ? <>
+                    <Input type="number" step="any" identifiant="prixHorsAcquereur" valeur={prixHorsAcquereur} errors={errors} onChange={onChange}>
+                        <span>Prix hors honoraire acquéreur</span>
+                    </Input>
+                </> : <div className="form-group" />}
                 <div className="form-group" />
                 <div className="form-group">
                     <label>Total général</label>
                     <div>{Sanitaze.toFormatCurrency(totalGeneral)}</div>
                 </div>
             </div>
-            {(honoraireChargeDe === 0 || honoraireChargeDe === 2) && <div className="line line-3">
-                <Input type="number" step="any" identifiant="prixHorsAcquereur" valeur={prixHorsAcquereur} errors={errors} onChange={onChange}>
-                    <span>Prix hors honoraire acquéreur</span>
-                </Input>
-                <div className="form-group" />
-                <div className="form-group" />
-            </div>}
         </div>
 
         <div className="line special-line">
