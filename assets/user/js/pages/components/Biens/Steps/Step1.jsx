@@ -9,7 +9,7 @@ import Sort from "@commonComponents/functions/sort";
 
 const CURRENT_STEP = 1;
 
-export function Step1({ negotiators, step, onChange, onChangeSelect, onNext, onDraft, errors,
+export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect, negotiators,
                           codeTypeAd, codeTypeBien, codeTypeMandat, negotiator })
 {
     let typeAdItems = helper.getItems("ads");

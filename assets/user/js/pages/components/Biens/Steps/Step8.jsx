@@ -20,8 +20,8 @@ import {
 
 const CURRENT_STEP = 8;
 
-export function Step8({ step, onChange, onChangeSelect, onChangeDate, onOpenAside, onNext, onDraft, errors, allOwners,
-                          owner, tenants,
+export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate, onOpenAside,
+                          allOwners, owner, tenants,
                           inform, lastname, phone1, email, visiteAt, visiteTo, keysNumber, keysWhere })
 {
     let itemOwner = null;

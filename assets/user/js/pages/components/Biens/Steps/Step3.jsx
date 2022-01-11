@@ -9,7 +9,7 @@ import helper from "@userPages/components/Biens/helper";
 
 const CURRENT_STEP = 3;
 
-export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, onDraft, errors,
+export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate,
                           hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian,
                           hasAlarme, hasLift, hasClim, hasCalme, hasInternet,
                           hasHandi, hasFibre, situation, sousType, sol,
@@ -102,62 +102,60 @@ export function Step3({ step, onChange, onChangeSelect, onChangeDate, onNext, on
             </div>
         </div>
 
-        <div className={"step-section" + (step === 3 ? " active" : "")}>
-            <div className="line special-line">
-                <div className="form-group">
-                    <label>Diagnostique</label>
-                </div>
+        <div className="line special-line">
+            <div className="form-group">
+                <label>Diagnostique</label>
+            </div>
 
-                <div className="line line-3">
-                    <Radiobox items={helper.getItems("answers", 17)} identifiant="beforeJuly" valeur={beforeJuly} errors={errors} onChange={onChange}>
-                        DPE avant le 1 juil. 2021
+            <div className="line line-3">
+                <Radiobox items={helper.getItems("answers", 17)} identifiant="beforeJuly" valeur={beforeJuly} errors={errors} onChange={onChange}>
+                    DPE avant le 1 juil. 2021
+                </Radiobox>
+                {parseInt(beforeJuly) !== 1 && <>
+                    <Radiobox items={helper.getItems("answers", 18)} identifiant="isVirgin" valeur={isVirgin} errors={errors} onChange={onChange}>
+                        DPE vierge
                     </Radiobox>
-                    {parseInt(beforeJuly) !== 1 && <>
-                        <Radiobox items={helper.getItems("answers", 18)} identifiant="isVirgin" valeur={isVirgin} errors={errors} onChange={onChange}>
-                            DPE vierge
-                        </Radiobox>
-                        <Radiobox items={helper.getItems("answers", 19)} identifiant="isSend" valeur={isSend} errors={errors} onChange={onChange}>
-                            DPE non soumis
-                        </Radiobox>
-                    </>}
-                </div>
-
-                <div className="line line-2">
-                    <DatePick identifiant="createdAtDpe" valeur={createdAtDpe} errors={errors}
-                              onChange={(e) => onChangeDate("createdAtDpe", e)}>
-                        Date de réalisation du DPE
-                    </DatePick>
-                    <Input type="number" min={1200} identifiant="referenceDpe" valeur={referenceDpe} errors={errors} onChange={onChange}>
-                        <span>Année de référence conso DPE</span>
-                    </Input>
-                </div>
-
-                <div className="line line-2">
-                    <Radiobox items={diag0Items} identifiant="dpeLetter" valeur={dpeLetter} errors={errors} onChange={onChange}>
-                        Consommation énergétique DPE
+                    <Radiobox items={helper.getItems("answers", 19)} identifiant="isSend" valeur={isSend} errors={errors} onChange={onChange}>
+                        DPE non soumis
                     </Radiobox>
-                    <Radiobox items={diag1Items} identifiant="gesLetter" valeur={gesLetter} errors={errors} onChange={onChange}>
-                        Bilan émission GES
-                    </Radiobox>
-                </div>
+                </>}
+            </div>
 
-                <div className="line line-2">
-                    <Input type="number" step="any" min={0} identifiant="dpeValue" valeur={dpeValue} errors={errors} onChange={onChange}>
-                        <span>en KWh/m² an</span>
-                    </Input>
-                    <Input type="number" step="any" min={0} identifiant="gesValue" valeur={gesValue} errors={errors} onChange={onChange}>
-                        <span>en Kg/co² an</span>
-                    </Input>
-                </div>
+            <div className="line line-2">
+                <DatePick identifiant="createdAtDpe" valeur={createdAtDpe} errors={errors}
+                          onChange={(e) => onChangeDate("createdAtDpe", e)}>
+                    Date de réalisation du DPE
+                </DatePick>
+                <Input type="number" min={1200} identifiant="referenceDpe" valeur={referenceDpe} errors={errors} onChange={onChange}>
+                    <span>Année de référence conso DPE</span>
+                </Input>
+            </div>
 
-                <div className="line line-2">
-                    <Input type="number" step="any" min={0} identifiant="minAnnual" valeur={minAnnual} errors={errors} onChange={onChange}>
-                        <span>Estimation des coûts annuels minimun</span>
-                    </Input>
-                    <Input type="number" step="any" min={0} identifiant="maxAnnuel" valeur={maxAnnual} errors={errors} onChange={onChange}>
-                        <span>Estimation des coûts annuels maximum</span>
-                    </Input>
-                </div>
+            <div className="line line-2">
+                <Radiobox items={diag0Items} identifiant="dpeLetter" valeur={dpeLetter} errors={errors} onChange={onChange}>
+                    Consommation énergétique DPE
+                </Radiobox>
+                <Radiobox items={diag1Items} identifiant="gesLetter" valeur={gesLetter} errors={errors} onChange={onChange}>
+                    Bilan émission GES
+                </Radiobox>
+            </div>
+
+            <div className="line line-2">
+                <Input type="number" step="any" min={0} identifiant="dpeValue" valeur={dpeValue} errors={errors} onChange={onChange}>
+                    <span>en KWh/m² an</span>
+                </Input>
+                <Input type="number" step="any" min={0} identifiant="gesValue" valeur={gesValue} errors={errors} onChange={onChange}>
+                    <span>en Kg/co² an</span>
+                </Input>
+            </div>
+
+            <div className="line line-2">
+                <Input type="number" step="any" min={0} identifiant="minAnnual" valeur={minAnnual} errors={errors} onChange={onChange}>
+                    <span>Estimation des coûts annuels minimun</span>
+                </Input>
+                <Input type="number" step="any" min={0} identifiant="maxAnnuel" valeur={maxAnnual} errors={errors} onChange={onChange}>
+                    <span>Estimation des coûts annuels maximum</span>
+                </Input>
             </div>
         </div>
 

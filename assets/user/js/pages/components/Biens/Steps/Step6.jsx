@@ -10,8 +10,8 @@ import Sanitaze from "@commonComponents/functions/sanitaze";
 
 const CURRENT_STEP = 6;
 
-export function Step6({ step, onChange, onChangeSelect, onNext, onDraft, errors,
-                      typeCalcul, price, provisionCharges, provisionOrdures, tva, totalTerme, caution, honoraireTtc,
+export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
+                          typeCalcul, price, provisionCharges, provisionOrdures, tva, totalTerme, caution, honoraireTtc,
                           honoraireBail, edl, typeCharges, totalGeneral, typeBail, durationBail })
 {
     let calculItems = helper.getItems("calculs")

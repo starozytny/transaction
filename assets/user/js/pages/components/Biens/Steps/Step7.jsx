@@ -12,7 +12,7 @@ import Sort     from "@commonComponents/functions/sort";
 
 const CURRENT_STEP = 7;
 
-export function Step7({ step, onChangeLegend, onChangeFile, onSwitchTrashFile, onNext, onDraft, errors,
+export function Step7({ step, errors, onNext, onDraft, onChangeLegend, onChangeFile, onSwitchTrashFile,
                           refAside, onOpenAside, onSaveLegend,
                           onDragStart, onDragLeave, onDrop, photo, photos })
 {

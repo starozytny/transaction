@@ -10,7 +10,7 @@ import helper from "@userPages/components/Biens/helper";
 
 const CURRENT_STEP = 2;
 
-export function Step2({ step, onChange, onChangeSelect, onChangeDate, onNext, onDraft, errors,
+export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate,
                           codeTypeAd, codeTypeBien,
                           areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
                           piece, room, bathroom, wc, balcony, parking, box,

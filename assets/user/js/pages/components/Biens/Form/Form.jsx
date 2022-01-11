@@ -433,45 +433,38 @@ export class Form extends Component {
                 <section>
                     <form className="form-bien" onSubmit={(e) => this.handleSubmit(e, false)}>
 
-                        <Step1 {...this.state} onDraft={this.handleSubmit}
-                               onNext={this.handleNext} onChange={this.handleChange}
-                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
+                        <Step1 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
                                negotiators={negotiators} />
 
-                        <Step2 {...this.state} onDraft={this.handleSubmit}
-                               onNext={this.handleNext} onChange={this.handleChange}
-                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
+                        <Step2 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
-                        <Step3 {...this.state} onDraft={this.handleSubmit}
-                               onNext={this.handleNext} onChange={this.handleChange}
-                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
+                        <Step3 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
-                        <Step5 {...this.state} onDraft={this.handleSubmit}
-                               onNext={this.handleNext} onChange={this.handleChange}
-                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
-                               onChangeZipcode={this.handleChangeZipcode} />
+                        <Step5 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                               onChange={this.handleChange} onChangeZipcode={this.handleChangeZipcode} />
 
-                        {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onDraft={this.handleSubmit}
-                                                             onNext={this.handleNext} onChange={this.handleChange}
-                                                             onChangeSelect={this.handleChangeSelect} />
-                            : <Step6Vente {...this.state} onNext={this.handleNext} onChange={this.handleChange}
-                                          onChangeSelect={this.handleChangeSelect} />}
+                        {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                                                             onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} />
+                            : <Step6Vente {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                                          onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} />}
 
-                        <Step7 {...this.state} onDraft={this.handleSubmit}
-                               onNext={this.handleNext} onChangeFile={this.handleChangeFile}
-                               onSwitchTrashFile={this.handleSwitchTrashFile} onChangeLegend={this.handleChangeLegend}
+                        <Step7 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                               onChangeFile={this.handleChangeFile} onSwitchTrashFile={this.handleSwitchTrashFile}
+                               onChangeLegend={this.handleChangeLegend} onSaveLegend={this.handleSaveLegend}
                                onDragStart={this.handleDragStart} onDrop={this.handleDrop} onDragLeave={this.handleDragLeave}
-                               refAside={this.aside0} onOpenAside={this.handleOpenAside} onSaveLegend={this.handleSaveLegend} />
+                               refAside={this.aside0} onOpenAside={this.handleOpenAside} />
 
-                        <Step8 {...this.state} onDraft={this.handleSubmit}
-                               onNext={this.handleNext} onChange={this.handleChange}
-                               onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
+                        <Step8 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                refAside1={this.aside1} onOpenAside={this.handleOpenAside}
                                allOwners={allOwners} />
 
-                        <Step9 {...this.state} onDraft={this.handleSubmit} onOpenHelp={this.handleOpenHelp}
-                               onNext={this.handleNext} onChange={this.handleChange}
-                               onChangeSelect={this.handleChangeSelect} negotiators={negotiators} />
+                        <Step9 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onOpenHelp={this.handleOpenHelp}
+                               negotiators={negotiators} />
 
                         {step === 9 && <div className="step-section active">
                             <div className="line line-buttons">

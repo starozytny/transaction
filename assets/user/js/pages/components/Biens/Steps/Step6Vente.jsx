@@ -10,7 +10,7 @@ import Sanitaze from "@commonComponents/functions/sanitaze";
 
 const CURRENT_STEP = 6
 
-export function Step6Vente({ step, onChange, onChangeSelect, onNext, onDraft, errors,
+export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                         price, chargesMensuelles, notaire, foncier, taxeHabitation, totalTerme, honoraireChargeDe,
                         honorairePourcentage, honoraireTtc, totalGeneral, prixHorsAcquereur,
                         isCopro, nbLot, chargesLot, isSyndicProcedure, detailsProcedure })

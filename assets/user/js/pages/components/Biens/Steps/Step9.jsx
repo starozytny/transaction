@@ -35,7 +35,7 @@ function toString (tab, value) {
     return label;
 }
 
-export function Step9({ step, onChange, onChangeSelect, onNext, onDraft, errors, negotiator, negotiators,
+export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect, negotiators, negotiator,
                         typeAdvert, contentSimple, contentFull, onOpenHelp,
                         codeTypeBien, codeTypeAd, codeTypeMandat, libelle, address, zipcode, city, price, areaTotal, piece,
                         areaGarden, areaTerrace, room, balcony, parking, box, dispoAt, busy,

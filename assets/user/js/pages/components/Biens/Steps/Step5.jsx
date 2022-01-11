@@ -9,8 +9,8 @@ import helper from "@userPages/components/Biens/helper";
 
 const CURRENT_STEP = 5;
 
-export function Step5({ step, onChange, onChangeZipcode, onNext, onDraft, errors,
-                      address, hideAddress, zipcode, city, country, departement, quartier, lat, lon, hideMap })
+export function Step5({ step, errors, onNext, onDraft, onChange, onChangeZipcode,
+                          address, hideAddress, zipcode, city, country, departement, quartier, lat, lon, hideMap })
 {
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
