@@ -61,12 +61,22 @@ export class Step4 extends Component {
     }
 
     handleUpdate = (room) => {
-        this.setState({
+        let data = this.handleAddGeneriqueRoom(room);
+        this.setState(data);
+
+        if(room){
+            this.props.onOpenAside("room", room);
+        }
+    }
+
+    handleAddGeneriqueRoom = (room, typeRoom=null, areaRoom=null) => {
+        return {
+            isGenerique: !!typeRoom,
             context: room ? "update" : "create",
             uid: room ? room.uid : uid(),
-            typeRoom: room ? room.typeRoom : "",
-            name: room ? room.name : "",
-            area: room ? Formulaire.setValueEmptyIfNull(room.area)  : "",
+            typeRoom: room ? room.typeRoom : (typeRoom ? typeRoom : ""),
+            name: room ? room.name : (typeRoom ? ARRAY_STRING[typeRoom] : ""),
+            area: room ? Formulaire.setValueEmptyIfNull(room.area)  : (areaRoom ? areaRoom : ""),
             sol: room ? Formulaire.setValueEmptyIfNull(room.sol) : "",
             hasBalcony: room ? room.hasBalcony : 99,
             hasTerrace: room ? room.hasTerrace : 99,
@@ -74,10 +84,6 @@ export class Step4 extends Component {
             areaBalcony: room ? Formulaire.setValueEmptyIfNull(room.areaBalcony) : "",
             areaTerrace: room ? Formulaire.setValueEmptyIfNull(room.areaTerrace) : "",
             areaGarden: room ? Formulaire.setValueEmptyIfNull(room.areaGarden) : "",
-        });
-
-        if(room){
-            this.props.onOpenAside("room", room);
         }
     }
 

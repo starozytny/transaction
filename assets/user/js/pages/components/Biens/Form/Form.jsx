@@ -35,11 +35,42 @@ let initRank = null;
 
 function consequenceValueToBoolean(self, name, value, compareName, compareValue, toName, booleanValue=99) {
     if(name === compareName){
-        if(value > compareValue){
+        if(value > parseFloat(compareValue)){
             self.setState({ [toName]: 1 })
         }else{
             self.setState({ [toName]: booleanValue })
         }
+    }
+}
+
+function consequenceValueToRooms(self, name, value, rooms, compareName, codeTypeRoom, elStep) {
+    if(name === compareName){
+        let iteration = value !== "" ? parseInt(value) : 0;
+
+        let nRooms = [];
+        let total = 0;
+        rooms.forEach(ro => {
+            if(ro.typeRoom === codeTypeRoom){
+                total++;
+            }
+
+            if(!ro.isGenerique){
+                nRooms.push(ro);
+            }
+
+            if(ro.isGenerique && ro.typeRoom !== codeTypeRoom){
+                nRooms.push(ro);
+            }
+        })
+        iteration = iteration - total;
+
+         rooms.filter(r => {return (r.isGenerique !== false && r.isGenerique !== undefined) || r.typeRoom !== codeTypeRoom});
+        for(let i = 0 ; i < (iteration > 0 ? iteration : 0) ; i++){
+            let newRoom = elStep.handleAddGeneriqueRoom(null, codeTypeRoom);
+            nRooms.push(newRoom)
+        }
+
+        self.setState({ rooms: nRooms })
     }
 }
 
@@ -101,12 +132,21 @@ export class Form extends Component {
     componentDidMount = () => { Helper.getPostalCodes(this); }
 
     handleChange = (e) => {
+        const { rooms } = this.state;
+
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
 
-        consequenceValueToBoolean(this, name, parseFloat(value), "areaGarden", 0, "hasGarden");
-        consequenceValueToBoolean(this, name, parseFloat(value), "areaTerrace", 0, "hasTerrace");
-        consequenceValueToBoolean(this, name, parseFloat(value), "areaCave", 0, "hasCave");
+        consequenceValueToBoolean(this, name, value, "areaGarden",  0, "hasGarden");
+        consequenceValueToBoolean(this, name, value, "areaTerrace", 0, "hasTerrace");
+        consequenceValueToBoolean(this, name, value, "areaCave",    0, "hasCave");
+
+        let elStep = this.rooms.current;
+        consequenceValueToRooms(this, name, value, rooms, "room",       4, elStep);
+        consequenceValueToRooms(this, name, value, rooms, "bathroom",   9, elStep);
+        consequenceValueToRooms(this, name, value, rooms, "wc",         12, elStep);
+        consequenceValueToRooms(this, name, value, rooms, "balcony",    1, elStep);
+        consequenceValueToRooms(this, name, value, rooms, "box",        2, elStep);
 
         this.setState({[name]: value});
     }
