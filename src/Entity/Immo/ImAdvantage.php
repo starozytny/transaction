@@ -23,85 +23,85 @@ class ImAdvantage
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasGarden;
+    private $hasGarden = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasTerrace;
+    private $hasTerrace = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasPool;
+    private $hasPool = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasCave;
+    private $hasCave = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasDigicode;
+    private $hasDigicode = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasInterphone;
+    private $hasInterphone = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasGuardian;
+    private $hasGuardian = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasAlarme;
+    private $hasAlarme = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasLift;
+    private $hasLift = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasClim;
+    private $hasClim = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasCalme;
+    private $hasCalme = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasInternet;
+    private $hasInternet = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasHandi;
+    private $hasHandi = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $hasFibre;
+    private $hasFibre = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
