@@ -10,8 +10,10 @@ import { FormActions }          from "@userPages/components/Biens/Form/Form";
 
 import helper      from "@userPages/components/Biens/helper";
 import Validateur  from "@commonComponents/functions/validateur";
+import Sort        from "@commonComponents/functions/sort";
 import Formulaire  from "@dashboardComponents/functions/Formulaire";
 
+const SORTER = Sort.compareName;
 const CURRENT_STEP = 4;
 const ARRAY_STRING = ["Autre", "Balcon", "Box", "Cave", "Chambre", "Cuisine", "Jardin", "Parking",
     "Salle à manger", "Salle de bain", "Salon", "Terrasse", "WC" ];
@@ -33,17 +35,17 @@ export class Step4 extends Component {
 
     handleChange = (e) => { this.setState({ [e.currentTarget.name]: e.currentTarget.value }) }
     handleChangeSelect = (input, e) => {
-        const { type, name } = this.state;
+        const { typeRoom, name } = this.state;
 
         let value = e !== undefined ? e.value : "";
         let nameRoom = name;
 
-        if(input === "type"){
+        if(input === "typeRoom"){
             if(nameRoom !== ARRAY_STRING[value] && (ARRAY_STRING.includes(nameRoom) || nameRoom === "")){
                 nameRoom = ARRAY_STRING[value];
             }
 
-            if(POSSIBILITIES_EXT.includes(type !== "" ? parseInt(type) : "")){
+            if(POSSIBILITIES_EXT.includes(typeRoom !== "" ? parseInt(typeRoom) : "")){
                 this.setState({
                     hasBalcony: 99,
                     hasTerrace: 99,
@@ -62,16 +64,16 @@ export class Step4 extends Component {
         this.setState({
             context: room ? "update" : "create",
             uid: room ? room.uid : uid(),
-            type: room ? room.type : "",
+            typeRoom: room ? room.typeRoom : "",
             name: room ? room.name : "",
-            area: room ? room.area : "",
-            sol: room ? room.sol : "",
+            area: room ? Formulaire.setValueEmptyIfNull(room.area)  : "",
+            sol: room ? Formulaire.setValueEmptyIfNull(room.sol) : "",
             hasBalcony: room ? room.hasBalcony : 99,
             hasTerrace: room ? room.hasTerrace : 99,
             hasGarden: room ? room.hasGarden : 99,
-            areaBalcony: room ? room.areaBalcony : "",
-            areaTerrace: room ? room.areaTerrace : "",
-            areaGarden: room ? room.areaGarden : "",
+            areaBalcony: room ? Formulaire.setValueEmptyIfNull(room.areaBalcony) : "",
+            areaTerrace: room ? Formulaire.setValueEmptyIfNull(room.areaTerrace) : "",
+            areaGarden: room ? Formulaire.setValueEmptyIfNull(room.areaGarden) : "",
         });
 
         if(room){
@@ -82,13 +84,13 @@ export class Step4 extends Component {
     handleClick = (e) => {
         e.preventDefault();
 
-        const { context, type, name } = this.state;
+        const { context, typeRoom, name } = this.state;
 
         this.setState({ errors: [], success: false })
 
         let paramsToValidate = [
-            {type: "text", id: 'type', value: type},
-            {type: "text", id: 'name', value: name},
+            {type: "text", id: 'typeRoom',  value: typeRoom},
+            {type: "text", id: 'name',      value: name},
         ];
 
         // validate global
@@ -104,18 +106,20 @@ export class Step4 extends Component {
     render () {
         const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, rooms } = this.props;
 
-        const { errors, type, uid, name, area, sol,
+        const { errors, typeRoom, uid, name, area, sol,
             hasBalcony, hasTerrace, hasGarden, areaBalcony, areaTerrace, areaGarden } = this.state;
 
         let roomItems = helper.getItems("rooms");
         let solItems = helper.getItems("sols");
 
-        let typeInt = type !== "" ? parseInt(type) : "";
+        let typeInt = typeRoom !== "" ? parseInt(typeRoom) : "";
+
+        console.log(rooms)
 
         let contentAside = <div key={uid}>
             <div className="line line-2">
-                <SelectReactSelectize items={roomItems} identifiant="type" valeur={type} errors={errors}
-                                      onChange={(e) => this.handleChangeSelect('type', e)}>
+                <SelectReactSelectize items={roomItems} identifiant="typeRoom" valeur={typeRoom} errors={errors}
+                                      onChange={(e) => this.handleChangeSelect('typeRoom', e)}>
                     Type de pièce *
                 </SelectReactSelectize>
                 <Input identifiant="name" valeur={name} errors={errors} onChange={this.handleChange}>
@@ -172,6 +176,8 @@ export class Step4 extends Component {
             </div>
         </div>
 
+        rooms.sort(SORTER)
+
         return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
             <div className="line special-line">
                 <div className="form-group">
@@ -208,8 +214,8 @@ export class Step4 extends Component {
                                                 <div className="name">{el.name}</div>
                                             </div>
                                             <div className="col-2">
-                                                {el.area && <div className="sub">{el.area} m²</div>}
-                                                {el.sol && <div className="sub">{solString}</div>}
+                                                {el.area ? <div className="sub">{el.area} m²</div> : ""}
+                                                {el.sol !== "" && <div className="sub">{solString}</div>}
                                             </div>
                                             <div className="col-3">
                                                 {parseInt(el.hasBalcony) === 1 && <div className="sub">
