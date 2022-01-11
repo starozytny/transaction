@@ -15,56 +15,73 @@ class ImRoom
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
+     */
+    private $uid;
+
+    /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $typeRoom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
      */
     private $area;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
      */
     private $sol;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasBalcony = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
      */
     private $areaBalcony;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasTerrace = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
      */
     private $areaTerrace;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $hasGarden = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
      */
     private $areaGarden;
 
@@ -73,11 +90,6 @@ class ImRoom
      * @ORM\JoinColumn(nullable=false)
      */
     private $bien;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $uid;
 
     public function getId(): ?int
     {

@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
+use App\Repository\Immo\ImRoomRepository;
 use App\Repository\Immo\ImTenantRepository;
 use App\Repository\Immo\ImVisitRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -100,7 +101,7 @@ class UserController extends AbstractController
     /**
      * Common return createBien and updateBien
      */
-    private function formBien(SerializerInterface $serializer, $route, $element = null, $tenants = "[]"): Response
+    private function formBien(SerializerInterface $serializer, $route, $element = null, $tenants = "[]", $rooms = "[]"): Response
     {
         $em = $this->doctrine->getManager();
 
@@ -117,6 +118,7 @@ class UserController extends AbstractController
         return $this->render($route, [
             'element' => $element,
             'tenants' => $tenants,
+            'rooms' => $rooms,
             'negotiators' => $negotiators,
             'allOwners' => $allOwners,
             'allTenants' => $allTenants,
@@ -135,15 +137,18 @@ class UserController extends AbstractController
     /**
      * @Route("/biens/modifier-un-bien/{slug}",options={"expose"=true}, name="biens_update")
      */
-    public function updateBien($slug, ImBienRepository $repository, ImTenantRepository $tenantRepository, SerializerInterface $serializer): Response
+    public function updateBien($slug, SerializerInterface $serializer,
+                               ImBienRepository $repository, ImTenantRepository $tenantRepository, ImRoomRepository $roomRepository): Response
     {
         $element = $repository->findOneBy(["slug" => $slug]);
         $tenants = $tenantRepository->findBy(["bien" => $element]);
+        $rooms = $roomRepository->findBy(["bien" => $element]);
 
         $element = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
         $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
+        $rooms   = $serializer->serialize($rooms,   'json', ['groups' => User::USER_READ]);
 
-        return $this->formBien($serializer, 'user/pages/biens/update.html.twig', $element, $tenants);
+        return $this->formBien($serializer, 'user/pages/biens/update.html.twig', $element, $tenants, $rooms);
     }
 
     /**

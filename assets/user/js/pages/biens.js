@@ -37,6 +37,7 @@ el = document.getElementById("update-bien");
 if(el){
     render(<BienFormulaire type="update" element={JSON.parse(el.dataset.element)}
                            tenants={JSON.parse(el.dataset.tenants)}
+                           rooms={JSON.parse(el.dataset.rooms)}
                            societyId={parseInt(el.dataset.societyId)}
                            agencyId={parseInt(el.dataset.agencyId)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
