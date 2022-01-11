@@ -176,6 +176,8 @@ export function BienFormulaire ({ type, element, tenants, negotiators, allOwners
         contentSimple={element ? setValueEmptyIfNull(advert, advert.contentSimple) : ""}
         contentFull={element ? setValueEmptyIfNull(advert, advert.contentFull) : ""}
 
+        rooms={element ? [] : []}
+
         messageSuccess={msg}
 
         negotiators={negotiators}

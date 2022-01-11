@@ -1,5 +1,21 @@
 function getItems (type, prefix) {
     switch (type) {
+        case "rooms":
+            return [
+                { value: 0, label: 'Autre',             identifiant: 'r-other' },
+                { value: 1, label: 'Balcon',            identifiant: 'r-balcony' },
+                { value: 2, label: 'Box',               identifiant: 'r-box' },
+                { value: 3, label: 'Cave',              identifiant: 'r-cave' },
+                { value: 4, label: 'Chambre',           identifiant: 'r-room' },
+                { value: 5, label: 'Cuisine',           identifiant: 'r-kitchen' },
+                { value: 6, label: 'Jardin',            identifiant: 'r-garden' },
+                { value: 7, label: 'Parking',           identifiant: 'r-parking' },
+                { value: 8, label: 'Salle à manger',    identifiant: 'r-sdm' },
+                { value: 9, label: 'Salle de bain',     identifiant: 'r-sde' },
+                { value: 10, label: 'Salon',            identifiant: 'r-salon' },
+                { value: 11, label: 'Terrasse',         identifiant: 'r-terrace' },
+                { value: 12, label: 'WC',               identifiant: 'r-wc' },
+            ];
         case "adverts":
             return [
                 { value: 0, label: 'Classique',       identifiant: 'classique' },
@@ -10,7 +26,7 @@ function getItems (type, prefix) {
             return [
                 { value: 0, label: 'Personne',       identifiant: 'inform-nobody' },
                 { value: 1, label: 'Propriétaire',   identifiant: 'inform-owner' },
-                { value: 2, label: 'Locataire(s)',      identifiant: 'inform-tenant' },
+                { value: 2, label: 'Locataire(s)',   identifiant: 'inform-tenant' },
                 { value: 3, label: 'Autres',         identifiant: 'inform-others' },
             ];
         case "occupations":

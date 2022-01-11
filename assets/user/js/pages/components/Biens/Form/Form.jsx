@@ -15,6 +15,7 @@ import { Button }       from "@dashboardComponents/Tools/Button";
 import { Step1 } from "@userPages/components/Biens/Steps/Step1";
 import { Step2 } from "@userPages/components/Biens/Steps/Step2";
 import { Step3 } from "@userPages/components/Biens/Steps/Step3";
+import { Step4 } from "@userPages/components/Biens/Steps/Step4";
 import { Step5 } from "@userPages/components/Biens/Steps/Step5";
 import { Step6 } from "@userPages/components/Biens/Steps/Step6";
 import { Step6Vente } from "@userPages/components/Biens/Steps/Step6Vente";
@@ -22,9 +23,9 @@ import { Step7 } from "@userPages/components/Biens/Steps/Step7";
 import { Step8 } from "@userPages/components/Biens/Steps/Step8";
 import { Step9 } from "@userPages/components/Biens/Steps/Step9";
 
-import { Aside }  from "@dashboardComponents/Tools/Aside";
-import { Owners}  from "@dashboardPages/components/Immo/Owners/Owners";
-import {Tenants} from "@dashboardPages/components/Immo/Tenants/Tenants";
+import { Aside }   from "@dashboardComponents/Tools/Aside";
+import { Owners}   from "@dashboardPages/components/Immo/Owners/Owners";
+import { Tenants } from "@dashboardPages/components/Immo/Tenants/Tenants";
 
 const ARRAY_STRING_BIENS = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
 
@@ -62,6 +63,7 @@ export class Form extends Component {
         this.aside0 = React.createRef();
         this.aside1 = React.createRef();
         this.aside2 = React.createRef();
+        this.aside3 = React.createRef();
         this.owner = React.createRef();
         this.tenant = React.createRef();
 
@@ -304,6 +306,9 @@ export class Form extends Component {
 
     handleOpenAside = (type, el) => {
         switch (type) {
+            case "room":
+                this.aside3.current.handleOpen(el ? "Modifier " : "Ajouter une pièce");
+                break;
             case "tenant-select":
                 this.aside2.current.handleOpen();
                 break;
@@ -442,6 +447,9 @@ export class Form extends Component {
 
                         <Step3 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
+
+                        <Step4 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                               refAside={this.aside3} onOpenAside={this.handleOpenAside} />
 
                         <Step5 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeZipcode={this.handleChangeZipcode} />

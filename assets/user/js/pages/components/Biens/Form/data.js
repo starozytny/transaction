@@ -133,13 +133,16 @@ function getDataState (props) {
         contentSimple: props.contentSimple,
         contentFull: props.contentFull,
 
+        rooms: props.rooms,
+
+        isDraft: true,
+        id: null,
+
         contentAside: "",
         contentHelpBubble: "",
         arrayPostalCode: [],
         errors: [],
-        step: 1,
-        isDraft: true,
-        id: null
+        step: 4,
     }
 }
 
