@@ -3,14 +3,14 @@ import React, { Component } from "react";
 import { uid } from 'uid';
 
 import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
-import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
-import { Aside }        from "@dashboardComponents/Tools/Aside";
-import { FormActions }  from "@userPages/components/Biens/Form/Form";
+import { Button, ButtonIcon }   from "@dashboardComponents/Tools/Button";
+import { Aside }                from "@dashboardComponents/Tools/Aside";
+import { Alert }                from "@dashboardComponents/Tools/Alert";
+import { FormActions }          from "@userPages/components/Biens/Form/Form";
 
 import helper      from "@userPages/components/Biens/helper";
 import Validateur  from "@commonComponents/functions/validateur";
 import Formulaire  from "@dashboardComponents/functions/Formulaire";
-import {Alert} from "@dashboardComponents/Tools/Alert";
 
 const CURRENT_STEP = 4;
 const ARRAY_STRING = ["Autre", "Balcon", "Box", "Cave", "Chambre", "Cuisine", "Jardin", "Parking",
@@ -22,18 +22,6 @@ export class Step4 extends Component {
         super();
 
         this.state = {
-            context: "create",
-            uid: uid(),
-            type: "",
-            name: "",
-            area: "",
-            sol: "",
-            hasBalcony: 99,
-            hasTerrace: 99,
-            hasGarden: 99,
-            areaBalcony: "",
-            areaTerrace: "",
-            areaGarden: "",
             errors: [],
         }
 
@@ -72,24 +60,23 @@ export class Step4 extends Component {
 
     handleUpdate = (room) => {
         this.setState({
-            context: "update",
-            uid: room.uid,
-            type: room.type,
-            name: room.name,
-            area: room.area,
-            sol: room.sol,
-            hasBalcony: room.hasBalcony,
-            hasTerrace: room.hasTerrace,
-            hasGarden: room.hasGarden,
-            areaBalcony: room.areaBalcony,
-            areaTerrace: room.areaTerrace,
-            areaGarden: room.areaGarden,
+            context: room ? "update" : "create",
+            uid: room ? room.uid : uid(),
+            type: room ? room.type : "",
+            name: room ? room.name : "",
+            area: room ? room.area : "",
+            sol: room ? room.sol : "",
+            hasBalcony: room ? room.hasBalcony : 99,
+            hasTerrace: room ? room.hasTerrace : 99,
+            hasGarden: room ? room.hasGarden : 99,
+            areaBalcony: room ? room.areaBalcony : "",
+            areaTerrace: room ? room.areaTerrace : "",
+            areaGarden: room ? room.areaGarden : "",
         });
 
-        let label = document.querySelector("label[for='type'] + .react-selectize .simple-value > span");
-        if(label){ label.innerHTML = "Cuisine"; }
-
-        this.props.onOpenAside("room", room);
+        if(room){
+            this.props.onOpenAside("room", room);
+        }
     }
 
     handleClick = (e) => {
@@ -111,34 +98,13 @@ export class Step4 extends Component {
         }else{
             let room = this.state;
             this.props.onSelectRooms(room, context === "update")
-
-            let label = document.querySelector("label[for='type'] + .react-selectize .simple-value > span");
-            if(label){ label.innerHTML = ""; }
-            label = document.querySelector("label[for='sol'] + .react-selectize .simple-value > span");
-            if(label){ label.innerHTML = ""; }
-
-            this.setState({
-                context: "create",
-                uid: uid(),
-                type: 0,
-                name: "",
-                area: "",
-                sol: 0,
-                hasBalcony: 99,
-                hasTerrace: 99,
-                hasGarden: 99,
-                areaBalcony: "",
-                areaTerrace: "",
-                areaGarden: "",
-            });
-
         }
     }
 
     render () {
         const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, rooms } = this.props;
 
-        const { errors, type, name, area, sol,
+        const { errors, type, uid, name, area, sol,
             hasBalcony, hasTerrace, hasGarden, areaBalcony, areaTerrace, areaGarden } = this.state;
 
         let roomItems = helper.getItems("rooms");
@@ -146,7 +112,7 @@ export class Step4 extends Component {
 
         let typeInt = type !== "" ? parseInt(type) : "";
 
-        let contentAside = <div>
+        let contentAside = <div key={uid}>
             <div className="line line-2">
                 <SelectReactSelectize items={roomItems} identifiant="type" valeur={type} errors={errors}
                                       onChange={(e) => this.handleChangeSelect('type', e)}>

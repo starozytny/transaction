@@ -65,6 +65,7 @@ export class Form extends Component {
         this.aside3 = React.createRef();
         this.owner = React.createRef();
         this.tenant = React.createRef();
+        this.rooms = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeFile = this.handleChangeFile.bind(this);
@@ -242,6 +243,9 @@ export class Form extends Component {
     handleOpenAside = (type, el) => {
         switch (type) {
             case "room":
+                if(!el){
+                    this.rooms.current.handleUpdate();
+                }
                 this.aside3.current.handleOpen(el ? "Modifier " + el.name : "Ajouter une pièce");
                 break;
             case "tenant-select":
@@ -299,9 +303,7 @@ export class Form extends Component {
 
         let nRooms = helper.addOrRemove(rooms, room, "Pièce ajoutée.", "Pièce enlevée.", isUpdate, "Pièce modifiée.");
         this.setState({ rooms: nRooms });
-        if(isUpdate){
-            this.aside3.current.handleClose();
-        }
+        this.aside3.current.handleClose();
     }
 
     handleSubmit = (e, isDraft = true) => {
@@ -439,7 +441,8 @@ export class Form extends Component {
 
                         <Step4 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onSelectRooms={this.handleSelectRooms}
-                               refAside={this.aside3} onOpenAside={this.handleOpenAside} />
+                               refAside={this.aside3} onOpenAside={this.handleOpenAside}
+                                ref={this.rooms}/>
 
                         <Step5 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeZipcode={this.handleChangeZipcode} />
