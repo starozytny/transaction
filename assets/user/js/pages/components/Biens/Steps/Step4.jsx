@@ -194,7 +194,7 @@ export class Step4 extends Component {
                                 <div className="item-body">
                                     <div className="infos infos-col-4">
                                         <div className="col-1">Pièce</div>
-                                        <div className="col-2">Informations</div>
+                                        <div className="col-2">Surface/Sol</div>
                                         <div className="col-3">Détails</div>
                                         <div className="col-4 actions">Actions</div>
                                     </div>

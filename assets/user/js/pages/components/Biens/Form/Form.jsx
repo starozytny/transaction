@@ -113,6 +113,7 @@ export class Form extends Component {
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleChangeLegend = this.handleChangeLegend.bind(this);
+        this.handleChangeGeo = this.handleChangeGeo.bind(this);
 
         this.handleSwitchTrashFile = this.handleSwitchTrashFile.bind(this);
         this.handleDragStart = this.handleDragStart.bind(this);
@@ -149,6 +150,26 @@ export class Form extends Component {
         consequenceValueToRooms(this, name, value, rooms, "box",        2, elStep);
 
         this.setState({[name]: value});
+    }
+
+    handleChangeGeo = () => {
+        const { address, zipcode, city } = this.state;
+
+        let adr = address.replaceAll(" ", "+") + "+" + zipcode.replaceAll(" ", "+") + "+" + city.replaceAll(" ", "+");
+
+        const self = this;
+        Formulaire.loader(true);
+        axios({ method: "GET", url: 'https://api-adresse.data.gouv.fr/search/?q=' + adr + '&format=json&limit=1', data:{} })
+            .then(function (response) {
+                let data = response.data;
+                let lat = data.features.length !== 0 ? data.features[0].geometry.coordinates[1] : "";
+                let lon = data.features.length !== 0 ? data.features[0].geometry.coordinates[0] : "";
+                self.setState({ lat, lon })
+            })
+            .then(function (){
+                Formulaire.loader(false)
+            })
+        ;
     }
 
     handleChangeLegend = (e, el) => {
@@ -502,7 +523,8 @@ export class Form extends Component {
                                 ref={this.rooms}/>
 
                         <Step5 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
-                               onChange={this.handleChange} onChangeZipcode={this.handleChangeZipcode} />
+                               onChange={this.handleChange} onChangeZipcode={this.handleChangeZipcode}
+                               onChangeGeo={this.handleChangeGeo} />
 
                         {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                                              onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} />
