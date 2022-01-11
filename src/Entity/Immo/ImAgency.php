@@ -22,13 +22,13 @@ class ImAgency
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"user:read", "admin:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read"})
+     * @Groups({"user:read", "admin:read"})
      */
     private $name;
 

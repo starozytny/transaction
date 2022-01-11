@@ -205,6 +205,10 @@ class ImLocalisation extends DataEntity
         return $this;
     }
 
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
     public function getFullAddress(): string
     {
         return $this->getFullAddressString($this->address, $this->zipcode, $this->city);

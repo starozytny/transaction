@@ -3,7 +3,7 @@
 {% set page_title %}{{ elem.fullname }}{% endset %}
 
 {% block main_content %}
-    <div id="read-bien">
+    <div id="read-bien" data-elem="{{ data }}">
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}
