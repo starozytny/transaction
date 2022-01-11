@@ -3,7 +3,7 @@ import React from "react";
 import { Input, Radiobox } from "@dashboardComponents/Tools/Fields";
 
 import { Alert }        from "@dashboardComponents/Tools/Alert";
-import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
+import { Button }       from "@dashboardComponents/Tools/Button";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/helper";
@@ -13,8 +13,6 @@ const CURRENT_STEP = 5;
 export function Step5({ step, errors, onNext, onDraft, onChange, onChangeZipcode, onChangeGeo,
                           address, hideAddress, zipcode, city, country, departement, quartier, lat, lon, hideMap })
 {
-    console.log(lat, lon)
-
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
             <Alert iconCustom="exclamation" type="reverse">(*) Champs obligatoires.</Alert>
@@ -60,7 +58,7 @@ export function Step5({ step, errors, onNext, onDraft, onChange, onChangeZipcode
             </div>
             <div className="line">
                 <div className="form-group">
-                    <ButtonIcon icon="placeholder" text="Obtenir les coordonnées" onClick={onChangeGeo}/>
+                    <Button type="default" icon="placeholder" onClick={onChangeGeo}>Obtenir les coordonnées GPS</Button>
                 </div>
             </div>
             <div className="line line-3">
