@@ -239,9 +239,7 @@ export class Step4 extends Component {
                         }) : <Alert>Aucune pièce renseignée.</Alert>}
                     </div>
                 </div>
-            </div>
 
-            <div className="line">
                 <Button type="default" onClick={() => onOpenAside("room")}>Ajouter une pièce</Button>
                 <Aside ref={refAside} content={contentAside}>Pièce</Aside>
             </div>
