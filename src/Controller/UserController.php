@@ -147,6 +147,20 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/biens/bien/{slug}",options={"expose"=true}, name="biens_read")
+     */
+    public function readBien($slug, ImBienRepository $repository, ImTenantRepository $tenantRepository, SerializerInterface $serializer): Response
+    {
+        $element = $repository->findOneBy(["slug" => $slug]);
+        $tenants = $tenantRepository->findBy(["bien" => $element]);
+
+        return $this->render("user/pages/biens/read.html.twig", [
+            'elem' => $element,
+            'tenants' => $tenants
+        ]);
+    }
+
+    /**
      * @Route("/biens/visite/{slug}", options={"expose"=true}, name="visits_bien_index")
      */
     public function visitsBien($slug, ImBienRepository $repository, ImVisitRepository $visitRepository, SerializerInterface $serializer): Response
