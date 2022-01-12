@@ -47,8 +47,6 @@ export class AdItem extends Component {
                 break;
         }
 
-        console.log(elem)
-
         return <div className="main-content">
             <div className="details-container">
                 <div className="details-content-container">
@@ -89,7 +87,9 @@ function Navigation({ onChangeContext, subContext }){
 
     let items = [
         {context: "infos",       label: "Infos"},
-        {context: "features",    label: "Caractéristiques"},
+        {context: "features",    label: "Détails"},
+        {context: "rooms",       label: "Pièces"},
+        {context: "address",     label: "Adresse"},
         {context: "diag",        label: "Diagnostic"},
         {context: "financial",   label: "Financier"},
         {context: "contact",     label: "Contact"},
