@@ -16,6 +16,7 @@ use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImTenant;
@@ -337,6 +338,16 @@ class DataImmo extends DataConstructor
             ->setAreaBalcony($this->setToNullFloat($data->areaBalcony))
             ->setAreaTerrace($this->setToNullFloat($data->areaTerrace))
             ->setAreaGarden($this->setToNullFloat($data->areaGarden))
+        ;
+    }
+
+    public function setDataPhoto($data, $fileName): ImPhoto
+    {
+        return (new ImPhoto())
+            ->setLegend($this->sanitizeData->trimData($data->legend))
+            ->setRank((int) $data->rank)
+            ->setSize($this->setToNullFloat($data->size))
+            ->setFile($fileName)
         ;
     }
 

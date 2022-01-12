@@ -123,7 +123,6 @@ function getBase64(file, self, rank) {
     reader.readAsDataURL(file);
     reader.onload = function () {
         self.setState({ photos: [...self.state.photos, ...[{
-            oriFile: file,
             file: reader.result,
             name: file.name,
             legend: "",

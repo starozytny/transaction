@@ -176,14 +176,6 @@ class BienController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $files = $request->files->get('photos');
-
-        if ($files) {
-            foreach($files as $file){
-                $fileName = $fileUploader->upload($file, ImBien::FOLDER_PHOTOS . "/" . $user->getAgency()->getDirname());
-//                dump($fileName);
-            }
-        }
-
         if($type == "create"){
             $obj = ($obj)
                 ->setUser($user)
@@ -191,11 +183,43 @@ class BienController extends AbstractController
                 ->setIdentifiant(uniqid().bin2hex(random_bytes(8)))
                 ->setAgency($user->getAgency())
             ;
+
+            if ($files) {
+                foreach($files as $file){
+                    foreach($data->photos as $photo){
+                        if($photo->name === $file->getClientOriginalName()){
+                            $fileName = $fileUploader->upload($file, ImBien::FOLDER_PHOTOS . "/" . $user->getAgency()->getDirname());
+
+                            $donnee = $dataEntity->setDataPhoto($photo, $fileName);
+                            $em->persist($donnee);
+
+                            $obj->addPhoto($donnee);
+                            break;
+                        }
+                    }
+                }
+            }
         }else{
             $obj = ($obj)
                 ->setUpdatedAt(new \DateTime())
                 ->setUpdatedBy($user->getShortFullName())
             ;
+
+//            if ($files) {
+//                foreach($files as $file){
+//                    foreach($data->photos as $photo){
+//                        if($photo->name === $file->getClientOriginalName()){
+//                            $fileName = $fileUploader->upload($file, ImBien::FOLDER_PHOTOS . "/" . $user->getAgency()->getDirname());
+//
+//                            $donnee = $dataEntity->setDataPhoto($photo, $fileName);
+//                            $em->persist($donnee);
+//
+//                            $obj->addPhoto($donnee);
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
         }
 
         $noErrors = $validator->validate($obj);
