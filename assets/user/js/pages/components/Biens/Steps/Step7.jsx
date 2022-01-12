@@ -17,6 +17,7 @@ export function Step7({ step, errors, onNext, onDraft, onChangeLegend, onChangeF
                           onDragStart, onDragLeave, onDrop, photo, photos })
 {
     photos.sort(Sort.compareRank);
+    console.log(photos)
     let contentAside = "";
     if(photo){
         let srcFormPhoto = photo.is64 ? photo.file : "path/" . photo.file;
@@ -65,7 +66,7 @@ export function Step7({ step, errors, onNext, onDraft, onChangeLegend, onChangeF
                     </div>}
                     {photos.map((el, index) => {
 
-                        let src = el.is64 ? el.file : "path/" . el.file;
+                        let src = el.is64 ? el.file : el.photoFile;
 
                         return (<div className={"item-drag item" + (el.isTrash ? " trash" : "")}
                                      draggable="true" key={index}

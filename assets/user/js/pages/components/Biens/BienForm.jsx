@@ -24,7 +24,7 @@ function setValueEmptyIfNull (parentValue, value) {
     return ""
 }
 
-export function BienFormulaire ({ type, element, tenants, rooms, negotiators, allOwners, allTenants, societyId, agencyId, photos = [] })
+export function BienFormulaire ({ type, element, tenants, rooms, photos, negotiators, allOwners, allTenants, societyId, agencyId })
 {
     let title = "Ajouter un bien";
     let url = Routing.generate(URL_CREATE_ELEMENT);
