@@ -92,7 +92,7 @@ class BienController extends AbstractController
      * @throws Exception
      */
     public function submitForm($type, ImBien $obj, Request $request, ApiResponse $apiResponse,
-                               ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+                               ValidatorService $validator, DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
@@ -175,6 +175,15 @@ class BienController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
+        $files = $request->files->get('photos');
+
+        if ($files) {
+            foreach($files as $file){
+                $fileName = $fileUploader->upload($file, ImBien::FOLDER_PHOTOS . "/" . $user->getAgency()->getDirname());
+//                dump($fileName);
+            }
+        }
+
         if($type == "create"){
             $obj = ($obj)
                 ->setUser($user)
@@ -223,7 +232,7 @@ class BienController extends AbstractController
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
-        return $this->submitForm("create", new ImBien(), $request, $apiResponse, $validator, $dataEntity);
+        return $this->submitForm("create", new ImBien(), $request, $apiResponse, $validator, $dataEntity, $fileUploader);
     }
 
     /**
@@ -250,7 +259,7 @@ class BienController extends AbstractController
     public function update(ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
-        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
+        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $fileUploader);
     }
 
     /**

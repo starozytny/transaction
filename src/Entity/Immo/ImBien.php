@@ -17,6 +17,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImBien extends DataEntity
 {
+    const FOLDER_PHOTOS = "immo/photos";
+
     const TOTAL_READ_BY_OWNER = ["bien-owner:read"];
 
     const ANSWER_NO = 0;

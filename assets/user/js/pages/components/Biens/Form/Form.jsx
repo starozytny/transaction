@@ -123,6 +123,7 @@ function getBase64(file, self, rank) {
     reader.readAsDataURL(file);
     reader.onload = function () {
         self.setState({ photos: [...self.state.photos, ...[{
+            oriFile: file,
             file: reader.result,
             name: file.name,
             legend: "",
@@ -144,10 +145,10 @@ export class Form extends Component {
         this.state = DataState.getDataState(props);
 
         this.helpBubble = React.createRef();
-        this.aside0 = React.createRef();
-        this.aside1 = React.createRef();
-        this.aside2 = React.createRef();
-        this.aside3 = React.createRef();
+        this.aside0 = React.createRef(); //image
+        this.aside1 = React.createRef(); //owner
+        this.aside2 = React.createRef(); //tenant
+        this.aside3 = React.createRef(); //piece
         this.owner = React.createRef();
         this.tenant = React.createRef();
         this.rooms = React.createRef();
@@ -328,9 +329,7 @@ export class Form extends Component {
         this.setState({ photos: nPhotos })
     }
 
-    handleDragStart = (e, rank) => {
-        initRank = rank;
-    }
+    handleDragStart = (e, rank) => { initRank = rank; }
 
     handleDragLeave = (e) => {
         let elements = document.querySelectorAll(".item-drag");
@@ -436,7 +435,7 @@ export class Form extends Component {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
-        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator } = this.state;
+        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator, photos } = this.state;
 
         // TODO : ----------------------------------
         // TODO : recheck all data before send
@@ -471,6 +470,12 @@ export class Form extends Component {
 
             let formData = new FormData();
             formData.append("data", JSON.stringify(this.state));
+
+            let files = document.querySelector('#photos');
+            for( let i = 0; i < files.files.length; i++ ){
+                let file = files.files[i];
+                formData.append('photos[' + i + ']', file);
+            }
 
             this.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
 
