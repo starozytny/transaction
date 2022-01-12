@@ -130,6 +130,15 @@ class ImFeature extends DataEntity
      * @return string|null
      * @Groups({"user:read"})
      */
+    public function getDispoAtString(): ?string
+    {
+        return $this->getFullDateString($this->dispoAt);
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"user:read"})
+     */
     public function getDispoAtJavascript(): ?string
     {
         return $this->setDateJavascript($this->dispoAt);

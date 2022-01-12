@@ -1,6 +1,7 @@
 import React     from "react";
-import Sanitize  from "@commonComponents/functions/sanitaze";
+
 import parseHtml from "html-react-parser";
+import Sanitize  from "@commonComponents/functions/sanitaze";
 
 export function Infos({ elem }){
     return (<div className="details-tab-infos">
@@ -10,40 +11,27 @@ export function Infos({ elem }){
                 <div>{elem.identifiant}</div>
             </div>
             <div>
-                <div className="label">Référence transfert</div>
+                <div className="label">Référence</div>
                 <div>{elem.reference}</div>
             </div>
-            {/*<div>*/}
-            {/*    <div className="label">Référence agence</div>*/}
-            {/*    <div>{elem.realRef}</div>*/}
-            {/*</div>*/}
-            {elem.codeTypeAd === 1 && elem.feature.isMeuble !== 99 && <div>
+            {elem.codeTypeAd === 1 && <div>
                 <div className="label">Bien meublé</div>
-                {/*<div>{Sanitize.getTrilieanResponse(elem.feature.isMeuble)}</div>*/}
+                <div>{Sanitize.toTrilleanString(elem.feature.isMeuble)}</div>
             </div>}
-            {/*{elem.dispoString && <div>*/}
-            {/*    <div className="label">Disponibilité</div>*/}
-            {/*    <div>{elem.dispoString}</div>*/}
-            {/*</div>}*/}
+            {elem.feature.dispoAtString && <div>
+                <div className="label">Disponibilité</div>
+                <div>{elem.feature.dispoAtString}</div>
+            </div>}
         </div>
 
         <div className="details-tab-infos-content">
             <div className="content">
-                <div className="label">Description du bien immobilier</div>
-                <p>{parseHtml(elem.advert.contentFull)}</p>
+                <div className="label">Courte description du bien immobilier</div>
+                <p>{parseHtml(elem.advert.contentSimple)}</p>
             </div>
-            <div className="contacts">
-                <div className="label">Contacts</div>
-                <div className="contact">
-                    <div>{elem.agency.name}</div>
-                    <div>{Sanitize.toFormatPhone(elem.agency.phone)}</div>
-                    <div>{elem.agency.email}</div>
-                </div>
-                {/*{elem.responsable && <div className="contact">*/}
-                {/*    <div>{elem.responsable.name}</div>*/}
-                {/*    <div>{Sanitize.toFormatPhone(elem.responsable.phone)}</div>*/}
-                {/*    <div>{elem.responsable.email}</div>*/}
-                {/*</div>}*/}
+            <div className="content">
+                <div className="label">Complète description du bien immobilier</div>
+                <p>{parseHtml(elem.advert.contentFull)}</p>
             </div>
         </div>
     </div>)

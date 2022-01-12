@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 
-import Routing       from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
-import Sanitize      from "@commonComponents/functions/sanitaze";
-
-import { Infos }     from "./split/Infos";
-import { Features }  from "./split/Features";
-import { Diag }      from "./split/Diag";
-import { Financial } from "./split/Financial";
+import { Infos }      from "./split/Infos";
+import { Features }   from "./split/Features";
+import { Diag }       from "./split/Diag";
+import { Financial }  from "./split/Financial";
+import { Contact }    from "@userPages/components/Biens/Read/split/Contact";
 import { ButtonIcon } from "@dashboardComponents/Tools/Button";
+
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
 export class AdItem extends Component {
@@ -16,7 +15,7 @@ export class AdItem extends Component {
 
         this.state = {
             elem: JSON.parse(props.elem),
-            subContext: "infos",
+            subContext: "contact",
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -29,6 +28,9 @@ export class AdItem extends Component {
 
         let content;
         switch (subContext){
+            case "contact":
+                content = <Contact elem={elem} />
+                break;
             case "financial":
                 content = <Financial elem={elem} />
                 break;
@@ -65,7 +67,7 @@ export class AdItem extends Component {
                             <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
                             <div className="badge badge-default">{elem.typeAdString}</div>
                             <div className="badge badge-default">{elem.typeBienString}</div>
-                            <div className="badge badge-default">Mandat {elem.typeMandatString}</div>
+                            <div className="badge badge-default">Mandat {elem.typeMandatString.toLowerCase()}</div>
                         </div>
                         <div className="details-ad-actions">
                             <ButtonIcon element="a" target="_blank" icon="print">Imprimer</ButtonIcon>
@@ -88,6 +90,7 @@ function Navigation({ onChangeContext, subContext }){
         {context: "features",    label: "Caractéristiques"},
         {context: "diag",        label: "Diagnostic"},
         {context: "financial",   label: "Financier"},
+        {context: "contact",     label: "Contact"},
     ]
 
     return (

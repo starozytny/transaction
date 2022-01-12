@@ -15,8 +15,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImAgency
 {
-    const FOLDER_LOGO = "immo/logos/";
-    const FOLDER_TARIF = "immo/tarifs/";
+    const FOLDER_LOGO = "immo/logos";
+    const FOLDER_TARIF = "immo/tarifs";
 
     /**
      * @ORM\Id
@@ -52,37 +52,37 @@ class ImAgency
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"user:read","admin:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"user:read","admin:read"})
      */
     private $emailLocation;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"user:read","admin:read"})
      */
     private $emailVente;
 
     /**
      * @ORM\Column(type="string", length=40, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"user:read","admin:read"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=40, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"user:read","admin:read"})
      */
     private $phoneLocation;
 
     /**
      * @ORM\Column(type="string", length=40, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"user:read","admin:read"})
      */
     private $phoneVente;
 
@@ -711,7 +711,7 @@ class ImAgency
      */
     public function getLogoFile(): string
     {
-        return $this->logo ? self::FOLDER_LOGO . $this->logo : "https://robohash.org/" . $this->id . "?size=120x120";
+        return $this->logo ? "/" . self::FOLDER_LOGO . "/" . $this->logo : "https://robohash.org/" . $this->id . "?size=120x120";
     }
 
     /**

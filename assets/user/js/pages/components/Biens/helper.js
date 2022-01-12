@@ -208,8 +208,26 @@ function getIntValue(value){
     return value !== "" ? parseInt(value) : "";
 }
 
+function getRightPhoneBien(agency, codeTypeAd){
+    if(codeTypeAd === 1){
+        return agency.phoneLocation ? agency.phoneLocation : agency.phone;
+    }
+
+    return agency.phoneVente ? agency.phoneVente : agency.phone;
+}
+
+function getRightEmailBien(agency, codeTypeAd){
+    if(codeTypeAd === 1){
+        return agency.emailLocation ? agency.emailLocation : agency.phone;
+    }
+
+    return agency.emailVente ? agency.emailVente : agency.phone;
+}
+
 module.exports = {
     getItems,
     addOrRemove,
-    getIntValue
+    getIntValue,
+    getRightPhoneBien,
+    getRightEmailBien
 }

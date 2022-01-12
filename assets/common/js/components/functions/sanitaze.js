@@ -101,6 +101,10 @@ function toFormatTimeHoursMinutes(date){
     return addZeroToNumber(date.getHours()) + "h" + addZeroToNumber(date.getMinutes())
 }
 
+function toTrilleanString(value) {
+    return value === 99 ? "?" : (value === 1 ? "Oui" : "Non");
+}
+
 module.exports = {
     sanitizeString,
     addZeroToNumber,
@@ -112,5 +116,6 @@ module.exports = {
     toFormatBytesToSize,
     toFormatDataAgenda,
     toFormatDateTimeMidString,
-    toFormatTimeHoursMinutes
+    toFormatTimeHoursMinutes,
+    toTrilleanString
 }

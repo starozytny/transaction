@@ -7,7 +7,8 @@ import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class OwnersItem extends Component {
     render () {
-        const { isClient, isFormBien, owner, biens, elem, onDelete, onSelectors, onChangeContext, onSelectOwner } = this.props;
+        const { isReadBien=false, isClient, isFormBien, owner, biens, elem,
+            onDelete, onSelectors, onChangeContext, onSelectOwner } = this.props;
 
         let totalBien = 0;
         biens.forEach(bien => {
@@ -24,7 +25,7 @@ export class OwnersItem extends Component {
 
             <div className="item-content">
                 <div className="item-body">
-                    <div className={"infos infos-col-" + (isFormBien ? "3" : "4")}>
+                    <div className={"infos infos-col-" + ((isReadBien || isFormBien) ? "3" : "4")}>
                         <div className="col-1" onClick={() => onSelectOwner(elem)}>
                             <OwnerMainInfos elem={elem} />
                             {!isClient && <div className="sub">{elem.society.fullname}</div>}
@@ -38,16 +39,16 @@ export class OwnersItem extends Component {
                         <div className={isFormBien ? "col-2" : "col-3"} onClick={() => onSelectOwner(elem)}>
                             <OwnerNegotiator elem={elem} />
                         </div>
-                        <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
+                        {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
                             {!elem.isGerance && <>
                                 {(biens.length !== 0 && totalBien !== 0) &&
                                     <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'fo': elem.id})}>
                                         Biens
-                                </ButtonIcon>}
+                                    </ButtonIcon>}
                                 <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
                             </>}
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>

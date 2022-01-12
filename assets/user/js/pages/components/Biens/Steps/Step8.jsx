@@ -162,7 +162,7 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     <div className="line line-2">
                         <DatePick identifiant="visiteAt" valeur={visiteAt} errors={errors}
                                   onChange={(e) => onChangeDate("visiteAt", e)}>
-                            Date de la visite
+                            Visite à partir de quelle date
                         </DatePick>
                         <Input valeur={visiteTo} identifiant="visiteTo" errors={errors} onChange={onChange}>
                             Lieu de la visite
