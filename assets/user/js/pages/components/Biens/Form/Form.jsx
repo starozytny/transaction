@@ -208,19 +208,21 @@ export class Form extends Component {
 
         let adr = address.replaceAll(" ", "+") + "+" + zipcode.replaceAll(" ", "+") + "+" + city.replaceAll(" ", "+");
 
-        const self = this;
-        Formulaire.loader(true);
-        axios({ method: "GET", url: 'https://api-adresse.data.gouv.fr/search/?q=' + adr + '&format=json&limit=1', data:{} })
-            .then(function (response) {
-                let data = response.data;
-                let lat = data.features.length !== 0 ? data.features[0].geometry.coordinates[1] : "";
-                let lon = data.features.length !== 0 ? data.features[0].geometry.coordinates[0] : "";
-                self.setState({ lat, lon })
-            })
-            .then(function (){
-                Formulaire.loader(false)
-            })
-        ;
+        if(address !== "" && zipcode !== "" && city !== ""){
+            const self = this;
+            Formulaire.loader(true);
+            axios({ method: "GET", url: 'https://api-adresse.data.gouv.fr/search/?q=' + adr + '&format=json&limit=1', data:{} })
+                .then(function (response) {
+                    let data = response.data;
+                    let lat = data.features.length !== 0 ? data.features[0].geometry.coordinates[1] : "";
+                    let lon = data.features.length !== 0 ? data.features[0].geometry.coordinates[0] : "";
+                    self.setState({ lat, lon })
+                })
+                .then(function (){
+                    Formulaire.loader(false)
+                })
+            ;
+        }
     }
 
     handleChangeLegend = (e, el) => {

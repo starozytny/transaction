@@ -24,6 +24,8 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
     let waterItems = helper.getItems("water");
     let occupationItems = helper.getItems("occupations");
 
+    let codeTypeBienInt = helper.getIntValue(codeTypeBien);
+
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
             <Alert iconCustom="exclamation" type="reverse">
@@ -33,7 +35,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </Alert>
         </div>
 
-        <div className="line special-line">
+        {(codeTypeBienInt !== 2 && codeTypeBienInt !== 3) && <div className="line special-line">
             <div className="form-group">
                 <label>Nombre de ...</label>
             </div>
@@ -60,7 +62,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     <span>Boxes</span>
                 </Input>
             </div>
-        </div>
+        </div>}
 
         <div className="line special-line">
             <div className="form-group">
@@ -70,30 +72,32 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <Input type="number" step="any" min={0} identifiant="areaTotal" valeur={areaTotal} errors={errors} onChange={onChange}>
                     <span>Totale *</span>
                 </Input>
-                <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={onChange}>
-                    <span>Habitable</span>
-                </Input>
-                <Input type="number" step="any" min={0} identifiant="areaLand" valeur={areaLand} errors={errors} onChange={onChange}>
-                    <span>Terrain</span>
-                </Input>
-                <Input type="number" step="any" min={0} identifiant="areaGarden" valeur={areaGarden} errors={errors} onChange={onChange}>
-                    <span>Jardin</span>
-                </Input>
-                <Input type="number" step="any" min={0} identifiant="areaTerrace" valeur={areaTerrace} errors={errors} onChange={onChange}>
-                    <span>Terrasse</span>
-                </Input>
-                <Input type="number" step="any" min={0} identifiant="areaCave" valeur={areaCave} errors={errors} onChange={onChange}>
-                    <span>Cave</span>
-                </Input>
-                <Input type="number" step="any" min={0} identifiant="areaBathroom" valeur={areaBathroom} errors={errors} onChange={onChange}>
-                    <span>Salle de bain</span>
-                </Input>
-                <Input type="number" step="any" min={0} identifiant="areaLiving" valeur={areaLiving} errors={errors} onChange={onChange}>
-                    <span>Salon</span>
-                </Input>
-                <Input type="number" step="any" min={0} identifiant="areaDining" valeur={areaDining} errors={errors} onChange={onChange}>
-                    <span>Salle à manger</span>
-                </Input>
+                {codeTypeBienInt !== 2 && <>
+                    <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={onChange}>
+                        <span>Habitable</span>
+                    </Input>
+                    <Input type="number" step="any" min={0} identifiant="areaLand" valeur={areaLand} errors={errors} onChange={onChange}>
+                        <span>Terrain</span>
+                    </Input>
+                    <Input type="number" step="any" min={0} identifiant="areaGarden" valeur={areaGarden} errors={errors} onChange={onChange}>
+                        <span>Jardin</span>
+                    </Input>
+                    <Input type="number" step="any" min={0} identifiant="areaTerrace" valeur={areaTerrace} errors={errors} onChange={onChange}>
+                        <span>Terrasse</span>
+                    </Input>
+                    <Input type="number" step="any" min={0} identifiant="areaCave" valeur={areaCave} errors={errors} onChange={onChange}>
+                        <span>Cave</span>
+                    </Input>
+                    <Input type="number" step="any" min={0} identifiant="areaBathroom" valeur={areaBathroom} errors={errors} onChange={onChange}>
+                        <span>Salle de bain</span>
+                    </Input>
+                    <Input type="number" step="any" min={0} identifiant="areaLiving" valeur={areaLiving} errors={errors} onChange={onChange}>
+                        <span>Salon</span>
+                    </Input>
+                    <Input type="number" step="any" min={0} identifiant="areaDining" valeur={areaDining} errors={errors} onChange={onChange}>
+                        <span>Salle à manger</span>
+                    </Input>
+                </>}
             </div>
         </div>
 
@@ -137,7 +141,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 </Input>
             </div>
         </div>
-        <div className="line special-line">
+        {codeTypeBienInt !== 2 && <div className="line special-line">
             <div className="line line-2">
                 <SelectReactSelectize items={chauffage0Items} identifiant="codeHeater0" valeur={codeHeater0} errors={errors}
                                       onChange={(e) => onChangeSelect('codeHeater0', e)}>
@@ -158,9 +162,9 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     Type d'eau chaude
                 </SelectReactSelectize>
             </div>
-        </div>
+        </div>}
 
-        <div className="line special-line">
+        {codeTypeBienInt !== 2 && <div className="line special-line">
             <div className="line line-2">
                 <Radiobox items={helper.getItems("answers", 2)} identifiant="isWcSeparate" valeur={isWcSeparate} errors={errors} onChange={onChange}>
                     WC séparé ?
@@ -172,7 +176,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     Exposition
                 </Radiobox>
             </div>
-        </div>
+        </div>}
 
         <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
     </div>

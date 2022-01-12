@@ -110,7 +110,7 @@ export class Step4 extends Component {
     }
 
     render () {
-        const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, rooms } = this.props;
+        const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, rooms, codeTypeBien } = this.props;
 
         const { errors, typeRoom, uid, name, area, sol,
             hasBalcony, hasTerrace, hasGarden, areaBalcony, areaTerrace, areaGarden } = this.state;
@@ -118,7 +118,8 @@ export class Step4 extends Component {
         let roomItems = helper.getItems("rooms");
         let solItems = helper.getItems("sols");
 
-        let typeInt = typeRoom !== "" ? parseInt(typeRoom) : "";
+        let typeInt = helper.getIntValue(typeRoom);
+        let codeTypeBienInt = helper.getIntValue(codeTypeBien);
 
         let contentAside = <div key={uid}>
             <div className="line line-2">
@@ -183,70 +184,72 @@ export class Step4 extends Component {
         rooms.sort(SORTER)
 
         return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
-            <div className="line special-line">
-                <div className="form-group">
-                    <label>Les pièces</label>
-                </div>
-                <div className="items-table">
-                    <div className="items items-default">
-                        <div className="item item-header">
-                            <div className="item-content">
-                                <div className="item-body">
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">Pièce</div>
-                                        <div className="col-2">Surface/Sol</div>
-                                        <div className="col-3">Détails</div>
-                                        <div className="col-4 actions">Actions</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {rooms && rooms.length !== 0 ? rooms.map((el, index) => {
-                            let solString = "";
-                            solItems.forEach(item => {
-                                if(item.value === el.sol){
-                                    solString = item.label
-                                }
-                            })
-
-                            return (<div className="item" key={index}>
+            {codeTypeBienInt !== 2 ? <>
+                <div className="line special-line">
+                    <div className="form-group">
+                        <label>Les pièces</label>
+                    </div>
+                    <div className="items-table">
+                        <div className="items items-default">
+                            <div className="item item-header">
                                 <div className="item-content">
                                     <div className="item-body">
                                         <div className="infos infos-col-4">
-                                            <div className="col-1">
-                                                <div className="sub">{el.uid}</div>
-                                                <div className="name">{el.name}</div>
-                                            </div>
-                                            <div className="col-2">
-                                                {el.area ? <div className="sub">{el.area} m²</div> : ""}
-                                                {el.sol !== "" && <div className="sub">{solString}</div>}
-                                            </div>
-                                            <div className="col-3">
-                                                {parseInt(el.hasBalcony) === 1 && <div className="sub">
-                                                    Balcon{el.areaBalcony !== "" ? " : " + el.areaBalcony + " m²" : ""}
-                                                </div>}
-                                                {parseInt(el.hasTerrace) === 1 && <div className="sub">
-                                                    Terrasse{el.areaTerrace !== "" ? " : " + el.areaTerrace + " m²" : ""}
-                                                </div>}
-                                                {parseInt(el.hasGarden) === 1 && <div className="sub">
-                                                    Jardin{el.areaGarden !== "" ? " : " + el.areaGarden + " m²" : ""}
-                                                </div>}
-                                            </div>
-                                            <div className="col-4 actions">
-                                                <ButtonIcon icon="pencil" onClick={() => this.handleUpdate(el)}>Modifier</ButtonIcon>
-                                                <ButtonIcon icon="trash" onClick={() => onSelectRooms(el)}>Supprimer</ButtonIcon>
-                                            </div>
+                                            <div className="col-1">Pièce</div>
+                                            <div className="col-2">Surface/Sol</div>
+                                            <div className="col-3">Détails</div>
+                                            <div className="col-4 actions">Actions</div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>)
-                        }) : <Alert>Aucune pièce renseignée.</Alert>}
-                    </div>
-                </div>
+                            </div>
+                            {rooms && rooms.length !== 0 ? rooms.map((el, index) => {
+                                let solString = "";
+                                solItems.forEach(item => {
+                                    if(item.value === el.sol){
+                                        solString = item.label
+                                    }
+                                })
 
-                <Button type="default" onClick={() => onOpenAside("room")}>Ajouter une pièce</Button>
-                <Aside ref={refAside} content={contentAside}>Pièce</Aside>
-            </div>
+                                return (<div className="item" key={index}>
+                                    <div className="item-content">
+                                        <div className="item-body">
+                                            <div className="infos infos-col-4">
+                                                <div className="col-1">
+                                                    <div className="sub">{el.uid}</div>
+                                                    <div className="name">{el.name}</div>
+                                                </div>
+                                                <div className="col-2">
+                                                    {el.area ? <div className="sub">{el.area} m²</div> : ""}
+                                                    {el.sol !== "" && <div className="sub">{solString}</div>}
+                                                </div>
+                                                <div className="col-3">
+                                                    {parseInt(el.hasBalcony) === 1 && <div className="sub">
+                                                        Balcon{el.areaBalcony !== "" ? " : " + el.areaBalcony + " m²" : ""}
+                                                    </div>}
+                                                    {parseInt(el.hasTerrace) === 1 && <div className="sub">
+                                                        Terrasse{el.areaTerrace !== "" ? " : " + el.areaTerrace + " m²" : ""}
+                                                    </div>}
+                                                    {parseInt(el.hasGarden) === 1 && <div className="sub">
+                                                        Jardin{el.areaGarden !== "" ? " : " + el.areaGarden + " m²" : ""}
+                                                    </div>}
+                                                </div>
+                                                <div className="col-4 actions">
+                                                    <ButtonIcon icon="pencil" onClick={() => this.handleUpdate(el)}>Modifier</ButtonIcon>
+                                                    <ButtonIcon icon="trash" onClick={() => onSelectRooms(el)}>Supprimer</ButtonIcon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>)
+                            }) : <Alert>Aucune pièce renseignée.</Alert>}
+                        </div>
+                    </div>
+
+                    <Button type="default" onClick={() => onOpenAside("room")}>Ajouter une pièce</Button>
+                    <Aside ref={refAside} content={contentAside}>Pièce</Aside>
+                </div>
+            </> : <Alert type="reverse">Rien à renseigner dans cette <b><u>partie {CURRENT_STEP}</u></b> pour un parking/box.</Alert>}
 
             <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
         </div>

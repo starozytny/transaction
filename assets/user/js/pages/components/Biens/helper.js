@@ -204,7 +204,12 @@ function addOrRemove(data, el, txtAdd="", txtRemove="", isUpdate=false, txtUpdat
     return newData;
 }
 
+function getIntValue(value){
+    return value !== "" ? parseInt(value) : "";
+}
+
 module.exports = {
     getItems,
-    addOrRemove
+    addOrRemove,
+    getIntValue
 }
