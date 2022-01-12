@@ -176,6 +176,10 @@ class BienController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $files = $request->files->get('photos');
+        $folderPhoto = ImBien::FOLDER_PHOTOS . "/" . $user->getAgency()->getDirname();
+        dump($files);
+        dump($data->photos);
+
         if($type == "create"){
             $obj = ($obj)
                 ->setUser($user)
@@ -187,10 +191,10 @@ class BienController extends AbstractController
             if ($files) {
                 foreach($files as $file){
                     foreach($data->photos as $photo){
-                        if($photo->name === $file->getClientOriginalName()){
-                            $fileName = $fileUploader->upload($file, ImBien::FOLDER_PHOTOS . "/" . $user->getAgency()->getDirname());
+                        if($photo->name == $file->getClientOriginalName()){
+                            $fileName = $fileUploader->upload($file, $folderPhoto);
 
-                            $donnee = $dataEntity->setDataPhoto($photo, $fileName);
+                            $donnee = $dataEntity->setDataPhoto($photo, $fileName, $user->getAgency());
                             $em->persist($donnee);
 
                             $obj->addPhoto($donnee);
@@ -205,21 +209,35 @@ class BienController extends AbstractController
                 ->setUpdatedBy($user->getShortFullName())
             ;
 
-//            if ($files) {
-//                foreach($files as $file){
-//                    foreach($data->photos as $photo){
-//                        if($photo->name === $file->getClientOriginalName()){
-//                            $fileName = $fileUploader->upload($file, ImBien::FOLDER_PHOTOS . "/" . $user->getAgency()->getDirname());
-//
-//                            $donnee = $dataEntity->setDataPhoto($photo, $fileName);
-//                            $em->persist($donnee);
-//
-//                            $obj->addPhoto($donnee);
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
+            $oriPhotos = $obj->getPhotos();
+
+            foreach($oriPhotos as $oriPhoto){
+                $find = false;
+                foreach($data->photos as $photo){
+                    if($photo->uid == $oriPhoto->getUid()){
+                        $find = true;
+                    }
+                }
+
+                if(!$find){
+                    $fileUploader->deleteFile($oriPhoto->getFile(), $folderPhoto);
+                }
+            }
+            if ($files) {
+                foreach($files as $file){
+                    foreach($data->photos as $photo){
+                        if(!isset($photo->id) && $photo->name == $file->getClientOriginalName()){
+                            $fileName = $fileUploader->upload($file, $folderPhoto);
+
+                            $donnee = $dataEntity->setDataPhoto($photo, $fileName, $user->getAgency());
+                            $em->persist($donnee);
+
+                            $obj->addPhoto($donnee);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         $noErrors = $validator->validate($obj);

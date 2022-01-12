@@ -23,6 +23,12 @@ class ImPhoto
      * @ORM\Column(type="string", length=255)
      * @Groups({"user:read"})
      */
+    private $uid;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
+     */
     private $file;
 
     /**
@@ -137,6 +143,18 @@ class ImPhoto
     public function setAgency(?ImAgency $agency): self
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function getUid(): ?string
+    {
+        return $this->uid;
+    }
+
+    public function setUid(string $uid): self
+    {
+        $this->uid = $uid;
 
         return $this;
     }

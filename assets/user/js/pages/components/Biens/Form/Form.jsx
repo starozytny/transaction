@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import axios    from "axios";
 import toastr   from "toastr";
+import { uid }  from 'uid';
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import helper           from "@userPages/components/Biens/helper";
@@ -123,6 +124,7 @@ function getBase64(file, self, rank) {
     reader.readAsDataURL(file);
     reader.onload = function () {
         self.setState({ photos: [...self.state.photos, ...[{
+            uid: uid(),
             file: reader.result,
             name: file.name,
             legend: "",
@@ -475,6 +477,8 @@ export class Form extends Component {
                 let file = files.files[i];
                 formData.append('photos[' + i + ']', file);
             }
+
+            files.value = ""
 
             this.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
 
