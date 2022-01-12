@@ -7,7 +7,8 @@ import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class TenantsItem extends Component {
     render () {
-        const { isClient, isFormBien, tenants, elem, onDelete, onSelectors, onChangeContext, onSelectTenant } = this.props;
+        const { isReadBien=false, isClient, isFormBien, tenants, elem,
+            onDelete, onSelectors, onChangeContext, onSelectTenant } = this.props;
 
         let active = false;
         tenants.forEach(te => {
@@ -24,24 +25,24 @@ export class TenantsItem extends Component {
 
             <div className="item-content">
                 <div className="item-body">
-                    <div className={"infos infos-col-" + (isFormBien ? "3" : "4")}>
-                        <div className="col-1" onClick={() => onSelectTenant(elem)}>
+                    <div className={"infos infos-col-" + ((isReadBien || isFormBien) ? "3" : "4")}>
+                        <div className="col-1" onClick={onSelectTenant ? () => onSelectTenant(elem) : null}>
                             <TenantMainInfos elem={elem} isClient={isClient} />
                         </div>
                         {!isFormBien && <div className="col-2">
                             <TenantContact elem={elem} />
                         </div>}
-                        <div className={isFormBien ? "col-2" : "col-3"} onClick={() => onSelectTenant(elem)}>
+                        <div className={isFormBien ? "col-2" : "col-3"} onClick={onSelectTenant ? () => onSelectTenant(elem) : null}>
                             <TenantNegotiator elem={elem} />
                         </div>
-                        <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
+                        {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
                             {(elem.bien && !isFormBien) &&
                                 <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'ft': elem.bien.id})}>
                                     Bien
-                            </ButtonIcon>}
+                                </ButtonIcon>}
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>

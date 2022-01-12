@@ -15,6 +15,7 @@ export class AdItem extends Component {
 
         this.state = {
             elem: JSON.parse(props.elem),
+            tenants: JSON.parse(props.tenants),
             subContext: "contact",
         }
 
@@ -24,12 +25,12 @@ export class AdItem extends Component {
     handleChangeContext = (subContext) => { this.setState({ subContext }) }
 
     render () {
-        const { elem, subContext } = this.state;
+        const { elem, tenants, subContext } = this.state;
 
         let content;
         switch (subContext){
             case "contact":
-                content = <Contact elem={elem} />
+                content = <Contact elem={elem} tenants={tenants} />
                 break;
             case "financial":
                 content = <Financial elem={elem} />

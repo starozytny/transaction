@@ -165,6 +165,7 @@ class UserController extends AbstractController
         $tenants = $tenantRepository->findBy(["bien" => $element]);
 
         $data = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
+        $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::USER_READ]);
 
         return $this->render("user/pages/biens/read.html.twig", [
             'elem' => $element,

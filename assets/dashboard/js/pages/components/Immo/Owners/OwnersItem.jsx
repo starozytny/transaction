@@ -19,14 +19,14 @@ export class OwnersItem extends Component {
 
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
-            {isFormBien && <div className="selector" onClick={() => onSelectOwner(elem)}>
+            {isFormBien && <div className="selector" onClick={onSelectOwner ? () => onSelectOwner(elem) : null}>
                 <label className={"item-selector " + (owner === elem.id)}/>
             </div>}
 
             <div className="item-content">
                 <div className="item-body">
                     <div className={"infos infos-col-" + ((isReadBien || isFormBien) ? "3" : "4")}>
-                        <div className="col-1" onClick={() => onSelectOwner(elem)}>
+                        <div className="col-1" onClick={onSelectOwner ? () => onSelectOwner(elem) : null}>
                             <OwnerMainInfos elem={elem} />
                             {!isClient && <div className="sub">{elem.society.fullname}</div>}
                             {biens.length !== 0 && <div className="sub">{totalBien} bien{totalBien > 1 ? "s" : ""}</div>}
@@ -36,7 +36,7 @@ export class OwnersItem extends Component {
                             <OwnerContact elem={elem} />
                         </div>}
 
-                        <div className={isFormBien ? "col-2" : "col-3"} onClick={() => onSelectOwner(elem)}>
+                        <div className={isFormBien ? "col-2" : "col-3"} onClick={onSelectOwner ? () => onSelectOwner(elem) : null}>
                             <OwnerNegotiator elem={elem} />
                         </div>
                         {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
