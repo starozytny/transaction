@@ -275,4 +275,26 @@ class ImFeature extends DataEntity
 
         return $this;
     }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getBusyString(): string
+    {
+        $values = ["Libre", "Occupé - propriétaire", "Occupé - locataire(s)"];
+
+        return $values[$this->busy];
+    }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getExpositionString(): string
+    {
+        $values = ["Nord", "Est", "Sud", "Ouest", "Nord-est", "Nord-ouest", "Sud-est", "Sud-ouest"];
+
+        return $values[$this->exposition];
+    }
 }

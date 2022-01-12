@@ -17,7 +17,7 @@ export class AdItem extends Component {
         this.state = {
             elem: JSON.parse(props.elem),
             tenants: JSON.parse(props.tenants),
-            subContext: "diag",
+            subContext: "features",
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
