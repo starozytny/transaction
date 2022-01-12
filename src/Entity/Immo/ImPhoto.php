@@ -158,4 +158,14 @@ class ImPhoto
 
         return $this;
     }
+
+    /**
+     * For js loqique
+     * @return false
+     * @Groups({"user:read"})
+     */
+    public function getIsTrash(): bool
+    {
+        return false;
+    }
 }

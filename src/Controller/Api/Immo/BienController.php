@@ -219,9 +219,7 @@ class BienController extends AbstractController
                     // si id existe = already uploaded => no reach photo->name
                     // check if isTrash existe and not true to add
                     // check if file is in list
-                    if(!isset($photo->id) && (isset($photo->isTrash) && !$photo->isTrash)
-                        && $photo->name == $file->getClientOriginalName()
-                    ){
+                    if(!isset($photo->id) && !$photo->isTrash && $photo->name == $file->getClientOriginalName()){
                         $fileName = $fileUploader->upload($file, $folderPhoto);
 
                         $donnee = $dataEntity->setDataPhoto(new ImPhoto(), $photo, $fileName, $user->getAgency());
@@ -244,19 +242,10 @@ class BienController extends AbstractController
             $find = false;
             $nPhoto = null;
             foreach($photos as $photo){
-                if($photo->uid == $oriPhoto->getUid()){
-                    if(isset($photo->isTrash)){
-                        if(!$photo->isTrash){
-                            $find = true;
-                            $nPhoto = $photo;
-                            break;
-                        }
-                    }else{
-                        $find = true;
-                        $nPhoto = $photo;
-                        break;
-                    }
-
+                if(!$photo->isTrash && $photo->uid == $oriPhoto->getUid()){
+                    $find = true;
+                    $nPhoto = $photo;
+                    break;
                 }
             }
 
