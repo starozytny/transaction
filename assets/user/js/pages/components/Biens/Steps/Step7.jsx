@@ -17,7 +17,6 @@ export function Step7({ step, errors, onNext, onDraft, onChangeLegend, onChangeF
                           onDragStart, onDragLeave, onDrop, photo, photos })
 {
     photos.sort(Sort.compareRank);
-    console.log(photos)
     let contentAside = "";
     if(photo){
         let srcFormPhoto = photo.is64 ? photo.file : "path/" . photo.file;

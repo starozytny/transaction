@@ -358,6 +358,10 @@ export class Form extends Component {
         e.preventDefault()
     }
 
+    /**
+     * @param e
+     * @param rank - où l'élément va être drop
+     */
     handleDrop = (e, rank) => {
         const { photos } = this.state;
 
