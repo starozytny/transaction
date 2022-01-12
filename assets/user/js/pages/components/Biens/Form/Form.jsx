@@ -8,6 +8,7 @@ import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 import helper           from "@userPages/components/Biens/helper";
 import Helper           from "@commonComponents/functions/helper";
 import Validateur       from "@commonComponents/functions/validateur";
+import Sort             from "@commonComponents/functions/sort";
 import Formulaire       from "@dashboardComponents/functions/Formulaire";
 import DataState        from "./data";
 
@@ -233,7 +234,12 @@ export class Form extends Component {
         let files = e.target.files;
         let self = this;
 
-        let rank = photos.length + 1;
+        let rank = 1;
+        photos.forEach(p => {
+            if(p.isTrash !== true){
+                rank++;
+            }
+        })
         if(files){
             Array.prototype.forEach.call(files, (file) => {
                 if(rank <= 20){
@@ -318,12 +324,17 @@ export class Form extends Component {
     handleSwitchTrashFile = (el) => {
         const { photos } = this.state;
 
-        let nPhotos = [];
+        let nPhotos = [], rank = 1;
+        photos.sort(Sort.compareRank);
         photos.forEach(elem => {
-            if(elem.rank === el.rank){
+            if(elem.uid === el.uid){
                 elem.isTrash = !elem.isTrash;
             }
 
+            elem.rank = rank;
+            if(elem.isTrash !== true){
+                rank++;
+            }
             nPhotos.push(elem)
         })
 
@@ -478,22 +489,17 @@ export class Form extends Component {
                 formData.append('photos[' + i + ']', file);
             }
 
-            files.value = ""
-
             this.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
 
             axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                 .then(function (response) {
-                    let data = response.data;
                     toastr.info(messageSuccess);
-                    if(isDraft){
-                        self.setState({ id: data.id })
-                    }
+                    setTimeout(function (){
+                        location.reload();
+                    }, 2000)
                 })
                 .catch(function (error) {
                     Formulaire.displayErrors(self, error);
-                })
-                .then(() => {
                     Formulaire.loader(false);
                 })
             ;

@@ -188,10 +188,11 @@ class BienController extends AbstractController
                 ->setAgency($user->getAgency())
             ;
 
+            // check when resend form // TODO
             if ($files) {
                 foreach($files as $file){
                     foreach($data->photos as $photo){
-                        if($photo->name == $file->getClientOriginalName()){
+                        if((isset($photo->isTrash) && !$photo->isTrash) && $photo->name == $file->getClientOriginalName()){
                             $fileName = $fileUploader->upload($file, $folderPhoto);
 
                             $donnee = $dataEntity->setDataPhoto($photo, $fileName, $user->getAgency());
@@ -215,18 +216,26 @@ class BienController extends AbstractController
                 $find = false;
                 foreach($data->photos as $photo){
                     if($photo->uid == $oriPhoto->getUid()){
-                        $find = true;
+                        if(isset($photo->isTrash)){
+                            if(!$photo->isTrash){
+                                $find = true;
+                            }
+                        }else{
+                            $find = true;
+                        }
+
                     }
                 }
 
                 if(!$find){
                     $fileUploader->deleteFile($oriPhoto->getFile(), $folderPhoto);
+                    $em->remove($oriPhoto);
                 }
             }
             if ($files) {
                 foreach($files as $file){
                     foreach($data->photos as $photo){
-                        if(!isset($photo->id) && $photo->name == $file->getClientOriginalName()){
+                        if(!isset($photo->id) && (isset($photo->isTrash) && !$photo->isTrash) && $photo->name == $file->getClientOriginalName()){
                             $fileName = $fileUploader->upload($file, $folderPhoto);
 
                             $donnee = $dataEntity->setDataPhoto($photo, $fileName, $user->getAgency());
