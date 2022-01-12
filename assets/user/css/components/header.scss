@@ -27,7 +27,7 @@ header{
 
     .actions{
       width: 100%;
-      margin-bottom: 12px;
+      margin-bottom: 24px;
       @include flex(row, center, flex-end)
     }
 
@@ -81,10 +81,12 @@ header{
 
       .right{
         flex-direction: row;
+        align-items: center;
       }
 
       .actions{
         width: auto;
+        margin-bottom: 0;
       }
 
       a{
