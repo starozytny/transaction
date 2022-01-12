@@ -15,14 +15,20 @@ header{
     margin: 8px 0 0 0;
 
     .left{
-      margin-top: 12px;
+      margin-top: 24px;
       width: 100%;
       text-align: center;
     }
 
     .right{
       width: 100%;
-      @include flex(row, center, flex-end);
+      @include flex(column, flex-end, flex-end);
+    }
+
+    .actions{
+      width: 100%;
+      margin-bottom: 12px;
+      @include flex(row, center, flex-end)
     }
 
     .header-name{
@@ -71,6 +77,14 @@ header{
       .left{
         margin-top: 0;
         text-align: left;
+      }
+
+      .right{
+        flex-direction: row;
+      }
+
+      .actions{
+        width: auto;
       }
 
       a{

@@ -2,6 +2,10 @@
 
 @import "../../../common/css/components/theme";
 
+#theme{
+  min-width: 50px;
+}
+
 .theme-container {
   .switcher-items .switcher-item label {
     &:after {
@@ -13,5 +17,31 @@
 
   .switcher-items .switcher-item.checked label:after {
     content: "\e910";
+  }
+}
+
+.dark-mode{
+  nav{
+    background-color: var(--fondMenu);
+
+    .nav-mobile{
+      & > [class^="icon-"]{
+        color: var(--txt);
+      }
+    }
+  }
+}
+
+//                      __   _  ___ ____  _  _     __
+//                     | _| / |/ _ \___ \| || |   |_ |
+//    _____ _____ _____| |  | | | | |__) | || |_   | |_____ _____ _____
+//   |_____|_____|_____| |  | | |_| / __/|__   _|  | |_____|_____|_____|
+//                     | |  |_|\___/_____|  |_|    | |
+//                     |__|                       |__|
+@media (min-width: 1024px) {
+  .dark-mode {
+    nav {
+      background-color: var(--fond);
+    }
   }
 }
