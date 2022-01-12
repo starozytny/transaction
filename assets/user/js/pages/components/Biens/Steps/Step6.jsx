@@ -39,9 +39,16 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <Input type="number" step="any" identifiant="provisionCharges" valeur={provisionCharges} errors={errors} onChange={onChange}>
                     <span>Provision pour charges</span>
                 </Input>
+                <SelectReactSelectize items={chargesItems} identifiant="typeCharges" valeur={typeCharges} errors={errors}
+                                      onChange={(e) => onChangeSelect('typeCharges', e)}>
+                    Type de charges
+                </SelectReactSelectize>
+            </div>
+            <div className="line line-2">
                 <Input type="number" step="any" identifiant="provisionOrdures" valeur={provisionOrdures} errors={errors} onChange={onChange}>
                     <span>Provision ordures ménagères</span>
                 </Input>
+                <div className="form-group" />
             </div>
             <div className="line line-2">
                 <div className="form-group">
@@ -73,10 +80,7 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 </Input>
             </div>
             <div className="line line-2">
-                <SelectReactSelectize items={chargesItems} identifiant="typeCharges" valeur={typeCharges} errors={errors}
-                                      onChange={(e) => onChangeSelect('typeCharges', e)}>
-                    Type de charges
-                </SelectReactSelectize>
+                <div className="form-group" />
                 <div className="form-group">
                     <label>Total général</label>
                     <div>{Sanitaze.toFormatCurrency(totalGeneral)}</div>

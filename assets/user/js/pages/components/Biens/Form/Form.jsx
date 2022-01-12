@@ -79,13 +79,16 @@ function consequenceValueToRooms(self, name, value, rooms, compareName, codeType
 }
 
 function calculateFinancial(self, name, value, codeTypeAd,
-                            price, notaire, honoraireTtc, honorairePourcentage) {
-    if(codeTypeAd !== 1){
-        let nPrice      = name === "price" ? value : price;
-        let nNotaire    = name === "notaire" ? value : notaire;
-        let nHonoTtc    = name === "honoraireTtc" ? value : honoraireTtc;
-        let nHonoPour   = name === "honorairePourcentage" ? value : honorairePourcentage;
+                            price, notaire, honoraireTtc, honorairePourcentage, provisionCharges, provisionOrdures)
+{
+    let nPrice      = name === "price" ? value : price;
+    let nNotaire    = name === "notaire" ? value : notaire;
+    let nHonoTtc    = name === "honoraireTtc" ? value : honoraireTtc;
+    let nHonoPour   = name === "honorairePourcentage" ? value : honorairePourcentage;
+    let nProvChar   = name === "provisionCharges" ? value : provisionCharges;
+    let nProvOrd    = name === "provisionOrdures" ? value : provisionOrdures;
 
+    if(parseInt(codeTypeAd) !== 1){
         let nPriceHoAcq = getValueFloat(nPrice) + getValueFloat(nNotaire);
 
         if(name === "price" || name === "honorairePourcentage"){
@@ -103,7 +106,15 @@ function calculateFinancial(self, name, value, codeTypeAd,
             self.setState({ totalGeneral: totalGeneral, prixHorsAcquereur: nPriceHoAcq })
         }
     }else{
+        if(name === "price" || name === "honoraireTtc" || name === "provisionCharges" || name === "provisionOrdures"){
+            let totalGeneral = getValueFloat(nPrice) + getValueFloat(nHonoTtc) + getValueFloat(nProvOrd) + getValueFloat(nProvChar);
+            self.setState({ totalGeneral: totalGeneral })
+        }
 
+        if(name === "price" || name === "provisionCharges" || name === "provisionOrdures"){
+            let totalTerme = getValueFloat(nPrice) + getValueFloat(nProvOrd) + getValueFloat(nProvChar);
+            self.setState({ totalTerme: totalTerme })
+        }
     }
 }
 
@@ -166,7 +177,8 @@ export class Form extends Component {
     componentDidMount = () => { Helper.getPostalCodes(this); }
 
     handleChange = (e) => {
-        const { codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage } = this.state;
+        const { codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage,
+            provisionCharges, provisionOrdures } = this.state;
 
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
@@ -182,7 +194,8 @@ export class Form extends Component {
         consequenceValueToRooms(this, name, value, rooms, "balcony",    1, elStep);
         consequenceValueToRooms(this, name, value, rooms, "box",        2, elStep);
 
-        calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage)
+        calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+            provisionCharges, provisionOrdures)
 
         this.setState({[name]: value});
     }

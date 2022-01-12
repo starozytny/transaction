@@ -250,7 +250,6 @@ class DataImmo extends DataConstructor
     public function setDataFinancial(ImFinancial $obj, $data): ImFinancial
     {
         return ($obj)
-            ->setTypeCalcul($data->typeCalcul)
             ->setPrice((float) $data->price)
             ->setProvisionCharges($this->setToNullFloat($data->provisionCharges))
             ->setProvisionOrdures($this->setToNullFloat($data->provisionOrdures))
