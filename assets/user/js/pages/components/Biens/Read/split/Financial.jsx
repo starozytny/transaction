@@ -32,7 +32,6 @@ export function Financial({ elem }){
 
 export function FinancialVente({ elem }){
     let financial = elem.financial;
-    console.log(financial.honoraireChargeDe)
 
     return (<div className="details-tab-infos">
         <div className="details-tab-infos-main">

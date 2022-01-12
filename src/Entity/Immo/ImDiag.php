@@ -231,4 +231,33 @@ class ImDiag extends DataEntity
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     * @Groups({"user:read"})
+     */
+    public function getCreatedAtDpeString(): ?string
+    {
+        return $this->getFullDateString($this->createdAtDpe);
+    }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getDpeLetterString(): string
+    {
+        $values = ["A", "B", "C", "D", "E", "F", "G"];
+        return $values[$this->dpeLetter];
+    }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getGesLetterString(): string
+    {
+        $values = ["A", "B", "C", "D", "E", "F", "G"];
+        return $values[$this->gesLetter];
+    }
 }

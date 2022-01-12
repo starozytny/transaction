@@ -1,0 +1,216 @@
+$dpeA: rgb(13,219,157);
+$dpeB: rgb(97,241,39);
+$dpeC: rgb(202,250,2);
+$dpeD: rgb(249,221,23);
+$dpeE: rgb(253,173,0);
+$dpeF: rgb(252,113,48);
+$dpeG: rgb(217,70,84);
+
+$gesA: rgb(253,234,254);
+$gesB: rgb(255,222,253);
+$gesC: rgb(249,190,253);
+$gesD: rgb(251,126,255);
+$gesE: rgb(246,82,252);
+$gesF: rgb(223,40,244);
+$gesG: rgb(180,21,185);
+
+$colorsDPE: (
+        'a': $dpeA,
+        'b': $dpeB,
+        'c': $dpeC,
+        'd': $dpeD,
+        'e': $dpeE,
+        'f': $dpeF,
+        'g': $dpeG,
+);
+
+$colorsGES: (
+        'a': $gesA,
+        'b': $gesB,
+        'c': $gesC,
+        'd': $gesD,
+        'e': $gesE,
+        'f': $gesF,
+        'g': $gesG,
+);
+
+.diag-title{
+  font-weight: 600;
+}
+
+.diagnostic{
+  width: 100%;
+
+  .diag-dpe, .diag-ges{
+    margin-top: 12px;
+  }
+}
+.diag-dpe, .diag-ges{
+  display: flex;
+
+  .dpe, .ges{
+    padding: 6px 8px;
+
+    & > div:first-child{
+      opacity: 0;
+    }
+  }
+
+  .number{
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 600;
+    display: none;
+  }
+
+  .dpe-a, .ges-a{
+    border-radius: 3px 0 0 3px;
+  }
+  .dpe-g, .ges-g{
+    border-radius: 0 3px 3px 0;
+  }
+  @each $letter, $color in $colorsDPE{
+    .dpe-#{$letter}{
+      background-color: $color;
+      color: var(--alpha);
+    }
+  }
+  @each $letter, $color in $colorsGES{
+    .ges-#{$letter}{
+      background-color: $color;
+      color: var(--alpha);
+    }
+  }
+  .ges-a{
+    color: rgb(186,21,191);
+  }
+  .dpe-a, .dpe-g, .ges-a, .ges-g{
+    & > div:first-child{
+      opacity: 1;
+    }
+  }
+  .dpe.dpe_is-active,.ges.ges_is-active{
+    transform: scale(1.4);
+    border-radius: 500px;
+    font-size: 0.75em;
+    border: 2px solid var(--alpha);
+    color: var(--txt);
+    font-weight: 600;
+
+    & > div:first-child{
+      opacity: 1;
+    }
+
+    + .number{
+      display: block;
+    }
+  }
+}
+
+.diag-plus{
+  cursor: pointer;
+  color: var(--primary);
+  opacity: 0.8;
+  text-decoration: underline;
+  transition: all 0.2s ease-in-out;
+  margin-top: 12px;
+
+   &:hover{
+     opacity: 1;
+   }
+}
+
+.diagnostic-details{
+  display: flex;
+  width: 100%;
+
+  .diag-dpe, .diag-ges{
+    flex-direction: column;
+    width: 100%;
+
+    $sizes: (
+            '1': 6%,
+            '2': 10%,
+            '3': 14%,
+            '4': 18%,
+            '5': 22%,
+            '6': 26%,
+            '7': 30%,
+    );
+
+    .dpe-a, .ges-a, .dpe-g, .ges-g{
+      border-radius: 0;
+    }
+
+    & > div{
+      position: relative;
+      display: inline-block;
+    }
+
+    @each $i, $size in $sizes {
+      & > div:nth-child(#{$i}){
+        width: $size;
+      }
+
+    }
+
+    @each $letter, $color in $colorsDPE{
+      .dpe-#{$letter} + .number{
+        background-color: $color;
+      }
+    }
+
+    @each $letter, $color in $colorsGES{
+      .ges-#{$letter} + .number{
+        background-color: $color;
+      }
+    }
+
+
+    .dpe, .ges{
+      position: relative;
+      @include flex(row, center, space-between);
+      @include fontSemibold();
+
+      & > div:first-child{
+        opacity: 1;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+
+    .dpe.dpe_is-active2,.ges.ges_is-active2{
+      color: var(--txt);
+
+      + .number{
+        position: absolute;
+        display: block;
+        top: -10px;
+        right: -170px;
+        padding: 5px 15px;
+        border-radius: 100px;
+        transform: scale(0.85);
+        min-width: 148px;
+      }
+    }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .diagnostic{
+    & > *:not(:last-child){
+      margin-right: 30px;
+    }
+
+    & > *{
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
