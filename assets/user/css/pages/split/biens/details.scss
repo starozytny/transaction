@@ -28,10 +28,23 @@
 
 .details-general{
   margin-top: 12px;
-  @include flex(row, flex-start, space-between);
+  @include flex(column, flex-start, space-between);
 }
 
 .details-general{
+  .badges{
+    margin-bottom: 8px;
+  }
+
+  .details-ad-actions{
+    width: 100%;
+    @include flex(row, flex-start, flex-end);
+
+    & > *:not(:last-child){
+      margin-left: 8px;
+    }
+  }
+
   .badge-default{
     background-color: var(--grey2);
   }
@@ -39,6 +52,7 @@
   .badge{
     &:not(:last-child){
       margin-right: 8px;
+      margin-bottom: 8px;
     }
   }
 }
@@ -144,6 +158,26 @@
     & > div{
       margin-right: 48px;
       margin-bottom: 24px;
+    }
+  }
+
+  .details-general{
+    flex-direction: row;
+    align-items: center;
+
+    .badges{
+      width: 85%;
+      margin-bottom: 0;
+    }
+
+    .details-ad-actions{
+      width: 15%;
+    }
+
+    .badge{
+      &:not(:last-child){
+        margin-bottom: 0;
+      }
     }
   }
 }
