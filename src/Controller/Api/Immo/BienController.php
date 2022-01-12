@@ -12,6 +12,7 @@ use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
 use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNumber;
+use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImRoom;
 use App\Entity\User;
 use App\Service\ApiResponse;
@@ -175,10 +176,10 @@ class BienController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
+
         $files = $request->files->get('photos');
+        $oriPhotos = $obj->getPhotos();
         $folderPhoto = ImBien::FOLDER_PHOTOS . "/" . $user->getAgency()->getDirname();
-        dump($files);
-        dump($data->photos);
 
         if($type == "create"){
             $obj = ($obj)
@@ -187,67 +188,16 @@ class BienController extends AbstractController
                 ->setIdentifiant(uniqid().bin2hex(random_bytes(8)))
                 ->setAgency($user->getAgency())
             ;
-
-            // check when resend form // TODO
-            if ($files) {
-                foreach($files as $file){
-                    foreach($data->photos as $photo){
-                        if((isset($photo->isTrash) && !$photo->isTrash) && $photo->name == $file->getClientOriginalName()){
-                            $fileName = $fileUploader->upload($file, $folderPhoto);
-
-                            $donnee = $dataEntity->setDataPhoto($photo, $fileName, $user->getAgency());
-                            $em->persist($donnee);
-
-                            $obj->addPhoto($donnee);
-                            break;
-                        }
-                    }
-                }
-            }
         }else{
             $obj = ($obj)
                 ->setUpdatedAt(new \DateTime())
                 ->setUpdatedBy($user->getShortFullName())
             ;
 
-            $oriPhotos = $obj->getPhotos();
-
-            foreach($oriPhotos as $oriPhoto){
-                $find = false;
-                foreach($data->photos as $photo){
-                    if($photo->uid == $oriPhoto->getUid()){
-                        if(isset($photo->isTrash)){
-                            if(!$photo->isTrash){
-                                $find = true;
-                            }
-                        }else{
-                            $find = true;
-                        }
-
-                    }
-                }
-
-                if(!$find){
-                    $fileUploader->deleteFile($oriPhoto->getFile(), $folderPhoto);
-                    $em->remove($oriPhoto);
-                }
-            }
-            if ($files) {
-                foreach($files as $file){
-                    foreach($data->photos as $photo){
-                        if(!isset($photo->id) && (isset($photo->isTrash) && !$photo->isTrash) && $photo->name == $file->getClientOriginalName()){
-                            $fileName = $fileUploader->upload($file, $folderPhoto);
-
-                            $donnee = $dataEntity->setDataPhoto($photo, $fileName, $user->getAgency());
-                            $em->persist($donnee);
-
-                            $obj->addPhoto($donnee);
-                            break;
-                        }
-                    }
-                }
-            }
+            $this->updateRemovePhotos($em, $fileUploader, $dataEntity, $folderPhoto, $oriPhotos, $data->photos);
         }
+
+        $obj = $this->addPhotos($em, $fileUploader, $folderPhoto, $dataEntity, $user, $obj, $files, $data->photos);
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
@@ -258,6 +208,66 @@ class BienController extends AbstractController
         $em->flush();
 
         return $apiResponse->apiJsonResponse($obj, User::USER_READ);
+    }
+
+    private function addPhotos($em, FileUploader $fileUploader, $folderPhoto, DataImmo $dataEntity,
+                               User $user, ImBien $obj, $files, $photos): ImBien
+    {
+        if ($files) {
+            foreach($files as $file){
+                foreach($photos as $photo){
+                    // si id existe = already uploaded => no reach photo->name
+                    // check if isTrash existe and not true to add
+                    // check if file is in list
+                    if(!isset($photo->id) && (isset($photo->isTrash) && !$photo->isTrash)
+                        && $photo->name == $file->getClientOriginalName()
+                    ){
+                        $fileName = $fileUploader->upload($file, $folderPhoto);
+
+                        $donnee = $dataEntity->setDataPhoto(new ImPhoto(), $photo, $fileName, $user->getAgency());
+                        $em->persist($donnee);
+
+                        $obj->addPhoto($donnee);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $obj;
+    }
+
+    private function updateRemovePhotos($em, FileUploader $fileUploader, DataImmo $dataEntity, $folderPhoto, $oriPhotos, $photos)
+    {
+        /** @var ImPhoto $oriPhoto */
+        foreach($oriPhotos as $oriPhoto){
+            $find = false;
+            $nPhoto = null;
+            foreach($photos as $photo){
+                if($photo->uid == $oriPhoto->getUid()){
+                    if(isset($photo->isTrash)){
+                        if(!$photo->isTrash){
+                            $find = true;
+                            $nPhoto = $photo;
+                            break;
+                        }
+                    }else{
+                        $find = true;
+                        $nPhoto = $photo;
+                        break;
+                    }
+
+                }
+            }
+
+            if(!$find){
+                $fileUploader->deleteFile($oriPhoto->getFile(), $folderPhoto);
+                $em->remove($oriPhoto);
+            }else{
+                $donnee = $dataEntity->setDataPhoto($oriPhoto, $nPhoto, $oriPhoto->getFile(), $oriPhoto->getAgency());
+                $em->persist($donnee);
+            }
+        }
     }
 
     /**

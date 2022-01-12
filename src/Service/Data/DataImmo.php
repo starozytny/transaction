@@ -341,9 +341,9 @@ class DataImmo extends DataConstructor
         ;
     }
 
-    public function setDataPhoto($data, $fileName, ImAgency $agency): ImPhoto
+    public function setDataPhoto(ImPhoto $obj, $data, $fileName, ImAgency $agency): ImPhoto
     {
-        return (new ImPhoto())
+        return ($obj)
             ->setUid($data->uid)
             ->setLegend($this->sanitizeData->trimData($data->legend))
             ->setRank((int) $data->rank)
