@@ -1,8 +1,9 @@
 import React     from "react";
 
 import helper    from "../../helper";
-import { OwnersItem } from "@dashboardPages/components/Immo/Owners/OwnersItem";
-import {TenantsItem} from "@dashboardPages/components/Immo/Tenants/TenantsItem";
+
+import { OwnersItem }  from "@dashboardPages/components/Immo/Owners/OwnersItem";
+import { TenantsItem } from "@dashboardPages/components/Immo/Tenants/TenantsItem";
 
 export function Contact({ elem, tenants }){
     return (<div className="details-tab-infos">

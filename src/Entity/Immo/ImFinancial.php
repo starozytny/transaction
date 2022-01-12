@@ -500,4 +500,15 @@ class ImFinancial
 
         return $this;
     }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getHonoraireChargeDeString(): string
+    {
+        $charges = ["Acquéreur", "Vendeur", "Acquéreur et vendeur"];
+
+        return $charges[$this->honoraireChargeDe];
+    }
 }

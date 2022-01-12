@@ -270,7 +270,7 @@ class DataImmo extends DataConstructor
             ->setTaxeHabitation($this->setToNullFloat($data->taxeHabitation))
             ->setHonoraireChargeDe($this->setToNullInteger($data->honoraireChargeDe))
             ->setHonorairePourcentage($this->setToNullFloat($data->honorairePourcentage))
-            ->setPriceHorsAcquereur($this->setToNullFloat($data->prixHorsAcquereur))
+            ->setPriceHorsAcquereur($this->setToNullFloat($data->priceHorsAcquereur))
             ->setIsCopro($data->isCopro)
             ->setNbLot($this->setToNullFloat($data->nbLot))
             ->setChargesLot($this->setToNullFloat($data->chargesLot))

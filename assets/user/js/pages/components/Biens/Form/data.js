@@ -105,7 +105,7 @@ function getDataState (props) {
         taxeHabitation: props.taxeHabitation,
         honoraireChargeDe: props.honoraireChargeDe,
         honorairePourcentage: props.honorairePourcentage,
-        prixHorsAcquereur: props.prixHorsAcquereur,
+        priceHorsAcquereur: props.priceHorsAcquereur,
         isCopro: props.isCopro,
         nbLot: props.nbLot,
         chargesLot: props.chargesLot,

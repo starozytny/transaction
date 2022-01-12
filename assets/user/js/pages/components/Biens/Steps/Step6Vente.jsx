@@ -12,7 +12,7 @@ const CURRENT_STEP = 6
 
 export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                         price, chargesMensuelles, notaire, foncier, taxeHabitation, honoraireChargeDe,
-                        honorairePourcentage, honoraireTtc, totalGeneral, prixHorsAcquereur,
+                        honorairePourcentage, honoraireTtc, totalGeneral, priceHorsAcquereur,
                         isCopro, nbLot, chargesLot, isSyndicProcedure, detailsProcedure })
 {
     let honoraireItems = helper.getItems("honoraires");
@@ -64,7 +64,7 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSe
             </div>
             <div className="line line-3">
                 {(honoraireChargeDe === 0 || honoraireChargeDe === 2) ? <>
-                    <Input type="number" step="any" identifiant="prixHorsAcquereur" valeur={prixHorsAcquereur} errors={errors} onChange={onChange}>
+                    <Input type="number" step="any" identifiant="priceHorsAcquereur" valeur={priceHorsAcquereur} errors={errors} onChange={onChange}>
                         <span>Prix hors honoraire acquéreur</span>
                     </Input>
                 </> : <div className="form-group" />}

@@ -151,7 +151,7 @@ export function BienFormulaire ({ type, element, tenants, rooms, photos, negotia
         taxeHabitation={element ? setValueEmptyIfNull(financial, financial.taxeHabitation) : ""}
         honoraireChargeDe={element ? setValueEmptyIfNull(financial, financial.honoraireChargeDe) : 1}
         honorairePourcentage={element ? setValueEmptyIfNull(financial, financial.honorairePourcentage) : ""}
-        prixHorsAcquereur={element ? setValueEmptyIfNull(financial, financial.prixHorsAcquereur) : ""}
+        priceHorsAcquereur={element ? setValueEmptyIfNull(financial, financial.priceHorsAcquereur) : ""}
         isCopro={element ? setValueBoolean(financial, financial.isCopro) : 0}
         nbLot={element ? setValueEmptyIfNull(financial, financial.nbLot) : ""}
         chargesLot={element ? setValueEmptyIfNull(financial, financial.chargesLot) : ""}

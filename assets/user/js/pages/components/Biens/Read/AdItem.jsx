@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
-import { Infos }      from "./split/Infos";
-import { Features }   from "./split/Features";
 import { Diag }       from "./split/Diag";
-import { Financial }  from "./split/Financial";
-import { Contact }    from "@userPages/components/Biens/Read/split/Contact";
+import { Infos }      from "./split/Infos";
+import { Contact }    from "./split/Contact";
+import { Features }   from "./split/Features";
+import { Financial, FinancialVente } from "./split/Financial";
+
 import { ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
@@ -16,7 +17,7 @@ export class AdItem extends Component {
         this.state = {
             elem: JSON.parse(props.elem),
             tenants: JSON.parse(props.tenants),
-            subContext: "contact",
+            subContext: "financial",
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -33,7 +34,7 @@ export class AdItem extends Component {
                 content = <Contact elem={elem} tenants={tenants} />
                 break;
             case "financial":
-                content = <Financial elem={elem} />
+                content = elem.codeTypeAd === 1 ? <Financial elem={elem} /> : <FinancialVente elem={elem} />
                 break;
             case "diag":
                 content = <Diag elem={elem} />
