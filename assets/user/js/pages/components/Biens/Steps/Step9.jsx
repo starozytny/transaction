@@ -1,26 +1,12 @@
 import React from "react";
 
-import {Input, SelectReactSelectize, TextArea} from "@dashboardComponents/Tools/Fields";
-import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
-import {Button, ButtonIcon, ButtonIconDropdown} from "@dashboardComponents/Tools/Button";
+import { Input, SelectReactSelectize, TextArea } from "@dashboardComponents/Tools/Fields";
+import { ButtonIcon } from "@dashboardComponents/Tools/Button";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
-import helper   from "@userPages/components/Biens/helper";
-
-import {
-    OwnerContact,
-    OwnerMainInfos,
-    OwnerNegotiator,
-} from "@dashboardPages/components/Immo/Owners/OwnersItem";
-import {
-    TenantContact,
-    TenantMainInfos,
-    TenantNegotiator
-} from "@dashboardPages/components/Immo/Tenants/TenantsItem";
-import {AdCard} from "@userPages/components/Biens/AdCard";
-import {Selector} from "@dashboardComponents/Layout/Selector";
-import Sanitaze from "@commonComponents/functions/sanitaze";
-import {HelpBubble} from "@dashboardComponents/Tools/HelpBubble";
+import helper    from "@userPages/components/Biens/helper";
+import Sort      from "@commonComponents/functions/sort";
+import Sanitaze  from "@commonComponents/functions/sanitaze";
 
 const CURRENT_STEP = 9;
 
@@ -43,7 +29,7 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                         hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian, hasAlarme,
                         hasLift, hasClim, hasCalme, hasInternet, hasHandi, hasFibre, situation,
                         dpeLetter, gesLetter, dpeValue, gesValue,
-                        provisionCharges, caution, honoraireTtc, edl, chargesMensuelles, notaire, foncier })
+                        provisionCharges, caution, honoraireTtc, edl, chargesMensuelles, notaire, foncier, photos })
 {
     let typeAdItems = helper.getItems("ads");
     let typeBienItems = helper.getItems("biens");
@@ -75,6 +61,15 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
     let kitchenString = toString(cuisineItems, codeKitchen).toLowerCase();
     let busyString = toString(occupationItems, busy);
 
+    photos.sort(Sort.compareRank);
+    let photo = null;
+    photos.forEach(ph => {
+        if(photo === null && !ph.isTrash){
+            photo = ph;
+        }
+    })
+
+    let srcFormPhoto = photo ? (photo.is64 ? photo.file : photo.photoFile) : "/build/user/images/menu.jpg";
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line special-line">
@@ -87,7 +82,7 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     <div className="card-main">
                         <div className="card-body">
                             <div className="image">
-                                <img src="/build/user/images/menu.jpg" alt="illustration"/>
+                                <img src={srcFormPhoto} alt="illustration"/>
                             </div>
 
                             <div className="infos">

@@ -19,7 +19,7 @@ export function Step7({ step, errors, onNext, onDraft, onChangeLegend, onChangeF
     photos.sort(Sort.compareRank);
     let contentAside = "";
     if(photo){
-        let srcFormPhoto = photo.is64 ? photo.file : "path/" . photo.file;
+        let srcFormPhoto = photo.is64 ? photo.file : photo.photoFile;
         contentAside = <div>
             <div className="line">
                 <div className="legend-photo">

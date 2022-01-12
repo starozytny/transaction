@@ -142,7 +142,7 @@ function getDataState (props) {
         contentHelpBubble: "",
         arrayPostalCode: [],
         errors: [],
-        step: 7,
+        step: 9,
     }
 }
 
