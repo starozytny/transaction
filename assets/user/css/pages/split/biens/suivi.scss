@@ -15,6 +15,10 @@
       margin-right: 4px;
       transform: translateY(2px);
     }
+
+    a{
+      color: var(--txt);
+    }
   }
 
   .global-visits .item, .help-bubble-content{
