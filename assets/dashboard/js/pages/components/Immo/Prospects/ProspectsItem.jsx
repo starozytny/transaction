@@ -25,17 +25,19 @@ export class ProspectsItem extends Component {
 
             <div className="item-content">
                 <div className="item-body">
-                    <div className={"infos infos-col-" + (isFromRead ? "3" : "5")}>
+                    <div className={"infos infos-col-" + (isFromRead ? "2" : "5")}>
                         <div className="col-1">
                             <TenantMainInfos elem={elem} isClient={isClient} />
-                            {isFromRead && <TenantNegotiator elem={elem} />}
-                        </div>
-                        <div className="col-2">
-                            <TenantContact elem={elem} />
+                            {isFromRead && <TenantContact elem={elem} />}
                             {(isFromRead && elem.lastContactAtAgo) && <div className="sub">
                                 Dernier contact : {elem.lastContactAtAgo}
                             </div>}
+                            {isFromRead && <TenantNegotiator elem={elem} />}
                         </div>
+
+                        {!isFromRead && <div className="col-2">
+                            <TenantContact elem={elem} />
+                        </div>}
 
                         {!isFromRead && <>
                             <div className="col-3">
@@ -47,6 +49,7 @@ export class ProspectsItem extends Component {
                                 {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
                             </div>
                         </>}
+
                         <div className={isFromRead ? "col-3 actions" : "col-5 actions"}>
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>

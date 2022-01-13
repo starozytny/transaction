@@ -259,12 +259,9 @@
     width: 40%;
 
     .items-default {
-      .infos-col-3 {
+      .infos-col-2 {
         .col-1{
-          width: calc(100% - 46% - 48px - 110px);
-        }
-        .col-2{
-          width: calc(46% - 24px);
+          width: calc(100% - 24px - 110px);
         }
         .col-3{
           width: 110px;
