@@ -2,29 +2,66 @@ import React     from "react";
 import Sanitize  from "@commonComponents/functions/sanitaze";
 
 export function Financial({ elem }){
+    let financial = elem.financial;
+
     return (<div className="details-tab-infos">
         <div className="details-tab-infos-main">
             <div>
+                <div className="label">Type de calcul</div>
+                <div>{financial.typeCalculString}</div>
+            </div>
+            <div>
                 <div className="label">Loyer charges comprises</div>
-                <div>{Sanitize.toFormatCurrency(elem.financial.price)} cc / mois</div>
+                <div>{Sanitize.toFormatCurrency(financial.price)} / mois</div>
             </div>
             <div>
-                <div className="label">Provisions pour charge (Soumis à régularisation annuelle)</div>
-                <div>{Sanitize.toFormatCurrency(elem.financial.charges)}</div>
+                <div className="label">Type de charges</div>
+                <div>{financial.typeChargesString}</div>
             </div>
             <div>
-                <div className="label">Dépôt de garantie</div>
-                <div>{Sanitize.toFormatCurrency(elem.financial.deposit)}</div>
+                <div className="label">Provision pour charge (soumis à régularisation annuelle)</div>
+                <div>{Sanitize.toFormatCurrency(financial.provisionCharges)}</div>
+            </div>
+            <div>
+                <div className="label">Provision ordures ménagères</div>
+                <div>{Sanitize.toFormatCurrency(financial.provisionOrdures)}</div>
+            </div>
+            <div>
+                <div className="label">Montant T.V.A</div>
+                <div>{Sanitize.toFormatCurrency(financial.tva)}</div>
+            </div>
+            <div>
+                <div className="label">Total terme</div>
+                <div>{Sanitize.toFormatCurrency(financial.totalTerme)}</div>
             </div>
         </div>
         <div className="details-tab-infos-main">
             <div>
-                <div className="label">Honoraire à la charge du locataire avec état des lieux</div>
-                <div>{Sanitize.toFormatCurrency(elem.financial.commission)} TTC</div>
+                <div className="label">Caution</div>
+                <div>{Sanitize.toFormatCurrency(financial.caution)}</div>
             </div>
             <div>
-                <div className="label">Etat des lieux</div>
-                <div>{Sanitize.toFormatCurrency(elem.financial.partHonoEdl)}</div>
+                <div className="label">Honoraire TTC</div>
+                <div>{Sanitize.toFormatCurrency(financial.honoraireTtc)} TTC</div>
+            </div>
+            <div>
+                <div className="label">- dont état des lieux</div>
+                <div>{Sanitize.toFormatCurrency(financial.edl)}</div>
+            </div>
+            <div>
+                <div className="label">Honoraire rédaction bail</div>
+                <div>{Sanitize.toFormatCurrency(financial.honoraireBail)}</div>
+            </div>
+        </div>
+
+        <div className="details-tab-infos-main">
+            <div>
+                <div className="label">Type de bail</div>
+                <div>{financial.typeBailString}</div>
+            </div>
+            <div>
+                <div className="label">Durée du bail en mois</div>
+                <div>{financial.durationBail}</div>
             </div>
         </div>
     </div>)

@@ -22,7 +22,7 @@ export class AdItem extends Component {
             tenants: props.tenants ? JSON.parse(props.tenants) : [],
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
-            context: "address",
+            context: "financial",
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);

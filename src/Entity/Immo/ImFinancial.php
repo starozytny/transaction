@@ -511,4 +511,37 @@ class ImFinancial
 
         return $charges[$this->honoraireChargeDe];
     }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getTypeCalculString(): string
+    {
+        $charges = ["Pas de taxe", "TVA/Loyer", "TVA/Loyer + Ordures ménagères", "TVA/Loyer + Ordures ménagères + Charges"];
+
+        return $charges[$this->typeCalcul];
+    }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getTypeChargesString(): string
+    {
+        $charges = ["Forfaitaires mensuelles", "Prévisionnelles mensuelles avec régularisation annuelle", "Remboursement annuel par le locataire"];
+
+        return $charges[$this->typeCharges];
+    }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getTypeBailString(): string
+    {
+        $charges = ["Habitation", "Commercial", "Meublé", "Professionnel", "Garage"];
+
+        return $charges[$this->typeBail];
+    }
 }
