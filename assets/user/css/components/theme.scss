@@ -30,6 +30,14 @@
       }
     }
   }
+
+  .card-ad {
+    &.card-draft {
+      .card-footer {
+        background-color: rgba(49, 46, 52, 0.5);
+      }
+    }
+  }
 }
 
 //                      __   _  ___ ____  _  _     __
