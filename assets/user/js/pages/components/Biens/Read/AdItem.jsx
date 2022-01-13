@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { Diag }       from "./split/Diag";
 import { Infos }      from "./split/Infos";
+import { Rooms }      from "./split/Rooms";
 import { Contact }    from "./split/Contact";
 import { Features }   from "./split/Features";
 import { Financial, FinancialVente } from "./split/Financial";
@@ -16,8 +17,9 @@ export class AdItem extends Component {
 
         this.state = {
             elem: JSON.parse(props.elem),
-            tenants: JSON.parse(props.tenants),
-            subContext: "features",
+            tenants: props.tenants ? JSON.parse(props.tenants) : [],
+            rooms: props.rooms ? JSON.parse(props.rooms) : [],
+            subContext: "rooms",
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -26,10 +28,13 @@ export class AdItem extends Component {
     handleChangeContext = (subContext) => { this.setState({ subContext }) }
 
     render () {
-        const { elem, tenants, subContext } = this.state;
+        const { elem, tenants, rooms, subContext } = this.state;
 
         let content;
         switch (subContext){
+            case "rooms":
+                content = <Rooms rooms={rooms} />
+                break;
             case "contact":
                 content = <Contact elem={elem} tenants={tenants} />
                 break;

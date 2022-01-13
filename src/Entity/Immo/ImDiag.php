@@ -245,19 +245,19 @@ class ImDiag extends DataEntity
      * @return string
      * @Groups({"user:read"})
      */
-    public function getDpeLetterString(): string
+    public function getDpeLetterString(): ?string
     {
         $values = ["A", "B", "C", "D", "E", "F", "G"];
-        return $values[$this->dpeLetter];
+        return $this->dpeLetter ? $values[$this->dpeLetter] : null;
     }
 
     /**
      * @return string
      * @Groups({"user:read"})
      */
-    public function getGesLetterString(): string
+    public function getGesLetterString(): ?string
     {
         $values = ["A", "B", "C", "D", "E", "F", "G"];
-        return $values[$this->gesLetter];
+        return $this->gesLetter ? $values[$this->gesLetter] : null;
     }
 }

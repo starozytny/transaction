@@ -189,62 +189,7 @@ export class Step4 extends Component {
                     <div className="form-group">
                         <label>Les pièces</label>
                     </div>
-                    <div className="items-table">
-                        <div className="items items-default">
-                            <div className="item item-header">
-                                <div className="item-content">
-                                    <div className="item-body">
-                                        <div className="infos infos-col-4">
-                                            <div className="col-1">Pièce</div>
-                                            <div className="col-2">Surface/Sol</div>
-                                            <div className="col-3">Détails</div>
-                                            <div className="col-4 actions">Actions</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {rooms && rooms.length !== 0 ? rooms.map((el, index) => {
-                                let solString = "";
-                                solItems.forEach(item => {
-                                    if(item.value === el.sol){
-                                        solString = item.label
-                                    }
-                                })
-
-                                return (<div className="item" key={index}>
-                                    <div className="item-content">
-                                        <div className="item-body">
-                                            <div className="infos infos-col-4">
-                                                <div className="col-1">
-                                                    <div className="sub">{el.uid}</div>
-                                                    <div className="name">{el.name}</div>
-                                                </div>
-                                                <div className="col-2">
-                                                    {el.area ? <div className="sub">{el.area} m²</div> : ""}
-                                                    {el.sol !== "" && <div className="sub">{solString}</div>}
-                                                </div>
-                                                <div className="col-3">
-                                                    {parseInt(el.hasBalcony) === 1 && <div className="sub">
-                                                        Balcon{el.areaBalcony !== "" ? " : " + el.areaBalcony + " m²" : ""}
-                                                    </div>}
-                                                    {parseInt(el.hasTerrace) === 1 && <div className="sub">
-                                                        Terrasse{el.areaTerrace !== "" ? " : " + el.areaTerrace + " m²" : ""}
-                                                    </div>}
-                                                    {parseInt(el.hasGarden) === 1 && <div className="sub">
-                                                        Jardin{el.areaGarden !== "" ? " : " + el.areaGarden + " m²" : ""}
-                                                    </div>}
-                                                </div>
-                                                <div className="col-4 actions">
-                                                    <ButtonIcon icon="pencil" onClick={() => this.handleUpdate(el)}>Modifier</ButtonIcon>
-                                                    <ButtonIcon icon="trash" onClick={() => onSelectRooms(el)}>Supprimer</ButtonIcon>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>)
-                            }) : <Alert>Aucune pièce renseignée.</Alert>}
-                        </div>
-                    </div>
+                    <RoomItem rooms={rooms} solItems={solItems} onUpdate={this.handleUpdate} onSelectRooms={onSelectRooms} />
 
                     <Button type="default" onClick={() => onOpenAside("room")}>Ajouter une pièce</Button>
                     <Aside ref={refAside} content={contentAside}>Pièce</Aside>
@@ -254,4 +199,68 @@ export class Step4 extends Component {
             <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
         </div>
     }
+}
+
+export function RoomItem ({ isFromRead=false, rooms, solItems, onUpdate, onSelectRooms }) {
+
+    return <div className="items-table">
+        <div className="items items-default">
+            <div className="item item-header">
+                <div className="item-content">
+                    <div className="item-body">
+                        {isFromRead ? <div className="infos infos-col-3">
+                            <div className="col-1">Pièce</div>
+                            <div className="col-2">Surface/Sol</div>
+                            <div className="col-3">Détails</div>
+                        </div> : <div className="infos infos-col-4">
+                            <div className="col-1">Pièce</div>
+                            <div className="col-2">Surface/Sol</div>
+                            <div className="col-3">Détails</div>
+                            <div className="col-4 actions">Actions</div>
+                        </div>}
+                    </div>
+                </div>
+            </div>
+            {rooms && rooms.length !== 0 ? rooms.map((el, index) => {
+                let solString = "";
+                solItems.forEach(item => {
+                    if(item.value === el.sol){
+                        solString = item.label
+                    }
+                })
+
+                return (<div className="item" key={index}>
+                    <div className="item-content">
+                        <div className="item-body">
+                            <div className={"infos infos-col-" + (isFromRead ? "3" : "4")}>
+                                <div className="col-1">
+                                    <div className="sub">{el.uid}</div>
+                                    <div className="name">{el.name}</div>
+                                </div>
+                                <div className="col-2">
+                                    {el.area ? <div className="sub">{el.area} m²</div> : ""}
+                                    {el.sol !== "" && <div className="sub">{solString}</div>}
+                                </div>
+                                <div className="col-3">
+                                    {parseInt(el.hasBalcony) === 1 && <div className="sub">
+                                        Balcon{el.areaBalcony !== "" ? " : " + el.areaBalcony + " m²" : ""}
+                                    </div>}
+                                    {parseInt(el.hasTerrace) === 1 && <div className="sub">
+                                        Terrasse{el.areaTerrace !== "" ? " : " + el.areaTerrace + " m²" : ""}
+                                    </div>}
+                                    {parseInt(el.hasGarden) === 1 && <div className="sub">
+                                        Jardin{el.areaGarden !== "" ? " : " + el.areaGarden + " m²" : ""}
+                                    </div>}
+                                </div>
+                                {!isFromRead && <div className="col-4 actions">
+                                    <ButtonIcon icon="pencil" onClick={() => onUpdate(el)}>Modifier</ButtonIcon>
+                                    <ButtonIcon icon="trash" onClick={() => onSelectRooms(el)}>Supprimer</ButtonIcon>
+                                </div>}
+                            </div>
+                        </div>
+                    </div>
+                </div>)
+            }) : <Alert>Aucune pièce renseignée.</Alert>}
+        </div>
+    </div>
 }

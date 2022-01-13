@@ -159,18 +159,22 @@ class UserController extends AbstractController
     /**
      * @Route("/biens/bien/{slug}",options={"expose"=true}, name="biens_read")
      */
-    public function readBien($slug, ImBienRepository $repository, ImTenantRepository $tenantRepository, SerializerInterface $serializer): Response
+    public function readBien($slug, SerializerInterface $serializer, ImBienRepository $repository,
+                             ImTenantRepository $tenantRepository, ImRoomRepository $roomRepository): Response
     {
         $element = $repository->findOneBy(["slug" => $slug]);
         $tenants = $tenantRepository->findBy(["bien" => $element]);
+        $rooms = $roomRepository->findBy(["bien" => $element]);
 
         $data = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
         $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::USER_READ]);
+        $rooms = $serializer->serialize($rooms, 'json', ['groups' => User::USER_READ]);
 
         return $this->render("user/pages/biens/read.html.twig", [
             'elem' => $element,
             'data' => $data,
-            'tenants' => $tenants
+            'tenants' => $tenants,
+            'rooms' => $rooms,
         ]);
     }
 

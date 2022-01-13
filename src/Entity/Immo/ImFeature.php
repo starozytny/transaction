@@ -295,6 +295,6 @@ class ImFeature extends DataEntity
     {
         $values = ["Nord", "Est", "Sud", "Ouest", "Nord-est", "Nord-ouest", "Sud-est", "Sud-ouest"];
 
-        return $values[$this->exposition];
+        return $this->exposition == 99 ? "?" : $values[$this->exposition];
     }
 }

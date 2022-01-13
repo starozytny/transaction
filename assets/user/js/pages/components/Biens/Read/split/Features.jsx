@@ -101,7 +101,7 @@ export function Features({ elem }){
             </div>
             <div>
                 <div className="label">Exposition</div>
-                <div>{feature.exposition === 99 ? "/" : feature.expositionString}</div>
+                <div>{feature.expositionString}</div>
             </div>
             <div>
                 <div className="label">WC séparé</div>
