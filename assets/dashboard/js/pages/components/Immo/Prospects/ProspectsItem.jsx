@@ -50,7 +50,7 @@ export class ProspectsItem extends Component {
                         <div className={isFromRead ? "col-3 actions" : "col-5 actions"}>
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
-                            {(isFromRead && !isSelect) && <ButtonIcon icon="cancel">Enlever</ButtonIcon>}
+                            {(isFromRead && !isSelect) && <ButtonIcon icon="cancel" onClick={() => onSelectProspect(elem)}>Enlever</ButtonIcon>}
                         </div>
                     </div>
                 </div>

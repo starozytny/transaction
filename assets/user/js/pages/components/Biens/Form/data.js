@@ -174,8 +174,23 @@ function getTenants (self) {
         })
 }
 
+function getProspects (self) {
+    axios.get(Routing.generate('api_prospects_user_agency'), {})
+        .then(function (response) {
+            let data = response.data;
+            self.setState({ allProspects: data })
+        })
+        .catch(function (error) {
+            Formulaire.displayErrors(self, error);
+        })
+        .then(() => {
+            Formulaire.loader(false);
+        })
+}
+
 module.exports = {
     getDataState,
     getOwners,
-    getTenants
+    getTenants,
+    getProspects
 }
