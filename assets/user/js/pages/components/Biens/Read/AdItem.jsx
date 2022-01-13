@@ -22,16 +22,19 @@ export class AdItem extends Component {
             tenants: props.tenants ? JSON.parse(props.tenants) : [],
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
-            context: "financial",
+            context: "infos",
+            contextSuivi: "prospects"
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
+        this.handleChangeContextSuivi = this.handleChangeContextSuivi.bind(this);
     }
 
     handleChangeContext = (context) => { this.setState({ context }) }
+    handleChangeContextSuivi = (contextSuivi) => { this.setState({ contextSuivi }) }
 
     render () {
-        const { elem, tenants, rooms, photos, context } = this.state;
+        const { elem, tenants, rooms, photos, context, contextSuivi } = this.state;
 
         let content;
         switch (context){
@@ -58,6 +61,22 @@ export class AdItem extends Component {
                 break;
             default:
                 content = <Infos elem={elem} />
+                break;
+        }
+
+        let contentSuivi;
+        switch (contextSuivi){
+            case "offres":
+                contentSuivi = <div>Offres</div>
+                break;
+            case "prospects":
+                contentSuivi = <div>Prospects</div>
+                break;
+            case "visites":
+                contentSuivi = <div>Visites</div>
+                break;
+            default:
+                contentSuivi = <div>Global</div>
                 break;
         }
 
@@ -95,6 +114,13 @@ export class AdItem extends Component {
                         {content}
                     </div>
                 </div>
+                <div className="details-suivi-container">
+                    <div className="title">Suivi</div>
+                    <NavigationSuivi context={contextSuivi} onChangeContext={this.handleChangeContextSuivi} />
+                    <div className="details-content">
+                        {contentSuivi}
+                    </div>
+                </div>
             </div>
         </div>
     }
@@ -111,6 +137,26 @@ function Navigation({ onChangeContext, context }){
         {context: "financial",   label: "Financier"},
         {context: "contact",     label: "Contact"},
         {context: "photos",      label: "Photos"},
+    ]
+
+    return (
+        <div className="details-nav">
+            <div className="details-nav-items">
+                {items.map(el => {
+                    return <div className={context === el.context ? "active" : ""} onClick={() => onChangeContext(el.context)} key={el.context}>{el.label}</div>
+                })}
+            </div>
+        </div>
+    )
+}
+
+function NavigationSuivi({ onChangeContext, context }){
+
+    let items = [
+        {context: "global",    label: "Global"},
+        {context: "visites",   label: "Visites"},
+        {context: "prospects", label: "Prospects"},
+        {context: "offres",    label: "Offres"},
     ]
 
     return (

@@ -28,10 +28,6 @@
 
 .details-main-infos{
   position: relative;
-
-  .isDraft{
-
-  }
 }
 
 .details-general{
@@ -161,6 +157,17 @@
   }
 }
 
+.details-suivi-container{
+  .title{
+    width: calc(100% - 24px);
+    @include fontSemibold();
+    font-size: 20px;
+    background-color: var(--grey);
+    padding: 12px;
+    margin-bottom: 24px;
+  }
+}
+
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
@@ -215,5 +222,8 @@
     display: inline-block;
     width: calc(60% - 48px);
     margin-right: 48px;
+  }
+  .details-suivi-container{
+    width: 40%;
   }
 }
