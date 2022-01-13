@@ -66,7 +66,7 @@ export class AdCard extends Component {
         const { el, onDelete } = this.props;
 
         let items = [
-            {data: <a href={Routing.generate('user_visits_bien_index', {'slug': el.slug})} target="_blank">Liste des visites</a>},
+            {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
             {data: <a href="/">Envoyer un mail</a>},
             {data: <a href="/">Imprimer la fiche</a>}
         ]

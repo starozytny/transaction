@@ -137,7 +137,7 @@ class UserController extends AbstractController
         return $this->formBien($serializer, 'user/pages/biens/create.html.twig');
     }
 
-    private function bienData($type, SerializerInterface $serializer, $slug): Response
+    private function bienData($type, Request $request, SerializerInterface $serializer, $slug): Response
     {
         $em = $this->doctrine->getManager();
         $obj = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
@@ -151,6 +151,7 @@ class UserController extends AbstractController
         $photos  = $serializer->serialize($photos,  'json', ['groups' => User::USER_READ]);
 
         if($type !== "update"){
+            $context = $request->query->get("ct");
             $suivis = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
             $visits = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
             $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
@@ -174,48 +175,33 @@ class UserController extends AbstractController
                 'photos' => $photos,
                 'prospects' => $prospects,
                 'negotiators' => $negotiators,
-                'visits' => $visits
+                'visits' => $visits,
+                'context' => $context
         ]);
     }
 
     /**
      * @Route("/biens/modifier-un-bien/{slug}",options={"expose"=true}, name="biens_update")
      */
-    public function updateBien($slug, SerializerInterface $serializer): Response
+    public function updateBien(Request $request, $slug, SerializerInterface $serializer): Response
     {
-        return $this->bienData("update", $serializer, $slug);
+        return $this->bienData("update", $request, $serializer, $slug);
     }
 
     /**
      * @Route("/biens/bien/{slug}",options={"expose"=true}, name="biens_read")
      */
-    public function readBien($slug, SerializerInterface $serializer): Response
+    public function readBien(Request $request, $slug, SerializerInterface $serializer): Response
     {
-        return $this->bienData("read", $serializer, $slug);
+        return $this->bienData("read", $request, $serializer, $slug);
     }
 
     /**
      * @Route("/biens/bien-suivi/{slug}",options={"expose"=true}, name="biens_suivi")
      */
-    public function suiviBien($slug, SerializerInterface $serializer): Response
+    public function suiviBien(Request $request, $slug, SerializerInterface $serializer): Response
     {
-        return $this->bienData("suivi", $serializer, $slug);
-    }
-
-    /**
-     * @Route("/biens/visite/{slug}", options={"expose"=true}, name="visits_bien_index")
-     */
-    public function visitsBien($slug, ImBienRepository $repository, ImVisitRepository $visitRepository, SerializerInterface $serializer): Response
-    {
-        $element = $repository->findOneBy(["slug" => $slug]);
-        $visits = $visitRepository->findBy(['bien' => $element]);
-
-        $visits = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
-
-        return $this->render("user/pages/visits/index.html.twig", [
-            'elem' => $element,
-            'data' => $visits
-        ]);
+        return $this->bienData("suivi", $request, $serializer, $slug);
     }
 
     /**

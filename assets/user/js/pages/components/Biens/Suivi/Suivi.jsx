@@ -21,7 +21,7 @@ export class Suivi extends Component {
             prospects: props.prospects ? JSON.parse(props.prospects) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
-            context: "global",
+            context: props.context ? props.context : "global",
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
