@@ -50,20 +50,24 @@ class SuiviController extends AbstractController
         $data = json_decode($request->getContent());
         $suivis = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
 
-        $alreadyCreated = []; $idProspects = [];
+        //get id prospects
+        $idProspects = [];
+        foreach($data as $prospect){
+            if(!in_array($prospect->id, $idProspects)){
+                $idProspects[] = $prospect->id;
+            }
+        }
+
+        $alreadyCreated = [];
         foreach($suivis as $suivi){
             $find = false;
             foreach($data as $prospect){
-                if(!in_array($prospect->id, $idProspects)){
-                    $idProspects[] = $prospect->id;
-                }
-                if($prospect->id === $suivi->getProspect()->getId()){
+                if($prospect->id == $suivi->getProspect()->getId()){
                     $find = true;
                     $alreadyCreated[] = $prospect;
                 }
             }
-
-            if(!$find){ //delete
+            if(!$find){
                 $em->remove($suivi);
             }
         }
