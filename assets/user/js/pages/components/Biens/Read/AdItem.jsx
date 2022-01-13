@@ -25,6 +25,7 @@ export class AdItem extends Component {
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
             prospects: props.prospects ? JSON.parse(props.prospects) : [],
+            negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             context: "infos",
             contextSuivi: "prospects"
         }
@@ -37,7 +38,7 @@ export class AdItem extends Component {
     handleChangeContextSuivi = (contextSuivi) => { this.setState({ contextSuivi }) }
 
     render () {
-        const { elem, context, contextSuivi, tenants, rooms, photos, prospects } = this.state;
+        const { elem, context, contextSuivi, tenants, rooms, photos, prospects, negotiators } = this.state;
 
         let content;
         switch (context){
@@ -73,7 +74,8 @@ export class AdItem extends Component {
                 contentSuivi = <div>Offres</div>
                 break;
             case "prospects":
-                contentSuivi = <Prospects elem={elem} data={prospects} />
+                contentSuivi = <Prospects elem={elem} data={prospects}
+                                          societyId={elem.agency.society.id} agencyId={elem.agency.id} negotiators={negotiators} />
                 break;
             case "visites":
                 contentSuivi = <div>Visites</div>

@@ -37,7 +37,6 @@ export class Prospects extends Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-        this.handleUpdateSelectTenants = this.handleUpdateSelectTenants.bind(this);
 
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
@@ -49,8 +48,6 @@ export class Prospects extends Component {
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
     handleSearch = (search) => { this.layout.current.handleSearch(search, "prospect"); }
-
-    handleUpdateSelectTenants = (tenants) => { this.setState({ tenants }) }
 
     handleContentList = (currentData, changeContext) => {
         return <ProspectsList onChangeContext={changeContext}

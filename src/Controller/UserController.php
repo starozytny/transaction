@@ -152,12 +152,14 @@ class UserController extends AbstractController
 
         if($type !== "update"){
             $suivis = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
+            $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
 
             $prospects = [];
             foreach($suivis as $suivi){
                 $prospects[] = $suivi->getProspect();
             }
             $prospects  = $serializer->serialize($prospects,  'json', ['groups' => User::ADMIN_READ]);
+            $negotiators  = $serializer->serialize($negotiators,  'json', ['groups' => User::ADMIN_READ]);
         }
 
         return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',
@@ -168,7 +170,8 @@ class UserController extends AbstractController
                 'tenants' => $tenants,
                 'rooms' => $rooms,
                 'photos' => $photos,
-                'prospects' => $prospects
+                'prospects' => $prospects,
+                'negotiators' => $negotiators
         ]);
     }
 

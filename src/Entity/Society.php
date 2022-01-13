@@ -19,7 +19,7 @@ class Society
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"user:read", "admin:read"})
      */
     private $id;
 

@@ -184,7 +184,7 @@ class ImAgency
     /**
      * @ORM\ManyToOne(targetEntity=Society::class, fetch="EAGER", inversedBy="imAgencies")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read"})
+     * @Groups({"user:read", "admin:read"})
      */
     private $society;
 

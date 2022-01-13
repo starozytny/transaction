@@ -1,16 +1,16 @@
 import React, {Component} from "react";
 
 import axios    from "axios";
-import Swal     from "sweetalert2";
-import toastr   from "toastr";
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { ProspectsList } from "@dashboardPages/components/Immo/Prospects/ProspectsList";
 import { Aside }         from "@dashboardComponents/Tools/Aside";
 
 import helper       from "@userPages/components/Biens/helper";
 import DataState    from "@userPages/components/Biens/Form/data";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
+
+import { ProspectsList }      from "@dashboardPages/components/Immo/Prospects/ProspectsList";
+import { ProspectFormulaire } from "@dashboardPages/components/Immo/Prospects/ProspectForm";
 
 export class Prospects extends Component {
     constructor(props) {
@@ -33,9 +33,15 @@ export class Prospects extends Component {
     }
 
     handleChangeContext = (context) => {
-        if(context === "select"){
-            this.aside.current.handleOpen("Sélectionner un existant");
+        switch (context){
+            case "create":
+                this.aside.current.handleOpen("Ajouter un prospect");
+                break;
+            default:
+                this.aside.current.handleOpen("Sélectionner un existant");
+                break;
         }
+
         this.setState({ context })
     }
 
@@ -54,25 +60,25 @@ export class Prospects extends Component {
     }
 
     render () {
+        const { societyId, agencyId, negotiators } = this.props;
         const { context, data, allProspects } = this.state;
 
-        let content;
+        let contentAside;
         switch (context) {
             case "create":
-                content = "create";
+                contentAside = <ProspectFormulaire type="create" negotiators={negotiators} isClient={true}
+                                                   societyId={societyId} agencyId={agencyId} />;
                 break
             default:
-                content = <ProspectsList isFromRead={true} isClient={true} data={data}
-                                         onChangeContext={this.handleChangeContext}
-                                         onSelectProspect={this.handleSelectProspect} />
+                contentAside = <ProspectsList isSelect={true} isFromRead={true} isClient={true} data={allProspects} prospects={data}
+                                             onSelectProspect={this.handleSelectProspect} />
                 break;
         }
 
-        let contentAside = <ProspectsList isSelect={true} isFromRead={true} isClient={true} data={allProspects} prospects={data}
-                                          onSelectProspect={this.handleSelectProspect} />
-
-        return (<div className="details-tab-infos details-prospects">
-            {content}
+        return (<div className="details-tab-infos">
+            <ProspectsList isFromRead={true} isClient={true} data={data}
+                           onChangeContext={this.handleChangeContext}
+                           onSelectProspect={this.handleSelectProspect} />
 
             <Aside ref={this.aside} content={contentAside}/>
         </div>)
