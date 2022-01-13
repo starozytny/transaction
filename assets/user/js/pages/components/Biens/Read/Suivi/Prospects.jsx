@@ -38,8 +38,11 @@ export class Prospects extends Component {
         DataState.getProspects(this);
     }
 
-    handleChangeContext = (context) => {
+    handleChangeContext = (context, element) => {
         switch (context){
+            case "update":
+                this.aside.current.handleOpen("Modifier " + element.fullname);
+                break;
             case "create":
                 this.aside.current.handleOpen("Ajouter un prospect");
                 break;
@@ -48,7 +51,7 @@ export class Prospects extends Component {
                 break;
         }
 
-        this.setState({ context })
+        this.setState({ context, element })
     }
 
     handleUpdateList = (element, newContext=null) => {
@@ -74,12 +77,16 @@ export class Prospects extends Component {
 
     render () {
         const { elem, societyId, agencyId, negotiators } = this.props;
-        const { context, data, allProspects, sorter } = this.state;
+        const { context, data, allProspects, sorter, element } = this.state;
 
         data.sort(sorter)
 
         let contentAside;
         switch (context) {
+            case "update":
+                contentAside = <ProspectFormulaire type="update" isFromRead={true} isClient={true} element={element} bienId={elem.id} negotiators={negotiators}
+                                                   societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateList}/>;
+                break
             case "create":
                 contentAside = <ProspectFormulaire type="create" isFromRead={true} isClient={true} bienId={elem.id} negotiators={negotiators}
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateList}/>;
