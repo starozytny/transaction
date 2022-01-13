@@ -13,6 +13,8 @@ import Formulaire   from "@dashboardComponents/functions/Formulaire";
 import { ProspectsList }      from "@dashboardPages/components/Immo/Prospects/ProspectsList";
 import { ProspectFormulaire } from "@dashboardPages/components/Immo/Prospects/ProspectForm";
 
+const URL_DELETE_ELEMENT = 'api_suivis_prospect_delete';
+const MSG_DELETE_ELEMENT = 'Supprimer ce prospect ?';
 const SORTER = Sort.compareLastname;
 
 export class Prospects extends Component {
@@ -32,6 +34,7 @@ export class Prospects extends Component {
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleSelectProspect = this.handleSelectProspect.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
@@ -59,6 +62,11 @@ export class Prospects extends Component {
 
         Formulaire.updateData(this, sorter, newContext, context, data, element);
         DataState.getProspects(this);
+    }
+
+    handleDelete = (element, text='Cette action est irréversible.') => {
+        let url = Routing.generate(URL_DELETE_ELEMENT, {'id': element.id, "bien": this.props.elem.id})
+        Formulaire.axiosDeleteElement(this, element, url, MSG_DELETE_ELEMENT, text);
     }
 
     handleSelectProspect = (prospect) => {
@@ -93,14 +101,14 @@ export class Prospects extends Component {
                 break
             default:
                 contentAside = <ProspectsList isSelect={true} isFromRead={true} isClient={true} data={allProspects} prospects={data}
-                                             onSelectProspect={this.handleSelectProspect} />
+                                             onSelectProspect={this.handleSelectProspect} onDelete={this.handleDelete} />
                 break;
         }
 
         return (<div className="details-tab-infos">
             <ProspectsList isFromRead={true} isClient={true} data={data}
                            onChangeContext={this.handleChangeContext}
-                           onSelectProspect={this.handleSelectProspect} />
+                           onSelectProspect={this.handleSelectProspect} onDelete={this.handleDelete} />
 
             <Aside ref={this.aside} content={contentAside}/>
         </div>)

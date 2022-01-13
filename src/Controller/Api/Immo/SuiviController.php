@@ -7,6 +7,7 @@ use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSuivi;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
+use App\Service\Data\DataService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -91,5 +92,32 @@ class SuiviController extends AbstractController
         $em->flush();
 
         return $apiResponse->apiJsonResponseSuccessful("ok");
+    }
+
+    /**
+     * Delete a prospect and suivi
+     *
+     * @Route("/prospect/{id}/{bien}", name="prospect_delete", options={"expose"=true}, methods={"DELETE"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message"
+     * )
+     *
+     * @OA\Tag(name="Suivis")
+     *
+     * @param ImProspect $obj
+     * @param ImBien $bien
+     * @param DataService $dataService
+     * @return JsonResponse
+     */
+    public function delete(ImProspect $obj, ImBien $bien, DataService $dataService): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $suivi = $em->getRepository(ImSuivi::class)->findOneBy(['bien' => $bien, 'prospect' => $obj]);
+
+        $em->remove($suivi);
+
+        return $dataService->delete($obj);
     }
 }

@@ -159,11 +159,16 @@ class ProspectController extends AbstractController
      * @OA\Tag(name="Prospects")
      *
      * @param ImProspect $obj
+     * @param ApiResponse $apiResponse
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(ImProspect $obj, DataService $dataService): JsonResponse
+    public function delete(ImProspect $obj, ApiResponse $apiResponse, DataService $dataService): JsonResponse
     {
+        if(count($obj->getSuivis())){
+            return $apiResponse->apiJsonResponseBadRequest("Ce prospect est lié à au moins un bien. Vous ne pouvez pas le supprimer depuis cet interface.");
+        }
+
         return $dataService->delete($obj);
     }
 
