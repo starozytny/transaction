@@ -6,6 +6,7 @@ use App\Entity\Agenda\AgEvent;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
+use App\Repository\Immo\ImVisitRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\Agenda\DataEvent;
 use App\Service\Data\DataImmo;
@@ -29,6 +30,30 @@ class VisitController extends AbstractController
     public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+
+    /**
+     * get visits of bien
+     *
+     * @Route("/bien/{id}", name="bien", options={"expose"=true}, methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message"
+     * )
+     *
+     * @OA\Tag(name="Visits")
+     *
+     * @param ImBien $obj
+     * @param ImVisitRepository $repository
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function index(ImBien $obj, ImVisitRepository $repository, ApiResponse $apiResponse): JsonResponse
+    {
+        $objs = $repository->findBy(['bien' => $obj]);
+
+        return $apiResponse->apiJsonResponse($objs, ImVisit::VISIT_READ);
     }
 
     /**

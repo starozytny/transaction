@@ -188,9 +188,24 @@ function getProspects (self) {
         })
 }
 
+function getVisits (self, elem) {
+    axios.get(Routing.generate('api_visits_bien', {'id': elem.id}), {})
+        .then(function (response) {
+            let data = response.data;
+            self.setState({ allVisits: data })
+        })
+        .catch(function (error) {
+            Formulaire.displayErrors(self, error);
+        })
+        .then(() => {
+            Formulaire.loader(false);
+        })
+}
+
 module.exports = {
     getDataState,
     getOwners,
     getTenants,
-    getProspects
+    getProspects,
+    getVisits
 }

@@ -11,11 +11,12 @@ import { Financial, FinancialVente } from "./Data/Financial";
 
 import { Prospects }    from "@userPages/components/Biens/Read/Suivi/Prospects";
 import { Visits }       from "@dashboardPages/components/Immo/Visits/Visits";
+import { Global }       from "@userPages/components/Biens/Read/Suivi/Global";
 
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
-import {Global} from "@userPages/components/Biens/Read/Suivi/Global";
+import DataState from "@userPages/components/Biens/Form/data";
 
 export class AdItem extends Component {
     constructor(props) {
@@ -28,20 +29,25 @@ export class AdItem extends Component {
             photos: props.photos ? JSON.parse(props.photos) : [],
             prospects: props.prospects ? JSON.parse(props.prospects) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
-            visits: props.visits ? JSON.parse(props.visits) : [],
+            allVisits: props.visits ? JSON.parse(props.visits) : [],
             context: "infos",
             contextSuivi: "global"
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleChangeContextSuivi = this.handleChangeContextSuivi.bind(this);
+        this.handleUpdateVisits = this.handleUpdateVisits.bind(this);
     }
 
     handleChangeContext = (context) => { this.setState({ context }) }
     handleChangeContextSuivi = (contextSuivi) => { this.setState({ contextSuivi }) }
 
+    handleUpdateVisits = () => {
+        DataState.getVisits(this, this.state.elem);
+    }
+
     render () {
-        const { elem, context, contextSuivi, tenants, rooms, photos, prospects, negotiators, visits } = this.state;
+        const { elem, context, contextSuivi, tenants, rooms, photos, prospects, negotiators, allVisits } = this.state;
 
         let content;
         switch (context){
@@ -81,10 +87,11 @@ export class AdItem extends Component {
                                           societyId={elem.agency.society.id} agencyId={elem.agency.id} negotiators={negotiators} />
                 break;
             case "visites":
-                contentSuivi = <Visits isFromRead={true} bienId={elem.id} donnees={JSON.stringify(visits)} classes={""}/>
+                contentSuivi = <Visits isFromRead={true} bienId={elem.id} donnees={JSON.stringify(allVisits)}
+                                       onUpdateVisits={this.handleUpdateVisits} classes={""}/>
                 break;
             default:
-                contentSuivi = <Global elem={elem} prospects={prospects} visits={visits} />
+                contentSuivi = <Global elem={elem} prospects={prospects} visits={allVisits} />
                 break;
         }
 

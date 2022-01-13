@@ -39,7 +39,13 @@ export class Visits extends Component {
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
 
-    handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
+    handleUpdateList = (element, newContext=null) => {
+        this.layout.current.handleUpdateList(element, newContext);
+
+        if(this.state.isFromRead){
+            this.props.onUpdateVisits()
+        }
+    }
 
     handleContentList = (currentData, changeContext) => {
         return <VisitsList onChangeContext={changeContext}
