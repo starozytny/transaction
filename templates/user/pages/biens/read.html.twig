@@ -1,6 +1,6 @@
 {% extends 'user/pages/biens/template.html.twig' %}
 
-{% set page_title %}{{ elem.fullname }}{% endset %}
+{% set page_title %}{{ elem.shortname }}{% endset %}
 
 {% block main_content %}
     <div id="read-bien" data-elem="{{ data }}" data-tenants="{{ tenants }}"

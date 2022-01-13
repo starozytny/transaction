@@ -753,6 +753,15 @@ class ImBien extends DataEntity
     }
 
     /**
+     * @return string
+     * @Groups({"agenda:read"})
+     */
+    public function getShortname(): string
+    {
+        return $this->libelle . " | " . $this->getLocalisation()->getFullAddress();
+    }
+
+    /**
      * @return Collection|ImVisit[]
      */
     public function getVisits(): Collection
