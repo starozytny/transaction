@@ -7,7 +7,7 @@ import { VisitsItem } from "./VisitsItem";
 
 export class VisitsList extends Component {
     render () {
-        const { data, onChangeContext } = this.props;
+        const { isFromRead, data, onChangeContext } = this.props;
 
         return <>
             <div>
@@ -22,13 +22,15 @@ export class VisitsList extends Component {
                         <div className="item item-header">
                             <div className="item-content">
                                 <div className="item-body">
-                                    <div className="infos infos-col-4">
+                                    {isFromRead ? <div className="infos infos-col-2">
+                                        <div className="col-1">Visite</div>
+                                        <div className="col-2 actions">Actions</div>
+                                    </div> : <div className="infos infos-col-4">
                                         <div className="col-1">Visite</div>
                                         <div className="col-2">Personnes</div>
                                         <div className="col-3">Statut</div>
                                         <div className="col-4 actions">Actions</div>
-                                    </div>
-
+                                    </div>}
                                 </div>
                             </div>
                         </div>

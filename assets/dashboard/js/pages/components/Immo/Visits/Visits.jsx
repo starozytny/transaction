@@ -21,6 +21,8 @@ export class Visits extends Component {
             msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "visits.pagination",
             isClient: props.isClient ? props.isClient : false,
+            isFromRead: props.isFromRead ? props.isFromRead : false,
+            classes: props.classes !== null ? props.classes : "main-content"
         }
 
         this.layout = React.createRef();
@@ -43,6 +45,7 @@ export class Visits extends Component {
         return <VisitsList onChangeContext={changeContext}
                            onDelete={this.layout.current.handleDelete}
                            isClient={this.state.isClient}
+                           isFromRead={this.state.isFromRead}
                            data={currentData} />
     }
 

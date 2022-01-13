@@ -5,7 +5,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class VisitsItem extends Component {
     render () {
-        const { elem, onDelete, onChangeContext } = this.props;
+        const { isFromRead, elem, onDelete, onChangeContext } = this.props;
 
         let event = elem.agEvent;
         let persons = event.persons;
@@ -13,7 +13,7 @@ export class VisitsItem extends Component {
         return <div className="item">
             <div className="item-content">
                 <div className="item-body">
-                    <div className="infos infos-col-4">
+                    <div className={"infos infos-col-" + (isFromRead ? "2" : "4")}>
                         <div className="col-1">
                             <div className="name">
                                 {event.name}
@@ -21,18 +21,16 @@ export class VisitsItem extends Component {
                             <div className="sub">{parse(event.fullDate)}</div>
                             {event.location && <div className="sub">{event.location}</div>}
                             {event.comment && <div className="sub">{event.comment}</div>}
+                            {isFromRead && <Persons persons={persons} />}
                         </div>
-                        <div className="col-2">
-                            <Person type={0} data={persons.users} name="Utilisateur"/>
-                            <Person type={1} data={persons.managers} name="Manager"/>
-                            <Person type={2} data={persons.negotiators} name="Négociateur"/>
-                            <Person type={3} data={persons.owners} name="Propriétaire"/>
-                            <Person type={4} data={persons.tenants} name="Locataire"/>
-                            <Person type={5} data={persons.prospects} name="Prospect"/>
-                        </div>
-                        <div className="col-3">
+                        {!isFromRead && <>
+                            <div className="col-2">
+                                <Persons persons={persons} />
+                            </div>
+                            <div className="col-3">
 
-                        </div>
+                            </div>
+                        </>}
                         <div className="col-4 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
@@ -42,6 +40,17 @@ export class VisitsItem extends Component {
             </div>
         </div>
     }
+}
+
+function Persons({ persons }) {
+    return <>
+        <Person type={0} data={persons.users} name="Utilisateur"/>
+        <Person type={1} data={persons.managers} name="Manager"/>
+        <Person type={2} data={persons.negotiators} name="Négociateur"/>
+        <Person type={3} data={persons.owners} name="Propriétaire"/>
+        <Person type={4} data={persons.tenants} name="Locataire"/>
+        <Person type={5} data={persons.prospects} name="Prospect"/>
+    </>
 }
 
 function Person ({ data, name, type }) {

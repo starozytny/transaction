@@ -10,6 +10,7 @@ import { Localisation } from "./Data/Localisation";
 import { Financial, FinancialVente } from "./Data/Financial";
 
 import { Prospects }    from "@userPages/components/Biens/Read/Suivi/Prospects";
+import { Visits }       from "@dashboardPages/components/Immo/Visits/Visits";
 
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
@@ -26,8 +27,9 @@ export class AdItem extends Component {
             photos: props.photos ? JSON.parse(props.photos) : [],
             prospects: props.prospects ? JSON.parse(props.prospects) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
+            visits: props.visits ? JSON.parse(props.visits) : [],
             context: "infos",
-            contextSuivi: "prospects"
+            contextSuivi: "visites"
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -38,7 +40,7 @@ export class AdItem extends Component {
     handleChangeContextSuivi = (contextSuivi) => { this.setState({ contextSuivi }) }
 
     render () {
-        const { elem, context, contextSuivi, tenants, rooms, photos, prospects, negotiators } = this.state;
+        const { elem, context, contextSuivi, tenants, rooms, photos, prospects, negotiators, visits } = this.state;
 
         let content;
         switch (context){
@@ -78,7 +80,7 @@ export class AdItem extends Component {
                                           societyId={elem.agency.society.id} agencyId={elem.agency.id} negotiators={negotiators} />
                 break;
             case "visites":
-                contentSuivi = <div>Visites</div>
+                contentSuivi = <Visits isFromRead={true} bienId={elem.id} donnees={JSON.stringify(visits)} classes={""}/>
                 break;
             default:
                 contentSuivi = <div>Global</div>

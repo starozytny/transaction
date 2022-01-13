@@ -135,7 +135,7 @@ class AgEvent extends DataEntity
      */
     public function getStartAtString(): ?string
     {
-        return str_replace(":", "h", date_format($this->startAt, "D\\.d M Y \\à H\\hi"));
+        return $this->startAt ? str_replace(":", "h", date_format($this->startAt, "D\\.d M Y \\à H\\hi")) : null;
     }
 
     /**
@@ -173,7 +173,7 @@ class AgEvent extends DataEntity
      */
     public function getEndAtString(): ?string
     {
-        return str_replace(":", "h", date_format($this->endAt, "D\\.d M Y \\à H\\hi"));
+        return $this->endAt ? str_replace(":", "h", date_format($this->endAt, "D\\.d M Y \\à H\\hi")) : null;
     }
 
     /**

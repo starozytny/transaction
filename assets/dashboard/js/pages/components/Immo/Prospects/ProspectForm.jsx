@@ -24,7 +24,7 @@ const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, element, isClient = false,
                                      societies, societyId = "", agencies, agencyId = "",
-                                     negotiators, bienId=null, isFromRead= false })
+                                     negotiators, bienId="", isFromRead= false })
 {
     let title = "Ajouter un prospect";
     let url = Routing.generate(URL_CREATE_ELEMENT);
