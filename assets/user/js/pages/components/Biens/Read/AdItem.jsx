@@ -64,18 +64,21 @@ export class AdItem extends Component {
         return <div className="main-content">
             <div className="details-container">
                 <div className="details-content-container">
-                    <div className="details-pretitle">{elem.agency.name}</div>
-                    <div className="details-title">{elem.libelle}</div>
-                    <div className="details-subtitle">
-                        <div>
-                            <div>{elem.localisation.address}</div>
-                            <div>{elem.localisation.zipcode}, {elem.localisation.city}</div>
+                    <div className="details-main-infos">
+                        {elem.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
+                        <div className="details-pretitle">{elem.agency.name}</div>
+                        <div className="details-title">{elem.libelle}</div>
+                        <div className="details-subtitle">
+                            <div>
+                                <div>{elem.localisation.address}</div>
+                                <div>{elem.localisation.zipcode}, {elem.localisation.city}</div>
+                            </div>
+                            <div className="details-subtitle-price">
+                                {Sanitaze.toFormatCurrency(elem.financial.price)} {elem.codeTypeAd === 1 ? "cc/mois" : ""}
+                            </div>
                         </div>
-                        <div className="details-subtitle-price">
-                            {Sanitaze.toFormatCurrency(elem.financial.price)} {elem.codeTypeAd === 1 ? "cc/mois" : ""}
-                        </div>
+                        <div className="details-subtitle">{elem.area.total}m² - {elem.number.piece} pièce{elem.number.piece > 1 ? "s" : ""}</div>
                     </div>
-                    <div className="details-subtitle">{elem.area.total}m² - {elem.number.piece} pièce{elem.number.piece > 1 ? "s" : ""}</div>
                     <div className="details-general">
                         <div className="badges">
                             <div className={"badge badge-" + elem.status}>{elem.statusString}</div>

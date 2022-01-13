@@ -26,12 +26,18 @@
   }
 }
 
-.details-general{
-  margin-top: 12px;
-  @include flex(column, flex-start, space-between);
+.details-main-infos{
+  position: relative;
+
+  .isDraft{
+
+  }
 }
 
 .details-general{
+  margin-top: 12px;
+  @include flex(column, flex-start, space-between);
+
   .badges{
     margin-bottom: 8px;
   }
