@@ -26,7 +26,7 @@ export class ProspectsItem extends Component {
             <div className="item-content">
                 <div className="item-body">
                     <div className={"infos infos-col-" + (isFromRead ? "2" : "5")}>
-                        <div className="col-1">
+                        <div className="col-1" onClick={isSelect ? () => onSelectProspect(elem) : null}>
                             <TenantMainInfos elem={elem} isClient={isClient} />
                             {isFromRead && <TenantContact elem={elem} />}
                             {(isFromRead && elem.lastContactAtAgo) && <div className="sub">
