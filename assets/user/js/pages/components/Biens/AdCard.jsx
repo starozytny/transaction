@@ -1,18 +1,15 @@
 import React, { Component } from "react";
 
 import axios        from "axios";
-import toastr       from "toastr";
 import Swal         from "sweetalert2";
 import SwalOptions  from "@commonComponents/functions/swalOptions";
 import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { HelpBubble }       from "@dashboardComponents/Tools/HelpBubble";
-import { Selector }         from "@dashboardComponents/Layout/Selector";
 import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
 import Sanitaze     from "@commonComponents/functions/sanitaze";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
-
 
 const URL_CHANGE_STATUS = 'api_biens_status';
 

@@ -15,13 +15,7 @@ export class VisitsItem extends Component {
                 <div className="item-body">
                     <div className={"infos infos-col-" + (isFromRead ? "2" : "4")}>
                         <div className="col-1">
-                            <div className="name">
-                                {event.name}
-                            </div>
-                            <div className="sub">{parse(event.fullDate)}</div>
-                            {event.location && <div className="sub">{event.location}</div>}
-                            {event.comment && <div className="sub">{event.comment}</div>}
-                            {isFromRead && <Persons persons={persons} />}
+                            <VisitsMainInfos isFromRead={isFromRead} event={event} persons={persons}/>
                         </div>
                         {!isFromRead && <>
                             <div className="col-2">
@@ -42,21 +36,33 @@ export class VisitsItem extends Component {
     }
 }
 
-function Persons({ persons }) {
+export function VisitsMainInfos({ isFromRead, inline=true, event, persons }) {
     return <>
+        <div className="name">
+            {event.name}
+        </div>
+        <div className="sub">{inline ? parse(event.fullDate) : event.fullDateInline}</div>
+        {event.location && <div className="sub">{event.location}</div>}
+        {event.comment && <div className="sub">{event.comment}</div>}
+        {isFromRead && <Persons persons={persons} />}
+    </>
+}
+
+export function Persons({ persons }) {
+    return <div className="persons">
         <Person type={0} data={persons.users} name="Utilisateur"/>
         <Person type={1} data={persons.managers} name="Manager"/>
         <Person type={2} data={persons.negotiators} name="Négociateur"/>
         <Person type={3} data={persons.owners} name="Propriétaire"/>
         <Person type={4} data={persons.tenants} name="Locataire"/>
         <Person type={5} data={persons.prospects} name="Prospect"/>
-    </>
+    </div>
 }
 
 function Person ({ data, name, type }) {
     let items = [];
-    data.length !== 0 && data.forEach(el => {
-        items.push(<div className="sub person" key={el.value}><span className={"badge badge-" + type}>{name}</span> - {el.label}</div>)
+    data.length !== 0 && data.forEach((el, index) => {
+        items.push(<div className="sub person" key={index}><span className={"badge badge-" + type}>{name}</span> - {el.label}</div>)
     })
     return items.length > 0 ? items : null;
 }

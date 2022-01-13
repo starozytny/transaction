@@ -15,6 +15,7 @@ import { Visits }       from "@dashboardPages/components/Immo/Visits/Visits";
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
+import {Global} from "@userPages/components/Biens/Read/Suivi/Global";
 
 export class AdItem extends Component {
     constructor(props) {
@@ -29,7 +30,7 @@ export class AdItem extends Component {
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             visits: props.visits ? JSON.parse(props.visits) : [],
             context: "infos",
-            contextSuivi: "visites"
+            contextSuivi: "global"
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -83,7 +84,7 @@ export class AdItem extends Component {
                 contentSuivi = <Visits isFromRead={true} bienId={elem.id} donnees={JSON.stringify(visits)} classes={""}/>
                 break;
             default:
-                contentSuivi = <div>Global</div>
+                contentSuivi = <Global elem={elem} prospects={prospects} visits={visits} />
                 break;
         }
 

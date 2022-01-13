@@ -48,6 +48,7 @@ class AgEvent extends DataEntity
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"visit:read"})
      */
     private $startAt;
 
@@ -135,6 +136,9 @@ class AgEvent extends DataEntity
      */
     public function getStartAtString(): ?string
     {
+        if($this->allDay){
+            return $this->startAt ? date_format($this->startAt, "D\\.d M Y") : null;
+        }
         return $this->startAt ? str_replace(":", "h", date_format($this->startAt, "D\\.d M Y \\à H\\hi")) : null;
     }
 
@@ -215,6 +219,17 @@ class AgEvent extends DataEntity
         $start = str_replace(":", "h", $this->getStartAtString());
         $end = str_replace(":", "h", $this->getEndAtString());
         return $start . (($end && $this->endAt !== $this->startAt) ? "<br> à <br>" . $end : "");
+    }
+
+    /**
+     * @return string
+     * @Groups({"visit:read"})
+     */
+    public function getFullDateInline(): string
+    {
+        $start = str_replace(":", "h", $this->getStartAtString());
+        $end = str_replace(":", "h", $this->getEndAtString());
+        return $start . (($end && $this->endAt !== $this->startAt) ? " à " . $end : "");
     }
 
     public function getAllDay(): ?bool
