@@ -24,7 +24,7 @@ const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, element, isClient = false,
                                      societies, societyId = "", agencies, agencyId = "",
-                                     negotiators, bienId=null })
+                                     negotiators, bienId=null, isFromRead= false })
 {
     let title = "Ajouter un prospect";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -70,7 +70,7 @@ export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, eleme
         isClient={isClient}
     />
 
-    return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
+    return isFromRead ? <div className="form">{form}</div> : <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
 
 }
 

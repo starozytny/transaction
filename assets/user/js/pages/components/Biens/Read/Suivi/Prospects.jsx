@@ -81,7 +81,7 @@ export class Prospects extends Component {
         let contentAside;
         switch (context) {
             case "create":
-                contentAside = <ProspectFormulaire type="create" negotiators={negotiators} isClient={true} bienId={elem.id}
+                contentAside = <ProspectFormulaire type="create" isFromRead={true} isClient={true} bienId={elem.id} negotiators={negotiators}
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateList}/>;
                 break
             default:
