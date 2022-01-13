@@ -166,7 +166,7 @@ class UserController extends AbstractController
 
         return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',
             $element, $tenants, $rooms, $photos)
-            : $this->render("user/pages/biens/read.html.twig", [
+            : $this->render($type === "read" ? "user/pages/biens/read.html.twig" : "user/pages/biens/suivi.html.twig", [
                 'elem' => $obj,
                 'data' => $element,
                 'tenants' => $tenants,
@@ -192,6 +192,14 @@ class UserController extends AbstractController
     public function readBien($slug, SerializerInterface $serializer): Response
     {
         return $this->bienData("read", $serializer, $slug);
+    }
+
+    /**
+     * @Route("/biens/bien-suivi/{slug}",options={"expose"=true}, name="biens_suivi")
+     */
+    public function suiviBien($slug, SerializerInterface $serializer): Response
+    {
+        return $this->bienData("suivi", $serializer, $slug);
     }
 
     /**

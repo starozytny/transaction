@@ -23,6 +23,11 @@ if(el){
     render(<AdItem {...el.dataset} />, el)
 }
 
+el = document.getElementById("bien-suivi");
+if(el){
+    render(<Visits {...el.dataset} />, el)
+}
+
 el = document.getElementById("create-bien");
 if(el){
     render(<BienFormulaire type="create"

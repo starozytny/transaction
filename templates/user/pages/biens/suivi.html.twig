@@ -1,0 +1,9 @@
+{% extends 'user/pages/biens/template.html.twig' %}
+
+{% set page_title %}Suivi de {{ elem.fullname }}{% endset %}
+
+{% block main_content %}
+    <div id="suivi-bien">
+        {% include "dashboard/layout/components/spinner.html.twig" %}
+    </div>
+{% endblock %}
