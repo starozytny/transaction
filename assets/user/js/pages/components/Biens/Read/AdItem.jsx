@@ -114,7 +114,11 @@ export function AdMainInfos ({ elem }) {
     return <div className="details-main-infos">
         {elem.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
         <div className="details-pretitle">{elem.agency.name}</div>
-        <div className="details-title">{elem.libelle}</div>
+        <div className="details-title">
+            <a href={Routing.generate('user_biens_read', {'slug': elem.slug})}>
+                {elem.libelle}
+            </a>
+        </div>
         <div className="details-subtitle">
             <div>
                 <div>{elem.localisation.address}</div>

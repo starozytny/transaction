@@ -13,6 +13,10 @@
 .details-title{
   @include fontSemibold();
   font-size: 22px;
+
+  a{
+    color: var(--txt);
+  }
 }
 
 .details-subtitle{
