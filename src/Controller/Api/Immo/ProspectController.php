@@ -2,7 +2,9 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImProspect;
+use App\Entity\Immo\ImSuivi;
 use App\Entity\User;
 use App\Repository\Immo\ImProspectRepository;
 use App\Service\ApiResponse;
@@ -70,6 +72,19 @@ class ProspectController extends AbstractController
         }
 
         $obj = $dataEntity->setDataProspect($obj, $data);
+
+        if($data->bienId){
+            $bien = $em->getRepository(ImBien::class)->find($data->bienId);
+            if(!$bien){
+                return $apiResponse->apiJsonResponseBadRequest('Une erreur est survenu dans la liaison entre le bien et le prospect.');
+            }
+            $existe = $em->getRepository(ImSuivi::class)->findOneBy(['bien' => $bien, 'prospect' => $obj]);
+            $suivi = !$existe ? new ImSuivi() : $existe;
+
+            $suivi = $dataEntity->setDataSuivi($suivi, $bien, $obj);
+
+            $em->persist($suivi);
+        }
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {

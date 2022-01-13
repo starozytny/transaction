@@ -7,10 +7,13 @@ import { Aside }         from "@dashboardComponents/Tools/Aside";
 
 import helper       from "@userPages/components/Biens/helper";
 import DataState    from "@userPages/components/Biens/Form/data";
+import Sort         from "@commonComponents/functions/sort";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
 
 import { ProspectsList }      from "@dashboardPages/components/Immo/Prospects/ProspectsList";
 import { ProspectFormulaire } from "@dashboardPages/components/Immo/Prospects/ProspectForm";
+
+const SORTER = Sort.compareLastname;
 
 export class Prospects extends Component {
     constructor(props) {
@@ -18,14 +21,17 @@ export class Prospects extends Component {
 
         this.state = {
             context: "list",
+            sorter: SORTER,
             data: props.data,
-            allProspects: []
+            element: null,
+            allProspects: [],
         }
 
         this.aside = React.createRef();
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleSelectProspect = this.handleSelectProspect.bind(this);
+        this.handleUpdateList = this.handleUpdateList.bind(this);
     }
 
     componentDidMount() {
@@ -45,6 +51,13 @@ export class Prospects extends Component {
         this.setState({ context })
     }
 
+    handleUpdateList = (element, newContext=null) => {
+        const { data, context, sorter} = this.state
+
+        Formulaire.updateData(this, sorter, newContext, context, data, element);
+        DataState.getProspects(this);
+    }
+
     handleSelectProspect = (prospect) => {
         const { elem } = this.props;
         const { data } = this.state;
@@ -60,14 +73,16 @@ export class Prospects extends Component {
     }
 
     render () {
-        const { societyId, agencyId, negotiators } = this.props;
-        const { context, data, allProspects } = this.state;
+        const { elem, societyId, agencyId, negotiators } = this.props;
+        const { context, data, allProspects, sorter } = this.state;
+
+        data.sort(sorter)
 
         let contentAside;
         switch (context) {
             case "create":
-                contentAside = <ProspectFormulaire type="create" negotiators={negotiators} isClient={true}
-                                                   societyId={societyId} agencyId={agencyId} />;
+                contentAside = <ProspectFormulaire type="create" negotiators={negotiators} isClient={true} bienId={elem.id}
+                                                   societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateList}/>;
                 break
             default:
                 contentAside = <ProspectsList isSelect={true} isFromRead={true} isClient={true} data={allProspects} prospects={data}

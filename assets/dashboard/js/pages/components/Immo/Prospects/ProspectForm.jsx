@@ -24,7 +24,7 @@ const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, element, isClient = false,
                                      societies, societyId = "", agencies, agencyId = "",
-                                     negotiators })
+                                     negotiators, bienId=null })
 {
     let title = "Ajouter un prospect";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -57,7 +57,9 @@ export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, eleme
         birthday={element ? Formulaire.setDateOrEmptyIfNull(element.birthdayJavascript, "") : ""}
         lastContactAt={element ? Formulaire.setDateOrEmptyIfNull(element.lastContactAtJavascript, "") : ""}
         type={element ? Formulaire.setValueEmptyIfNull(element.type, 0) : 0}
-        status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
+        status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : (bienId ? 2 : 0)}
+
+        bienId={bienId}
 
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
@@ -96,6 +98,8 @@ export class ProspectForm extends Component {
             lastContactAt: props.lastContactAt,
             type: props.type,
             status: props.status,
+
+            bienId: props.bienId,
 
             errors: [],
             success: false,
