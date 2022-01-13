@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 
-import { Diag }       from "./split/Diag";
-import { Infos }      from "./split/Infos";
-import { Rooms }      from "./split/Rooms";
-import { Photos }     from "./split/Photos";
-import { Contact }    from "./split/Contact";
-import { Features }   from "./split/Features";
+import { Diag }         from "./split/Diag";
+import { Infos }        from "./split/Infos";
+import { Rooms }        from "./split/Rooms";
+import { Photos }       from "./split/Photos";
+import { Contact }      from "./split/Contact";
+import { Features }     from "./split/Features";
+import { Localisation } from "./split/Localisation";
 import { Financial, FinancialVente } from "./split/Financial";
 
 import { ButtonIcon } from "@dashboardComponents/Tools/Button";
@@ -21,7 +22,7 @@ export class AdItem extends Component {
             tenants: props.tenants ? JSON.parse(props.tenants) : [],
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
-            context: "photos",
+            context: "address",
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -34,6 +35,9 @@ export class AdItem extends Component {
 
         let content;
         switch (context){
+            case "address":
+                content = <Localisation elem={elem} />
+                break;
             case "photos":
                 content = <Photos photos={photos} />
                 break;
