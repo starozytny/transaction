@@ -15,7 +15,10 @@ use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImPhoto;
+use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImTenant;
+use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Service\Data\DataImmo;
@@ -75,6 +78,9 @@ class FakeBiensCreate extends Command
 
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
+            ImVisit::class,
+            ImPhoto::class,
+            ImRoom::class,
             ImBien::class,
             ImAdvantage::class,
             ImArea::class,
@@ -173,7 +179,7 @@ class FakeBiensCreate extends Command
                 "lat" => (string) $fake->latitude,
                 "lon" => (string) $fake->longitude,
                 "hideMap" => $fake->numberBetween(0, 1),
-                "typeCalcul" => $fake->numberBetween(0, 3),
+                "typeCalcul" => $fake->numberBetween(0, 2),
                 "price" => (string) $fake->randomFloat(2),
                 "provisionCharges" => (string) $fake->randomFloat(2),
                 "provisionOrdures" => (string) $fake->randomFloat(2),
@@ -183,7 +189,7 @@ class FakeBiensCreate extends Command
                 "honoraireTtc" => (string) $fake->randomFloat(2),
                 "honoraireBail" => (string) $fake->randomFloat(2),
                 "edl" => (string) $fake->randomFloat(2),
-                "typeCharges" => $fake->numberBetween(0, 3),
+                "typeCharges" => $fake->numberBetween(0, 2),
                 "totalGeneral" => (string) $fake->randomFloat(2),
                 "typeBail" => $fake->numberBetween(0, 3),
                 "durationBail" => (string) $fake->numberBetween(0,5),
@@ -193,7 +199,7 @@ class FakeBiensCreate extends Command
                 "taxeHabitation" => (string) $fake->randomFloat(2),
                 "honoraireChargeDe" => $fake->numberBetween(0,2),
                 "honorairePourcentage" => (string) $fake->randomFloat(2),
-                "prixHorsAcquereur" => (string) $fake->randomFloat(2),
+                "priceHorsAcquereur" => (string) $fake->randomFloat(2),
                 "isCopro" => $fake->numberBetween(0,1),
                 "nbLot" => $fake->numberBetween(0, 500),
                 "chargesLot" => (string) $fake->randomFloat(2),
@@ -209,8 +215,8 @@ class FakeBiensCreate extends Command
                 "keysWhere" => $fake->streetName,
                 "typeAdvert" => $fake->numberBetween(0, 2),
                 "contentSimple" => $fake->text,
-                "contentFull" => $fake->sentence(255)
-
+                "contentFull" => $fake->sentence(255),
+                "isDraft" => $fake->numberBetween(0, 1)
             ];
 
             $data = json_decode(json_encode($data));
@@ -226,7 +232,7 @@ class FakeBiensCreate extends Command
             $area = $this->dataImmo->setDataArea(new ImArea(), $data);
 
             $obj = $this->dataImmo->setDataBien(new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
-                $localisation, $financial, $confidential, $advert);
+                $localisation, $financial, $confidential, $advert, []);
 
             $choicesOwners = [];
             foreach($owners as $ow){

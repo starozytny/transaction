@@ -68,15 +68,19 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     <span>Caution</span>
                 </Input>
                 <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
-                    <span>Honoraires TTC *</span>
+                    <span>Honoraires (avec état des lieux) TTC *</span>
                 </Input>
             </div>
             <div className="line line-2">
-                <Input type="number" step="any" identifiant="honoraireBail" valeur={honoraireBail} errors={errors} onChange={onChange}>
-                    <span>Honoraires rédaction bail</span>
-                </Input>
+                <div className="form-group" />
                 <Input type="number" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChange}>
                     <span>- dont état des lieux *</span>
+                </Input>
+            </div>
+            <div className="line line-2">
+                <div className="form-group" />
+                <Input type="number" step="any" identifiant="honoraireBail" valeur={honoraireBail} errors={errors} onChange={onChange}>
+                    <span>Honoraires rédaction bail</span>
                 </Input>
             </div>
             <div className="line line-2">

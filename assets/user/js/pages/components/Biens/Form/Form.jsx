@@ -81,7 +81,8 @@ function consequenceValueToRooms(self, name, value, rooms, compareName, codeType
 }
 
 function calculateFinancial(self, name, value, codeTypeAd,
-                            price, notaire, honoraireTtc, honorairePourcentage, provisionCharges, provisionOrdures)
+                            price, notaire, honoraireTtc, honorairePourcentage, provisionCharges, provisionOrdures,
+                            typeCalcul, tva, honoraireBail)
 {
     let nPrice      = name === "price" ? value : price;
     let nNotaire    = name === "notaire" ? value : notaire;
@@ -89,6 +90,9 @@ function calculateFinancial(self, name, value, codeTypeAd,
     let nHonoPour   = name === "honorairePourcentage" ? value : honorairePourcentage;
     let nProvChar   = name === "provisionCharges" ? value : provisionCharges;
     let nProvOrd    = name === "provisionOrdures" ? value : provisionOrdures;
+    let nTva        = name === "tva" ? value : tva;
+    let nHonoBail   = name === "honoraireBail" ? value : honoraireBail;
+    let nTypeCalcul = name === "typeCalcul" ? value : typeCalcul;
 
     if(parseInt(codeTypeAd) !== 1){
         let nPriceHoAcq = getValueFloat(nPrice) + getValueFloat(nNotaire);
@@ -108,15 +112,22 @@ function calculateFinancial(self, name, value, codeTypeAd,
             self.setState({ totalGeneral: totalGeneral, priceHorsAcquereur: nPriceHoAcq })
         }
     }else{
-        if(name === "price" || name === "honoraireTtc" || name === "provisionCharges" || name === "provisionOrdures"){
-            let totalGeneral = getValueFloat(nPrice) + getValueFloat(nHonoTtc) + getValueFloat(nProvOrd) + getValueFloat(nProvChar);
-            self.setState({ totalGeneral: totalGeneral })
+        let totalTerme, totalGeneral;
+        switch (nTypeCalcul){
+            case 2:
+                totalTerme = getValueFloat(nPrice) + getValueFloat(nProvChar) + getValueFloat(nTva) + getValueFloat(nProvOrd);
+                break;
+            case 1:
+                totalTerme = getValueFloat(nPrice) + getValueFloat(nProvChar) + getValueFloat(nTva);
+                break;
+            default:
+                totalTerme = getValueFloat(nPrice) + getValueFloat(nProvChar) + getValueFloat(nProvOrd);
+                break;
         }
 
-        if(name === "price" || name === "provisionCharges" || name === "provisionOrdures"){
-            let totalTerme = getValueFloat(nPrice) + getValueFloat(nProvOrd) + getValueFloat(nProvChar);
-            self.setState({ totalTerme: totalTerme })
-        }
+        totalGeneral = totalTerme + getValueFloat(nHonoTtc) + getValueFloat(nHonoBail);
+
+        self.setState({ totalTerme, totalGeneral })
     }
 }
 
@@ -181,7 +192,7 @@ export class Form extends Component {
 
     handleChange = (e) => {
         const { codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures } = this.state;
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail } = this.state;
 
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
@@ -198,9 +209,23 @@ export class Form extends Component {
         consequenceValueToRooms(this, name, value, rooms, "box",        2, elStep);
 
         calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures)
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail);
 
         this.setState({[name]: value});
+    }
+
+    handleChangeSelect = (name, e) => {
+        const { codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail } = this.state;
+
+        let value = e !== undefined ? e.value : "";
+
+        if(name === "typeCalcul"){
+            calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+                provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail);
+        }
+
+        this.setState({ [name]: value })
     }
 
     handleChangeGeo = () => {
@@ -259,8 +284,6 @@ export class Form extends Component {
             })
         }
     }
-
-    handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
 
     handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
 

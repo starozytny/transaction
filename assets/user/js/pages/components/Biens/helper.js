@@ -69,9 +69,8 @@ function getItems (type, prefix) {
         case "calculs":
             return [
                 { value: 0, label: 'Pas de taxe',                               identifiant: 'no-taxe' },
-                { value: 1, label: 'TVA/Loyer',                                 identifiant: 'tva-l' },
-                { value: 2, label: 'TVA/Loyer + Ordures ménagères',             identifiant: 'tva-l-o' },
-                { value: 3, label: 'TVA/Loyer + Ordures ménagères + Charges',   identifiant: 'tva-l-o-c' },
+                { value: 1, label: 'TVA/Loyer + Charges',                       identifiant: 'tva-l-c' },
+                { value: 2, label: 'TVA/Loyer + Charges + Ordures ménagères',   identifiant: 'tva-l-c-o' },
             ];
         case "diags":
             return [

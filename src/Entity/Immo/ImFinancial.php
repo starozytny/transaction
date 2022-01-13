@@ -518,7 +518,7 @@ class ImFinancial
      */
     public function getTypeCalculString(): string
     {
-        $charges = ["Pas de taxe", "TVA/Loyer", "TVA/Loyer + Ordures ménagères", "TVA/Loyer + Ordures ménagères + Charges"];
+        $charges = ["Pas de taxe", "TVA/Loyer + Charges", "TVA/Loyer + Charges + Ordures ménagères"];
 
         return $charges[$this->typeCalcul];
     }
