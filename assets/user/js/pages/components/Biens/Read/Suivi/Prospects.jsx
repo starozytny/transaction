@@ -1,10 +1,16 @@
 import React, {Component} from "react";
 
+import axios    from "axios";
+import Swal     from "sweetalert2";
+import toastr   from "toastr";
+import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { ProspectsList } from "@dashboardPages/components/Immo/Prospects/ProspectsList";
 import { Aside }         from "@dashboardComponents/Tools/Aside";
 
 import helper       from "@userPages/components/Biens/helper";
 import DataState    from "@userPages/components/Biens/Form/data";
+import Formulaire   from "@dashboardComponents/functions/Formulaire";
 
 export class Prospects extends Component {
     constructor(props) {
@@ -34,10 +40,17 @@ export class Prospects extends Component {
     }
 
     handleSelectProspect = (prospect) => {
+        const { elem } = this.props;
         const { data } = this.state;
 
         let nData = helper.addOrRemove(data, prospect, "Prospect ajouté.", "Prospect enlevé.");
         this.setState({ data: nData });
+
+        axios.post(Routing.generate('api_suivis_link_bien', {'id': elem.id}), nData)
+            .catch(function (error) {
+                Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+            })
+        ;
     }
 
     render () {

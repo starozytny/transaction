@@ -73,7 +73,7 @@ export class AdItem extends Component {
                 contentSuivi = <div>Offres</div>
                 break;
             case "prospects":
-                contentSuivi = <Prospects data={prospects} />
+                contentSuivi = <Prospects elem={elem} data={prospects} />
                 break;
             case "visites":
                 contentSuivi = <div>Visites</div>

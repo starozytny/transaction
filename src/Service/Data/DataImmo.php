@@ -19,6 +19,7 @@ use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImRoom;
+use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
@@ -544,14 +545,19 @@ class DataImmo extends DataConstructor
         ;
     }
 
-    /**
-     * @throws Exception
-     */
     public function setDataVisit(ImVisit $obj, AgEvent $event, ImBien $bien): ImVisit
     {
         return ($obj)
             ->setAgEvent($event)
             ->setBien($bien)
+        ;
+    }
+
+    public function setDataSuivi(ImSuivi $obj, ImBien $bien, ImProspect $prospect): ImSuivi
+    {
+        return ($obj)
+            ->setBien($bien)
+            ->setProspect($prospect)
         ;
     }
 }
