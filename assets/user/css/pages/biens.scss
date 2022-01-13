@@ -6,6 +6,7 @@
 
 @import "./split/biens/form";
 @import "./split/biens/details";
+@import "./split/biens/suivi";
 
 .list-biens{
   .card-ad{
@@ -83,5 +84,10 @@
   .input-page,
   .pagination,{
     margin-left: 278px;
+  }
+
+  .suivi-container{
+    width: 100%;
+    margin-right: 0;
   }
 }

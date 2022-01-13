@@ -5,7 +5,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class VisitsItem extends Component {
     render () {
-        const { isFromRead, elem, onDelete, onChangeContext } = this.props;
+        const { elem, onDelete, onChangeContext } = this.props;
 
         let event = elem.agEvent;
         let persons = event.persons;
@@ -13,18 +13,16 @@ export class VisitsItem extends Component {
         return <div className="item">
             <div className="item-content">
                 <div className="item-body">
-                    <div className={"infos infos-col-" + (isFromRead ? "2" : "4")}>
+                    <div className="infos infos-col-4">
                         <div className="col-1">
-                            <VisitsMainInfos isFromRead={isFromRead} event={event} persons={persons}/>
+                            <VisitsMainInfos event={event}/>
                         </div>
-                        {!isFromRead && <>
-                            <div className="col-2">
-                                <Persons persons={persons} />
-                            </div>
-                            <div className="col-3">
+                        <div className="col-2">
+                            <Persons persons={persons} />
+                        </div>
+                        <div className="col-3">
 
-                            </div>
-                        </>}
+                        </div>
                         <div className="col-4 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
@@ -36,7 +34,7 @@ export class VisitsItem extends Component {
     }
 }
 
-export function VisitsMainInfos({ isFromRead, inline=true, event, persons }) {
+export function VisitsMainInfos({ havePersons=false, inline=true, event, persons=null }) {
     return <>
         <div className="name">
             {event.name}
@@ -44,7 +42,7 @@ export function VisitsMainInfos({ isFromRead, inline=true, event, persons }) {
         <div className="sub">{inline ? parse(event.fullDate) : event.fullDateInline}</div>
         {event.location && <div className="sub">{event.location}</div>}
         {event.comment && <div className="sub">{event.comment}</div>}
-        {isFromRead && <Persons persons={persons} />}
+        {havePersons && <Persons persons={persons} />}
     </>
 }
 

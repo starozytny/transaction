@@ -36,14 +36,14 @@ export class Global extends Component {
 
                 if(totalVisits < 4){
                     itemsVisits.push(<div className="item" onClick={() => this.handleOpenHelp(visit)} key={visit.id}>
-                        <VisitsMainInfos isFromRead={false} inline={false} event={visit.agEvent} persons={visit.agEvent.persons}/>
+                        <VisitsMainInfos havePersons={false} inline={false} event={visit.agEvent} persons={visit.agEvent.persons}/>
                         <div className="item-details">Voir le details</div>
                     </div>)
                 }
             }
         })
 
-        let contentHelpBubble = visit ? <VisitsMainInfos isFromRead={true} inline={false} event={visit.agEvent} persons={visit.agEvent.persons}/> : null;
+        let contentHelpBubble = visit ? <VisitsMainInfos havePersons={true} inline={false} event={visit.agEvent} persons={visit.agEvent.persons}/> : null;
 
         return <div className="suivi-global">
             <div className="card">

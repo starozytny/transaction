@@ -25,32 +25,26 @@ export class ProspectsItem extends Component {
 
             <div className="item-content">
                 <div className="item-body">
-                    <div className={"infos infos-col-" + (isFromRead ? "2" : "5")}>
+                    <div className="infos infos-col-5">
                         <div className="col-1" onClick={isSelect ? () => onSelectProspect(elem) : null}>
                             <TenantMainInfos elem={elem} isClient={isClient} />
-                            {isFromRead && <TenantContact elem={elem} />}
-                            {(isFromRead && elem.lastContactAtAgo) && <div className="sub">
-                                Dernier contact : {elem.lastContactAtAgo}
-                            </div>}
-                            {isFromRead && <TenantNegotiator elem={elem} />}
                         </div>
 
-                        {!isFromRead && <div className="col-2">
+                        <div className="col-2">
                             <TenantContact elem={elem} />
-                        </div>}
+                        </div>
 
-                        {!isFromRead && <>
-                            <div className="col-3">
-                                <TenantNegotiator elem={elem} />
-                            </div>
-                            <div className="col-4">
-                                <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
-                                <div className="sub">Type de prospect : {elem.typeString}</div>
-                                {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
-                            </div>
-                        </>}
+                        <div className="col-3">
+                            <TenantNegotiator elem={elem} />
+                        </div>
 
-                        <div className={isFromRead ? "col-3 actions" : "col-5 actions"}>
+                        <div className="col-4">
+                            <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
+                            <div className="sub">Type de prospect : {elem.typeString}</div>
+                            {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
+                        </div>
+
+                        <div className="col-5 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                             {(isFromRead && !isSelect) && <ButtonIcon icon="cancel" onClick={() => onSelectProspect(elem)}>Enlever</ButtonIcon>}

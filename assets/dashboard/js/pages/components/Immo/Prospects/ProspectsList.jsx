@@ -42,16 +42,13 @@ export class ProspectsList extends Component {
                             {(!isClient || isSelect) && <div className="item-header-selector" />}
                             <div className="item-content">
                                 <div className="item-body">
-                                    {isFromRead ? <div className="infos infos-col-2">
-                                        <div className="col-1">Prospect</div>
-                                        <div className="col-2 actions">Actions</div>
-                                    </div> :  <div className="infos infos-col-5">
+                                    <div className="infos infos-col-5">
                                         <div className="col-1">Prospect</div>
                                         <div className="col-2">Contact</div>
                                         <div className="col-3">Négociateur</div>
                                         <div className="col-4">Status</div>
                                         <div className="col-5 actions">Actions</div>
-                                    </div>}
+                                    </div>
                                 </div>
                             </div>
                         </div>
