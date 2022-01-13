@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 
-import { Diag }         from "./split/Diag";
-import { Infos }        from "./split/Infos";
-import { Rooms }        from "./split/Rooms";
-import { Photos }       from "./split/Photos";
-import { Contact }      from "./split/Contact";
-import { Features }     from "./split/Features";
-import { Localisation } from "./split/Localisation";
-import { Financial, FinancialVente } from "./split/Financial";
+import { Diag }         from "./Data/Diag";
+import { Infos }        from "./Data/Infos";
+import { Rooms }        from "./Data/Rooms";
+import { Photos }       from "./Data/Photos";
+import { Contact }      from "./Data/Contact";
+import { Features }     from "./Data/Features";
+import { Localisation } from "./Data/Localisation";
+import { Financial, FinancialVente } from "./Data/Financial";
 
-import { ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { Prospects }    from "@userPages/components/Biens/Read/Suivi/Prospects";
+
+import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
@@ -22,6 +24,7 @@ export class AdItem extends Component {
             tenants: props.tenants ? JSON.parse(props.tenants) : [],
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
+            prospects: props.prospects ? JSON.parse(props.prospects) : [],
             context: "infos",
             contextSuivi: "prospects"
         }
@@ -34,7 +37,7 @@ export class AdItem extends Component {
     handleChangeContextSuivi = (contextSuivi) => { this.setState({ contextSuivi }) }
 
     render () {
-        const { elem, tenants, rooms, photos, context, contextSuivi } = this.state;
+        const { elem, context, contextSuivi, tenants, rooms, photos, prospects } = this.state;
 
         let content;
         switch (context){
@@ -70,7 +73,7 @@ export class AdItem extends Component {
                 contentSuivi = <div>Offres</div>
                 break;
             case "prospects":
-                contentSuivi = <div>Prospects</div>
+                contentSuivi = <Prospects data={prospects} />
                 break;
             case "visites":
                 contentSuivi = <div>Visites</div>

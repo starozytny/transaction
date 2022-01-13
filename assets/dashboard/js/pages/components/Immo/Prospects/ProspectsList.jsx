@@ -20,17 +20,20 @@ export class ProspectsList extends Component {
     }
 
     render () {
-        const { isClient, data, onSearch, onChangeContext, onDeleteAll } = this.props;
+        const { isFromRead=false, isClient, data, onSearch, onChangeContext, onDeleteAll } = this.props;
 
         return <>
             <div>
-                <div className="toolbar">
+                <div className="toolbar toolbar-prospect">
                     <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter un prospect</Button>
                     </div>
-                    <div className="item filter-search">
+                    {isFromRead && <div className="item">
+                        <Button onClick={() => onChangeContext("select")}>Sélectionner un existant</Button>
+                    </div>}
+                    {!isFromRead && <div className="item filter-search">
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom.."/>
-                    </div>
+                    </div>}
                 </div>
 
                 <div className="items-table">
@@ -39,14 +42,17 @@ export class ProspectsList extends Component {
                             {!isClient && <div className="item-header-selector" />}
                             <div className="item-content">
                                 <div className="item-body">
-                                    <div className="infos infos-col-5">
+                                    {isFromRead ? <div className="infos infos-col-3">
+                                        <div className="col-1">Prospect</div>
+                                        <div className="col-2">Contact</div>
+                                        <div className="col-3 actions">Actions</div>
+                                    </div> :  <div className="infos infos-col-5">
                                         <div className="col-1">Prospect</div>
                                         <div className="col-2">Contact</div>
                                         <div className="col-3">Négociateur</div>
                                         <div className="col-4">Status</div>
                                         <div className="col-5 actions">Actions</div>
-                                    </div>
-
+                                    </div>}
                                 </div>
                             </div>
                         </div>
@@ -56,7 +62,7 @@ export class ProspectsList extends Component {
                     </div>
                 </div>
 
-                {(data && data.length !== 0 && !isClient) && <div className="page-actions">
+                {(!isFromRead && data && data.length !== 0 && !isClient) && <div className="page-actions">
                     <div className="selectors-actions">
                         <div className="item" onClick={onDeleteAll}>
                             <ButtonIcon icon="trash" text="Supprimer la sélection" />

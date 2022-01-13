@@ -166,6 +166,20 @@
     padding: 12px;
     margin-bottom: 24px;
   }
+
+  .toolbar-prospect{
+    & > .item{
+      .create{
+      }
+      .btn{
+        width: 100%;
+      }
+    }
+
+    & > .item:not(:last-child){
+      margin-bottom: 12px;
+    }
+  }
 }
 
 //                      __   _____ __    ___    __
@@ -205,6 +219,16 @@
       }
     }
   }
+
+  .details-suivi-container{
+    .toolbar-prospect{
+      flex-wrap: nowrap;
+      & > .item:not(:last-child){
+        margin-bottom: 0;
+        margin-right: 12px;
+      }
+    }
+  }
 }
 
 //                      __   _ ____  ___   ___    __
@@ -220,10 +244,24 @@
   }
   .details-content-container{
     display: inline-block;
-    width: calc(60% - 48px);
-    margin-right: 48px;
+    width: calc(60% - 24px);
+    margin-right: 24px;
   }
   .details-suivi-container{
     width: 40%;
+
+    .items-default {
+      .infos-col-3 {
+        .col-1{
+          width: calc(100% - 47% - 48px - 80px);
+        }
+        .col-2{
+          width: calc(47% - 24px);
+        }
+        .col-3{
+          width: 80px;
+        }
+      }
+    }
   }
 }

@@ -258,6 +258,11 @@ class ImBien extends DataEntity
      */
     private $rooms;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImSuivi::class, mappedBy="bien")
+     */
+    private $suivis;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -265,6 +270,7 @@ class ImBien extends DataEntity
         $this->tenants = new ArrayCollection();
         $this->visits = new ArrayCollection();
         $this->rooms = new ArrayCollection();
+        $this->suivis = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -800,6 +806,36 @@ class ImBien extends DataEntity
             // set the owning side to null (unless already changed)
             if ($room->getBien() === $this) {
                 $room->setBien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImSuivi[]
+     */
+    public function getSuivis(): Collection
+    {
+        return $this->suivis;
+    }
+
+    public function addSuivi(ImSuivi $suivi): self
+    {
+        if (!$this->suivis->contains($suivi)) {
+            $this->suivis[] = $suivi;
+            $suivi->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSuivi(ImSuivi $suivi): self
+    {
+        if ($this->suivis->removeElement($suivi)) {
+            // set the owning side to null (unless already changed)
+            if ($suivi->getBien() === $this) {
+                $suivi->setBien(null);
             }
         }
 

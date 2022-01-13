@@ -8,6 +8,7 @@ use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImRoom;
+use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
@@ -149,6 +150,16 @@ class UserController extends AbstractController
         $rooms   = $serializer->serialize($rooms,   'json', ['groups' => User::USER_READ]);
         $photos  = $serializer->serialize($photos,  'json', ['groups' => User::USER_READ]);
 
+        if($type !== "update"){
+            $suivis = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
+
+            $prospects = [];
+            foreach($suivis as $suivi){
+                $prospects[] = $suivi->getProspect();
+            }
+            $prospects  = $serializer->serialize($prospects,  'json', ['groups' => User::ADMIN_READ]);
+        }
+
         return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',
             $element, $tenants, $rooms, $photos)
             : $this->render("user/pages/biens/read.html.twig", [
@@ -156,7 +167,8 @@ class UserController extends AbstractController
                 'data' => $element,
                 'tenants' => $tenants,
                 'rooms' => $rooms,
-                'photos' => $photos
+                'photos' => $photos,
+                'prospects' => $prospects
         ]);
     }
 

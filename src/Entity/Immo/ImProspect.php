@@ -4,6 +4,8 @@ namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
 use App\Repository\Immo\ImProspectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -137,9 +139,15 @@ class ImProspect extends DataEntity
      */
     private $agency;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImSuivi::class, mappedBy="prospect")
+     */
+    private $suivis;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
+        $this->suivis = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -438,5 +446,35 @@ class ImProspect extends DataEntity
     public function getLastContactAtAgo(): ?string
     {
         return $this->getHowLongAgo($this->lastContactAt);
+    }
+
+    /**
+     * @return Collection|ImSuivi[]
+     */
+    public function getSuivis(): Collection
+    {
+        return $this->suivis;
+    }
+
+    public function addSuivi(ImSuivi $suivi): self
+    {
+        if (!$this->suivis->contains($suivi)) {
+            $this->suivis[] = $suivi;
+            $suivi->setProspect($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSuivi(ImSuivi $suivi): self
+    {
+        if ($this->suivis->removeElement($suivi)) {
+            // set the owning side to null (unless already changed)
+            if ($suivi->getProspect() === $this) {
+                $suivi->setProspect(null);
+            }
+        }
+
+        return $this;
     }
 }
