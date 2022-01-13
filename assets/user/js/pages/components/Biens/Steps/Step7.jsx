@@ -49,63 +49,10 @@ export function Step7({ step, errors, onNext, onDraft, onChangeLegend, onChangeF
             <div className="form-group">
                 <label>Photos</label>
             </div>
-            <div className="items-table">
-                <div className="items items-default">
-                    {(photos && photos.length !== 0) && <div className="item item-header">
-                        <div className="item-content">
-                            <div className="item-body item-body-image">
-                                <div className="infos infos-col-4">
-                                    <div className="col-1">Photo</div>
-                                    <div className="col-2">Ordre</div>
-                                    <div className="col-3">Taille</div>
-                                    <div className="col-4 actions">Actions</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>}
-                    {photos.map((el, index) => {
 
-                        let src = el.is64 ? el.file : el.photoFile;
+            <PhotosItem photos={photos} onSwitchTrashFile={onSwitchTrashFile} onOpenAside={onOpenAside}
+                        onDragStart={onDragStart} onDragLeave={onDragLeave} onDrop={onDrop} />
 
-                        return (<div className={"item-drag item" + (el.isTrash ? " trash" : "")}
-                                     draggable="true" key={index}
-                                     onDragStart={(e) => onDragStart(e, el.rank)}
-                                     onDragOver={(e) => e.preventDefault()}
-                                     onDragEnter={onDragLeave}
-                                     onDrop={(e) => onDrop(e, el.rank)}
-                        >
-                            <div className="item-content">
-                                <div className="item-body item-body-image">
-                                    <div className="item-image">
-                                        <img src={src} alt={el.legend} />
-                                    </div>
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">
-                                            <div className="name name-legend">
-                                                {!el.isTrash ?
-                                                    (el.legend ?
-                                                        <><ButtonIcon icon="pencil" onClick={() => onOpenAside(el)} >Modifier</ButtonIcon><span>{el.legend}</span></>
-                                                        : <ButtonIcon icon="tag" text="Ajouter une légende" onClick={() => onOpenAside("photo", el)}/>)
-                                                    : "Supprimée"}
-                                            </div>
-                                        </div>
-                                        <div className="col-2">
-                                            {el.rank}
-                                        </div>
-                                        <div className="col-3">
-                                            {Sanitaze.toFormatBytesToSize(el.size)}
-                                        </div>
-                                        <div className="col-4 actions">
-                                            {el.isTrash ? <ButtonIcon icon="refresh" onClick={() => onSwitchTrashFile(el)}>Annuler la suppression</ButtonIcon>
-                                                : <ButtonIcon icon="trash" onClick={() => onSwitchTrashFile(el)}>Supprimer</ButtonIcon>}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>)
-                    })}
-                </div>
-            </div>
             <div className="line line-3">
                 <div className="form-group" />
                 <div className="form-group" />
@@ -120,5 +67,70 @@ export function Step7({ step, errors, onNext, onDraft, onChangeLegend, onChangeF
         </div>
 
         <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
+    </div>
+}
+
+export function PhotosItem({ isFromRead=false, photos, onSwitchTrashFile, onOpenAside, onDragStart, onDragLeave, onDrop }) {
+    return <div className="items-table">
+        <div className="items items-default">
+            <div className="item item-header">
+                <div className="item-content">
+                    <div className="item-body item-body-image">
+                        {isFromRead ? <div className="infos infos-col-3">
+                            <div className="col-1">Photo</div>
+                            <div className="col-2">Ordre</div>
+                            <div className="col-3">Taille</div>
+                        </div> : <div className="infos infos-col-4">
+                            <div className="col-1">Photo</div>
+                            <div className="col-2">Ordre</div>
+                            <div className="col-3">Taille</div>
+                            <div className="col-4 actions">Actions</div>
+                        </div>}
+                    </div>
+                </div>
+            </div>
+            {(photos && photos.length !== 0) ? photos.map((el, index) => {
+
+                let src = el.is64 ? el.file : el.photoFile;
+
+                return (<div className={"item-drag item" + (el.isTrash ? " trash" : "")}
+                             draggable={isFromRead ? "false" : "true"} key={index}
+                             onDragStart={isFromRead ? null : (e) => onDragStart(e, el.rank)}
+                             onDragOver={(e) => e.preventDefault()}
+                             onDragEnter={isFromRead ? null : onDragLeave}
+                             onDrop={isFromRead ? null : (e) => onDrop(e, el.rank)}
+                >
+                    <div className="item-content">
+                        <div className="item-body item-body-image">
+                            <div className="item-image">
+                                <img src={src} alt={el.legend} />
+                            </div>
+                            <div className={"infos infos-col-" + (isFromRead ? "3" : "4")}>
+                                <div className="col-1">
+                                    <div className="name name-legend">
+                                        {!el.isTrash ?
+                                            isFromRead ? <span>{el.legend}</span> : (el.legend ?
+                                                <><ButtonIcon icon="pencil" onClick={() => onOpenAside(el)} >Modifier</ButtonIcon><span>{el.legend}</span></>
+                                                : <ButtonIcon icon="tag" text="Ajouter une légende" onClick={() => onOpenAside("photo", el)}/>)
+                                            : "Supprimée"
+                                        }
+                                    </div>
+                                </div>
+                                <div className="col-2">
+                                    {el.rank}
+                                </div>
+                                <div className="col-3">
+                                    {Sanitaze.toFormatBytesToSize(el.size)}
+                                </div>
+                                {!isFromRead && <div className="col-4 actions">
+                                    {el.isTrash ? <ButtonIcon icon="refresh" onClick={() => onSwitchTrashFile(el)}>Annuler la suppression</ButtonIcon>
+                                        : <ButtonIcon icon="trash" onClick={() => onSwitchTrashFile(el)}>Supprimer</ButtonIcon>}
+                                </div>}
+                            </div>
+                        </div>
+                    </div>
+                </div>)
+            }) : <Alert>Aucune photo renseignée.</Alert>}
+        </div>
     </div>
 }

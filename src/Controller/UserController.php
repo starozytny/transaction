@@ -6,14 +6,14 @@ use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImPhoto;
+use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImOwnerRepository;
-use App\Repository\Immo\ImPhotoRepository;
 use App\Repository\Immo\ImProspectRepository;
-use App\Repository\Immo\ImRoomRepository;
 use App\Repository\Immo\ImTenantRepository;
 use App\Repository\Immo\ImVisitRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -136,46 +136,44 @@ class UserController extends AbstractController
         return $this->formBien($serializer, 'user/pages/biens/create.html.twig');
     }
 
-    /**
-     * @Route("/biens/modifier-un-bien/{slug}",options={"expose"=true}, name="biens_update")
-     */
-    public function updateBien($slug, SerializerInterface $serializer,
-                               ImBienRepository $repository, ImTenantRepository $tenantRepository,
-                               ImRoomRepository $roomRepository, ImPhotoRepository $photoRepository): Response
+    private function bienData($type, SerializerInterface $serializer, $slug): Response
     {
-        $element = $repository->findOneBy(["slug" => $slug]);
-        $tenants = $tenantRepository->findBy(["bien" => $element]);
-        $photos = $photoRepository->findBy(["bien" => $element]);
-        $rooms = $roomRepository->findBy(["bien" => $element]);
+        $em = $this->doctrine->getManager();
+        $obj = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
+        $tenants = $em->getRepository(ImTenant::class)->findBy(["bien" => $obj]);
+        $photos = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
+        $rooms = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
 
-        $element = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
+        $element = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
         $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
         $rooms   = $serializer->serialize($rooms,   'json', ['groups' => User::USER_READ]);
         $photos  = $serializer->serialize($photos,  'json', ['groups' => User::USER_READ]);
 
-        return $this->formBien($serializer, 'user/pages/biens/update.html.twig', $element, $tenants, $rooms, $photos);
+        return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',
+            $element, $tenants, $rooms, $photos)
+            : $this->render("user/pages/biens/read.html.twig", [
+                'elem' => $obj,
+                'data' => $element,
+                'tenants' => $tenants,
+                'rooms' => $rooms,
+                'photos' => $photos
+        ]);
+    }
+
+    /**
+     * @Route("/biens/modifier-un-bien/{slug}",options={"expose"=true}, name="biens_update")
+     */
+    public function updateBien($slug, SerializerInterface $serializer): Response
+    {
+        return $this->bienData("update", $serializer, $slug);
     }
 
     /**
      * @Route("/biens/bien/{slug}",options={"expose"=true}, name="biens_read")
      */
-    public function readBien($slug, SerializerInterface $serializer, ImBienRepository $repository,
-                             ImTenantRepository $tenantRepository, ImRoomRepository $roomRepository): Response
+    public function readBien($slug, SerializerInterface $serializer): Response
     {
-        $element = $repository->findOneBy(["slug" => $slug]);
-        $tenants = $tenantRepository->findBy(["bien" => $element]);
-        $rooms = $roomRepository->findBy(["bien" => $element]);
-
-        $data = $serializer->serialize($element, 'json', ['groups' => User::USER_READ]);
-        $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::USER_READ]);
-        $rooms = $serializer->serialize($rooms, 'json', ['groups' => User::USER_READ]);
-
-        return $this->render("user/pages/biens/read.html.twig", [
-            'elem' => $element,
-            'data' => $data,
-            'tenants' => $tenants,
-            'rooms' => $rooms,
-        ]);
+        return $this->bienData("read", $serializer, $slug);
     }
 
     /**

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Diag }       from "./split/Diag";
 import { Infos }      from "./split/Infos";
 import { Rooms }      from "./split/Rooms";
+import { Photos }     from "./split/Photos";
 import { Contact }    from "./split/Contact";
 import { Features }   from "./split/Features";
 import { Financial, FinancialVente } from "./split/Financial";
@@ -19,19 +20,23 @@ export class AdItem extends Component {
             elem: JSON.parse(props.elem),
             tenants: props.tenants ? JSON.parse(props.tenants) : [],
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
-            subContext: "rooms",
+            photos: props.photos ? JSON.parse(props.photos) : [],
+            context: "photos",
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
     }
 
-    handleChangeContext = (subContext) => { this.setState({ subContext }) }
+    handleChangeContext = (context) => { this.setState({ context }) }
 
     render () {
-        const { elem, tenants, rooms, subContext } = this.state;
+        const { elem, tenants, rooms, photos, context } = this.state;
 
         let content;
-        switch (subContext){
+        switch (context){
+            case "photos":
+                content = <Photos photos={photos} />
+                break;
             case "rooms":
                 content = <Rooms rooms={rooms} />
                 break;
@@ -78,7 +83,7 @@ export class AdItem extends Component {
                             <ButtonIcon element="a" target="_blank" icon="print">Imprimer</ButtonIcon>
                         </div>
                     </div>
-                    <Navigation subContext={subContext} onChangeContext={this.handleChangeContext} />
+                    <Navigation context={context} onChangeContext={this.handleChangeContext} />
                     <div className="details-content">
                         {content}
                     </div>
@@ -88,7 +93,7 @@ export class AdItem extends Component {
     }
 }
 
-function Navigation({ onChangeContext, subContext }){
+function Navigation({ onChangeContext, context }){
 
     let items = [
         {context: "infos",       label: "Infos"},
@@ -98,13 +103,14 @@ function Navigation({ onChangeContext, subContext }){
         {context: "diag",        label: "Diagnostic"},
         {context: "financial",   label: "Financier"},
         {context: "contact",     label: "Contact"},
+        {context: "photos",      label: "Photos"},
     ]
 
     return (
         <div className="details-nav">
             <div className="details-nav-items">
                 {items.map(el => {
-                    return <div className={subContext === el.context ? "active" : ""} onClick={() => onChangeContext(el.context)} key={el.context}>{el.label}</div>
+                    return <div className={context === el.context ? "active" : ""} onClick={() => onChangeContext(el.context)} key={el.context}>{el.label}</div>
                 })}
             </div>
         </div>
