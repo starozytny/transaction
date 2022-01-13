@@ -4,8 +4,13 @@
   @include flex(row, center, flex-start);
 
   &.card-draft{
-    .card-main{
+    .card-body,
+    .commentary{
       opacity: 0.5;
+    }
+
+    .card-footer{
+      background-color: rgba(49, 46, 52, 0.5);
     }
   }
 

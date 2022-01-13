@@ -4,7 +4,7 @@ import Sort from "@commonComponents/functions/sort";
 
 import { HelpBubble } from "@dashboardComponents/Tools/HelpBubble";
 
-import { Persons, VisitsMainInfos } from "@dashboardPages/components/Immo/Visits/VisitsItem";
+import { VisitsMainInfos } from "@dashboardPages/components/Immo/Visits/VisitsItem";
 
 export class Global extends Component {
     constructor(props) {
