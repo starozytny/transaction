@@ -97,6 +97,7 @@ class DataEntity
     {
         $complement = $complement != null && $complement != "" ? ", " . $complement : "";
         $zipcode = $zipcode != null && $zipcode != "" ? ", " . $zipcode : "";
+        $city = $city != null && $city != "" ? " " . $city : "";
         $country = $country != null && $country != "" ? " - " . $country : "";
 
         return $address . $complement .  $zipcode . $city . $country;
@@ -108,7 +109,7 @@ class DataEntity
         return $civility . $lastname . " " . $firstname;
     }
 
-    public function setCivilityString($civility)
+    public function setCivilityString($civility): string
     {
         $civilities = ["Mr", "Mme", "Société", "Mr ou Mme", "Mr et Mme"];
 
