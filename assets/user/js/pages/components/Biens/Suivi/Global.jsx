@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 
+import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import Sort from "@commonComponents/functions/sort";
 
 import { HelpBubble } from "@dashboardComponents/Tools/HelpBubble";
@@ -49,13 +51,21 @@ export class Global extends Component {
             <div className="card">
                 <div>
                     <span className="icon-group" />
-                    <span>{prospects.length} prospect{prospects.length > 1 ? "s" : ""}</span>
+                    <span>
+                        <a href={Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "prospects"})}>
+                            {prospects.length} prospect{prospects.length > 1 ? "s" : ""}
+                        </a>
+                    </span>
                 </div>
             </div>
             <div className="card">
                 <div>
                     <span className="icon-calendar" />
-                    <span>{totalVisits} visite{totalVisits > 1 ? "s" : ""}</span>
+                    <span>
+                        <a href={Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "visites"})}>
+                            {totalVisits} visite{totalVisits > 1 ? "s" : ""}
+                        </a>
+                    </span>
                 </div>
             </div>
 
