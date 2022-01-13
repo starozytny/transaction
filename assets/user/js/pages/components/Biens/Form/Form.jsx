@@ -107,10 +107,8 @@ function calculateFinancial(self, name, value, codeTypeAd,
             self.setState({ honorairePourcentage: nHonoPour })
         }
 
-        if(name === "price" || name === "notaire" || name === "honoraireTtc" || name === "honorairePourcentage"){
-            let totalGeneral = getValueFloat(nPrice) + getValueFloat(nNotaire) + getValueFloat(nHonoTtc);
-            self.setState({ totalGeneral: totalGeneral, priceHorsAcquereur: nPriceHoAcq })
-        }
+        let totalGeneral = getValueFloat(nPrice) + getValueFloat(nNotaire) + getValueFloat(nHonoTtc);
+        self.setState({ totalGeneral: totalGeneral, priceHorsAcquereur: nPriceHoAcq })
     }else{
         let totalTerme, totalGeneral;
         switch (nTypeCalcul){
