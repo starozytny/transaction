@@ -6,16 +6,29 @@ import { TenantContact, TenantMainInfos, TenantNegotiator } from "@dashboardPage
 
 export class ProspectsItem extends Component {
     render () {
-        const { isFromRead, isClient, elem, onDelete, onSelectors, onChangeContext } = this.props;
+        const { isSelect, isFromRead, isClient, elem, prospects, onDelete, onSelectors, onChangeContext, onSelectProspect } = this.props;
+
+        let active = false;
+        if(prospects){
+            prospects.forEach(te => {
+                if(te.id === elem.id){
+                    active = true;
+                }
+            })
+        }
 
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
+            {isSelect && <div className="selector" onClick={() => onSelectProspect(elem)}>
+                <label className={"item-selector " + active} />
+            </div>}
 
             <div className="item-content">
                 <div className="item-body">
                     <div className={"infos infos-col-" + (isFromRead ? "3" : "5")}>
                         <div className="col-1">
                             <TenantMainInfos elem={elem} isClient={isClient} />
+                            {isFromRead && <TenantNegotiator elem={elem} />}
                         </div>
                         <div className="col-2">
                             <TenantContact elem={elem} />
@@ -37,6 +50,7 @@ export class ProspectsItem extends Component {
                         <div className={isFromRead ? "col-3 actions" : "col-5 actions"}>
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            {(isFromRead && !isSelect) && <ButtonIcon icon="cancel">Enlever</ButtonIcon>}
                         </div>
                     </div>
                 </div>

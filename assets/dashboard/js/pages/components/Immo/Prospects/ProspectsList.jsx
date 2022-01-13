@@ -20,11 +20,11 @@ export class ProspectsList extends Component {
     }
 
     render () {
-        const { isFromRead=false, isClient, data, onSearch, onChangeContext, onDeleteAll } = this.props;
+        const { isSelect=false, isFromRead=false, isClient, data, onSearch, onChangeContext, onDeleteAll } = this.props;
 
         return <>
             <div>
-                <div className="toolbar toolbar-prospect">
+                {!isSelect && <div className="toolbar toolbar-prospect">
                     <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter un prospect</Button>
                     </div>
@@ -34,12 +34,12 @@ export class ProspectsList extends Component {
                     {!isFromRead && <div className="item filter-search">
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom.."/>
                     </div>}
-                </div>
+                </div>}
 
                 <div className="items-table">
                     <div className="items items-default">
                         <div className="item item-header">
-                            {!isClient && <div className="item-header-selector" />}
+                            {(!isClient || isSelect) && <div className="item-header-selector" />}
                             <div className="item-content">
                                 <div className="item-body">
                                     {isFromRead ? <div className="infos infos-col-3">

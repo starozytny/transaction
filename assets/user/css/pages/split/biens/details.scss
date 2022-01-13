@@ -110,6 +110,10 @@
   }
 }
 
+.details-identifiant{
+  margin-bottom: 24px;
+}
+
 .details-tab-infos-main{
   background-color: var(--greyShadow);
   border-radius: 4px;
@@ -158,7 +162,7 @@
 }
 
 .details-suivi-container{
-  .title{
+  & > .title{
     width: calc(100% - 24px);
     @include fontSemibold();
     font-size: 20px;
@@ -253,13 +257,13 @@
     .items-default {
       .infos-col-3 {
         .col-1{
-          width: calc(100% - 47% - 48px - 80px);
+          width: calc(100% - 46% - 48px - 110px);
         }
         .col-2{
-          width: calc(47% - 24px);
+          width: calc(46% - 24px);
         }
         .col-3{
-          width: 80px;
+          width: 110px;
         }
       }
     }

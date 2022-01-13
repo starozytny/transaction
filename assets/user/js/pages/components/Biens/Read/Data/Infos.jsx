@@ -5,7 +5,7 @@ import Sanitize  from "@commonComponents/functions/sanitaze";
 
 export function Infos({ elem }){
     return (<div className="details-tab-infos">
-        <div className="details-tab-infos-main">
+        <div className="details-tab-infos-main details-identifiant">
             <div>
                 <div className="label">Identifiant immuable</div>
                 <div>{elem.identifiant}</div>
