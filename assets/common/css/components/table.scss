@@ -242,6 +242,7 @@
     & > .items {
       & > .item{
         padding-top: 12px;
+        padding-right: 4px;
       }
       & > .item-header {
         display: flex;
@@ -251,6 +252,7 @@
         border-bottom: none;
         overflow: hidden;
         @include fontSemibold();
+        padding-right: 12px;
 
         .item-body-image{
           padding-left: 74px;
