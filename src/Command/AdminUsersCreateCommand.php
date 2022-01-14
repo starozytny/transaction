@@ -32,7 +32,7 @@ class AdminUsersCreateCommand extends Command
     {
         $this
             ->setDescription('Create an user and an admin.')
-            ->addOption('fake', 'f', InputOption::VALUE_NONE, 'Option shit values')
+            ->addOption('fake', "f", InputOption::VALUE_NONE, 'Option shit values')
         ;
     }
 
