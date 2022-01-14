@@ -56,7 +56,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $objs = $repository->findAll();
         $data = $eventService->getEvents($objs, $user);
-        $objs = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
+        $objs = $serializer->serialize($data, 'json', ['groups' => User::AGENDA_READ]);
 
         return $this->render('user/pages/agenda/index.html.twig', [
             'donnees' => $objs,

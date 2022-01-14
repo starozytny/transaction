@@ -55,7 +55,7 @@ class EventController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponse($obj, User::USER_READ);
+        return $apiResponse->apiJsonResponse($obj, User::AGENDA_READ);
     }
 
     /**
@@ -147,7 +147,7 @@ class EventController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponse($obj, User::USER_READ);
+        return $apiResponse->apiJsonResponse($obj, User::AGENDA_READ);
     }
 
     /**

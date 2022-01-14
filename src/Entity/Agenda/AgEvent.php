@@ -16,6 +16,7 @@ class AgEvent extends DataEntity
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_CANCEL = 2;
+    const STATUS_OVER = 3;
 
     const VISIBILITY_RELATED = 0;
     const VISIBILITY_ONLY_ME = 1;
@@ -27,19 +28,19 @@ class AgEvent extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     private $visibilities = [self::VISIBILITY_ONLY_ME];
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     private $name;
 
@@ -55,19 +56,19 @@ class AgEvent extends DataEntity
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     private $allDay = false;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     private $location;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     private $comment;
 
@@ -83,20 +84,20 @@ class AgEvent extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     private $persons;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, fetch="EAGER", inversedBy="agEvents")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     private $creator;
 
@@ -124,7 +125,7 @@ class AgEvent extends DataEntity
 
     /**
      * @return string|null
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     public function getStartAtAgenda(): ?string
     {
@@ -133,7 +134,7 @@ class AgEvent extends DataEntity
 
     /**
      * @return string|null
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     public function getStartAtJavascript(): ?string
     {
@@ -154,7 +155,7 @@ class AgEvent extends DataEntity
 
     /**
      * @return string|null
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     public function getEndAtAgenda(): ?string
     {
@@ -163,7 +164,7 @@ class AgEvent extends DataEntity
 
     /**
      * @return string|null
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     public function getEndAtJavascript(): ?string
     {
@@ -269,7 +270,7 @@ class AgEvent extends DataEntity
 
     /**
      * @return string
-     * @Groups({"user:read"})
+     * @Groups({"agenda:read"})
      */
     public function getStatusString(): string
     {
