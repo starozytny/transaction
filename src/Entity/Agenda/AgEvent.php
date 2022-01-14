@@ -125,6 +125,17 @@ class AgEvent extends DataEntity
 
     /**
      * @return string|null
+     */
+    public function getStartAtString(): ?string
+    {
+        if($this->allDay){
+            return $this->startAt ? date_format($this->startAt, "D\\.d M Y") : null;
+        }
+        return $this->setDateHumanHours($this->startAt);
+    }
+
+    /**
+     * @return string|null
      * @Groups({"agenda:read"})
      */
     public function getStartAtAgenda(): ?string
@@ -151,6 +162,15 @@ class AgEvent extends DataEntity
         $this->startAt = $startAt;
 
         return $this;
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function getEndAtString(): ?string
+    {
+        return $this->setDateHumanHours($this->endAt);
     }
 
     /**
@@ -181,6 +201,27 @@ class AgEvent extends DataEntity
         $this->endAt = $endAt;
 
         return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getFullDate(): string
+    {
+        $start = str_replace(":", "h", $this->getStartAtString());
+        $end = str_replace(":", "h", $this->getEndAtString());
+        return $start . (($end && $this->endAt !== $this->startAt) ? "<br> à <br>" . $end : "");
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullDateInline(): string
+    {
+        $start = str_replace(":", "h", $this->getStartAtString());
+        $end = str_replace(":", "h", $this->getEndAtString());
+        return $start . (($end && $this->endAt !== $this->startAt) ? " à " . $end : "");
     }
 
     public function getAllDay(): ?bool
@@ -274,7 +315,7 @@ class AgEvent extends DataEntity
      */
     public function getStatusString(): string
     {
-        $status = ["Inactif", "Actif", "Annulé"];
+        $status = ["Inactif", "Actif", "Annulé", "Fini"];
 
         return $status[$this->status];
     }
