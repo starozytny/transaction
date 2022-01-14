@@ -57,7 +57,7 @@ export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, eleme
         birthday={element ? Formulaire.setDateOrEmptyIfNull(element.birthdayJavascript, "") : ""}
         lastContactAt={element ? Formulaire.setDateOrEmptyIfNull(element.lastContactAtJavascript, "") : ""}
         type={element ? Formulaire.setValueEmptyIfNull(element.type, 0) : 0}
-        status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : (bienId ? 2 : 0)}
+        status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
 
         bienId={bienId}
 
