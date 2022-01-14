@@ -96,7 +96,7 @@ class DataEntity
         return $civility . $lastname . " " . $firstname;
     }
 
-    public function setCivilityString($civility)
+    public function setCivilityString($civility): string
     {
         $civilities = ["Mr", "Mme", "Société", "Mr ou Mme", "Mr et Mme"];
 
