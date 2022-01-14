@@ -16,6 +16,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import Formulaire        from "@dashboardComponents/functions/Formulaire";
 import UpdateList        from "@dashboardComponents/functions/updateList";
 import Sanitaze          from "@commonComponents/functions/sanitaze";
+import AgendaData        from "./agendaData";
 
 import { Aside }         from "@dashboardComponents/Tools/Aside";
 import { Button }        from "@dashboardComponents/Tools/Button";
@@ -53,43 +54,14 @@ export class Agenda extends Component {
         this.handleEventDidMount = this.handleEventDidMount.bind(this);
     }
 
-    componentDidMount = () => {
-        const self = this;
-        axios({ method: "GET", url: Routing.generate(URL_GET_DATA), data: {}})
-            .then(function (response) {
-                let data = response.data;
-                let users = JSON.parse(data.users)
-                self.setState({ users: users })
-            })
-            .catch(function (error) {
-                Formulaire.displayErrors(self, error)
-                self.setState({ loadPageError: true });
-            })
-            .then(function () {
-                Formulaire.loader(false);
-                self.setState({ loadData: false });
-            })
-        ;
-    }
+    componentDidMount = () => { AgendaData.getData(this, URL_GET_DATA); }
 
     handleOpenAside = (context, elem) => {
         let title = context === "update" ? elem.title : "Ajouter un évènement";
 
         let element = elem;
         if(context === "update"){
-            let props = elem.extendedProps;
-            element = {
-                id: parseInt(elem.id),
-                name: elem.title,
-                allDay: elem.allDay,
-                startAtJavascript: props.startAtJavascript,
-                endAtJavascript: props.endAtJavascript,
-                location: props.location,
-                comment: props.comment,
-                persons: props.persons,
-                status: props.status,
-                visibilities: props.visibilities,
-            }
+            element = AgendaData.createElement(elem);
         }
 
         this.setState({ context, element })
@@ -182,28 +154,11 @@ export class Agenda extends Component {
 
         let events = [];
         data.forEach(elem => {
-            events.push({
-                id: elem.id,
-                title: elem.name,
-                start: elem.startAtAgenda,
-                end: elem.endAtAgenda,
-                allDay: elem.allDay,
-                extendedProps: {
-                    location: elem.location,
-                    comment: elem.comment,
-                    persons: elem.persons,
-                    startAtJavascript: elem.startAtJavascript,
-                    endAtJavascript: elem.endAtJavascript,
-                    status: elem.status,
-                    statusString: elem.statusString,
-                    visibilities: elem.visibilities,
-                },
-                classNames: "event event-" + elem.status
-            })
+            events.push(AgendaData.createEventStructure(elem))
         })
 
         return <>
-            {loadPageError ? <PageError /> : <div id="calendar" className="main-content">
+            {loadPageError ? <div className="main-content"><PageError /></div> : <div id="calendar" className="main-content">
                 {loadData ? <LoaderElement /> : <>
                     <div className="toolbar">
                         <div className="item">
