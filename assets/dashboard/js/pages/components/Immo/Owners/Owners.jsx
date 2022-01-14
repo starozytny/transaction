@@ -23,7 +23,7 @@ export class Owners extends Component {
             msgDeleteElement: MSG_DELETE_ELEMENT,
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
-            sessionName: "tenants.pagination",
+            sessionName: "owners.pagination",
             idAgency: parseInt(props.agencyId),
             idSociety: parseInt(props.societyId),
             societies: props.societies ? JSON.parse(props.societies) : [],

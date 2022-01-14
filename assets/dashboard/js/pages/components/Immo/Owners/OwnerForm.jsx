@@ -189,9 +189,6 @@ export class OwnerForm extends Component {
                         if(context === "create"){
                             toastr.info(messageSuccess);
                             self.setState( {
-                                society: "",
-                                agency: "",
-                                negotiator: "",
                                 lastname: "",
                                 firstname: "",
                                 civility: 2,
