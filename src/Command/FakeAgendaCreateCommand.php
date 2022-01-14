@@ -69,7 +69,7 @@ class FakeAgendaCreateCommand extends Command
                 "startAt" => $start->format("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "endAt" => $end,
                 "allDay" => [$allDay],
-                "status" => $fake->numberBetween(0, 2),
+                "status" => $fake->numberBetween(0, 3),
                 "location" => $fake->streetName,
                 "comment" => $fake->sentence,
                 "users" => $users,
