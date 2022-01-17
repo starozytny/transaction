@@ -31,5 +31,7 @@ winpty.exe.stackdump
 
 /public/data/*
 /public/annonces/*
+/public/articles/*
+/public/avatars/*
 
 /documents/*
