@@ -9,7 +9,7 @@ import { ProspectFormulaire }  from "./ProspectForm";
 const URL_DELETE_ELEMENT = 'api_prospects_delete';
 const URL_DELETE_GROUP   = 'api_prospects_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer ce prospect ?';
-const MSG_DELETE_GROUP   = 'Aucun prospect sélectionnés.';
+const MSG_DELETE_GROUP   = 'Aucun prospect sélectionné.';
 const SORTER = Sort.compareLastname;
 
 export class Prospects extends Component {

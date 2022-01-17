@@ -9,7 +9,7 @@ import { OwnerFormulaire }  from "./OwnerForm";
 const URL_DELETE_ELEMENT = 'api_owners_delete';
 const URL_DELETE_GROUP   = 'api_owners_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer ce propriétaire ?';
-const MSG_DELETE_GROUP   = 'Aucun propriétaire sélectionnés.';
+const MSG_DELETE_GROUP   = 'Aucun propriétaire sélectionné.';
 const SORTER = Sort.compareLastname;
 
 export class Owners extends Component {

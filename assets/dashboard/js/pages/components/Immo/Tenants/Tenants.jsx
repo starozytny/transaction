@@ -9,7 +9,7 @@ import { TenantFormulaire }  from "./TenantForm";
 const URL_DELETE_ELEMENT = 'api_tenants_delete';
 const URL_DELETE_GROUP   = 'api_tenants_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer ce locataire ?';
-const MSG_DELETE_GROUP   = 'Aucun locataire sélectionnés.';
+const MSG_DELETE_GROUP   = 'Aucun locataire sélectionné.';
 const SORTER = Sort.compareLastname;
 
 export class Tenants extends Component {

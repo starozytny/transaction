@@ -9,7 +9,7 @@ import { BuyerFormulaire }  from "./BuyerForm";
 const URL_DELETE_ELEMENT = 'api_buyers_delete';
 const URL_DELETE_GROUP   = 'api_buyers_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer cet acquéreur ?';
-const MSG_DELETE_GROUP   = 'Aucun acquéreur sélectionnés.';
+const MSG_DELETE_GROUP   = 'Aucun acquéreur sélectionné.';
 const SORTER = Sort.compareLastname;
 
 export class Buyers extends Component {

@@ -5,10 +5,10 @@ import { Layout }        from "@dashboardComponents/Layout/Page";
 import { SearchsList }       from "./SearchsList";
 import { SearchFormulaire }  from "./SearchForm";
 
-const URL_DELETE_ELEMENT = 'api_prospects_delete';
-const URL_DELETE_GROUP   = 'api_prospects_delete_group';
-const MSG_DELETE_ELEMENT = 'Supprimer ce prospect ?';
-const MSG_DELETE_GROUP   = 'Aucun prospect sélectionnés.';
+const URL_DELETE_ELEMENT = 'api_searchs_delete';
+const URL_DELETE_GROUP   = 'api_searchs_delete_group';
+const MSG_DELETE_ELEMENT = 'Supprimer cette recherche ?';
+const MSG_DELETE_GROUP   = 'Aucune recherche sélectionné.';
 
 export class Searchs extends Component {
     constructor(props) {

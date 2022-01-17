@@ -14,8 +14,8 @@ import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 import helper                  from "@userPages/components/Biens/helper";
 
-const URL_CREATE_ELEMENT     = "api_prospects_create";
-const URL_UPDATE_GROUP       = "api_prospects_update";
+const URL_CREATE_ELEMENT     = "api_searchs_create";
+const URL_UPDATE_GROUP       = "api_searchs_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 

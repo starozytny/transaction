@@ -9,7 +9,7 @@ import { NegotiatorFormulaire } from "./NegotiatorForm";
 const URL_DELETE_ELEMENT = 'api_negotiators_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer ce négociateur ?';
 const URL_DELETE_GROUP   = 'api_negotiators_delete_group';
-const MSG_DELETE_GROUP   = 'Aucun négociateur sélectionnés.';
+const MSG_DELETE_GROUP   = 'Aucun négociateur sélectionné.';
 const SORTER = Sort.compareName;
 
 export class Negotiators extends Component {
