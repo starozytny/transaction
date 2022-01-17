@@ -19,7 +19,7 @@ export class ProspectsItem extends Component {
             })
         }
 
-        let routeSearchs = isClient ? "" : "admin_prospects_searchs";
+        let routeSearchs = isClient ? "user_prospects_searchs" : "admin_prospects_searchs";
 
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}

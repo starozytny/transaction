@@ -7,7 +7,9 @@ use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
+use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImRoom;
+use App\Entity\Immo\ImSearch;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
@@ -354,6 +356,22 @@ class UserController extends AbstractController
         $objs = $serializer->serialize($data, 'json', ['groups' => User::AGENDA_READ]);
 
         return $this->render('user/pages/agenda/index.html.twig', [
+            'donnees' => $objs,
+        ]);
+    }
+
+    /**
+     * @Route("/prospects/prospect/{id}/recherches", options={"expose"=true}, name="prospects_searchs")
+     */
+    public function searchs(ImProspect $obj, SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+        $objs = $em->getRepository(ImSearch::class)->findBy(['prospect' => $obj]);
+
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('user/pages/searchs/index.html.twig', [
+            'elem' => $obj,
             'donnees' => $objs,
         ]);
     }

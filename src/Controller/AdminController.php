@@ -263,7 +263,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/immobilier/prospect/{id}/recherches", options={"expose"=true}, name="prospects_searchs")
+     * @Route("/immobilier/prospects/prospect/{id}/recherches", options={"expose"=true}, name="prospects_searchs")
      */
     public function searchs(ImProspect $obj, SerializerInterface $serializer): Response
     {
