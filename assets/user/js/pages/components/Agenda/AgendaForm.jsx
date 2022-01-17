@@ -14,11 +14,11 @@ import {
 import { DatePick, DateTimePick } from "@dashboardComponents/Tools/DatePicker";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
+import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
-import {FormLayout} from "@dashboardComponents/Layout/Elements";
 
 const URL_CREATE_ELEMENT     = "api_agenda_events_create";
 const URL_UPDATE_GROUP       = "api_agenda_events_update";

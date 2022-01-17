@@ -218,6 +218,11 @@ class ImAgency
      */
     private $photos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImBuyer::class, mappedBy="agency")
+     */
+    private $buyers;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
@@ -227,6 +232,7 @@ class ImAgency
         $this->owners = new ArrayCollection();
         $this->prospects = new ArrayCollection();
         $this->photos = new ArrayCollection();
+        $this->buyers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -738,6 +744,36 @@ class ImAgency
             // set the owning side to null (unless already changed)
             if ($prospect->getAgency() === $this) {
                 $prospect->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImBuyer[]
+     */
+    public function getBuyers(): Collection
+    {
+        return $this->buyers;
+    }
+
+    public function addBuyer(ImBuyer $buyer): self
+    {
+        if (!$this->buyers->contains($buyer)) {
+            $this->buyers[] = $buyer;
+            $buyer->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuyer(ImBuyer $buyer): self
+    {
+        if ($this->buyers->removeElement($buyer)) {
+            // set the owning side to null (unless already changed)
+            if ($buyer->getAgency() === $this) {
+                $buyer->setAgency(null);
             }
         }
 
