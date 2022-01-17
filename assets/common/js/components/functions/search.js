@@ -36,6 +36,7 @@ function switchFunction(type, search, v) {
                 return v;
             }
             break;
+        case "buyer":
         case "prospect":
         case "tenant":
             if( v.firstname.toLowerCase().startsWith(search)

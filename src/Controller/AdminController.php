@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
@@ -235,6 +236,24 @@ class AdminController extends AbstractController
         $negotiators = $this->getAllData(ImNegotiator::class, $serializer);
 
         return $this->render('admin/pages/immo/prospects.html.twig', [
+            'donnees' => $objs,
+            'societies' => $societies,
+            'agencies' => $agencies,
+            'negotiators' => $negotiators,
+        ]);
+    }
+
+    /**
+     * @Route("/immobilier/acquereurs", name="buyers_index")
+     */
+    public function buyers(SerializerInterface $serializer): Response
+    {
+        $objs = $this->getAllData(ImBuyer::class, $serializer);
+        $societies = $this->getAllData(Society::class, $serializer);
+        $agencies = $this->getAllData(ImAgency::class, $serializer);
+        $negotiators = $this->getAllData(ImNegotiator::class, $serializer);
+
+        return $this->render('admin/pages/immo/buyers.html.twig', [
             'donnees' => $objs,
             'societies' => $societies,
             'agencies' => $agencies,

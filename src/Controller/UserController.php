@@ -13,6 +13,7 @@ use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
+use App\Repository\Immo\ImBuyerRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
 use App\Repository\Immo\ImTenantRepository;
@@ -292,9 +293,14 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/locataires", name="tenants")
+     * Return render and route for tenant, prospects, buyers...
+     *
+     * @param SerializerInterface $serializer
+     * @param $repository
+     * @param $routeName
+     * @return Response
      */
-    public function tenants(ImTenantRepository $repository, SerializerInterface $serializer): Response
+    private function getDataPersons(SerializerInterface $serializer, $repository, $routeName): Response
     {
         $em = $this->doctrine->getManager();
         /** @var User $user */
@@ -305,7 +311,7 @@ class UserController extends AbstractController
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
-        return $this->render('user/pages/tenants/index.html.twig', [
+        return $this->render($routeName, [
             'data' => $objs,
             'user' => $user,
             'negotiators' => $negotiators
@@ -313,24 +319,27 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/locataires", name="tenants")
+     */
+    public function tenants(ImTenantRepository $repository, SerializerInterface $serializer): Response
+    {
+        return $this->getDataPersons($serializer, $repository, "user/pages/tenants/index.html.twig");
+    }
+
+    /**
      * @Route("/prospects", name="prospects")
      */
     public function prospects(ImProspectRepository $repository, SerializerInterface $serializer): Response
     {
-        $em = $this->doctrine->getManager();
-        /** @var User $user */
-        $user = $this->getUser();
-        $objs = $repository->findBy(['agency' => $user->getAgency()]);
-        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+        return $this->getDataPersons($serializer, $repository, "user/pages/prospects/index.html.twig");
+    }
 
-        $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
-        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
-
-        return $this->render('user/pages/prospects/index.html.twig', [
-            'data' => $objs,
-            'user' => $user,
-            'negotiators' => $negotiators
-        ]);
+    /**
+     * @Route("/acquereurs", name="buyers")
+     */
+    public function buyers(ImBuyerRepository $repository, SerializerInterface $serializer): Response
+    {
+        return $this->getDataPersons($serializer, $repository, "user/pages/buyers/index.html.twig");
     }
 
     /**
