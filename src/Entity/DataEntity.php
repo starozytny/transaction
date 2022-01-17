@@ -115,4 +115,18 @@ class DataEntity
 
         return $civilities[$civility];
     }
+
+    public function getCodeTypeAdString($value): string
+    {
+        $data = ["Vente", "Location", "Viager", "Produit d'investissement", "Cession bail", "Location vacances", "Vente prestige", "Fond de commerce"];
+
+        return $data[$value];
+    }
+
+    public function getCodeTypeBienString($value): string
+    {
+        $data = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
+
+        return $data[$value];
+    }
 }

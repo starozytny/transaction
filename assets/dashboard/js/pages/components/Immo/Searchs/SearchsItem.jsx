@@ -13,7 +13,8 @@ export class SearchsItem extends Component {
                 <div className="item-body">
                     <div className="infos infos-col-5">
                         <div className="col-1">
-                            {elem.id}
+                            <div className={"badge badge-" + elem.codeTypeAd}>{elem.typeAdString}</div>
+                            <div className="name">{elem.typeBienString}</div>
                         </div>
 
                         <div className="col-2">

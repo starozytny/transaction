@@ -313,9 +313,7 @@ class ImBien extends DataEntity
      */
     public function getTypeAdString(): string
     {
-        $data = ["Vente", "Location", "Viager", "Produit d'investissement", "Cession bail", "Location vacances", "Vente prestige", "Fond de commerce"];
-
-        return $data[$this->codeTypeAd];
+        return $this->getCodeTypeAdString($this->codeTypeAd);
     }
 
     public function setCodeTypeAd(int $codeTypeAd): self
@@ -331,9 +329,7 @@ class ImBien extends DataEntity
      */
     public function getTypeBienString(): string
     {
-        $data = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Divers"];
-
-        return $data[$this->codeTypeBien];
+        return $this->getCodeTypeBienString($this->codeTypeAd);
     }
 
     public function getCodeTypeBien(): ?int

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Immo;
 
+use App\Entity\DataEntity;
 use App\Repository\Immo\ImSearchRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -9,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=ImSearchRepository::class)
  */
-class ImSearch
+class ImSearch extends DataEntity
 {
     /**
      * @ORM\Id
@@ -381,5 +382,23 @@ class ImSearch
         $this->prospect = $prospect;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getTypeAdString(): string
+    {
+        return $this->getCodeTypeAdString($this->codeTypeAd);
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getTypeBienString(): string
+    {
+        return $this->getCodeTypeBienString($this->codeTypeAd);
     }
 }
