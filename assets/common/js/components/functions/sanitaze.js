@@ -101,8 +101,8 @@ function toFormatTimeHoursMinutes(date){
     return addZeroToNumber(date.getHours()) + "h" + addZeroToNumber(date.getMinutes())
 }
 
-function toTrilleanString(value) {
-    return value === 99 ? "?" : (value === 1 ? "Oui" : "Non");
+function toTrilleanString(value, txt = "?") {
+    return value === 99 ? txt : (value === 1 ? "Oui" : "Non");
 }
 
 module.exports = {

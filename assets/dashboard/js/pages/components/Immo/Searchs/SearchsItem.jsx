@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
+import Sanitaze         from "@commonComponents/functions/sanitaze";
 
 export class SearchsItem extends Component {
     render () {
@@ -18,15 +19,27 @@ export class SearchsItem extends Component {
                         </div>
 
                         <div className="col-2">
-                            Localisation
+                            <div className="sub">
+                                {elem.zipcode} {elem.city}
+                            </div>
                         </div>
 
                         <div className="col-3">
-                            Infos
+                            <div className="sub">
+                                {Sanitaze.toFormatCurrency(elem.minPrice)} à {Sanitaze.toFormatCurrency(elem.maxPrice)}
+                            </div>
+                            <div className="sub">{elem.minPiece} à {elem.maxPiece} pièces</div>
+                            <div className="sub">{elem.minRoom} à {elem.maxRoom} chambres</div>
+                            <div className="sub">Surface : {elem.minArea} m² à {elem.maxArea} m²</div>
+                            <div className="sub">Terrain : {elem.minLand} m² à {elem.maxLand} m²</div>
                         </div>
 
                         <div className="col-4">
-                            Plus
+                            <div className="sub">Ascenseur : {Sanitaze.toTrilleanString(elem.hasLift, "Indifférent")}</div>
+                            <div className="sub">Terrasse : {Sanitaze.toTrilleanString(elem.hasTerrace, "Indifférent")}</div>
+                            <div className="sub">Balcon : {Sanitaze.toTrilleanString(elem.hasBalcony, "Indifférent")}</div>
+                            <div className="sub">Parking : {Sanitaze.toTrilleanString(elem.hasParking, "Indifférent")}</div>
+                            <div className="sub">Box : {Sanitaze.toTrilleanString(elem.hasBox, "Indifférent")}</div>
                         </div>
 
                         <div className="col-5 actions">

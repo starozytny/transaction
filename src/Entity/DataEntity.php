@@ -48,6 +48,8 @@ class DataEntity
     /**
      * return ll -> 5 janv. 2017
      * return LL -> 5 janvier 2017
+     * return llll -> 5 janv. 2017 00:00
+     * return LLLL -> 5 janvier 2017 00:00
      *
      * @param $date
      * @param string $format
@@ -67,6 +69,18 @@ class DataEntity
         }
 
         return null;
+    }
+
+    /**
+     * return human date hours
+     *
+     * @param $date
+     * @return string|null
+     */
+    public function setDateHumanHours($date): ?string
+    {
+        date_default_timezone_set('Europe/Paris');
+        return $date ? str_replace(":", "h", date_format($date, "D\\.d M Y \\à H\\hi")) : null;
     }
 
     /**
