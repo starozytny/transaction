@@ -23,73 +23,73 @@ class ImSearch
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $codeTypeAd;
+    private $codeTypeAd = 0;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $codeTypeBien;
+    private $codeTypeBien = 0;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"admin:read"})
      */
-    private $minPrice;
+    private $minPrice = 0;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"admin:read"})
      */
-    private $maxPrice;
+    private $maxPrice = 0;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $minPiece;
+    private $minPiece = 0;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $maxPiece;
+    private $maxPiece = 0;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $minRoom;
+    private $minRoom = 0;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $maxRoom;
+    private $maxRoom = 0;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"admin:read"})
      */
-    private $minArea;
+    private $minArea = 0;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"admin:read"})
      */
-    private $maxArea;
+    private $maxArea = 0;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"admin:read"})
      */
-    private $minLand;
+    private $minLand = 0;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"admin:read"})
      */
-    private $maxLand;
+    private $maxLand = 0;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
@@ -107,31 +107,31 @@ class ImSearch
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $hasLift;
+    private $hasLift = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $hasTerrace;
+    private $hasTerrace = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $hasBalcony;
+    private $hasBalcony = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $hasParking;
+    private $hasParking = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
-    private $hasBox;
+    private $hasBox = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImProspect::class, inversedBy="searchs")

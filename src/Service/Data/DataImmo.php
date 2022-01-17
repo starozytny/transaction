@@ -20,6 +20,7 @@ use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImRoom;
+use App\Entity\Immo\ImSearch;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
@@ -593,5 +594,42 @@ class DataImmo extends DataConstructor
             ->setBirthday($this->createDate($data->birthday))
             ->setType((int) $data->type)
             ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataSearch(ImSearch $obj, $data): ImSearch
+    {
+        $prospect = null;
+        if($data->prospectId){
+            $prospect = $this->em->getRepository(ImProspect::class)->find($data->prospectId);
+            if(!$prospect){
+                throw new Exception("Prospect introuvable.");
+            }
+        }
+
+        return ($obj)
+            ->setProspect($prospect)
+            ->setCodeTypeAd($this->setToNullInteger($data->codeTypeAd))
+            ->setCodeTypeBien($this->setToNullInteger($data->codeTypeBien))
+            ->setMinPrice($this->setToNullFloat($data->minPrice))
+            ->setMaxPrice($this->setToNullFloat($data->maxPrice))
+            ->setMinPiece($this->setToNullFloat($data->minPiece))
+            ->setMaxPiece($this->setToNullFloat($data->maxPiece))
+            ->setMinRoom($this->setToNullFloat($data->minRoom))
+            ->setMaxRoom($this->setToNullFloat($data->maxRoom))
+            ->setMinArea($this->setToNullFloat($data->minArea))
+            ->setMaxArea($this->setToNullFloat($data->maxArea))
+            ->setMinLand($this->setToNullFloat($data->minLand))
+            ->setMaxLand($this->setToNullFloat($data->maxLand))
+            ->setZipcode($this->sanitizeData->trimData($data->zipcode))
+            ->setCity($this->sanitizeData->trimData($data->city))
+            ->setHasLift($this->setToNullInteger($data->hasLift))
+            ->setHasTerrace($this->setToNullInteger($data->hasTerrace))
+            ->setHasBalcony($this->setToNullInteger($data->hasBalcony))
+            ->setHasParking($this->setToNullInteger($data->hasParking))
+            ->setHasBox($this->setToNullInteger($data->hasBox))
+        ;
     }
 }

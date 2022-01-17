@@ -2,10 +2,14 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImProspect;
+use App\Entity\Immo\ImSearch;
+use App\Entity\Immo\ImSuivi;
 use App\Entity\User;
 use App\Repository\Immo\ImBuyerRepository;
+use App\Repository\Immo\ImProspectRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
@@ -20,9 +24,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
 
 /**
- * @Route("/api/buyers", name="api_buyers_")
+ * @Route("/api/searchs", name="api_searchs_")
  */
-class BuyerController extends AbstractController
+class SearchController extends AbstractController
 {
     private $doctrine;
 
@@ -32,35 +36,9 @@ class BuyerController extends AbstractController
     }
 
     /**
-     * get buyers of user agency
-     *
-     * @Route("/user-agency", name="user_agency", options={"expose"=true}, methods={"GET"})
-     *
-     * @OA\Response(
-     *     response=200,
-     *     description="Returns a message"
-     * )
-     *
-     * @OA\Tag(name="Buyers")
-     *
-     * @param ImBuyerRepository $repository
-     * @param ApiResponse $apiResponse
-     * @return JsonResponse
-     */
-    public function index(ImBuyerRepository $repository, ApiResponse $apiResponse): JsonResponse
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-
-        $objs = $repository->findBy(['agency' => $user->getAgency()]);
-
-        return $apiResponse->apiJsonResponse($objs, User::ADMIN_READ);
-    }
-
-    /**
      * @throws Exception
      */
-    public function submitForm($type, ImBuyer $obj, Request $request, ApiResponse $apiResponse,
+    public function submitForm($type, ImSearch $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
         $em = $this->doctrine->getManager();
@@ -70,7 +48,7 @@ class BuyerController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataBuyer($obj, $data);
+        $obj = $dataEntity->setDataSearch($obj, $data);
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
@@ -84,7 +62,7 @@ class BuyerController extends AbstractController
     }
 
     /**
-     * Create a buyer
+     * Create a search
      *
      * @Route("/", name="create", options={"expose"=true}, methods={"POST"})
      *
@@ -93,7 +71,7 @@ class BuyerController extends AbstractController
      *     description="Returns a message"
      * )
      *
-     * @OA\Tag(name="Buyers")
+     * @OA\Tag(name="Searchs")
      *
      * @param Request $request
      * @param ApiResponse $apiResponse
@@ -104,11 +82,11 @@ class BuyerController extends AbstractController
      */
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
-        return $this->submitForm("create", new ImBuyer(), $request, $apiResponse, $validator, $dataEntity);
+        return $this->submitForm("create", new ImSearch(), $request, $apiResponse, $validator, $dataEntity);
     }
 
     /**
-     * Update a buyer
+     * Update a search
      *
      * @Route("/{id}", name="update", options={"expose"=true}, methods={"PUT"})
      *
@@ -117,9 +95,9 @@ class BuyerController extends AbstractController
      *     description="Returns a message"
      * )
      *
-     * @OA\Tag(name="Buyers")
+     * @OA\Tag(name="Searchs")
      *
-     * @param ImBuyer $obj
+     * @param ImSearch $obj
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -127,13 +105,13 @@ class BuyerController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(ImBuyer $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+    public function update(ImSearch $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
 
     /**
-     * Delete a buyer
+     * Delete a search
      *
      * @Route("/{id}", name="delete", options={"expose"=true}, methods={"DELETE"})
      *
@@ -142,21 +120,19 @@ class BuyerController extends AbstractController
      *     description="Returns a message"
      * )
      *
-     * @OA\Tag(name="Buyers")
+     * @OA\Tag(name="Searchs")
      *
-     * @param ImProspect $obj
+     * @param ImSearch $obj
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(ImProspect $obj, DataService $dataService): JsonResponse
+    public function delete(ImSearch $obj, DataService $dataService): JsonResponse
     {
         return $dataService->delete($obj);
     }
 
     /**
-     * Admin - Delete a group of buyers
-     *
-     * @Security("is_granted('ROLE_ADMIN')")
+     * Admin - Delete a group of searchs
      *
      * @Route("/", name="delete_group", options={"expose"=true}, methods={"DELETE"})
      *
@@ -165,7 +141,7 @@ class BuyerController extends AbstractController
      *     description="Return message successful",
      * )
      *
-     * @OA\Tag(name="Buyers")
+     * @OA\Tag(name="Searchs")
      *
      * @param Request $request
      * @param DataService $dataService
@@ -173,6 +149,6 @@ class BuyerController extends AbstractController
      */
     public function deleteSelected(Request $request, DataService $dataService): JsonResponse
     {
-        return $dataService->deleteSelected(ImBuyer::class, json_decode($request->getContent()));
+        return $dataService->deleteSelected(ImSearch::class, json_decode($request->getContent()));
     }
 }
