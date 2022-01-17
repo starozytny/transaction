@@ -131,6 +131,12 @@ function getItems (type, prefix) {
                 { value: 7, label: 'Sud-ouest',       identifiant: 'sud-ouest' },
                 { value: 99, label: 'Je ne sais pas', identifiant: 'expo-ne-sais-pas' },
             ]
+        case "answers-search":
+            return [
+                { value: 1, label: 'Oui',               identifiant: 'answer-' + prefix + '-oui' },
+                { value: 0, label: 'Non',               identifiant: 'answer-' + prefix + '-non' },
+                { value: 99, label: 'Indifférent',      identifiant: 'answer-' + prefix + '-ok' },
+            ]
         case "answers":
             return [
                 { value: 1, label: 'Oui',               identifiant: 'answer-' + prefix + '-oui' },

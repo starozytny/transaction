@@ -4,6 +4,7 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImSearchRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImSearchRepository::class)
@@ -14,101 +15,121 @@ class ImSearch
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $codeTypeAd;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $codeTypeBien;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"admin:read"})
      */
     private $minPrice;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"admin:read"})
      */
     private $maxPrice;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $minPiece;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $maxPiece;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $minRoom;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $maxRoom;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"admin:read"})
      */
     private $minArea;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"admin:read"})
      */
     private $maxArea;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"admin:read"})
      */
     private $minLand;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"admin:read"})
      */
     private $maxLand;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"admin:read"})
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"admin:read"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $hasLift;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $hasTerrace;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $hasBalcony;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $hasParking;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
      */
     private $hasBox;
 

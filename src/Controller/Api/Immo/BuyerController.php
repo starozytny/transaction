@@ -113,7 +113,7 @@ class BuyerController extends AbstractController
     /**
      * Update a buyer
      *
-     * @Route("/{id}", name="update", options={"expose"=true}, methods={"POST"})
+     * @Route("/{id}", name="update", options={"expose"=true}, methods={"PUT"})
      *
      * @OA\Response(
      *     response=200,

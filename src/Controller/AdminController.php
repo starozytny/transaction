@@ -9,6 +9,7 @@ use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
+use App\Entity\Immo\ImSearch;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Notification;
 use App\Entity\Settings;
@@ -258,6 +259,22 @@ class AdminController extends AbstractController
             'societies' => $societies,
             'agencies' => $agencies,
             'negotiators' => $negotiators,
+        ]);
+    }
+
+    /**
+     * @Route("/immobilier/prospect/{id}/recherches", options={"expose"=true}, name="prospects_searchs")
+     */
+    public function searchs(ImProspect $obj, SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+        $objs = $em->getRepository(ImSearch::class)->findBy(['prospect' => $obj]);
+
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('admin/pages/immo/searchs.html.twig', [
+            'elem' => $obj,
+            'donnees' => $objs,
         ]);
     }
 }
