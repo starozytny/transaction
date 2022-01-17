@@ -6,8 +6,8 @@ import Sort              from "@commonComponents/functions/sort";
 import { BuyersList }       from "./BuyersList";
 import { BuyerFormulaire }  from "./BuyerForm";
 
-const URL_DELETE_ELEMENT = 'api_prospects_delete';
-const URL_DELETE_GROUP   = 'api_prospects_delete_group';
+const URL_DELETE_ELEMENT = 'api_buyers_delete';
+const URL_DELETE_GROUP   = 'api_buyers_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer cet acquéreur ?';
 const MSG_DELETE_GROUP   = 'Aucun acquéreur sélectionnés.';
 const SORTER = Sort.compareLastname;

@@ -17,8 +17,8 @@ import Formulaire              from "@dashboardComponents/functions/Formulaire";
 import { SelecteurNegociateur } from "@dashboardPages/components/Immo/Elements/Selecteur";
 import { LocalisationContact }  from "@dashboardPages/components/Immo/Elements/Contact";
 
-const URL_CREATE_ELEMENT     = "api_prospects_create";
-const URL_UPDATE_GROUP       = "api_prospects_update";
+const URL_CREATE_ELEMENT     = "api_buyers_create";
+const URL_UPDATE_GROUP       = "api_buyers_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
