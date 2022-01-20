@@ -131,12 +131,14 @@ class AdminController extends AbstractController
     /**
      * @Route("/boite-reception/envoyer", options={"expose"=true}, name="mails_send")
      */
-    public function mailsSend(SerializerInterface $serializer): Response
+    public function mailsSend(Request $request, SerializerInterface $serializer): Response
     {
+        $dest = $request->query->get('dest');
         $users = $this->getAllData(User::class, $serializer);
 
         return $this->render('admin/pages/mails/send.html.twig', [
-            'users' => $users
+            'users' => $users,
+            'dest' => $dest
         ]);
     }
 }

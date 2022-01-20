@@ -16,7 +16,7 @@ const URL_CREATE_ELEMENT     = "api_mails_create";
 const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
-export function MailFormulaire ({ type, users })
+export function MailFormulaire ({ type, users, dest })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Le message a été envoyé !"
@@ -25,6 +25,7 @@ export function MailFormulaire ({ type, users })
         context={type}
         url={url}
         users={users}
+        dest={JSON.parse(dest)}
         messageSuccess={msg}
     />
 
@@ -55,7 +56,17 @@ export class Form extends Component {
     }
 
     componentDidMount() {
+        const { dest } = this.props;
         Helper.toTop();
+
+        if(dest){
+            let emails = [];
+            dest.forEach(el => {
+                emails.push({ value: el, label: el, identifiant: el })
+            })
+
+            this.setState({ type: 1, emails })
+        }
     }
 
     handleChange = (e) => {
@@ -177,7 +188,7 @@ export class Form extends Component {
     }
 
     render () {
-        const { users } = this.props;
+        const { users, dest } = this.props;
         const { errors, success, type, emails, aloneEmail, subject, title, message } = this.state;
 
         let typeItems = [
@@ -200,7 +211,7 @@ export class Form extends Component {
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
-                <div className="line line-2">
+                {!dest ? <div className="line line-2">
                     <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>Destinataire</Radiobox>
                     {parseInt(type) === 0 && <div className="form-group" />}
                     {parseInt(type) === 1 && <>
@@ -216,7 +227,16 @@ export class Form extends Component {
                     {parseInt(type) === 2 && <>
                         <Input identifiant="aloneEmail" valeur={aloneEmail} errors={errors} onChange={this.handleChange} type="email">Email</Input>
                     </>}
-                </div>
+                </div> : <div className="line">
+                    <div className="form-group">
+                        <label>Destinataire{dest.length > 1 ? "s" : "s"}</label>
+                        <div>
+                            {dest.map((el, index) => {
+                                return <div key={index}>{el}</div>
+                            })}
+                        </div>
+                    </div>
+                </div>}
 
                 <div className="line">
                     <Input identifiant="subject" valeur={subject} errors={errors} onChange={this.handleChange}>Objet</Input>
