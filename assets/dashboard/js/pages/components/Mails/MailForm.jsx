@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import axios                   from "axios";
-import parse                   from "html-react-parser";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Input, Radiobox, SelectizeMultiple } from "@dashboardComponents/Tools/Fields";
@@ -13,7 +12,7 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_users_create";
+const URL_CREATE_ELEMENT     = "api_mails_create";
 const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
@@ -122,17 +121,26 @@ export class Form extends Component {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
-        const { type, emails, subject, title, message } = this.state;
+        const { type, emails, aloneEmail, subject, title, message } = this.state;
 
-        this.setState({ success: false})
+        this.setState({ errors: [], success: false })
 
         let paramsToValidate = [
             {type: "text",  id: 'type',     value: type},
-            {type: "array", id: 'emails',   value: emails},
             {type: "text",  id: 'subject',  value: subject},
             {type: "text",  id: 'title',    value: title},
             {type: "text",  id: 'message',  value: message}
         ];
+
+        if(parseInt(type) === 1){
+            paramsToValidate = [...paramsToValidate,
+                ...[{type: "array", id: 'emails', value: emails}]
+            ];
+        }else if(parseInt(type) === 2) {
+            paramsToValidate = [...paramsToValidate,
+                ...[{type: "text", id: 'aloneEmail', value: aloneEmail}]
+            ];
+        }
 
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
@@ -152,10 +160,10 @@ export class Form extends Component {
                     self.setState( {
                         type: 1,
                         emails: [],
+                        aloneEmail: '',
                         subject: '',
                         title: '',
                         message: {value: "", html: ""},
-                        preview: null
                     })
                 })
                 .catch(function (error) {

@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Contact;
 use App\Entity\User;
 use App\Repository\ContactRepository;
+use App\Repository\UserRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataService;
 use App\Service\MailerService;
@@ -31,7 +32,7 @@ class MailController extends AbstractController
      *
      * @Security("is_granted('ROLE_ADMIN')")
      *
-     * @Route("/", name="preview", options={"expose"=true}, methods={"POST"})
+     * @Route("/preview", name="preview", options={"expose"=true}, methods={"POST"})
      *
      * @OA\Response(
      *     response=200,
@@ -48,7 +49,7 @@ class MailController extends AbstractController
     {
         $data = json_decode($request->get('data'));
 
-        if($data === null){
+        if($data == null){
             return $apiResponse->apiJsonResponseBadRequest("Les données sont vides.");
         }
 
@@ -60,5 +61,67 @@ class MailController extends AbstractController
         ]);
 
         return new Response($html);
+    }
+
+    /**
+     * Create a message contact
+     *
+     * @Route("/", name="create", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message",
+     * )
+     *
+     * @OA\Tag(name="Contact")
+     *
+     * @param Request $request
+     * @param ApiResponse $apiResponse
+     * @param UserRepository $userRepository
+     * @param MailerService $mailerService
+     * @param SettingsService $settingsService
+     * @return JsonResponse
+     */
+    public function create(Request $request, ApiResponse $apiResponse, UserRepository $userRepository,
+                           MailerService $mailerService, SettingsService $settingsService): JsonResponse
+    {
+        $data = json_decode($request->get('data'));
+
+        if ($data == null) {
+            return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
+        }
+
+        $destinataires = [];
+        switch ((int) $data->type){
+            case 0:
+                $users = $userRepository->findAll();
+                foreach($users as $user){
+                    if($user->getHighRoleCode() != 1){
+                        $destinataires[] = $user->getEmail();
+                    }
+                }
+                break;
+            default:
+                foreach($data->emails as $email){
+                    $destinataires[] = $email->value;
+                }
+                break;
+        }
+
+        if($mailerService->sendMailCCGroup(
+                $destinataires,
+                "[" . $settingsService->getWebsiteName() ."] " . trim($data->subject),
+                trim($data->title),
+                'app/email/template/random.html.twig',
+                ['title' => trim($data->title), 'message' => trim($data->message->html), 'settings' => $settingsService->getSettings()]
+            ) != true)
+        {
+            return $apiResponse->apiJsonResponseValidationFailed([[
+                'name' => 'message',
+                'message' => "Le message n\'a pas pu être délivré. Veuillez contacter le support."
+            ]]);
+        }
+
+        return $apiResponse->apiJsonResponseSuccessful("Message envoyé.");
     }
 }
