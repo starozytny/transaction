@@ -121,7 +121,7 @@ export class Form extends Component {
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
-                <div className={"line" + (context !== "profil" ? " line-2" : "")}>
+                <div className="line">
                     <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Raison sociale</Input>
                 </div>
 
