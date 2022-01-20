@@ -143,4 +143,16 @@ class AdminController extends AbstractController
             'donnees' => $objs
         ]);
     }
+
+    /**
+     * @Route("/societes", name="societies_index")
+     */
+    public function societies(SerializerInterface $serializer): Response
+    {
+        $objs = $this->getAllData(Society::class, $serializer);
+
+        return $this->render('admin/pages/society/index.html.twig', [
+            'donnees' => $objs
+        ]);
+    }
 }
