@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Notification;
 use App\Entity\Society;
 use App\Entity\User;
+use App\Service\Data\Society\DataSociety;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
@@ -19,13 +20,16 @@ class AdminUsersCreateCommand extends Command
     protected static $defaultName = 'admin:users:create';
     private $em;
     private $databaseService;
+    private $dataSociety;
 
-    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService)
+    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService,
+                                DataSociety $dataSociety)
     {
         parent::__construct();
 
         $this->em = $entityManager;
         $this->databaseService = $databaseService;
+        $this->dataSociety = $dataSociety;
     }
 
     protected function configure()
@@ -106,10 +110,13 @@ class AdminUsersCreateCommand extends Command
             $societies = [];
             $fake = Factory::create();
             for($i=0; $i<10 ; $i++) {
-                $new = (new Society())
-                    ->setName($fake->name)
-                    ->setCode($i+1)
-                ;
+                $data = [
+                    "name" => $fake->name,
+                ];
+
+                $data = json_decode(json_encode($data));
+
+                $new = $this->dataSociety->setData(new Society(), $data, $i+1);
 
                 $this->em->persist($new);
                 $societies[] = $new;
