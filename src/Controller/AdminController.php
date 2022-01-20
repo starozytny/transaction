@@ -7,6 +7,7 @@ use App\Entity\Notification;
 use App\Entity\Settings;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Http\Discovery\Exception\NotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -125,5 +126,13 @@ class AdminController extends AbstractController
         return $this->render('admin/pages/notifications/index.html.twig', [
             'donnees' => $objs
         ]);
+    }
+
+    /**
+     * @Route("/boite-reception/envoyer", name="mails_send")
+     */
+    public function mailsSend(): Response
+    {
+        return $this->render('admin/pages/mails/send.html.twig');
     }
 }
