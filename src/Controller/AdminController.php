@@ -129,7 +129,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/boite-reception/envoyer", name="mails_send")
+     * @Route("/boite-reception/envoyer", options={"expose"=true}, name="mails_send")
      */
     public function mailsSend(SerializerInterface $serializer): Response
     {
