@@ -11,5 +11,5 @@ Routing.setRoutingData(routes);
 
 let el = document.getElementById("mails");
 if(el){
-    render(<MailFormulaire type="create" />, el)
+    render(<MailFormulaire type="create" {...el.dataset} />, el)
 }

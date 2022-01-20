@@ -1,1 +1,11 @@
 @import "../vars/vars";
+
+.previsualisation{
+  margin-top: 48px;
+
+  h2{
+    background-color: var(--fondContent);
+    padding: 12px;
+    text-align: center;
+  }
+}

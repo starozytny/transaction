@@ -131,8 +131,12 @@ class AdminController extends AbstractController
     /**
      * @Route("/boite-reception/envoyer", name="mails_send")
      */
-    public function mailsSend(): Response
+    public function mailsSend(SerializerInterface $serializer): Response
     {
-        return $this->render('admin/pages/mails/send.html.twig');
+        $users = $this->getAllData(User::class, $serializer);
+
+        return $this->render('admin/pages/mails/send.html.twig', [
+            'users' => $users
+        ]);
     }
 }
