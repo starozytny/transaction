@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import axios                   from "axios";
+import parse                   from "html-react-parser";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Input, Radiobox, SelectizeMultiple } from "@dashboardComponents/Tools/Fields";
@@ -13,6 +14,7 @@ import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
 const URL_CREATE_ELEMENT     = "api_users_create";
+const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
 export function MailFormulaire ({ type, users })
@@ -49,6 +51,7 @@ export class Form extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeTrumb = this.handleChangeTrumb.bind(this);
+        this.handlePreview = this.handlePreview.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -92,6 +95,29 @@ export class Form extends Component {
         this.selectMultiple.current.handleUpdateValeurs(valeurs);
     }
 
+    handlePreview = (e) => {
+        e.preventDefault();
+
+        Formulaire.loader(true);
+        let self = this;
+
+        let formData = new FormData();
+        formData.append("data", JSON.stringify(this.state));
+
+        axios({ method: "POST", url: Routing.generate(URL_PREVIEW_ELEMENT), data: formData, headers: {'Content-Type': 'multipart/form-data'} })
+            .then(function (response) {
+                let preview = document.getElementById("preview");
+                preview.innerHTML = response.data
+            })
+            .catch(function (error) {
+                Formulaire.displayErrors(self, error);
+            })
+            .then(() => {
+                Formulaire.loader(false);
+            })
+        ;
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -129,6 +155,7 @@ export class Form extends Component {
                         subject: '',
                         title: '',
                         message: {value: "", html: ""},
+                        preview: null
                     })
                 })
                 .catch(function (error) {
@@ -198,14 +225,11 @@ export class Form extends Component {
 
                 <div className="line">
                     <div className="form-button">
+                        <Button isSubmit={false} outline={true} type="default" onClick={this.handlePreview}>Prévisualisation</Button>
                         <Button isSubmit={true}>{TXT_CREATE_BUTTON_FORM}</Button>
                     </div>
                 </div>
             </form>
-
-            <div className="previsualisation">
-                <h2>Prévisualisation du mail</h2>
-            </div>
         </>
     }
 }

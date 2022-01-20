@@ -8,4 +8,11 @@
     padding: 12px;
     text-align: center;
   }
+
+  #preview{
+    background-color: var(--alpha);
+    border: 1px solid var(--grey);
+    padding: 12px;
+    border-radius: 4px;
+  }
 }
