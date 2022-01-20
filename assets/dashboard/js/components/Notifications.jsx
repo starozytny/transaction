@@ -25,7 +25,7 @@ export class Notifications extends Component{
         this.handleIsSeenAll = this.handleIsSeenAll.bind(this);
     }
 
-    componentDidMount = () => { Formulaire.axiosGetData(this, Routing.generate('api_notifications_index'), Sort.compareCreatedAt) }
+    componentDidMount = () => { Formulaire.axiosGetData(this, Routing.generate('api_notifications_index'), Sort.compareCreatedAtInverse) }
 
     componentWillUnmount() {
         const self = this;
@@ -40,7 +40,7 @@ export class Notifications extends Component{
 
     handleUpdateList = (element, newContext = null) => {
         const { data } = this.state
-        Formulaire.updateData(this, Sort.compareCreatedAt, newContext, "update", data, element);
+        Formulaire.updateData(this, Sort.compareCreatedAtInverse, newContext, "update", data, element);
     }
 
     handleOpen = () => {
@@ -63,7 +63,9 @@ export class Notifications extends Component{
         Formulaire.loader(true)
         axios.post(Routing.generate('api_notifications_isSeen_all'), {})
             .then(function (response) {
-                self.setState({ data: response.data, open: false })
+                let data = response.data;
+                data.sort(Sort.compareCreatedAtInverse);
+                self.setState({ data: data, open: false })
             })
             .catch(function (error) {
                 Formulaire.displayErrors(this, error)
@@ -80,6 +82,7 @@ export class Notifications extends Component{
         let items = [];
         let taille = 0;
         if(data){
+            data.sort(Sort.compareCreatedAtInverse)
             data.forEach(el => {
                 if(!el.isSeen){
                     taille++;
