@@ -21,8 +21,8 @@ class DataEvent extends DataConstructor
 
         return ($obj)
             ->setName($this->sanitizeData->sanitizeString($data->name))
-            ->setStartAt($this->createDate($data->startAt))
-            ->setEndAt($this->createDate($data->endAt))
+            ->setStartAt($this->sanitizeData->createDate($data->startAt))
+            ->setEndAt($this->sanitizeData->createDate($data->endAt))
             ->setAllDay((int) $data->allDay[0])
             ->setLocation($this->sanitizeData->trimData($data->location))
             ->setComment($this->sanitizeData->trimData($data->comment))
@@ -38,8 +38,8 @@ class DataEvent extends DataConstructor
     public function setDataEventDate(AgEvent $obj, $data): AgEvent
     {
         return ($obj)
-            ->setStartAt($this->createDate($data->startAt))
-            ->setEndAt($this->createDate($data->endAt))
+            ->setStartAt($this->sanitizeData->createDate($data->startAt))
+            ->setEndAt($this->sanitizeData->createDate($data->endAt))
         ;
     }
 
