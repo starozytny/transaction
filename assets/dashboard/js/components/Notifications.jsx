@@ -4,6 +4,7 @@ import Routing    from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import Formulaire from "@dashboardComponents/functions/Formulaire";
 import Sort       from "@commonComponents/functions/sort";
+import axios from "axios";
 
 export class Notifications extends Component{
     constructor(props) {
@@ -21,6 +22,7 @@ export class Notifications extends Component{
         this.handleDelete = this.handleDelete.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.handleIsSeenAll = this.handleIsSeenAll.bind(this);
     }
 
     componentDidMount = () => { Formulaire.axiosGetData(this, Routing.generate('api_notifications_index'), Sort.compareCreatedAt) }
@@ -54,6 +56,22 @@ export class Notifications extends Component{
 
     handleDelete = (element) => {
         Formulaire.deleteElement(this, element, Routing.generate('api_notifications_delete', {'id': element.id}), false, false);
+    }
+
+    handleIsSeenAll = () => {
+        const self = this;
+        Formulaire.loader(true)
+        axios.post(Routing.generate('api_notifications_isSeen_all'), {})
+            .then(function (response) {
+                self.setState({ data: response.data, open: false })
+            })
+            .catch(function (error) {
+                Formulaire.displayErrors(this, error)
+            })
+            .then(function () {
+                Formulaire.loader(false)
+            })
+        ;
     }
 
     render() {
@@ -99,6 +117,9 @@ export class Notifications extends Component{
                 </div>
                 <div className="notif-all">
                     <a href={Routing.generate('admin_notifications_index')}>Voir toutes les notifications</a>
+                </div>
+                <div className="notif-all">
+                    <a onClick={this.handleIsSeenAll}>Marquer comme lu</a>
                 </div>
             </div>
         </div>
