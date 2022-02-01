@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { Back } from "@dashboardComponents/Layout/Elements";
 
 export class SocietyRead extends Component {
     render () {
@@ -8,26 +9,22 @@ export class SocietyRead extends Component {
 
         return <>
             <div>
-                <div className="toolbar">
-                    <div className="item">
-                        <Button outline={true} icon="left-arrow" type="primary" onClick={() => onChangeContext("list")}>Retour à la liste</Button>
-                    </div>
-                </div>
+                <Back onChangeContext={onChangeContext} />
 
-                <div className="item-user-read">
+                <div className="item-read">
 
-                    <div className="user-read-infos">
+                    <div className="item-read-infos">
                         <div className="actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext('update', elem)} >Modifier</ButtonIcon>
                         </div>
-                        <div className="user-read-infos-container">
-                            {/*<div className="avatar">*/}
-                            {/*    <img src={avatar} alt={`Avatar de ${elem.username}`}/>*/}
-                            {/*</div>*/}
+                        <div className="item-read-infos-container">
+                            <div className="avatar">
+                                <img src={elem.logoFile} alt={`Logo de ${elem.name}`}/>
+                            </div>
 
                             <div className="main-infos">
                                 <div className="name">
-                                    <div>#{elem.code}</div>
+                                    <div>#{elem.codeString}</div>
                                     <span>{elem.name}</span>
                                 </div>
                             </div>

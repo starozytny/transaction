@@ -26,7 +26,7 @@ export class SocietiesList extends Component {
                         <div className="item item-header">
                             <div className="item-header-selector" />
                             <div className="item-content">
-                                <div className="item-body">
+                                <div className="item-body item-body-image">
                                     <div className="infos infos-col-2">
                                         <div className="col-1">Raison sociale</div>
                                         <div className="col-2 actions">Actions</div>

@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 
-import axios             from "axios";
-import toastr            from "toastr";
-import Swal              from "sweetalert2";
-import SwalOptions       from "@commonComponents/functions/swalOptions";
-import Routing           from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
-
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
-import Formulaire        from "@dashboardComponents/functions/Formulaire";
 
-import { SocietiesList }       from "./SocietiesList";
-import { SocietyFormulaire }   from "./SocietyForm";
+import { SocietiesList }       from "@dashboardPages/components/Society/SocietiesList";
+import { SocietyFormulaire }   from "@dashboardPages/components/Society/SocietyForm";
+import { SocietyRead }         from "@dashboardPages/components/Society/SocietyRead";
 
 const URL_DELETE_ELEMENT    = 'api_users_delete';
 const URL_DELETE_GROUP      = 'api_users_delete_group';
@@ -43,6 +37,7 @@ export class Societies extends Component {
         this.handleContentList = this.handleContentList.bind(this);
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
+        this.handleContentRead = this.handleContentRead.bind(this);
     }
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
@@ -68,10 +63,14 @@ export class Societies extends Component {
         return <SocietyFormulaire type="update" element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
+    handleContentRead = (changeContext, element) => {
+        return <SocietyRead elem={element} onChangeContext={changeContext} />
+    }
+
     render () {
         return <>
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
-                    onContentList={this.handleContentList}
+                    onContentList={this.handleContentList} onContentRead={this.handleContentRead}
                     onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}/>
         </>
     }

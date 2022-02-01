@@ -5,19 +5,22 @@ import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class SocietiesItem extends Component {
     render () {
-        const { developer, elem, onChangeContext, onSelectors, onDelete } = this.props
+        const { developer, elem, onChangeContext, onSelectors, onDelete } = this.props;
 
         return <div className="item">
             <Selector id={elem.id} onSelectors={onSelectors} />
 
             <div className="item-content">
-                <div className="item-body">
+                <div className="item-body item-body-image">
+                    <div className="item-image" onClick={() => onChangeContext('read', elem)}>
+                        <img src={elem.logoFile} alt={`Logo de ${elem.name}`}/>
+                    </div>
                     <div className="infos infos-col-2">
-                        <div className="col-1">
+                        <div className="col-1" onClick={() => onChangeContext('read', elem)}>
                             <div className="name">
                                 <span>{elem.name}</span>
-                                <span className="role">#{elem.code}</span>
                             </div>
+                            <span className="badge">#{elem.codeString}</span>
                         </div>
                         <div className="col-2 actions">
                             {developer === 1 && <>
