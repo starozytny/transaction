@@ -13,13 +13,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=SocietyRepository::class)
  */
-class Society
+class Society extends DataEntity
 {
+    const FOLDER_LOGOS = "societies/logos";
+
+    const COUNT_READ = ["count-users:read"];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user:read", "admin:read"})
+     * @Groups({"user:read", "admin:read", "count-users:read"})
      */
     private $id;
 
@@ -153,7 +157,6 @@ class Society
     }
 
     /**
-<<<<<<< HEAD
      * @return Collection|ImAgency[]
      */
     public function getImAgencies(): Collection
@@ -190,6 +193,15 @@ class Society
     public function getFullname(): string
     {
         return "#" . $this->getCodeString() . " - " . $this->name;
+    }
+
+    /**
+     * @return string
+     * @Groups({"admin:read"})
+     */
+    public function getLogoFile(): string
+    {
+        return $this->getFileOrDefault($this->logo, self::FOLDER_LOGOS, "/placeholders/society.jpg");
     }
 
     /**

@@ -59,6 +59,7 @@ export class User extends Component {
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "user.pagination",
+            isClient: props.isClient ? props.isClient : false,
             societies: props.societies ? JSON.parse(props.societies) : [],
             agencies: props.societies ? JSON.parse(props.agencies) : []
         }
@@ -143,6 +144,7 @@ export class User extends Component {
                          sorters={sorters}
                          onSorter={this.handleSorter}
                          //data
+                         isClient={this.state.isClient}
                          minimal={this.props.minimal ? this.props.minimal : false}
                          data={currentData} />
     }

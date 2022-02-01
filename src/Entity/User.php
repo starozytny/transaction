@@ -40,6 +40,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read", "count-users:read"})
      * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     private $id;
@@ -48,7 +49,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank()
      * @Assert\Type(type="alnum")
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "count-users:read", "count-users:read"})
      */
     private $username;
 
@@ -56,7 +57,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\Email()
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "count-users:read"})
      */
     private $email;
 
@@ -69,13 +70,13 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read", "user:read", "agenda:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "count-users:read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "count-users:read"})
      */
     private $firstname;
 
@@ -126,7 +127,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     /**
      * @ORM\ManyToOne(targetEntity=Society::class, fetch="EAGER", inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "count-users:read"})
      */
     private $society;
 
@@ -204,7 +205,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * Get label of the high role
      *
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "count-users:read"})
      */
     public function getHighRole(): string
     {
@@ -227,7 +228,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * Get code of the high role
      *
      * @return int
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "count-users:read"})
      */
     public function getHighRoleCode(): int
     {
@@ -535,7 +536,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read", "agenda:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "count-users:read"})
      */
     public function getAvatarFile(): string
     {

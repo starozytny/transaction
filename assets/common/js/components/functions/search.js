@@ -19,6 +19,11 @@ function switchFunction(type, search, v) {
                 return v;
             }
             break;
+        case "society":
+            if(v.name.toLowerCase().startsWith(search)){
+                return v;
+            }
+            break;
         case "negotiator":
             if(v.email.toLowerCase().startsWith(search)
                 || v.code.toLowerCase() === search
