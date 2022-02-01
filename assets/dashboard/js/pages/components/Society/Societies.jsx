@@ -26,6 +26,7 @@ export class Societies extends Component {
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "societies.pagination",
+            users: props.users ? JSON.parse(props.users) : []
         }
 
         this.layout = React.createRef();
@@ -52,6 +53,7 @@ export class Societies extends Component {
                               onDeleteAll={this.layout.current.handleDeleteGroup}
                               developer={parseInt(this.props.developer)}
                               onSearch={this.handleSearch}
+                              users={this.state.users}
                               data={currentData} />
     }
 

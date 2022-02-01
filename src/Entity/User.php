@@ -44,7 +44,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank()
      * @Assert\Type(type="alnum")
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "count-users:read"})
      */
     private $username;
 
@@ -122,7 +122,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     /**
      * @ORM\ManyToOne(targetEntity=Society::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "count-users:read"})
      */
     private $society;
 

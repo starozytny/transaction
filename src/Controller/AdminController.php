@@ -150,9 +150,11 @@ class AdminController extends AbstractController
     public function societies(SerializerInterface $serializer): Response
     {
         $objs = $this->getAllData(Society::class, $serializer);
+        $users= $this->getAllData(User::class, $serializer, Society::COUNT_READ);
 
         return $this->render('admin/pages/society/index.html.twig', [
-            'donnees' => $objs
+            'donnees' => $objs,
+            'users' => $users
         ]);
     }
 }

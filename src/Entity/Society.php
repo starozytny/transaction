@@ -15,11 +15,13 @@ class Society extends DataEntity
 {
     const FOLDER_LOGOS = "societies/logos";
 
+    const COUNT_READ = ["count-users:read"];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "count-users:read"})
      */
     private $id;
 
