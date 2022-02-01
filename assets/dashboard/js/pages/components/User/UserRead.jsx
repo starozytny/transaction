@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { Back } from "@dashboardComponents/Layout/Elements";
 
 export class UserRead extends Component {
     render () {
@@ -8,11 +9,7 @@ export class UserRead extends Component {
 
         return <>
             <div>
-                <div className="toolbar">
-                    <div className="item">
-                        <Button outline={true} icon="left-arrow" type="primary" onClick={() => onChangeContext("list")}>Retour à la liste</Button>
-                    </div>
-                </div>
+                <Back onChangeContext={onChangeContext} />
 
                 <div className="item-read">
 
