@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import {Button, ButtonIcon, ButtonIconDropdown} from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 import { Filter, FilterSelected }   from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }      from "@dashboardComponents/Layout/Pagination";
 import { Search }                   from "@dashboardComponents/Layout/Search";
@@ -51,7 +51,7 @@ export class UserList extends Component {
                 {!isClient && <div className="toolbar">
                     <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter un utilisateur</Button>
-                    </div>}
+                    </div>
 
                     <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
