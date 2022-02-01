@@ -32,3 +32,7 @@ winpty.exe.stackdump
 /public/data/*
 /public/articles/*
 /public/avatars/*
+
+/documents/*
+
+graph.svg
