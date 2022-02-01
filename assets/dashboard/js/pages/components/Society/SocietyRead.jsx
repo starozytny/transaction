@@ -2,10 +2,18 @@ import React, { Component } from 'react';
 
 import { ButtonIcon } from "@dashboardComponents/Tools/Button";
 import { Back } from "@dashboardComponents/Layout/Elements";
+import {User} from "@dashboardPages/components/User/User";
 
 export class SocietyRead extends Component {
     render () {
-        const { elem, onChangeContext } = this.props;
+        const { elem, users, onChangeContext } = this.props;
+
+        let items = [];
+        users.forEach(user => {
+            if(user.society.id === elem.id){
+                items.push(user);
+            }
+        })
 
         return <>
             <div>
@@ -34,6 +42,9 @@ export class SocietyRead extends Component {
                         </div>
                     </div>
 
+                    <div className="item-read-content">
+                        <User donnees={JSON.stringify(items)} isClient={true} />
+                    </div>
 
                 </div>
             </div>

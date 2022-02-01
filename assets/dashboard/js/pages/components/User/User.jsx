@@ -59,7 +59,8 @@ export class User extends Component {
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "user.pagination",
-            societies: JSON.parse(props.societies)
+            isClient: props.isClient ? props.isClient : false,
+            societies: props.societies ? JSON.parse(props.societies) : []
         }
 
         this.layout = React.createRef();
@@ -142,6 +143,7 @@ export class User extends Component {
                          sorters={sorters}
                          onSorter={this.handleSorter}
                          //data
+                         isClient={this.state.isClient}
                          data={currentData} />
     }
 

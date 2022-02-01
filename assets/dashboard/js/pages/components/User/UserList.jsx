@@ -24,7 +24,7 @@ export class UserList extends Component {
     }
 
     render () {
-        const { taille, data, perPage, onChangeContext, onGetFilters, filters, onSearch, onDeleteAll, onPerPage,
+        const { isClient, taille, data, perPage, onChangeContext, onGetFilters, filters, onSearch, onDeleteAll, onPerPage,
             onPaginationClick, currentPage, sorters, onSorter } = this.props;
 
         let filtersLabel = ["Utilisateur", "Développeur", "Administrateur", "Manager"];
@@ -48,7 +48,7 @@ export class UserList extends Component {
 
         return <>
             <div>
-                <div className="toolbar">
+                {!isClient && <div className="toolbar">
                     <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter un utilisateur</Button>
                     </div>
@@ -57,7 +57,7 @@ export class UserList extends Component {
                         <Search onSearch={onSearch} placeholder="Recherche par identifiant, nom, prénom ou email.."/>
                         <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                     </div>
-                </div>
+                </div>}
 
                 <TopSorterPagination sorters={sorters} onSorter={onSorter}
                                      currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>

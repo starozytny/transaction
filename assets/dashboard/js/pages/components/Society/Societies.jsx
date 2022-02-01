@@ -66,7 +66,7 @@ export class Societies extends Component {
     }
 
     handleContentRead = (changeContext, element) => {
-        return <SocietyRead elem={element} onChangeContext={changeContext} />
+        return <SocietyRead elem={element} onChangeContext={changeContext} users={this.state.users} />
     }
 
     render () {
