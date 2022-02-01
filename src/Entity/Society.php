@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=SocietyRepository::class)
  */
-class Society
+class Society extends DataEntity
 {
     const FOLDER_LOGOS = "societies/logos";
 
@@ -155,6 +155,6 @@ class Society
      */
     public function getLogoFile(): string
     {
-        return $this->logo ? "/" . self::FOLDER_LOGOS . "/" . $this->logo : "/placeholders/society.jpg";
+        return $this->getFileOrDefault($this->logo, self::FOLDER_LOGOS, "/placeholders/society.jpg");
     }
 }
