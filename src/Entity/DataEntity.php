@@ -130,6 +130,11 @@ class DataEntity
         return $civilities[$civility];
     }
 
+    public function getFileOrDefault($file, $folder, $default = "/placeholders/placeholder.jpg")
+    {
+        return $file ? "/" . $folder . "/" . $file : $default;
+    }
+
     public function getCodeTypeAdString($value): string
     {
         $data = ["Vente", "Location", "Viager", "Produit d'investissement", "Cession bail", "Location vacances", "Vente prestige", "Fond de commerce"];

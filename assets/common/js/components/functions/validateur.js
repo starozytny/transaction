@@ -1,5 +1,3 @@
-const {func} = require("prop-types");
-
 function validateDate($value) {
     if($value === "" || $value === null){
         return {
@@ -56,8 +54,6 @@ function validatePassword($value, $valueCheck){
             'message': 'Ce champ doit être renseigné.'
         };
     }
-
-    return {'code': true};
 
     if (/^(?=.{12,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\w).*$/.test($value)){
 
