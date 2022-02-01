@@ -1,3 +1,9 @@
+.item-read{
+  & > * {
+    margin-bottom: 24px;
+  }
+}
+
 .item-read-infos{
   position: relative;
   width: calc(100% - 24px);
@@ -6,7 +12,7 @@
   box-shadow: 0 0 12px var(--greyShadow);
   padding: 12px;
   @include flex(column, center, center);
-  max-width: 414px;
+  max-width: 375px;
 
   &:before{
     content: "";
@@ -73,5 +79,30 @@
     background-color: var(--fond);
     border-radius: 4px;
     z-index: 3;
+  }
+}
+
+//                      __   _  ___ ____  _  _     __
+//                     | _| / |/ _ \___ \| || |   |_ |
+//    _____ _____ _____| |  | | | | |__) | || |_   | |_____ _____ _____
+//   |_____|_____|_____| |  | | |_| / __/|__   _|  | |_____|_____|_____|
+//                     | |  |_|\___/_____|  |_|    | |
+//                     |__|                       |__|
+@media (min-width:1024px) {
+  .item-read{
+    @include flex(row, flex-start, flex-start);
+
+    &:not(:last-child){
+      margin-bottom: 24px;
+    }
+
+    & > * {
+      margin-bottom: 0;
+    }
+
+    & > *:nth-child(2){
+      width: calc(100% - 375px - 24px);
+      margin-left: 24px;
+    }
   }
 }
