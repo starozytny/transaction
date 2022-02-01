@@ -1,35 +1,6 @@
 @import "../vars/vars";
 
-.items-table {
-
-  & > .items > .item{
-    align-items: flex-start;
-  }
-  
-  .item-image{
-    cursor: pointer;
-
-    img{
-      transition: all 0.2s ease-in-out;
-    }
-
-    &:hover{
-      img{
-        transform: scale(1.05);
-      }
-    }
-  }
-
-  .item-selector{
-    transform: translateY(24px);
-  }
-}
-
-.preview-form-oldFile{
-  img{
-    width: 42px; height: 42px;
-  }
-}
+@include toolbarCreateFilterSearch(195);
 
 .items-user{
   .sub-username{
@@ -52,21 +23,6 @@
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
-  .toolbar{
-    .create{
-      width: 195px;
-    }
-    .filter-search{
-      width: calc(100% - 24px - 195px);
-    }
-  }
-
-  .preview-form-oldFile{
-    img{
-      width: 64px; height: 64px;
-    }
-  }
-
   .items-user{
     .role{
       margin: 0;

@@ -44,7 +44,6 @@ export class UserRead extends Component {
                         </div>
                     </div>
 
-
                 </div>
             </div>
         </>

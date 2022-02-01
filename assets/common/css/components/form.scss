@@ -41,6 +41,12 @@
   }
 }
 
+.preview-form-oldFile{
+  img{
+    width: 42px; height: 42px;
+  }
+}
+
 .form-rgpd{
   font-size: 14px;
   color: var(--grey2);
@@ -488,6 +494,12 @@ select{
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
+  .preview-form-oldFile{
+    img{
+      width: 64px; height: 64px;
+    }
+  }
+
   .line{
     &.line-2, &.line-3, &.line-4, &.line-infinite{
       flex-direction: row;
