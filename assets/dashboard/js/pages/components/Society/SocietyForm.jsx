@@ -5,6 +5,7 @@ import Routing                 from '@publicFolder/bundles/fosjsrouting/js/route
 
 import { Input }               from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
+import { Drop }                from "@dashboardComponents/Tools/Drop";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
@@ -12,8 +13,8 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_users_create";
-const URL_UPDATE_GROUP       = "api_users_update";
+const URL_CREATE_ELEMENT     = "api_societies_create";
+const URL_UPDATE_GROUP       = "api_societies_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
@@ -33,6 +34,7 @@ export function SocietyFormulaire ({ type, onChangeContext, onUpdateList, elemen
         context={type}
         url={url}
         name={element ? element.name : ""}
+        logo={element ? element.logoFile : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
@@ -47,11 +49,12 @@ export class Form extends Component {
 
         this.state = {
             name: props.name,
+            logo: props.logo,
             errors: [],
             success: false
         }
 
-        this.inputAvatar = React.createRef();
+        this.inputLogo = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -77,6 +80,9 @@ export class Form extends Component {
             {type: "text", id: 'name',  value: name},
         ];
 
+        let inputLogo = this.inputLogo.current;
+        let logo = inputLogo ? inputLogo.drop.current.files : [];
+
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
         if(!validate.code){
@@ -86,6 +92,10 @@ export class Form extends Component {
             let self = this;
 
             let formData = new FormData();
+            if(logo[0]){
+                formData.append('logo', logo[0].file);
+            }
+
             formData.append("data", JSON.stringify(this.state));
 
             axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
@@ -114,15 +124,17 @@ export class Form extends Component {
 
     render () {
         const { context } = this.props;
-        const { errors, success, name } = this.state;
+        const { errors, success, name, logo } = this.state;
 
         return <>
             <form onSubmit={this.handleSubmit}>
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
-                <div className="line">
+                <div className="line line-2">
                     <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Raison sociale</Input>
+                    <Drop ref={this.inputLogo} identifiant="logo" previewFile={logo} errors={errors} accept={"image/*"} maxFiles={1}
+                          label="Téléverser un logo" labelError="Seules les images sont acceptées.">Logo (facultatif)</Drop>
                 </div>
 
                 <div className="line">

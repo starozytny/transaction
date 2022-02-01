@@ -7,8 +7,8 @@ import { SocietiesList }       from "@dashboardPages/components/Society/Societie
 import { SocietyFormulaire }   from "@dashboardPages/components/Society/SocietyForm";
 import { SocietyRead }         from "@dashboardPages/components/Society/SocietyRead";
 
-const URL_DELETE_ELEMENT    = 'api_users_delete';
-const URL_DELETE_GROUP      = 'api_users_delete_group';
+const URL_DELETE_ELEMENT    = 'api_societies_delete';
+const URL_DELETE_GROUP      = 'api_societies_delete_group';
 const MSG_DELETE_ELEMENT    = 'Supprimer cette société ?';
 const MSG_DELETE_GROUP      = 'Aucune société sélectionnée.';
 let SORTER = Sort.compareName;

@@ -191,7 +191,7 @@ class UserController extends AbstractController
             return $apiResponse->apiJsonResponseForbidden();
         }
 
-        return $this->submitForm("create", $obj, $request, $apiResponse, $validator, $dataEntity, $passwordHasher, $fileUploader, $notificationService);
+        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $passwordHasher, $fileUploader, $notificationService);
     }
 
     /**

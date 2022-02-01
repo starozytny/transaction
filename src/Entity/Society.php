@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Society
 {
-    const FOLDER_LOGO = "societies/logos";
+    const FOLDER_LOGOS = "societies/logos";
 
     /**
      * @ORM\Id
@@ -155,6 +155,6 @@ class Society
      */
     public function getLogoFile(): string
     {
-        return $this->logo ? "/" . self::FOLDER_LOGO . "/" . $this->logo : "/placeholders/society.jpg";
+        return $this->logo ? "/" . self::FOLDER_LOGOS . "/" . $this->logo : "/placeholders/society.jpg";
     }
 }
