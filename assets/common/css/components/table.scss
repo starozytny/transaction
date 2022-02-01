@@ -51,7 +51,7 @@
 
   & > .items{
     & > .item{
-      @include flex(row, center, flex-start);
+      @include flex(row, flex-start, flex-start);
       padding: 24px 12px 12px 12px;
 
       &:hover{
@@ -129,6 +129,20 @@
         &:before{
           opacity: 1;
         }
+      }
+    }
+  }
+
+  .item-image{
+    cursor: pointer;
+
+    img{
+      transition: all 0.2s ease-in-out;
+    }
+
+    &:hover{
+      img{
+        transform: scale(1.05);
       }
     }
   }
