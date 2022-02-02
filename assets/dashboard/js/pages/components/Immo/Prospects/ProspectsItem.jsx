@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
+import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
 import { TenantContact, TenantMainInfos, TenantNegotiator } from "@dashboardPages/components/Immo/Tenants/TenantsItem";
 
@@ -50,9 +50,7 @@ export class ProspectsItem extends Component {
 
                         <div className="col-5 actions">
                             <ButtonIcon icon="search" element="a" onClick={Routing.generate(routeSearchs, {'id': elem.id})}>Recherches</ButtonIcon>
-                            <ButtonIcon icon="chat-2" onClick={Routing.generate(isClient ? "user_mails_send" : "admin_mails_send", {'dest': [elem.email]})} element="a">
-                                Contacter
-                            </ButtonIcon>
+                            <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                             {(isFromRead && !isSelect) && <ButtonIcon icon="cancel" onClick={() => onSelectProspect(elem)}>Enlever</ButtonIcon>}

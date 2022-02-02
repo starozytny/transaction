@@ -1,5 +1,7 @@
 import React from "react";
 
+import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 export function ButtonIcon(props){
     const { icon, isSubmit=false, children, text, onClick, element="button", target="_self", tooltipWidth=null } = props;
 
@@ -64,4 +66,10 @@ export function ButtonIconDropdown(props){
             })}
         </div>
     </div>
+}
+
+export function ButtonIconContact({ isClient=true, email }){
+    return <ButtonIcon icon="chat-2" onClick={Routing.generate(isClient ? "user_mails_send" : "admin_mails_send", {'dest': [email]})} element="a">
+        Contacter
+    </ButtonIcon>
 }
