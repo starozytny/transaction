@@ -130,13 +130,13 @@ function validateDateLimitHoursMinutes($value, $minH, $maxH, $minM, $maxM) {
     if($value.getHours() < $minH || $value.getHours() > $maxH){
         return {
             'code': false,
-            'message': 'L\'horaire doit être compris entre ' + $minH + 'h' + $minM +'min et ' + $maxH + 'h' + $maxM + 'min.';
+            'message': 'L\'horaire doit être compris entre ' + $minH + 'h' + $minM +'min et ' + $maxH + 'h' + $maxM + 'min.'
         };
     }else{
         if($value.getMinutes() < $minM || $value.getMinutes() > $maxM){
             return {
                 'code': false,
-                'message': 'L\'horaire doit être compris entre ' + $minH + 'h' + $minM +'min et ' + $maxH + 'h' + $maxM + 'min.';
+                'message': 'L\'horaire doit être compris entre ' + $minH + 'h' + $minM +'min et ' + $maxH + 'h' + $maxM + 'min.'
             };
         }
     }
