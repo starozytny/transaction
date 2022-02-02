@@ -129,4 +129,9 @@ class DataEntity
 
         return $civilities[$civility];
     }
+
+    public function getFileOrDefault($file, $folder, $default = "/placeholders/placeholder.jpg")
+    {
+        return $file ? "/" . $folder . "/" . $file : $default;
+    }
 }
