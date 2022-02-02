@@ -75,10 +75,10 @@ function setActiveByValue(tab, value)
     return active;
 }
 
-function createTimeHoursMinutes(hours, minutes)
+function createTimeHoursMinutes(hours, minutes = 0, secondes = 0)
 {
     let date = new Date();
-    date.setHours(hours); date.setMinutes(minutes);
+    date.setHours(hours); date.setMinutes(minutes); date.setSeconds(secondes);
 
     return date;
 }
