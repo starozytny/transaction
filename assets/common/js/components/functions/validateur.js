@@ -104,6 +104,17 @@ function validateMinMax($value, $valueCheck) {
     return {'code': true};
 }
 
+function validateDateLimitHours($value, $minHours, $maxHours) {
+    if($value.getHours() < $minHours || $value.getHours() > $maxHours){
+        return {
+            'code': false,
+            'message': 'L\'heure doit être comprise entre ' + $minHours + 'h et ' + $maxHours + 'h.'
+        };
+    }
+
+    return {'code': true};
+}
+
 function switchCase(element){
     let validate;
     switch (element.type) {
@@ -130,6 +141,9 @@ function switchCase(element){
             break;
         case 'minMax':
             validate = validateMinMax(element.value, element.valueCheck);
+            break;
+        case 'dateLimitH':
+            validate = validateDateLimitHours(element.value, element.valueCheck);
             break;
     }
 
