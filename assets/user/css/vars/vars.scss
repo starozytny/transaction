@@ -3,3 +3,13 @@
 @mixin fontRegular() { font-family: 'barlowregular', sans-serif; }
 @mixin fontSemibold() { font-family: 'barlowsemibold', sans-serif; }
 @mixin fontBold() { font-family: 'barlowbold', sans-serif; }
+
+@mixin title() {
+  width: calc(100% - 24px);
+  font-family: 'barlowsemibold', sans-serif;
+  font-size: 20px;
+  background-color: var(--grey);
+  padding: 12px;
+  margin-bottom: 24px;
+  border-radius: 4px;
+}

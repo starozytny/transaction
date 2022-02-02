@@ -129,7 +129,7 @@ main{
     @include flex(row, flex-start, flex-start);
   }
   main{
-    width: calc(80% - 2px);
+    width: 80%;
     margin-left: 20%;
   }
 
@@ -146,7 +146,7 @@ main{
 //                     |__|                      |__|
 @media (min-width:1280px) {
   main{
-    width: calc(82.5% - 2px);
+    width: 82.5%;
     margin-left: 17.5%;
   }
   .main-content{
@@ -162,7 +162,7 @@ main{
 //                     |__|                       |__|
 @media (min-width: 1600px){
   main{
-    width: calc(86% - 2px);
+    width: 86%;
     margin-left: 14%;
   }
   .main-content{

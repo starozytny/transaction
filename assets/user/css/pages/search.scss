@@ -1,2 +1,44 @@
 @import "../vars/vars";
 @import "~react-selectize/dist/index.min.css";
+
+@import "../components/card";
+
+.search-read{
+  & > *:not(:last-child){
+    margin-bottom: 24px;
+  }
+
+  & > .col-1 > .btn{
+    width: 100%;
+
+    &:not(:last-child){
+      margin-bottom: 12px;
+    }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .search-read{
+    @include flex(row, flex-start, flex-start);
+    width: calc(100% + 24px);
+
+    & > *:not(:last-child){
+      margin-bottom: 0;
+    }
+
+    & > .col-1{
+      width: 275px;
+    }
+
+    & > .col-2 {
+      width: calc(100% - 275px - 24px);
+      margin-left: 24px;
+    }
+  }
+}

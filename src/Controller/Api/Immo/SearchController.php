@@ -13,6 +13,7 @@ use App\Repository\Immo\ImProspectRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
+use App\Service\Immo\SearchService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
@@ -166,17 +167,33 @@ class SearchController extends AbstractController
      *
      * @param ImSearch $search
      * @param ApiResponse $apiResponse
+     * @param SearchService $searchService
      * @return JsonResponse
      */
-    public function results(ImSearch $search, ApiResponse $apiResponse): JsonResponse
+    public function results(ImSearch $search, ApiResponse $apiResponse, SearchService $searchService): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $biens = $em->getRepository(ImBien::class)->findByCodeAdBienWithoutArchive(
             $search->getCodeTypeAd(), $search->getCodeTypeBien()
         );
 
-        dump($biens);
+        //check price
+        $biens = $searchService->filterMinMax('price', $biens, $search->getMinPrice(), $search->getMaxPrice());
+        $biens = $searchService->filterMinMax('piece', $biens, $search->getMinPiece(), $search->getMaxPiece());
+        $biens = $searchService->filterMinMax('room',  $biens, $search->getMinRoom(),  $search->getMaxRoom());
+        $biens = $searchService->filterMinMax('area',  $biens, $search->getMinArea(),  $search->getMaxArea());
+        $biens = $searchService->filterMinMax('land',  $biens, $search->getMinLand(),  $search->getMaxLand());
 
-        return $apiResponse->apiJsonResponseSuccessful("ok");
+        $biens = $searchService->filterLocalisation('zipcode', $biens, $search->getZipcode());
+        $biens = $searchService->filterLocalisation('city',    $biens, $search->getCity());
+
+        //check advantage
+        $biens = $searchService->filterAdvantage('lift',    $biens, $search->getHasLift());
+        $biens = $searchService->filterAdvantage('terrace', $biens, $search->getHasTerrace());
+        $biens = $searchService->filterAdvantage('balcony', $biens, $search->getHasBalcony());
+        $biens = $searchService->filterAdvantage('parking', $biens, $search->getHasParking());
+        $biens = $searchService->filterAdvantage('box',     $biens, $search->getHasBox());
+
+        return $apiResponse->apiJsonResponse($biens, User::USER_READ);
     }
 }

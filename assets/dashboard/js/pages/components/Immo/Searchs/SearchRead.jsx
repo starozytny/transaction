@@ -9,15 +9,21 @@ import { Back }          from "@dashboardComponents/Layout/Elements";
 import { Alert }         from "@dashboardComponents/Tools/Alert";
 import { LoaderElement } from "@dashboardComponents/Layout/Loader";
 
+import { AdCard }        from "@userPages/components/Biens/AdCard";
+import {Button} from "@dashboardComponents/Tools/Button";
+
 export class SearchRead extends Component {
     constructor(props) {
         super();
 
         this.state = {
+            context: 'main',
             loadData: true,
             data: [],
             data2: []
         }
+
+        this.handleChangeContext = this.handleChangeContext.bind(this);
     }
 
     componentDidMount = () => {
@@ -27,7 +33,7 @@ export class SearchRead extends Component {
         axios({ method: "GET", url: Routing.generate('api_searchs_results', {'id': elem.id}) })
             .then(function (response) {
                 let data = response.data;
-                self.setState({ loadData: false })
+                self.setState({ loadData: false, data: data })
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error);
@@ -35,9 +41,11 @@ export class SearchRead extends Component {
         ;
     }
 
+    handleChangeContext = (context) => { this.setState({ context }) }
+
     render () {
         const { onChangeContext } = this.props;
-        const { loadData, data, data2 } = this.state;
+        const { loadData, context, data, data2 } = this.state;
 
         return loadData ? <LoaderElement /> : <>
             <div>
@@ -45,12 +53,17 @@ export class SearchRead extends Component {
 
                 <div className="search-read">
                     <div className="col-1">
-                        <div className="title">Biens</div>
-                        <DataBiens data={data} />
+                        <Button type={context === "main" ? "primary" : "default"}
+                                onClick={() => this.handleChangeContext("main")}>
+                            Par rapport à la recherche
+                        </Button>
+                        <Button type={context !== "main" ? "primary" : "default"}
+                                onClick={() => this.handleChangeContext("second")}>
+                            Similaire à la recherche
+                        </Button>
                     </div>
                     <div className="col-2">
-                        <div className="title">Biens similaires</div>
-                        <DataBiens data={data2} />
+                        <DataBiens data={context === "main" ? data : data2} />
                     </div>
                 </div>
             </div>
@@ -60,6 +73,8 @@ export class SearchRead extends Component {
 
 function DataBiens ({ data }) {
     return <div className="content">
-        {data.length !== 0 ? "ok" : <Alert>Aucun résultat</Alert>}
+        {data.length !== 0 ? data.map(el => {
+            return <AdCard el={el} key={el.id}/>
+        }) : <Alert>Aucun résultat</Alert>}
     </div>
 }
