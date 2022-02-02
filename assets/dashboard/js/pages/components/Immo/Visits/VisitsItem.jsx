@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import parse from "html-react-parser";
-import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
+
+import { ButtonIcon, ButtonIconContacts } from "@dashboardComponents/Tools/Button";
 
 export class VisitsItem extends Component {
     render () {
@@ -24,6 +25,7 @@ export class VisitsItem extends Component {
 
                         </div>
                         <div className="col-4 actions">
+                            {/*<ButtonIconContacts emails={}/>*/}
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>

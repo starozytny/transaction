@@ -73,3 +73,9 @@ export function ButtonIconContact({ isClient=true, email }){
         Contacter
     </ButtonIcon>
 }
+
+export function ButtonIconContacts({ isClient=true, emails }){
+    return <ButtonIcon icon="chat-2" onClick={Routing.generate(isClient ? "user_mails_send" : "admin_mails_send", {'dest': emails})} element="a">
+        Contacter
+    </ButtonIcon>
+}
