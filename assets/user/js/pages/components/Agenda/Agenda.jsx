@@ -74,6 +74,10 @@ export class Agenda extends Component {
         let nContext = (newContext !== null) ? newContext : context;
         let newData = UpdateList.update(nContext, data, element);
 
+        if(nContext === "delete"){
+            this.aside.current.handleClose();
+        }
+
         this.setState({
             data: newData,
             element: element
@@ -142,10 +146,11 @@ export class Agenda extends Component {
         let contentAside;
         switch (context){
             case "create":
-                contentAside = <AgendaFormulaire type="create" custom={element} users={users} onUpdateList={this.handleUpdateList} />
+                contentAside = <AgendaFormulaire type="create" custom={element} users={users} refAside={this.aside}
+                                                 onUpdateList={this.handleUpdateList} />
                 break;
             case "update":
-                contentAside = <AgendaFormulaire type="update" element={element} users={users}
+                contentAside = <AgendaFormulaire type="update" element={element} users={users} refAside={this.aside}
                                                  onUpdateList={this.handleUpdateList} onDelete={() => this.handleDelete(element)} />
                 break;
             default:

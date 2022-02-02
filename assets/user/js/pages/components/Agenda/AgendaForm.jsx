@@ -24,7 +24,7 @@ const URL_UPDATE_GROUP       = "api_agenda_events_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, element, users })
+export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, element, users, refAside })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez ajouté un nouveau évènement !"
@@ -53,6 +53,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onDelete, custom, elemen
         onDelete={onDelete}
         messageSuccess={msg}
         users={users}
+        refAside={refAside}
         key={element ? element.id : (custom ? custom.dateStr : 0)}
     />
 
@@ -87,10 +88,6 @@ export class Form extends Component {
         this.handleChangeSelectMultipleAdd = this.handleChangeSelectMultipleAdd.bind(this);
         this.handleChangeSelectMultipleDel = this.handleChangeSelectMultipleDel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentWillUnmount() {
-        console.log("in")
     }
 
     handleChange = (e) => {
@@ -147,7 +144,7 @@ export class Form extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { context, url, messageSuccess } = this.props;
+        const { context, url, messageSuccess, refAside } = this.props;
         const { name, allDay, startAt, endAt } = this.state;
 
         this.setState({ errors: [], success: false })
@@ -185,24 +182,12 @@ export class Form extends Component {
             axios({ method: method, url: url, data: this.state })
                 .then(function (response) {
                     let data = response.data;
+
+                    refAside.current.handleClose();
+
                     Helper.toTop();
                     if(self.props.onUpdateList){
                         self.props.onUpdateList(data);
-                    }
-                    self.setState({ success: messageSuccess, errors: [] });
-                    if(context === "create"){
-                        self.setState( {
-                            name: "",
-                            startAt: "",
-                            endAt: "",
-                            allDay: [0],
-                            location: "",
-                            comment: "",
-                            status: 1,
-                            visibilities: [],
-                            persons: [],
-                            users: [],
-                        })
                     }
                 })
                 .catch(function (error) {
