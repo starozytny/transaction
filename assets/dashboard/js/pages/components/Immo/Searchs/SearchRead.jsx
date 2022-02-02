@@ -65,9 +65,7 @@ export class SearchRead extends Component {
         }else{
             this.setState({ errors: [] })
 
-            let data = {
-                price: price, piece: piece, room: room, area: area, land: land
-            }
+            let data = { price: price, piece: piece, room: room, area: area, land: land }
 
             let paramsToValidate = [
                 {type: "text", id: 'price', value: price},
