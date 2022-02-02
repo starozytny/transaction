@@ -157,7 +157,7 @@ class SearchController extends AbstractController
     /**
      * Get results search
      *
-     * @Route("/results/{id}", name="results", options={"expose"=true}, methods={"GET"})
+     * @Route("/results/{id}", name="results", options={"expose"=true}, methods={"POST"})
      *
      * @OA\Response(
      *     response=200,
@@ -166,18 +166,20 @@ class SearchController extends AbstractController
      *
      * @OA\Tag(name="Searchs")
      *
+     * @param Request $request
      * @param ImSearch $search
      * @param ApiResponse $apiResponse
      * @param SearchService $searchService
-     * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function results(ImSearch $search, ApiResponse $apiResponse, SearchService $searchService, SerializerInterface $serializer): JsonResponse
+    public function results(Request $request, ImSearch $search, ApiResponse $apiResponse, SearchService $searchService): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $biens = $em->getRepository(ImBien::class)->findByCodeAdBienWithoutArchive(
             $search->getCodeTypeAd(), $search->getCodeTypeBien()
         );
+
+        $data = json_decode($request->getContent());
 
         $biens = $searchService->filterLocalisation('zipcode', $biens, $search->getZipcode());
         $biens = $searchService->filterLocalisation('city',    $biens, $search->getCity());
@@ -188,28 +190,12 @@ class SearchController extends AbstractController
         $biens = $searchService->filterAdvantage('parking', $biens, $search->getHasParking());
         $biens = $searchService->filterAdvantage('box',     $biens, $search->getHasBox());
 
-        $similaires = $biens;
+        $biens = $searchService->filterMinMax('price', $biens, $search->getMinPrice(), $search->getMaxPrice(), $data->price ?? 0);
+        $biens = $searchService->filterMinMax('piece', $biens, $search->getMinPiece(), $search->getMaxPiece(), $data->piece ?? 0);
+        $biens = $searchService->filterMinMax('room',  $biens, $search->getMinRoom(),  $search->getMaxRoom(), $data->room ?? 0);
+        $biens = $searchService->filterMinMax('area',  $biens, $search->getMinArea(),  $search->getMaxArea(), $data->area ?? 0);
+        $biens = $searchService->filterMinMax('land',  $biens, $search->getMinLand(),  $search->getMaxLand(), $data->land ?? 0);
 
-        $deltaPrice = $search->getCodeTypeAd() == ImBien::AD_LOCATION ? 100 : 20000;
-
-        $biens = $searchService->filterMinMax('price', $biens, $search->getMinPrice(), $search->getMaxPrice());
-        $biens = $searchService->filterMinMax('piece', $biens, $search->getMinPiece(), $search->getMaxPiece());
-        $biens = $searchService->filterMinMax('room',  $biens, $search->getMinRoom(),  $search->getMaxRoom());
-        $biens = $searchService->filterMinMax('area',  $biens, $search->getMinArea(),  $search->getMaxArea());
-        $biens = $searchService->filterMinMax('land',  $biens, $search->getMinLand(),  $search->getMaxLand());
-
-        $similaires = $searchService->filterMinMax('price', $similaires, $search->getMinPrice(), $search->getMaxPrice(), $deltaPrice);
-        $similaires = $searchService->filterMinMax('piece', $similaires, $search->getMinPiece(), $search->getMaxPiece(), 1);
-        $similaires = $searchService->filterMinMax('room',  $similaires, $search->getMinRoom(),  $search->getMaxRoom(), 1);
-        $similaires = $searchService->filterMinMax('area',  $similaires, $search->getMinArea(),  $search->getMaxArea(), 30);
-        $similaires = $searchService->filterMinMax('land',  $similaires, $search->getMinLand(),  $search->getMaxLand(), 30);
-
-        $biens      = $serializer->serialize($biens,      'json', ['groups' => User::USER_READ]);
-        $similaires = $serializer->serialize($similaires, 'json', ['groups' => User::USER_READ]);
-
-        return $apiResponse->apiJsonResponseCustom([
-            'main' => $biens,
-            'second' => $similaires
-        ]);
+        return $apiResponse->apiJsonResponse($biens, User::USER_READ);
     }
 }
