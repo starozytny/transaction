@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/visits", name="api_visits_")
@@ -60,7 +61,7 @@ class VisitController extends AbstractController
      * @throws Exception
      */
     public function submitForm($type, ImVisit $obj, AgEvent $event, Request $request, ApiResponse $apiResponse,
-                               ValidatorService $validator, DataImmo $dataEntity, DataEvent $dataEvent): JsonResponse
+                               ValidatorService $validator, DataImmo $dataEntity, DataEvent $dataEvent, SerializerInterface $serializer): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
@@ -90,7 +91,12 @@ class VisitController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponse($obj, ImVisit::VISIT_READ);
+        $data = $serializer->serialize($obj, "json", ['groups' => ImVisit::VISIT_READ]);
+
+        $data = json_decode($data);
+        $data->agEvent->persons = $obj->getAgEvent()->getPersons();
+
+        return $apiResponse->apiJsonResponseCustom($data);
     }
 
     /**
@@ -110,13 +116,14 @@ class VisitController extends AbstractController
      * @param ValidatorService $validator
      * @param DataEvent $dataEvent
      * @param DataImmo $dataEntity
+     * @param SerializerInterface $serializer
      * @return JsonResponse
      * @throws Exception
      */
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
-                           DataEvent $dataEvent, DataImmo $dataEntity): JsonResponse
+                           DataEvent $dataEvent, DataImmo $dataEntity, SerializerInterface $serializer): JsonResponse
     {
-        return $this->submitForm("create", new ImVisit(), new AgEvent(), $request, $apiResponse, $validator, $dataEntity, $dataEvent);
+        return $this->submitForm("create", new ImVisit(), new AgEvent(), $request, $apiResponse, $validator, $dataEntity, $dataEvent, $serializer);
     }
 
     /**
@@ -137,13 +144,14 @@ class VisitController extends AbstractController
      * @param ValidatorService $validator
      * @param DataImmo $dataEntity
      * @param DataEvent $dataEvent
+     * @param SerializerInterface $serializer
      * @return JsonResponse
      * @throws Exception
      */
     public function update(ImVisit $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
-                           DataImmo $dataEntity, DataEvent $dataEvent): JsonResponse
+                           DataImmo $dataEntity, DataEvent $dataEvent, SerializerInterface $serializer): JsonResponse
     {
-        return $this->submitForm("update", $obj, $obj->getAgEvent(), $request, $apiResponse, $validator, $dataEntity, $dataEvent);
+        return $this->submitForm("update", $obj, $obj->getAgEvent(), $request, $apiResponse, $validator, $dataEntity, $dataEvent, $serializer);
     }
 
     /**
