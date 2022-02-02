@@ -132,7 +132,7 @@ class SearchController extends AbstractController
     }
 
     /**
-     * Admin - Delete a group of searchs
+     * Delete a group of searchs
      *
      * @Route("/", name="delete_group", options={"expose"=true}, methods={"DELETE"})
      *
@@ -150,5 +150,28 @@ class SearchController extends AbstractController
     public function deleteSelected(Request $request, DataService $dataService): JsonResponse
     {
         return $dataService->deleteSelected(ImSearch::class, json_decode($request->getContent()));
+    }
+
+    /**
+     * Get results search
+     *
+     * @Route("/results/{id}", name="results", options={"expose"=true}, methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Return message successful",
+     * )
+     *
+     * @OA\Tag(name="Searchs")
+     *
+     * @param ImSearch $search
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function results(ImSearch $search, ApiResponse $apiResponse): JsonResponse
+    {
+        dump($search);
+
+        return $apiResponse->apiJsonResponseSuccessful("ok");
     }
 }

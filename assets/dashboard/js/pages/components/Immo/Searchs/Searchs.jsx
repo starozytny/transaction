@@ -56,7 +56,7 @@ export class Searchs extends Component {
     }
 
     handleContentRead = (changeContext, element) => {
-        return <SearchRead element={element} onChangeContext={changeContext} />
+        return <SearchRead elem={element} onChangeContext={changeContext} />
     }
 
     render () {
