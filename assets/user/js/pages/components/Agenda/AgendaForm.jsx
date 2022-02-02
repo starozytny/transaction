@@ -148,7 +148,7 @@ export class Form extends Component {
         e.preventDefault();
 
         const { context, url, messageSuccess } = this.props;
-        const { name, startAt } = this.state;
+        const { name, startAt, endAt } = this.state;
 
         this.setState({ success: false})
 
@@ -159,6 +159,11 @@ export class Form extends Component {
             {type: "text",       id: 'startAt', value: startAt},
             {type: "dateLimitH", id: 'startAt', value: startAt, 'min': 8, 'max': 22},
         ];
+
+        if(endAt !== ""){
+            let min = startAt ? startAt.getHours() : 8;
+            paramsToValidate = [...paramsToValidate, ...[{type: "dateLimitH", id: 'endAt', value: endAt, 'min': min, 'max': 22}]]
+        }
 
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
