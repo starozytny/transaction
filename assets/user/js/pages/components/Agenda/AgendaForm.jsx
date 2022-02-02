@@ -150,23 +150,25 @@ export class Form extends Component {
         const { context, url, messageSuccess } = this.props;
         const { name, startAt, endAt } = this.state;
 
-        this.setState({ success: false})
+        this.setState({ errors: [], success: false })
 
         let method = context === "create" ? "POST" : "PUT";
 
         let paramsToValidate = [
-            {type: "text",       id: 'name',  value: name},
-            {type: "text",       id: 'startAt', value: startAt},
-            {type: "dateLimitH", id: 'startAt', value: startAt, 'min': 8, 'max': 22},
+            {type: "text",        id: 'name',  value: name},
+            {type: "text",        id: 'startAt', value: startAt},
+            {type: "dateLimitHM", id: 'startAt', value: startAt, 'minH': 8, 'maxH': 22, 'minM': 0, 'maxM': 60},
         ];
 
         if(endAt !== ""){
-            let min = startAt ? startAt.getHours() : 8;
-            paramsToValidate = [...paramsToValidate, ...[{type: "dateLimitH", id: 'endAt', value: endAt, 'min': min, 'max': 22}]]
+            let minH = startAt ? startAt.getHours() : 8;
+            let minM = startAt ? startAt.getMinutes() : 0;
+            paramsToValidate = [...paramsToValidate, ...[{type: "dateLimitHM", id: 'endAt', value: endAt, 'minH': minH, 'maxH': 22, 'minM': minM, 'maxM': 60}]]
         }
 
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
+        console.log(validate)
         if(!validate.code){
             Formulaire.showErrors(this, validate);
         }else{
