@@ -100,6 +100,7 @@ class AgEvent extends DataEntity
     /**
      * @ORM\ManyToOne(targetEntity=User::class, fetch="EAGER", inversedBy="agEvents")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"agenda:read"})
      */
     private $creator;
 
@@ -171,6 +172,7 @@ class AgEvent extends DataEntity
 
         return $this;
     }
+
 
     /**
      * @return string|null

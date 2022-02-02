@@ -112,6 +112,10 @@ export class Form extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentWillUnmount() {
+        console.log("in")
+    }
+
     handleChange = (e) => {
         const { visibilities } = this.state;
 
@@ -169,16 +173,31 @@ export class Form extends Component {
         e.preventDefault();
 
         const { context, url, messageSuccess } = this.props;
-        const { name, startAt } = this.state;
+        const { name, allDay, startAt, endAt } = this.state;
 
-        this.setState({ success: false})
+        this.setState({ errors: [], success: false })
 
         let method = context === "create" ? "POST" : "PUT";
 
         let paramsToValidate = [
-            {type: "text", id: 'name',  value: name},
-            {type: "text", id: 'startAt', value: startAt}
+            {type: "text",        id: 'name',  value: name},
+            {type: "text",        id: 'startAt', value: startAt},
         ];
+
+        if(allDay[0] === 0){
+            paramsToValidate = [...paramsToValidate, ...[
+                {type: "dateLimitHM", id: 'startAt', value: startAt, minH: 8, maxH: 22, minM: 0, maxM: 60}
+            ]]
+
+            if(endAt !== ""){
+                let minH = startAt ? startAt.getHours() : 8;
+                let minM = startAt ? startAt.getMinutes() : 0;
+                paramsToValidate = [...paramsToValidate, ...[
+                    {type: "dateLimitHM", id: 'endAt', value: endAt, minH: minH, maxH: 22, minM: minM, maxM: 60},
+                    {type: "dateCompare", id: 'startAt', value: startAt, valueCheck: endAt}
+                ]]
+            }
+        }
 
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
@@ -254,6 +273,12 @@ export class Form extends Component {
         let selectOwners        = getSelectData(this.props.owners, "own");
         let selectTenants       = getSelectData(this.props.tenants, "tenant");
         let selectProspects     = getSelectData(this.props.prospects, "pros");
+
+        let minTimeStart = Helper.createTimeHoursMinutes(8);
+        let maxTimeStart = Helper.createTimeHoursMinutes(22);
+        let minTimeEnd   = startAt ? startAt : Helper.createTimeHoursMinutes(8);
+        let maxTimeEnd   = Helper.createTimeHoursMinutes(22);
+
         return <>
             {(context === "update" && onDelete) && <div className="toolbar">
                 <div className="item">
@@ -298,10 +323,14 @@ export class Form extends Component {
                             </DatePick>
                             <div className="form-group" />
                         </> : <>
-                        <DateTimePick identifiant="startAt" valeur={startAt} errors={errors} onChange={(e) => this.handleChangeDate("startAt", e)}>
+                        <DateTimePick identifiant="startAt" valeur={startAt} errors={errors}
+                                      minTime={minTimeStart} maxTime={maxTimeStart}
+                                      onChange={(e) => this.handleChangeDate("startAt", e)}>
                             Début du rendez-vous
                         </DateTimePick>
-                        <DateTimePick identifiant="endAt" valeur={endAt} errors={errors} onChange={(e) => this.handleChangeDate("endAt", e)}>
+                        <DateTimePick identifiant="endAt" valeur={endAt} errors={errors}
+                                      minTime={minTimeEnd} maxTime={maxTimeEnd}
+                                      onChange={(e) => this.handleChangeDate("endAt", e)}>
                             Fin du rendez-vous
                         </DateTimePick>
                     </>}
@@ -389,7 +418,7 @@ function Selecteur ({ refSelecteur, items, identifiant, valeur, errors, onChange
 function getSelectData (data, pre) {
     let tab = [];
     data.forEach(el => {
-        tab.push({ value: el.id, label: el.fullname, identifiant: pre + "-" + el.id })
+        tab.push({ value: el.id, label: el.fullname, identifiant: pre + "-" + el.id, email: el.email })
     })
 
     return tab
@@ -399,7 +428,7 @@ function getPersonsData (data) {
     let tab = [];
     if(data){
         data.forEach(el => {
-            tab.push({value: el.value, label: el.label})
+            tab.push({ value: el.value, label: el.label, email: el.email })
         })
     }
 
