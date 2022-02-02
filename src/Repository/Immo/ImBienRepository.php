@@ -19,6 +19,20 @@ class ImBienRepository extends ServiceEntityRepository
         parent::__construct($registry, ImBien::class);
     }
 
+     /**
+      * @return ImBien[] Returns an array of ImBien objects
+      */
+    public function findByCodeAdBienWithoutArchive($codeTypeAd, $codeTypeBien): array
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.status != ' . ImBien::STATUS_ARCHIVE . ' AND i.codeTypeAd = :ad AND i.codeTypeBien = :bien')
+            ->setParameter('ad', $codeTypeAd)
+            ->setParameter('bien', $codeTypeBien)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return ImBien[] Returns an array of ImBien objects
     //  */

@@ -170,7 +170,12 @@ class SearchController extends AbstractController
      */
     public function results(ImSearch $search, ApiResponse $apiResponse): JsonResponse
     {
-        dump($search);
+        $em = $this->doctrine->getManager();
+        $biens = $em->getRepository(ImBien::class)->findByCodeAdBienWithoutArchive(
+            $search->getCodeTypeAd(), $search->getCodeTypeBien()
+        );
+
+        dump($biens);
 
         return $apiResponse->apiJsonResponseSuccessful("ok");
     }
