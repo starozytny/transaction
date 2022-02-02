@@ -27,7 +27,7 @@ export class UsersItem extends Component {
                             <div className="sub">{elem.email}</div>
                         </div>
                         <div className="col-3 actions">
-                            <ButtonIconContact isClient={isClient} email={elem.email} />
+                            <ButtonIconContact email={elem.email} />
                             {(id !== elem.id && !isUser && elem.highRoleCode !== 1 && elem.highRoleCode !== 2) && <>
                                 <ButtonIcon icon="pencil" onClick={Routing.generate('user_user_update', {'username': elem.username})} element="a">Modifier</ButtonIcon>
                                 <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>

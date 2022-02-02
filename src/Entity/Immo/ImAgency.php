@@ -2,6 +2,7 @@
 
 namespace App\Entity\Immo;
 
+use App\Entity\DataEntity;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Repository\Immo\ImAgencyRepository;
@@ -13,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=ImAgencyRepository::class)
  */
-class ImAgency
+class ImAgency extends DataEntity
 {
     const FOLDER_LOGO = "immo/logos";
     const FOLDER_TARIF = "immo/tarifs";
@@ -717,7 +718,7 @@ class ImAgency
      */
     public function getLogoFile(): string
     {
-        return $this->logo ? "/" . self::FOLDER_LOGO . "/" . $this->logo : "https://robohash.org/" . $this->id . "?size=120x120";
+        return $this->getFileOrDefault($this->logo, self::FOLDER_LOGO, "https://robohash.org/" . $this->id . "?size=120x120");
     }
 
     /**

@@ -43,7 +43,7 @@ export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, ele
         email={element ? element.email : ""}
         transport={element ? element.transport : ""}
         immatriculation={element ? element.immatriculation : ""}
-        avatar={element ? element.avatar : null}
+        avatar={element ? element.avatarFile : null}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
@@ -201,7 +201,7 @@ export class NegotiatorForm extends Component {
                 </div>}
 
                 <div className="line line-2">
-                    <Drop ref={this.inputAvatar} identifiant="avatar" file={avatar} folder="avatars" errors={errors} accept={"image/*"} maxFiles={1}
+                    <Drop ref={this.inputAvatar} identifiant="avatar" previewFile={avatar} errors={errors} accept={"image/*"} maxFiles={1}
                           label="Téléverser un avatar" labelError="Seules les images sont acceptées.">Avatar (facultatif)</Drop>
                     <div className="form-group" />
                 </div>

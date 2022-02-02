@@ -51,7 +51,7 @@ export function AgencyFormulaire ({ type, onChangeContext, onUpdateList, element
         lat={element ? element.lat : ""}
         lon={element ? element.lon : ""}
         description={element ? element.description : ""}
-        logo={element ? element.logo : ""}
+        logo={element ? element.logoFile : ""}
         tarif={element ? element.tarif : ""}
         type={element ? element.type : ""}
         siret={element ? element.siret : ""}
@@ -301,9 +301,9 @@ export class AgencyForm extends Component {
                 </div>
 
                 <div className="line line-2">
-                    <Drop ref={this.inputLogo} identifiant="logo" file={logo} folder="immo/logos" errors={errors} accept={"image/*"} maxFiles={1}
+                    <Drop ref={this.inputLogo} identifiant="logo" previewFile={logo} errors={errors} accept={"image/*"} maxFiles={1}
                           label="Téléverser un logo" labelError="Seules les images sont acceptées.">Logo</Drop>
-                    <Drop ref={this.inputTarif} identifiant="tarif" file={tarif} folder="immo/tarifs" errors={errors} accept={"application/pdf"} maxFiles={1}
+                    <Drop ref={this.inputTarif} identifiant="tarif" previewFile={tarif} folder="immo/tarifs" errors={errors} accept={"application/pdf"} maxFiles={1}
                           label="Téléverser un PDF Tarif" labelError="Seules les PDFs sont acceptées.">Tarif</Drop>
                 </div>
 
