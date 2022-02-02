@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Fake;
 
 use App\Entity\Agenda\AgEvent;
 use App\Entity\Immo\ImBien;
@@ -67,7 +67,7 @@ class FakeAgendaCreateCommand extends Command
             }
 
             $users = [
-                ["value" => $user->getId(), "label" => $user->getFullname()],
+                ["value" => $user->getId(), "label" => $user->getFullname(), "email" => $user->getEmail()],
             ];
 
             $data = [
