@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/agenda/events", name="api_agenda_events_")
@@ -32,7 +33,7 @@ class EventController extends AbstractController
      * @throws Exception
      */
     public function submitForm($type, AgEvent $obj, Request $request, ApiResponse $apiResponse,
-                               ValidatorService $validator, DataEvent $dataEntity): JsonResponse
+                               ValidatorService $validator, DataEvent $dataEntity, SerializerInterface $serializer): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
@@ -55,7 +56,12 @@ class EventController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponse($obj, User::AGENDA_READ);
+        $data = $serializer->serialize($obj, "json", ['groups' => User::AGENDA_READ]);
+
+        $data = json_decode($data);
+        $data->persons = $obj->getPersons();
+
+        return $apiResponse->apiJsonResponseCustom($data);
     }
 
     /**
@@ -74,12 +80,14 @@ class EventController extends AbstractController
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
      * @param DataEvent $dataEntity
+     * @param SerializerInterface $serializer
      * @return JsonResponse
      * @throws Exception
      */
-    public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataEvent $dataEntity): JsonResponse
+    public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
+                           DataEvent $dataEntity, SerializerInterface $serializer): JsonResponse
     {
-        return $this->submitForm("create", new AgEvent(), $request, $apiResponse, $validator, $dataEntity);
+        return $this->submitForm("create", new AgEvent(), $request, $apiResponse, $validator, $dataEntity, $serializer);
     }
 
     /**
@@ -99,12 +107,14 @@ class EventController extends AbstractController
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
      * @param DataEvent $dataEntity
+     * @param SerializerInterface $serializer
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(AgEvent $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataEvent $dataEntity): JsonResponse
+    public function update(AgEvent $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
+                           DataEvent $dataEntity, SerializerInterface $serializer): JsonResponse
     {
-        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
+        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $serializer);
     }
 
     /**
