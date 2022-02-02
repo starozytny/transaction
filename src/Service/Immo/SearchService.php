@@ -11,12 +11,13 @@ class SearchService
      * @param ImBien[] $data
      * @param $min
      * @param $max
+     * @param int $delta
      * @return array
      */
-    public function filterMinMax($filter, array $data, $min, $max): array
+    public function filterMinMax($filter, array $data, $min, $max, int $delta = 0): array
     {
         $nData = [];
-        if($min != 0 && $max != 0){
+        if($min != 0 || $max != 0){
             foreach($data as $item){
                 switch ($filter){
                     case 'land':
@@ -38,7 +39,9 @@ class SearchService
                         break;
                 }
 
-                if(isset($value) && ($value >= $min && $value <= $max)){
+                $min = ($min > $delta) ? $min - $delta : 0;
+                $max = $min != 0 && $max == 0 ? 9999999999999999999 : $max;
+                if(isset($value) && ($value >= $min && $value <= ($max + $delta))){
                     $nData[] = $item;
                 }
             }

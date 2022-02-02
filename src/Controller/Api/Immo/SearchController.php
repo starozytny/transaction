@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/searchs", name="api_searchs_")
@@ -168,32 +169,47 @@ class SearchController extends AbstractController
      * @param ImSearch $search
      * @param ApiResponse $apiResponse
      * @param SearchService $searchService
+     * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function results(ImSearch $search, ApiResponse $apiResponse, SearchService $searchService): JsonResponse
+    public function results(ImSearch $search, ApiResponse $apiResponse, SearchService $searchService, SerializerInterface $serializer): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $biens = $em->getRepository(ImBien::class)->findByCodeAdBienWithoutArchive(
             $search->getCodeTypeAd(), $search->getCodeTypeBien()
         );
 
-        //check price
-        $biens = $searchService->filterMinMax('price', $biens, $search->getMinPrice(), $search->getMaxPrice());
-        $biens = $searchService->filterMinMax('piece', $biens, $search->getMinPiece(), $search->getMaxPiece());
-        $biens = $searchService->filterMinMax('room',  $biens, $search->getMinRoom(),  $search->getMaxRoom());
-        $biens = $searchService->filterMinMax('area',  $biens, $search->getMinArea(),  $search->getMaxArea());
-        $biens = $searchService->filterMinMax('land',  $biens, $search->getMinLand(),  $search->getMaxLand());
-
         $biens = $searchService->filterLocalisation('zipcode', $biens, $search->getZipcode());
         $biens = $searchService->filterLocalisation('city',    $biens, $search->getCity());
 
-        //check advantage
         $biens = $searchService->filterAdvantage('lift',    $biens, $search->getHasLift());
         $biens = $searchService->filterAdvantage('terrace', $biens, $search->getHasTerrace());
         $biens = $searchService->filterAdvantage('balcony', $biens, $search->getHasBalcony());
         $biens = $searchService->filterAdvantage('parking', $biens, $search->getHasParking());
         $biens = $searchService->filterAdvantage('box',     $biens, $search->getHasBox());
 
-        return $apiResponse->apiJsonResponse($biens, User::USER_READ);
+        $similaires = $biens;
+
+        $deltaPrice = $search->getCodeTypeAd() == ImBien::AD_LOCATION ? 100 : 20000;
+
+        $biens = $searchService->filterMinMax('price', $biens, $search->getMinPrice(), $search->getMaxPrice());
+        $biens = $searchService->filterMinMax('piece', $biens, $search->getMinPiece(), $search->getMaxPiece());
+        $biens = $searchService->filterMinMax('room',  $biens, $search->getMinRoom(),  $search->getMaxRoom());
+        $biens = $searchService->filterMinMax('area',  $biens, $search->getMinArea(),  $search->getMaxArea());
+        $biens = $searchService->filterMinMax('land',  $biens, $search->getMinLand(),  $search->getMaxLand());
+
+        $similaires = $searchService->filterMinMax('price', $similaires, $search->getMinPrice(), $search->getMaxPrice(), $deltaPrice);
+        $similaires = $searchService->filterMinMax('piece', $similaires, $search->getMinPiece(), $search->getMaxPiece(), 1);
+        $similaires = $searchService->filterMinMax('room',  $similaires, $search->getMinRoom(),  $search->getMaxRoom(), 1);
+        $similaires = $searchService->filterMinMax('area',  $similaires, $search->getMinArea(),  $search->getMaxArea(), 30);
+        $similaires = $searchService->filterMinMax('land',  $similaires, $search->getMinLand(),  $search->getMaxLand(), 30);
+
+        $biens      = $serializer->serialize($biens,      'json', ['groups' => User::USER_READ]);
+        $similaires = $serializer->serialize($similaires, 'json', ['groups' => User::USER_READ]);
+
+        return $apiResponse->apiJsonResponseCustom([
+            'main' => $biens,
+            'second' => $similaires
+        ]);
     }
 }

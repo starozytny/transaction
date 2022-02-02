@@ -33,7 +33,7 @@ export class SearchRead extends Component {
         axios({ method: "GET", url: Routing.generate('api_searchs_results', {'id': elem.id}) })
             .then(function (response) {
                 let data = response.data;
-                self.setState({ loadData: false, data: data })
+                self.setState({ loadData: false, data: JSON.parse(data.main), data2: JSON.parse(data.second) })
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error);
