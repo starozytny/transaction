@@ -63,7 +63,7 @@ export class AdCard extends Component {
     }
 
     render () {
-        const { el, onDelete } = this.props;
+        const { isProspectPage = false, el, onDelete, onLinkToProspect } = this.props;
 
         let items = [
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
@@ -141,12 +141,18 @@ export class AdCard extends Component {
                             Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par " + el.updatedBy)}
                         </div>
                         <div className="actions">
+                            {isProspectPage && <ButtonIcon icon="star" tooltipWidth={90} onClick={() => onLinkToProspect(el)}>Lier au prospect</ButtonIcon>}
+
                             <ButtonIcon icon="follow" element="a" target="_blank" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>
                             <ButtonIcon icon="vision" element="a" target="_blank" onClick={Routing.generate('user_biens_read', {'slug': el.slug})}>Détails</ButtonIcon>
                             <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
-                            {el.status !== 2 ? <ButtonIcon icon="archive" onClick={() => this.handleChangeStatus(el, 2)}>Archive</ButtonIcon>
-                                : <ButtonIcon icon="layer" onClick={() => this.handleChangeStatus(el, 0)}>Désarchiver</ButtonIcon>}
-                            <ButtonIcon icon="trash" onClick={() => onDelete(el)}>Supprimer</ButtonIcon>
+
+                            {!isProspectPage && <>
+                                {el.status !== 2 ? <ButtonIcon icon="archive" onClick={() => this.handleChangeStatus(el, 2)}>Archive</ButtonIcon>
+                                    : <ButtonIcon icon="layer" onClick={() => this.handleChangeStatus(el, 0)}>Désarchiver</ButtonIcon>}
+                                <ButtonIcon icon="trash" onClick={() => onDelete(el)}>Supprimer</ButtonIcon>
+                            </>}
+
                             <ButtonIconDropdown icon="dropdown" items={items}>Autres</ButtonIconDropdown>
                         </div>
                     </div>

@@ -161,7 +161,7 @@ export class SearchRead extends Component {
 function DataBiens ({ data }) {
     return <div className="content">
         {data.length !== 0 ? data.map(el => {
-            return <AdCard el={el} key={el.id}/>
+            return <AdCard el={el} isProspectPage={true} key={el.id}/>
         }) : <Alert>Aucun résultat</Alert>}
     </div>
 }
