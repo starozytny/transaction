@@ -55,7 +55,7 @@ class ImOwner extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     private $email;
 

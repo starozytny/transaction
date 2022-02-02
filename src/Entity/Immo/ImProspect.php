@@ -53,7 +53,7 @@ class ImProspect extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "agenda:read"})
      */
     private $email;
 
