@@ -8,7 +8,7 @@ import {
     Checkbox,
     Radiobox,
     TextArea,
-    SelectizeMultiple, SelectReactSelectize
+    SelectizeMultiple,
 } from "@dashboardComponents/Tools/Fields";
 
 import { DatePick, DateTimePick } from "@dashboardComponents/Tools/DatePicker";
@@ -25,7 +25,7 @@ const URL_UPDATE_GROUP       = "api_agenda_events_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelete, custom, element, refAside,
+export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelete, custom, element, refAside, useAside,
                                       users, managers, negotiators, owners, tenants, prospects, biens, bienId ="",
                                       url_create=null, url_update=null, params_update={} })
 {
@@ -68,6 +68,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelet
         biens={biens}
 
         refAside={refAside}
+        useAside={useAside}
         key={element ? element.id : (custom ? custom.dateStr : 0)}
     />
 
@@ -170,8 +171,8 @@ export class Form extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { context, url, messageSuccess, refAside } = this.props;
-        const { name, allDay, startAt, endAt } = this.state;
+        const { context, url, messageSuccess, refAside, useAside } = this.props;
+        const { name, allDay, startAt, endAt  } = this.state;
 
         this.setState({ errors: [], success: false })
 
@@ -183,9 +184,11 @@ export class Form extends Component {
         ];
 
         if(allDay[0] === 0){
-            paramsToValidate = [...paramsToValidate, ...[
-                {type: "dateLimitHM", id: 'startAt', value: startAt, minH: 8, maxH: 22, minM: 0, maxM: 60}
-            ]]
+            if(startAt !== ""){
+                paramsToValidate = [...paramsToValidate, ...[
+                    {type: "dateLimitHM", id: 'startAt', value: startAt, minH: 8, maxH: 22, minM: 0, maxM: 60}
+                ]]
+            }
 
             if(endAt !== ""){
                 let minH = startAt ? startAt.getHours() : 8;
@@ -217,6 +220,31 @@ export class Form extends Component {
                     if(self.props.onUpdateList){
                         self.props.onUpdateList(data);
                     }
+
+                    if(!useAside){
+                        self.setState({ success: messageSuccess, errors: [] });
+                        if(context === "create"){
+                            self.setState( {
+                                name: "",
+                                startAt: "",
+                                endAt: "",
+                                allDay: [0],
+                                location: "",
+                                comment: "",
+                                status: 1,
+                                visibilities: [],
+                                persons: [],
+                                users: [],
+                                managers: [],
+                                negotiators: [],
+                                owners: [],
+                                tenants: [],
+                                prospects: [],
+                                bien: ""
+                            })
+                        }
+                    }
+
                 })
                 .catch(function (error) {
                     Formulaire.displayErrors(self, error);
