@@ -16,6 +16,7 @@ use App\Entity\Settings;
 use App\Entity\Society;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Http\Discovery\Exception\NotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -152,6 +153,20 @@ class AdminController extends AbstractController
 
         return $this->render('admin/pages/notifications/index.html.twig', [
             'donnees' => $objs
+        ]);
+    }
+
+    /**
+     * @Route("/boite-reception/envoyer", options={"expose"=true}, name="mails_send")
+     */
+    public function mailsSend(Request $request, SerializerInterface $serializer): Response
+    {
+        $dest = $request->query->get('dest');
+        $users = $this->getAllData(User::class, $serializer);
+
+        return $this->render('admin/pages/mails/send.html.twig', [
+            'users' => $users,
+            'dest' => $dest
         ]);
     }
 
