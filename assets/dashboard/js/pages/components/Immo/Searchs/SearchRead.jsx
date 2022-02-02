@@ -88,7 +88,7 @@ export class SearchRead extends Component {
     handleChange = (e) => { this.setState({ [e.currentTarget.name]: e.currentTarget.value }) }
 
     render () {
-        const { onChangeContext } = this.props;
+        const { onChangeContext, follows } = this.props;
         const { loadData, context, data, data2, errors, price, piece, room, area, land } = this.state;
 
         return loadData ? <LoaderElement /> : <>
@@ -150,7 +150,7 @@ export class SearchRead extends Component {
                 </div>
                 <div className="page-col-2">
                     <div>
-                        <DataBiens data={context === "main" ? data : data2} />
+                        <DataBiens data={context === "main" ? data : data2} follows={follows} />
                     </div>
                 </div>
             </div>
@@ -158,10 +158,10 @@ export class SearchRead extends Component {
     }
 }
 
-function DataBiens ({ data }) {
+function DataBiens ({ data, follows }) {
     return <div className="content">
         {data.length !== 0 ? data.map(el => {
-            return <AdCard el={el} isProspectPage={true} key={el.id}/>
+            return <AdCard el={el} isProspectPage={true} follows={follows} key={el.id}/>
         }) : <Alert>Aucun résultat</Alert>}
     </div>
 }

@@ -3,7 +3,7 @@
 {% set page_title %}Recherches de {{ elem.fullname }}{% endset %}
 
 {% block main_content %}
-    <div id="list-searchs" data-donnees="{{ donnees }}" data-prospect-id="{{ elem.id }}">
+    <div id="list-searchs" data-donnees="{{ donnees }}" data-follows="{{ follows }}" data-prospect-id="{{ elem.id }}">
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

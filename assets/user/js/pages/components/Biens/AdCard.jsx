@@ -63,7 +63,7 @@ export class AdCard extends Component {
     }
 
     render () {
-        const { isProspectPage = false, el, onDelete, onLinkToProspect } = this.props;
+        const { isProspectPage = false, follows, el, onDelete, onLinkToProspect } = this.props;
 
         let items = [
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
@@ -80,6 +80,14 @@ export class AdCard extends Component {
             <div>{el.negotiator.email}</div>
         </div>
 
+        let followed = false;
+        if(isProspectPage){
+            follows.forEach(follow => {
+                if(follow.bien.id === el.id){
+                    followed = true;
+                }
+            })
+        }
 
         return <div className={"card-ad" + (el.isDraft ? " card-draft" : "")}>
             {/*<Selector id={el.id} />*/}
@@ -140,8 +148,8 @@ export class AdCard extends Component {
                         <div className="createdAt">
                             Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par " + el.updatedBy)}
                         </div>
-                        <div className="actions">
-                            {isProspectPage && <ButtonIcon icon="star" tooltipWidth={90} onClick={() => onLinkToProspect(el)}>Lier au prospect</ButtonIcon>}
+                        <div className={"actions" + (isProspectPage && followed ? " followed" : "")}>
+                            {isProspectPage && <ButtonIcon icon="star" tooltipWidth={90} onClick={() => onLinkToProspect(el)}>{followed ? "Lié" : "Lier"} au prospect</ButtonIcon>}
 
                             <ButtonIcon icon="follow" element="a" target="_blank" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>
                             <ButtonIcon icon="vision" element="a" target="_blank" onClick={Routing.generate('user_biens_read', {'slug': el.slug})}>Détails</ButtonIcon>

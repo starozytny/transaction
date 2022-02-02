@@ -4,6 +4,7 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImSuiviRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImSuiviRepository::class)
@@ -20,6 +21,7 @@ class ImSuivi
     /**
      * @ORM\ManyToOne(targetEntity=ImBien::class, inversedBy="suivis")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"admin:read"})
      */
     private $bien;
 

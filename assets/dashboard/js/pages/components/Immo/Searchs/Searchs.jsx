@@ -23,6 +23,7 @@ export class Searchs extends Component {
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "searchs.pagination",
             prospectId: props.prospectId ? parseInt(props.prospectId) : null,
+            follows: props.follows ? JSON.parse(props.follows) : []
         }
 
         this.layout = React.createRef();
@@ -56,7 +57,7 @@ export class Searchs extends Component {
     }
 
     handleContentRead = (changeContext, element) => {
-        return <SearchRead elem={element} onChangeContext={changeContext} />
+        return <SearchRead elem={element} follows={this.state.follows} onChangeContext={changeContext} />
     }
 
     render () {
