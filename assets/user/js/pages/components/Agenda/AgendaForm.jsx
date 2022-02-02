@@ -155,8 +155,9 @@ export class Form extends Component {
         let method = context === "create" ? "POST" : "PUT";
 
         let paramsToValidate = [
-            {type: "text", id: 'name',  value: name},
-            {type: "text", id: 'startAt', value: startAt}
+            {type: "text",       id: 'name',  value: name},
+            {type: "text",       id: 'startAt', value: startAt},
+            {type: "dateLimitH", id: 'startAt', value: startAt, 'min': 8, 'max': 22},
         ];
 
         // validate global
