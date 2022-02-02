@@ -209,7 +209,9 @@ export class Form extends Component {
                 .then(function (response) {
                     let data = response.data;
 
-                    refAside.current.handleClose();
+                    if(refAside.current){
+                        refAside.current.handleClose();
+                    }
 
                     Helper.toTop();
                     if(self.props.onUpdateList){
