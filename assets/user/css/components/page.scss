@@ -27,6 +27,10 @@
     background-color: var(--fondContent);
     border-radius: 12px;
     padding: 12px;
+
+    &:not(:last-child){
+      margin-bottom: 24px;
+    }
   }
 
   .title-col-1, .tab-col-2{

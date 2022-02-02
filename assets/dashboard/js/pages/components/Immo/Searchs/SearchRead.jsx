@@ -5,12 +5,12 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import Formulaire from "@dashboardComponents/functions/Formulaire";
 
-import { Back }          from "@dashboardComponents/Layout/Elements";
+import { Button }        from "@dashboardComponents/Tools/Button";
 import { Alert }         from "@dashboardComponents/Tools/Alert";
+import { ButtonBack }    from "@dashboardComponents/Layout/Elements";
 import { LoaderElement } from "@dashboardComponents/Layout/Loader";
 
 import { AdCard }        from "@userPages/components/Biens/AdCard";
-import {Button} from "@dashboardComponents/Tools/Button";
 
 export class SearchRead extends Component {
     constructor(props) {
@@ -48,21 +48,34 @@ export class SearchRead extends Component {
         const { loadData, context, data, data2 } = this.state;
 
         return loadData ? <LoaderElement /> : <>
-            <div>
-                <Back onChangeContext={onChangeContext} />
-
-                <div className="search-read">
-                    <div className="col-1">
-                        <Button type={context === "main" ? "primary" : "default"}
-                                onClick={() => this.handleChangeContext("main")}>
-                            Par rapport à la recherche
-                        </Button>
-                        <Button type={context !== "main" ? "primary" : "default"}
-                                onClick={() => this.handleChangeContext("second")}>
-                            Similaire à la recherche
-                        </Button>
+            <div className="page-default">
+                <div className="page-col-1">
+                    <div className="comeback">
+                        <ButtonBack onChangeContext={onChangeContext} />
                     </div>
-                    <div className="col-2">
+                    <div className="body-col-1">
+                        <div className="title-col-1">
+                            <span>Recherche de base :</span>
+                        </div>
+                        <div className="content-col-1">
+                            <Button type={context === "main" ? "primary" : "default"}
+                                    onClick={() => this.handleChangeContext("main")}>
+                                Basique
+                            </Button>
+                        </div>
+                        <div className="title-col-1">
+                            <span>Elargir la recherche :</span>
+                        </div>
+                        <div className="content-col-1">
+                            <Button type={context !== "main" ? "primary" : "default"}
+                                    onClick={() => this.handleChangeContext("second")}>
+                                Avancée
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+                <div className="page-col-2">
+                    <div>
                         <DataBiens data={context === "main" ? data : data2} />
                     </div>
                 </div>
