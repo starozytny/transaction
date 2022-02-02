@@ -329,7 +329,7 @@ class ImBien extends DataEntity
      */
     public function getTypeBienString(): string
     {
-        return $this->getCodeTypeBienString($this->codeTypeAd);
+        return $this->getCodeTypeBienString($this->codeTypeBien);
     }
 
     public function getCodeTypeBien(): ?int

@@ -103,7 +103,7 @@ class ImFinancial
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
-    private $typeBail;
+    private $typeBail = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=true)

@@ -63,23 +63,18 @@ function filterFunction(dataImmuable, filters){
         dataImmuable.forEach(el => {
             newData = setNewTab("array", filtersAd, el, el.codeTypeAd, newData);
         })
-
         newData.forEach(el => {
             newData1 = setNewTab("array", filtersBien, el, el.codeTypeBien, newData1);
         })
-
         newData1.forEach(el => {
             newData2 = setNewTab("array", filtersMandat, el, el.codeTypeMandat, newData2);
         })
-
         newData2.forEach(el => {
             newData3 = setNewTab("select", filterOwner, el, el.owner, newData3, "owner")
         })
-
         newData3.forEach(el => {
             newData4 = setNewTab("select", filterTenant, el, el.tenants, newData4, "tenant")
         })
-
         newData4.forEach(el => {
             newData5 = setNewTab("select", filterNego, el, el.negotiator, newData5, "nego")
         })
