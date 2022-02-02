@@ -209,7 +209,7 @@ export class Form extends Component {
                 .then(function (response) {
                     let data = response.data;
 
-                    if(refAside.current){
+                    if(readAside && refAside.current){
                         refAside.current.handleClose();
                     }
 
