@@ -104,12 +104,41 @@ function validateMinMax($value, $valueCheck) {
     return {'code': true};
 }
 
-function validateDateLimitHours($value, $minHours, $maxHours) {
-    if($value.getHours() < $minHours || $value.getHours() > $maxHours){
+function validateDateLimitHours($value, $min, $max) {
+    if($value.getHours() < $min || $value.getHours() > $max){
         return {
             'code': false,
-            'message': 'L\'heure doit être comprise entre ' + $minHours + 'h et ' + $maxHours + 'h.'
+            'message': 'L\'heure doit être comprise entre ' + $min + 'h et ' + $max + 'h.'
+        }
+    }
+
+    return {'code': true};
+}
+
+function validateDateLimitMinutes($value, $min, $max) {
+    if($value.getMinutes() < $min || $value.getMinutes() > $max){
+        return {
+            'code': false,
+            'message': 'Les minutes doivent être comprises entre ' + $min + 'h et ' + $max + 'h.'
         };
+    }
+
+    return {'code': true};
+}
+
+function validateDateLimitHoursMinutes($value, $minH, $maxH, $minM, $maxM) {
+    if($value.getHours() < $minH || $value.getHours() > $maxH){
+        return {
+            'code': false,
+            'message': 'L\'horaire doit être compris entre ' + $minH + 'h' + $minM +'min et ' + $maxH + 'h' + $maxM + 'min.';
+        };
+    }else{
+        if($value.getMinutes() < $minM || $value.getMinutes() > $maxM){
+            return {
+                'code': false,
+                'message': 'L\'horaire doit être compris entre ' + $minH + 'h' + $minM +'min et ' + $maxH + 'h' + $maxM + 'min.';
+            };
+        }
     }
 
     return {'code': true};
@@ -143,7 +172,13 @@ function switchCase(element){
             validate = validateMinMax(element.value, element.valueCheck);
             break;
         case 'dateLimitH':
-            validate = validateDateLimitHours(element.value, element.valueCheck);
+            validate = validateDateLimitHours(element.value, element.min, element.max);
+            break;
+        case 'dateLimitM':
+            validate = validateDateLimitMinutes(element.value, element.min, element.max);
+            break;
+        case 'dateLimitHM':
+            validate = validateDateLimitHoursMinutes(element.value, element.minH, element.maxH, element.minM, element.maxM);
             break;
     }
 
