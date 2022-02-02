@@ -71,12 +71,10 @@ export class Agenda extends Component {
     handleUpdateList = (element, newContext=null) => {
         const { data, context } = this.state
 
-        console.log(element)
-
         let nContext = (newContext !== null) ? newContext : context;
         let newData = UpdateList.update(nContext, data, element);
 
-        if(nContext === "delete"){
+        if(nContext === "delete" && this.aside.current){
             this.aside.current.handleClose();
         }
 
