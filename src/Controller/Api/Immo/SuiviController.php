@@ -5,6 +5,7 @@ namespace App\Controller\Api\Immo;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSuivi;
+use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
@@ -91,13 +92,15 @@ class SuiviController extends AbstractController
 
         $em->flush();
 
-        return $apiResponse->apiJsonResponseSuccessful("ok");
+        $suivis = $em->getRepository(ImSuivi::class)->findBy(['prospect' => $prospects]);
+
+        return $apiResponse->apiJsonResponse($suivis, User::ADMIN_READ);
     }
 
     /**
-     * Delete a prospect and suivi
+     * Delete suivi
      *
-     * @Route("/prospect/{id}/{bien}", name="prospect_delete", options={"expose"=true}, methods={"DELETE"})
+     * @Route("/suivi/{id}/{bien}", name="delete", options={"expose"=true}, methods={"DELETE"})
      *
      * @OA\Response(
      *     response=200,
@@ -108,16 +111,17 @@ class SuiviController extends AbstractController
      *
      * @param ImProspect $obj
      * @param ImBien $bien
-     * @param DataService $dataService
+     * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
-    public function delete(ImProspect $obj, ImBien $bien, DataService $dataService): JsonResponse
+    public function delete(ImProspect $obj, ImBien $bien, ApiResponse $apiResponse): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $suivi = $em->getRepository(ImSuivi::class)->findOneBy(['bien' => $bien, 'prospect' => $obj]);
 
         $em->remove($suivi);
+        $em->flush();
 
-        return $dataService->delete($obj);
+        return $apiResponse->apiJsonResponseSuccessful("Supression réussie !");
     }
 }

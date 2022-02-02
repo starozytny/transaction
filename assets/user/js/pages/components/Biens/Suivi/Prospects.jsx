@@ -13,7 +13,7 @@ import Formulaire   from "@dashboardComponents/functions/Formulaire";
 import { ProspectsList }      from "@dashboardPages/components/Immo/Prospects/ProspectsList";
 import { ProspectFormulaire } from "@dashboardPages/components/Immo/Prospects/ProspectForm";
 
-const URL_DELETE_ELEMENT = 'api_suivis_prospect_delete';
+const URL_DELETE_ELEMENT = 'api_suivis_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer ce prospect ?';
 const SORTER = Sort.compareLastname;
 
@@ -76,6 +76,7 @@ export class Prospects extends Component {
         let nData = helper.addOrRemove(data, prospect, "Prospect ajouté.", "Prospect enlevé.");
         this.setState({ data: nData });
 
+        const self = this;
         axios.post(Routing.generate('api_suivis_link_bien', {'id': elem.id}), nData)
             .catch(function (error) {
                 Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")

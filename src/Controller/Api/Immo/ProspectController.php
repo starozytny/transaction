@@ -159,14 +159,16 @@ class ProspectController extends AbstractController
      * @OA\Tag(name="Prospects")
      *
      * @param ImProspect $obj
-     * @param ApiResponse $apiResponse
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(ImProspect $obj, ApiResponse $apiResponse, DataService $dataService): JsonResponse
+    public function delete(ImProspect $obj, DataService $dataService): JsonResponse
     {
-        if(count($obj->getSuivis())){
-            return $apiResponse->apiJsonResponseBadRequest("Ce prospect est lié à au moins un bien. Vous ne pouvez pas le supprimer depuis cet interface.");
+        $em = $this->doctrine->getManager();
+        $suivis = $em->getRepository(ImSuivi::class)->findBy(['prospect' => $obj]);
+
+        foreach($suivis as $suivi){
+            $em->remove($suivi);
         }
 
         return $dataService->delete($obj);
@@ -187,11 +189,26 @@ class ProspectController extends AbstractController
      * @OA\Tag(name="Prospects")
      *
      * @param Request $request
-     * @param DataService $dataService
+     * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
-    public function deleteSelected(Request $request, DataService $dataService): JsonResponse
+    public function deleteSelected(Request $request, ApiResponse $apiResponse): JsonResponse
     {
-        return $dataService->deleteSelected(ImProspect::class, json_decode($request->getContent()));
+        $em = $this->doctrine->getManager();
+        $ids = json_decode($request->getContent());
+
+        $objs   = $em->getRepository(ImProspect::class)->findBy(['id' => $ids]);
+        $suivis = $em->getRepository(ImSuivi::class)->findBy(['prospect' => $ids]);
+
+        foreach($suivis as $suivi){
+            $em->remove($suivi);
+        }
+
+        foreach ($objs as $obj) {
+            $em->remove($obj);
+        }
+
+        $em->flush();
+        return $apiResponse->apiJsonResponseSuccessful("Supression de la sélection réussie !");
     }
 }

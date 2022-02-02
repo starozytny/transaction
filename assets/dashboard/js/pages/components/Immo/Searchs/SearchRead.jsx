@@ -53,6 +53,7 @@ export class SearchRead extends Component {
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleLink = this.handleLink.bind(this);
     }
 
     componentDidMount = () => { getData(this, "main", this.props.elem); }
@@ -86,6 +87,29 @@ export class SearchRead extends Component {
     }
 
     handleChange = (e) => { this.setState({ [e.currentTarget.name]: e.currentTarget.value }) }
+
+    handleLink = (bien) => {
+        const { follows } = this.props;
+
+        let method = "POST";
+        let url = Routing.generate('api_suivis_link_bien', {'id': bien.id});
+        follows.forEach(follow => {
+            if(follow.bien.id === bien.id){
+                method = "DELETE"
+                url = Routing.generate('api_suivis_delete', {'id': this.props.prospectId, 'bien': bien.id})
+            }
+        })
+
+        const self = this;
+        axios({ method: method, url: url, data: [{id: this.props.prospectId}] })
+            .then(function (response) {
+                self.props.onUpdateFollows(bien, method === "POST" ? "create" : "delete");
+            })
+            .catch(function (error) {
+                Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+            })
+        ;
+    }
 
     render () {
         const { onChangeContext, follows } = this.props;
@@ -150,7 +174,7 @@ export class SearchRead extends Component {
                 </div>
                 <div className="page-col-2">
                     <div>
-                        <DataBiens data={context === "main" ? data : data2} follows={follows} />
+                        <DataBiens data={context === "main" ? data : data2} follows={follows} onLink={this.handleLink} />
                     </div>
                 </div>
             </div>
@@ -158,10 +182,10 @@ export class SearchRead extends Component {
     }
 }
 
-function DataBiens ({ data, follows }) {
+function DataBiens ({ data, follows, onLink }) {
     return <div className="content">
         {data.length !== 0 ? data.map(el => {
-            return <AdCard el={el} isProspectPage={true} follows={follows} key={el.id}/>
+            return <AdCard el={el} isProspectPage={true} onLinkToProspect={onLink} follows={follows} key={el.id}/>
         }) : <Alert>Aucun résultat</Alert>}
     </div>
 }

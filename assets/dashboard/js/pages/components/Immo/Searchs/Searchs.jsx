@@ -30,6 +30,7 @@ export class Searchs extends Component {
 
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
+        this.handleUpdateFollows = this.handleUpdateFollows.bind(this);
 
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
@@ -40,6 +41,20 @@ export class Searchs extends Component {
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
+
+    handleUpdateFollows = (bien, methode) => {
+        const { follows } = this.state;
+
+        let nFollows;
+        if(methode === "create"){
+            nFollows = follows;
+            nFollows.push({id: (new Date()).getTime(), bien: {id: bien.id}})
+        }else{
+            nFollows = follows.filter(el => el.bien.id !== bien.id);
+        }
+
+        this.setState({ follows: nFollows })
+    }
 
     handleContentList = (currentData, changeContext) => {
         return <SearchsList onChangeContext={changeContext}
@@ -57,7 +72,8 @@ export class Searchs extends Component {
     }
 
     handleContentRead = (changeContext, element) => {
-        return <SearchRead elem={element} follows={this.state.follows} onChangeContext={changeContext} />
+        return <SearchRead elem={element} follows={this.state.follows} prospectId={this.state.prospectId}
+                           onUpdateFollows={this.handleUpdateFollows} onChangeContext={changeContext} />
     }
 
     render () {
