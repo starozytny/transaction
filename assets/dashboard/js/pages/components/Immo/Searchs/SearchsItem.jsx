@@ -43,7 +43,7 @@ export class SearchsItem extends Component {
                         </div>
 
                         <div className="col-5 actions">
-                            <ButtonIcon icon="layer">Résultats</ButtonIcon>
+                            <ButtonIcon icon="layer" onClick={() => onChangeContext("read", elem)}>Résultats</ButtonIcon>
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>

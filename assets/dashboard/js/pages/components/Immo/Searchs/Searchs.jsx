@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 
 import { Layout }        from "@dashboardComponents/Layout/Page";
 
-import { SearchsList }       from "./SearchsList";
-import { SearchFormulaire }  from "./SearchForm";
+import { SearchsList }       from "@dashboardPages/components/Immo/Searchs/SearchsList";
+import { SearchRead }        from "@dashboardPages/components/Immo/Searchs/SearchRead";
+import { SearchFormulaire }  from "@dashboardPages/components/Immo/Searchs/SearchForm";
 
 const URL_DELETE_ELEMENT = 'api_searchs_delete';
 const URL_DELETE_GROUP   = 'api_searchs_delete_group';
@@ -32,6 +33,7 @@ export class Searchs extends Component {
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
         this.handleContentList = this.handleContentList.bind(this);
+        this.handleContentRead = this.handleContentRead.bind(this);
     }
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
@@ -53,10 +55,14 @@ export class Searchs extends Component {
         return <SearchFormulaire type="update" element={element} prospectId={this.state.prospectId} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
+    handleContentRead = (changeContext, element) => {
+        return <SearchRead element={element} onChangeContext={changeContext} />
+    }
+
     render () {
         return <>
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
-                    onContentList={this.handleContentList}
+                    onContentList={this.handleContentList} onContentRead={this.handleContentRead}
                     onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}/>
         </>
     }
