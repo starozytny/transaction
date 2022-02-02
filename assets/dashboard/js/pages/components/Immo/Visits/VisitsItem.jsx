@@ -11,6 +11,15 @@ export class VisitsItem extends Component {
         let event = elem.agEvent;
         let persons = event.persons;
 
+        let emails = [];
+        Object.entries(persons).forEach(([key, person]) => {
+            person.forEach(p => {
+                if(!emails.includes(p.email)){
+                    emails.push(p.email)
+                }
+            })
+        })
+
         return <div className="item">
             <div className="item-content">
                 <div className="item-body">
@@ -25,7 +34,7 @@ export class VisitsItem extends Component {
 
                         </div>
                         <div className="col-4 actions">
-                            {/*<ButtonIconContacts emails={}/>*/}
+                            {emails.length > 0 && <ButtonIconContacts emails={emails}/>}
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>
