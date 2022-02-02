@@ -53,7 +53,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\Email()
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     private $email;
 

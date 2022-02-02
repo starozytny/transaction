@@ -89,6 +89,10 @@ export class Form extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentWillUnmount() {
+        console.log("in")
+    }
+
     handleChange = (e) => {
         const { visibilities } = this.state;
 
@@ -305,7 +309,7 @@ function Selecteur ({ refSelecteur, items, identifiant, valeur, errors, onChange
 function getSelectData (data, pre) {
     let tab = [];
     data.forEach(el => {
-        tab.push({ value: el.id, label: el.fullname, identifiant: pre + "-" + el.id })
+        tab.push({ value: el.id, label: el.fullname, identifiant: pre + "-" + el.id, email: el.email })
     })
 
     return tab
@@ -315,7 +319,7 @@ function getPersonsData (data) {
     let tab = [];
     if(data){
         data.forEach(el => {
-            tab.push({value: el.value, label: el.label})
+            tab.push({ value: el.value, label: el.label, email: el.email })
         })
     }
 
