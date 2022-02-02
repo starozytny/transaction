@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Fake;
 
 use App\Entity\Immo\ImAdvantage;
 use App\Entity\Immo\ImAdvert;

@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Fake;
 
 use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImProspect;
-use App\Entity\Immo\ImTenant;
 use App\Service\Data\DataImmo;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,9 +15,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class FakeBuyersCreate extends Command
+class FakeProspectsCreate extends Command
 {
-    protected static $defaultName = 'fake:buyers:create';
+    protected static $defaultName = 'fake:prospects:create';
     protected $em;
     private $databaseService;
     private $dataImmo;
@@ -37,7 +34,7 @@ class FakeBuyersCreate extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Create fake buyers.')
+            ->setDescription('Create fake prospects.')
         ;
     }
 
@@ -49,7 +46,7 @@ class FakeBuyersCreate extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [ImBuyer::class]);
+        $this->databaseService->resetTable($io, [ImProspect::class]);
 
         $agencies = $this->em->getRepository(ImAgency::class)->findAll();
         $nbAgencies = count($agencies);
@@ -61,7 +58,7 @@ class FakeBuyersCreate extends Command
             return Command::FAILURE;
         }
 
-        $io->title('Création de 30 buyers fake');
+        $io->title('Création de 30 prospects fake');
         $fake = Factory::create();
         for($i=0; $i<30 ; $i++) {
             $agency = $agencies[$fake->numberBetween(0,$nbAgencies - 1)];
@@ -92,16 +89,18 @@ class FakeBuyersCreate extends Command
                 "zipcode" => $fake->postcode,
                 "city" => $fake->city,
                 "birthday" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
+                "lastContactAt" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
                 "type" => $fake->numberBetween(0, 4),
+                "status" => $fake->numberBetween(0, 3),
             ];
 
             $data = json_decode(json_encode($data));
 
-            $new = $this->dataImmo->setDataBuyer(new ImBuyer(), $data);
+            $new = $this->dataImmo->setDataProspect(new ImProspect(), $data);
 
             $this->em->persist($new);
         }
-        $io->text('BUYERS : Buyers fake créés' );
+        $io->text('PROSPECTS : Prospects fake créés' );
 
         $this->em->flush();
 
