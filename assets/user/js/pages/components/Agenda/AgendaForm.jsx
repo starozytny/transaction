@@ -222,6 +222,11 @@ export class Form extends Component {
 
         let selectUsers = getSelectData(this.props.users, "user");
 
+        let minTimeStart = Helper.createTimeHoursMinutes(8);
+        let maxTimeStart = Helper.createTimeHoursMinutes(22);
+        let minTimeEnd   = startAt ? startAt : Helper.createTimeHoursMinutes(8);
+        let maxTimeEnd   = Helper.createTimeHoursMinutes(22);
+
         return <>
             {context === "update" && <div className="toolbar">
                 <div className="item">
@@ -257,10 +262,14 @@ export class Form extends Component {
                             </DatePick>
                             <div className="form-group" />
                         </> : <>
-                        <DateTimePick identifiant="startAt" valeur={startAt} errors={errors} onChange={(e) => this.handleChangeDate("startAt", e)}>
+                        <DateTimePick identifiant="startAt" valeur={startAt} errors={errors}
+                                      minTime={minTimeStart} maxTime={maxTimeStart}
+                                      onChange={(e) => this.handleChangeDate("startAt", e)}>
                             Début du rendez-vous
                         </DateTimePick>
-                        <DateTimePick identifiant="endAt" valeur={endAt} errors={errors} onChange={(e) => this.handleChangeDate("endAt", e)}>
+                        <DateTimePick identifiant="endAt" valeur={endAt} errors={errors}
+                                      minTime={minTimeEnd} maxTime={maxTimeEnd}
+                                      onChange={(e) => this.handleChangeDate("endAt", e)}>
                             Fin du rendez-vous
                         </DateTimePick>
                     </>}
