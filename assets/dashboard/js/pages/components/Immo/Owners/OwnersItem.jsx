@@ -17,6 +17,8 @@ export class OwnersItem extends Component {
             }
         })
 
+        let urlContact = isClient ? "user_mails_send" : "admin_mails_send";
+
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
             {isFormBien && <div className="selector" onClick={onSelectOwner ? () => onSelectOwner(elem) : null}>
@@ -40,11 +42,12 @@ export class OwnersItem extends Component {
                             <OwnerNegotiator elem={elem} />
                         </div>
                         {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
+                            {(biens.length !== 0 && totalBien !== 0) &&
+                                <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'fo': elem.id})}>
+                                    Biens
+                                </ButtonIcon>}
+                            <ButtonIcon icon="chat-2" onClick={Routing.generate(urlContact, {'dest': [elem.email]})} element="a">Contacter</ButtonIcon>
                             {!elem.isGerance && <>
-                                {(biens.length !== 0 && totalBien !== 0) &&
-                                    <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'fo': elem.id})}>
-                                        Biens
-                                    </ButtonIcon>}
                                 <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
                             </>}

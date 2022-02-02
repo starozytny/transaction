@@ -20,6 +20,7 @@ use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
 use App\Repository\Immo\ImTenantRepository;
 use App\Repository\Immo\ImVisitRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Repository\Agenda\AgEventRepository;
@@ -373,6 +374,25 @@ class UserController extends AbstractController
         return $this->render('user/pages/searchs/index.html.twig', [
             'elem' => $obj,
             'donnees' => $objs,
+        ]);
+    }
+
+    /**
+     * @Route("/boite-reception/envoyer", options={"expose"=true}, name="mails_send")
+     */
+    public function mailsSend(Request $request, UserRepository $userRepository, SerializerInterface $serializer): Response
+    {
+        $dest = $request->query->get('dest');
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $users = $userRepository->findBy(['agency' => $user->getAgency()]);
+
+        $users = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('user/pages/mails/send.html.twig', [
+            'users' => $users,
+            'dest' => $dest
         ]);
     }
 }
