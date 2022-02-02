@@ -104,6 +104,16 @@ function validateMinMax($value, $valueCheck) {
     return {'code': true};
 }
 
+function validateDateCompare($value, $valueCheck) {
+    if($value.getTime() > $valueCheck.getTime()){
+        return {
+            'code': false,
+            'message': 'Incohérence des dates.'
+        };
+    }
+    return {'code': true};
+}
+
 function validateDateLimitHours($value, $min, $max) {
     if($value.getHours() < $min || $value.getHours() > $max){
         return {
@@ -165,11 +175,14 @@ function switchCase(element){
         case 'atLeastOne':
             validate = validateAtLeastOne(element.value, element.valueCheck);
             break;
+        case 'minMax':
+            validate = validateMinMax(element.value, element.valueCheck);
+            break;
         case 'date':
             validate = validateDate(element.value);
             break;
-        case 'minMax':
-            validate = validateMinMax(element.value, element.valueCheck);
+        case 'dateCompare':
+            validate = validateDateCompare(element.value, element.valueCheck);
             break;
         case 'dateLimitH':
             validate = validateDateLimitHours(element.value, element.min, element.max);
