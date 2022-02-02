@@ -846,4 +846,13 @@ class ImBien extends DataEntity
 
         return $this;
     }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getMainPhotoFile(): string
+    {
+        return $this->getMainPhoto() ? $this->getMainPhoto()->getPhotoFile() : "https://unsplash.it/120?random";
+    }
 }

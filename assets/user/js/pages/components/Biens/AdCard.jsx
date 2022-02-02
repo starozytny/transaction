@@ -97,7 +97,7 @@ export class AdCard extends Component {
                     {el.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
 
                     <div className="image">
-                        <img src="https://unsplash.it/120?random" alt="illustration"/>
+                        <img src={el.mainPhotoFile} alt="illustration"/>
                     </div>
 
                     <div className="infos">
