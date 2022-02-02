@@ -217,12 +217,13 @@ export class Form extends Component {
                     <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange} >Nom</Input>
                 </div>
 
-                {context !== "profil" && <div className="line line-2">
-                    <Checkbox items={rolesItems} identifiant="roles" valeur={roles} errors={errors} onChange={this.handleChange}>Roles</Checkbox>
+                <div className="line line-2">
+                    {context !== "profil" ? <Checkbox items={rolesItems} identifiant="roles" valeur={roles} errors={errors} onChange={this.handleChange}>Roles</Checkbox>
+                        : <div className="form-group" />}
 
                     <Drop ref={this.inputAvatar} identifiant="avatar" previewFile={avatar} errors={errors} accept={"image/*"} maxFiles={1}
                           label="Téléverser un avatar" labelError="Seules les images sont acceptées.">Avatar (facultatif)</Drop>
-                </div>}
+                </div>
 
                 {context !== "profil" && !isProfil && <div className="line line-2">
                     <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
@@ -240,10 +241,11 @@ export class Form extends Component {
                 </div>}
 
                 {(context === "create" || context === "profil") ? <>
-                    <Alert type="reverse">
+                    {context !== "profil" && <Alert type="reverse">
                         Laisser le champs vide génére un mot de passe aléatoire. L'utilisateur pourra utilise la
                         fonction <u>Mot de passe oublié ?</u> pour créer son mot de passe.
-                    </Alert>
+                    </Alert>}
+
                     <div className="line">
                         <PasswordRules />
                     </div>
