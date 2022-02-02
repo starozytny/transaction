@@ -148,7 +148,7 @@ export class Form extends Component {
         e.preventDefault();
 
         const { context, url, messageSuccess } = this.props;
-        const { name, startAt, endAt } = this.state;
+        const { name, allDay, startAt, endAt } = this.state;
 
         this.setState({ errors: [], success: false })
 
@@ -157,21 +157,25 @@ export class Form extends Component {
         let paramsToValidate = [
             {type: "text",        id: 'name',  value: name},
             {type: "text",        id: 'startAt', value: startAt},
-            {type: "dateLimitHM", id: 'startAt', value: startAt, minH: 8, maxH: 22, minM: 0, maxM: 60},
         ];
 
-        if(endAt !== ""){
-            let minH = startAt ? startAt.getHours() : 8;
-            let minM = startAt ? startAt.getMinutes() : 0;
+        if(allDay[0] === 0){
             paramsToValidate = [...paramsToValidate, ...[
-                {type: "dateLimitHM", id: 'endAt', value: endAt, minH: minH, maxH: 22, minM: minM, maxM: 60},
-                {type: "dateCompare", id: 'startAt', value: startAt, valueCheck: endAt}
+                {type: "dateLimitHM", id: 'startAt', value: startAt, minH: 8, maxH: 22, minM: 0, maxM: 60}
             ]]
+
+            if(endAt !== ""){
+                let minH = startAt ? startAt.getHours() : 8;
+                let minM = startAt ? startAt.getMinutes() : 0;
+                paramsToValidate = [...paramsToValidate, ...[
+                    {type: "dateLimitHM", id: 'endAt', value: endAt, minH: minH, maxH: 22, minM: minM, maxM: 60},
+                    {type: "dateCompare", id: 'startAt', value: startAt, valueCheck: endAt}
+                ]]
+            }
         }
 
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
-        console.log(validate)
         if(!validate.code){
             Formulaire.showErrors(this, validate);
         }else{
