@@ -19,7 +19,6 @@ use App\Repository\Immo\ImBuyerRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
 use App\Repository\Immo\ImTenantRepository;
-use App\Repository\Immo\ImVisitRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -48,7 +47,17 @@ class UserController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('user/pages/index.html.twig');
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $biensAgency = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
+        $biensUser = $em->getRepository(ImBien::class)->findBy(['user' => $user]);
+
+        return $this->render('user/pages/index.html.twig', [
+            'biensAgency' => count($biensAgency),
+            'biensUser' => count($biensUser),
+        ]);
     }
 
     /**
@@ -71,10 +80,13 @@ class UserController extends AbstractController
         $filterTenant = $request->query->get('ft');
         $filterNego = $request->query->get('fn');
 
+        /** @var User $user */
+        $user = $this->getUser();
+
         if($status == null){
-            $objs = $repository->findAll();
+            $objs = $repository->findBy(['agency' => $user->getAgency()]);
         }else{
-            $objs = $repository->findBy(['status' => (int) $status]);
+            $objs = $repository->findBy(['agency' => $user->getAgency()], ['status' => (int) $status]);
         }
 
         if($draft == 1){

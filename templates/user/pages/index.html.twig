@@ -32,7 +32,14 @@
                         <span class="icon-home"></span>
                     </div>
                     <div class="title">{{ app.user.agency.name }}</div>
-                    <div>Infos</div>
+                    <div>{{ biensAgency }} {{ biensAgency > 1 ? "biens immobiliers" : "bien immobilier" }}</div>
+                </div>
+                <div class="dash-card-1">
+                    <div class="icon">
+                        <span class="icon-layer"></span>
+                    </div>
+                    <div class="title">Mes biens</div>
+                    <div>{{ biensUser }} / {{ biensAgency }}</div>
                 </div>
             </div>
         </div>
