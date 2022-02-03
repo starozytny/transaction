@@ -223,11 +223,11 @@ class AdminController extends AbstractController
      */
     public function owners(SerializerInterface $serializer): Response
     {
-        $objs = $this->getAllData(ImOwner::class, $serializer, ImOwner::OWNER_READ);
-        $societies = $this->getAllData(Society::class, $serializer);
-        $agencies = $this->getAllData(ImAgency::class, $serializer);
-        $negotiators = $this->getAllData(ImNegotiator::class, $serializer);
-        $biens = $this->getAllData(ImBien::class, $serializer, User::USER_READ);
+        $objs        = $this->getAllData(ImOwner::class, $serializer, ImOwner::OWNER_READ);
+        $societies   = $this->getAllData(Society::class, $serializer, ImOwner::OWNER_READ);
+        $agencies    = $this->getAllData(ImAgency::class, $serializer, ImOwner::OWNER_READ);
+        $negotiators = $this->getAllData(ImNegotiator::class, $serializer, ImOwner::OWNER_READ);
+        $biens       = $this->getAllData(ImBien::class, $serializer, User::USER_READ);
 
         return $this->render('admin/pages/immo/owners.html.twig', [
             'donnees' => $objs,

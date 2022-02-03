@@ -137,9 +137,8 @@ export class Owners extends Component {
     }
 
     handleContentCreate = (changeContext) => {
-        const { societies, agencies, negotiators, idSociety, idAgency, isClient } = this.state;
+        const { societies, agencies, negotiators, isClient } = this.state;
         return <OwnerFormulaire type="create" societies={societies} agencies={agencies} negotiators={negotiators} isClient={isClient}
-                                societyId={idSociety} agencyId={idAgency}
                                 onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 

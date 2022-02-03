@@ -82,7 +82,7 @@ class ImNegotiator
     /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="negotiators")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "owner:read"})
      */
     private $agency;
 

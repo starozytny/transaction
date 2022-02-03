@@ -29,7 +29,7 @@ class Society extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "owner:read"})
      */
     private $name;
 
@@ -86,7 +86,7 @@ class Society extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "owner:read"})
      */
     public function getCodeString(): string
     {
@@ -188,7 +188,7 @@ class Society extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read", "owner:read"})
+     * @Groups({"admin:read"})
      */
     public function getFullname(): string
     {

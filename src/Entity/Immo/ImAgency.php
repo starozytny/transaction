@@ -185,7 +185,7 @@ class ImAgency extends DataEntity
     /**
      * @ORM\ManyToOne(targetEntity=Society::class, fetch="EAGER", inversedBy="imAgencies")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read", "admin:read"})
+     * @Groups({"user:read", "admin:read", "owner:read"})
      */
     private $society;
 
