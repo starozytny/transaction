@@ -185,6 +185,19 @@ function toTop() {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
+function countProgress (number, total) {
+    let progress;
+    let nb = number !== 0 ? (number / total) * 100 : 0;
+    for(let i = 100; i >= 0 ; i--){
+        if(nb >= i){
+            progress = i;
+            break;
+        }
+    }
+
+    return progress;
+}
+
 module.exports = {
     getPostalCodes,
     setCityFromZipcode,
@@ -195,5 +208,6 @@ module.exports = {
     extractDateToArray,
     getNbDayBetweenDateArray,
     downloadBinaryFile,
-    toTop
+    toTop,
+    countProgress
 }
