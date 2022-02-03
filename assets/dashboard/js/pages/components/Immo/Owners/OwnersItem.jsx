@@ -10,12 +10,14 @@ export class OwnersItem extends Component {
         const { isReadBien=false, isClient, isFormBien, owner, biens, elem,
             onDelete, onSelectors, onChangeContext, onSelectOwner } = this.props;
 
-        let totalBien = 0;
-        biens.forEach(bien => {
-            if(bien.owner && bien.owner.id === elem.id){
-                totalBien++;
-            }
-        })
+        let totalBiens = 0;
+        if(biens) {
+            biens.forEach(bien => {
+                if (bien.owner && bien.owner.id === elem.id) {
+                    totalBiens++;
+                }
+            })
+        }
 
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
@@ -29,7 +31,7 @@ export class OwnersItem extends Component {
                         <div className="col-1" onClick={onSelectOwner ? () => onSelectOwner(elem) : null}>
                             <OwnerMainInfos elem={elem} />
                             {!isClient && <div className="sub">{elem.society.fullname}</div>}
-                            {biens.length !== 0 && <div className="sub">{totalBien} bien{totalBien > 1 ? "s" : ""}</div>}
+                            {biens.length !== 0 && <div className="sub">{totalBiens} bien{totalBiens > 1 ? "s" : ""}</div>}
                         </div>
 
                         {!isFormBien && <div className="col-2">
@@ -40,7 +42,7 @@ export class OwnersItem extends Component {
                             <OwnerNegotiator elem={elem} />
                         </div>
                         {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
-                            {(biens.length !== 0 && totalBien !== 0) &&
+                            {(biens.length !== 0 && totalBiens !== 0) &&
                                 <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'fo': elem.id})}>
                                     Biens
                                 </ButtonIcon>}
@@ -62,8 +64,8 @@ export function OwnerMainInfos ({ elem }) {
         <div className="badges">
             <div className="badge">{elem.code}</div>
             {elem.isGerance && <>
-                <div className="badge default">{elem.codeGerance}</div>
-                <div className="badge default">{elem.folderGerance}</div>
+                <div className="badge badge-default">Gérance</div>
+                <div className="badge badge-default">#{elem.codeGerance}</div>
             </>}
         </div>
         <div className="name">
