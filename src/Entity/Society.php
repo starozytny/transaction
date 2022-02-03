@@ -23,7 +23,7 @@ class Society extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user:read", "admin:read", "count-users:read"})
+     * @Groups({"user:read", "admin:read", "count-users:read", "owner:read"})
      */
     private $id;
 
@@ -188,7 +188,7 @@ class Society extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "owner:read"})
      */
     public function getFullname(): string
     {

@@ -53,7 +53,7 @@ class OwnerController extends AbstractController
 
         $objs = $repository->findBy(['agency' => $user->getAgency()]);
 
-        return $apiResponse->apiJsonResponse($objs, User::ADMIN_READ);
+        return $apiResponse->apiJsonResponse($objs, ImOwner::OWNER_READ);
     }
 
     /**
@@ -79,7 +79,7 @@ class OwnerController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponse($obj, User::ADMIN_READ);
+        return $apiResponse->apiJsonResponse($obj, ImOwner::OWNER_READ);
     }
 
     /**

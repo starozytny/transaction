@@ -23,13 +23,13 @@ class ImAgency extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user:read", "admin:read", "count-agency:read"})
+     * @Groups({"user:read", "admin:read", "count-agency:read", "owner:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read", "admin:read"})
+     * @Groups({"user:read", "admin:read", "owner:read"})
      */
     private $name;
 

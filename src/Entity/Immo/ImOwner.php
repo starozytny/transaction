@@ -15,6 +15,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImOwner extends DataEntity
 {
+    const OWNER_READ = ["owner:read"];
+
     const CIVILITY_MR = 0;
     const CIVILITY_MME = 1;
     const CIVILITY_SOC = 2;
@@ -25,13 +27,13 @@ class ImOwner extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "bien-owner:read", "agenda:read"})
+     * @Groups({"admin:read", "user:read", "bien-owner:read", "agenda:read", "owner:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $code;
 
@@ -49,85 +51,85 @@ class ImOwner extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $civility = 0;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read", "agenda:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $phone1;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $phone2;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $phone3;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $complement;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $country;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $isGerance = false;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $codeGerance;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $folderGerance;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $isCoIndivisaire = false;
 
@@ -169,32 +171,32 @@ class ImOwner extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $coPhone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $coEmail;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="owners")
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $negotiator;
 
     /**
      * @ORM\ManyToOne(targetEntity=Society::class, fetch="EAGER", inversedBy="imOwners")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $society;
 
@@ -206,7 +208,7 @@ class ImOwner extends DataEntity
     /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="owners")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $agency;
 
@@ -564,7 +566,7 @@ class ImOwner extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read", "agenda:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read"})
      */
     public function getFullname(): string
     {
@@ -573,7 +575,7 @@ class ImOwner extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     public function getFullAddress(): string
     {
@@ -582,7 +584,7 @@ class ImOwner extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     public function getCoFullname(): string
     {
@@ -591,7 +593,7 @@ class ImOwner extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     public function getCoFullAddress(): string
     {

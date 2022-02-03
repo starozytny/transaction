@@ -16,7 +16,6 @@ use App\Entity\Settings;
 use App\Entity\Society;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Http\Discovery\Exception\NotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -224,7 +223,7 @@ class AdminController extends AbstractController
      */
     public function owners(SerializerInterface $serializer): Response
     {
-        $objs = $this->getAllData(ImOwner::class, $serializer);
+        $objs = $this->getAllData(ImOwner::class, $serializer, ImOwner::OWNER_READ);
         $societies = $this->getAllData(Society::class, $serializer);
         $agencies = $this->getAllData(ImAgency::class, $serializer);
         $negotiators = $this->getAllData(ImNegotiator::class, $serializer);
