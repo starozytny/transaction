@@ -422,4 +422,24 @@ class UserController extends AbstractController
             'dest' => $dest
         ]);
     }
+
+
+    /**
+     * @Route("/visites", options={"expose"=true}, name="visites")
+     */
+    public function visites(SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $biens   = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
+        $objs    = $em->getRepository(ImVisit::class)->findBy(['bien' => $biens]);
+
+        $objs    = $serializer->serialize($objs, 'json', ['groups' => ImVisit::VISIT_READ]);
+
+        return $this->render('user/pages/visites/index.html.twig', [
+            'donnees' => $objs,
+        ]);
+    }
 }
