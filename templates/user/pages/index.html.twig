@@ -4,23 +4,40 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    {{ encore_entry_link_tags('user_homepage') }}
 {% endblock %}
 
 {% block main_content %}
     <div class="main-content">
-{#        <div class="dash-line-1">#}
-{#            <div class="welcome-back">#}
-{#                <div class="avatar">#}
-{#                    <img src="https://robohash.org/{{ app.user.userIdentifier }}?size=126x126" alt="Avatar de {{ app.user.userIdentifier }}"/>#}
-{#                </div>#}
-{#                <div class="me">#}
-{#                    <p>Bon retour,</p>#}
-{#                    <p class="username">{{ app.user.userIdentifier | capitalize }}</p>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
+        <div class="dash-line-1">
+            <div class="welcome-back">
+                <div class="avatar">
+                    {% if app.user.avatar %}
+                        <img src="{{ asset(app.user.avatarFile) }}" alt="Avatar de {{ app.user.userIdentifier }}">
+                    {% else %}
+                        <img src="https://robohash.org/{{ app.user.userIdentifier }}?size=126x126" alt="Avatar de {{ app.user.userIdentifier }}"/>
+                    {% endif %}
+                </div>
+                <div class="me">
+                    <p>Bon retour,</p>
+                    <p class="username">{{ app.user.firstname | capitalize }}</p>
+                </div>
+                {% if app.user.highRoleCode != 0 %}
+                    <div class="badge badge-1">{{ app.user.highRole }}</div>
+                {% endif %}
+            </div>
+            <div class="dash-line-1-col-2">
+                <div class="dash-card-1">
+                    <div class="icon">
+                        <span class="icon-home"></span>
+                    </div>
+                    <div class="title">{{ app.user.agency.name }}</div>
+                    <div>Infos</div>
+                </div>
+            </div>
+        </div>
         <div class="dash-line-2">
-            Hello world
+            <div>Hello</div>
         </div>
     </div>
 {% endblock %}

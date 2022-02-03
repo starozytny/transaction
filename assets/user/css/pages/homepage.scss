@@ -1,0 +1,19 @@
+@import "../vars/vars";
+
+@import "../../../common/css/components/homepage";
+
+.welcome-back{
+  .avatar{
+    background: var(--fondContent);
+  }
+
+  .me{
+    margin-bottom: 8px;
+  }
+}
+
+.dark-mode{
+  .dash-card-1{
+    border: 1px solid var(--greyShadow);
+  }
+}

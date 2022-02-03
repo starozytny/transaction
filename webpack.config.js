@@ -80,6 +80,7 @@ Encore
     .addEntry('dashboard_immo', './assets/dashboard/js/pages/immo.js')
 
     .addEntry('user', './assets/user/js/app.js')
+    .addEntry('user_homepage', './assets/user/js/pages/homepage.js')
     .addEntry('user_styleguide', './assets/user/js/pages/styleguide.js')
     .addEntry('user_biens', './assets/user/js/pages/biens.js')
     .addEntry('user_profil', './assets/user/js/pages/profil.js')
