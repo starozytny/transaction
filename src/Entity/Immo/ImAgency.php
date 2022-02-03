@@ -487,15 +487,6 @@ class ImAgency extends DataEntity
         return $this;
     }
 
-    /**
-     * @Groups({"admin:read"})
-     */
-    public function getTotalBiens(): int
-    {
-//        return count($this->biens);
-        return 0;
-    }
-
     public function getSociety(): ?Society
     {
         return $this->society;

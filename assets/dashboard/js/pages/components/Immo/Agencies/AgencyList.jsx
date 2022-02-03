@@ -9,9 +9,7 @@ import { AgencyItem }   from "./AgencyItem";
 
 export class AgencyList extends Component {
     render () {
-        const { data, biens, onChangeContext } = this.props;
-
-
+        const { data, onChangeContext } = this.props;
 
         return <>
             <div>
@@ -41,6 +39,7 @@ export class AgencyList extends Component {
                 </div>
 
                 <div className="page-actions">
+                    <div className="selectors-actions" />
                     <div className="common-actions">
                         <div className="item">
                             <div className="dropdown">

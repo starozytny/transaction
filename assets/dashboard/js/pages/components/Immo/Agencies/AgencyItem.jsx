@@ -2,24 +2,23 @@ import React, { Component } from 'react';
 
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 import Sanitize         from "@commonComponents/functions/sanitaze";
+import Helper           from "@commonComponents/functions/helper";
 
 export class AgencyItem extends Component {
     render () {
-        const { elem, total, onChangeContext, onDelete } = this.props
+        const { elem, biens, onChangeContext, onDelete } = this.props
 
-        let progress;
-        let nb = parseInt(total) !== 0 ? (elem.totalBiens / parseInt(total)) * 100 : 0; // sub le total global des agences
-        if(nb === 0){
-            progress = 0;
-        }else if(nb > 0 && nb < 26){
-            progress = 25;
-        }else if(nb >= 26 && nb < 51){
-            progress = 50;
-        }else if(nb >= 51 && nb < 76){
-            progress = 75;
-        }else{
-            progress = 100;
+        let totalBiens = biens ? biens.length : 0;
+        let total = 0;
+        if(biens){
+            biens.forEach(item => {
+                if(item.agency.id === elem.id){
+                    total++;
+                }
+            })
         }
+
+        let progress = Helper.countProgress(total, totalBiens);
 
         let logo = (elem.logo) ? "/immo/logos/" + elem.logo : `https://robohash.org/${elem.id}?size=64x64`;
 
@@ -45,7 +44,7 @@ export class AgencyItem extends Component {
                             <div className="sub">{Sanitize.toFormatPhone(elem.phone)}</div>
                         </div>
                         <div className="col-3">
-                            <div className="sub">{elem.totalBiens}</div>
+                            <div className="sub">{total} / {totalBiens}</div>
                             <div className={"sub progress progress-" + progress} />
                         </div>
                         <div className="col-4 actions">
