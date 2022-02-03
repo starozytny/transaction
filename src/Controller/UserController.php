@@ -45,18 +45,28 @@ class UserController extends AbstractController
     /**
      * @Route("/", options={"expose"=true}, name="homepage")
      */
-    public function index(): Response
+    public function index(SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
 
         /** @var User $user */
         $user = $this->getUser();
-        $biensAgency = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
-        $biensUser = $em->getRepository(ImBien::class)->findBy(['user' => $user]);
+        $biensAgency    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
+        $biensUsers     = $em->getRepository(ImBien::class)->findBy(['user' => $user]);
+        $biensActif     = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'status' => ImBien::STATUS_ACTIF]);
+        $biensInactif   = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'status' => ImBien::STATUS_INACTIF]);
+        $biensDraft     = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'status' => ImBien::STATUS_ARCHIVE]);
+
+        $visits = $em->getRepository(ImVisit::class)->findBy(['bien' => $biensUsers]);
+
+        $visits = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
 
         return $this->render('user/pages/index.html.twig', [
             'biensAgency' => count($biensAgency),
-            'biensUser' => count($biensUser),
+            'biensActif' => count($biensActif),
+            'biensInactif' => count($biensInactif),
+            'biensDraft' => count($biensDraft),
+            'visits' => $visits
         ]);
     }
 

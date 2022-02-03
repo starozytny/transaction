@@ -39,12 +39,30 @@
                         <span class="icon-layer"></span>
                     </div>
                     <div class="title">Mes biens</div>
-                    <div>{{ biensUser }} / {{ biensAgency }}</div>
+                    <div>{{ biensActif }} / {{ biensAgency }} actif{{ biensActif > 1 ? "s" : "" }}</div>
+                    <div>{{ biensInactif }} / {{ biensAgency }} inactif{{ biensInactif > 1 ? "s" : "" }}</div>
+                </a>
+                <a href="{{ path('user_biens_create') }}" class="dash-card-1">
+                    <div class="icon">
+                        <span class="icon-add-square"></span>
+                    </div>
+                    <div class="title">Ajouter un bien</div>
+                    <div><div>{{ biensDraft }} / {{ biensActif + biensInactif }} en brouillon</div></div>
                 </a>
             </div>
         </div>
         <div class="dash-line-2">
-            <div>Hello</div>
+            <div class="dash-line-2-line-1">
+                <div class="title">Visites</div>
+                <div id="visits" data-visits="{{ visits }}">
+                    {% include "dashboard/layout/components/spinner.html.twig" %}
+                </div>
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('user_homepage') }}
 {% endblock %}

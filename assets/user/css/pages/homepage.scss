@@ -1,6 +1,7 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/homepage";
+@import "./split/biens/suivi";
 
 .welcome-back{
   .avatar{
@@ -15,5 +16,39 @@
 .dark-mode{
   .dash-card-1{
     background: var(--fondContent);
+    transition: all 0.2s ease-in-out;
+
+    &:hover{
+      transform: scale(1.01);
+    }
+  }
+}
+
+.sub + .persons,
+.name + .persons{
+  margin-top: 8px;
+}
+
+.person {
+  margin-bottom: 4px;
+}
+
+.dash-line-2{
+  .dash-line-2-line-1{
+    & > .title{
+      @include title();
+    }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .dash-card-1:not(:last-child){
+    margin-bottom: 0;
   }
 }
