@@ -11,7 +11,6 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 import DataState from "@userPages/components/Biens/Form/data";
 
-
 export class Suivi extends Component {
     constructor(props) {
         super(props);
@@ -46,7 +45,7 @@ export class Suivi extends Component {
                 content = <Prospects elem={elem} data={prospects} societyId={elem.agency.society.id} agencyId={elem.agency.id} negotiators={negotiators} />
                 break;
             case "visites":
-                content = <Visits bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits} classes={""}/>
+                content = <Visits bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits} isSuiviPage={true} classes={""}/>
                 break;
             default:
                 content = <Global elem={elem} prospects={prospects} visits={allVisits} />

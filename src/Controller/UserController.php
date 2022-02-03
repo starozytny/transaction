@@ -427,7 +427,7 @@ class UserController extends AbstractController
     /**
      * @Route("/visites", options={"expose"=true}, name="visites")
      */
-    public function visites(SerializerInterface $serializer): Response
+    public function visits(SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
 
@@ -438,7 +438,7 @@ class UserController extends AbstractController
 
         $objs    = $serializer->serialize($objs, 'json', ['groups' => ImVisit::VISIT_READ]);
 
-        return $this->render('user/pages/visites/index.html.twig', [
+        return $this->render('user/pages/visits/index.html.twig', [
             'donnees' => $objs,
         ]);
     }

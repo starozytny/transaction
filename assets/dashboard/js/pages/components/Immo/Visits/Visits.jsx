@@ -20,7 +20,7 @@ export class Visits extends Component {
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "visits.pagination",
-            isClient: props.isClient ? props.isClient : false,
+            isSuiviPage: props.isSuiviPage ? props.isSuiviPage : false,
             classes: props.classes !== null ? props.classes : "main-content"
         }
 
@@ -49,7 +49,7 @@ export class Visits extends Component {
     handleContentList = (currentData, changeContext) => {
         return <VisitsList onChangeContext={changeContext}
                            onDelete={this.layout.current.handleDelete}
-                           isClient={this.state.isClient}
+                           isSuiviPage={this.state.isSuiviPage}
                            data={currentData} />
     }
 

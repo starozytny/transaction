@@ -7,15 +7,16 @@ import { VisitsItem } from "./VisitsItem";
 
 export class VisitsList extends Component {
     render () {
-        const { data, onChangeContext } = this.props;
+        const { isSuiviPage=true, data, onChangeContext } = this.props;
 
         return <>
             <div>
-                <div className="toolbar">
+                {isSuiviPage && <div className="toolbar">
                     <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter une visite</Button>
                     </div>
-                </div>
+                </div>}
+
 
                 <div className="items-table">
                     <div className="items items-default">
