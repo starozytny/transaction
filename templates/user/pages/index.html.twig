@@ -33,6 +33,7 @@
                     </div>
                     <div class="title">{{ app.user.agency.name }}</div>
                     <div>{{ biensAgency }} {{ biensAgency > 1 ? "biens immobiliers" : "bien immobilier" }}</div>
+                    <div>{{ biensArchived }} {{ biensArchived > 1 ? "biens archivés" : "bien archivé" }}</div>
                 </a>
                 <a href="{{ path('user_biens', {'fu': app.user.userIdentifier}) }}" class="dash-card-1">
                     <div class="icon">
