@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import axios        from "axios";
 import Swal         from "sweetalert2";
+import parse        from "html-react-parser";
 import SwalOptions  from "@commonComponents/functions/swalOptions";
 import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
@@ -89,6 +90,8 @@ export class AdCard extends Component {
             })
         }
 
+        console.log(el)
+
         return <div className={"card-ad" + (el.isDraft ? " card-draft" : "")}>
             {/*<Selector id={el.id} />*/}
 
@@ -143,7 +146,8 @@ export class AdCard extends Component {
                     </div>
                 </div>
                 <div className="card-footer">
-                    <div className="commentary">Commentaire : Les clés sont à récupérer auprès de Shanbo.</div>
+                    {el.confidential.commentary && <div className="commentary">Confidentiel : {parse(el.confidential.commentary)}</div>}
+
                     <div className="footer-actions">
                         <div className="createdAt">
                             Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par " + el.updatedBy)}

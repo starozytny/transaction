@@ -181,4 +181,23 @@ class ImConfidential extends DataEntity
 
         return $this;
     }
+
+    /**
+     * @return string
+     * @Groups({"user:read"})
+     */
+    public function getCommentary(): string
+    {
+        $nbKeys = $this->keysNumber ?: 0;
+        $txtKeys = $nbKeys !== 0 ? $nbKeys . " clée" . ($nbKeys > 1 ? "s": "") . "." : "";
+        $txtKeys .= $this->keysWhere ? " " . $this->keysWhere . "." : "";
+        $txtKeys = trim($txtKeys);
+
+        $txtVisits = $this->visiteAt ? "Visites à partir du " . $this->getFullDateString($this->visiteAt) . "." : "";
+
+        $txtContact = $this->lastname . ($this->lastname ? ", " : "") . $this->phone1 . ($this->phone1 ? ", " : "") . $this->email;
+        $txtContact = $txtContact ?  "Personne à contacter : " . $txtContact : "";
+
+        return $txtKeys . ($txtKeys ? "<br />" . $txtVisits : "") . ($txtVisits ? "<br />" . $txtContact : "");
+    }
 }
