@@ -28,17 +28,17 @@ export class OwnersItem extends Component {
             <div className="item-content">
                 <div className="item-body">
                     <div className={"infos infos-col-" + ((isReadBien || isFormBien) ? "3" : "4")}>
-                        <div className="col-1" onClick={onSelectOwner ? () => onSelectOwner(elem) : null}>
+                        <div className="col-1" onClick={onSelectOwner ? () => onSelectOwner(elem) : () => onChangeContext("read", elem)}>
                             <OwnerMainInfos elem={elem} />
                             {!isClient && <div className="sub">{elem.society.fullname}</div>}
                             {biens.length !== 0 && <div className="sub">{totalBiens} bien{totalBiens > 1 ? "s" : ""}</div>}
                         </div>
 
-                        {!isFormBien && <div className="col-2">
+                        {!isFormBien && <div className="col-2" onClick={() => onChangeContext("read", elem)}>
                             <OwnerContact elem={elem} />
                         </div>}
 
-                        <div className={isFormBien ? "col-2" : "col-3"} onClick={onSelectOwner ? () => onSelectOwner(elem) : null}>
+                        <div className={isFormBien ? "col-2" : "col-3"} onClick={onSelectOwner ? () => onSelectOwner(elem) : () => onChangeContext("read", elem)}>
                             <OwnerNegotiator elem={elem} />
                         </div>
                         {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>

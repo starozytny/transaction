@@ -5,6 +5,7 @@ import Sort              from "@commonComponents/functions/sort";
 
 import { OwnersList }       from "./OwnersList";
 import { OwnerFormulaire }  from "./OwnerForm";
+import {OwnerRead} from "@dashboardPages/components/Immo/Owners/OwnerRead";
 
 const URL_DELETE_ELEMENT = 'api_owners_delete';
 const URL_DELETE_GROUP   = 'api_owners_delete_group';
@@ -76,6 +77,9 @@ export class Owners extends Component {
         this.handleSorter = this.handleSorter.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
+        this.handleContentCreate = this.handleContentCreate.bind(this);
+        this.handleContentUpdate = this.handleContentUpdate.bind(this);
+        this.handleContentRead = this.handleContentRead.bind(this);
     }
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
@@ -146,10 +150,14 @@ export class Owners extends Component {
                                 onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
+    handleContentRead = (changeContext, element) => {
+        return <OwnerRead elem={element} onChangeContext={changeContext} />
+    }
+
     render () {
         return <>
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
-                    onContentList={this.handleContentList}
+                    onContentList={this.handleContentList} onContentRead={this.handleContentRead}
                     onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}
                     onChangeCurrentPage={this.handleChangeCurrentPage}/>
         </>
