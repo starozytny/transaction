@@ -4,7 +4,7 @@
 @import "./split/user/card";
 
 #owners{
-  @include toolbarCreateSearch(208);
+  @include toolbarCreateFilterSearch(208);
 }
 
 #negotiators{

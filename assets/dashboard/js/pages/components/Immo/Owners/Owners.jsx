@@ -10,7 +10,33 @@ const URL_DELETE_ELEMENT = 'api_owners_delete';
 const URL_DELETE_GROUP   = 'api_owners_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer ce propriétaire ?';
 const MSG_DELETE_GROUP   = 'Aucun propriétaire sélectionné.';
-const SORTER = Sort.compareLastname;
+let SORTER = Sort.compareLastname;
+
+let sorters = [
+    { value: 0, label: 'Nom',    identifiant: 'sorter-nom' },
+    { value: 1, label: 'code',   identifiant: 'sorter-code' },
+    { value: 2, label: 'Email',  identifiant: 'sorter-email' },
+];
+
+let sortersFunction = [Sort.compareLastname, Sort.compareCode, Sort.compareEmail];
+
+function filterFunction(dataImmuable, filters){
+    let newData = [];
+    if(filters.length === 0) {
+        newData = dataImmuable
+    }else{
+        dataImmuable.forEach(el => {
+            filters.forEach(filter => {
+                if((filter === 1 && el.isGerance) || (filter === 0 && !el.isGerance)){
+                    newData.filter(elem => elem.id !== el.id)
+                    newData.push(el);
+                }
+            })
+        })
+    }
+
+    return newData;
+}
 
 export class Owners extends Component {
     constructor(props) {
@@ -18,6 +44,7 @@ export class Owners extends Component {
 
         this.state = {
             perPage: 10,
+            currentPage: 0,
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
@@ -39,10 +66,14 @@ export class Owners extends Component {
 
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
+        this.handleGetFilters = this.handleGetFilters.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
         this.handleUpdateSelectOwner = this.handleUpdateSelectOwner.bind(this);
+        this.handlePerPage = this.handlePerPage.bind(this);
+        this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
+        this.handleSorter = this.handleSorter.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
     }
@@ -51,15 +82,48 @@ export class Owners extends Component {
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "owner"); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, filterFunction); }
+
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "owner", true, filterFunction); }
 
     handleUpdateSelectOwner = (owner) => { this.setState({ owner }) }
 
-    handleContentList = (currentData, changeContext) => {
+    handlePerPage = (perPage) => {
+        this.layout.current.handleUpdatePerPage(SORTER, perPage);
+        this.setState({ perPage: perPage });
+    }
+
+    handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
+
+    handleSorter = (nb) => {
+        const { perPage } = this.state;
+
+        SORTER = sortersFunction[nb];
+        this.layout.current.handleUpdatePerPage(SORTER, perPage);
+        this.setState({ sorter: SORTER });
+    }
+
+    handleContentList = (currentData, changeContext, getFilters, filters, data) => {
+        const { perPage, currentPage } = this.state;
+
         return <OwnersList onChangeContext={changeContext}
                            onDelete={this.layout.current.handleDelete}
                            onDeleteAll={this.layout.current.handleDeleteGroup}
+                           //filter-search
                            onSearch={this.handleSearch}
+                           filters={filters}
+                           onGetFilters={this.handleGetFilters}
+                           //changeNumberPerPage
+                           perPage={perPage}
+                           onPerPage={this.handlePerPage}
+                           //twice pagination
+                           currentPage={currentPage}
+                           onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
+                           taille={data.length}
+                           //sorter
+                           sorters={sorters}
+                           onSorter={this.handleSorter}
+                           //data
                            isClient={this.state.isClient}
                            isFormBien={this.state.isFormBien}
                            owner={this.state.owner}

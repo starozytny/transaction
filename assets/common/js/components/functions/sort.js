@@ -38,6 +38,10 @@ function compareAgEventStartAt(a, b){
     return comparison(a.agEvent.startAt, b.agEvent.startAt);
 }
 
+function compareCode(a, b){
+    return comparison(a.code, b.code);
+}
+
 function comparison (objA, objB){
     let comparison = 0;
     if (objA > objB) {
@@ -58,5 +62,6 @@ module.exports = {
     compareCreatedAtInverse,
     compareEmail,
     compareRank,
-    compareAgEventStartAt
+    compareAgEventStartAt,
+    compareCode,
 }
