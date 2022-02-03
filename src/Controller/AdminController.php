@@ -194,10 +194,12 @@ class AdminController extends AbstractController
         $biens = $em->getRepository(ImBien::class)->findAll();
         $societies = $this->getAllData(Society::class, $serializer);
 
+        $biens = $serializer->serialize($biens, 'json', ['groups' => ImBien::COUNT_BY_AGENCY]);
+
         return $this->render('admin/pages/immo/agencies.html.twig', [
             'donnees' => $objs,
-            'total' => count($biens),
             'societies' => $societies,
+            'biens' => $biens,
         ]);
     }
 

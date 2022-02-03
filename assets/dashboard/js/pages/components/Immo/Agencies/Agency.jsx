@@ -21,7 +21,8 @@ export class Agency extends Component {
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "agencies.pagination",
-            societies: JSON.parse(props.societies)
+            societies: props.societies ? JSON.parse(props.societies) : [],
+            biens: props.biens ? JSON.parse(props.biens) : []
         }
 
         this.layout = React.createRef();
@@ -43,6 +44,7 @@ export class Agency extends Component {
         return <AgencyList onChangeContext={changeContext}
                            total={this.props.total}
                            onDelete={this.layout.current.handleDelete}
+                           biens={this.state.biens}
                            data={currentData} />
     }
 

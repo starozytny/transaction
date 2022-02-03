@@ -9,7 +9,9 @@ import { AgencyItem }   from "./AgencyItem";
 
 export class AgencyList extends Component {
     render () {
-        const { data, onChangeContext } = this.props;
+        const { data, biens, onChangeContext } = this.props;
+
+
 
         return <>
             <div>
