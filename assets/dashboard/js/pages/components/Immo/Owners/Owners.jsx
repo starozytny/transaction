@@ -150,7 +150,8 @@ export class Owners extends Component {
         return <>
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
                     onContentList={this.handleContentList}
-                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}/>
+                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}
+                    onChangeCurrentPage={this.handleChangeCurrentPage}/>
         </>
     }
 }
