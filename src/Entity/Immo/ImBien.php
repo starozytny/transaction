@@ -167,8 +167,9 @@ class ImBien extends DataEntity
     private $negotiator;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="imBiens")
+     * @ORM\ManyToOne(targetEntity=User::class, fetch="EAGER", inversedBy="imBiens")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
      */
     private $user;
 

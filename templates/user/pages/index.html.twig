@@ -27,20 +27,20 @@
                 {% endif %}
             </div>
             <div class="dash-line-1-col-2">
-                <div class="dash-card-1">
+                <a href="{{ path('user_biens') }}" class="dash-card-1">
                     <div class="icon">
                         <span class="icon-home"></span>
                     </div>
                     <div class="title">{{ app.user.agency.name }}</div>
                     <div>{{ biensAgency }} {{ biensAgency > 1 ? "biens immobiliers" : "bien immobilier" }}</div>
-                </div>
-                <div class="dash-card-1">
+                </a>
+                <a href="{{ path('user_biens', {'fu': app.user.userIdentifier}) }}" class="dash-card-1">
                     <div class="icon">
                         <span class="icon-layer"></span>
                     </div>
                     <div class="title">Mes biens</div>
                     <div>{{ biensUser }} / {{ biensAgency }}</div>
-                </div>
+                </a>
             </div>
         </div>
         <div class="dash-line-2">

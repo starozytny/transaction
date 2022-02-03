@@ -8,11 +8,11 @@ import { Alert }  from "@dashboardComponents/Tools/Alert";
 import { AdCard } from "./AdCard";
 import { Filter } from "./Filter";
 
-function getItemsSelect (data, noDuplication, el, pref) {
+function getItemsSelect (data, noDuplication, el, pref, typeValue = "id") {
     if(el){
         if(!noDuplication.includes(el.id)){
             noDuplication.push(el.id);
-            data.push({ value: el.id, label: el.fullname, identifiant: pref + "-" + el.id })
+            data.push({ value: typeValue === "id" ? el.id : el.username, label: el.fullname, identifiant: pref + "-" + el.id })
         }
     }
 
@@ -23,12 +23,13 @@ export class BiensList extends Component {
     render () {
         const { pageStatus, pageDraft, data, onDelete, filters, onGetFilters, tenants, onUpdateList } = this.props;
 
-        let items = [], owners = [], negotiators = [], noDuplicateOwners = [], noDuplicateNegotiators = [];
+        let items = [], owners = [], negotiators = [], users = [], noDuplicateOwners = [], noDuplicateNegotiators = [], noDuplicateUsers = [];
         data.forEach(el => {
             items.push(<AdCard el={el} onDelete={onDelete} onUpdateList={onUpdateList} key={el.id}/>)
 
-            owners = getItemsSelect(owners, noDuplicateOwners, el.owner, "owner");
+            owners      = getItemsSelect(owners, noDuplicateOwners, el.owner, "owner");
             negotiators = getItemsSelect(negotiators, noDuplicateNegotiators, el.negotiator, "nego");
+            users       = getItemsSelect(users, noDuplicateUsers, el.user, "user", "username");
         })
 
         return <div className="list-biens">
@@ -39,7 +40,7 @@ export class BiensList extends Component {
                             <span>Filtres :</span>
                         </div>
                         <div className="content-col-1">
-                            <Filter onGetFilters={onGetFilters} filters={filters} tenants={tenants} owners={owners} negotiators={negotiators}/>
+                            <Filter onGetFilters={onGetFilters} filters={filters} tenants={tenants} owners={owners} negotiators={negotiators} users={users}/>
                         </div>
                     </div>
                 </div>

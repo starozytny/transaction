@@ -79,6 +79,7 @@ class UserController extends AbstractController
         $filterOwner = $request->query->get('fo');
         $filterTenant = $request->query->get('ft');
         $filterNego = $request->query->get('fn');
+        $filterUser = $request->query->get('fu');
 
         /** @var User $user */
         $user = $this->getUser();
@@ -86,7 +87,7 @@ class UserController extends AbstractController
         if($status == null){
             $objs = $repository->findBy(['agency' => $user->getAgency()]);
         }else{
-            $objs = $repository->findBy(['agency' => $user->getAgency()], ['status' => (int) $status]);
+            $objs = $repository->findBy(['agency' => $user->getAgency(), 'status' => (int) $status]);
         }
 
         if($draft == 1){
@@ -111,6 +112,7 @@ class UserController extends AbstractController
             'filterOwner' => $filterOwner,
             'filterTenant' => $filterTenant,
             'filterNego' => $filterNego,
+            'filterUser' => $filterUser,
             'st' => $status,
             'dr' => $draft
         ]);

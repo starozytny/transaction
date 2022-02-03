@@ -22,6 +22,11 @@ function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
             })
         }else{
             switch (subType) {
+                case "user":
+                    if(comparateur && comparateur.username === initTab){
+                        newTable.push(el)
+                    }
+                    break;
                 case "tenant":
                     if(el.id === initTab){
                         newTable.push(el)
@@ -43,12 +48,7 @@ function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
 }
 
 function filterFunction(dataImmuable, filters){
-    let newData = [];
-    let newData1 = [];
-    let newData2 = [];
-    let newData3 = [];
-    let newData4 = [];
-    let newData5 = [];
+    let newData = [], newData1 = [], newData2 = [], newData3 = [], newData4 = [], newData5 = [], newData6 = [];
 
     let filtersAd = filters[0];
     let filtersBien = filters[1];
@@ -56,6 +56,7 @@ function filterFunction(dataImmuable, filters){
     let filterOwner = filters[3];
     let filterTenant = filters[4];
     let filterNego = filters[5];
+    let filterUser = filters[6];
 
     if(filters.length === 0) {
         newData = dataImmuable
@@ -78,8 +79,11 @@ function filterFunction(dataImmuable, filters){
         newData4.forEach(el => {
             newData5 = setNewTab("select", filterNego, el, el.negotiator, newData5, "nego")
         })
+        newData5.forEach(el => {
+            newData6 = setNewTab("select", filterUser, el, el.user, newData6, "user")
+        })
 
-        newData = newData5
+        newData = newData6
     }
 
     return newData;
@@ -108,6 +112,7 @@ export class Biens extends Component {
                 props.filterOwner ? parseInt(props.filterOwner) : "", //owner
                 props.filterTenant ? parseInt(props.filterTenant) : "", //tenant - value == bienId
                 props.filterNego ? parseInt(props.filterNego) : "", //negotiator
+                props.filterUser ? props.filterUser : "", //utilisateur
             ]
         }
 
@@ -136,7 +141,7 @@ export class Biens extends Component {
                           onGetFilters={this.handleGetFilters}
                           tenants={JSON.parse(this.props.tenants)}
                           pageStatus={this.props.pageStatus !== "" ? parseInt(this.props.pageStatus) : false}
-                          pageDraft={this.props.pageStatus !== "" ? parseInt(this.props.pageDraft) : false}
+                          pageDraft={this.props.pageDraft !== "" ? parseInt(this.props.pageDraft) : false}
                           onUpdateList={this.handleUpdateList}
                           data={currentData} />
     }
