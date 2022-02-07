@@ -1,4 +1,5 @@
 const toastr = require("toastr");
+const Sanitaze = require("@commonComponents/functions/sanitaze");
 
 function getItems (type, prefix) {
     switch (type) {
@@ -244,7 +245,8 @@ function setContentFull(self){
     const { quartier, codeTypeBien, codeTypeAd, piece, areaHabitable, areaTerrace, areaGarden, parking, box,
         room, bathroom, balcony, wc, exposition, codeHeater0, codeHeater, codeKitchen, isWcSeparate,
         hasPool, hasCave, hasClim, hasInternet, hasGuardian, hasAlarme, hasDigicode, hasInterphone,
-        hideAddress, address, zipcode, city, hasCalme, hasHandi } = self.state;
+        hideAddress, address, zipcode, city, hasCalme, hasHandi, beforeJuly,
+        dpeLetter, dpeValue, gesLetter, gesValue, isNew, isMeuble, dispoAt } = self.state;
 
     let cTypeBien       = parseInt(codeTypeBien);
     let cTypeAd         = parseInt(codeTypeAd);
@@ -268,6 +270,9 @@ function setContentFull(self){
     let cHasCalme       = parseInt(hasCalme);
     let cHasHandi       = parseInt(hasHandi);
     let cHideAddress    = parseInt(hideAddress);
+    let cBeforeJuly     = parseInt(beforeJuly);
+    let cIsNew          = parseInt(isNew);
+    let cIsMeuble       = parseInt(isMeuble);
 
     let typeAdItems     = getItems("ads");
     let typeBienItems   = getItems("biens");
@@ -275,29 +280,38 @@ function setContentFull(self){
     let chauffage0Items = getItems("chauffages-0");
     let chauffage1Items = getItems("chauffages-1");
     let cuisineItems    = getItems("cuisines");
+    let diagItems       = getItems("diags");
 
     let typeBienString      = cTypeBien === 9 ? "bien" : selectToString(typeBienItems, cTypeBien).toLowerCase();
     let typeAdString        = selectToString(typeAdItems, cTypeAd);
-    let expositionString    = selectToString(expositionItems, exposition).toLowerCase();
-    let heater0String       = selectToString(chauffage0Items, codeHeater0).toLowerCase();
-    let heaterString        = selectToString(chauffage1Items, codeHeater).toLowerCase();
-    let kitchenString       = selectToString(cuisineItems, codeKitchen).toLowerCase();
+    let expositionString    = selectToString(expositionItems, cExposition).toLowerCase();
+    let heater0String       = selectToString(chauffage0Items, parseInt(codeHeater0)).toLowerCase();
+    let heaterString        = selectToString(chauffage1Items, parseInt(codeHeater)).toLowerCase();
+    let kitchenString       = selectToString(cuisineItems, parseInt(codeKitchen)).toLowerCase();
+    let dpeLetterString     = selectToString(diagItems, parseInt(dpeLetter));
+    let gesLetterString     = selectToString(diagItems, parseInt(gesLetter));
 
-    let pre0, pre1, secure;
+    let pre0, pre1, pre3, amenage, secure;
     switch (cTypeBien){
         case 2: case 3: case 5: case 6: case 8: case 9:
             pre0 = "un "
             pre1 = "Ce "
+            pre3 = "Il "
+            amenage = "aménagé"
             secure = "sécurisé"
             break;
         case 1: case 4:
             pre0 = "une "
             pre1 = "Cette "
+            pre3 = "Elle "
+            amenage = "aménagée"
             secure = "sécurisée"
             break;
         default:
             pre0 = "un "
             pre1 = "Cet"
+            pre3 = "Il "
+            amenage = "aménagé"
             secure = "sécurisé"
             break;
     }
@@ -310,6 +324,7 @@ function setContentFull(self){
         + (cTypeBien !== 2 && cTypeBien !== 3 ? " de " + cPiece + " pièce" + (cPiece > 1 ? "s" : "") : "")
         + (cTypeAd === 0 || cTypeAd === 1 ? " à la " : " en ") + typeAdString.toLowerCase()
         + " de " + areaHabitable + "m²"
+        + (cTypeAd === 0 && cIsMeuble === 1 ? " loué meublé" : "")
         + (parseFloat(areaTerrace) > 0 ? " avec une terrasse de " + areaTerrace + "m²" : "")
         + (parseFloat(areaTerrace) > 0 ? " et " : " avec ") + textParking
         + "."
@@ -319,6 +334,7 @@ function setContentFull(self){
     content += " Situé à " + (cHideAddress ? city : txtAddress)
         + (cHasCalme === 1 ? " dans un environement calme" : "")
         + ((cHasCalme === 1 && cHasHandi === 1) ? " et" : "") + " disposant d'aménagement pour handicapés"
+        + (cIsNew === 1 ? ". " + pre3 + "a été refait à neuf" : "")
         + ".\n"
 
     if(parseFloat(areaGarden) > 0 || cPiece > 0 || cRoom > 0 || cBalcony > 0 || cBathroom > 0 || cWc > 0){
@@ -331,6 +347,14 @@ function setContentFull(self){
             + ((cPiece > 0 || cRoom > 0 || cBalcony > 0 || cBathroom > 0) && cWc > 0 ? " et " : "") + numberString(cWc, "WC", "")
             + ".\n"
         ;
+    }
+
+    if(codeHeater0 !== "" || codeHeater !== "" || codeKitchen !== ""){
+        content += pre3 + "est " +  amenage
+            + (codeKitchen !== "" ? " d'une cuisine " + kitchenString : "")
+            + (codeKitchen !== "" && (codeHeater0 !== "" || codeHeater !== "") ? " et " : "")
+            + (codeHeater0 !== "" || codeHeater !== "" ? "de chauffages " + heater0String + (codeHeater0 !== "" && codeHeater !== "" ? " " : "") +  heaterString : "")
+            + ".\n"
     }
 
     if(cExposition !== 99 || cHasPool === 1 || cHasCave === 1 || cHasClim === 1 ||  cHasInternet === 1 || cIsWcSeparate === 1){
@@ -357,8 +381,45 @@ function setContentFull(self){
         ;
     }
 
+    if(cTypeAd === 3){
+        content += "\nCe bien est idéal pour un investissement locatif.";
+    }
+
+    if(dispoAt){
+        content += "\nDisponible le " + Sanitaze.toFormatDate(dispoAt) + ".";
+    }
+
+    if(dpeValue && gesValue){
+        content += "\n\n" + "Le diagnostique énergétique à été réalisé " + (cBeforeJuly === 1 ? "avant" : "après") + " le 1 juillet 2021."
+            + "\n" + "Consommation énergétique DPE : " + dpeLetterString + " -> " + dpeValue + " KWh/m² an"
+            + "\n" + "Bilan émission GES : " + gesLetterString + " -> " + gesValue + " Kg/co² an"
+            + "\n"
+    }
 
     return content;
+}
+
+function setContentSimple(self) {
+    const { city, quartier, codeTypeBien, codeTypeAd, piece, areaHabitable, parking, box } = self.state;
+
+    let cTypeBien       = parseInt(codeTypeBien);
+    let cTypeAd         = parseInt(codeTypeAd);
+    let cPiece          = parseInt(piece);
+    let cParking        = parseInt(parking);
+    let cBox            = parseInt(box);
+
+    let typeAdItems     = getItems("ads");
+    let typeBienItems   = getItems("biens");
+
+    let typeBienString      = cTypeBien === 9 ? "Bien" : selectToString(typeBienItems, cTypeBien);
+    let typeAdString        = selectToString(typeAdItems, cTypeAd);
+
+    let textParking = cParking > 0 && cBox > 0 ? "un parking/box" : (cParking > 0 ? "un parking" : cBox > 0 ? "un box": "")
+
+    return typeBienString + " T" + cPiece + " en " + typeAdString.toLowerCase() + " de " +
+        + areaHabitable + "m² à " + city + (quartier !== "" ? " dans le quartier de " + quartier : "")
+        + (textParking !== "" ? " doté d'" + textParking : "")
+        + ".";
 }
 
 function advantageString(value, text) {
@@ -376,5 +437,6 @@ module.exports = {
     getRightPhoneBien,
     getRightEmailBien,
     setContentFull,
+    setContentSimple,
     selectToString
 }

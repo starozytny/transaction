@@ -197,13 +197,18 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 </TextArea>
             </div>
             <div className="line">
+                <div className="form-group">
+                    <Button type="default" onClick={() => onGenerateContent("simple")}>Générer un texte simple par défaut</Button>
+                </div>
+            </div>
+            <div className="line">
                 <TextArea identifiant="contentFull" valeur={contentFull} errors={errors} onChange={onChange}>
                     Description complète
                 </TextArea>
             </div>
             <div className="line">
                 <div className="form-group">
-                    <Button type="default" onClick={onGenerateContent}>Générer un text par défaut</Button>
+                    <Button type="default" onClick={() => onGenerateContent("complexe")}>Générer un texte complexe par défaut</Button>
                 </div>
             </div>
         </div>

@@ -292,9 +292,13 @@ export class Form extends Component {
         Helper.setCityFromZipcode(this, e, arrayPostalCode ? arrayPostalCode : arrayZipcodeSave)
     }
 
-    handleGenerateContent = () => {
+    handleGenerateContent = (type) => {
         console.log(this.state)
-        this.setState({ contentFull: helper.setContentFull(this) })
+        if(type === "simple"){
+            this.setState({ contentSimple: helper.setContentSimple(this) })
+        }else{
+            this.setState({ contentFull: helper.setContentFull(this) })
+        }
     }
 
     handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
