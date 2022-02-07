@@ -2,6 +2,7 @@
 
 namespace App\Entity\Immo;
 
+use App\Entity\User;
 use App\Repository\Immo\ImNegotiatorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -116,6 +117,11 @@ class ImNegotiator
      * @ORM\OneToMany(targetEntity=ImBuyer::class, mappedBy="negotiator")
      */
     private $buyers;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="negotiator", cascade={"persist", "remove"})
+     */
+    private $user;
 
     public function __construct()
     {
@@ -438,6 +444,28 @@ class ImNegotiator
                 $buyer->setNegotiator(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setNegotiator(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getNegotiator() !== $this) {
+            $user->setNegotiator($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

@@ -61,7 +61,8 @@ export class User extends Component {
             sessionName: "user.pagination",
             isClient: props.isClient ? props.isClient : false,
             societies: props.societies ? JSON.parse(props.societies) : [],
-            agencies: props.societies ? JSON.parse(props.agencies) : []
+            agencies: props.agencies ? JSON.parse(props.agencies) : [],
+            negotiators: props.negotiators ? JSON.parse(props.negotiators) : []
         }
 
         this.layout = React.createRef();
@@ -150,14 +151,14 @@ export class User extends Component {
     }
 
     handleContentCreate = (changeContext) => {
-        const { societies, agencies } = this.state;
-        return <UserFormulaire type="create" societies={societies} agencies={agencies}
+        const { societies, agencies, negotiators } = this.state;
+        return <UserFormulaire type="create" societies={societies} agencies={agencies} negotiators={negotiators}
                                onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
-        const { societies, agencies } = this.state;
-        return <UserFormulaire type="update" societies={societies} agencies={agencies} element={element}
+        const { societies, agencies, negotiators } = this.state;
+        return <UserFormulaire type="update" societies={societies} agencies={agencies} negotiators={negotiators} element={element}
                                onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 

@@ -109,22 +109,21 @@ class AdminController extends AbstractController
         $objs = $this->getAllData(User::class, $serializer);
         $societies = $this->getAllData(Society::class, $serializer);
         $agencies = $this->getAllData(ImAgency::class, $serializer);
+        $negotiators = $this->getAllData(ImNegotiator::class, $serializer);
+
+        $params = [
+            'donnees' => $objs,
+            'societies' => $societies,
+            'agencies' => $agencies,
+            'negotiators' => $negotiators
+        ];
 
         $search = $request->query->get('search');
         if($search){
-            return $this->render($route, [
-                'donnees' => $objs,
-                'search' => $search,
-                'societies' => $societies,
-                'agencies' => $agencies
-            ]);
+            return $this->render($route, array_merge($params, ['search' => $search]));
         }
 
-        return $this->render($route, [
-            'donnees' => $objs,
-            'societies' => $societies,
-            'agencies' => $agencies
-        ]);
+        return $this->render($route, $params);
     }
 
     /**

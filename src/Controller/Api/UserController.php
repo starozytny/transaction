@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Immo\ImNegotiator;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\ApiResponse;
@@ -63,6 +64,9 @@ class UserController extends AbstractController
         return $apiResponse->apiJsonResponse($repository->findAll(), User::ADMIN_READ);
     }
 
+    /**
+     * @throws Exception
+     */
     public function submitForm($type, User $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataUser $dataEntity,
                                UserPasswordHasherInterface $passwordHasher, FileUploader $fileUploader,
@@ -79,7 +83,18 @@ class UserController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Il manque des données.');
         }
 
-        $obj = $dataEntity->setData($obj, $data);
+        $negotiator = null;
+        if($data->negotiator){
+            $negotiator = $em->getRepository(ImNegotiator::class)->find($data->negotiator);
+            if(!$negotiator || $negotiator->getUser() !== null){
+                return $apiResponse->apiJsonResponseValidationFailed([[
+                    'name' => 'negotiator',
+                    'message' => 'Ce négociateur est déjà associé à un utilisateur.'
+                ]]);
+            }
+        }
+
+        $obj = $dataEntity->setData($obj, $data, $negotiator);
 
         $file = $request->files->get('avatar');
         $groups = User::ADMIN_READ;

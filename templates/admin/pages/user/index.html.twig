@@ -8,8 +8,13 @@
 {% endblock %}
 
 {% block main_content %}
-    <div id="user" data-donnees="{{ donnees }}" data-societies="{{ societies }}" data-agencies="{{ agencies }}"
-         data-developer="{{ app.user.highRoleCode }}" {% if search is defined %}data-search="{{ search }}"{% endif %}>
+    <div id="user"
+         data-donnees="{{ donnees }}"
+         data-societies="{{ societies }}"
+         data-agencies="{{ agencies }}"
+         data-negotiators="{{ negotiators }}"
+         data-developer="{{ app.user.highRoleCode }}"
+         {% if search is defined %}data-search="{{ search }}"{% endif %}>
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Service\Data;
 
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImNegotiator;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Service\SanitizeData;
@@ -25,7 +26,7 @@ class DataUser
     /**
      * @throws Exception
      */
-    public function setData(User $obj, $data): User
+    public function setData(User $obj, $data, ?ImNegotiator $negotiator): User
     {
         if (isset($data->roles)) {
             $obj->setRoles($data->roles);
@@ -47,6 +48,7 @@ class DataUser
             ->setEmail($data->email)
             ->setSociety($society)
             ->setAgency($agency)
+            ->setNegotiator($negotiator)
         ;
     }
 }

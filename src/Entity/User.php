@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Agenda\AgEvent;
+use App\Entity\Immo\ImNegotiator;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -147,6 +148,12 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * @ORM\OneToMany(targetEntity=AgEvent::class, mappedBy="creator")
      */
     private $agEvents;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ImNegotiator::class, inversedBy="user", fetch="EAGER", cascade={"persist", "remove"})
+     * @Groups({"admin:read", "user:read"})
+     */
+    private $negotiator;
 
     /**
      * @throws Exception
@@ -569,6 +576,18 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
                 $agEvent->setCreator(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNegotiator(): ?ImNegotiator
+    {
+        return $this->negotiator;
+    }
+
+    public function setNegotiator(?ImNegotiator $negotiator): self
+    {
+        $this->negotiator = $negotiator;
 
         return $this;
     }

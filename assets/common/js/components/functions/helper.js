@@ -226,12 +226,14 @@ function selectorsImmo(societies, society, agencies, agency, negotiators = null,
         }
     });
 
-    negotiators.forEach(elem => {
-        let add = agency === "" ? true : (elem.agency.id === agency);
-        if(add){
-            selectNegotiator.push({ value: elem.id, label: elem.fullname, identifiant: "nego-" + elem.id })
-        }
-    })
+    if(negotiators){
+        negotiators.forEach(elem => {
+            let add = agency === "" ? true : (elem.agency.id === agency);
+            if(add){
+                selectNegotiator.push({ value: elem.id, label: elem.fullname, identifiant: "nego-" + elem.id })
+            }
+        })
+    }
 
     return [selectSociety, selectAgency, selectNegotiator];
 }
