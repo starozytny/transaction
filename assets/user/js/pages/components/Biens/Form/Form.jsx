@@ -170,6 +170,7 @@ export class Form extends Component {
         this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleChangeLegend = this.handleChangeLegend.bind(this);
         this.handleChangeGeo = this.handleChangeGeo.bind(this);
+        this.handleGenerateContent = this.handleGenerateContent.bind(this);
 
         this.handleSwitchTrashFile = this.handleSwitchTrashFile.bind(this);
         this.handleDragStart = this.handleDragStart.bind(this);
@@ -289,6 +290,11 @@ export class Form extends Component {
         const { arrayPostalCode } = this.state;
 
         Helper.setCityFromZipcode(this, e, arrayPostalCode ? arrayPostalCode : arrayZipcodeSave)
+    }
+
+    handleGenerateContent = () => {
+        console.log(this.state)
+        this.setState({ contentFull: helper.setContentFull(this) })
     }
 
     handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
@@ -633,6 +639,7 @@ export class Form extends Component {
 
                         <Step9 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onOpenHelp={this.handleOpenHelp}
+                               onGenerateContent={this.handleGenerateContent}
                                negotiators={negotiators} />
 
                         {step === 9 && <div className="step-section active">

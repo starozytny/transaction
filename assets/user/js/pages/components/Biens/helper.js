@@ -229,10 +229,121 @@ function getRightEmailBien(agency, codeTypeAd){
     return agency.emailVente ? agency.emailVente : agency.phone;
 }
 
+function selectToString (tab, value) {
+    let label = "";
+    tab.forEach(item => {
+        if(item.value === value){
+            label = item.label
+        }
+    })
+
+    return label;
+}
+
+function setContentFull(self){
+    const { quartier, codeTypeBien, codeTypeAd, piece, areaHabitable, areaTerrace, areaGarden, parking, box,
+        room, bathroom, balcony, wc, exposition, codeHeater0, codeHeater, codeKitchen,
+        hasPool, hasCave, hasClim, hasInternet } = self.state;
+
+    let cTypeBien    = parseInt(codeTypeBien);
+    let cTypeAd      = parseInt(codeTypeAd);
+    let cPiece       = parseInt(piece);
+    let cParking     = parseInt(parking);
+    let cBox         = parseInt(box);
+    let cRoom        = parseInt(room);
+    let cBathroom    = parseInt(bathroom);
+    let cBalcony     = parseInt(balcony);
+    let cWc          = parseInt(wc);
+    let cExposition  = parseInt(exposition);
+    let cHasPool     = parseInt(hasPool);
+    let cHasCave     = parseInt(hasCave);
+    let cHasClim     = parseInt(hasClim);
+    let cHasInternet = parseInt(hasInternet);
+
+    let typeAdItems     = getItems("ads");
+    let typeBienItems   = getItems("biens");
+    let expositionItems = getItems("expositions");
+    let chauffage0Items = getItems("chauffages-0");
+    let chauffage1Items = getItems("chauffages-1");
+    let cuisineItems    = getItems("cuisines");
+
+    let typeBienString      = cTypeBien === 9 ? "bien" : selectToString(typeBienItems, cTypeBien);
+    let typeAdString        = selectToString(typeAdItems, cTypeAd);
+    let expositionString    = selectToString(expositionItems, exposition).toLowerCase();
+    let heater0String       = selectToString(chauffage0Items, codeHeater0).toLowerCase();
+    let heaterString        = selectToString(chauffage1Items, codeHeater).toLowerCase();
+    let kitchenString       = selectToString(cuisineItems, codeKitchen).toLowerCase();
+
+    let pre0;
+    let pre1;
+    switch (cTypeBien){
+        case 2:
+        case 3:
+        case 5:
+        case 6:
+        case 8:
+            pre1 = "Le "
+            break;
+        case 1:
+        case 4:
+            pre0 = "une "
+            pre1 = "La "
+            break;
+        default:
+            pre0 = "un "
+            pre1 = "L'"
+            break;
+    }
+
+    let textParking = cParking > 0 && cBox > 0 ? "un parking/box" : (cParking > 0 ? "un parking" : cBox > 0 ? "un box": "")
+
+    let content = quartier ? "A proximité de " + quartier + ", n" : "N";
+    content += "ous vous proposons "
+        + pre0 + typeBienString.toLowerCase()
+        + (cTypeBien !== 2 && cTypeBien !== 3 ? " de " + cPiece + " pièce" + (cPiece > 1 ? "s" : "") : "")
+        + (cTypeAd === 0 || cTypeAd === 1 ? " à la " : " en ") + typeAdString.toLowerCase()
+        + " de " + areaHabitable + "m²"
+        + (parseFloat(areaTerrace) > 0 ? " avec une terrasse de " + areaTerrace + "m²" : "")
+        + (parseFloat(areaTerrace) > 0 ? " et " : " avec ") + textParking
+        + ". \n"
+    ;
+
+    content += pre1 + typeBienString.toLowerCase() + (parseFloat(areaGarden) > 0 ? " dispose d'un jardin de " + areaGarden + "m² et" : "")
+        + " comporte "
+        + numberString(cRoom, "chambre")
+        + (cRoom > 0 ? ", " : "") + numberString(cBalcony, "balcon")
+        + (cRoom > 0 || cBalcony > 0 ? ", " : "") + numberString(cBathroom, "salle") + (cBathroom > 0 ? " de bain" : "")
+        + (cRoom > 0 || cBalcony > 0 || cBathroom > 0 ? " et " : "") + numberString(cWc, "WC", "")
+        + ".\n"
+    ;
+
+    if(cExposition !== 99 || cHasPool){
+        content += "Le bien" + (cExposition !== 99 ? ", exposé " + expositionString : "")
+            + (cExposition !== 99 ? "," : "") + " a l'avantage de posséder "
+            + advantageString(cHasPool, "piscine")
+            + (cHasPool === 1 ? ", " : "") + advantageString(cHasCave, "cave")
+            + (cHasPool === 1 || cHasCave === 1 ? ", " : "") + advantageString(cHasClim, "climatisation")
+            + (cHasPool === 1 || cHasCave === 1 || cHasClim === 1 ? " et " : "") + advantageString(cHasInternet, "connexion internet")
+            +  "."
+    }
+
+    return content;
+}
+
+function advantageString(value, text) {
+    return value === 1 ? "une " + text : ""
+}
+
+function numberString(value, text, plurial = "s") {
+    return value > 0 ? value + " " + text + (value > 1 ? plurial : "") : "";
+}
+
 module.exports = {
     getItems,
     addOrRemove,
     getIntValue,
     getRightPhoneBien,
-    getRightEmailBien
+    getRightEmailBien,
+    setContentFull,
+    selectToString
 }

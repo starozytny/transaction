@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Input, SelectReactSelectize, TextArea } from "@dashboardComponents/Tools/Fields";
-import { ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper    from "@userPages/components/Biens/helper";
@@ -10,18 +10,7 @@ import Sanitaze  from "@commonComponents/functions/sanitaze";
 
 const CURRENT_STEP = 9;
 
-function toString (tab, value) {
-    let label = "";
-    tab.forEach(item => {
-        if(item.value === value){
-            label = item.label
-        }
-    })
-
-    return label;
-}
-
-export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect, negotiators, negotiator,
+export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect, onGenerateContent, negotiators, negotiator,
                         typeAdvert, contentSimple, contentFull, onOpenHelp,
                         codeTypeBien, codeTypeAd, codeTypeMandat, libelle, address, zipcode, city, price, areaTotal, piece,
                         areaGarden, areaTerrace, room, balcony, parking, box, dispoAt, busy,
@@ -49,17 +38,17 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
         }
     })
 
-    let typeBienString = toString(typeBienItems, codeTypeBien);
-    let typeAdString = toString(typeAdItems, codeTypeAd);
-    let typeMandatString = toString(typeMandatItems, codeTypeMandat);
+    let typeBienString = helper.selectToString(typeBienItems, codeTypeBien);
+    let typeAdString = helper.selectToString(typeAdItems, codeTypeAd);
+    let typeMandatString = helper.selectToString(typeMandatItems, codeTypeMandat);
 
-    let dpeLetterString = toString(diagItems, dpeLetter);
-    let gesLetterString = toString(diagItems, gesLetter);
-    let expositionString = toString(expositionItems, exposition).toLowerCase();
-    let heater0String = toString(chauffage0Items, codeHeater0).toLowerCase();
-    let heaterString = toString(chauffage1Items, codeHeater).toLowerCase();
-    let kitchenString = toString(cuisineItems, codeKitchen).toLowerCase();
-    let busyString = toString(occupationItems, busy);
+    let dpeLetterString = helper.selectToString(diagItems, dpeLetter);
+    let gesLetterString = helper.selectToString(diagItems, gesLetter);
+    let expositionString = helper.selectToString(expositionItems, exposition).toLowerCase();
+    let heater0String = helper.selectToString(chauffage0Items, codeHeater0).toLowerCase();
+    let heaterString = helper.selectToString(chauffage1Items, codeHeater).toLowerCase();
+    let kitchenString = helper.selectToString(cuisineItems, codeKitchen).toLowerCase();
+    let busyString = helper.selectToString(occupationItems, busy);
 
     photos.sort(Sort.compareRank);
     let photo = null;
@@ -200,7 +189,6 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                       onChange={(e) => onChangeSelect('typeAdvert', e)}>
                     Type de publicité
                 </SelectReactSelectize>
-                <div className="form-group" />
             </div>
 
             <div className="line">
@@ -212,6 +200,11 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <TextArea identifiant="contentFull" valeur={contentFull} errors={errors} onChange={onChange}>
                     Description complète
                 </TextArea>
+            </div>
+            <div className="line">
+                <div className="form-group">
+                    <Button type="default" onClick={onGenerateContent}>Générer un text par défaut</Button>
+                </div>
             </div>
         </div>
 
