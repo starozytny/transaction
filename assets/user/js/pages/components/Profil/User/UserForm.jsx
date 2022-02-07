@@ -27,6 +27,7 @@ export function UserFormulaire ({ type, element, societyId, agencyId, negotiator
         firstname={element ? element.firstname : ""}
         lastname={element ? element.lastname : ""}
         email={element ? element.email : ""}
+        negotiator={element ? (element.negotiator ? element.negotiator.id : "") : ""}
         avatar={element ? element.avatarFile : null}
         roles={element ? element.roles : []}
         society={element ? element.society.id : societyId}

@@ -86,7 +86,7 @@ class UserController extends AbstractController
         $negotiator = null;
         if($data->negotiator){
             $negotiator = $em->getRepository(ImNegotiator::class)->find($data->negotiator);
-            if(!$negotiator || $negotiator->getUser() !== null){
+            if(!$negotiator || ($negotiator->getUser() !== null && $negotiator->getUser()->getId() !== $obj->getId())){
                 return $apiResponse->apiJsonResponseValidationFailed([[
                     'name' => 'negotiator',
                     'message' => 'Ce négociateur est déjà associé à un utilisateur.'
