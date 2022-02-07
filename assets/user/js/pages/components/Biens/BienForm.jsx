@@ -45,6 +45,7 @@ export function BienFormulaire ({ type, element, tenants, rooms, photos, negotia
     let financial = element ? element.financial : null;
     let confidential = element ? element.confidential : null;
     let advert = element ? element.advert : null;
+    let mandat = element ? element.mandat : null;
 
     let form = <Form
         title={title}
@@ -54,7 +55,6 @@ export function BienFormulaire ({ type, element, tenants, rooms, photos, negotia
         codeTypeAd={element ? element.codeTypeAd : ""}
         codeTypeBien={element ? element.codeTypeBien : ""}
         libelle={element ? element.libelle : "Brouillon"}
-        codeTypeMandat={element ? element.codeTypeMandat : 0}
         negotiator={element ? element.negotiator.id : ""}
 
         areaTotal={element ? setValueEmptyIfNull(area, area.total) : 0}
@@ -175,6 +175,10 @@ export function BienFormulaire ({ type, element, tenants, rooms, photos, negotia
         typeAdvert={element ? setValueEmptyIfNull(advert, advert.typeAdvert) : 0}
         contentSimple={element ? setValueEmptyIfNull(advert, advert.contentSimple) : ""}
         contentFull={element ? setValueEmptyIfNull(advert, advert.contentFull) : ""}
+
+        codeTypeMandat={element ? setValueEmptyIfNull(mandat, mandat.codeTypeMandat) : 0}
+        startAt={element ? (setValueEmptyIfNull(mandat, mandat.startAtJavascript) !== "" ? new Date(mandat.startAtJavascript) : "" ) : ""}
+        endAt={element ? (setValueEmptyIfNull(mandat, mandat.endAtJavascript) !== "" ? new Date(mandat.endAtJavascript) : "" ) : ""}
 
         rooms={element ? rooms : []}
 

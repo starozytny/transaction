@@ -14,6 +14,7 @@ use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
 use App\Entity\Immo\ImLocalisation;
+use App\Entity\Immo\ImMandat;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImOwner;
@@ -51,12 +52,11 @@ class DataImmo extends DataConstructor
      */
     public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature,
                                 ImAdvantage $advantage, ImDiag $diag, ImLocalisation $localisation,
-                                ImFinancial $financial, ImConfidential $confidential, ImAdvert $advert, array $rooms)
+                                ImFinancial $financial, ImConfidential $confidential, ImAdvert $advert, ImMandat $mandat, array $rooms)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
         $libelle        = $data->libelle;
-        $codeTypeMandat = $data->codeTypeMandat;
         $negotiator     = $data->negotiator;
 
         // validation des données
@@ -64,7 +64,6 @@ class DataImmo extends DataConstructor
             ['type' => 'text',   'name' => 'codeTypeAd',      'value' => $codeTypeAd],
             ['type' => 'text',   'name' => 'codeTypeBien',    'value' => $codeTypeBien],
             ['type' => 'text',   'name' => 'libelle',         'value' => $libelle],
-            ['type' => 'text',   'name' => 'codeTypeMandat',  'value' => $codeTypeMandat],
             ['type' => 'text',   'name' => 'negotiator',      'value' => $negotiator],
             ['type' => 'length', 'name' => 'libelle',         'value' => $libelle, 'min' => 0, 'max' => 64]
         ];
@@ -117,7 +116,6 @@ class DataImmo extends DataConstructor
             ->setCodeTypeAd((int) $codeTypeAd)
             ->setCodeTypeBien((int) $codeTypeBien)
             ->setLibelle($this->sanitizeData->trimData($libelle))
-            ->setCodeTypeMandat((int) $codeTypeMandat)
             ->setNegotiator($negotiator)
             ->setReference(substr(mb_strtoupper(uniqid().bin2hex(random_bytes(1))), 0, 10).random_int(100,999))
             ->setArea($area)
@@ -130,7 +128,20 @@ class DataImmo extends DataConstructor
             ->setOwner($owner)
             ->setConfidential($confidential)
             ->setAdvert($advert)
+            ->setMandat($mandat)
             ->setIsDraft($isDraft)
+        ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataMandat(ImMandat $obj, $data): ImMandat
+    {
+        return ($obj)
+            ->setCodeTypeMandat((int) $data->codeTypeMandat)
+            ->setStartAt($this->createDate($data->startAt))
+            ->setEndAt($this->createDate($data->endAt))
         ;
     }
 

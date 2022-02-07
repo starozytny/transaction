@@ -94,12 +94,6 @@ class ImBien extends DataEntity
     private $libelle;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
-     */
-    private $codeTypeMandat;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -265,6 +259,13 @@ class ImBien extends DataEntity
      */
     private $suivis;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ImMandat::class, fetch="EAGER", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user:read"})
+     */
+    private $mandat;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -354,29 +355,6 @@ class ImBien extends DataEntity
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     * @Groups({"user:read"})
-     */
-    public function getTypeMandatString(): string
-    {
-        $data = ["Aucun", "Simple", "Exclusif", "Semi-exclusif"];
-
-        return $data[$this->codeTypeMandat];
-    }
-
-    public function getCodeTypeMandat(): ?int
-    {
-        return $this->codeTypeMandat;
-    }
-
-    public function setCodeTypeMandat(int $codeTypeMandat): self
-    {
-        $this->codeTypeMandat = $codeTypeMandat;
 
         return $this;
     }
@@ -856,5 +834,17 @@ class ImBien extends DataEntity
     public function getMainPhotoFile(): string
     {
         return $this->getMainPhoto() ? $this->getMainPhoto()->getPhotoFile() : "/placeholders/placeholder.jpg";
+    }
+
+    public function getMandat(): ?ImMandat
+    {
+        return $this->mandat;
+    }
+
+    public function setMandat(ImMandat $mandat): self
+    {
+        $this->mandat = $mandat;
+
+        return $this;
     }
 }

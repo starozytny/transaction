@@ -12,6 +12,7 @@ use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
 use App\Entity\Immo\ImLocalisation;
+use App\Entity\Immo\ImMandat;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImOwner;
@@ -90,6 +91,7 @@ class FakeBiensCreate extends Command
             ImLocalisation::class,
             ImNumber::class,
             ImConfidential::class,
+            ImMandat::class,
         ]);
 
         if($nbAgencies == 0 || $nbNegotiators == 0 || $nbUsers == 0){
@@ -110,7 +112,6 @@ class FakeBiensCreate extends Command
                 "codeTypeAd" => (string) $fake->numberBetween(0, 7),
                 "codeTypeBien" => (string) $fake->numberBetween(0, 9),
                 "libelle" => $fake->name,
-                "codeTypeMandat" => (string) $fake->numberBetween(0, 3),
                 "negotiator" => $negotiator->getId(),
                 "areaTotal" => (string) $fake->randomFloat(2),
                 "areaHabitable" => (string) $fake->randomFloat(2),
@@ -216,23 +217,27 @@ class FakeBiensCreate extends Command
                 "typeAdvert" => $fake->numberBetween(0, 2),
                 "contentSimple" => $fake->text,
                 "contentFull" => $fake->sentence(255),
-                "isDraft" => $fake->numberBetween(0, 1)
+                "isDraft" => $fake->numberBetween(0, 1),
+                "codeTypeMandat" => (string) $fake->numberBetween(0, 3),
+                "startAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
+                "endAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
             ];
 
             $data = json_decode(json_encode($data));
 
-            $advert = $this->dataImmo->setDataAdvert(new ImAdvert(), $data);
-            $confidential = $this->dataImmo->setDataConfidential(new ImConfidential(), $data);
-            $financial = $this->dataImmo->setDataFinancial(new ImFinancial(), $data);
-            $localisation = $this->dataImmo->setDataLocalisation(new ImLocalisation(), $data);
-            $diag = $this->dataImmo->setDataDiag(new ImDiag(), $data);
-            $advantage = $this->dataImmo->setDataAdvantage(new ImAdvantage(), $data);
-            $feature = $this->dataImmo->setDataFeature(new ImFeature(), $data);
-            $number = $this->dataImmo->setDataNumber(new ImNumber(), $data);
-            $area = $this->dataImmo->setDataArea(new ImArea(), $data);
+            $advert         = $this->dataImmo->setDataAdvert(new ImAdvert(), $data);
+            $confidential   = $this->dataImmo->setDataConfidential(new ImConfidential(), $data);
+            $financial      = $this->dataImmo->setDataFinancial(new ImFinancial(), $data);
+            $localisation   = $this->dataImmo->setDataLocalisation(new ImLocalisation(), $data);
+            $diag           = $this->dataImmo->setDataDiag(new ImDiag(), $data);
+            $advantage      = $this->dataImmo->setDataAdvantage(new ImAdvantage(), $data);
+            $feature        = $this->dataImmo->setDataFeature(new ImFeature(), $data);
+            $number         = $this->dataImmo->setDataNumber(new ImNumber(), $data);
+            $area           = $this->dataImmo->setDataArea(new ImArea(), $data);
+            $mandat         = $this->dataImmo->setDataMandat(new ImMandat(), $data);
 
             $obj = $this->dataImmo->setDataBien(new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
-                $localisation, $financial, $confidential, $advert, []);
+                $localisation, $financial, $confidential, $advert, $mandat, []);
 
             $choicesOwners = [];
             foreach($owners as $ow){

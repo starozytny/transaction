@@ -106,7 +106,7 @@ export function AdBadges ({ elem }) {
         <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
         <div className="badge badge-default">{elem.typeAdString}</div>
         <div className="badge badge-default">{elem.typeBienString}</div>
-        <div className="badge badge-default">Mandat {elem.typeMandatString.toLowerCase()}</div>
+        <div className="badge badge-default">Mandat {elem.mandat.typeMandatString.toLowerCase()}</div>
     </div>
 }
 

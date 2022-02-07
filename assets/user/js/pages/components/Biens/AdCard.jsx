@@ -122,7 +122,7 @@ export class AdCard extends Component {
                         <div className="col-2">
                             <div className="badges">
                                 <div className="status">{el.typeAdString}</div>
-                                <div className="status">Mandat {el.typeMandatString}</div>
+                                <div className="status">Mandat {el.mandat.typeMandatString}</div>
                             </div>
                             <div className="identifier">
                                 <div className="price">{Sanitaze.toFormatCurrency(el.financial.price)} {el.codeTypeAd === 1 ? "cc/mois" : ""}</div>

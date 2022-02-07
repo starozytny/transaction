@@ -11,6 +11,7 @@ use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
 use App\Entity\Immo\ImLocalisation;
+use App\Entity\Immo\ImMandat;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImRoom;
@@ -46,6 +47,9 @@ class BienController extends AbstractController
     public function setProperty($em, $type, $obj, $data, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
     {
         switch ($type){
+            case "mandat":
+                $obj = $dataEntity->setDataMandat($obj, $data);
+                break;
             case "advert":
                 $obj = $dataEntity->setDataAdvert($obj, $data);
                 break;
@@ -119,14 +123,19 @@ class BienController extends AbstractController
             [ "type" => "financial",    "new" => new ImFinancial(),     "existe" => $obj->getFinancial() ],
             [ "type" => "confidential", "new" => new ImConfidential(),  "existe" => $obj->getConfidential() ],
             [ "type" => "advert",       "new" => new ImAdvert(),        "existe" => $obj->getAdvert() ],
+            [ "type" => "mandat",       "new" => new ImMandat(),        "existe" => $obj->getMandat() ],
         ];
 
         $area = null; $number = null; $feature = null; $advantage = null; $diag = null; $localisation = null;
-        $financial = null; $confidential = null; $advert = null;
+        $financial = null; $confidential = null; $advert = null; $mandat = null;
         foreach($tab as $item){
             $donnee = $this->setProperty($em, $item["type"], $type == "create" ? $item["new"] : $item["existe"],
                 $data, $apiResponse, $validator, $dataEntity);
             switch ($item["type"]){
+                case "mandat":
+                    if(!$donnee instanceof ImMandat){ return $donnee; }
+                    $mandat = $donnee;
+                    break;
                 case "advert":
                     if(!$donnee instanceof ImAdvert){ return $donnee; }
                     $advert = $donnee;
@@ -169,7 +178,7 @@ class BienController extends AbstractController
         $rooms = $dataEntity->setDataRooms($data, $type == "create" ? [] : $obj->getRooms());
 
         $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage, $diag,
-            $localisation, $financial, $confidential, $advert, $rooms);
+            $localisation, $financial, $confidential, $advert, $mandat, $rooms);
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }

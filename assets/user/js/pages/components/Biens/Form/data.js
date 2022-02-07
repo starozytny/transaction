@@ -8,7 +8,6 @@ function getDataState (props) {
         codeTypeAd: props.codeTypeAd,
         codeTypeBien: props.codeTypeBien,
         libelle: props.libelle,
-        codeTypeMandat: props.codeTypeMandat,
         negotiator: props.negotiator,
 
         areaTotal: props.areaTotal,
@@ -133,6 +132,10 @@ function getDataState (props) {
         contentSimple: props.contentSimple,
         contentFull: props.contentFull,
 
+        codeTypeMandat: props.codeTypeMandat,
+        startAt: props.startAt,
+        endAt: props.endAt,
+
         rooms: props.rooms,
 
         isDraft: true,
@@ -142,7 +145,7 @@ function getDataState (props) {
         contentHelpBubble: "",
         arrayPostalCode: [],
         errors: [],
-        step: 6,
+        step: 1,
     }
 }
 

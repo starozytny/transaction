@@ -597,7 +597,7 @@ export class Form extends Component {
                     <form className="form-bien" onSubmit={(e) => this.handleSubmit(e, false)}>
 
                         <Step1 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
-                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
+                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                negotiators={negotiators} />
 
                         <Step2 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
