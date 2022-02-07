@@ -60,6 +60,8 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
 
     let srcFormPhoto = photo ? (photo.is64 ? photo.file : photo.photoFile) : "/build/user/images/menu.jpg";
 
+    contentFull = contentFull.replaceAll("<br />", "\n")
+
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line special-line">
             <div className="form-group">

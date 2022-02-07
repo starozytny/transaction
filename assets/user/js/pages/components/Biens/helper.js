@@ -335,7 +335,7 @@ function setContentFull(self){
         + (cHasCalme === 1 ? " dans un environement calme" : "")
         + ((cHasCalme === 1 && cHasHandi === 1) ? " et" : "") + " disposant d'aménagement pour handicapés"
         + (cIsNew === 1 ? ". " + pre3 + "a été refait à neuf" : "")
-        + ".\n"
+        + ".<br />"
 
     if(parseFloat(areaGarden) > 0 || cPiece > 0 || cRoom > 0 || cBalcony > 0 || cBathroom > 0 || cWc > 0){
         content += pre1 + typeBienString + (parseFloat(areaGarden) > 0 ? " dispose d'un jardin de " + areaGarden + "m² et" : "")
@@ -345,7 +345,7 @@ function setContentFull(self){
             + ((cPiece > 0 || cRoom > 0) && cBalcony > 0 ? ", " : "") + numberString(cBalcony, "balcon")
             + ((cPiece > 0 || cRoom > 0 || cBalcony > 0) && cBathroom > 0 ? ", " : "") + numberString(cBathroom, "salle") + (cBathroom > 0 ? " de bain" : "")
             + ((cPiece > 0 || cRoom > 0 || cBalcony > 0 || cBathroom > 0) && cWc > 0 ? " et " : "") + numberString(cWc, "WC", "")
-            + ".\n"
+            + ".<br />"
         ;
     }
 
@@ -354,7 +354,7 @@ function setContentFull(self){
             + (codeKitchen !== "" ? " d'une cuisine " + kitchenString : "")
             + (codeKitchen !== "" && (codeHeater0 !== "" || codeHeater !== "") ? " et " : "")
             + (codeHeater0 !== "" || codeHeater !== "" ? "de chauffages " + heater0String + (codeHeater0 !== "" && codeHeater !== "" ? " " : "") +  heaterString : "")
-            + ".\n"
+            + ".<br />"
     }
 
     if(cExposition !== 99 || cHasPool === 1 || cHasCave === 1 || cHasClim === 1 ||  cHasInternet === 1 || cIsWcSeparate === 1){
@@ -366,7 +366,7 @@ function setContentFull(self){
             + ((cHasPool === 1 || cHasCave === 1 || cHasClim === 1) && cHasInternet === 1 ? ", " : "") + advantageString(cHasInternet, "une connexion internet")
             + ((cHasPool === 1 || cHasCave === 1 || cHasClim === 1 || cHasInternet === 1) && cIsWcSeparate === 1 ? " et " : "")
             + advantageString(cIsWcSeparate, " de WC séparé")
-            +  ".\n"
+            +  ".<br />"
         ;
     }
 
@@ -382,18 +382,18 @@ function setContentFull(self){
     }
 
     if(cTypeAd === 3){
-        content += "\nCe bien est idéal pour un investissement locatif.";
+        content += "<br />Ce bien est idéal pour un investissement locatif.";
     }
 
     if(dispoAt){
-        content += "\nDisponible le " + Sanitaze.toFormatDate(dispoAt) + ".";
+        content += "<br />Disponible le " + Sanitaze.toFormatDate(dispoAt) + ".";
     }
 
     if(dpeValue && gesValue){
-        content += "\n\n" + "Le diagnostique énergétique à été réalisé " + (cBeforeJuly === 1 ? "avant" : "après") + " le 1 juillet 2021."
-            + "\n" + "Consommation énergétique DPE : " + dpeLetterString + " -> " + dpeValue + " KWh/m² an"
-            + "\n" + "Bilan émission GES : " + gesLetterString + " -> " + gesValue + " Kg/co² an"
-            + "\n"
+        content += "<br /><br />" + "Le diagnostique énergétique à été réalisé " + (cBeforeJuly === 1 ? "avant" : "après") + " le 1 juillet 2021."
+            + "<br />" + "Consommation énergétique DPE : " + dpeLetterString + " -> " + dpeValue + " KWh/m² an"
+            + "<br />" + "Bilan émission GES : " + gesLetterString + " -> " + gesValue + " Kg/co² an"
+            + "<br />"
     }
 
     return content;

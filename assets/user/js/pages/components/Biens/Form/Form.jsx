@@ -517,6 +517,9 @@ export class Form extends Component {
 
             this.state.isDraft = isDraft;
 
+            let formatTxt = this.state.contentFull;
+            this.state.contentFull = formatTxt.replaceAll("\n", "<br />");
+
             let formData = new FormData();
             formData.append("data", JSON.stringify(this.state));
 
