@@ -197,12 +197,21 @@ export class Form extends Component {
 
         let selectSociety = [];
         let selectAgency = [];
-        let selectNegociator = [];
+        let selectNegotiator = [];
         if(context !== "profil" && !isProfil){
             let selectorsData = Helper.selectorsImmo(societies, society, agencies, agency, negotiators, negotiator);
             selectSociety = selectorsData[0];
             selectAgency = selectorsData[1];
-            selectNegociator = selectorsData[2];
+            selectNegotiator = selectorsData[2];
+        }else{
+            if(context !== "profil"){
+                negotiators.forEach(elem => {
+                    let add = agency === "" ? true : (elem.agency.id === agency);
+                    if(add){
+                        selectNegotiator.push({ value: elem.id, label: elem.fullname, identifiant: "nego-" + elem.id })
+                    }
+                })
+            }
         }
 
         return <>
@@ -246,8 +255,8 @@ export class Form extends Component {
                     </SelectReactSelectize>
                 </div>}
 
-                {(agency && society) && <div className="line line-2">
-                    <SelectReactSelectize items={selectNegociator} identifiant="negotiator" valeur={negotiator}
+                {(agency && society && context !== "profil") && <div className="line line-2">
+                    <SelectReactSelectize items={selectNegotiator} identifiant="negotiator" valeur={negotiator}
                                           placeholder={"Sélectionner un négociateur"}
                                           errors={errors} onChange={(e) => this.handleChangeSelect("negotiator", e)}
                     >

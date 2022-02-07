@@ -279,11 +279,17 @@ class UserController extends AbstractController
      *
      * @Security("is_granted('ROLE_MANAGER')")
      */
-    public function userCreate(): Response
+    public function userCreate(SerializerInterface $serializer): Response
     {
+        $em = $this->doctrine->getManager();
+
         /** @var User $obj */
         $obj = $this->getUser();
-        return $this->render('user/pages/profil/user/create.html.twig', ['elem' => $obj]);
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
+
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => ImNegotiator::SELECT_NEGOTIATORS_READ]);
+
+        return $this->render('user/pages/profil/user/create.html.twig', ['elem' => $obj, 'negotiators' => $negotiators]);
     }
 
     /**
@@ -293,8 +299,13 @@ class UserController extends AbstractController
      */
     public function userUpdate(User $obj, SerializerInterface $serializer): Response
     {
+        $em = $this->doctrine->getManager();
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
+
         $data = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
-        return $this->render('user/pages/profil/user/update.html.twig', ['elem' => $obj, 'donnees' => $data]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => ImNegotiator::SELECT_NEGOTIATORS_READ]);
+
+        return $this->render('user/pages/profil/user/update.html.twig', ['elem' => $obj, 'donnees' => $data, 'negotiators' => $negotiators]);
     }
 
     /**

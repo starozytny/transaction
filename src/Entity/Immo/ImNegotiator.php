@@ -16,6 +16,8 @@ class ImNegotiator
 {
     const FOLDER_AVATARS = "immo/negotiators/";
 
+    const SELECT_NEGOTIATORS_READ = ["select-negotiator:read"];
+
     const TRANSPORT_UNKNOWN = 0;
     const TRANSPORT_PIED = 1;
     const TRANSPORT_COMMUN = 2;
@@ -28,7 +30,7 @@ class ImNegotiator
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "select-negotiator:read"})
      */
     private $id;
 
@@ -83,7 +85,7 @@ class ImNegotiator
     /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="negotiators")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read", "owner:read"})
+     * @Groups({"admin:read", "owner:read", "select-negotiator:read"})
      */
     private $agency;
 
@@ -270,7 +272,7 @@ class ImNegotiator
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "select-negotiator:read"})
      */
     public function getFullname(): string
     {
