@@ -212,6 +212,28 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      * Get label of the high role
      *
      * @return string
+     */
+    public function getHighRoleSlug(): string
+    {
+        $rolesSortedByImportance = ['ROLE_DEVELOPER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'];
+        $rolesLabel = ['developer', 'admin', 'manager', 'user'];
+        $i = 0;
+        foreach ($rolesSortedByImportance as $role)
+        {
+            if (in_array($role, $this->roles))
+            {
+                return $rolesLabel[$i];
+            }
+            $i++;
+        }
+
+        return "user";
+    }
+
+    /**
+     * Get label of the high role
+     *
+     * @return string
      * @Groups({"admin:read", "count-users:read"})
      */
     public function getHighRole(): string

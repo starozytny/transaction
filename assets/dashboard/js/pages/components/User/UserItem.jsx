@@ -35,7 +35,8 @@ export class UserItem extends Component {
                         </div>
                         <div className="col-2">
                             <div className="sub sub-username">{elem.username}</div>
-                            {elem.email !== "undefined@undefined.fr" ? <div className="sub">{elem.email}</div> : <div className="sub txt-danger"><span className="icon-warning" /> {elem.email}</div>}
+                            {elem.email !== "undefined@undefined.fr" ? <div className="sub sub-username">{elem.email}</div> : <div className="sub  sub-username txt-danger"><span className="icon-warning" /> {elem.email}</div>}
+                            {elem.negotiator && <div className="sub">Lié à {elem.negotiator.fullname}</div>}
                         </div>
                         <div className="col-3 actions">
                             {(!isClient && elem.highRoleCode !== 1) &&

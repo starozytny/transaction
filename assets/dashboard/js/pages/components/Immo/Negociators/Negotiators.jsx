@@ -28,6 +28,7 @@ export class Negotiators extends Component {
             biens: props.biens ? JSON.parse(props.biens) : [],
             isClient: props.isClient ? props.isClient : false,
             isUser: props.isUser ? props.isUser : false,
+            classes: props.classes ? props.classes : "main-content"
         }
 
         this.layout = React.createRef();

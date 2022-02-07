@@ -34,8 +34,8 @@ export class Agencies extends Component {
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
     handleContentList = (currentData, changeContext) => {
-        const { idAgency, isUser } = this.props;
-        return <AgenciesList onChangeContext={changeContext} idAgency={idAgency} isUser={isUser} data={currentData} />
+        const { role, idAgency, isUser } = this.props;
+        return <AgenciesList role={role} onChangeContext={changeContext} idAgency={idAgency} isUser={isUser} data={currentData} />
     }
 
     handleContentCreate = (changeContext) => {

@@ -25,6 +25,7 @@ export class UsersItem extends Component {
                             {elem.highRoleCode !== 0 && <div className="role">{elem.highRole}</div>}
                             <div className="sub">{elem.username}</div>
                             <div className="sub">{elem.email}</div>
+                            {elem.negotiator && <div className="sub">Lié à {elem.negotiator.fullname}</div>}
                         </div>
                         <div className="col-3 actions">
                             <ButtonIconContact email={elem.email} />
