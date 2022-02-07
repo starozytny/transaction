@@ -9,6 +9,7 @@
          data-agencies="{{ agencies }}"
          data-negotiators="{{ negotiators }}"
          data-biens="{{ biens }}"
+         {% if search is defined %}data-search="{{ search }}"{% endif %}
     >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>

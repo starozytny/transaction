@@ -82,7 +82,7 @@ export class Owners extends Component {
         this.handleContentRead = this.handleContentRead.bind(this);
     }
 
-    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
+    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "id"); }
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
@@ -155,7 +155,7 @@ export class Owners extends Component {
 
     render () {
         return <>
-            <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
+            <Layout ref={this.layout} {...this.state} search={this.props.search} onGetData={this.handleGetData}
                     onContentList={this.handleContentList} onContentRead={this.handleContentRead}
                     onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}
                     onChangeCurrentPage={this.handleChangeCurrentPage}/>

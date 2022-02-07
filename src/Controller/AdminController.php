@@ -221,21 +221,30 @@ class AdminController extends AbstractController
     /**
      * @Route("/immobilier/proprietaires", name="owners_index")
      */
-    public function owners(SerializerInterface $serializer): Response
+    public function owners(Request $request, SerializerInterface $serializer): Response
     {
+        $route = 'admin/pages/immo/owners.html.twig';
+
         $objs        = $this->getAllData(ImOwner::class, $serializer, ImOwner::OWNER_READ);
         $societies   = $this->getAllData(Society::class, $serializer, ImOwner::OWNER_READ);
         $agencies    = $this->getAllData(ImAgency::class, $serializer, ImOwner::OWNER_READ);
         $negotiators = $this->getAllData(ImNegotiator::class, $serializer, ImOwner::OWNER_READ);
         $biens       = $this->getAllData(ImBien::class, $serializer, User::USER_READ);
 
-        return $this->render('admin/pages/immo/owners.html.twig', [
+        $params = [
             'donnees' => $objs,
             'societies' => $societies,
             'agencies' => $agencies,
             'negotiators' => $negotiators,
             'biens' => $biens,
-        ]);
+        ];
+
+        $search = $request->query->get('search');
+        if($search){
+            return $this->render($route, array_merge($params, ['search' => $search]));
+        }
+
+        return $this->render($route, $params);
     }
 
     /**
