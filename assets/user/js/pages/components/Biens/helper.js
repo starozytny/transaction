@@ -243,7 +243,8 @@ function selectToString (tab, value) {
 function setContentFull(self){
     const { quartier, codeTypeBien, codeTypeAd, piece, areaHabitable, areaTerrace, areaGarden, parking, box,
         room, bathroom, balcony, wc, exposition, codeHeater0, codeHeater, codeKitchen, isWcSeparate,
-        hasPool, hasCave, hasClim, hasInternet, hasGuardian, hasAlarme, hasDigicode, hasInterphone } = self.state;
+        hasPool, hasCave, hasClim, hasInternet, hasGuardian, hasAlarme, hasDigicode, hasInterphone,
+        hideAddress, address, zipcode, city, hasCalme, hasHandi } = self.state;
 
     let cTypeBien       = parseInt(codeTypeBien);
     let cTypeAd         = parseInt(codeTypeAd);
@@ -264,6 +265,9 @@ function setContentFull(self){
     let cHasAlarme      = parseInt(hasAlarme);
     let cHasDigicode    = parseInt(hasDigicode);
     let cHasInterphone  = parseInt(hasInterphone);
+    let cHasCalme       = parseInt(hasCalme);
+    let cHasHandi       = parseInt(hasHandi);
+    let cHideAddress    = parseInt(hideAddress);
 
     let typeAdItems     = getItems("ads");
     let typeBienItems   = getItems("biens");
@@ -282,6 +286,7 @@ function setContentFull(self){
     let pre0, pre1, secure;
     switch (cTypeBien){
         case 2: case 3: case 5: case 6: case 8: case 9:
+            pre0 = "un "
             pre1 = "Ce "
             secure = "sécurisé"
             break;
@@ -307,13 +312,19 @@ function setContentFull(self){
         + " de " + areaHabitable + "m²"
         + (parseFloat(areaTerrace) > 0 ? " avec une terrasse de " + areaTerrace + "m²" : "")
         + (parseFloat(areaTerrace) > 0 ? " et " : " avec ") + textParking
-        + ". \n"
+        + "."
     ;
+
+    let txtAddress = address + (address !== "" && (zipcode !== "" || city !== "") ? ", " : "") + zipcode + " " + city
+    content += " Situé à " + (cHideAddress ? city : txtAddress)
+        + (cHasCalme === 1 ? " dans un environement calme" : "")
+        + ((cHasCalme === 1 && cHasHandi === 1) ? " et" : "") + " disposant d'aménagement pour handicapés"
+        + ".\n"
 
     if(parseFloat(areaGarden) > 0 || cPiece > 0 || cRoom > 0 || cBalcony > 0 || cBathroom > 0 || cWc > 0){
         content += pre1 + typeBienString + (parseFloat(areaGarden) > 0 ? " dispose d'un jardin de " + areaGarden + "m² et" : "")
             + " comporte "
-            + numberString(cPiece, "piece")
+            + numberString(cPiece, "pièce")
             + (cPiece > 0 && cRoom > 0 ? ", " : "") + numberString(cRoom, "chambre")
             + ((cPiece > 0 || cRoom > 0) && cBalcony > 0 ? ", " : "") + numberString(cBalcony, "balcon")
             + ((cPiece > 0 || cRoom > 0 || cBalcony > 0) && cBathroom > 0 ? ", " : "") + numberString(cBathroom, "salle") + (cBathroom > 0 ? " de bain" : "")
@@ -341,7 +352,7 @@ function setContentFull(self){
             + advantageString(cHasGuardian, "un gardien")
             + (cHasGuardian === 1 && cHasAlarme === 1 ? ", " : "") + advantageString(cHasAlarme, "une alarme")
             + ((cHasGuardian === 1 || cHasAlarme === 1) && cHasDigicode === 1 ? ", " : "") + advantageString(cHasDigicode, "un digicode")
-            + ((cHasGuardian === 1 || cHasAlarme === 1 || cHasDigicode === 1) && cHasInterphone === 1 ? " et " : "") + advantageString(cHasInterphone, "un interphone")
+            + ((cHasGuardian === 1 || cHasAlarme === 1 || cHasDigicode === 1) && cHasInterphone === 1 ? " et d'" : "") + advantageString(cHasInterphone, "un interphone")
             + "."
         ;
     }
