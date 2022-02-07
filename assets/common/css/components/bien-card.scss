@@ -1,0 +1,304 @@
+.card-ad{
+  @include flex(row, center, flex-start);
+
+  &.card-draft{
+    .card-body,
+    .commentary{
+      opacity: 0.5;
+    }
+
+    .card-footer{
+      background-color: rgba(249, 249, 251, 0.5);
+    }
+  }
+
+  .image{
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    object-fit: cover;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .status{
+    border-radius: 4px;
+    background-color: var(--grey2);
+    @include fontSemibold();
+    font-size: 14px;
+    color: var(--alpha);
+    padding: 2px 10px;
+
+    $status:
+            "0" var(--danger) "pointer",
+            "1" var(--primary) "pointer",
+            "2" var(--warning) "initial",
+            "3" var(--grey3) "initial"
+  ;
+
+    @each $number, $bg, $cursor in $status {
+      &.status-#{$number}{
+        background-color: $bg;
+        cursor: #{$cursor};
+      }
+    }
+  }
+
+  .title{
+    @include fontSemibold();
+    @include flex(row, flex-start, flex-start);
+  }
+
+  .online{
+    display: inline-block;
+    width: 6px; height: 6px;
+    background-color: var(--success);
+    border-radius: 100px;
+    margin-left: 4px;
+  }
+
+  .negociateur{
+    position: relative;
+    cursor: pointer;
+
+    .tooltip{
+      min-width: 90px;
+    }
+
+    &:hover{
+      .tooltip{
+        opacity: 1;
+        z-index: 1;
+      }
+    }
+  }
+
+  .avatar{
+    width: 32px; height: 32px;
+    border-radius: 100px;
+    background-color: var(--grey);
+    box-shadow: 0 4px 12px var(--greyShadow);
+    overflow: hidden;
+  }
+
+  .card-main{
+    border-radius: 4px;
+    background-color: var(--alpha);
+    border: 1px solid var(--grey);
+    //width: calc(100% - 13px - 12px);
+    width: calc(100% - 2px);
+  }
+
+  .card-body{
+    position: relative;
+
+    .infos{
+      padding: 12px;
+      margin-top: 12px;
+    }
+
+    .col-3{
+      @include flex(column, flex-end, flex-end);
+    }
+
+    .badges{
+      @include flex(row, flex-start, flex-start);
+
+      & > .status:not(:last-child){
+        margin-right: 4px;
+      }
+    }
+
+    .identifier{
+      margin-top: 8px;
+      margin-bottom: 12px;
+    }
+
+    .carac, .address{
+      color: var(--grey3);
+      margin-top: 4px;
+    }
+
+    .references{
+      margin-bottom: 8px;
+      color: var(--grey3);
+      font-size: 14px;
+      text-align: right;
+    }
+  }
+
+  .card-footer{
+    padding: 12px 12px 4px 12px;
+    background-color: var(--fondContent);
+
+    .footer-actions{
+      margin-top: 12px;
+    }
+
+    .createdAt{
+      font-size: 12px;
+      color: var(--grey3);
+      line-height: 1.38;
+    }
+
+    .actions{
+      margin-top: 8px;
+      text-align: right;
+    }
+  }
+}
+
+.isDraft{
+  position: absolute;
+  top: 0; left: 0;
+  display: block;
+  width: calc(100% - 2px); height: calc(100% - 2px);
+  background: repeating-linear-gradient(
+                  -45deg,
+                  var(--overlay),
+                  var(--overlay) 10px,
+                  var(--greyShadow) 10px,
+                  var(--greyShadow) 20px
+  );
+  border: 1px solid var(--alpha);
+  border-radius: 4px;
+  @include flex(row, center, center);
+  @include fontSemibold();
+  font-size: 18px;
+  z-index: 1000;
+
+  & > div{
+    background-color: var(--warning);
+    color: var(--alpha);
+    padding: 4px 12px;
+    border-radius: 4px;
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .card-ad{
+    .image{
+      width: 100px;
+      height: initial;
+      max-height: 130px;
+      border-radius: 4px 0 0 0;
+
+      img{
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .card-body{
+      @include flex(row, stretch, flex-start);
+      border-bottom: 1px solid var(--grey);
+
+      .identifier{
+        margin-bottom: 0;
+      }
+
+      .infos{
+        margin-top: 0;
+        @include flex(row, stretch, flex-start);
+        width: calc(100% - 24px - 100px);
+
+        .col-1{
+          width: calc(100% - (40% - 12px) - 100px);
+          margin-right: 12px;
+        }
+
+        .col-2{
+          width: calc(40% - 12px);
+          margin-right: 12px;
+        }
+
+        .col-3{
+          width: 100px;
+          justify-content: space-between;
+        }
+      }
+    }
+
+    .card-footer{
+
+      .commentary{
+        width: calc(100% - 184px);
+        font-size: 15px;
+      }
+
+      .footer-actions{
+        margin-top: 0;
+        @include flex(row, flex-end, space-between);
+      }
+
+      .createdAt{
+        padding-bottom: 8px;
+      }
+
+      .actions{
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .card-ad{
+    .image{
+      width: 140px;
+    }
+
+    .card-body{
+      .infos{
+        width: calc(100% - 24px - 140px);
+      }
+    }
+
+    .card-footer{
+      .createdAt{
+        font-size: 13px;
+      }
+
+      .btn-icon [class^="icon-"]{
+        font-size: 22px;
+      }
+    }
+  }
+}
+
+//                      __   _  __    ___   ___    __
+//                     | _| / |/ /_  / _ \ / _ \  |_ |
+//    _____ _____ _____| |  | | '_ \| | | | | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | | (_) | |_| | |_| |  | |_____|_____|_____|
+//                     | |  |_|\___/ \___/ \___/   | |
+//                     |__|                       |__|
+@media (min-width: 1600px){
+  .card-ad{
+    .card-body{
+      .references{
+        font-size: 15px;
+      }
+
+      .infos{
+        .col-1{
+          width: calc(100% - (45% - 12px) - 100px);
+        }
+
+        .col-2{
+          width: calc(45% - 12px);
+        }
+      }
+    }
+  }
+}

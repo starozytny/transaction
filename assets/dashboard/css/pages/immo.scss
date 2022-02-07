@@ -2,6 +2,7 @@
 
 @import "./split/immo/agency";
 @import "./split/user/card";
+@import "../components/bien-card";
 
 #owners{
   @include toolbarCreateFilterSearch(208);
@@ -21,4 +22,36 @@
 
 #buyers{
   @include toolbarCreateSearch(197);
+}
+
+.card-ad{
+  margin-bottom: 12px;
+}
+
+.dark-mode{
+  .card-ad.card-draft{
+    .card-footer{
+      background-color: var(--fondContent);
+    }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .card-ad {
+    margin-bottom: 24px;
+
+    .card-footer{
+      .btn-icon{
+        [class^="icon-"]{
+          font-size: 18px;
+        }
+      }
+    }
+  }
 }

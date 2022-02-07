@@ -90,8 +90,6 @@ export class AdCard extends Component {
             })
         }
 
-        console.log(el)
-
         return <div className={"card-ad" + (el.isDraft ? " card-draft" : "")}>
             {/*<Selector id={el.id} />*/}
 

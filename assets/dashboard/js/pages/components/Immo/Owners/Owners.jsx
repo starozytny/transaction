@@ -150,7 +150,7 @@ export class Owners extends Component {
     }
 
     handleContentRead = (changeContext, element) => {
-        return <OwnerRead elem={element} onChangeContext={changeContext} />
+        return <OwnerRead elem={element} onChangeContext={changeContext} biens={this.state.biens} />
     }
 
     render () {
