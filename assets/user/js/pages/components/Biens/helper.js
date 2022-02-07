@@ -309,12 +309,15 @@ function setContentFull(self){
         + ". \n"
     ;
 
+
+
     content += pre1 + typeBienString + (parseFloat(areaGarden) > 0 ? " dispose d'un jardin de " + areaGarden + "m² et" : "")
         + " comporte "
-        + numberString(cRoom, "chambre")
-        + (cRoom > 0 && cBalcony > 0 ? ", " : "") + numberString(cBalcony, "balcon")
-        + ((cRoom > 0 || cBalcony > 0) && cBathroom > 0 ? ", " : "") + numberString(cBathroom, "salle") + (cBathroom > 0 ? " de bain" : "")
-        + ((cRoom > 0 || cBalcony > 0 || cBathroom > 0) && cWc > 0 ? " et " : "") + numberString(cWc, "WC", "")
+        + numberString(cPiece, "piece")
+        + (cPiece > 0 && cRoom > 0 ? ", " : "") + numberString(cRoom, "chambre")
+        + ((cPiece > 0 || cRoom > 0) && cBalcony > 0 ? ", " : "") + numberString(cBalcony, "balcon")
+        + ((cPiece > 0 || cRoom > 0 || cBalcony > 0) && cBathroom > 0 ? ", " : "") + numberString(cBathroom, "salle") + (cBathroom > 0 ? " de bain" : "")
+        + ((cPiece > 0 || cRoom > 0 || cBalcony > 0 || cBathroom > 0) && cWc > 0 ? " et " : "") + numberString(cWc, "WC", "")
         + ".\n"
     ;
 
