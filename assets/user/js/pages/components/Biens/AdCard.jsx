@@ -64,7 +64,7 @@ export class AdCard extends Component {
     }
 
     render () {
-        const { isProspectPage = false, follows, el, onDelete, onLinkToProspect } = this.props;
+        const { isOwnerPage=false, isProspectPage=false, follows, el, onDelete, onLinkToProspect } = this.props;
 
         let items = [
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
@@ -157,7 +157,7 @@ export class AdCard extends Component {
                             <ButtonIcon icon="vision" element="a" target="_blank" onClick={Routing.generate('user_biens_read', {'slug': el.slug})}>Détails</ButtonIcon>
                             <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
 
-                            {!isProspectPage && <>
+                            {!isProspectPage && !isOwnerPage && <>
                                 {el.status !== 2 ? <ButtonIcon icon="archive" onClick={() => this.handleChangeStatus(el, 2)}>Archive</ButtonIcon>
                                     : <ButtonIcon icon="layer" onClick={() => this.handleChangeStatus(el, 0)}>Désarchiver</ButtonIcon>}
                                 <ButtonIcon icon="trash" onClick={() => onDelete(el)}>Supprimer</ButtonIcon>

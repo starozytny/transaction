@@ -12,7 +12,6 @@ export class OwnerRead extends Component {
         let totalBiens = 0;
         let itemsBien = [];
         if(biens) {
-            console.log(biens)
             biens.forEach(bien => {
                 if (bien.owner && bien.owner.id === elem.id) {
                     itemsBien.push(bien);
@@ -69,7 +68,7 @@ export class OwnerRead extends Component {
                     <div className="item-read-content">
                         <div className="content">
                             {itemsBien.length !== 0 ? itemsBien.map(el => {
-                                return <AdCard el={el} key={el.id}/>
+                                return <AdCard el={el} isOwnerPage={true} key={el.id}/>
                             }) : <Alert>Aucun bien</Alert>}
                         </div>
                     </div>
