@@ -39,13 +39,13 @@ class ImOwner extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $firstname;
 
