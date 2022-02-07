@@ -242,7 +242,7 @@ function selectToString (tab, value) {
 
 function setContentFull(self){
     const { quartier, codeTypeBien, codeTypeAd, piece, areaHabitable, areaTerrace, areaGarden, parking, box,
-        room, bathroom, balcony, wc, exposition, codeHeater0, codeHeater, codeKitchen,
+        room, bathroom, balcony, wc, exposition, codeHeater0, codeHeater, codeKitchen, isWcSeparate,
         hasPool, hasCave, hasClim, hasInternet, hasGuardian, hasAlarme, hasDigicode, hasInterphone } = self.state;
 
     let cTypeBien       = parseInt(codeTypeBien);
@@ -255,6 +255,7 @@ function setContentFull(self){
     let cBalcony        = parseInt(balcony);
     let cWc             = parseInt(wc);
     let cExposition     = parseInt(exposition);
+    let cIsWcSeparate   = parseInt(isWcSeparate);
     let cHasPool        = parseInt(hasPool);
     let cHasCave        = parseInt(hasCave);
     let cHasClim        = parseInt(hasClim);
@@ -309,25 +310,27 @@ function setContentFull(self){
         + ". \n"
     ;
 
+    if(parseFloat(areaGarden) > 0 || cPiece > 0 || cRoom > 0 || cBalcony > 0 || cBathroom > 0 || cWc > 0){
+        content += pre1 + typeBienString + (parseFloat(areaGarden) > 0 ? " dispose d'un jardin de " + areaGarden + "m² et" : "")
+            + " comporte "
+            + numberString(cPiece, "piece")
+            + (cPiece > 0 && cRoom > 0 ? ", " : "") + numberString(cRoom, "chambre")
+            + ((cPiece > 0 || cRoom > 0) && cBalcony > 0 ? ", " : "") + numberString(cBalcony, "balcon")
+            + ((cPiece > 0 || cRoom > 0 || cBalcony > 0) && cBathroom > 0 ? ", " : "") + numberString(cBathroom, "salle") + (cBathroom > 0 ? " de bain" : "")
+            + ((cPiece > 0 || cRoom > 0 || cBalcony > 0 || cBathroom > 0) && cWc > 0 ? " et " : "") + numberString(cWc, "WC", "")
+            + ".\n"
+        ;
+    }
 
-
-    content += pre1 + typeBienString + (parseFloat(areaGarden) > 0 ? " dispose d'un jardin de " + areaGarden + "m² et" : "")
-        + " comporte "
-        + numberString(cPiece, "piece")
-        + (cPiece > 0 && cRoom > 0 ? ", " : "") + numberString(cRoom, "chambre")
-        + ((cPiece > 0 || cRoom > 0) && cBalcony > 0 ? ", " : "") + numberString(cBalcony, "balcon")
-        + ((cPiece > 0 || cRoom > 0 || cBalcony > 0) && cBathroom > 0 ? ", " : "") + numberString(cBathroom, "salle") + (cBathroom > 0 ? " de bain" : "")
-        + ((cPiece > 0 || cRoom > 0 || cBalcony > 0 || cBathroom > 0) && cWc > 0 ? " et " : "") + numberString(cWc, "WC", "")
-        + ".\n"
-    ;
-
-    if(cExposition !== 99 || cHasPool === 1 || cHasCave === 1 || cHasClim === 1 || cHasInternet === 1){
+    if(cExposition !== 99 || cHasPool === 1 || cHasCave === 1 || cHasClim === 1 ||  cHasInternet === 1 || cIsWcSeparate === 1){
         content += "Ce bien" + (cExposition !== 99 ? ", exposé " + expositionString : "")
             + (cExposition !== 99 ? "," : "") + " a l'avantage de posséder "
             + advantageString(cHasPool, "une piscine")
             + (cHasPool === 1 && cHasCave === 1 ? ", " : "") + advantageString(cHasCave, "une cave")
             + ((cHasPool === 1 || cHasCave === 1) && cHasClim === 1 ? ", " : "") + advantageString(cHasClim, "une climatisation")
-            + ((cHasPool === 1 || cHasCave === 1 || cHasClim === 1) && cHasInternet === 1 ? " et " : "") + advantageString(cHasInternet, "une connexion internet")
+            + ((cHasPool === 1 || cHasCave === 1 || cHasClim === 1) && cHasInternet === 1 ? ", " : "") + advantageString(cHasInternet, "une connexion internet")
+            + ((cHasPool === 1 || cHasCave === 1 || cHasClim === 1 || cHasInternet === 1) && cIsWcSeparate === 1 ? " et " : "")
+            + advantageString(cIsWcSeparate, " de WC séparé")
             +  ".\n"
         ;
     }
