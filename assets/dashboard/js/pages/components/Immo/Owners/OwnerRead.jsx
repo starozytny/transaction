@@ -7,8 +7,6 @@ export class OwnerRead extends Component {
     render () {
         const { elem, onChangeContext } = this.props;
 
-        console.log(elem)
-
         return <>
             <div>
                 <Back onChangeContext={onChangeContext} />
@@ -16,9 +14,10 @@ export class OwnerRead extends Component {
                 <div className="item-read">
 
                     <div className="item-read-infos item-read-infos-without-img">
-                        <div className="actions">
+                        {!elem.isGerance && <div className="actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext('update', elem)} >Modifier</ButtonIcon>
-                        </div>
+                        </div>}
+
                         <div className="item-read-infos-container">
 
                             <div className="main-infos">
