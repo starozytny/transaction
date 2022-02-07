@@ -411,8 +411,8 @@ function setContentSimple(self) {
     let typeAdItems     = getItems("ads");
     let typeBienItems   = getItems("biens");
 
-    let typeBienString      = cTypeBien === 9 ? "Bien" : selectToString(typeBienItems, cTypeBien);
-    let typeAdString        = selectToString(typeAdItems, cTypeAd);
+    let typeBienString  = cTypeBien === 9 ? "Bien" : selectToString(typeBienItems, cTypeBien);
+    let typeAdString    = selectToString(typeAdItems, cTypeAd);
 
     let textParking = cParking > 0 && cBox > 0 ? "un parking/box" : (cParking > 0 ? "un parking" : cBox > 0 ? "un box": "")
 
