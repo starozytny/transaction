@@ -73,13 +73,13 @@ export class AdCard extends Component {
             {data: <a href="/">Imprimer la fiche</a>}
         ]
 
-        let contentHelpBubble = <div>
-            <div>#{el.negotiator.code} - {el.negotiator.fullname}</div>
-            <p><br/></p>
-            <div>{el.negotiator.phone}</div>
-            <div>{el.negotiator.phone2}</div>
-            <div>{el.negotiator.email}</div>
-        </div>
+           let contentHelpBubble = <div>
+                <div>#{el.negotiator.code} - {el.negotiator.fullname}</div>
+                <p><br/></p>
+                <div>{el.negotiator.phone}</div>
+                <div>{el.negotiator.phone2}</div>
+                <div>{el.negotiator.email}</div>
+            </div>
 
         let followed = false;
         if(isProspectPage){

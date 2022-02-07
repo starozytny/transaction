@@ -12,6 +12,7 @@ export class OwnerRead extends Component {
         let totalBiens = 0;
         let itemsBien = [];
         if(biens) {
+            console.log(biens)
             biens.forEach(bien => {
                 if (bien.owner && bien.owner.id === elem.id) {
                     itemsBien.push(bien);

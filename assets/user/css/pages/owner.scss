@@ -1,4 +1,22 @@
 @import "../vars/vars";
 @import "~react-selectize/dist/index.min.css";
 
+@import "../components/card";
+
 @include toolbarCreateFilterSearch(224);
+
+.card-ad{
+  margin-bottom: 12px;
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .card-ad {
+    margin-bottom: 24px;
+  }
+}

@@ -322,7 +322,7 @@ class UserController extends AbstractController
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
-        $biens = $serializer->serialize($biens, 'json', ['groups' => ImBien::TOTAL_READ_BY_OWNER]);
+        $biens = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/owners/index.html.twig', [
             'data' => $objs,

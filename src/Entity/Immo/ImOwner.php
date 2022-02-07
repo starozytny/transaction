@@ -27,7 +27,7 @@ class ImOwner extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "bien-owner:read", "agenda:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read"})
      */
     private $id;
 

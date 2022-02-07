@@ -19,7 +19,6 @@ class ImBien extends DataEntity
 {
     const FOLDER_PHOTOS = "immo/photos";
 
-    const TOTAL_READ_BY_OWNER = ["bien-owner:read"];
     const COUNT_BY_AGENCY = ["count-agency:read"];
 
     const ANSWER_NO = 0;
@@ -211,7 +210,7 @@ class ImBien extends DataEntity
 
     /**
      * @ORM\ManyToOne(targetEntity=ImOwner::class, fetch="EAGER", inversedBy="biens")
-     * @Groups({"user:read", "bien-owner:read"})
+     * @Groups({"user:read"})
      */
     private $owner;
 
