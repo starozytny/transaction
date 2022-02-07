@@ -855,6 +855,6 @@ class ImBien extends DataEntity
      */
     public function getMainPhotoFile(): string
     {
-        return $this->getMainPhoto() ? $this->getMainPhoto()->getPhotoFile() : "https://unsplash.it/120?random";
+        return $this->getMainPhoto() ? $this->getMainPhoto()->getPhotoFile() : "/placeholders/placeholder.jpg";
     }
 }

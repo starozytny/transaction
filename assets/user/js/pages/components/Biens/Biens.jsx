@@ -10,7 +10,7 @@ const URL_DELETE_ELEMENT    = 'api_biens_delete';
 const URL_DELETE_GROUP      = 'api_contact_delete_group';
 const MSG_DELETE_ELEMENT    = 'Supprimer ce bien ?';
 const MSG_DELETE_GROUP      = 'Aucun message sélectionné.';
-const SORTER = Sort.compareCreatedAt;
+const SORTER = Sort.compareCreatedAtInverse;
 
 function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
     if(initTab.length !== 0){
