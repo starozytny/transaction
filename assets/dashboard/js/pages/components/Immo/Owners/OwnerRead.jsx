@@ -26,9 +26,23 @@ export class OwnerRead extends Component {
                                     <div>#{elem.code}</div>
                                     <span>{elem.fullname}</span>
                                 </div>
+                                <div className="username">
+                                    <span>({elem.agency.name})</span>
+                                </div>
+                                <div className="sub">{elem.email}</div>
+                                <div className="sub">{elem.phone1}</div>
+                                <div className="sub">{elem.phone2}</div>
+                                <div className="username">
+                                    <span>{elem.phone3}</span>
+                                </div>
+                                <div className="sub">{elem.fullAddress}</div>
                             </div>
 
                             <div className="footer-infos">
+                                {elem.isGerance && <>
+                                    <div className="badge role-time">Gérance</div>
+                                    <div className="badge role-time">{elem.codeGerance}</div>
+                                </>}
                             </div>
                         </div>
                     </div>
