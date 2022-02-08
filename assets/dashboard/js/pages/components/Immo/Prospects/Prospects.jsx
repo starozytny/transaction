@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
+import Filter            from "@commonComponents/functions/filter";
+import TopToolbar        from "@commonComponents/functions/topToolbar";
 
 import { ProspectsList }       from "./ProspectsList";
 import { ProspectFormulaire }  from "./ProspectForm";
@@ -18,24 +20,6 @@ let sorters = [
 ]
 
 let sortersFunction = [Sort.compareLastname, Sort.compareEmail];
-
-function filterFunction(dataImmuable, filters){
-    let newData = [];
-    if(filters.length === 0) {
-        newData = dataImmuable
-    }else{
-        dataImmuable.forEach(el => {
-            filters.forEach(filter => {
-                if(filter === el.status){
-                    newData.filter(elem => elem.id !== el.id)
-                    newData.push(el);
-                }
-            })
-        })
-    }
-
-    return newData;
-}
 
 export class Prospects extends Component {
     constructor(props) {
@@ -76,24 +60,15 @@ export class Prospects extends Component {
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "prospect"); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "prospect", true, Filter.filterStatus); }
 
-    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, filterFunction); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterStatus); }
 
-    handlePerPage = (perPage) => {
-        this.layout.current.handleUpdatePerPage(SORTER, perPage);
-        this.setState({ perPage: perPage });
-    }
+    handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
 
     handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
 
-    handleSorter = (nb) => {
-        const { perPage } = this.state;
-
-        SORTER = sortersFunction[nb];
-        this.layout.current.handleUpdatePerPage(SORTER, perPage);
-        this.setState({ sorter: SORTER });
-    }
+    handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { perPage, currentPage } = this.state;
