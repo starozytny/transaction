@@ -4,7 +4,6 @@ import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.j
 
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
-import { TenantContact, TenantMainInfos, TenantNegotiator } from "@dashboardPages/components/Immo/Tenants/TenantsItem";
 
 export class ProspectsItem extends Component {
     render () {
@@ -29,26 +28,25 @@ export class ProspectsItem extends Component {
 
             <div className="item-content">
                 <div className="item-body">
-                    <div className="infos infos-col-5">
+                    <div className="infos infos-col-4">
                         <div className="col-1" onClick={isSelect ? () => onSelectProspect(elem) : null}>
-                            <TenantMainInfos elem={elem} isClient={isClient} />
+                            <ProspectsMainInfos elem={elem} isClient={isClient} />
                         </div>
 
                         <div className="col-2">
-                            <TenantContact elem={elem} />
+                            <ProspectsNegotiator elem={elem} />
                         </div>
 
                         <div className="col-3">
-                            <TenantNegotiator elem={elem} />
-                        </div>
-
-                        <div className="col-4">
-                            <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
+                            <div className="badges">
+                                <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
+                                {elem.isArchived && <div className="badge badge-default">Archive</div>}
+                            </div>
                             <div className="sub">Type de prospect : {elem.typeString}</div>
                             {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
                         </div>
 
-                        <div className="col-5 actions">
+                        <div className="col-4 actions">
                             <ButtonIcon icon="search" element="a" onClick={Routing.generate(routeSearchs, {'id': elem.id})}>Recherches</ButtonIcon>
                             <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
@@ -60,4 +58,23 @@ export class ProspectsItem extends Component {
             </div>
         </div>
     }
+}
+
+export function ProspectsMainInfos ({ elem, isClient }) {
+    return <>
+        <div className="name">
+            <span>{elem.lastname} {elem.firstname}</span>
+        </div>
+        {!isClient && <div className="sub">{elem.agency.name}</div>}
+        <div className="sub">{elem.email}</div>
+        <div className="sub">{elem.phone1}</div>
+        <div className="sub">{elem.phone2}</div>
+        <div className="sub">{elem.phone3}</div>
+    </>
+}
+
+export function ProspectsNegotiator ({ elem }) {
+    return <>
+        <div className="sub">{elem.negotiator ? elem.negotiator.fullname : "/"}</div>
+    </>
 }

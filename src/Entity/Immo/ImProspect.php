@@ -22,8 +22,6 @@ class ImProspect extends DataEntity
 
     const STATUS_NONE = 0;
     const STATUS_SEARCH = 1;
-    const STATUS_VALIDATE = 2;
-    const STATUS_ARCHIVE = 3;
 
     /**
      * @ORM\Id
@@ -125,6 +123,12 @@ class ImProspect extends DataEntity
      * @Groups({"admin:read"})
      */
     private $status = self::STATUS_SEARCH;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"admin:read"})
+     */
+    private $isArchived = false;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="prospects")
@@ -439,7 +443,7 @@ class ImProspect extends DataEntity
      */
     public function getStatusString(): string
     {
-        $status = ["Aucun", "En recherche", "En place", "Archive"];
+        $status = ["Aucun", "En recherche"];
 
         return $status[$this->status];
     }
@@ -510,6 +514,18 @@ class ImProspect extends DataEntity
                 $search->setProspect(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
 
         return $this;
     }

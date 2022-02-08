@@ -92,12 +92,14 @@ class FakeProspectsCreate extends Command
                 "birthday" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
                 "lastContactAt" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
                 "type" => $fake->numberBetween(0, 4),
-                "status" => $fake->numberBetween(0, 3),
+                "status" => $fake->numberBetween(0, 1)
             ];
 
             $data = json_decode(json_encode($data));
 
             $new = $this->dataImmo->setDataProspect(new ImProspect(), $data);
+
+            $new->setIsArchived($fake->numberBetween(0, 1));
 
             $this->em->persist($new);
         }

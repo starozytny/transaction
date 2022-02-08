@@ -240,8 +240,6 @@ export class ProspectForm extends Component {
         let statusItems = [
             {value: 0, label: "Aucun",        identifiant: "aucun-1"},
             {value: 1, label: "En recherche", identifiant: "en-search"},
-            {value: 2, label: "En place",     identifiant: "en-place"},
-            {value: 3, label: "Archive",      identifiant: "en-archive"},
         ]
 
         return <>
@@ -255,7 +253,7 @@ export class ProspectForm extends Component {
                             <div className="title">Informations générales</div>
                         </div>
 
-                        <div className="line">
+                        <div className="line line-3">
                             <Radiobox items={civilityItems} identifiant="civility" valeur={civility} errors={errors} onChange={this.handleChange}>
                                 Civilité
                             </Radiobox>
