@@ -118,6 +118,11 @@ class ImBuyer extends DataEntity
      */
     private $agency;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -365,5 +370,17 @@ class ImBuyer extends DataEntity
         $types = ["Aucun", "Location", "Vente", "Investisseur", "Autre"];
 
         return $types[$this->type];
+    }
+
+    public function getIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
     }
 }

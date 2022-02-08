@@ -116,6 +116,11 @@ class ImTenant extends DataEntity
      */
     private $negotiator;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -356,5 +361,17 @@ class ImTenant extends DataEntity
     public function getFullAddress(): string
     {
         return $this->getFullAddressString($this->address, $this->zipcode, $this->city, $this->complement, $this->country);
+    }
+
+    public function getIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
     }
 }
