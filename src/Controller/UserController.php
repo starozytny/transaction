@@ -330,15 +330,18 @@ class UserController extends AbstractController
     private function getDataPersons(Request $request, SerializerInterface $serializer, $repository, $routeName): Response
     {
         $em = $this->doctrine->getManager();
+
+        $getArchived = (bool)$request->query->get('ar');
+
         /** @var User $user */
         $user = $this->getUser();
-        $objs = $repository->findBy(['agency' => $user->getAgency(), 'isArchived' => (bool)$request->query->get('archive')]);
+        $objs = $repository->findBy(['agency' => $user->getAgency(), 'isArchived' => $getArchived]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
-        return $this->render($routeName, [
+        return $this->render("user/pages/" . $routeName . "/" . ($getArchived ? "archived" : "index") . ".html.twig", [
             'data' => $objs,
             'user' => $user,
             'negotiators' => $negotiators
@@ -350,7 +353,7 @@ class UserController extends AbstractController
      */
     public function tenants(Request $request, ImTenantRepository $repository, SerializerInterface $serializer): Response
     {
-        return $this->getDataPersons($request, $serializer, $repository, "user/pages/tenants/index.html.twig");
+        return $this->getDataPersons($request, $serializer, $repository, "tenants");
     }
 
     /**
@@ -358,7 +361,7 @@ class UserController extends AbstractController
      */
     public function prospects(Request $request, ImProspectRepository $repository, SerializerInterface $serializer): Response
     {
-        return $this->getDataPersons($request, $serializer, $repository, "user/pages/prospects/index.html.twig");
+        return $this->getDataPersons($request, $serializer, $repository, "prospects");
     }
 
     /**
@@ -366,7 +369,7 @@ class UserController extends AbstractController
      */
     public function buyers(Request $request, ImBuyerRepository $repository, SerializerInterface $serializer): Response
     {
-        return $this->getDataPersons($request, $serializer, $repository, "user/pages/buyers/index.html.twig");
+        return $this->getDataPersons($request, $serializer, $repository, "buyers");
     }
 
     /**
