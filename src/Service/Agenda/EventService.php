@@ -57,6 +57,7 @@ class EventService
 
                 if($checkRelatedPeople){
                     foreach($persons["users"] as $el){
+                        $el = json_decode(json_encode($el));
                         if($el->value == $user->getId()){ // event related to user
                             if(!$alreadyAdded) {
                                 $data[] = $obj;
