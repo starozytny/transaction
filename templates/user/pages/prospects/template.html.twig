@@ -1,5 +1,10 @@
 {% extends 'user/layout/layout.html.twig' %}
 
+{% set submenu = [
+    { 'label': "Prospects", 'path': path('user_prospects') },
+    { 'label': "Archivés", 'path': path('user_prospects', {'archive': 'archive'}) },
+] %}
+
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('user_prospect') }}

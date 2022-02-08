@@ -1,3 +1,17 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/submenu";
+
+.submenu{
+  background: var(--alpha);
+  border-bottom: 2px solid var(--fondContent);
+
+  a{
+    @include fontSemibold();
+    color: var(--grey3);
+
+    &.active{
+      color: var(--txt);
+    }
+  }
+}
