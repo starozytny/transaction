@@ -26,7 +26,7 @@ class DataUser
     /**
      * @throws Exception
      */
-    public function setData(User $obj, $data, ?ImNegotiator $negotiator): User
+    public function setData(User $obj, $data): User
     {
         if (isset($data->roles)) {
             $obj->setRoles($data->roles);
@@ -48,7 +48,6 @@ class DataUser
             ->setEmail($data->email)
             ->setSociety($society)
             ->setAgency($agency)
-            ->setNegotiator($negotiator)
         ;
     }
 }

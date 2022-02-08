@@ -18,7 +18,7 @@ const URL_UPDATE_GROUP       = "api_users_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, societies, agencies, negotiators })
+export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, societies, agencies })
 {
     let title = "Ajouter un utilisateur";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -41,13 +41,11 @@ export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, 
         roles={element ? element.roles : []}
         society={element ? element.society.id : ""}
         agency={element ? element.agency.id : ""}
-        negotiator={element ? (element.negotiator ? element.negotiator.id : "") : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
         societies={societies}
         agencies={agencies}
-        negotiators={negotiators}
     />
 
     return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
@@ -66,7 +64,6 @@ export class Form extends Component {
             avatar: props.avatar,
             society: props.society,
             agency: props.agency,
-            negotiator: props.negotiator,
             password: '',
             passwordConfirm: '',
             errors: [],
@@ -165,7 +162,6 @@ export class Form extends Component {
                             roles: [],
                             society: '',
                             agency: '',
-                            negotiator: '',
                             password: '',
                             passwordConfirm: '',
                         })
@@ -182,8 +178,8 @@ export class Form extends Component {
     }
 
     render () {
-        const { context, societies, agencies, negotiators, isProfil=false } = this.props;
-        const { errors, success, username, firstname, lastname, email, password, passwordConfirm, roles, avatar, society, agency, negotiator } = this.state;
+        const { context, societies, agencies, isProfil=false } = this.props;
+        const { errors, success, username, firstname, lastname, email, password, passwordConfirm, roles, avatar, society, agency } = this.state;
 
         let rolesItems = [
             { value: 'ROLE_ADMIN',      label: 'Admin',          identifiant: 'admin' },
@@ -197,21 +193,10 @@ export class Form extends Component {
 
         let selectSociety = [];
         let selectAgency = [];
-        let selectNegotiator = [];
         if(context !== "profil" && !isProfil){
-            let selectorsData = Helper.selectorsImmo(societies, society, agencies, agency, negotiators, negotiator);
+            let selectorsData = Helper.selectorsImmo(societies, society, agencies, agency);
             selectSociety = selectorsData[0];
             selectAgency = selectorsData[1];
-            selectNegotiator = selectorsData[2];
-        }else{
-            if(context !== "profil"){
-                negotiators.forEach(elem => {
-                    let add = agency === "" ? true : (elem.agency.id === agency);
-                    if(add){
-                        selectNegotiator.push({ value: elem.id, label: elem.fullname, identifiant: "nego-" + elem.id })
-                    }
-                })
-            }
         }
 
         return <>
@@ -253,16 +238,6 @@ export class Form extends Component {
                     >
                         Agence
                     </SelectReactSelectize>
-                </div>}
-
-                {(agency && society && context !== "profil") && <div className="line line-2">
-                    <SelectReactSelectize items={selectNegotiator} identifiant="negotiator" valeur={negotiator}
-                                          placeholder={"Sélectionner un négociateur"}
-                                          errors={errors} onChange={(e) => this.handleChangeSelect("negotiator", e)}
-                    >
-                        Négociateur (facultatif)
-                    </SelectReactSelectize>
-                    <div className="form-group" />
                 </div>}
 
                 {(context === "create" || context === "profil") ? <>

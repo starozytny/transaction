@@ -83,18 +83,7 @@ class UserController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Il manque des données.');
         }
 
-        $negotiator = null;
-        if($data->negotiator){
-            $negotiator = $em->getRepository(ImNegotiator::class)->find($data->negotiator);
-            if(!$negotiator || ($negotiator->getUser() !== null && $negotiator->getUser()->getId() !== $obj->getId())){
-                return $apiResponse->apiJsonResponseValidationFailed([[
-                    'name' => 'negotiator',
-                    'message' => 'Ce négociateur est déjà associé à un utilisateur.'
-                ]]);
-            }
-        }
-
-        $obj = $dataEntity->setData($obj, $data, $negotiator);
+        $obj = $dataEntity->setData($obj, $data);
 
         $file = $request->files->get('avatar');
         $groups = User::ADMIN_READ;
