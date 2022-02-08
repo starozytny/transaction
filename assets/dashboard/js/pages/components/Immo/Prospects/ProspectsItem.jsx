@@ -8,7 +8,7 @@ import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/Ne
 
 export class ProspectsItem extends Component {
     render () {
-        const { isArchivedPage, isSelect, isFromRead, isClient, elem, prospects, onDelete, onSelectors, onChangeContext, onSelectProspect, onSwitchArchived } = this.props;
+        const { isSelect, isFromRead, isClient, elem, prospects, onDelete, onSelectors, onChangeContext, onSelectProspect, onSwitchArchived } = this.props;
 
         let active = false;
         if(prospects){
@@ -23,7 +23,7 @@ export class ProspectsItem extends Component {
 
         let actions = [
             {data: <a onClick={() => onDelete(elem)}>Supprimer</a>},
-            {data: <a onClick={() => onSwitchArchived(elem)}>{isArchivedPage ? "Désarchiver" : "Archiver"}</a>}
+            {data: <a onClick={() => onSwitchArchived(elem)}>{elem.isArchived ? "Désarchiver" : "Archiver"}</a>}
         ]
 
         return <div className="item">

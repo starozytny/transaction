@@ -11,7 +11,7 @@ header{
 
   .header-container{
     position: relative;
-    @include flex(column-reverse, flex-start, flex-end);
+    @include flex(column-reverse, center, flex-end);
     margin: 8px 0 0 0;
 
     .left{
