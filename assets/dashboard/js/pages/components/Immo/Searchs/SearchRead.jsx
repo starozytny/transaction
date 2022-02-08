@@ -173,7 +173,6 @@ export class SearchRead extends Component {
                     <div className="items-table">
                         <div className="items items-default">
                             <div className="item item-header">
-                                <div className="item-header-selector" />
                                 <div className="item-content">
                                     <div className="item-body">
                                         <div className="infos infos-col-5">
@@ -181,7 +180,7 @@ export class SearchRead extends Component {
                                             <div className="col-2">Localisation</div>
                                             <div className="col-3">Informations</div>
                                             <div className="col-4">Avantages</div>
-                                            <div className="col-5 actions">Actions</div>
+                                            <div className="col-5 actions" />
                                         </div>
                                     </div>
                                 </div>
