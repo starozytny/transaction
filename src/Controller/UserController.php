@@ -297,8 +297,10 @@ class UserController extends AbstractController
     /**
      * @Route("/proprietaires", name="owners")
      */
-    public function owners(ImOwnerRepository $repository, SerializerInterface $serializer): Response
+    public function owners(Request $request, ImOwnerRepository $repository, SerializerInterface $serializer): Response
     {
+        $route = 'user/pages/owners/index.html.twig';
+
         $em = $this->doctrine->getManager();
         /** @var User $user */
         $user = $this->getUser();
@@ -310,12 +312,19 @@ class UserController extends AbstractController
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
         $biens = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
 
-        return $this->render('user/pages/owners/index.html.twig', [
+        $params = [
             'data' => $objs,
             'user' => $user,
             'negotiators' => $negotiators,
             'biens' => $biens,
-        ]);
+        ];
+
+        $search = $request->query->get('search');
+        if($search){
+            return $this->render($route, array_merge($params, ['search' => $search]));
+        }
+
+        return $this->render($route, $params);
     }
 
     /**
@@ -341,11 +350,19 @@ class UserController extends AbstractController
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
-        return $this->render("user/pages/" . $routeName . "/" . ($getArchived ? "archived" : "index") . ".html.twig", [
+        $route = "user/pages/" . $routeName . "/" . ($getArchived ? "archived" : "index") . ".html.twig";
+        $params = [
             'data' => $objs,
             'user' => $user,
             'negotiators' => $negotiators
-        ]);
+        ];
+
+        $search = $request->query->get('search');
+        if($search){
+            return $this->render($route, array_merge($params, ['search' => $search]));
+        }
+
+        return $this->render($route, $params);
     }
 
     /**

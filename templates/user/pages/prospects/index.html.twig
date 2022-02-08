@@ -4,8 +4,13 @@
 {% set submenuActive = "Prospects" %}
 
 {% block main_content %}
-    <div id="list-prospects" data-donnees="{{ data }}" data-negotiators="{{ negotiators }}"
-         data-society-id="{{ user.society.id }}" data-agency-id="{{ user.agency.id }}">
+    <div id="list-prospects"
+         data-donnees="{{ data }}"
+         data-negotiators="{{ negotiators }}"
+         data-society-id="{{ user.society.id }}"
+         data-agency-id="{{ user.agency.id }}"
+         {% if search is defined %}data-search="{{ search }}"{% endif %}
+    >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}
