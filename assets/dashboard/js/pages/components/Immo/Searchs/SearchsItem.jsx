@@ -6,10 +6,11 @@ import Sanitaze         from "@commonComponents/functions/sanitaze";
 
 export class SearchsItem extends Component {
     render () {
-        const { elem, onDelete, onSelectors, onChangeContext, onDuplicate } = this.props;
+        const { isRead=false, elem, onDelete, onSelectors, onChangeContext, onDuplicate } = this.props;
 
         return <div className="item">
-            <Selector id={elem.id} onSelectors={onSelectors} />
+            {!isRead && <Selector id={elem.id} onSelectors={onSelectors} />}
+
             <div className="item-content">
                 <div className="item-body">
                     <div className="infos infos-col-5">
@@ -43,10 +44,12 @@ export class SearchsItem extends Component {
                         </div>
 
                         <div className="col-5 actions">
-                            <ButtonIcon icon="layer" onClick={() => onChangeContext("read", elem)}>Résultats</ButtonIcon>
-                            <ButtonIcon icon="copy" onClick={() => onDuplicate(elem)}>Dupliquer</ButtonIcon>
-                            <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                            <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            {!isRead && <>
+                                <ButtonIcon icon="layer" onClick={() => onChangeContext("read", elem)}>Résultats</ButtonIcon>
+                                <ButtonIcon icon="copy" onClick={() => onDuplicate(elem)}>Dupliquer</ButtonIcon>
+                                <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
+                                <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            </>}
                         </div>
                     </div>
                 </div>

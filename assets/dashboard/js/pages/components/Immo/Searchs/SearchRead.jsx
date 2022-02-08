@@ -10,12 +10,12 @@ import { Button }        from "@dashboardComponents/Tools/Button";
 import { Alert }         from "@dashboardComponents/Tools/Alert";
 import { ButtonBack }    from "@dashboardComponents/Layout/Elements";
 import { LoaderElement } from "@dashboardComponents/Layout/Loader";
+import { Input }         from "@dashboardComponents/Tools/Fields";
 
 import { AdCard }        from "@userPages/components/Biens/AdCard";
-import { Input } from "@dashboardComponents/Tools/Fields";
+import { SearchsItem }   from "@dashboardPages/components/Immo/Searchs/SearchsItem";
 
 function getData(self, context, elem, data={}) {
-    Formulaire.loader(true);
     axios({ method: "POST", url: Routing.generate('api_searchs_results', {'id': elem.id}), data: data })
         .then(function (response) {
             let data = response.data;
@@ -27,9 +27,6 @@ function getData(self, context, elem, data={}) {
         })
         .catch(function (error) {
             Formulaire.displayErrors(self, error);
-        })
-        .then(function() {
-            Formulaire.loader(false);
         })
     ;
 }
@@ -112,73 +109,92 @@ export class SearchRead extends Component {
     }
 
     render () {
-        const { onChangeContext, follows } = this.props;
+        const { onChangeContext, follows, elem } = this.props;
         const { loadData, context, data, data2, errors, price, piece, room, area, land } = this.state;
 
-        return loadData ? <LoaderElement /> : <>
-            <div className="page-default">
-                <div className="page-col-1">
-                    <div className="comeback">
-                        <ButtonBack onChangeContext={onChangeContext} />
-                    </div>
-                    <div className="body-col-1">
-                        <div className="title-col-1">
-                            <span>Recherche de base :</span>
-                        </div>
-                        <div className="content-col-1">
-                            <Button type={context === "main" ? "primary" : "default"}
-                                    onClick={() => this.handleChangeContext("main")}>
-                                Recherche simple
-                            </Button>
-                        </div>
-                        <div className="title-col-1">
-                            <span>Elargir la recherche :</span>
-                        </div>
-                        <div className="content-col-1">
-                            <div className="line">
-                                <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={this.handleChange}>
-                                    Delta prix
-                                </Input>
-                            </div>
-                            <div className="line">
-                                <Input type="number" step="any" identifiant="piece" valeur={piece} errors={errors} onChange={this.handleChange}>
-                                    Delta pièces
-                                </Input>
-                            </div>
-
-                            <div className="line">
-                                <Input type="number" step="any" identifiant="room" valeur={room} errors={errors} onChange={this.handleChange}>
-                                    Delta chambres
-                                </Input>
-                            </div>
-
-                            <div className="line">
-                                <Input type="number" step="any" identifiant="area" valeur={area} errors={errors} onChange={this.handleChange}>
-                                    Delta surface habitable
-                                </Input>
-                            </div>
-
-
-                            <div className="line">
-                                <Input type="number" step="any" identifiant="land" valeur={land} errors={errors} onChange={this.handleChange}>
-                                    Delta surface terrain
-                                </Input>
-                            </div>
-
-                            <Button type={context !== "main" ? "primary" : "default"}
-                                    onClick={() => this.handleChangeContext("second")}>
-                                Recherche avancée
-                            </Button>
-                        </div>
-                    </div>
+        return <div className="page-default">
+            <div className="page-col-1">
+                <div className="comeback">
+                    <ButtonBack onChangeContext={onChangeContext} />
                 </div>
-                <div className="page-col-2">
-                    <div>
-                        <DataBiens data={context === "main" ? data : data2} follows={follows} onLink={this.handleLink} />
+                <div className="body-col-1">
+                    <div className="title-col-1">
+                        <span>Recherche de base :</span>
+                    </div>
+                    <div className="content-col-1">
+                        <Button type={context === "main" ? "primary" : "default"}
+                                onClick={() => this.handleChangeContext("main")}>
+                            Recherche simple
+                        </Button>
+                    </div>
+                    <div className="title-col-1">
+                        <span>Elargir la recherche :</span>
+                    </div>
+                    <div className="content-col-1">
+                        <div className="line">
+                            <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={this.handleChange}>
+                                Delta prix
+                            </Input>
+                        </div>
+                        <div className="line">
+                            <Input type="number" step="any" identifiant="piece" valeur={piece} errors={errors} onChange={this.handleChange}>
+                                Delta pièces
+                            </Input>
+                        </div>
+
+                        <div className="line">
+                            <Input type="number" step="any" identifiant="room" valeur={room} errors={errors} onChange={this.handleChange}>
+                                Delta chambres
+                            </Input>
+                        </div>
+
+                        <div className="line">
+                            <Input type="number" step="any" identifiant="area" valeur={area} errors={errors} onChange={this.handleChange}>
+                                Delta surface habitable
+                            </Input>
+                        </div>
+
+
+                        <div className="line">
+                            <Input type="number" step="any" identifiant="land" valeur={land} errors={errors} onChange={this.handleChange}>
+                                Delta surface terrain
+                            </Input>
+                        </div>
+
+                        <Button type={context !== "main" ? "primary" : "default"}
+                                onClick={() => this.handleChangeContext("second")}>
+                            Recherche avancée
+                        </Button>
                     </div>
                 </div>
             </div>
-        </>
+            <div className="page-col-2">
+                <div>
+                    <div className="items-table">
+                        <div className="items items-default">
+                            <div className="item item-header">
+                                <div className="item-header-selector" />
+                                <div className="item-content">
+                                    <div className="item-body">
+                                        <div className="infos infos-col-5">
+                                            <div className="col-1">Type</div>
+                                            <div className="col-2">Localisation</div>
+                                            <div className="col-3">Informations</div>
+                                            <div className="col-4">Avantages</div>
+                                            <div className="col-5 actions">Actions</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <SearchsItem elem={elem} isRead={true} />
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    {loadData ? <LoaderElement /> : <DataBiens data={context === "main" ? data : data2} follows={follows} onLink={this.handleLink} />}
+                </div>
+            </div>
+        </div>
     }
 }
 
