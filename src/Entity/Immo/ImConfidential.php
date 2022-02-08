@@ -55,12 +55,6 @@ class ImConfidential extends DataEntity
     private $visiteAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $visiteTo;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
@@ -142,18 +136,6 @@ class ImConfidential extends DataEntity
     public function setVisiteAt(?\DateTimeInterface $visiteAt): self
     {
         $this->visiteAt = $visiteAt;
-
-        return $this;
-    }
-
-    public function getVisiteTo(): ?string
-    {
-        return $this->visiteTo;
-    }
-
-    public function setVisiteTo(?string $visiteTo): self
-    {
-        $this->visiteTo = $visiteTo;
 
         return $this;
     }

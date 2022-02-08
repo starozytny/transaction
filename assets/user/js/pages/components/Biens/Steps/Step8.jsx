@@ -22,7 +22,7 @@ const CURRENT_STEP = 8;
 
 export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate, onOpenAside,
                           allOwners, owner, tenants,
-                          inform, lastname, phone1, email, visiteAt, visiteTo, keysNumber, keysWhere })
+                          inform, lastname, phone1, email, visiteAt, keysNumber, keysWhere })
 {
     let itemOwner = null;
     if(owner){
@@ -164,9 +164,7 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                   onChange={(e) => onChangeDate("visiteAt", e)}>
                             Visite à partir de quelle date
                         </DatePick>
-                        <Input valeur={visiteTo} identifiant="visiteTo" errors={errors} onChange={onChange}>
-                            Lieu de la visite
-                        </Input>
+                        <div className="form-group" />
                     </div>
                 </div>
 

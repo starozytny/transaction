@@ -305,7 +305,6 @@ class DataImmo extends DataConstructor
             ->setPhone1($this->sanitizeData->trimData($data->phone1))
             ->setEmail($this->sanitizeData->trimData($data->email))
             ->setVisiteAt($this->createDate($data->visiteAt))
-            ->setVisiteTo($this->sanitizeData->trimData($data->visiteTo))
             ->setKeysNumber($this->setToNullInteger($data->keysNumber))
             ->setKeysWhere($this->sanitizeData->trimData($data->keysWhere))
         ;

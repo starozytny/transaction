@@ -168,7 +168,6 @@ export function BienFormulaire ({ type, element, tenants, rooms, photos, negotia
         phone1={element ? setValueEmptyIfNull(confidential, confidential.phone1) : ""}
         email={element ? setValueEmptyIfNull(confidential, confidential.email) : ""}
         visiteAt={element ? (setValueEmptyIfNull(confidential, confidential.visiteAtJavascript) !== "" ? new Date(confidential.visiteAtJavascript) : "" ) : ""}
-        visiteTo={element ? setValueEmptyIfNull(confidential, confidential.visiteTo) : ""}
         keysNumber={element ? setValueEmptyIfNull(confidential, confidential.keysNumber) : ""}
         keysWhere={element ? setValueEmptyIfNull(confidential, confidential.keysWhere) : ""}
 

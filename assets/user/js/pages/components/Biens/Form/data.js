@@ -124,7 +124,6 @@ function getDataState (props) {
         phone1: props.phone1,
         email: props.email,
         visiteAt: props.visiteAt,
-        visiteTo: props.visiteTo,
         keysNumber: props.keysNumber,
         keysWhere: props.keysWhere,
 
