@@ -8,6 +8,7 @@ import Routing           from '@publicFolder/bundles/fosjsrouting/js/router.min.
 
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
+import Filter            from "@commonComponents/functions/filter";
 import Formulaire        from "@dashboardComponents/functions/Formulaire";
 
 import { UserList }       from "./UserList";
@@ -27,24 +28,6 @@ let sorters = [
 ]
 
 let sortersFunction = [Sort.compareLastname, Sort.compareUsername, Sort.compareEmail];
-
-function filterFunction(dataImmuable, filters){
-    let newData = [];
-    if(filters.length === 0) {
-        newData = dataImmuable
-    }else{
-        dataImmuable.forEach(el => {
-            filters.forEach(filter => {
-                if(filter === el.highRoleCode){
-                    newData.filter(elem => elem.id !== el.id)
-                    newData.push(el);
-                }
-            })
-        })
-    }
-
-    return newData;
-}
 
 export class User extends Component {
     constructor(props) {
@@ -67,9 +50,9 @@ export class User extends Component {
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleGetFilters = this.handleGetFilters.bind(this);
-        this.handleRegenPassword = this.handleRegenPassword.bind(this);
         this.handlePerPage = this.handlePerPage.bind(this);
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
+        this.handleRegenPassword = this.handleRegenPassword.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
         this.handleContentCreate = this.handleContentCreate.bind(this);
@@ -81,9 +64,9 @@ export class User extends Component {
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, filterFunction); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterHighRoleCode); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "user", true, filterFunction); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "user", true, Filter.filterHighRoleCode); }
 
     handlePerPage = (perPage) => {
         this.layout.current.handleUpdatePerPage(SORTER, perPage);
