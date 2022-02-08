@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
-import { Selector }     from "@dashboardComponents/Layout/Selector";
+import { Selector }         from "@dashboardComponents/Layout/Selector";
+import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
 export class ProspectsItem extends Component {
     render () {
@@ -34,7 +35,7 @@ export class ProspectsItem extends Component {
                         </div>
 
                         <div className="col-2">
-                            <ProspectsNegotiator elem={elem} />
+                            <NegotiatorBubble elem={elem.negotiator} />
                         </div>
 
                         <div className="col-3">
@@ -70,11 +71,5 @@ export function ProspectsMainInfos ({ elem, isClient }) {
         <div className="sub">{elem.phone1}</div>
         <div className="sub">{elem.phone2}</div>
         <div className="sub">{elem.phone3}</div>
-    </>
-}
-
-export function ProspectsNegotiator ({ elem }) {
-    return <>
-        <div className="sub">{elem.negotiator ? elem.negotiator.fullname : "/"}</div>
     </>
 }

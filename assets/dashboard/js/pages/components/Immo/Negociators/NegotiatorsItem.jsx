@@ -56,3 +56,18 @@ export class NegotiatorsItem extends Component {
         </div>
     }
 }
+
+export function NegotiatorBubble ({ elem, txt="/" }) {
+    console.log(elem)
+    return <>
+        {elem ? <div className="negotiator-bubble">
+            <div className="image">
+                <img src={elem.avatarFile} alt={"negociateur avatar " + elem.fullname}/>
+            </div>
+            <div className="title">
+                <span>{elem.fullname}</span>
+            </div>
+        </div> : txt}
+
+    </>
+}
