@@ -150,12 +150,6 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $agEvents;
 
     /**
-     * @ORM\OneToOne(targetEntity=ImNegotiator::class, inversedBy="user", fetch="EAGER", cascade={"persist", "remove"})
-     * @Groups({"admin:read", "user:read"})
-     */
-    private $negotiator;
-
-    /**
      * @throws Exception
      */
     public function __construct()
@@ -598,18 +592,6 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
                 $agEvent->setCreator(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getNegotiator(): ?ImNegotiator
-    {
-        return $this->negotiator;
-    }
-
-    public function setNegotiator(?ImNegotiator $negotiator): self
-    {
-        $this->negotiator = $negotiator;
 
         return $this;
     }
