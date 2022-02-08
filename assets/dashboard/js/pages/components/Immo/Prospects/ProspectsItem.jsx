@@ -8,7 +8,7 @@ import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/Ne
 
 export class ProspectsItem extends Component {
     render () {
-        const { isArchivedPage, isSelect, isFromRead, isClient, elem, prospects, onDelete, onSelectors, onChangeContext, onSelectProspect } = this.props;
+        const { isArchivedPage, isSelect, isFromRead, isClient, elem, prospects, onDelete, onSelectors, onChangeContext, onSelectProspect, onSwitchArchived } = this.props;
 
         let active = false;
         if(prospects){
@@ -23,7 +23,7 @@ export class ProspectsItem extends Component {
 
         let actions = [
             {data: <a onClick={() => onDelete(elem)}>Supprimer</a>},
-            {data: isArchivedPage ? <a onClick={() => onDelete(elem)}>Désarchiver</a> : <a onClick={() => onDelete(elem)}>Archiver</a>}
+            {data: <a onClick={() => onSwitchArchived(elem)}>{isArchivedPage ? "Désarchiver" : "Archiver"}</a>}
         ]
 
         return <div className="item">
@@ -40,16 +40,16 @@ export class ProspectsItem extends Component {
                         </div>
 
                         <div className="col-2">
-                            <NegotiatorBubble elem={elem.negotiator} />
-                        </div>
-
-                        <div className="col-3">
                             <div className="badges">
                                 <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
                                 {elem.isArchived && <div className="badge badge-default">Archive</div>}
                             </div>
                             <div className="sub">Type de prospect : {elem.typeString}</div>
                             {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
+                        </div>
+
+                        <div className="col-3">
+                            <NegotiatorBubble elem={elem.negotiator} />
                         </div>
 
                         <div className="col-4 actions">

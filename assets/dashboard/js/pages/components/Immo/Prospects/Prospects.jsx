@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 
+import axios        from "axios";
+import Swal         from "sweetalert2";
+import SwalOptions  from "@commonComponents/functions/swalOptions";
+import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
 import Filter            from "@commonComponents/functions/filter";
 import TopToolbar        from "@commonComponents/functions/topToolbar";
+import Formulaire        from "@dashboardComponents/functions/Formulaire";
 
 import { ProspectsList }       from "./ProspectsList";
 import { ProspectFormulaire }  from "./ProspectForm";
 
+const URL_ARCHIVED_ELEMENT = 'api_prospects_switch_archived';
 const URL_DELETE_ELEMENT = 'api_prospects_delete';
 const URL_DELETE_GROUP   = 'api_prospects_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer ce prospect ?';
@@ -51,6 +58,7 @@ export class Prospects extends Component {
         this.handleGetFilters = this.handleGetFilters.bind(this);
         this.handlePerPage = this.handlePerPage.bind(this);
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
+        this.handleSwitchArchived = this.handleSwitchArchived.bind(this);
 
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
@@ -70,6 +78,30 @@ export class Prospects extends Component {
     handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
 
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
+
+    handleSwitchArchived = (element) => {
+        let title = element.isArchived ? "Rétablir ce prospect ?" : "Archiver ce prospect ?"
+
+        const self = this;
+        Swal.fire(SwalOptions.options(title, ""))
+            .then((result) => {
+                if (result.isConfirmed) {
+                    Formulaire.loader(true);
+                    axios.post(Routing.generate(URL_ARCHIVED_ELEMENT, {'id': element.id}), {})
+                        .then(function (response) {
+                            self.handleUpdateList(element, "delete");
+                        })
+                        .catch(function (error) {
+                            Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+                        })
+                        .then(() => {
+                            Formulaire.loader(false);
+                        })
+                    ;
+                }
+            })
+        ;
+    }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { perPage, currentPage } = this.state;
@@ -93,6 +125,7 @@ export class Prospects extends Component {
                               onSorter={this.handleSorter}
                               isClient={this.state.isClient}
                               isArchivedPage={this.state.isArchivedPage}
+                              onSwitchArchived={this.handleSwitchArchived}
                               data={currentData} />
     }
 

@@ -211,4 +211,30 @@ class ProspectController extends AbstractController
         $em->flush();
         return $apiResponse->apiJsonResponseSuccessful("Supression de la sélection réussie !");
     }
+
+    /**
+     * Switch isArchived
+     *
+     * @Route("/{id}/switch-archived", name="switch_archived", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns contact object",
+     * )
+     *
+     * @OA\Tag(name="Prospects")
+     *
+     * @param ImProspect $obj
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function switchArchived(ImProspect $obj, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        $obj->setIsArchived(!$obj->getIsArchived());
+        $em->flush();
+
+        return $apiResponse->apiJsonResponse($obj, User::ADMIN_READ);
+    }
 }
