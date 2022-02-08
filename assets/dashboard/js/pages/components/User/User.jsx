@@ -9,6 +9,7 @@ import Routing           from '@publicFolder/bundles/fosjsrouting/js/router.min.
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
 import Filter            from "@commonComponents/functions/filter";
+import TopToolbar        from "@commonComponents/functions/topToolbar";
 import Formulaire        from "@dashboardComponents/functions/Formulaire";
 
 import { UserList }       from "./UserList";
@@ -68,20 +69,11 @@ export class User extends Component {
 
     handleSearch = (search) => { this.layout.current.handleSearch(search, "user", true, Filter.filterHighRoleCode); }
 
-    handlePerPage = (perPage) => {
-        this.layout.current.handleUpdatePerPage(SORTER, perPage);
-        this.setState({ perPage: perPage });
-    }
+    handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
 
     handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
 
-    handleSorter = (nb) => {
-        const { perPage } = this.state;
-
-        SORTER = sortersFunction[nb];
-        this.layout.current.handleUpdatePerPage(SORTER, perPage);
-        this.setState({ sorter: SORTER });
-    }
+    handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
     handleRegenPassword = (elem) => {
         const self = this;
