@@ -21,7 +21,7 @@ function getItemsSelect (data, noDuplication, el, pref, typeValue = "id") {
 
 export class BiensList extends Component {
     render () {
-        const { pageStatus, pageDraft, data, onDelete, filters, onGetFilters, tenants, onUpdateList } = this.props;
+        const { dataFilters, pageStatus, pageDraft, data, onDelete, filters, onGetFilters, tenants, onUpdateList } = this.props;
 
         let items = [], owners = [], negotiators = [], users = [], noDuplicateOwners = [], noDuplicateNegotiators = [], noDuplicateUsers = [];
         data.forEach(el => {
@@ -40,7 +40,8 @@ export class BiensList extends Component {
                             <span>Filtres :</span>
                         </div>
                         <div className="content-col-1">
-                            <Filter onGetFilters={onGetFilters} filters={filters} tenants={tenants} owners={owners} negotiators={negotiators} users={users}/>
+                            <Filter data={dataFilters} onGetFilters={onGetFilters} filters={filters}
+                                    tenants={tenants} owners={owners} negotiators={negotiators} users={users}/>
                         </div>
                     </div>
                 </div>

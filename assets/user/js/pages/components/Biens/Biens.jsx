@@ -143,6 +143,7 @@ export class Biens extends Component {
                           pageStatus={this.props.pageStatus !== "" ? parseInt(this.props.pageStatus) : false}
                           pageDraft={this.props.pageDraft !== "" ? parseInt(this.props.pageDraft) : false}
                           onUpdateList={this.handleUpdateList}
+                          dataFilters={this.layout.current.state.data}
                           data={currentData} />
     }
 

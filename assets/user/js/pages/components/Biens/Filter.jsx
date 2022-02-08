@@ -64,10 +64,10 @@ export class Filter extends Component {
             case "filterOwner":
                 nFilterOwner = value;
                 break;
-            case "mandat":
+            case "codeTypeMandat":
                 nFiltersMandat = updateTab(filtersMandat, value, nFiltersMandat);
                 break;
-            case "bien":
+            case "codeTypeBien":
                 nFiltersBien = updateTab(filtersBien, value, nFiltersBien);
                 break;
             default:
@@ -87,7 +87,7 @@ export class Filter extends Component {
     }
 
     render () {
-        const { owners, negotiators, tenants, users } = this.props;
+        const { data, owners, negotiators, tenants, users } = this.props;
         const { filtersAd, filtersBien, filtersMandat, filterOwner, filterTenant, filterNego, filterUser } = this.state;
 
         let itemsFiltersAd = helper.getItems("ads");
@@ -100,9 +100,9 @@ export class Filter extends Component {
         })
 
         return <div className="filters">
-            <ItemFilter type="ad"     title="Annonce"      itemsFilters={itemsFiltersAd}     filters={filtersAd} onFilter={this.handleFilter}/>
-            <ItemFilter type="bien"   title="Type de bien" itemsFilters={itemsFiltersBien}   filters={filtersBien} onFilter={this.handleFilter}/>
-            <ItemFilter type="mandat" title="Mandat"       itemsFilters={itemsFiltersMandat} filters={filtersMandat} onFilter={this.handleFilter}/>
+            <ItemFilter type="codeTypeAd"     title="Annonce"      itemsFilters={itemsFiltersAd}     filters={filtersAd} onFilter={this.handleFilter} data={data}/>
+            <ItemFilter type="codeTypeBien"   title="Type de bien" itemsFilters={itemsFiltersBien}   filters={filtersBien} onFilter={this.handleFilter} data={data}/>
+            <ItemFilter type="codeTypeMandat" title="Mandat"       itemsFilters={itemsFiltersMandat} filters={filtersMandat} onFilter={this.handleFilter} />
 
             <ItemFilterSelectize title="Négociateur"    items={negotiators}  identifiant="filterNego" valeur={filterNego} onChangeSelect={this.handleChangeSelect} />
             <ItemFilterSelectize title="Propriétaire"   items={owners}       identifiant="filterOwner" valeur={filterOwner} onChangeSelect={this.handleChangeSelect} />
@@ -131,22 +131,34 @@ function ItemFilterInput ({ title, identifiant, valeur, onChange, placeholder })
     </div>
 }
 
-function ItemFilter ({ type, title, itemsFilters, filters, onFilter }) {
+function ItemFilter ({ type, title, itemsFilters, filters, onFilter, data }) {
     return  <div className="item">
         <Title title={title}/>
         <div className="items-filter">
             {itemsFilters.map(el => {
-                return <ItemFilterBox type={type} el={el} filters={filters} onFilter={onFilter} key={el.value}/>
+
+                let total;
+                if(data){
+                    total = 0;
+                    data.forEach(elem => {
+                        if(el.value === elem[type]){ total++; }
+                    })
+                }
+
+                return <ItemFilterBox type={type} el={el} filters={filters} onFilter={onFilter} total={total} key={el.value}/>
             })}
         </div>
     </div>
 }
 
-function ItemFilterBox ({ type, el, filters, onFilter }) {
+function ItemFilterBox ({ type, el, filters, onFilter, total }) {
     return <div className={"item-filter" + Helper.setActive(filters, el.value)}
                 onClick={() => onFilter(type, el.value)}>
-        <div className="box" />
-        <div>{el.label}</div>
+        <div className="item-filter-name">
+            <div className="box" />
+            <div>{el.label}</div>
+        </div>
+        {total && <div className="item-filter-total">{total}</div>}
     </div>
 }
 
