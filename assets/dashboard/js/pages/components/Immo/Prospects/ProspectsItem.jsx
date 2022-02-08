@@ -35,20 +35,20 @@ export class ProspectsItem extends Component {
             <div className="item-content">
                 <div className="item-body">
                     <div className="infos infos-col-4">
-                        <div className="col-1" onClick={isSelect ? () => onSelectProspect(elem) : null}>
+                        <div className="col-1" onClick={isSelect ? () => onSelectProspect(elem) : () => onChangeContext("read", elem)}>
                             <ProspectsMainInfos elem={elem} isClient={isClient} />
                         </div>
 
-                        <div className="col-2">
+                        <div className="col-2" onClick={!isSelect ? () => onChangeContext("read", elem) : null}>
                             <div className="badges">
                                 <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
-                                {elem.isArchived && <div className="badge badge-default">Archive</div>}
+                                {elem.isArchived && <div className="badge badge-default">Archivé</div>}
                             </div>
                             <div className="sub">Type de prospect : {elem.typeString}</div>
                             {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
                         </div>
 
-                        <div className="col-3">
+                        <div className="col-3" onClick={!isSelect ? () => onChangeContext("read", elem) : null}>
                             <NegotiatorBubble elem={elem.negotiator} />
                         </div>
 

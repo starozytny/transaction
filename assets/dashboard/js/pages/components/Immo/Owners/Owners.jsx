@@ -5,7 +5,7 @@ import Sort              from "@commonComponents/functions/sort";
 
 import { OwnersList }       from "./OwnersList";
 import { OwnerFormulaire }  from "./OwnerForm";
-import {OwnerRead} from "@dashboardPages/components/Immo/Owners/OwnerRead";
+import { OwnerRead }        from "@dashboardPages/components/Immo/Owners/OwnerRead";
 
 const URL_DELETE_ELEMENT = 'api_owners_delete';
 const URL_DELETE_GROUP   = 'api_owners_delete_group';

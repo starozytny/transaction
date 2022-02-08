@@ -13,6 +13,7 @@ import Formulaire        from "@dashboardComponents/functions/Formulaire";
 
 import { ProspectsList }       from "./ProspectsList";
 import { ProspectFormulaire }  from "./ProspectForm";
+import { ProspectRead }        from "@dashboardPages/components/Immo/Prospects/ProspectRead";
 
 const URL_ARCHIVED_ELEMENT = 'api_prospects_switch_archived';
 const URL_DELETE_ELEMENT = 'api_prospects_delete';
@@ -62,9 +63,10 @@ export class Prospects extends Component {
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
         this.handleContentList = this.handleContentList.bind(this);
+        this.handleContentRead = this.handleContentRead.bind(this);
     }
 
-    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
+    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "id"); }
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
@@ -141,10 +143,14 @@ export class Prospects extends Component {
                                 onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
+    handleContentRead = (changeContext, element) => {
+        return <ProspectRead elem={element} onChangeContext={changeContext} />
+    }
+
     render () {
         return <>
-            <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
-                    onContentList={this.handleContentList}
+            <Layout ref={this.layout} {...this.state} search={this.props.search} onGetData={this.handleGetData}
+                    onContentList={this.handleContentList} onContentRead={this.handleContentRead}
                     onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}
                     onChangeCurrentPage={this.handleChangeCurrentPage} />
         </>
