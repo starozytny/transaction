@@ -6,7 +6,7 @@ import Sanitaze         from "@commonComponents/functions/sanitaze";
 
 export class SearchsItem extends Component {
     render () {
-        const { elem, onDelete, onSelectors, onChangeContext } = this.props;
+        const { elem, onDelete, onSelectors, onChangeContext, onDuplicate } = this.props;
 
         return <div className="item">
             <Selector id={elem.id} onSelectors={onSelectors} />
@@ -44,6 +44,7 @@ export class SearchsItem extends Component {
 
                         <div className="col-5 actions">
                             <ButtonIcon icon="layer" onClick={() => onChangeContext("read", elem)}>Résultats</ButtonIcon>
+                            <ButtonIcon icon="copy" onClick={() => onDuplicate(elem)}>Dupliquer</ButtonIcon>
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>

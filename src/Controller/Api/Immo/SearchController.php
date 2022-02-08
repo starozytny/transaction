@@ -198,4 +198,32 @@ class SearchController extends AbstractController
 
         return $apiResponse->apiJsonResponse($biens, User::USER_READ);
     }
+
+    /**
+     * Duplicate search line
+     *
+     * @Route("/duplicate/{id}", name="duplicate", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Return message successful",
+     * )
+     *
+     * @OA\Tag(name="Searchs")
+     *
+     * @param ImSearch $obj
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function duplicate(ImSearch $obj, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        $new = clone $obj;
+
+        $em->persist($new);
+        $em->flush();
+
+        return $apiResponse->apiJsonResponseSuccessful("Success");
+    }
 }

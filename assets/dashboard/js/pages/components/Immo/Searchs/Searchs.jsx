@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 
+import axios        from "axios";
+import Formulaire   from "@dashboardComponents/functions/Formulaire";
+import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { Layout }        from "@dashboardComponents/Layout/Page";
 
 import { SearchsList }       from "@dashboardPages/components/Immo/Searchs/SearchsList";
 import { SearchRead }        from "@dashboardPages/components/Immo/Searchs/SearchRead";
 import { SearchFormulaire }  from "@dashboardPages/components/Immo/Searchs/SearchForm";
 
+const URL_DUPLICATE_ELEMENT = 'api_searchs_duplicate';
 const URL_DELETE_ELEMENT = 'api_searchs_delete';
 const URL_DELETE_GROUP   = 'api_searchs_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer cette recherche ?';
@@ -33,6 +38,7 @@ export class Searchs extends Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleUpdateFollows = this.handleUpdateFollows.bind(this);
+        this.handleDuplicate = this.handleDuplicate.bind(this);
 
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
@@ -58,10 +64,24 @@ export class Searchs extends Component {
         this.setState({ follows: nFollows })
     }
 
+    handleDuplicate = (element) => {
+        Formulaire.loader(true);
+        axios.post(Routing.generate(URL_DUPLICATE_ELEMENT, {'id': element.id}), {})
+            .then(function (response) {
+                location.reload();
+            })
+            .catch(function (error) {
+                Formulaire.loader(false);
+                Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+            })
+        ;
+    }
+
     handleContentList = (currentData, changeContext) => {
         return <SearchsList onChangeContext={changeContext}
                             onDelete={this.layout.current.handleDelete}
                             onDeleteAll={this.layout.current.handleDeleteGroup}
+                            onDuplicate={this.handleDuplicate}
                             prospectFullname={this.state.prospectFullname}
                             isClient={this.state.isClient}
                             data={currentData} />
