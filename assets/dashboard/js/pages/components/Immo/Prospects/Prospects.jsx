@@ -10,7 +10,32 @@ const URL_DELETE_ELEMENT = 'api_prospects_delete';
 const URL_DELETE_GROUP   = 'api_prospects_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer ce prospect ?';
 const MSG_DELETE_GROUP   = 'Aucun prospect sélectionné.';
-const SORTER = Sort.compareLastname;
+let SORTER = Sort.compareLastname;
+
+let sorters = [
+    { value: 0, label: 'Nom',           identifiant: 'sorter-nom' },
+    { value: 1, label: 'Email',         identifiant: 'sorter-email' },
+]
+
+let sortersFunction = [Sort.compareLastname, Sort.compareEmail];
+
+function filterFunction(dataImmuable, filters){
+    let newData = [];
+    if(filters.length === 0) {
+        newData = dataImmuable
+    }else{
+        dataImmuable.forEach(el => {
+            filters.forEach(filter => {
+                if(filter === el.status){
+                    newData.filter(elem => elem.id !== el.id)
+                    newData.push(el);
+                }
+            })
+        })
+    }
+
+    return newData;
+}
 
 export class Prospects extends Component {
     constructor(props) {
@@ -18,6 +43,7 @@ export class Prospects extends Component {
 
         this.state = {
             perPage: 10,
+            currentPage: 0,
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
@@ -37,6 +63,9 @@ export class Prospects extends Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleGetFilters = this.handleGetFilters.bind(this);
+        this.handlePerPage = this.handlePerPage.bind(this);
+        this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
 
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
@@ -49,11 +78,43 @@ export class Prospects extends Component {
 
     handleSearch = (search) => { this.layout.current.handleSearch(search, "prospect"); }
 
-    handleContentList = (currentData, changeContext) => {
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, filterFunction); }
+
+    handlePerPage = (perPage) => {
+        this.layout.current.handleUpdatePerPage(SORTER, perPage);
+        this.setState({ perPage: perPage });
+    }
+
+    handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
+
+    handleSorter = (nb) => {
+        const { perPage } = this.state;
+
+        SORTER = sortersFunction[nb];
+        this.layout.current.handleUpdatePerPage(SORTER, perPage);
+        this.setState({ sorter: SORTER });
+    }
+
+    handleContentList = (currentData, changeContext, getFilters, filters, data) => {
+        const { perPage, currentPage } = this.state;
+
         return <ProspectsList onChangeContext={changeContext}
                               onDelete={this.layout.current.handleDelete}
                               onDeleteAll={this.layout.current.handleDeleteGroup}
+                              //filter-search
                               onSearch={this.handleSearch}
+                              filters={filters}
+                              onGetFilters={this.handleGetFilters}
+                              //changeNumberPerPage
+                              perPage={perPage}
+                              onPerPage={this.handlePerPage}
+                              //twice pagination
+                              currentPage={currentPage}
+                              onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
+                              taille={data.length}
+                              //sorter
+                              sorters={sorters}
+                              onSorter={this.handleSorter}
                               isClient={this.state.isClient}
                               data={currentData} />
     }
@@ -76,7 +137,8 @@ export class Prospects extends Component {
         return <>
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
                     onContentList={this.handleContentList}
-                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}/>
+                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}
+                    onChangeCurrentPage={this.handleChangeCurrentPage} />
         </>
     }
 }

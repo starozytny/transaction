@@ -1,7 +1,7 @@
 @import "../vars/vars";
 @import "~react-selectize/dist/index.min.css";
 
-@include toolbarCreateSearch(199);
+@include toolbarCreateFilterSearch(199);
 
 .badge{
   $status:
