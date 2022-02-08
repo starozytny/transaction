@@ -21,6 +21,10 @@
 
   & > .item{
     width: 100%;
+
+    .title{
+      @include fontSemibold();
+    }
   }
 
   .create{

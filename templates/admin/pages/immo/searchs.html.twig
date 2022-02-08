@@ -4,7 +4,12 @@
 {% set submenuActive = "Prospects" %}
 
 {% block main_content %}
-    <div id="searchs" data-donnees="{{ donnees }}" data-prospect-id="{{ elem.id }}">
+    <div id="searchs"
+         data-donnees="{{ donnees }}"
+         data-follows="{{ follows }}"
+         data-prospect-id="{{ elem.id }}"
+         data-prospect-fullname="{{ elem.fullname }}"
+    >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

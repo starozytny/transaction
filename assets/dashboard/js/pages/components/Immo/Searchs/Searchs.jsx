@@ -23,7 +23,9 @@ export class Searchs extends Component {
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "searchs.pagination",
             prospectId: props.prospectId ? parseInt(props.prospectId) : null,
-            follows: props.follows ? JSON.parse(props.follows) : []
+            prospectFullname: props.prospectFullname ? props.prospectFullname : "Inconnu",
+            follows: props.follows ? JSON.parse(props.follows) : [],
+            isClient: props.isClient ? props.isClient : false
         }
 
         this.layout = React.createRef();
@@ -60,6 +62,8 @@ export class Searchs extends Component {
         return <SearchsList onChangeContext={changeContext}
                             onDelete={this.layout.current.handleDelete}
                             onDeleteAll={this.layout.current.handleDeleteGroup}
+                            prospectFullname={this.state.prospectFullname}
+                            isClient={this.state.isClient}
                             data={currentData} />
     }
 

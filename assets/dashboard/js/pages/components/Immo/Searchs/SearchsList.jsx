@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
 
+import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
 
 import { SearchsItem }   from "./SearchsItem";
+import { ButtonBack } from "@dashboardComponents/Layout/Elements";
 
 export class SearchsList extends Component {
     render () {
-        const { data, onChangeContext, onDeleteAll } = this.props;
+        const { isClient, data, prospectFullname, onChangeContext, onDeleteAll } = this.props;
 
         return <>
             <div>
                 <div className="toolbar">
+                    <ButtonBack url={Routing.generate(isClient ? "user_prospects" : "admin_prospects_index")} />
+                </div>
+                <div className="toolbar">
                     <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter une recherche</Button>
+                    </div>
+                    <div className="item filter-search">
+                        <span className="title">{prospectFullname}</span>
                     </div>
                 </div>
 

@@ -357,7 +357,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/prospects", name="prospects")
+     * @Route("/prospects", options={"expose"=true}, name="prospects")
      */
     public function prospects(Request $request, ImProspectRepository $repository, SerializerInterface $serializer): Response
     {

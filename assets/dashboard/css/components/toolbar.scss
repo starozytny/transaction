@@ -1,3 +1,11 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/toolbar";
+
+.toolbar{
+  .item{
+    .title{
+      @include fontSemibold();
+    }
+  }
+}

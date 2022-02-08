@@ -10,6 +10,7 @@ use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSearch;
+use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Notification;
 use App\Entity\Settings;
@@ -265,7 +266,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/immobilier/prospects", name="prospects_index")
+     * @Route("/immobilier/prospects", options={"expose"=true}, name="prospects_index")
      */
     public function prospects(SerializerInterface $serializer): Response
     {
@@ -307,12 +308,15 @@ class AdminController extends AbstractController
     {
         $em = $this->doctrine->getManager();
         $objs = $em->getRepository(ImSearch::class)->findBy(['prospect' => $obj]);
+        $follows = $em->getRepository(ImSuivi::class)->findBy(['prospect' => $obj]);
 
-        $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
+        $objs    = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
+        $follows = $serializer->serialize($follows, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('admin/pages/immo/searchs.html.twig', [
             'elem' => $obj,
             'donnees' => $objs,
+            'follows' => $follows,
         ]);
     }
 }
