@@ -33,7 +33,7 @@ class FakeContactCreateCommand extends Command
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [Notification::class, Contact::class]);
 
-        $io->title('Création de 30 contacts fake');
+        $io->title('Création de 110 contacts fake');
         $fake = Factory::create();
         for($i=0; $i<110 ; $i++) {
             $new = (new Contact())

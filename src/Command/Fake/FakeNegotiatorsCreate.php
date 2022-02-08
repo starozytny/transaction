@@ -50,9 +50,9 @@ class FakeNegotiatorsCreate extends Command
             return Command::FAILURE;
         }
 
-        $io->title('Création de 30 négociateurs fake');
+        $io->title('Création de 1000 négociateurs fake');
         $fake = Factory::create();
-        for($i=0; $i<30 ; $i++) {
+        for($i=0; $i<1000 ; $i++) {
             $agency = $agencies[$fake->numberBetween(0,$nbAgencies - 1)];
 
             $lastname = $fake->lastName;

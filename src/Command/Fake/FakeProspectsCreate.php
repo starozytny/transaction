@@ -5,6 +5,7 @@ namespace App\Command\Fake;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImProspect;
+use App\Entity\Immo\ImSearch;
 use App\Service\Data\DataImmo;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,7 +47,7 @@ class FakeProspectsCreate extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [ImProspect::class]);
+        $this->databaseService->resetTable($io, [ImSearch::class, ImProspect::class]);
 
         $agencies = $this->em->getRepository(ImAgency::class)->findAll();
         $nbAgencies = count($agencies);
@@ -58,9 +59,9 @@ class FakeProspectsCreate extends Command
             return Command::FAILURE;
         }
 
-        $io->title('Création de 30 prospects fake');
+        $io->title('Création de 1000 prospects fake');
         $fake = Factory::create();
-        for($i=0; $i<30 ; $i++) {
+        for($i=0; $i<1000 ; $i++) {
             $agency = $agencies[$fake->numberBetween(0,$nbAgencies - 1)];
 
             $negotiators = $agency->getNegotiators();

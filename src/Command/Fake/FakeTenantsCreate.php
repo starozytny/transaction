@@ -57,9 +57,9 @@ class FakeTenantsCreate extends Command
             return Command::FAILURE;
         }
 
-        $io->title('Création de 30 locataires fake');
+        $io->title('Création de 1000 locataires fake');
         $fake = Factory::create();
-        for($i=0; $i<30 ; $i++) {
+        for($i=0; $i<1000 ; $i++) {
             $agency = $agencies[$fake->numberBetween(0,$nbAgencies - 1)];
 
             $negotiators = $agency->getNegotiators();
