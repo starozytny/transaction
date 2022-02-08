@@ -605,6 +605,8 @@ class DataImmo extends DataConstructor
             if(!$prospect){
                 throw new Exception("Prospect introuvable.");
             }
+
+            $prospect->setStatus(ImProspect::STATUS_SEARCH);
         }
 
         return ($obj)
