@@ -22,6 +22,9 @@ class ImProspect extends DataEntity
 
     const STATUS_NONE = 0;
     const STATUS_SEARCH = 1;
+    const STATUS_NOT_FULL = 2;
+    const STATUS_CONTACT = 3;
+    const STATUS_OFFER = 4;
 
     /**
      * @ORM\Id
@@ -443,7 +446,7 @@ class ImProspect extends DataEntity
      */
     public function getStatusString(): string
     {
-        $status = ["Aucun", "En recherche"];
+        $status = ["Aucun", "En recherche", "A compléter", "A contacter", "En offre"];
 
         return $status[$this->status];
     }

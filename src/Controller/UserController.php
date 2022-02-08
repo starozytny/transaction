@@ -332,17 +332,18 @@ class UserController extends AbstractController
     /**
      * Return render and route for tenant, prospects, buyers...
      *
+     * @param Request $request
      * @param SerializerInterface $serializer
      * @param $repository
      * @param $routeName
      * @return Response
      */
-    private function getDataPersons(SerializerInterface $serializer, $repository, $routeName): Response
+    private function getDataPersons(Request $request, SerializerInterface $serializer, $repository, $routeName): Response
     {
         $em = $this->doctrine->getManager();
         /** @var User $user */
         $user = $this->getUser();
-        $objs = $repository->findBy(['agency' => $user->getAgency()]);
+        $objs = $repository->findBy(['agency' => $user->getAgency(), 'isArchived' => (bool)$request->query->get('archive')]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
@@ -358,25 +359,25 @@ class UserController extends AbstractController
     /**
      * @Route("/locataires", name="tenants")
      */
-    public function tenants(ImTenantRepository $repository, SerializerInterface $serializer): Response
+    public function tenants(Request $request, ImTenantRepository $repository, SerializerInterface $serializer): Response
     {
-        return $this->getDataPersons($serializer, $repository, "user/pages/tenants/index.html.twig");
+        return $this->getDataPersons($request, $serializer, $repository, "user/pages/tenants/index.html.twig");
     }
 
     /**
      * @Route("/prospects", name="prospects")
      */
-    public function prospects(ImProspectRepository $repository, SerializerInterface $serializer): Response
+    public function prospects(Request $request, ImProspectRepository $repository, SerializerInterface $serializer): Response
     {
-        return $this->getDataPersons($serializer, $repository, "user/pages/prospects/index.html.twig");
+        return $this->getDataPersons($request, $serializer, $repository, "user/pages/prospects/index.html.twig");
     }
 
     /**
      * @Route("/acquereurs", name="buyers")
      */
-    public function buyers(ImBuyerRepository $repository, SerializerInterface $serializer): Response
+    public function buyers(Request $request, ImBuyerRepository $repository, SerializerInterface $serializer): Response
     {
-        return $this->getDataPersons($serializer, $repository, "user/pages/buyers/index.html.twig");
+        return $this->getDataPersons($request, $serializer, $repository, "user/pages/buyers/index.html.twig");
     }
 
     /**

@@ -240,6 +240,9 @@ export class ProspectForm extends Component {
         let statusItems = [
             {value: 0, label: "Aucun",        identifiant: "aucun-1"},
             {value: 1, label: "En recherche", identifiant: "en-search"},
+            {value: 2, label: "A compléter",  identifiant: "a-complete"},
+            {value: 3, label: "A contacter",  identifiant: "a-contact"},
+            {value: 4, label: "En offre",     identifiant: "en-offer"},
         ]
 
         return <>
