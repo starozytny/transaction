@@ -36,8 +36,6 @@
 }
 
 .items-table{
-  .badges + .sub,
-  .badges + .name,
   .badge + .sub,
   .role + .sub,
   .badge + .name,
@@ -92,6 +90,10 @@
     & > .badge:not(:last-child),
     & > .role:not(:last-child){
       margin-right: 8px;
+    }
+
+    & > .role,
+    & > .badge{
       margin-bottom: 8px;
     }
   }
