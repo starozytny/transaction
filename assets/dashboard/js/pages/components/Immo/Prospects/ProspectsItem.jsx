@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
+import { ButtonIcon, ButtonIconContact, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 import { Selector }         from "@dashboardComponents/Layout/Selector";
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
 export class ProspectsItem extends Component {
     render () {
-        const { isSelect, isFromRead, isClient, elem, prospects, onDelete, onSelectors, onChangeContext, onSelectProspect } = this.props;
+        const { isArchivedPage, isSelect, isFromRead, isClient, elem, prospects, onDelete, onSelectors, onChangeContext, onSelectProspect } = this.props;
 
         let active = false;
         if(prospects){
@@ -20,6 +20,11 @@ export class ProspectsItem extends Component {
         }
 
         let routeSearchs = isClient ? "user_prospects_searchs" : "admin_prospects_searchs";
+
+        let actions = [
+            {data: <a onClick={() => onDelete(elem)}>Supprimer</a>},
+            {data: isArchivedPage ? <a onClick={() => onDelete(elem)}>Désarchiver</a> : <a onClick={() => onDelete(elem)}>Archiver</a>}
+        ]
 
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
@@ -51,7 +56,7 @@ export class ProspectsItem extends Component {
                             <ButtonIcon icon="search" element="a" onClick={Routing.generate(routeSearchs, {'id': elem.id})}>Recherches</ButtonIcon>
                             <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                            <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>
                             {(isFromRead && !isSelect) && <ButtonIcon icon="cancel" onClick={() => onSelectProspect(elem)}>Enlever</ButtonIcon>}
                         </div>
                     </div>

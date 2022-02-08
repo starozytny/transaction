@@ -40,6 +40,7 @@ export class Prospects extends Component {
             agencies: props.agencies ? JSON.parse(props.agencies) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             isClient: props.isClient ? props.isClient : false,
+            isArchivedPage: props.isArchivedPage ? props.isArchivedPage : false,
         }
 
         this.layout = React.createRef();
@@ -91,6 +92,7 @@ export class Prospects extends Component {
                               sorters={sorters}
                               onSorter={this.handleSorter}
                               isClient={this.state.isClient}
+                              isArchivedPage={this.state.isArchivedPage}
                               data={currentData} />
     }
 

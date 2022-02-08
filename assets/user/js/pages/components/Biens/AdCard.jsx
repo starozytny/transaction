@@ -159,7 +159,7 @@ export class AdCard extends Component {
 
                             {!isProspectPage && !isOwnerPage && <>
                                 {el.status !== 2 ? <ButtonIcon icon="archive" onClick={() => this.handleChangeStatus(el, 2)}>Archive</ButtonIcon>
-                                    : <ButtonIcon icon="layer" onClick={() => this.handleChangeStatus(el, 0)}>Désarchiver</ButtonIcon>}
+                                    : <ButtonIcon icon="desarchive" onClick={() => this.handleChangeStatus(el, 0)}>Désarchiver</ButtonIcon>}
                                 <ButtonIcon icon="trash" onClick={() => onDelete(el)}>Supprimer</ButtonIcon>
                             </>}
 
