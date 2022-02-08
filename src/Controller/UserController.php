@@ -99,18 +99,7 @@ class UserController extends AbstractController
         if($status == null){
             $objs = $repository->findBy(['agency' => $user->getAgency()]);
         }else{
-            $objs = $repository->findBy(['agency' => $user->getAgency(), 'status' => (int) $status]);
-        }
-
-        if($draft == 1){
-            $data = [];
-            foreach ($objs as $obj){
-                if($obj->getIsDraft()){
-                    $data[] = $obj;
-                }
-            }
-
-            $objs = $data;
+            $objs = $repository->findBy(['agency' => $user->getAgency(), 'status' => (int) $status, 'isDraft' => (bool)$draft]);
         }
 
         $tenants = $tenantRepository->findBy(['bien' => $objs]);

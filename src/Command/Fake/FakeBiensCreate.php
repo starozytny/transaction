@@ -211,7 +211,6 @@ class FakeBiensCreate extends Command
                 "phone1" => $fake->e164PhoneNumber,
                 "email" => $fake->email,
                 "visiteAt" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
-                "visiteTo" => $fake->streetName,
                 "keysNumber" => $fake->randomNumber(1),
                 "keysWhere" => $fake->streetName,
                 "typeAdvert" => $fake->numberBetween(0, 2),
@@ -222,6 +221,8 @@ class FakeBiensCreate extends Command
                 "startAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "endAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
             ];
+
+
 
             $data = json_decode(json_encode($data));
 
