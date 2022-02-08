@@ -28,11 +28,9 @@ import { Step8 }        from "@userPages/components/Biens/Steps/Step8";
 import { Step9 }        from "@userPages/components/Biens/Steps/Step9";
 
 import { Owners}        from "@dashboardPages/components/Immo/Owners/Owners";
-import { Tenants }      from "@dashboardPages/components/Immo/Tenants/Tenants";
 
 let arrayZipcodeSave = [];
 let arrayOwnersSave = [];
-let arrayTenantsSave = [];
 let initRank = null;
 
 function getValueFloat(value){
@@ -158,10 +156,8 @@ export class Form extends Component {
         this.helpBubble = React.createRef();
         this.aside0 = React.createRef(); //image
         this.aside1 = React.createRef(); //owner
-        this.aside2 = React.createRef(); //tenant
         this.aside3 = React.createRef(); //piece
         this.owner = React.createRef();
-        this.tenant = React.createRef();
         this.rooms = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
@@ -179,7 +175,6 @@ export class Form extends Component {
         this.handleOpenAside = this.handleOpenAside.bind(this);
         this.handleSaveLegend = this.handleSaveLegend.bind(this);
         this.handleSelectOwner = this.handleSelectOwner.bind(this);
-        this.handleSelectTenant = this.handleSelectTenant.bind(this);
         this.handleSelectRooms = this.handleSelectRooms.bind(this);
 
         this.handleNext = this.handleNext.bind(this);
@@ -422,9 +417,6 @@ export class Form extends Component {
                 }
                 this.aside3.current.handleOpen(el ? "Modifier " + el.name : "Ajouter une pièce");
                 break;
-            case "tenant-select":
-                this.aside2.current.handleOpen();
-                break;
             case "owner-select":
                 this.aside1.current.handleOpen();
                 break;
@@ -460,16 +452,6 @@ export class Form extends Component {
 
         DataState.getOwners(this);
         this.setState({ owner: owner.id });
-    }
-
-    handleSelectTenant = (tenant) => {
-        const { tenants } = this.state;
-
-        let nTenants = helper.addOrRemove(tenants, tenant, "Locataire ajouté.", "Locataire enlevé.");
-
-        this.tenant.current.handleUpdateSelectTenants(nTenants);
-        DataState.getTenants(this);
-        this.setState({ tenants: nTenants });
     }
 
     handleSelectRooms = (room, isUpdate=false) => {
@@ -510,10 +492,8 @@ export class Form extends Component {
 
             arrayZipcodeSave = this.state.arrayPostalCode;
             arrayOwnersSave = this.state.allOwners;
-            arrayTenantsSave = this.state.allTenants;
             delete this.state.arrayPostalCode;
             delete this.state.allOwners;
-            delete this.state.allTenants;
 
             this.state.isDraft = isDraft;
 
@@ -529,7 +509,7 @@ export class Form extends Component {
                 formData.append('photos[' + i + ']', file);
             }
 
-            this.setState({ allOwners: arrayOwnersSave, allTenants: arrayTenantsSave })
+            this.setState({ allOwners: arrayOwnersSave })
 
             axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                 .then(function (response) {
@@ -548,7 +528,7 @@ export class Form extends Component {
 
     render () {
         const { negotiators, societyId, agencyId } = this.props;
-        const { step, contentHelpBubble, codeTypeAd, owner, allOwners, tenants, allTenants } = this.state;
+        const { step, contentHelpBubble, codeTypeAd, owner, allOwners } = this.state;
 
         let steps = [
             {id: 1, label: "Informations globales"},
@@ -580,10 +560,6 @@ export class Form extends Component {
         let contentAside1 = <Owners ref={this.owner} donnees={JSON.stringify(allOwners)} negotiators={JSON.stringify(negotiators)}
                                     societyId={societyId} agencyId={agencyId} isClient={true}
                                     owner={owner} isFormBien={true} onSelectOwner={this.handleSelectOwner}/>
-
-        let contentAside2 = <Tenants ref={this.tenant} donnees={JSON.stringify(allTenants)} negotiators={JSON.stringify(negotiators)}
-                                    societyId={societyId} agencyId={agencyId} isClient={true}
-                                    tenants={tenants} isFormBien={true} onSelectTenant={this.handleSelectTenant}/>
 
         return <div className="page-default">
             <div className="page-col-1">
@@ -661,7 +637,6 @@ export class Form extends Component {
 
                     <div className="contact-aside">
                         <Aside ref={this.aside1} content={contentAside1}>Sélectionner un propriétaire</Aside>
-                        <Aside ref={this.aside2} content={contentAside2}>Sélectionner un locataire</Aside>
                     </div>
                 </section>
             </div>

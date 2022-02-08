@@ -32,32 +32,6 @@ class TenantController extends AbstractController
     }
 
     /**
-     * get tenants of user agency
-     *
-     * @Route("/user-agency", name="user_agency", options={"expose"=true}, methods={"GET"})
-     *
-     * @OA\Response(
-     *     response=200,
-     *     description="Returns a message"
-     * )
-     *
-     * @OA\Tag(name="Tenants")
-     *
-     * @param ImTenantRepository $repository
-     * @param ApiResponse $apiResponse
-     * @return JsonResponse
-     */
-    public function index(ImTenantRepository $repository, ApiResponse $apiResponse): JsonResponse
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-
-        $objs = $repository->findBy(['agency' => $user->getAgency()]);
-
-        return $apiResponse->apiJsonResponse($objs, User::ADMIN_READ);
-    }
-
-    /**
      * @throws Exception
      */
     public function submitForm($type, ImTenant $obj, Request $request, ApiResponse $apiResponse,

@@ -141,11 +141,9 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
         $allOwners = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
-        $allTenants = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgency()]);
 
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
         $allOwners = $serializer->serialize($allOwners, 'json', ['groups' => User::ADMIN_READ]);
-        $allTenants = $serializer->serialize($allTenants, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render($route, [
             'element' => $element,
@@ -154,17 +152,8 @@ class UserController extends AbstractController
             'photos' => $photos,
             'negotiators' => $negotiators,
             'allOwners' => $allOwners,
-            'allTenants' => $allTenants,
             'user' => $user,
         ]);
-    }
-
-    /**
-     * @Route("/biens/ajouter-un-bien", options={"expose"=true}, name="biens_create")
-     */
-    public function createBien(SerializerInterface $serializer): Response
-    {
-        return $this->formBien($serializer, 'user/pages/biens/create.html.twig');
     }
 
     private function bienData($type, Request $request, SerializerInterface $serializer, $slug): Response
@@ -211,7 +200,15 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/biens/modifier-un-bien/{slug}",options={"expose"=true}, name="biens_update")
+     * @Route("/biens/bien/ajouter", options={"expose"=true}, name="biens_create")
+     */
+    public function createBien(SerializerInterface $serializer): Response
+    {
+        return $this->formBien($serializer, 'user/pages/biens/create.html.twig');
+    }
+
+    /**
+     * @Route("/biens/bien/modifier/{slug}",options={"expose"=true}, name="biens_update")
      */
     public function updateBien(Request $request, $slug, SerializerInterface $serializer): Response
     {
@@ -219,7 +216,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/biens/bien/{slug}",options={"expose"=true}, name="biens_read")
+     * @Route("/biens/bien/details/{slug}",options={"expose"=true}, name="biens_read")
      */
     public function readBien(Request $request, $slug, SerializerInterface $serializer): Response
     {
@@ -227,7 +224,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/biens/bien-suivi/{slug}",options={"expose"=true}, name="biens_suivi")
+     * @Route("/biens/bien/suivi/{slug}",options={"expose"=true}, name="biens_suivi")
      */
     public function suiviBien(Request $request, $slug, SerializerInterface $serializer): Response
     {

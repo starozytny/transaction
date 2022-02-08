@@ -52,7 +52,8 @@ class DataImmo extends DataConstructor
      */
     public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature,
                                 ImAdvantage $advantage, ImDiag $diag, ImLocalisation $localisation,
-                                ImFinancial $financial, ImConfidential $confidential, ImAdvert $advert, ImMandat $mandat, array $rooms)
+                                ImFinancial $financial, ImConfidential $confidential, ImAdvert $advert,
+                                ImMandat $mandat, array $rooms)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -88,20 +89,7 @@ class DataImmo extends DataConstructor
             }
         }
 
-        if(isset($data->tenants) && $data->tenants){
-            $idTenants = [];
-            foreach($data->tenants as $te){
-                $idTenants[] = $te->id;
-            }
-
-            $tenants = $this->em->getRepository(ImTenant::class)->findBy(['id' => $idTenants]);
-            foreach($tenants as $tenant){
-                $obj->addTenant($tenant);
-            }
-        }
-
         $isDraft = (int) $data->isDraft;
-
         if($isDraft){
             $obj->setStatus(ImBien::STATUS_INACTIF);
         }

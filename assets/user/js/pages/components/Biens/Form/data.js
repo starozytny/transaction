@@ -115,9 +115,7 @@ function getDataState (props) {
         photo: null,
 
         owner: props.owner,
-        tenants: props.tenants,
         allOwners: props.allOwners,
-        allTenants: props.allTenants,
 
         inform: props.inform,
         lastname: props.lastname,
@@ -162,20 +160,6 @@ function getOwners (self) {
         })
 }
 
-function getTenants (self) {
-    axios.get(Routing.generate('api_tenants_user_agency'), {})
-        .then(function (response) {
-            let data = response.data;
-            self.setState({ allTenants: data })
-        })
-        .catch(function (error) {
-            Formulaire.displayErrors(self, error);
-        })
-        .then(() => {
-            Formulaire.loader(false);
-        })
-}
-
 function getProspects (self) {
     axios.get(Routing.generate('api_prospects_user_agency'), {})
         .then(function (response) {
@@ -207,7 +191,6 @@ function getVisits (self, elem) {
 module.exports = {
     getDataState,
     getOwners,
-    getTenants,
     getProspects,
     getVisits
 }

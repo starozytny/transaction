@@ -35,21 +35,18 @@ if(el){
                            societyId={parseInt(el.dataset.societyId)}
                            agencyId={parseInt(el.dataset.agencyId)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
-                           allOwners={JSON.parse(el.dataset.allOwners)}
-                           allTenants={JSON.parse(el.dataset.allTenants)} />, el)
+                           allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 
 el = document.getElementById("update-bien");
 if(el){
     render(<BienFormulaire type="update" element={JSON.parse(el.dataset.element)}
-                           tenants={JSON.parse(el.dataset.tenants)}
                            rooms={JSON.parse(el.dataset.rooms)}
                            photos={JSON.parse(el.dataset.photos)}
                            societyId={parseInt(el.dataset.societyId)}
                            agencyId={parseInt(el.dataset.agencyId)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
-                           allOwners={JSON.parse(el.dataset.allOwners)}
-                           allTenants={JSON.parse(el.dataset.allTenants)} />, el)
+                           allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 
 el = document.getElementById("list-visits");

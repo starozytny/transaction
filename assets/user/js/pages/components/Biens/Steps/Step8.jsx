@@ -12,17 +12,11 @@ import {
     OwnerMainInfos,
     OwnerNegotiator,
 } from "@dashboardPages/components/Immo/Owners/OwnersItem";
-import {
-    TenantContact,
-    TenantMainInfos,
-    TenantNegotiator
-} from "@dashboardPages/components/Immo/Tenants/TenantsItem";
 
 const CURRENT_STEP = 8;
 
 export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate, onOpenAside,
-                          allOwners, owner, tenants,
-                          inform, lastname, phone1, email, visiteAt, keysNumber, keysWhere })
+                          allOwners, owner, inform, lastname, phone1, email, visiteAt, keysNumber, keysWhere })
 {
     let itemOwner = null;
     if(owner){
@@ -78,55 +72,6 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>}
-            </div>
-        </div>
-
-        <div className="line special-line contact-line">
-            <div className="form-group">
-                <label>Locataire(s)</label>
-
-                <Button type="default" onClick={() => onOpenAside("tenant-select")}>Sélectionner/ajouter un locataire</Button>
-
-                {tenants.length !== 0 && <div className="items-table">
-                    <div className="items items-default">
-                        <div className="item item-header">
-                            <div className="item-content">
-                                <div className="item-body">
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">Locataire</div>
-                                        <div className="col-2">Contact</div>
-                                        <div className="col-3">Négociateur</div>
-                                        <div className="col-4 actions" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {tenants.map(tenant => {
-                            return <div className="item" key={tenant.id}>
-                                <div className="item-content">
-                                    <div className="item-body">
-                                        <div className="infos infos-col-4">
-                                            <div className="col-1">
-                                                <TenantMainInfos elem={tenant} />
-                                            </div>
-
-                                            <div className="col-2">
-                                                <TenantContact elem={tenant} />
-                                            </div>
-
-                                            <div className="col-3">
-                                                <TenantNegotiator elem={tenant} />
-                                            </div>
-                                            <div className="col-4 actions">
-                                                <div className="sub">Sélectionné</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        })}
                     </div>
                 </div>}
             </div>
