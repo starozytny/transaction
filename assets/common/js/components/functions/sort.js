@@ -42,6 +42,22 @@ function compareCode(a, b){
     return comparison(a.code, b.code);
 }
 
+function compareUpdatedAtInverse(a, b){
+    return comparison(b.updatedAt, a.updatedAt);
+}
+
+function compareLibelle(a, b){
+    return comparison(a.libelle, b.libelle);
+}
+
+function compareFinancialPrice(a, b){
+    return comparison(a.financial.price, b.financial.price);
+}
+
+function compareFinancialPriceInverse(a, b){
+    return comparison(b.financial.price, a.financial.price);
+}
+
 function comparison (objA, objB){
     let comparison = 0;
     if (objA > objB) {
@@ -64,4 +80,8 @@ module.exports = {
     compareRank,
     compareAgEventStartAt,
     compareCode,
+    compareUpdatedAtInverse,
+    compareLibelle,
+    compareFinancialPrice,
+    compareFinancialPriceInverse
 }

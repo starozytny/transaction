@@ -7,6 +7,7 @@ import { Alert }  from "@dashboardComponents/Tools/Alert";
 
 import { AdCard } from "./AdCard";
 import { Filter } from "./Filter";
+import {TopSorterPagination} from "@dashboardComponents/Layout/Pagination";
 
 function getItemsSelect (data, noDuplication, el, pref, typeValue = "id") {
     if(el){
@@ -21,7 +22,8 @@ function getItemsSelect (data, noDuplication, el, pref, typeValue = "id") {
 
 export class BiensList extends Component {
     render () {
-        const { dataFilters, pageStatus, pageDraft, data, onDelete, filters, onGetFilters, tenants, onUpdateList } = this.props;
+        const { dataFilters, pageStatus, pageDraft, data, onDelete, filters, onGetFilters, tenants, onUpdateList,
+            sorters, onSorter, currentPage, perPage, onPerPage, taille, onPaginationClick } = this.props;
 
         let items = [], owners = [], negotiators = [], users = [], noDuplicateOwners = [], noDuplicateNegotiators = [], noDuplicateUsers = [];
         data.forEach(el => {
@@ -55,6 +57,10 @@ export class BiensList extends Component {
                             <div className={"item" + (pageStatus === 2 ? " active" : "")}><a href={Routing.generate('user_biens', {'st': 2})}>Archive</a></div>
                         </div>
                         <Button type="primary" element="a" onClick={Routing.generate('user_biens_create')}>Ajouter un bien</Button>
+                    </div>
+                    <div>
+                        <TopSorterPagination sorters={sorters} onSorter={onSorter}
+                                             currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
                     </div>
                     <div>
                         {items.length > 0 ? items : <Alert type="info">Aucun résultat.</Alert>}

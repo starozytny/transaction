@@ -5,12 +5,23 @@ import Sort          from "@commonComponents/functions/sort";
 import { Layout }    from "@dashboardComponents/Layout/Page";
 
 import { BiensList } from "./BiensList";
+import TopToolbar from "@commonComponents/functions/topToolbar";
 
 const URL_DELETE_ELEMENT    = 'api_biens_delete';
 const URL_DELETE_GROUP      = 'api_contact_delete_group';
 const MSG_DELETE_ELEMENT    = 'Supprimer ce bien ?';
 const MSG_DELETE_GROUP      = 'Aucun message sélectionné.';
-const SORTER = Sort.compareCreatedAtInverse;
+let SORTER = Sort.compareCreatedAtInverse;
+
+let sorters = [
+    { value: 0, label: 'Création',      identifiant: 'sorter-createdAt' },
+    { value: 1, label: 'Modification',  identifiant: 'sorter-updatedAt' },
+    { value: 2, label: 'Libellé',       identifiant: 'sorter-libelle' },
+    { value: 3, label: 'Prix ->',       identifiant: 'sorter-price-desc' },
+    { value: 4, label: 'Prix <-',       identifiant: 'sorter-price-asc' },
+]
+
+let sortersFunction = [Sort.compareCreatedAtInverse, Sort.compareUpdatedAtInverse, Sort.compareLibelle, Sort.compareFinancialPrice, Sort.compareFinancialPriceInverse];
 
 function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
     if(initTab.length !== 0){
@@ -121,6 +132,9 @@ export class Biens extends Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleGetFilters = this.handleGetFilters.bind(this);
+        this.handlePerPage = this.handlePerPage.bind(this);
+        this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
+        this.handleSorter = this.handleSorter.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
     }
@@ -133,12 +147,31 @@ export class Biens extends Component {
 
     handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, filterFunction); }
 
-    handleContentList = (currentData, changeContext, getFilters, filters) => {
+    handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
+
+    handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
+
+    handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
+
+    handleContentList = (currentData, changeContext, getFilters, filters, data) => {
+        const { perPage, currentPage } = this.state;
+
         return <BiensList onChangeContext={changeContext}
                           onDelete={this.layout.current.handleDelete}
                           onDeleteAll={this.layout.current.handleDeleteGroup}
                           filters={filters}
                           onGetFilters={this.handleGetFilters}
+                          //changeNumberPerPage
+                          perPage={perPage}
+                          onPerPage={this.handlePerPage}
+                          //twice pagination
+                          currentPage={currentPage}
+                          onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
+                          taille={data.length}
+                          //sorter
+                          sorters={sorters}
+                          onSorter={this.handleSorter}
+                          //data
                           tenants={JSON.parse(this.props.tenants)}
                           pageStatus={this.props.pageStatus !== "" ? parseInt(this.props.pageStatus) : false}
                           pageDraft={this.props.pageDraft !== "" ? parseInt(this.props.pageDraft) : false}
@@ -150,7 +183,8 @@ export class Biens extends Component {
     render () {
         return <div className="main-content">
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
-                    onContentList={this.handleContentList}/>
+                    onContentList={this.handleContentList}
+                    onChangeCurrentPage={this.handleChangeCurrentPage} />
         </div>
     }
 }
