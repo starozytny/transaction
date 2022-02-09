@@ -181,20 +181,7 @@ class SearchController extends AbstractController
 
         $data = json_decode($request->getContent());
 
-        $biens = $searchService->filterLocalisation('zipcode', $biens, $search->getZipcode());
-        $biens = $searchService->filterLocalisation('city',    $biens, $search->getCity());
-
-        $biens = $searchService->filterAdvantage('lift',    $biens, $search->getHasLift());
-        $biens = $searchService->filterAdvantage('terrace', $biens, $search->getHasTerrace());
-        $biens = $searchService->filterAdvantage('balcony', $biens, $search->getHasBalcony());
-        $biens = $searchService->filterAdvantage('parking', $biens, $search->getHasParking());
-        $biens = $searchService->filterAdvantage('box',     $biens, $search->getHasBox());
-
-        $biens = $searchService->filterMinMax('price', $biens, $search->getMinPrice(), $search->getMaxPrice(), $data->price ?? 0);
-        $biens = $searchService->filterMinMax('piece', $biens, $search->getMinPiece(), $search->getMaxPiece(), $data->piece ?? 0);
-        $biens = $searchService->filterMinMax('room',  $biens, $search->getMinRoom(),  $search->getMaxRoom(), $data->room ?? 0);
-        $biens = $searchService->filterMinMax('area',  $biens, $search->getMinArea(),  $search->getMaxArea(), $data->area ?? 0);
-        $biens = $searchService->filterMinMax('land',  $biens, $search->getMinLand(),  $search->getMaxLand(), $data->land ?? 0);
+        $biens = $searchService->getBiens($search, $biens, $data);
 
         return $apiResponse->apiJsonResponse($biens, User::USER_READ);
     }

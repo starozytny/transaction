@@ -3,9 +3,34 @@
 namespace App\Service\Immo;
 
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImSearch;
 
 class SearchService
 {
+    /**
+     * @param ImSearch $search
+     * @param ImBien[] $biens
+     * @param $data
+     * @return ImBien[]|array
+     */
+    public function getBiens(ImSearch $search, array $biens, $data = null): array
+    {
+        $biens = $this->filterLocalisation('zipcode', $biens, $search->getZipcode());
+        $biens = $this->filterLocalisation('city',    $biens, $search->getCity());
+
+        $biens = $this->filterAdvantage('lift',    $biens, $search->getHasLift());
+        $biens = $this->filterAdvantage('terrace', $biens, $search->getHasTerrace());
+        $biens = $this->filterAdvantage('balcony', $biens, $search->getHasBalcony());
+        $biens = $this->filterAdvantage('parking', $biens, $search->getHasParking());
+        $biens = $this->filterAdvantage('box',     $biens, $search->getHasBox());
+
+        $biens = $this->filterMinMax('price', $biens, $search->getMinPrice(), $search->getMaxPrice(), $data ? $data->price ?? 0 : 0);
+        $biens = $this->filterMinMax('piece', $biens, $search->getMinPiece(), $search->getMaxPiece(), $data ? $data->piece ?? 0 : 0);
+        $biens = $this->filterMinMax('room',  $biens, $search->getMinRoom(),  $search->getMaxRoom(), $data ? $data->room ?? 0 : 0);
+        $biens = $this->filterMinMax('area',  $biens, $search->getMinArea(),  $search->getMaxArea(), $data ? $data->area ?? 0 : 0);
+        return $this->filterMinMax('land',  $biens, $search->getMinLand(),  $search->getMaxLand(), $data ? $data->land ?? 0 : 0);
+    }
+    
     /**
      * @param $filter
      * @param ImBien[] $data
