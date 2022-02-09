@@ -95,7 +95,7 @@ class ProspectController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponse($obj, User::ADMIN_READ);
+        return $data->bienId ?$apiResponse->apiJsonResponse($suivi, ImSuivi::SUIVI_READ) : $apiResponse->apiJsonResponse($obj, User::ADMIN_READ);
     }
 
     /**

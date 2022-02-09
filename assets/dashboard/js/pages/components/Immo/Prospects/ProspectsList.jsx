@@ -39,12 +39,14 @@ export class ProspectsList extends Component {
         return <>
             <div>
                 <div className="toolbar toolbar-prospect">
-                    <div className="item create">
-                        <Button onClick={() => onChangeContext("create")}>Ajouter un prospect</Button>
-                    </div>
-                    {!isSelect && <div className="item">
-                        <Button onClick={() => onChangeContext("select")}>Sélectionner un existant</Button>
-                    </div>}
+                    {!isSelect && <>
+                        <div className="item create">
+                            <Button onClick={() => onChangeContext("create")}>Ajouter un prospect</Button>
+                        </div>
+                        <div className="item">
+                            <Button onClick={() => onChangeContext("select")}>Sélectionner un existant</Button>
+                        </div>
+                    </>}
                     <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom.."/>

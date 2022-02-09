@@ -59,16 +59,17 @@ export class Rapprochements extends Component {
         this.setState({ context, element })
     }
 
-    handleUpdateList = (element, newContext=null, getData = true) => {
-        const { data, context, sorter} = this.state
-
-        console.log(element, data)
+    handleUpdateListProspects = (element, newContext = null) => {
+        const { data, context, sorter } = this.state;
 
         Formulaire.updateData(this, sorter, newContext, context, data, element);
+        DataState.getProspects(this);
+    }
 
-        if(getData){
-            DataState.getProspects(this);
-        }
+    handleUpdateList = (element, newContext=null) => {
+        const { data, context, sorter} = this.state;
+
+        Formulaire.updateData(this, sorter, newContext, context, data, element);
     }
 
     handleSelectProspect = (prospect) => {
@@ -78,7 +79,7 @@ export class Rapprochements extends Component {
         axios.post(Routing.generate('api_suivis_link_bien_prospect', {'bien': elem.id, 'prospect': prospect.id}), {})
             .then(function (response) {
                 toastr.info(response.data.context === "create" ? "Prospect ajouté !" : "Prospect enlevé !");
-                self.handleUpdateList(JSON.parse(response.data.obj), response.data.context, false)
+                self.handleUpdateList(JSON.parse(response.data.obj), response.data.context)
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
@@ -103,11 +104,11 @@ export class Rapprochements extends Component {
         switch (context) {
             case "update":
                 contentAside = <ProspectFormulaire type="update" isFromRead={true} isClient={true} element={element} bienId={elem.id} negotiators={negotiators}
-                                                   societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateList}/>;
+                                                   societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
                 break
             case "create":
                 contentAside = <ProspectFormulaire type="create" isFromRead={true} isClient={true} bienId={elem.id} negotiators={negotiators}
-                                                   societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateList}/>;
+                                                   societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
                 break
             default:
                 contentAside = <Prospects isSelect={true} isClient={true} donnees={JSON.stringify(allProspects)} prospects={prospects} classes={" "}
