@@ -62,9 +62,11 @@ export function ButtonIconDropdown(props){
         <ButtonIcon {...props}>{children}</ButtonIcon>
         <div className="dropdown-items">
             {items.map((item, index) => {
-                return <div className="item" key={index}>
-                    {item.data}
-                </div>
+                if(item){
+                    return <div className="item" key={index}>
+                        {item.data}
+                    </div>
+                }
             })}
         </div>
     </div>
