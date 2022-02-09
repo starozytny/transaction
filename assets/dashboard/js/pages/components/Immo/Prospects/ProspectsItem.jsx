@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 
 import { ButtonIcon, ButtonIconContact, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 import { Selector }         from "@dashboardComponents/Layout/Selector";
+
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
-import Sanitaze from "@commonComponents/functions/sanitaze";
+import { SearchMainInfos1, SearchMainInfos2 } from "@dashboardPages/components/Immo/Searchs/SearchsItem";
 
 export class ProspectsItem extends Component {
     render () {
@@ -49,13 +50,16 @@ export class ProspectsItem extends Component {
 
                         <div className="col-3">
                             {elem.search ? <>
-                                <SearchInfos1 elem={elem.search} />
+                                <SearchInfos elem={elem.search} />
+                                <div className="actions-crud-search">
+                                    <ButtonSearchCrud icon="layer" onClick={() => onChangeContext('read', elem)}>Résultats</ButtonSearchCrud>
+                                </div>
                             </> : null}
                         </div>
 
                         <div className="col-4">
                             {elem.search ? <>
-                                <SearchInfos2 elem={elem.search} />
+                                <SearchMainInfos2 elem={elem.search} />
                                 <div className="actions-crud-search">
                                     <ButtonSearchCrud icon="pencil" onClick={() => onChangeContext('customTwo', elem)}>Modifier</ButtonSearchCrud>
                                     <ButtonSearchCrud icon="trash" onClick={() => onDeleteSearch(elem)}>Supprimer</ButtonSearchCrud>
@@ -89,32 +93,14 @@ export function ProspectsMainInfos ({ elem, isClient }) {
     </>
 }
 
-export function SearchInfos1({ elem }) {
+export function SearchInfos({ elem }) {
     return <>
         <div className="badges">
             <div className="badge badge-default">{elem.typeAdString}</div>
             <div className="badge badge-default">{elem.typeBienString}</div>
         </div>
 
-        <div className="sub">
-            {Sanitaze.toFormatCurrency(elem.minPrice)} à {Sanitaze.toFormatCurrency(elem.maxPrice)}
-        </div>
-        <div className="sub">{elem.minPiece} à {elem.maxPiece} pièces</div>
-        <div className="sub">{elem.minRoom} à {elem.maxRoom} chambres</div>
-        <div className="sub">Surface : {elem.minArea} m² à {elem.maxArea} m²</div>
-        <div className="sub">Terrain : {elem.minLand} m² à {elem.maxLand} m²</div>
-    </>
-}
-
-export function SearchInfos2({ elem }) {
-    return <>
-        <div className="sub">Ascenseur : {Sanitaze.toTrilleanString(elem.hasLift, "Indifférent")}</div>
-        <div className="sub">Terrasse : {Sanitaze.toTrilleanString(elem.hasTerrace, "Indifférent")}</div>
-        <div className="sub">Balcon : {Sanitaze.toTrilleanString(elem.hasBalcony, "Indifférent")}</div>
-        <div className="sub">Parking : {Sanitaze.toTrilleanString(elem.hasParking, "Indifférent")}</div>
-        <div className="sub">Box : {Sanitaze.toTrilleanString(elem.hasBox, "Indifférent")}</div>
-
-        <div className="sub">{elem.zipcode} {elem.city}</div>
+        <SearchMainInfos1 elem={elem} />
     </>
 }
 

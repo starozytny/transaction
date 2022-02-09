@@ -114,9 +114,6 @@ export class SearchRead extends Component {
 
         return <div className="page-default">
             <div className="page-col-1">
-                <div className="comeback">
-                    <ButtonBack onChangeContext={onChangeContext} />
-                </div>
                 <div className="body-col-1">
                     <div className="title-col-1">
                         <span>Recherche de base :</span>
@@ -185,7 +182,7 @@ export class SearchRead extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <SearchsItem elem={elem} isRead={true} />
+                            <SearchsItem elem={elem} />
                         </div>
                     </div>
                 </div>

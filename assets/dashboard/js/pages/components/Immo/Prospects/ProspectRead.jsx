@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
-import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
-import { Back }         from "@dashboardComponents/Layout/Elements";
+import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { Back }               from "@dashboardComponents/Layout/Elements";
+
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
+import { SearchRead }       from "@dashboardPages/components/Immo/Searchs/SearchRead";
 
 export class ProspectRead extends Component {
     render () {
@@ -55,11 +57,14 @@ export class ProspectRead extends Component {
                     </div>
 
                     <div className="item-read-content">
-                        <div className="content">
 
-                        </div>
                     </div>
+                </div>
 
+                <div>
+                    {elem.search ? <SearchRead elem={elem.search} follows={[]} prospectId={elem.id}
+                                               onUpdateFollows={null} onChangeContext={onChangeContext} />
+                        : <Button icon="add-square" onClick={() => onChangeContext('customOne', elem)}>Ajouter une recherche</Button>}
                 </div>
             </div>
         </>
