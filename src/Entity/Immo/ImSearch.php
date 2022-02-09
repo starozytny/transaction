@@ -21,6 +21,11 @@ class ImSearch extends DataEntity
     private $id;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive = false;
+
+    /**
      * @ORM\Column(type="integer")
      * @Groups({"admin:read"})
      */
@@ -400,5 +405,17 @@ class ImSearch extends DataEntity
     public function getTypeBienString(): string
     {
         return $this->getCodeTypeBienString($this->codeTypeAd);
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
     }
 }
