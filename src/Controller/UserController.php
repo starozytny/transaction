@@ -408,25 +408,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/prospects/prospect/{id}/recherches", options={"expose"=true}, name="prospects_searchs")
-     */
-    public function searchs(ImProspect $obj, SerializerInterface $serializer): Response
-    {
-        $em = $this->doctrine->getManager();
-        $objs    = $em->getRepository(ImSearch::class)->findBy(['prospect' => $obj]);
-        $follows = $em->getRepository(ImSuivi::class)->findBy(['prospect' => $obj]);
-
-        $objs    = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
-        $follows = $serializer->serialize($follows, 'json', ['groups' => User::ADMIN_READ]);
-
-        return $this->render('user/pages/searchs/index.html.twig', [
-            'elem' => $obj,
-            'donnees' => $objs,
-            'follows' => $follows,
-        ]);
-    }
-
-    /**
      * @Route("/boite-reception/envoyer", options={"expose"=true}, name="mails_send")
      */
     public function mailsSend(Request $request, UserRepository $userRepository, SerializerInterface $serializer): Response

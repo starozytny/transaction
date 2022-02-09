@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
-
 import { ButtonIcon, ButtonIconContact, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 import { Selector }         from "@dashboardComponents/Layout/Selector";
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
@@ -18,8 +16,6 @@ export class ProspectsItem extends Component {
                 }
             })
         }
-
-        let routeSearchs = isClient ? "user_prospects_searchs" : "admin_prospects_searchs";
 
         let actions = [
             {data: <a onClick={() => onDelete(elem)}>Supprimer</a>},
@@ -46,14 +42,14 @@ export class ProspectsItem extends Component {
                             </div>
                             <div className="sub">Type de prospect : {elem.typeString}</div>
                             {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
+                            <NegotiatorBubble elem={elem.negotiator} txt={null}/>
                         </div>
 
                         <div className="col-3" onClick={!isSelect ? () => onChangeContext("read", elem) : null}>
-                            <NegotiatorBubble elem={elem.negotiator} />
+
                         </div>
 
                         <div className="col-4 actions">
-                            <ButtonIcon icon="search" element="a" onClick={Routing.generate(routeSearchs, {'id': elem.id})}>Recherches</ButtonIcon>
                             <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>
