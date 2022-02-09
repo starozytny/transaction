@@ -96,6 +96,7 @@ export class AdCard extends Component {
             <div className="card-main">
                 <div className="card-body">
                     {el.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
+                    {el.status === 2 && <div className="isDraft"><div>Archive</div></div>}
 
                     <div className="image">
                         <img src={el.mainPhotoFile} alt="illustration"/>
@@ -144,7 +145,7 @@ export class AdCard extends Component {
                     </div>
                 </div>
                 <div className="card-footer">
-                    {el.confidential.commentary && <div className="commentary">Confidentiel : {parse(el.confidential.commentary)}</div>}
+                    {el.confidential.commentary && <div className="commentary">{parse(el.confidential.commentary)}</div>}
 
                     <div className="footer-actions">
                         <div className="createdAt">
