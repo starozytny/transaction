@@ -173,7 +173,15 @@ export class RapprochementsItem extends Component {
                         </div>
                         <div className="col-3">
                             <div className="ra-percentage">
-                                <div>{prospect.search ? "80%" : "0%"}</div>
+                                <figure className="chart-two chart-two-40 animate">
+                                    <svg role="img" xmlns="http://www.w3.org/2000/svg">
+                                        <title>Pourcentage rapprochement</title>
+                                        <circle className="circle-background"/>
+                                        <circle className="circle-foreground"/>
+                                    </svg>
+                                    <figcaption>{prospect.search ? "80%" : "0%"} of all males like donuts.</figcaption>
+                                </figure>
+                                <div></div>
                             </div>
                             {prospect.negotiator && <NegociatorBubble elem={prospect.negotiator} onOpen={this.handleOpenHelp} />}
                         </div>
