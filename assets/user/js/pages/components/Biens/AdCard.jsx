@@ -96,7 +96,6 @@ export class AdCard extends Component {
             <div className="card-main">
                 <div className="card-body">
                     {el.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
-                    {el.status === 2 && <div className="isDraft"><div>Archive</div></div>}
 
                     <div className="image">
                         <img src={el.mainPhotoFile} alt="illustration"/>
