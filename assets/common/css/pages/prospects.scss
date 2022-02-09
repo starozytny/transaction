@@ -1,0 +1,17 @@
+.actions-crud-search{
+  margin-top: 8px;
+
+  & > *:not(:last-child){
+    margin-bottom: 4px;
+  }
+}
+
+.crud-search{
+  @include flex(row, center, flex-start);
+  cursor: pointer;
+
+  [class^="icon-"]{
+    display: inline-block;
+    margin-right: 4px;
+  }
+}

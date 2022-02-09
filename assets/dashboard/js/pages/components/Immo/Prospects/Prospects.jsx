@@ -14,6 +14,7 @@ import Formulaire        from "@dashboardComponents/functions/Formulaire";
 import { ProspectsList }       from "./ProspectsList";
 import { ProspectFormulaire }  from "./ProspectForm";
 import { ProspectRead }        from "@dashboardPages/components/Immo/Prospects/ProspectRead";
+import { SearchFormulaire }    from "@dashboardPages/components/Immo/Searchs/SearchForm";
 
 const URL_ARCHIVED_ELEMENT = 'api_prospects_switch_archived';
 const URL_DELETE_ELEMENT = 'api_prospects_delete';
@@ -64,6 +65,8 @@ export class Prospects extends Component {
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
         this.handleContentList = this.handleContentList.bind(this);
         this.handleContentRead = this.handleContentRead.bind(this);
+        this.handleContentCustomOne = this.handleContentCustomOne.bind(this);
+        this.handleContentCustomTwo = this.handleContentCustomTwo.bind(this);
     }
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "id"); }
@@ -147,11 +150,20 @@ export class Prospects extends Component {
         return <ProspectRead elem={element} onChangeContext={changeContext} />
     }
 
+    handleContentCustomOne = (changeContext, element) => {
+        return <SearchFormulaire type="create" prospectId={element.id} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+    }
+
+    handleContentCustomTwo = (changeContext, element) => {
+        return <SearchFormulaire type="update" element={element.search} prospectId={element.id} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+    }
+
     render () {
         return <>
             <Layout ref={this.layout} {...this.state} search={this.props.search} onGetData={this.handleGetData}
                     onContentList={this.handleContentList} onContentRead={this.handleContentRead}
                     onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}
+                    onContentCustomOne={this.handleContentCustomOne} onContentCustomTwo={this.handleContentCustomTwo}
                     onChangeCurrentPage={this.handleChangeCurrentPage} />
         </>
     }

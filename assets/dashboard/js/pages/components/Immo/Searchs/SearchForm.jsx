@@ -153,33 +153,8 @@ export class SearchForm extends Component {
                         Helper.toTop();
 
                         if(self.props.onUpdateList){
-                            self.props.onUpdateList(data);
-                        }
-
-                        self.setState({ success: messageSuccess, errors: [] });
-                        if(context === "create"){
-                            toastr.info(messageSuccess);
-                            self.setState( {
-                                codeTypeAd: 0,
-                                codeTypeBien: 0,
-                                minPrice: 0,
-                                maxPrice: 0,
-                                minPiece: 0,
-                                maxPiece: 0,
-                                minRoom: 0,
-                                maxRoom: 0,
-                                minArea: 0,
-                                maxArea: 0,
-                                minLand: 0,
-                                maxLand: 0,
-                                zipcode: "",
-                                city: "",
-                                hasLift: 99,
-                                hasTerrace: 99,
-                                hasBalcony: 99,
-                                hasParking: 99,
-                                hasBox: 99,
-                            })
+                            self.props.onUpdateList(data, "update");
+                            self.props.onChangeContext('list')
                         }
                     })
                     .catch(function (error) {

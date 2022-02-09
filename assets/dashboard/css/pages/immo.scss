@@ -4,6 +4,8 @@
 @import "./split/user/card";
 @import "../components/bien-card";
 
+@import "../../../common/css/pages/prospects";
+
 #owners{
   @include toolbarCreateFilterSearch(208);
 }

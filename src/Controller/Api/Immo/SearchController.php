@@ -60,7 +60,9 @@ class SearchController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponse($obj, User::ADMIN_READ);
+        $prospect = $obj->getProspect();
+
+        return $apiResponse->apiJsonResponse($prospect, User::ADMIN_READ);
     }
 
     /**
@@ -134,27 +136,6 @@ class SearchController extends AbstractController
     }
 
     /**
-     * Delete a group of searchs
-     *
-     * @Route("/", name="delete_group", options={"expose"=true}, methods={"DELETE"})
-     *
-     * @OA\Response(
-     *     response=200,
-     *     description="Return message successful",
-     * )
-     *
-     * @OA\Tag(name="Searchs")
-     *
-     * @param Request $request
-     * @param DataService $dataService
-     * @return JsonResponse
-     */
-    public function deleteSelected(Request $request, DataService $dataService): JsonResponse
-    {
-        return $dataService->deleteSelected(ImSearch::class, json_decode($request->getContent()));
-    }
-
-    /**
      * Get results search
      *
      * @Route("/results/{id}", name="results", options={"expose"=true}, methods={"POST"})
@@ -184,33 +165,5 @@ class SearchController extends AbstractController
         $biens = $searchService->rapprochement($search, $biens, $data);
 
         return $apiResponse->apiJsonResponse($biens, User::USER_READ);
-    }
-
-    /**
-     * Duplicate search line
-     *
-     * @Route("/duplicate/{id}", name="duplicate", options={"expose"=true}, methods={"POST"})
-     *
-     * @OA\Response(
-     *     response=200,
-     *     description="Return message successful",
-     * )
-     *
-     * @OA\Tag(name="Searchs")
-     *
-     * @param ImSearch $obj
-     * @param ApiResponse $apiResponse
-     * @return JsonResponse
-     */
-    public function duplicate(ImSearch $obj, ApiResponse $apiResponse): JsonResponse
-    {
-        $em = $this->doctrine->getManager();
-
-        $new = clone $obj;
-
-        $em->persist($new);
-        $em->flush();
-
-        return $apiResponse->apiJsonResponseSuccessful("Success");
     }
 }
