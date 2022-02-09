@@ -18,7 +18,14 @@ export class AdCard extends Component {
     constructor(props) {
         super();
 
+        this.helpBubble = React.createRef();
+
+        this.handleOpenHelp = this.handleOpenHelp.bind(this);
         this.handleChangeStatus = this.handleChangeStatus.bind(this);
+    }
+
+    handleOpenHelp = () => {
+        this.helpBubble.current.handleOpen();
     }
 
     handleChangeStatus = (elem, status) => {
@@ -128,13 +135,13 @@ export class AdCard extends Component {
                                 <div className="carac">{el.area.total}m² - {el.number.piece} pièce{el.number.piece > 1 ? "s" : ""}</div>
                             </div>
                         </a>
-                        <a className="col-3" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
-                            <div className="references">
+                        <div className="col-3">
+                            <a className="references" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
                                 <div>{el.reference}</div>
                                 <div>GERANCE01</div>
-                            </div>
-                           <NegociatorBubble elem={el.negotiator} />
-                        </a>
+                            </a>
+                           <NegociatorBubble elem={el.negotiator} onOpen={this.handleOpenHelp} />
+                        </div>
                     </div>
                 </div>
                 <div className="card-footer">
@@ -162,43 +169,28 @@ export class AdCard extends Component {
                 </div>
             </div>
 
+            <HelpBubble ref={this.helpBubble} content={<ContentNegotiatorBubble elem={el.negotiator} />}>Négociateur</HelpBubble>
         </div>
     }
 }
 
-export class NegociatorBubble extends Component {
-    constructor(props) {
-        super();
-
-        this.helpBubble = React.createRef();
-
-        this.handleOpenHelp = this.handleOpenHelp.bind(this);
-    }
-
-    handleOpenHelp = () => {
-        this.helpBubble.current.handleOpen();
-    }
-
-    render () {
-        const { elem } = this.props;
-
-        let contentHelpBubble = <div>
-            <div>#{elem.code} - {elem.fullname}</div>
-            <p><br/></p>
-            <div>{elem.phone}</div>
-            <div>{elem.phone2}</div>
-            <div>{elem.email}</div>
-        </div>
-
-        return <>
-            <div className="negociateur" onClick={this.handleOpenHelp}>
-                <div className="avatar">
-                    <img src={elem.avatarFile} alt="Avatar" />
-                </div>
-                <span className="tooltip">{elem.fullname}</span>
+export function NegociatorBubble ({ elem, onOpen }) {
+    return <>
+        <div className="negociateur" onClick={onOpen}>
+            <div className="avatar">
+                <img src={elem.avatarFile} alt="Avatar" />
             </div>
+            <span className="tooltip">{elem.fullname}</span>
+        </div>
+    </>
+}
 
-            <HelpBubble ref={this.helpBubble} content={contentHelpBubble}>Négociateur</HelpBubble>
-        </>
-    }
+export function ContentNegotiatorBubble ({ elem }) {
+    return  <div>
+        <div>#{elem.code} - {elem.fullname}</div>
+        <p><br/></p>
+        <div>{elem.phone}</div>
+        <div>{elem.phone2}</div>
+        <div>{elem.email}</div>
+    </div>
 }

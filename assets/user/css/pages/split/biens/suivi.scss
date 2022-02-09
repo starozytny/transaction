@@ -66,6 +66,68 @@
   border-radius: 4px;
 }
 
+.card-ra{
+  @include flex(row, center, flex-start);
+  margin-bottom: 12px;
+
+  .selector{
+    width: 34px;
+  }
+
+  .address{
+    margin-top: 4px;
+  }
+
+  .sub, .address{
+    font-size: 15px;
+    color: var(--grey3);
+  }
+
+  .title{
+    @include fontSemibold();
+  }
+
+  .card-main{
+    border-radius: 4px;
+    background-color: var(--alpha);
+    border: 1px solid var(--grey);
+    width: calc(100% - 2px);
+  }
+
+  .card-body{
+    position: relative;
+
+    .infos{
+      padding: 12px;
+      margin-top: 12px;
+    }
+
+    .col-3{
+      @include flex(column, flex-end, flex-end);
+    }
+
+    .identifier{
+      margin-bottom: 12px;
+      display: block;
+      color: var(--txt);
+    }
+  }
+
+  .card-footer{
+    padding: 12px 12px 4px 12px;
+    background-color: var(--fondContent);
+
+    .footer-actions{
+      margin-top: 12px;
+    }
+
+    .actions{
+      margin-top: 8px;
+      text-align: right;
+    }
+  }
+}
+
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
@@ -85,6 +147,101 @@
 
     .aside{
       width: 60%;
+    }
+  }
+
+  .card-ra{
+    margin-bottom: 24px;
+
+    .card-body{
+      @include flex(row, stretch, flex-start);
+      border-bottom: 1px solid var(--grey);
+
+      .identifier{
+        margin-bottom: 0;
+      }
+
+      .infos{
+        margin-top: 0;
+        @include flex(row, stretch, flex-start);
+        width: 100%;
+
+        .col-1{
+          width: calc(100% - (40% - 12px) - 100px);
+          margin-right: 12px;
+        }
+
+        .col-2{
+          width: calc(40% - 12px);
+          margin-right: 12px;
+        }
+
+        .col-3{
+          width: 100px;
+          justify-content: space-between;
+        }
+      }
+    }
+
+    .card-footer{
+
+      .commentary{
+        width: calc(100% - 184px);
+        font-size: 15px;
+      }
+
+      .footer-actions{
+        margin-top: 0;
+        @include flex(row, flex-end, space-between);
+      }
+
+      .actions{
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .card-ra{
+
+    .card-body{
+      .infos{
+        padding: 24px;
+      }
+    }
+
+    .card-footer{
+      padding: 12px 24px 4px 12px;
+    }
+  }
+}
+
+//                      __   _  __    ___   ___    __
+//                     | _| / |/ /_  / _ \ / _ \  |_ |
+//    _____ _____ _____| |  | | '_ \| | | | | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | | (_) | |_| | |_| |  | |_____|_____|_____|
+//                     | |  |_|\___/ \___/ \___/   | |
+//                     |__|                       |__|
+@media (min-width: 1600px){
+  .card-ra{
+    .card-body{
+
+      .infos{
+        .col-1{
+          width: calc(100% - (45% - 12px) - 100px);
+        }
+
+        .col-2{
+          width: calc(45% - 12px);
+        }
+      }
     }
   }
 }

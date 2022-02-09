@@ -6,6 +6,7 @@ import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Aside }      from "@dashboardComponents/Tools/Aside";
 import { Alert }      from "@dashboardComponents/Tools/Alert";
+import { HelpBubble } from "@dashboardComponents/Tools/HelpBubble";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import DataState    from "@userPages/components/Biens/Form/data";
@@ -13,9 +14,9 @@ import Sort         from "@commonComponents/functions/sort";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
 
 import { ProspectFormulaire }   from "@dashboardPages/components/Immo/Prospects/ProspectForm";
-import { NegociatorBubble }     from "@userPages/components/Biens/AdCard";
 import { SearchInfos }          from "@dashboardPages/components/Immo/Prospects/ProspectsItem";
 import { Prospects }            from "@dashboardPages/components/Immo/Prospects/Prospects";
+import { ContentNegotiatorBubble, NegociatorBubble } from "@userPages/components/Biens/AdCard";
 
 const SORTER = Sort.compareLastname;
 let i = 0;
@@ -96,7 +97,7 @@ export class Rapprochements extends Component {
         let items = [];
         let prospects = [];
         data.forEach(elem => {
-            items.push(<RapprochementsItem prospect={elem.prospect} key={elem.id} />)
+            items.push(<RapprochementsItem prospect={elem.prospect} onSelectProspect={this.handleSelectProspect} key={elem.id} />)
             prospects.push(elem.prospect)
         })
 
@@ -134,10 +135,25 @@ export class Rapprochements extends Component {
 }
 
 export class RapprochementsItem extends Component {
-    render () {
-        const { prospect } = this.props;
+    constructor(props) {
+        super();
 
-        return <div className="card-ad">
+        this.helpBubble = React.createRef();
+
+        this.handleOpenHelp = this.handleOpenHelp.bind(this);
+    }
+
+    handleOpenHelp = () => {
+        this.helpBubble.current.handleOpen();
+    }
+
+    render () {
+        const { prospect, onSelectProspect } = this.props;
+
+        return <div className="card-ra">
+            <div className="selector">
+                <ButtonIcon icon="cancel" onClick={() => onSelectProspect(prospect)}>Enlever</ButtonIcon>
+            </div>
             <div className="card-main">
                 <div className="card-body">
                     <div className="infos">
@@ -159,7 +175,7 @@ export class RapprochementsItem extends Component {
                             <div className="ra-percentage">
                                 <div>{prospect.search ? "80%" : "0%"}</div>
                             </div>
-                            {prospect.negotiator && <NegociatorBubble elem={prospect.negotiator} />}
+                            {prospect.negotiator && <NegociatorBubble elem={prospect.negotiator} onOpen={this.handleOpenHelp} />}
                         </div>
                     </div>
                 </div>
@@ -173,6 +189,8 @@ export class RapprochementsItem extends Component {
                     </div>
                 </div>
             </div>
+
+            {prospect.negotiator && <HelpBubble ref={this.helpBubble} content={<ContentNegotiatorBubble elem={prospect.negotiator} />}>Négociateur</HelpBubble>}
         </div>
     }
 }
