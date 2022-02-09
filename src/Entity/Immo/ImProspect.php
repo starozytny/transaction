@@ -151,6 +151,11 @@ class ImProspect extends DataEntity
      */
     private $suivis;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ImSearch::class, inversedBy="prospect", cascade={"persist", "remove"})
+     */
+    private $search;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -493,6 +498,18 @@ class ImProspect extends DataEntity
     public function setIsArchived(bool $isArchived): self
     {
         $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    public function getSearch(): ?ImSearch
+    {
+        return $this->search;
+    }
+
+    public function setSearch(?ImSearch $search): self
+    {
+        $this->search = $search;
 
         return $this;
     }

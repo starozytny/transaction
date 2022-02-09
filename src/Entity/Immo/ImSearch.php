@@ -139,6 +139,11 @@ class ImSearch extends DataEntity
      */
     private $hasBox = ImBien::ANSWER_UNKNOWN;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ImProspect::class, mappedBy="search", cascade={"persist", "remove"})
+     */
+    private $prospect;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -398,6 +403,28 @@ class ImSearch extends DataEntity
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getProspect(): ?ImProspect
+    {
+        return $this->prospect;
+    }
+
+    public function setProspect(?ImProspect $prospect): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($prospect === null && $this->prospect !== null) {
+            $this->prospect->setSearch(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($prospect !== null && $prospect->getSearch() !== $this) {
+            $prospect->setSearch($this);
+        }
+
+        $this->prospect = $prospect;
 
         return $this;
     }
