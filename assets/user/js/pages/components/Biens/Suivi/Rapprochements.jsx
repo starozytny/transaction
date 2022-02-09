@@ -67,14 +67,19 @@ export class Rapprochements extends Component {
     }
 
     handleSelectProspect = (prospect) => {
-        const { elem } = this.props;
-        const { data } = this.state;
-
-        let nData = helper.addOrRemove(data, prospect, "Prospect ajouté.", "Prospect enlevé.");
-        this.setState({ data: nData });
+        const { elem } = this.props; //bien
 
         const self = this;
-        axios.post(Routing.generate('api_suivis_link_bien', {'id': elem.id}), nData)
+        axios.post(Routing.generate('api_suivis_link_bien_prospect', {'bien': elem.id, 'prospect': prospect.id}), {})
+            .then(function (response) {
+                console.log(response.data);
+                if(response.data.id){
+                    self.handleUpdateList(response.data, "update")
+                }else{
+                    self.handleUpdateList(response.data, "delete")
+                }
+
+            })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
             })
