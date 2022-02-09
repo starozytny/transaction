@@ -87,7 +87,6 @@ class UserController extends AbstractController
                           SerializerInterface $serializer): Response
     {
         $status = $request->query->get('st');
-        $draft = $request->query->get('dr');
         $filterOwner = $request->query->get('fo');
         $filterTenant = $request->query->get('ft');
         $filterNego = $request->query->get('fn');
@@ -97,14 +96,9 @@ class UserController extends AbstractController
         $user = $this->getUser();
 
         if($status == null){
-            if($draft){
-                $objs = $repository->findBy(['agency' => $user->getAgency(), 'isDraft' => true]);
-            }else{
-                $objs = $repository->findBy(['agency' => $user->getAgency()]);
-            }
-
+            $objs = $repository->findBy(['agency' => $user->getAgency()]);
         }else{
-            $objs = $repository->findBy(['agency' => $user->getAgency(), 'status' => (int) $status, 'isDraft' => (bool)$draft]);
+            $objs = $repository->findBy(['agency' => $user->getAgency(), 'status' => (int) $status]);
         }
 
         $tenants = $tenantRepository->findBy(['bien' => $objs]);
@@ -120,7 +114,6 @@ class UserController extends AbstractController
             'filterNego' => $filterNego,
             'filterUser' => $filterUser,
             'st' => $status,
-            'dr' => $draft
         ]);
     }
 

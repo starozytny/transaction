@@ -111,6 +111,9 @@ class FakeBiensCreate extends Command
             $negotiator = $negotiators[$fake->numberBetween(0,$nbNegotiators - 1)];
             $user = $users[$fake->numberBetween(0,$nbUsers - 1)];
 
+            $isDraft = $fake->numberBetween(0, 1);
+            $isArchived = $fake->numberBetween(0, 1);
+
             $data = [
                 "codeTypeAd" => (string) $fake->numberBetween(0, 7),
                 "codeTypeBien" => (string) $fake->numberBetween(0, 9),
@@ -219,7 +222,7 @@ class FakeBiensCreate extends Command
                 "typeAdvert" => $fake->numberBetween(0, 2),
                 "contentSimple" => $fake->text,
                 "contentFull" => $fake->sentence(255),
-                "isDraft" => $fake->numberBetween(0, 1),
+                "isDraft" => $isArchived ? false : $isDraft,
                 "codeTypeMandat" => (string) $fake->numberBetween(0, 3),
                 "startAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "endAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
@@ -240,8 +243,6 @@ class FakeBiensCreate extends Command
 
             $obj = $this->dataImmo->setDataBien(new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
                 $localisation, $financial, $confidential, $advert, $mandat, []);
-
-            $obj->setReference($i);
 
             $choicesOwners = [];
             foreach($owners as $ow){
@@ -278,35 +279,34 @@ class FakeBiensCreate extends Command
                 }
             }
 
-            $isDraft = $fake->numberBetween(0, 1);
-            $isArchived = $fake->numberBetween(0, 1);
-
             $obj = ($obj)
                 ->setUser($user)
                 ->setCreatedBy($user->getShortFullName())
+                ->setReference("REF" . $i)
                 ->setIdentifiant(uniqid().bin2hex(random_bytes(8)) . random_int(100,999))
                 ->setAgency($user->getAgency())
                 ->setOwner($owner)
-                ->setIsPublished($fake->numberBetween(0, 1))
-                ->setIsDraft($isDraft)
             ;
 
-            if($isDraft == 1){
-                $obj = ($obj)
-                    ->setIsPublished(false)
-                    ->setStatus(ImBien::STATUS_DRAFT)
-                ;
-            }
-
             if($isArchived == 0){
+                $status = $fake->numberBetween(0, 1);
                 $obj = ($obj)
-                    ->setIsPublished($fake->numberBetween(0, 1))
-                    ->setStatus($fake->numberBetween(0, 1))
+                    ->setIsPublished(!$status == 0)
+                    ->setStatus($status)
                 ;
+
+                if($isDraft == 1){
+                    $obj = ($obj)
+                        ->setIsPublished(false)
+                        ->setStatus(ImBien::STATUS_DRAFT)
+                        ->setIsDraft($isDraft)
+                    ;
+                }
             }else{
                 $obj = ($obj)
                     ->setIsPublished(false)
                     ->setStatus(ImBien::STATUS_ARCHIVE)
+                    ->setIsArchived($isArchived)
                 ;
             }
 
