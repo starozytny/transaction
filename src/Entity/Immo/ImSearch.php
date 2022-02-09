@@ -23,7 +23,7 @@ class ImSearch extends DataEntity
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isActive = false;
+    private $isActive = true;
 
     /**
      * @ORM\Column(type="integer")

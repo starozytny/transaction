@@ -239,7 +239,13 @@ class ProspectController extends AbstractController
     {
         $em = $this->doctrine->getManager();
 
-        $obj->setIsArchived(!$obj->getIsArchived());
+        $status = !$obj->getIsArchived();
+
+        $obj->setIsArchived($status);
+        foreach($obj->getSearchs() as $search){
+            $search->setIsActive(!$status);
+        }
+
         $em->flush();
 
         return $apiResponse->apiJsonResponse($obj, User::ADMIN_READ);
