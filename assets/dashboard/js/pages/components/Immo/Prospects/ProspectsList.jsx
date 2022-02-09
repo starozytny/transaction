@@ -22,7 +22,7 @@ export class ProspectsList extends Component {
     }
 
     render () {
-        const { isSelect=false, isFromRead=false, isClient, data, onSearch, onChangeContext, onDeleteAll, onGetFilters, filters,
+        const { isSelect=false, isClient, data, onSearch, onChangeContext, onDeleteAll, onGetFilters, filters,
             sorters, onSorter, currentPage, perPage, onPerPage, taille, onPaginationClick } = this.props;
 
         let filtersLabel = ["Aucun", "En recherche", "A compléter", "A contacter", "En offre"];
@@ -42,18 +42,18 @@ export class ProspectsList extends Component {
                     <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter un prospect</Button>
                     </div>
-                    {isFromRead && <div className="item">
+                    <div className="item">
                         <Button onClick={() => onChangeContext("select")}>Sélectionner un existant</Button>
                     </div>}
-                    {!isFromRead && <div className="item filter-search">
+                    <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom.."/>
                         <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
-                    </div>}
+                    </div>
                 </div>}
 
-                {!isFromRead && <TopSorterPagination sorters={sorters} onSorter={onSorter}
-                                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>}
+                <TopSorterPagination sorters={sorters} onSorter={onSorter}
+                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
 
                 <div className="items-table">
                     <div className="items items-default">
@@ -77,7 +77,7 @@ export class ProspectsList extends Component {
                     </div>
                 </div>
 
-                {(!isFromRead && data && data.length !== 0 && !isClient) && <div className="page-actions">
+                {(data && data.length !== 0 && !isClient) && <div className="page-actions">
                     <div className="selectors-actions">
                         <div className="item" onClick={onDeleteAll}>
                             <ButtonIcon icon="trash" text="Supprimer la sélection" />

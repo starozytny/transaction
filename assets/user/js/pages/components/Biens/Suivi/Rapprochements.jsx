@@ -5,7 +5,7 @@ import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Aside }      from "@dashboardComponents/Tools/Aside";
 import { Alert }      from "@dashboardComponents/Tools/Alert";
-import { ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import helper       from "@userPages/components/Biens/helper";
 import DataState    from "@userPages/components/Biens/Form/data";
@@ -109,8 +109,16 @@ export class Rapprochements extends Component {
         }
 
         return (<div className="details-tab-infos">
+            <div className="toolbar toolbar-prospect">
+                <div className="item create">
+                    <Button onClick={() => this.handleChangeContext('create')}>Ajouter un prospect</Button>
+                </div>
+                <div className="item">
+                    <Button onClick={() => this.handleChangeContext('select')}>Sélectionner un existant</Button>
+                </div>
+            </div>
             {data && data.length !== 0 ? data.map(elem => {
-                return <RapprochementsItem prospect={elem.prospect} bien={elem.bien} />
+                return <RapprochementsItem prospect={elem.prospect} bien={elem.bien} key={elem.id} />
             }) : <Alert>Aucun résultat</Alert>}
 
             <Aside ref={this.aside} content={contentAside}/>
@@ -135,18 +143,20 @@ export function RapprochementsItem ({ prospect, bien }) {
                         </div>
                     </div>
                     <div className="col-2">
-                        <div className="badges">
-                            <div className="status">{bien.typeAdString}</div>
-                            <div className="status">{bien.typeBienString}</div>
-                        </div>
-                        <div className="identifier">
-                            <div className="price">Price</div>
-                            <div className="price">Piece - Rooms</div>
-                        </div>
+                        {prospect.search && <>
+                            <div className="badges">
+                                <div className="status">{prospect.search.typeAdString}</div>
+                                <div className="status">{prospect.search.typeBienString}</div>
+                            </div>
+                            <div className="identifier">
+                                <div className="price">Price</div>
+                                <div className="price">Piece - Rooms</div>
+                            </div>
+                        </>}
                     </div>
                     <div className="col-3">
                         <div className="ra-percentage">
-                            <div>80%</div>
+                            <div>{prospect.search ? "80%" : "0%"}</div>
                         </div>
                         <div className="negociateur">
                             <div className="avatar">

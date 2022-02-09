@@ -8,7 +8,7 @@ import { SearchMainInfos1, SearchMainInfos2 } from "@dashboardPages/components/I
 
 export class ProspectsItem extends Component {
     render () {
-        const { isSelect, isFromRead, isClient, elem, prospects,
+        const { isSelect, isClient, elem, prospects,
             onDelete, onDeleteSearch, onSelectors, onChangeContext, onSelectProspect, onSwitchArchived } = this.props;
 
         let active = false;
@@ -71,7 +71,7 @@ export class ProspectsItem extends Component {
                             <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>
-                            {(isFromRead && !isSelect) && <ButtonIcon icon="cancel" onClick={() => onSelectProspect(elem)}>Enlever</ButtonIcon>}
+                            {!isSelect && <ButtonIcon icon="cancel" onClick={() => onSelectProspect(elem)}>Enlever</ButtonIcon>}
                         </div>
                     </div>
                 </div>

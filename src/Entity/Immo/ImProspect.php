@@ -153,7 +153,7 @@ class ImProspect extends DataEntity
 
     /**
      * @ORM\OneToOne(targetEntity=ImSearch::class, inversedBy="prospect", cascade={"persist", "remove"})
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $search;
 

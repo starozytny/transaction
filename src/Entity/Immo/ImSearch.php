@@ -16,7 +16,7 @@ class ImSearch extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $id;
 
@@ -39,103 +39,103 @@ class ImSearch extends DataEntity
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $minPrice = 0;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $maxPrice = 0;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $minPiece = 0;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $maxPiece = 0;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $minRoom = 0;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $maxRoom = 0;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $minArea = 0;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $maxArea = 0;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $minLand = 0;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $maxLand = 0;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $hasLift = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $hasTerrace = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $hasBalcony = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $hasParking = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $hasBox = ImBien::ANSWER_UNKNOWN;
 
@@ -379,7 +379,7 @@ class ImSearch extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     public function getTypeAdString(): string
     {
@@ -388,7 +388,7 @@ class ImSearch extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     public function getTypeBienString(): string
     {
