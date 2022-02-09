@@ -7,6 +7,14 @@
 @import "./split/biens/details";
 @import "./split/biens/suivi";
 
+.badges{
+  margin-bottom: 8px;
+
+  & > *:not(:last-child){
+    margin-right: 8px;
+  }
+}
+
 .list-biens{
   .card-ad{
     margin-bottom: 12px;

@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 import axios    from "axios";
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
@@ -12,9 +12,10 @@ import DataState    from "@userPages/components/Biens/Form/data";
 import Sort         from "@commonComponents/functions/sort";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
 
-import { ProspectFormulaire } from "@dashboardPages/components/Immo/Prospects/ProspectForm";
-import { Prospects } from "@dashboardPages/components/Immo/Prospects/Prospects";
-import {NegotiatorBubble} from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
+import { ProspectFormulaire }   from "@dashboardPages/components/Immo/Prospects/ProspectForm";
+import { NegociatorBubble }     from "@userPages/components/Biens/AdCard";
+import { SearchInfos }          from "@dashboardPages/components/Immo/Prospects/ProspectsItem";
+import { Prospects }            from "@dashboardPages/components/Immo/Prospects/Prospects";
 
 const SORTER = Sort.compareLastname;
 let i = 0;
@@ -112,7 +113,7 @@ export class Rapprochements extends Component {
                 </div>
             </div>
             {data && data.length !== 0 ? data.map(elem => {
-                return <RapprochementsItem prospect={elem.prospect} bien={elem.bien} key={elem.id} />
+                return <RapprochementsItem prospect={elem.prospect} key={elem.id} />
             }) : <Alert>Aucun résultat</Alert>}
 
             <Aside ref={this.aside} content={contentAside}/>
@@ -120,52 +121,46 @@ export class Rapprochements extends Component {
     }
 }
 
-export function RapprochementsItem ({ prospect, bien }) {
-    console.log(prospect)
-    return <div className="card-ad">
-        <div className="card-main">
-            <div className="card-body">
-                <div className="infos">
-                    <div className="col-1">
-                        <div className="identifier">
-                            <div className="title">
-                                <span>{prospect.fullname}</span>
-                            </div>
-                            <div className="address">
-                                <div>{prospect.email}</div>
-                                <div>{prospect.phone1}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-2">
-                        {prospect.search && <>
-                            <div className="badges">
-                                <div className="status">{prospect.search.typeAdString}</div>
-                                <div className="status">{prospect.search.typeBienString}</div>
-                            </div>
+export class RapprochementsItem extends Component {
+    render () {
+        const { prospect } = this.props;
+
+        return <div className="card-ad">
+            <div className="card-main">
+                <div className="card-body">
+                    <div className="infos">
+                        <div className="col-1">
                             <div className="identifier">
-                                <div className="price">Price</div>
-                                <div className="price">Piece - Rooms</div>
+                                <div className="title">
+                                    <span>{prospect.fullname}</span>
+                                </div>
+                                <div className="address">
+                                    <div>{prospect.email}</div>
+                                    <div>{prospect.phone1}</div>
+                                </div>
                             </div>
-                        </>}
-                    </div>
-                    <div className="col-3">
-                        <div className="ra-percentage">
-                            <div>{prospect.search ? "80%" : "0%"}</div>
                         </div>
-                        {prospect.negotiator && <NegotiatorBubble elem={elem.negotiator} txt={null} />}
+                        <div className="col-2">
+                            {prospect.search && <SearchInfos elem={prospect.search} />}
+                        </div>
+                        <div className="col-3">
+                            <div className="ra-percentage">
+                                <div>{prospect.search ? "80%" : "0%"}</div>
+                            </div>
+                            {prospect.negotiator && <NegociatorBubble elem={prospect.negotiator} />}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="card-footer">
-                <div className="commentary">Commentaire : </div>
+                <div className="card-footer">
+                    <div className="commentary">Commentaire : </div>
 
-                <div className="footer-actions">
-                    <div className="actions">
-                        <ButtonIcon icon="phone" text={"0"}>0 mails envoyés</ButtonIcon>
+                    <div className="footer-actions">
+                        <div className="actions">
+                            <ButtonIcon icon="phone" text={"0"}>0 mails envoyés</ButtonIcon>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 }

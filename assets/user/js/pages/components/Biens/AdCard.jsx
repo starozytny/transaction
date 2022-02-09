@@ -18,14 +18,7 @@ export class AdCard extends Component {
     constructor(props) {
         super();
 
-        this.helpBubble = React.createRef();
-
-        this.handleOpenHelp = this.handleOpenHelp.bind(this);
         this.handleChangeStatus = this.handleChangeStatus.bind(this);
-    }
-
-    handleOpenHelp = () => {
-        this.helpBubble.current.handleOpen();
     }
 
     handleChangeStatus = (elem, status) => {
@@ -77,14 +70,6 @@ export class AdCard extends Component {
             {data: <a onClick={() => onDelete(el)}>Supprimer</a>},
             {data: <a onClick={() => this.handleChangeStatus(el, el.status !== 2 ? 2 : 0)}>{el.status !== 2 ? "Archiver" : "Désarchiver"}</a>}
         ]
-
-        let contentHelpBubble = <div>
-            <div>#{el.negotiator.code} - {el.negotiator.fullname}</div>
-            <p><br/></p>
-            <div>{el.negotiator.phone}</div>
-            <div>{el.negotiator.phone2}</div>
-            <div>{el.negotiator.email}</div>
-        </div>
 
         let followed = false;
         if(isProspectPage){
@@ -148,12 +133,7 @@ export class AdCard extends Component {
                                 <div>{el.reference}</div>
                                 <div>GERANCE01</div>
                             </div>
-                            <div className="negociateur" onClick={this.handleOpenHelp}>
-                                <div className="avatar">
-                                    <img src={el.negotiator.avatarFile} alt="Avatar" />
-                                </div>
-                                <span className="tooltip">{el.negotiator.fullname}</span>
-                            </div>
+                           <NegociatorBubble elem={el.negotiator} />
                         </a>
                     </div>
                 </div>
@@ -182,7 +162,43 @@ export class AdCard extends Component {
                 </div>
             </div>
 
-            <HelpBubble ref={this.helpBubble} content={contentHelpBubble}>Négociateur</HelpBubble>
         </div>
+    }
+}
+
+export class NegociatorBubble extends Component {
+    constructor(props) {
+        super();
+
+        this.helpBubble = React.createRef();
+
+        this.handleOpenHelp = this.handleOpenHelp.bind(this);
+    }
+
+    handleOpenHelp = () => {
+        this.helpBubble.current.handleOpen();
+    }
+
+    render () {
+        const { elem } = this.props;
+
+        let contentHelpBubble = <div>
+            <div>#{elem.code} - {elem.fullname}</div>
+            <p><br/></p>
+            <div>{elem.phone}</div>
+            <div>{elem.phone2}</div>
+            <div>{elem.email}</div>
+        </div>
+
+        return <>
+            <div className="negociateur" onClick={this.handleOpenHelp}>
+                <div className="avatar">
+                    <img src={elem.avatarFile} alt="Avatar" />
+                </div>
+                <span className="tooltip">{elem.fullname}</span>
+            </div>
+
+            <HelpBubble ref={this.helpBubble} content={contentHelpBubble}>Négociateur</HelpBubble>
+        </>
     }
 }
