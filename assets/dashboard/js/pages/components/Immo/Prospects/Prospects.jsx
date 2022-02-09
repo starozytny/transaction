@@ -17,6 +17,7 @@ import { ProspectRead }        from "@dashboardPages/components/Immo/Prospects/P
 import { SearchFormulaire }    from "@dashboardPages/components/Immo/Searchs/SearchForm";
 
 const URL_ARCHIVED_ELEMENT = 'api_prospects_switch_archived';
+const URL_DELETE_SEARCH  = 'api_searchs_delete';
 const URL_DELETE_ELEMENT = 'api_prospects_delete';
 const URL_DELETE_GROUP   = 'api_prospects_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer ce prospect ?';
@@ -60,6 +61,7 @@ export class Prospects extends Component {
         this.handlePerPage = this.handlePerPage.bind(this);
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
         this.handleSwitchArchived = this.handleSwitchArchived.bind(this);
+        this.handleDeleteSearch = this.handleDeleteSearch.bind(this);
 
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
@@ -107,12 +109,36 @@ export class Prospects extends Component {
         ;
     }
 
+    handleDeleteSearch = (element) => {
+        const self = this;
+        Swal.fire(SwalOptions.options("Supprimer cette recherche ?", "Cette action est irréversible"))
+            .then((result) => {
+                if (result.isConfirmed) {
+                    Formulaire.loader(true);
+                    axios.delete(Routing.generate(URL_DELETE_SEARCH, {'id': element.search.id}), {})
+                        .then(function (response) {
+                            element.search = null;
+                            self.handleUpdateList(element, "update");
+                        })
+                        .catch(function (error) {
+                            Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+                        })
+                        .then(() => {
+                            Formulaire.loader(false);
+                        })
+                    ;
+                }
+            })
+        ;
+    }
+
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { perPage, currentPage } = this.state;
 
         return <ProspectsList onChangeContext={changeContext}
                               onDelete={this.layout.current.handleDelete}
                               onDeleteAll={this.layout.current.handleDeleteGroup}
+                              onDeleteSearch={this.handleDeleteSearch}
                               //filter-search
                               onSearch={this.handleSearch}
                               filters={filters}

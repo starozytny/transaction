@@ -132,6 +132,9 @@ class SearchController extends AbstractController
      */
     public function delete(ImSearch $obj, DataService $dataService): JsonResponse
     {
+        $prospect = $obj->getProspect();
+        $prospect->setSearch(null);
+
         return $dataService->delete($obj);
     }
 

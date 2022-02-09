@@ -11,7 +11,6 @@ import { Owners }       from "@dashboardPages/components/Immo/Owners/Owners";
 import { Tenants }      from "@dashboardPages/components/Immo/Tenants/Tenants";
 import { Prospects }    from "@dashboardPages/components/Immo/Prospects/Prospects";
 import { Buyers }       from "@dashboardPages/components/Immo/Buyers/Buyers";
-import { Searchs }      from "@dashboardPages/components/Immo/Searchs/Searchs";
 
 Routing.setRoutingData(routes);
 
@@ -43,9 +42,4 @@ if(el){
 el = document.getElementById("buyers");
 if(el){
     render(<Buyers {...el.dataset} />, el)
-}
-
-el = document.getElementById("searchs");
-if(el){
-    render(<Searchs {...el.dataset} />, el)
 }
