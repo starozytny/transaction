@@ -13,7 +13,7 @@ class SearchService
      * @param $data
      * @return ImBien[]|array
      */
-    public function getBiens(ImSearch $search, array $biens, $data = null): array
+    public function rapprochement(ImSearch $search, array $biens, $data = null): array
     {
         $biens = $this->filterLocalisation('zipcode', $biens, $search->getZipcode());
         $biens = $this->filterLocalisation('city',    $biens, $search->getCity());

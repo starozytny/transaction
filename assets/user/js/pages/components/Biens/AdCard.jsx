@@ -64,7 +64,7 @@ export class AdCard extends Component {
     }
 
     render () {
-        const { isOwnerPage=false, isProspectPage=false, follows, el, onDelete, onLinkToProspect } = this.props;
+        const { isOwnerPage=false, isProspectPage=false, rapprochements, follows, el, onDelete, onLinkToProspect } = this.props;
 
         let items = [
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
@@ -87,6 +87,15 @@ export class AdCard extends Component {
             follows.forEach(follow => {
                 if(follow.bien.id === el.id){
                     followed = true;
+                }
+            })
+        }
+
+        let nbRapprochements = 0;
+        if(rapprochements){
+            rapprochements.forEach(id => {
+                if(el.id === id){
+                    nbRapprochements++;
                 }
             })
         }
@@ -152,7 +161,13 @@ export class AdCard extends Component {
                             Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par " + el.updatedBy)}
                         </div>
                         <div className={"actions" + (isProspectPage && followed ? " followed" : "")}>
-                            {isProspectPage && <ButtonIcon icon="star" tooltipWidth={90} onClick={() => onLinkToProspect(el)}>{followed ? "Lié" : "Lier"} au prospect</ButtonIcon>}
+                            {(rapprochements && nbRapprochements > 0) && <ButtonIcon icon="group" tooltipWidth={120} text={""+nbRapprochements}>
+                                {nbRapprochements} rapprochement{nbRapprochements > 1 ? "s" : ""}
+                            </ButtonIcon>}
+
+                            {isProspectPage && <ButtonIcon icon="star" tooltipWidth={90} onClick={() => onLinkToProspect(el)}>
+                                {followed ? "Lié" : "Lier"} au prospect
+                            </ButtonIcon>}
 
                             <ButtonIcon icon="follow" element="a" target="_blank" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>
                             <ButtonIcon icon="vision" element="a" target="_blank" onClick={Routing.generate('user_biens_read', {'slug': el.slug})}>Détails</ButtonIcon>

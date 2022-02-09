@@ -22,12 +22,12 @@ function getItemsSelect (data, noDuplication, el, pref, typeValue = "id") {
 
 export class BiensList extends Component {
     render () {
-        const { dataFilters, pageStatus, data, onDelete, filters, onGetFilters, tenants, onUpdateList,
+        const { dataFilters, pageStatus, data, onDelete, filters, onGetFilters, tenants, rapprochements, onUpdateList,
             sorters, onSorter, currentPage, perPage, onPerPage, taille, onPaginationClick } = this.props;
 
         let items = [], owners = [], negotiators = [], users = [], noDuplicateOwners = [], noDuplicateNegotiators = [], noDuplicateUsers = [];
         data.forEach(el => {
-            items.push(<AdCard el={el} onDelete={onDelete} onUpdateList={onUpdateList} key={el.id}/>)
+            items.push(<AdCard el={el} rapprochements={rapprochements} onDelete={onDelete} onUpdateList={onUpdateList} key={el.id}/>)
 
             owners      = getItemsSelect(owners, noDuplicateOwners, el.owner, "owner");
             negotiators = getItemsSelect(negotiators, noDuplicateNegotiators, el.negotiator, "nego");

@@ -181,7 +181,7 @@ class SearchController extends AbstractController
 
         $data = json_decode($request->getContent());
 
-        $biens = $searchService->getBiens($search, $biens, $data);
+        $biens = $searchService->rapprochement($search, $biens, $data);
 
         return $apiResponse->apiJsonResponse($biens, User::USER_READ);
     }

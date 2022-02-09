@@ -18,8 +18,10 @@ use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImBuyerRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
+use App\Repository\Immo\ImSearchRepository;
 use App\Repository\Immo\ImTenantRepository;
 use App\Repository\UserRepository;
+use App\Service\Immo\SearchService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Repository\Agenda\AgEventRepository;
@@ -84,7 +86,7 @@ class UserController extends AbstractController
      * @Route("/biens", options={"expose"=true}, name="biens")
      */
     public function biens(Request $request, ImBienRepository $repository, ImTenantRepository $tenantRepository,
-                          SerializerInterface $serializer): Response
+                          ImSearchRepository $searchRepository, SerializerInterface $serializer, SearchService $searchService): Response
     {
         $status = $request->query->get('st');
         $filterOwner = $request->query->get('fo');
@@ -101,6 +103,20 @@ class UserController extends AbstractController
             $objs = $repository->findBy(['agency' => $user->getAgency(), 'status' => (int) $status]);
         }
 
+        $searchs = $searchRepository->findBy(['isActive' => true]);
+
+        //Rapprochement
+        $rapprochements = [];
+        foreach($objs as $obj){
+            foreach($searchs as $search){
+                $find = $searchService->rapprochement($search, [$obj]);
+
+                if(count($find) > 0){
+                    $rapprochements[] = $obj->getId();
+                }
+            }
+        }
+
         $tenants = $tenantRepository->findBy(['bien' => $objs]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
@@ -114,6 +130,7 @@ class UserController extends AbstractController
             'filterNego' => $filterNego,
             'filterUser' => $filterUser,
             'st' => $status,
+            'rapprochements' => json_encode($rapprochements)
         ]);
     }
 
