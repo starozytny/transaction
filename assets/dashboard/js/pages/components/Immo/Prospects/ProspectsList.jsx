@@ -38,11 +38,11 @@ export class ProspectsList extends Component {
 
         return <>
             <div>
-                {!isSelect && <div className="toolbar toolbar-prospect">
+                <div className="toolbar toolbar-prospect">
                     <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter un prospect</Button>
                     </div>
-                    <div className="item">
+                    {!isSelect && <div className="item">
                         <Button onClick={() => onChangeContext("select")}>Sélectionner un existant</Button>
                     </div>}
                     <div className="item filter-search">
@@ -50,7 +50,7 @@ export class ProspectsList extends Component {
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom.."/>
                         <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                     </div>
-                </div>}
+                </div>
 
                 <TopSorterPagination sorters={sorters} onSorter={onSorter}
                                      currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
@@ -77,7 +77,7 @@ export class ProspectsList extends Component {
                     </div>
                 </div>
 
-                {(data && data.length !== 0 && !isClient) && <div className="page-actions">
+                {(!isSelect && data && data.length !== 0 && !isClient) && <div className="page-actions">
                     <div className="selectors-actions">
                         <div className="item" onClick={onDeleteAll}>
                             <ButtonIcon icon="trash" text="Supprimer la sélection" />

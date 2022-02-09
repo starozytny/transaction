@@ -50,6 +50,8 @@ export class Prospects extends Component {
             agencies: props.agencies ? JSON.parse(props.agencies) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             isClient: props.isClient ? props.isClient : false,
+            isSelect: props.isSelect ? props.isSelect : false,
+            classes: props.classes ? props.classes : "main-content",
         }
 
         this.layout = React.createRef();
@@ -154,7 +156,9 @@ export class Prospects extends Component {
                               sorters={sorters}
                               onSorter={this.handleSorter}
                               isClient={this.state.isClient}
+                              isSelect={this.state.isSelect}
                               onSwitchArchived={this.handleSwitchArchived}
+                              onSelectProspect={this.props.onSelectProspect}
                               data={currentData} />
     }
 

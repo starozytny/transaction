@@ -12,12 +12,12 @@ import DataState    from "@userPages/components/Biens/Form/data";
 import Sort         from "@commonComponents/functions/sort";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
 
-import { ProspectsList }      from "@dashboardPages/components/Immo/Prospects/ProspectsList";
 import { ProspectFormulaire } from "@dashboardPages/components/Immo/Prospects/ProspectForm";
+import { Prospects } from "@dashboardPages/components/Immo/Prospects/Prospects";
+import {NegotiatorBubble} from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
-const URL_DELETE_ELEMENT = 'api_suivis_delete';
-const MSG_DELETE_ELEMENT = 'Supprimer ce prospect ?';
 const SORTER = Sort.compareLastname;
+let i = 0;
 
 export class Rapprochements extends Component {
     constructor(props) {
@@ -36,7 +36,6 @@ export class Rapprochements extends Component {
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleSelectProspect = this.handleSelectProspect.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
@@ -64,11 +63,6 @@ export class Rapprochements extends Component {
 
         Formulaire.updateData(this, sorter, newContext, context, data, element);
         DataState.getProspects(this);
-    }
-
-    handleDelete = (element, text='Cette action est irréversible.') => {
-        let url = Routing.generate(URL_DELETE_ELEMENT, {'id': element.id, "bien": this.props.elem.id})
-        Formulaire.axiosDeleteElement(this, element, url, MSG_DELETE_ELEMENT, text);
     }
 
     handleSelectProspect = (prospect) => {
@@ -103,8 +97,8 @@ export class Rapprochements extends Component {
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateList}/>;
                 break
             default:
-                contentAside = <ProspectsList isSelect={true} isFromRead={true} isClient={true} data={allProspects} prospects={data}
-                                             onSelectProspect={this.handleSelectProspect} onDelete={this.handleDelete} />
+                contentAside = <Prospects isSelect={true} isClient={true} donnees={JSON.stringify(allProspects)} classes={" "}
+                                          onSelectProspect={this.handleSelectProspect} key={i++} />
                 break;
         }
 
@@ -127,6 +121,7 @@ export class Rapprochements extends Component {
 }
 
 export function RapprochementsItem ({ prospect, bien }) {
+    console.log(prospect)
     return <div className="card-ad">
         <div className="card-main">
             <div className="card-body">
@@ -158,12 +153,7 @@ export function RapprochementsItem ({ prospect, bien }) {
                         <div className="ra-percentage">
                             <div>{prospect.search ? "80%" : "0%"}</div>
                         </div>
-                        <div className="negociateur">
-                            <div className="avatar">
-                                <img src={prospect.negotiator.avatarFile} alt="Avatar du negociateur" />
-                            </div>
-                            <span className="tooltip">{prospect.negotiator.fullname}</span>
-                        </div>
+                        {prospect.negotiator && <NegotiatorBubble elem={elem.negotiator} txt={null} />}
                     </div>
                 </div>
             </div>
