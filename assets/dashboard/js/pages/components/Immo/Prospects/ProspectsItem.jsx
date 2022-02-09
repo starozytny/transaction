@@ -8,8 +8,7 @@ import { SearchMainInfos1, SearchMainInfos2 } from "@dashboardPages/components/I
 
 export class ProspectsItem extends Component {
     render () {
-        const { isSelect, isClient, elem, prospects,
-            onDelete, onDeleteSearch, onSelectors, onChangeContext, onSelectProspect, onSwitchArchived } = this.props;
+        const { isSelect, isClient, elem, prospects, onDelete, onDeleteSearch, onSelectors, onChangeContext, onSelectProspect, onSwitchArchived } = this.props;
 
         let active = false;
         if(prospects){

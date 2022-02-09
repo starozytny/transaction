@@ -5,17 +5,15 @@ namespace App\Controller\Api\Immo;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSuivi;
-use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
-use App\Service\Data\DataService;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Http\Discovery\Exception\NotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/suivis", name="api_suivis_")
@@ -46,9 +44,11 @@ class SuiviController extends AbstractController
      * @param ImProspect $prospect
      * @param ApiResponse $apiResponse
      * @param DataImmo $dataEntity
+     * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function link(Request $request, ImBien $bien, ImProspect $prospect, ApiResponse $apiResponse, DataImmo $dataEntity): JsonResponse
+    public function link(Request $request, ImBien $bien, ImProspect $prospect, ApiResponse $apiResponse,
+                         DataImmo $dataEntity, SerializerInterface $serializer): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $obj = $em->getRepository(ImSuivi::class)->findOneBy(['bien' => $bien, 'prospect' => $prospect]);
@@ -56,13 +56,23 @@ class SuiviController extends AbstractController
         if(!$obj){ // create
             $obj = $dataEntity->setDataSuivi(new ImSuivi(), $bien, $prospect);
             $em->persist($obj);
+            $context = "create";
         }else{
+            $id = $obj->getId();
             $em->remove($obj);
+            $context = "delete";
+
+            $obj = ['id' => $id];
         }
 
         $em->flush();
 
-        return $apiResponse->apiJsonResponse($obj, ImSuivi::SUIVI_READ);
+        $obj = $serializer->serialize($obj, 'json', ['groups' => ImSuivi::SUIVI_READ]);
+
+        return $apiResponse->apiJsonResponseCustom([
+            'context' => $context,
+            'obj' => $obj
+        ]);
     }
 
     /**

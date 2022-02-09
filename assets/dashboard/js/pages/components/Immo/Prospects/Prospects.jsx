@@ -159,6 +159,7 @@ export class Prospects extends Component {
                               isSelect={this.state.isSelect}
                               onSwitchArchived={this.handleSwitchArchived}
                               onSelectProspect={this.props.onSelectProspect}
+                              prospects={this.props.prospects}
                               data={currentData} />
     }
 

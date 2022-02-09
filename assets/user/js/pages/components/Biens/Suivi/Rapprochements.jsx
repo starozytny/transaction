@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 
 import axios    from "axios";
+import toastr   from "toastr";
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Aside }      from "@dashboardComponents/Tools/Aside";
 import { Alert }      from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
-import helper       from "@userPages/components/Biens/helper";
 import DataState    from "@userPages/components/Biens/Form/data";
 import Sort         from "@commonComponents/functions/sort";
 import Formulaire   from "@dashboardComponents/functions/Formulaire";
@@ -59,11 +59,16 @@ export class Rapprochements extends Component {
         this.setState({ context, element })
     }
 
-    handleUpdateList = (element, newContext=null) => {
+    handleUpdateList = (element, newContext=null, getData = true) => {
         const { data, context, sorter} = this.state
 
+        console.log(element, data)
+
         Formulaire.updateData(this, sorter, newContext, context, data, element);
-        DataState.getProspects(this);
+
+        if(getData){
+            DataState.getProspects(this);
+        }
     }
 
     handleSelectProspect = (prospect) => {
@@ -72,13 +77,8 @@ export class Rapprochements extends Component {
         const self = this;
         axios.post(Routing.generate('api_suivis_link_bien_prospect', {'bien': elem.id, 'prospect': prospect.id}), {})
             .then(function (response) {
-                console.log(response.data);
-                if(response.data.id){
-                    self.handleUpdateList(response.data, "update")
-                }else{
-                    self.handleUpdateList(response.data, "delete")
-                }
-
+                toastr.info(response.data.context === "create" ? "Prospect ajouté !" : "Prospect enlevé !");
+                self.handleUpdateList(JSON.parse(response.data.obj), response.data.context, false)
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
@@ -92,6 +92,13 @@ export class Rapprochements extends Component {
 
         data.sort(sorter)
 
+        let items = [];
+        let prospects = [];
+        data.forEach(elem => {
+            items.push(<RapprochementsItem prospect={elem.prospect} key={elem.id} />)
+            prospects.push(elem.prospect)
+        })
+
         let contentAside;
         switch (context) {
             case "update":
@@ -103,7 +110,7 @@ export class Rapprochements extends Component {
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateList}/>;
                 break
             default:
-                contentAside = <Prospects isSelect={true} isClient={true} donnees={JSON.stringify(allProspects)} classes={" "}
+                contentAside = <Prospects isSelect={true} isClient={true} donnees={JSON.stringify(allProspects)} prospects={prospects} classes={" "}
                                           onSelectProspect={this.handleSelectProspect} key={i++} />
                 break;
         }
@@ -117,9 +124,7 @@ export class Rapprochements extends Component {
                     <Button onClick={() => this.handleChangeContext('select')}>Sélectionner un existant</Button>
                 </div>
             </div>
-            {data && data.length !== 0 ? data.map(elem => {
-                return <RapprochementsItem prospect={elem.prospect} key={elem.id} />
-            }) : <Alert>Aucun résultat</Alert>}
+            {items && items.length !== 0 ? items : <Alert>Aucun résultat</Alert>}
 
             <Aside ref={this.aside} content={contentAside}/>
         </div>)
