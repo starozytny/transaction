@@ -151,16 +151,10 @@ class ImProspect extends DataEntity
      */
     private $suivis;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ImSearch::class, mappedBy="prospect")
-     */
-    private $searchs;
-
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
         $this->suivis = new ArrayCollection();
-        $this->searchs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -485,36 +479,6 @@ class ImProspect extends DataEntity
             // set the owning side to null (unless already changed)
             if ($suivi->getProspect() === $this) {
                 $suivi->setProspect(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ImSearch[]
-     */
-    public function getSearchs(): Collection
-    {
-        return $this->searchs;
-    }
-
-    public function addSearch(ImSearch $search): self
-    {
-        if (!$this->searchs->contains($search)) {
-            $this->searchs[] = $search;
-            $search->setProspect($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSearch(ImSearch $search): self
-    {
-        if ($this->searchs->removeElement($search)) {
-            // set the owning side to null (unless already changed)
-            if ($search->getProspect() === $this) {
-                $search->setProspect(null);
             }
         }
 

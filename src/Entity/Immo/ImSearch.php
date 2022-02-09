@@ -139,11 +139,6 @@ class ImSearch extends DataEntity
      */
     private $hasBox = ImBien::ANSWER_UNKNOWN;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=ImProspect::class, inversedBy="searchs")
-     */
-    private $prospect;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -373,18 +368,6 @@ class ImSearch extends DataEntity
     public function setMaxLand(float $maxLand): self
     {
         $this->maxLand = $maxLand;
-
-        return $this;
-    }
-
-    public function getProspect(): ?ImProspect
-    {
-        return $this->prospect;
-    }
-
-    public function setProspect(?ImProspect $prospect): self
-    {
-        $this->prospect = $prospect;
 
         return $this;
     }
