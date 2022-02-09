@@ -70,17 +70,21 @@ export class AdCard extends Component {
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "prospects"})} target="_blank">Liste des prospects</a>},
             {data: <a href={Routing.generate("user_mails_send", {'dest': [el.owner ? el.owner.email : ""]})} target="_blank">Envoyer un mail</a>},
-            {data: <a href={Routing.generate("user_mails_send", {'dest': [el.owner ? el.owner.email : ""]})} target="_blank">Envoyer un mail</a>},
             {data: <a href="/">Imprimer la fiche</a>}
         ]
 
-           let contentHelpBubble = <div>
-                <div>#{el.negotiator.code} - {el.negotiator.fullname}</div>
-                <p><br/></p>
-                <div>{el.negotiator.phone}</div>
-                <div>{el.negotiator.phone2}</div>
-                <div>{el.negotiator.email}</div>
-            </div>
+        let itemsTrash = [
+            {data: <a onClick={() => onDelete(el)}>Supprimer</a>},
+            {data: <a onClick={() => this.handleChangeStatus(el, el.status !== 2 ? 2 : 0)}>{el.status !== 2 ? "Archiver" : "Désarchiver"}</a>}
+        ]
+
+       let contentHelpBubble = <div>
+            <div>#{el.negotiator.code} - {el.negotiator.fullname}</div>
+            <p><br/></p>
+            <div>{el.negotiator.phone}</div>
+            <div>{el.negotiator.phone2}</div>
+            <div>{el.negotiator.email}</div>
+        </div>
 
         let followed = false;
         if(isProspectPage){
@@ -93,8 +97,8 @@ export class AdCard extends Component {
 
         let nbRapprochements = 0;
         if(rapprochements){
-            rapprochements.forEach(id => {
-                if(el.id === id){
+            rapprochements.forEach(ra => {
+                if(el.id === ra.bien){
                     nbRapprochements++;
                 }
             })
@@ -107,9 +111,9 @@ export class AdCard extends Component {
                 <div className="card-body">
                     {el.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
 
-                    <div className="image">
+                    <a className="image" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
                         <img src={el.mainPhotoFile} alt="illustration"/>
-                    </div>
+                    </a>
 
                     <div className="infos">
                         <div className="col-1">
@@ -118,7 +122,7 @@ export class AdCard extends Component {
                                      onClick={(el.status === 1 || el.status === 0) ? () => this.handleChangeStatus(el, el.status === 1 ? 0 : 1) : null}>{el.statusString}</div>
                                 <div className="status">{el.typeBienString}</div>
                             </div>
-                            <div className="identifier">
+                            <a className="identifier" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
                                 <div className="title">
                                     <span>{el.libelle}</span>
                                     {el.isPublished && <span className="online" />}
@@ -127,9 +131,9 @@ export class AdCard extends Component {
                                     <div>{el.localisation.address}</div>
                                     <div>{el.localisation.zipcode}, {el.localisation.city}</div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
-                        <div className="col-2">
+                        <a className="col-2" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
                             <div className="badges">
                                 <div className="status">{el.typeAdString}</div>
                                 <div className="status">Mandat {el.mandat.typeMandatString}</div>
@@ -138,8 +142,8 @@ export class AdCard extends Component {
                                 <div className="price">{Sanitaze.toFormatCurrency(el.financial.price)} {el.codeTypeAd === 1 ? "cc/mois" : ""}</div>
                                 <div className="carac">{el.area.total}m² - {el.number.piece} pièce{el.number.piece > 1 ? "s" : ""}</div>
                             </div>
-                        </div>
-                        <div className="col-3">
+                        </a>
+                        <a className="col-3" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
                             <div className="references">
                                 <div>{el.reference}</div>
                                 <div>GERANCE01</div>
@@ -150,7 +154,7 @@ export class AdCard extends Component {
                                 </div>
                                 <span className="tooltip">{el.negotiator.fullname}</span>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div className="card-footer">
@@ -170,15 +174,8 @@ export class AdCard extends Component {
                             </ButtonIcon>}
 
                             <ButtonIcon icon="follow" element="a" target="_blank" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>
-                            <ButtonIcon icon="vision" element="a" target="_blank" onClick={Routing.generate('user_biens_read', {'slug': el.slug})}>Détails</ButtonIcon>
                             <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
-
-                            {!isProspectPage && !isOwnerPage && <>
-                                {el.status !== 2 ? <ButtonIcon icon="archive" onClick={() => this.handleChangeStatus(el, 2)}>Archiver</ButtonIcon>
-                                    : <ButtonIcon icon="desarchive" onClick={() => this.handleChangeStatus(el, 0)}>Désarchiver</ButtonIcon>}
-                                <ButtonIcon icon="trash" onClick={() => onDelete(el)}>Supprimer</ButtonIcon>
-                            </>}
-
+                            {(!isProspectPage && !isOwnerPage) && <ButtonIconDropdown icon="trash" items={itemsTrash}>Suppression</ButtonIconDropdown>}
                             <ButtonIconDropdown icon="dropdown" items={items}>Autres</ButtonIconDropdown>
                         </div>
                     </div>

@@ -112,7 +112,9 @@ class UserController extends AbstractController
                 $find = $searchService->rapprochement($search, [$obj]);
 
                 if(count($find) > 0){
-                    $rapprochements[] = $obj->getId();
+                    $rapprochements[] = [
+                        'bien' => $obj->getId()
+                    ];
                 }
             }
         }

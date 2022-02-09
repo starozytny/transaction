@@ -13,6 +13,7 @@
   }
 
   .image{
+    display: block;
     width: 100%;
     height: 120px;
     overflow: hidden;
@@ -111,6 +112,8 @@
     .identifier{
       margin-top: 8px;
       margin-bottom: 12px;
+      display: block;
+      color: var(--txt);
     }
 
     .carac, .address{
