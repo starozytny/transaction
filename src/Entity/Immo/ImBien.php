@@ -28,6 +28,7 @@ class ImBien extends DataEntity
     const STATUS_INACTIF = 0;
     const STATUS_ACTIF = 1;
     const STATUS_ARCHIVE = 2;
+    const STATUS_DRAFT = 3;
 
     const AD_VENTE              = 0;
     const AD_LOCATION           = 1;
@@ -137,6 +138,11 @@ class ImBien extends DataEntity
      * @Groups({"user:read"})
      */
     private $isDraft = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived = false;
 
     /**
      * @ORM\OneToOne(targetEntity=ImArea::class, fetch="EAGER", cascade={"persist", "remove"})
@@ -593,7 +599,7 @@ class ImBien extends DataEntity
      */
     public function getStatusString(): string
     {
-        $status = ["Inactif", "Active", "Archive"];
+        $status = ["Inactif", "Active", "Archive", "Brouillon"];
 
         return $status[$this->status];
     }
@@ -843,6 +849,18 @@ class ImBien extends DataEntity
     public function setMandat(ImMandat $mandat): self
     {
         $this->mandat = $mandat;
+
+        return $this;
+    }
+
+    public function getIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
 
         return $this;
     }

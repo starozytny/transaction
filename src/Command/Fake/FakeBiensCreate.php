@@ -18,6 +18,7 @@ use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImRoom;
+use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
@@ -25,6 +26,7 @@ use App\Entity\User;
 use App\Service\Data\DataImmo;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Faker\Factory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -55,7 +57,7 @@ class FakeBiensCreate extends Command
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -79,6 +81,7 @@ class FakeBiensCreate extends Command
 
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
+            ImSuivi::class,
             ImVisit::class,
             ImPhoto::class,
             ImRoom::class,
@@ -222,8 +225,6 @@ class FakeBiensCreate extends Command
                 "endAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
             ];
 
-
-
             $data = json_decode(json_encode($data));
 
             $advert         = $this->dataImmo->setDataAdvert(new ImAdvert(), $data);
@@ -239,6 +240,8 @@ class FakeBiensCreate extends Command
 
             $obj = $this->dataImmo->setDataBien(new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
                 $localisation, $financial, $confidential, $advert, $mandat, []);
+
+            $obj->setReference($i);
 
             $choicesOwners = [];
             foreach($owners as $ow){
@@ -276,6 +279,7 @@ class FakeBiensCreate extends Command
             }
 
             $isDraft = $fake->numberBetween(0, 1);
+            $isArchived = $fake->numberBetween(0, 1);
 
             $obj = ($obj)
                 ->setUser($user)
@@ -287,14 +291,22 @@ class FakeBiensCreate extends Command
                 ->setIsDraft($isDraft)
             ;
 
-            if($isDraft == 0){
+            if($isDraft == 1){
                 $obj = ($obj)
                     ->setIsPublished(false)
-                    ->setStatus(ImBien::STATUS_INACTIF)
+                    ->setStatus(ImBien::STATUS_DRAFT)
+                ;
+            }
+
+            if($isArchived == 0){
+                $obj = ($obj)
+                    ->setIsPublished($fake->numberBetween(0, 1))
+                    ->setStatus($fake->numberBetween(0, 1))
                 ;
             }else{
                 $obj = ($obj)
-                    ->setStatus($fake->numberBetween(0, 2))
+                    ->setIsPublished(false)
+                    ->setStatus(ImBien::STATUS_ARCHIVE)
                 ;
             }
 
