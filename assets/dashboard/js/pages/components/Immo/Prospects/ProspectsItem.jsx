@@ -92,14 +92,14 @@ export function ProspectsMainInfos ({ elem, isClient }) {
     </>
 }
 
-export function SearchInfos({ elem }) {
+export function SearchInfos({ elem, isRa = false }) {
     return <>
         <div className="badges">
             <div className="badge badge-default">{elem.typeAdString}</div>
             <div className="badge badge-default">{elem.typeBienString}</div>
         </div>
 
-        <SearchMainInfos1 elem={elem} />
+        <SearchMainInfos1 elem={elem} isRa={isRa} />
     </>
 }
 

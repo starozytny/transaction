@@ -37,15 +37,15 @@ export class SearchsItem extends Component {
     }
 }
 
-export function SearchMainInfos1({ elem }) {
+export function SearchMainInfos1({ elem, isRa = false }) {
     return <>
         <div className="sub">
             {Sanitaze.toFormatCurrency(elem.minPrice)} à {Sanitaze.toFormatCurrency(elem.maxPrice)}
         </div>
         <div className="sub">{elem.minPiece} à {elem.maxPiece} pièces</div>
-        <div className="sub">{elem.minRoom} à {elem.maxRoom} chambres</div>
-        <div className="sub">Surface : {elem.minArea} m² à {elem.maxArea} m²</div>
-        <div className="sub">Terrain : {elem.minLand} m² à {elem.maxLand} m²</div>
+        {!isRa && <div className="sub">{elem.minRoom} à {elem.maxRoom} chambres</div>}
+        <div className="sub">{!isRa && "Surface :"}{elem.minArea} m² à {elem.maxArea} m²</div>
+        {!isRa && <div className="sub">Terrain : {elem.minLand} m² à {elem.maxLand} m²</div>}
     </>
 }
 

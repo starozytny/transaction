@@ -169,7 +169,7 @@ export class RapprochementsItem extends Component {
                             </div>
                         </div>
                         <div className="col-2">
-                            {prospect.search && <SearchInfos elem={prospect.search} />}
+                            {prospect.search && <SearchInfos elem={prospect.search} isRa={true} />}
                         </div>
                         <div className="col-3">
                             <div className="ra-percentage">
