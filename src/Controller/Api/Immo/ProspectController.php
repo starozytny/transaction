@@ -4,6 +4,7 @@ namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImProspect;
+use App\Entity\Immo\ImSearch;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\User;
 use App\Repository\Immo\ImProspectRepository;
@@ -146,6 +147,20 @@ class ProspectController extends AbstractController
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
 
+    private function deleteProspect($em, $ids)
+    {
+        $suivis  = $em->getRepository(ImSuivi::class)->findBy(['prospect' => $ids]);
+        $searchs = $em->getRepository(ImSearch::class)->findBy(['prospect' => $ids]);
+
+        foreach($suivis as $suivi){
+            $em->remove($suivi);
+        }
+
+        foreach($searchs as $search){
+            $em->remove($search);
+        }
+    }
+
     /**
      * Delete a prospect
      *
@@ -165,11 +180,7 @@ class ProspectController extends AbstractController
     public function delete(ImProspect $obj, DataService $dataService): JsonResponse
     {
         $em = $this->doctrine->getManager();
-        $suivis = $em->getRepository(ImSuivi::class)->findBy(['prospect' => $obj]);
-
-        foreach($suivis as $suivi){
-            $em->remove($suivi);
-        }
+        $this->deleteProspect($em, $obj);
 
         return $dataService->delete($obj);
     }
@@ -198,11 +209,7 @@ class ProspectController extends AbstractController
         $ids = json_decode($request->getContent());
 
         $objs   = $em->getRepository(ImProspect::class)->findBy(['id' => $ids]);
-        $suivis = $em->getRepository(ImSuivi::class)->findBy(['prospect' => $ids]);
-
-        foreach($suivis as $suivi){
-            $em->remove($suivi);
-        }
+        $this->deleteProspect($em, $ids);
 
         foreach ($objs as $obj) {
             $em->remove($obj);
