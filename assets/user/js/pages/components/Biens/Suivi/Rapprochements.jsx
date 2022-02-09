@@ -111,7 +111,8 @@ export class Rapprochements extends Component {
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
                 break
             default:
-                contentAside = <Prospects isSelect={true} isClient={true} donnees={JSON.stringify(allProspects)} prospects={prospects} classes={" "}
+                contentAside = <Prospects isSelect={true} isClient={true}
+                                          donnees={JSON.stringify(allProspects)} prospects={prospects} classes={" "}
                                           onSelectProspect={this.handleSelectProspect} key={i++} />
                 break;
         }

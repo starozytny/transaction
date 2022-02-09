@@ -182,30 +182,32 @@ export class ProspectForm extends Component {
                             self.props.onUpdateList(data);
                         }
 
-                        self.setState({ success: messageSuccess, errors: [] });
-                        if(context === "create"){
-                            toastr.info(messageSuccess);
-                            self.setState( {
-                                society: "",
-                                agency: "",
-                                negotiator: "",
-                                lastname: "",
-                                firstname: "",
-                                civility: 0,
-                                phone1: "",
-                                phone2: "",
-                                phone3: "",
-                                email: "",
-                                address: "",
-                                complement: "",
-                                zipcode: "",
-                                city: "",
-                                country: "",
-                                birthday: "",
-                                lastContactAt: "",
-                                type: 0,
-                                status: 2
-                            })
+                        if(!self.state.bienId){
+                            self.setState({ success: messageSuccess, errors: [] });
+                            if(context === "create"){
+                                toastr.info(messageSuccess);
+                                self.setState( {
+                                    society: "",
+                                    agency: "",
+                                    negotiator: "",
+                                    lastname: "",
+                                    firstname: "",
+                                    civility: 0,
+                                    phone1: "",
+                                    phone2: "",
+                                    phone3: "",
+                                    email: "",
+                                    address: "",
+                                    complement: "",
+                                    zipcode: "",
+                                    city: "",
+                                    country: "",
+                                    birthday: "",
+                                    lastContactAt: "",
+                                    type: 0,
+                                    status: 2
+                                })
+                            }
                         }
                     })
                     .catch(function (error) {
