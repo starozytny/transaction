@@ -26,7 +26,7 @@ export class AdItem extends Component {
             tenants: props.tenants ? JSON.parse(props.tenants) : [],
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
-            prospects: props.prospects ? JSON.parse(props.prospects) : [],
+            suivis: props.suivis ? JSON.parse(props.suivis) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
             context: "infos",
@@ -39,7 +39,7 @@ export class AdItem extends Component {
     handleChangeContext = (context) => { this.setState({ context }) }
 
     render () {
-        const { elem, context, tenants, rooms, photos, prospects, allVisits } = this.state;
+        const { elem, context, tenants, rooms, photos, suivis, allVisits } = this.state;
 
         let content;
         switch (context){
@@ -93,7 +93,7 @@ export class AdItem extends Component {
                                 <Button element="a" onClick={Routing.generate('user_biens_suivi', {'slug': elem.slug})}>Voir le suivi détaillé</Button>
                             </div>
                         </div>
-                        <Global elem={elem} prospects={prospects} visits={allVisits} />
+                        <Global elem={elem} suivis={suivis} visits={allVisits} />
                     </div>
                 </div>
             </div>

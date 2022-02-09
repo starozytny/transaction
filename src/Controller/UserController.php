@@ -181,11 +181,7 @@ class UserController extends AbstractController
             $visits = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
             $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
 
-            $prospects = [];
-            foreach($suivis as $suivi){
-                $prospects[] = $suivi->getProspect();
-            }
-            $prospects      = $serializer->serialize($prospects,    'json', ['groups' => User::ADMIN_READ]);
+            $suivis         = $serializer->serialize($suivis,       'json', ['groups' => ImSuivi::SUIVI_READ]);
             $negotiators    = $serializer->serialize($negotiators,  'json', ['groups' => User::ADMIN_READ]);
             $visits         = $serializer->serialize($visits,       'json', ['groups' => ImVisit::VISIT_READ]);
         }
@@ -198,7 +194,7 @@ class UserController extends AbstractController
                 'tenants' => $tenants,
                 'rooms' => $rooms,
                 'photos' => $photos,
-                'prospects' => $prospects,
+                'suivis' => $suivis,
                 'negotiators' => $negotiators,
                 'visits' => $visits,
                 'context' => $context

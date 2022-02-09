@@ -30,7 +30,7 @@ class ImProspect extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "agenda:read"})
+     * @Groups({"admin:read", "agenda:read", "suivi:read"})
      */
     private $id;
 
@@ -413,7 +413,7 @@ class ImProspect extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read", "agenda:read"})
+     * @Groups({"admin:read", "agenda:read", "suivi:read"})
      */
     public function getFullname(): string
     {

@@ -17,7 +17,7 @@ export class Suivi extends Component {
 
         this.state = {
             elem: JSON.parse(props.elem),
-            prospects: props.prospects ? JSON.parse(props.prospects) : [],
+            suivis: props.suivis ? JSON.parse(props.suivis) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
             context: props.context ? props.context : "global",
@@ -34,7 +34,7 @@ export class Suivi extends Component {
     }
 
     render () {
-        const { elem, context, prospects, negotiators, allVisits } = this.state;
+        const { elem, context, suivis, negotiators, allVisits } = this.state;
 
         let content;
         switch (context){
@@ -42,13 +42,13 @@ export class Suivi extends Component {
                 content = <div>Offres</div>
                 break;
             case "rapprochements":
-                content = <Rapprochements elem={elem} data={prospects} societyId={elem.agency.society.id} agencyId={elem.agency.id} negotiators={negotiators} />
+                content = <Rapprochements elem={elem} data={suivis} societyId={elem.agency.society.id} agencyId={elem.agency.id} negotiators={negotiators} />
                 break;
             case "visites":
                 content = <Visits bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits} isSuiviPage={true} classes={""}/>
                 break;
             default:
-                content = <Global elem={elem} prospects={prospects} visits={allVisits} />
+                content = <Global elem={elem} suivis={suivis} visits={allVisits} />
                 break;
         }
 

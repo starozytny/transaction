@@ -11,23 +11,27 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImSuivi
 {
+    const SUIVI_READ = ["suivi:read"];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"suivi:read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImBien::class, inversedBy="suivis")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $bien;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImProspect::class, fetch="EAGER", inversedBy="suivis")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"suivi:read"})
      */
     private $prospect;
 

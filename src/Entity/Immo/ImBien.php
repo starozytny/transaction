@@ -58,7 +58,7 @@ class ImBien extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "agenda:read", "visit:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "visit:read", "suivi:read"})
      */
     private $id;
 
@@ -89,7 +89,7 @@ class ImBien extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $libelle;
 
