@@ -18,7 +18,7 @@ import { SearchInfos }          from "@dashboardPages/components/Immo/Prospects/
 import { Prospects }            from "@dashboardPages/components/Immo/Prospects/Prospects";
 import { ContentNegotiatorBubble, NegociatorBubble } from "@userPages/components/Biens/AdCard";
 
-const SORTER = Sort.compareLastname;
+const SORTER = Sort.compareProspectLastname;
 let i = 0;
 
 export class Rapprochements extends Component {

@@ -58,6 +58,11 @@ function compareFinancialPriceInverse(a, b){
     return comparison(b.financial.price, a.financial.price);
 }
 
+function compareProspectLastname(a, b){
+    return comparison(a.prospect.lastname, b.prospect.lastname);
+}
+
+
 function comparison (objA, objB){
     let comparison = 0;
     if (objA > objB) {
@@ -83,5 +88,6 @@ module.exports = {
     compareUpdatedAtInverse,
     compareLibelle,
     compareFinancialPrice,
-    compareFinancialPriceInverse
+    compareFinancialPriceInverse,
+    compareProspectLastname,
 }
