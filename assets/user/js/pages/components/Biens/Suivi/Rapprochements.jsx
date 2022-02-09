@@ -3,7 +3,9 @@ import React, {Component} from "react";
 import axios    from "axios";
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Aside }         from "@dashboardComponents/Tools/Aside";
+import { Aside }      from "@dashboardComponents/Tools/Aside";
+import { Alert }      from "@dashboardComponents/Tools/Alert";
+import { ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import helper       from "@userPages/components/Biens/helper";
 import DataState    from "@userPages/components/Biens/Form/data";
@@ -107,12 +109,63 @@ export class Rapprochements extends Component {
         }
 
         return (<div className="details-tab-infos">
-            <ProspectsList isFromRead={true} isClient={true} data={data}
-                           onChangeContext={this.handleChangeContext}
-                           onSelectProspect={this.handleSelectProspect} onDelete={this.handleDelete} />
+            {data && data.length !== 0 ? data.map(elem => {
+                return <RapprochementsItem prospect={elem.prospect} bien={elem.bien} />
+            }) : <Alert>Aucun résultat</Alert>}
 
             <Aside ref={this.aside} content={contentAside}/>
         </div>)
     }
+}
 
+export function RapprochementsItem ({ prospect, bien }) {
+    return <div className="card-ad">
+        <div className="card-main">
+            <div className="card-body">
+                <div className="infos">
+                    <div className="col-1">
+                        <div className="identifier">
+                            <div className="title">
+                                <span>{prospect.fullname}</span>
+                            </div>
+                            <div className="address">
+                                <div>{prospect.email}</div>
+                                <div>{prospect.phone1}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-2">
+                        <div className="badges">
+                            <div className="status">{bien.typeAdString}</div>
+                            <div className="status">{bien.typeBienString}</div>
+                        </div>
+                        <div className="identifier">
+                            <div className="price">Price</div>
+                            <div className="price">Piece - Rooms</div>
+                        </div>
+                    </div>
+                    <div className="col-3">
+                        <div className="ra-percentage">
+                            <div>80%</div>
+                        </div>
+                        <div className="negociateur">
+                            <div className="avatar">
+                                <img src={prospect.negotiator.avatarFile} alt="Avatar du negociateur" />
+                            </div>
+                            <span className="tooltip">{prospect.negotiator.fullname}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="card-footer">
+                <div className="commentary">Commentaire : </div>
+
+                <div className="footer-actions">
+                    <div className="actions">
+                        <ButtonIcon icon="phone" text={"0"}>0 mails envoyés</ButtonIcon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }

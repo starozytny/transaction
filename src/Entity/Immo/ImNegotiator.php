@@ -30,7 +30,7 @@ class ImNegotiator
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "select-negotiator:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "select-negotiator:read", "suivi:read"})
      */
     private $id;
 
@@ -267,7 +267,7 @@ class ImNegotiator
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "select-negotiator:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "select-negotiator:read", "suivi:read"})
      */
     public function getFullname(): string
     {
@@ -366,7 +366,7 @@ class ImNegotiator
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "suivi:read"})
      */
     public function getAvatarFile(): string
     {

@@ -36,67 +36,67 @@ class ImProspect extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $civility;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "agenda:read"})
+     * @Groups({"admin:read", "agenda:read", "suivi:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $phone1;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $phone2;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $phone3;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $complement;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $city;
 
@@ -117,32 +117,32 @@ class ImProspect extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $type = self::TYPE_NONE;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $status = self::STATUS_SEARCH;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $isArchived = false;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="prospects")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $negotiator;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="prospects")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $agency;
 
@@ -311,7 +311,7 @@ class ImProspect extends DataEntity
 
     /**
      * @return string|null
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     public function getBirthdayJavascript(): ?string
     {
@@ -344,7 +344,7 @@ class ImProspect extends DataEntity
 
     /**
      * @return string|null
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     public function getLastContactAtJavascript(): ?string
     {
@@ -431,7 +431,7 @@ class ImProspect extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     public function getTypeString(): string
     {

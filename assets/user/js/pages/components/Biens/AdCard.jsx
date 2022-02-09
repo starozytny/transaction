@@ -78,7 +78,7 @@ export class AdCard extends Component {
             {data: <a onClick={() => this.handleChangeStatus(el, el.status !== 2 ? 2 : 0)}>{el.status !== 2 ? "Archiver" : "Désarchiver"}</a>}
         ]
 
-       let contentHelpBubble = <div>
+        let contentHelpBubble = <div>
             <div>#{el.negotiator.code} - {el.negotiator.fullname}</div>
             <p><br/></p>
             <div>{el.negotiator.phone}</div>
