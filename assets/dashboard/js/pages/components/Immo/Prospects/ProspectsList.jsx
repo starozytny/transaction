@@ -52,8 +52,8 @@ export class ProspectsList extends Component {
                     </div>}
                 </div>}
 
-                <TopSorterPagination sorters={sorters} onSorter={onSorter}
-                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
+                {!isFromRead && <TopSorterPagination sorters={sorters} onSorter={onSorter}
+                                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>}
 
                 <div className="items-table">
                     <div className="items items-default">

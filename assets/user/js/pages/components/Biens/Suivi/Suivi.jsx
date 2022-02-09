@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Prospects }    from "@userPages/components/Biens/Suivi/Prospects";
-import { Global }       from "@userPages/components/Biens/Suivi/Global";
-import { Visits }       from "@dashboardPages/components/Immo/Visits/Visits";
+import { Rapprochements } from "@userPages/components/Biens/Suivi/Rapprochements";
+import { Global }         from "@userPages/components/Biens/Suivi/Global";
+import { Visits }         from "@dashboardPages/components/Immo/Visits/Visits";
 import { AdBadges, AdMainInfos } from "@userPages/components/Biens/Read/AdItem";
 
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
@@ -41,8 +41,8 @@ export class Suivi extends Component {
             case "offres":
                 content = <div>Offres</div>
                 break;
-            case "prospects":
-                content = <Prospects elem={elem} data={prospects} societyId={elem.agency.society.id} agencyId={elem.agency.id} negotiators={negotiators} />
+            case "rapprochements":
+                content = <Rapprochements elem={elem} data={prospects} societyId={elem.agency.society.id} agencyId={elem.agency.id} negotiators={negotiators} />
                 break;
             case "visites":
                 content = <Visits bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits} isSuiviPage={true} classes={""}/>
@@ -75,10 +75,10 @@ export class Suivi extends Component {
 function Navigation({ onChangeContext, context }){
 
     let items = [
-        {context: "global",    label: "Global"},
-        {context: "visites",   label: "Visites"},
-        {context: "prospects", label: "Prospects"},
-        {context: "offres",    label: "Offres"},
+        {context: "global",            label: "Global"},
+        {context: "visites",           label: "Visites"},
+        {context: "rapprochements",    label: "Rapprochements"},
+        {context: "offres",            label: "Offres"},
     ]
 
     return (

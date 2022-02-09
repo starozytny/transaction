@@ -17,7 +17,7 @@ const URL_DELETE_ELEMENT = 'api_suivis_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer ce prospect ?';
 const SORTER = Sort.compareLastname;
 
-export class Prospects extends Component {
+export class Rapprochements extends Component {
     constructor(props) {
         super(props);
 
