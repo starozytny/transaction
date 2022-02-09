@@ -343,6 +343,8 @@ class BienController extends AbstractController
         $em = $this->doctrine->getManager();
         $obj->setStatus($status);
 
+        $obj->setIsArchived($status == ImBien::STATUS_ARCHIVE);
+
         $em->flush();
         return $apiResponse->apiJsonResponse($obj, User::USER_READ);
     }

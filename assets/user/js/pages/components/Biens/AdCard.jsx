@@ -70,6 +70,7 @@ export class AdCard extends Component {
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "prospects"})} target="_blank">Liste des prospects</a>},
             {data: <a href={Routing.generate("user_mails_send", {'dest': [el.owner ? el.owner.email : ""]})} target="_blank">Envoyer un mail</a>},
+            {data: <a href={Routing.generate("user_mails_send", {'dest': [el.owner ? el.owner.email : ""]})} target="_blank">Envoyer un mail</a>},
             {data: <a href="/">Imprimer la fiche</a>}
         ]
 
@@ -158,7 +159,7 @@ export class AdCard extends Component {
                             <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
 
                             {!isProspectPage && !isOwnerPage && <>
-                                {el.status !== 2 ? <ButtonIcon icon="archive" onClick={() => this.handleChangeStatus(el, 2)}>Archive</ButtonIcon>
+                                {el.status !== 2 ? <ButtonIcon icon="archive" onClick={() => this.handleChangeStatus(el, 2)}>Archiver</ButtonIcon>
                                     : <ButtonIcon icon="desarchive" onClick={() => this.handleChangeStatus(el, 0)}>Désarchiver</ButtonIcon>}
                                 <ButtonIcon icon="trash" onClick={() => onDelete(el)}>Supprimer</ButtonIcon>
                             </>}
