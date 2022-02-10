@@ -45,6 +45,11 @@ class ImSuivi
      */
     private $prospect;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $commentary;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -84,5 +89,28 @@ class ImSuivi
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getCommentary(): ?string
+    {
+        return $this->commentary;
+    }
+
+    public function setCommentary(?string $commentary): self
+    {
+        $this->commentary = $commentary;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"suivi:read"})
+     */
+    public function getStatusString(): string
+    {
+        $values = ["A traiter", "En cours", "Traité"];
+
+        return $values[$this->status];
     }
 }
