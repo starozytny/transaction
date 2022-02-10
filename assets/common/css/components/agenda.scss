@@ -1,5 +1,21 @@
 #calendar{
 
+  .fc .fc-button-primary{
+    background-color: var(--primaryShadow);
+    border-color: var(--primaryShadow);
+    transition: all 0.2s ease-in-out;
+
+    &.fc-button-active{
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    &:hover{
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+  }
+
   .fc .fc-scroller,
   .fc .fc-scroller-liquid-absolute{
     @include scrollbar();
