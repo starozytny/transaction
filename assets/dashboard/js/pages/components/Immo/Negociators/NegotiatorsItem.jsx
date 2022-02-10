@@ -67,6 +67,5 @@ export function NegotiatorBubble ({ elem, txt="/" }) {
                 <span>{elem.fullname}</span>
             </div>
         </div> : txt}
-
     </>
 }

@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
-import { Selector } from "@dashboardComponents/Layout/Selector";
+import { Selector }  from "@dashboardComponents/Layout/Selector";
 import { UtContact } from "@dashboardComponents/Tools/Utilitaire";
 
-import { OwnerNegotiator } from "@dashboardPages/components/Immo/Owners/OwnersItem";
+import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
 export class TenantsItem extends Component {
     render () {
@@ -36,7 +36,7 @@ export class TenantsItem extends Component {
                             <UtContact elem={elem} />
                         </div>}
                         <div className={isFormBien ? "col-2" : "col-3"} onClick={onSelectTenant ? () => onSelectTenant(elem) : null}>
-                            <OwnerNegotiator elem={elem} />
+                            <NegotiatorBubble elem={elem.negotiator} />
                         </div>
                         {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
                             {(elem.bien && !isFormBien) &&

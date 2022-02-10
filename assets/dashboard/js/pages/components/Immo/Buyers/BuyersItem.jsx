@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
+import { UtContact }    from "@dashboardComponents/Tools/Utilitaire";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
 
-import { TenantMainInfos }               from "@dashboardPages/components/Immo/Tenants/TenantsItem";
-import { OwnerNegotiator } from "@dashboardPages/components/Immo/Owners/OwnersItem";
-import { UtContact } from "@dashboardComponents/Tools/Utilitaire";
+import { TenantMainInfos }  from "@dashboardPages/components/Immo/Tenants/TenantsItem";
+import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
 export class BuyersItem extends Component {
     render () {
@@ -39,7 +39,7 @@ export class BuyersItem extends Component {
                         </div>
 
                         <div className="col-3">
-                            <OwnerNegotiator elem={elem} />
+                            <NegotiatorBubble elem={elem.negotiator} />
                         </div>
 
                         <div className="col-4 actions">

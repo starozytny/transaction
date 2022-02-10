@@ -42,7 +42,7 @@ export class OwnersItem extends Component {
                         </div>}
 
                         <div className={isFormBien ? "col-2" : "col-3"} onClick={onSelectOwner ? () => onSelectOwner(elem) : () => onChangeContext("read", elem)}>
-                            <OwnerNegotiator elem={elem} />
+                            <NegotiatorBubble elem={elem.negotiator} />
                         </div>
                         {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
                             {(biens.length !== 0 && totalBiens !== 0) &&
@@ -75,8 +75,4 @@ export function OwnerMainInfos ({ elem }) {
             <span>{elem.fullname}</span>
         </div>
     </>
-}
-
-export function OwnerNegotiator ({ elem }) {
-    return <NegotiatorBubble elem={elem.negotiator} />
 }
