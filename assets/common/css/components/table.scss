@@ -82,10 +82,6 @@
     flex-wrap: wrap;
   }
 
-  .badges + .name{
-    margin-top: 8px;
-  }
-
   .badges{
     & > .badge:not(:last-child),
     & > .role:not(:last-child){
