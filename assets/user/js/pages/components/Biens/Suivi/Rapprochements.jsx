@@ -100,7 +100,7 @@ export class Rapprochements extends Component {
         let items = [];
         let prospects = [];
         data.forEach(elem => {
-            items.push(<RapprochementsItem prospect={elem.prospect} bien={elem.bien} onSelectProspect={this.handleSelectProspect} key={elem.id} />)
+            items.push(<RapprochementsItem elem={elem} onSelectProspect={this.handleSelectProspect} key={elem.id} />)
             prospects.push(elem.prospect)
         })
 
@@ -168,7 +168,10 @@ export class RapprochementsItem extends Component {
     }
 
     render () {
-        const { prospect, bien, onSelectProspect } = this.props;
+        const { elem, onSelectProspect } = this.props;
+
+        let prospect = elem.prospect;
+        let bien     = elem.bien;
 
         let percentage = 0;
         if(prospect.search){
@@ -187,6 +190,9 @@ export class RapprochementsItem extends Component {
                 <div className="card-body">
                     <div className="infos">
                         <div className="col-1">
+                            <div className="badges">
+                                <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
+                            </div>
                             <div className="identifier">
                                 <div className="title">
                                     <span>{prospect.fullname}</span>
