@@ -1,3 +1,20 @@
+.badge-prospect.badge{
+  $status:
+          "0" var(--grey) var(--txt),
+          "1" var(--primaryShadow) var(--txt),
+          "2" var(--warning) var(--txt),
+          "3" var(--danger) var(--txt),
+          "4" var(--color0Shadow) var(--txt),
+;
+
+  @each $number, $bg, $txt in $status {
+    &.badge-#{$number}{
+      background-color: $bg;
+      color: $txt;
+    }
+  }
+}
+
 .actions-crud-search{
   margin-top: 8px;
 
