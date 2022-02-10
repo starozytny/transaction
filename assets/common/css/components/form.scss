@@ -76,6 +76,17 @@
     width: 100%;
     @include fontRegular();
 
+    &.disabled{
+      pointer-events: initial;
+
+      &:not(.open){
+        .react-selectize-control{
+          background: var(--greyShadow);
+          cursor: not-allowed;
+        }
+      }
+    }
+
     &:not(.open){
       .react-selectize-control{
         background: var(--alpha);
