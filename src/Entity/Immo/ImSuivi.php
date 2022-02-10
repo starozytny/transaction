@@ -13,6 +13,10 @@ class ImSuivi
 {
     const SUIVI_READ = ["suivi:read"];
 
+    const STATUS_TO_PROCESS = 0;
+    const STATUS_PROCESSING = 1;
+    const STATUS_END = 2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -20,6 +24,12 @@ class ImSuivi
      * @Groups({"suivi:read"})
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"suivi:read"})
+     */
+    private $status = self::STATUS_TO_PROCESS;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImBien::class, inversedBy="suivis")
@@ -60,6 +70,18 @@ class ImSuivi
     public function setProspect(?ImProspect $prospect): self
     {
         $this->prospect = $prospect;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
