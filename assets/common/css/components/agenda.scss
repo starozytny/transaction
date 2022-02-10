@@ -178,6 +178,10 @@
 @media (min-width:768px) {
   #calendar {
 
+    .aside{
+      width: 80%;
+    }
+
     .fc-view-harness.fc-view-harness-active{
       min-height: 200vh;
     }
