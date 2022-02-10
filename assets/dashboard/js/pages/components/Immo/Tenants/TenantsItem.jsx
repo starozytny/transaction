@@ -3,7 +3,10 @@ import React, { Component } from 'react';
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
-import { Selector }     from "@dashboardComponents/Layout/Selector";
+import { Selector } from "@dashboardComponents/Layout/Selector";
+import { UtPhones } from "@dashboardComponents/Tools/Utilitaire";
+
+import { OwnerContact, OwnerNegotiator } from "@dashboardPages/components/Immo/Owners/OwnersItem";
 
 export class TenantsItem extends Component {
     render () {
@@ -30,10 +33,10 @@ export class TenantsItem extends Component {
                             <TenantMainInfos elem={elem} isClient={isClient} />
                         </div>
                         {!isFormBien && <div className="col-2">
-                            <TenantContact elem={elem} />
+                            <OwnerContact elem={elem} />
                         </div>}
                         <div className={isFormBien ? "col-2" : "col-3"} onClick={onSelectTenant ? () => onSelectTenant(elem) : null}>
-                            <TenantNegotiator elem={elem} />
+                            <OwnerNegotiator elem={elem} />
                         </div>
                         {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
                             {(elem.bien && !isFormBien) &&
@@ -57,20 +60,5 @@ export function TenantMainInfos ({ elem, isClient }) {
             <span>{elem.lastname} {elem.firstname}</span>
         </div>
         {!isClient && <div className="sub">{elem.agency.name}</div>}
-    </>
-}
-
-export function TenantContact ({ elem }) {
-    return <>
-        <div className="sub">{elem.email}</div>
-        <div className="sub">{elem.phone1}</div>
-        <div className="sub">{elem.phone2}</div>
-        <div className="sub">{elem.phone3}</div>
-    </>
-}
-
-export function TenantNegotiator ({ elem }) {
-    return <>
-        <div className="sub">{elem.negotiator ? elem.negotiator.fullname : "/"}</div>
     </>
 }

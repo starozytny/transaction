@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 
 import { Selector }     from "@dashboardComponents/Layout/Selector";
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
-import { TenantContact, TenantMainInfos, TenantNegotiator } from "@dashboardPages/components/Immo/Tenants/TenantsItem";
+
+import { TenantMainInfos }               from "@dashboardPages/components/Immo/Tenants/TenantsItem";
+import { OwnerContact, OwnerNegotiator } from "@dashboardPages/components/Immo/Owners/OwnersItem";
 
 export class BuyersItem extends Component {
     render () {
@@ -32,11 +34,11 @@ export class BuyersItem extends Component {
                         </div>
 
                         <div className="col-2">
-                            <TenantContact elem={elem} />
+                            <OwnerContact elem={elem} />
                         </div>
 
                         <div className="col-3">
-                            <TenantNegotiator elem={elem} />
+                            <OwnerNegotiator elem={elem} />
                         </div>
 
                         <div className="col-4 actions">
