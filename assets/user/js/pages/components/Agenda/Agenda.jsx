@@ -32,22 +32,39 @@ const MSG_DELETE_ELEMENT = 'Supprimer cet évènement ?';
 const URL_UPDATE_ELEMENT_DATE = 'api_agenda_events_update_date';
 const URL_GET_DATA            = 'api_agenda_data_persons';
 
-function filterFunction(dataImmuable, filters) {
+function filterFunction(dataImmuable, filters, search = null) {
     let newData = [];
     if(filters.length === 0) {
         newData = dataImmuable
     }else{
         dataImmuable.forEach(el => {
             filters.forEach(filter => {
+                let push = false;
                 switch (filter){
+                    case "user":
+                        if(el.persons && el.persons.users){
+                            el.persons.users.forEach(u => {
+                                if(u.value === search){
+                                    push = true;
+                                }
+                            })
+                        }
+                        break;
+                    case "all":
+                        push = true;
+                        break;
                     case 0: //users
                         if(el.persons && el.persons.users && el.persons.users.length > 0){
-                            newData.filter(elem => elem.id !== el.id)
-                            newData.push(el);
+                            push = true;
                         }
                         break;
                     default:
                         break;
+                }
+
+                if(push){
+                    newData.filter(elem => elem.id !== el.id)
+                    newData.push(el);
                 }
             })
         })
@@ -92,7 +109,15 @@ export class Agenda extends Component {
 
     componentDidMount = () => { AgendaData.getData(this, URL_GET_DATA); }
 
-    handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
+    handleChangeSelect = (name, e) => {
+        const { dataImmuable, filters } = this.state;
+
+        let search = e !== undefined ? e.value : "";
+        let newData = filterFunction(dataImmuable, search !== "" ? [name] : ["all"], search);
+        let newData1 = filterFunction(newData, filters);
+
+        this.setState({ data: newData1, filters: filters, [name]: search });
+    }
 
     handleGetFilters = (filters, dataIm = null) => {
         const { dataImmuable } = this.state;
