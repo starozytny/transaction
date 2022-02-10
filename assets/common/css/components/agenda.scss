@@ -160,13 +160,19 @@
         }
       }
     }
+  }
 
-    //@each $number, $bg in $status {
-    //  &.event-#{$number}{
-    //    background-color: $bg;
-    //    border-color: $bg;
-    //  }
-    //}
+  .toolbar{
+    .filter-search{
+      .dropdown-btn{
+        border-right: 1px solid var(--grey);
+        border-radius: 3px;
+      }
+    }
+
+    .filters-items-checked{
+      margin-left: 12px;
+    }
   }
 }
 //                      __   _____ __    ___    __

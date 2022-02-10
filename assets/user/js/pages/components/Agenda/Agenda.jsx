@@ -24,29 +24,61 @@ import { Button }        from "@dashboardComponents/Tools/Button";
 import { PageError }        from "@dashboardComponents/Layout/PageError";
 import { LoaderElement }    from "@dashboardComponents/Layout/Loader";
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
+import { Filter, FilterSelected } from "@dashboardComponents/Layout/Filter";
 
 const URL_DELETE_ELEMENT = 'api_agenda_events_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer cet évènement ?';
 const URL_UPDATE_ELEMENT_DATE = 'api_agenda_events_update_date';
 const URL_GET_DATA            = 'api_agenda_data_persons';
 
+function filterFunction(dataImmuable, filters) {
+    let newData = [];
+    if(filters.length === 0) {
+        newData = dataImmuable
+    }else{
+        dataImmuable.forEach(el => {
+            filters.forEach(filter => {
+                switch (filter){
+                    case 0: //users
+                        if(el.persons && el.persons.users && el.persons.users.length > 0){
+                            newData.filter(elem => elem.id !== el.id)
+                            newData.push(el);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            })
+        })
+    }
+
+    return newData;
+}
+
 export class Agenda extends Component {
     constructor(props) {
         super(props);
+
+        let data = props.donnees ? JSON.parse(props.donnees) : [];
 
         this.state = {
             context: "list",
             loadPageError: false,
             loadData: true,
-            data: props.donnees ? JSON.parse(props.donnees) : [],
-            initialView: (window.matchMedia("(min-width: 768px)").matches) ? "timeGridWeek" : "timeGridDay"
+            dataImmuable: data,
+            data: data,
+            initialView: (window.matchMedia("(min-width: 768px)").matches) ? "timeGridWeek" : "timeGridDay",
+            filters: []
         }
 
         this.aside = React.createRef();
+        this.filter = React.createRef();
 
         this.handleOpenAside = this.handleOpenAside.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleGetFilters = this.handleGetFilters.bind(this);
+        this.handleFilter = this.handleFilter.bind(this);
 
         this.handleDateClick = this.handleDateClick.bind(this);
         this.handleEventClick = this.handleEventClick.bind(this);
@@ -55,6 +87,18 @@ export class Agenda extends Component {
     }
 
     componentDidMount = () => { AgendaData.getData(this, URL_GET_DATA); }
+
+    handleGetFilters = (filters, dataIm = null) => {
+        const { dataImmuable } = this.state;
+
+        let newData = filterFunction(dataIm ? dataIm : dataImmuable, filters);
+
+        this.setState({ data: newData, filters: filters });
+    }
+
+    handleFilter = (e) => {
+        this.filter.current.handleChange(e, true);
+    }
 
     handleOpenAside = (context, elem) => {
         let title = context === "update" ? elem.title : "Ajouter un évènement";
@@ -141,7 +185,7 @@ export class Agenda extends Component {
     }
 
     render () {
-        const { context, loadPageError, loadData, data, initialView, element, users } = this.state;
+        const { context, loadPageError, loadData, data, initialView, element, users, filters } = this.state;
 
         let contentAside;
         switch (context){
@@ -162,12 +206,25 @@ export class Agenda extends Component {
             events.push(AgendaData.createEventStructure(elem))
         })
 
+        let filtersLabel = ["Utilisateur", "Développeur", "Administrateur"];
+        let filtersId    = ["f-user", "f-dev", "f-admin"];
+
+        let itemsFilter = [
+            { value: 0, id: filtersId[0], label: filtersLabel[0]},
+            { value: 1, id: filtersId[1], label: filtersLabel[1] },
+            { value: 2, id: filtersId[2], label: filtersLabel[2]}
+        ];
+
         return <>
             {loadPageError ? <div className="main-content"><PageError /></div> : <div id="calendar" className="main-content">
                 {loadData ? <LoaderElement /> : <>
                     <div className="toolbar">
                         <div className="item">
                             <Button onClick={this.handleAdd}>Ajouter un évènement</Button>
+                        </div>
+                        <div className="item filter-search">
+                            <Filter ref={this.filter} items={itemsFilter} onGetFilters={this.handleGetFilters} />
+                            <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                         </div>
                     </div>
                     <FullCalendar
