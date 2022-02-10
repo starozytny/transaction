@@ -160,15 +160,15 @@ export class Form extends Component {
         if(allDay[0] === 0){
             if(startAt !== ""){
                 paramsToValidate = [...paramsToValidate, ...[
-                    {type: "dateLimitHM", id: 'startAt', value: startAt, minH: 8, maxH: 22, minM: 0, maxM: 60}
+                    {type: "dateLimitHM", id: 'startAt', value: startAt, minH: 8, maxH: 22, minM: 0, maxM: 59}
                 ]]
             }
 
             if(endAt !== ""){
                 let minH = startAt ? startAt.getHours() : 8;
-                let minM = startAt ? startAt.getMinutes() : 0;
+                let minM = startAt && startAt.getHours() === endAt.getHours() ? startAt.getMinutes() : 0;
                 paramsToValidate = [...paramsToValidate, ...[
-                    {type: "dateLimitHM", id: 'endAt', value: endAt, minH: minH, maxH: 22, minM: minM, maxM: 60},
+                    {type: "dateLimitHM", id: 'endAt', value: endAt, minH: minH, maxH: 22, minM: minM, maxM: 59},
                     {type: "dateCompare", id: 'startAt', value: startAt, valueCheck: endAt}
                 ]]
             }
