@@ -139,7 +139,8 @@ function validateDateLimitMinutes($value, $min, $max) {
 }
 
 function validateDateLimitHoursMinutes($value, $minH, $maxH, $minM, $maxM) {
-    let $msg = 'L\'horaire doit être compris entre ' + $minH + 'h' + $minM +'min et ' + $maxH + 'h' + $maxM + 'min.';
+    let $msg = 'L\'horaire doit être compris entre '
+        + $minH + 'h' + Sanitaze.addZeroToNumber($minM) +'min et ' + $maxH + 'h' + Sanitaze.addZeroToNumber($maxM) + 'min.';
 
     if($value.getHours() < $minH || $value.getHours() > $maxH){
         return {
