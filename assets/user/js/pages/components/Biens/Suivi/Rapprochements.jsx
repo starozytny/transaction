@@ -9,9 +9,11 @@ import { Alert }      from "@dashboardComponents/Tools/Alert";
 import { HelpBubble } from "@dashboardComponents/Tools/HelpBubble";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
-import DataState    from "@userPages/components/Biens/Form/data";
-import Sort         from "@commonComponents/functions/sort";
-import Formulaire   from "@dashboardComponents/functions/Formulaire";
+import DataState     from "@userPages/components/Biens/Form/data";
+import Sort          from "@commonComponents/functions/sort";
+import Helper        from "@commonComponents/functions/helper";
+import Formulaire    from "@dashboardComponents/functions/Formulaire";
+import Rapprochement from "@userComponents/functions/rapprochement";
 
 import { ProspectFormulaire }   from "@dashboardPages/components/Immo/Prospects/ProspectForm";
 import { SearchInfos }          from "@dashboardPages/components/Immo/Prospects/ProspectsItem";
@@ -97,7 +99,7 @@ export class Rapprochements extends Component {
         let items = [];
         let prospects = [];
         data.forEach(elem => {
-            items.push(<RapprochementsItem prospect={elem.prospect} onSelectProspect={this.handleSelectProspect} key={elem.id} />)
+            items.push(<RapprochementsItem prospect={elem.prospect} bien={elem.bien} onSelectProspect={this.handleSelectProspect} key={elem.id} />)
             prospects.push(elem.prospect)
         })
 
@@ -148,7 +150,16 @@ export class RapprochementsItem extends Component {
     }
 
     render () {
-        const { prospect, onSelectProspect } = this.props;
+        const { prospect, bien, onSelectProspect } = this.props;
+
+        let percentage = 0;
+        if(prospect.search){
+            let biens, compteur;
+            [biens, compteur] = Rapprochement.rapprochement(prospect.search, [bien]);
+
+            percentage = Helper.countProgress(compteur, 14)
+        }
+
 
         return <div className="card-ra">
             <div className="selector">
@@ -173,15 +184,14 @@ export class RapprochementsItem extends Component {
                         </div>
                         <div className="col-3">
                             <div className="ra-percentage">
-                                <figure className="chart-two chart-two-40 animate">
+                                <figure className={"chart-two chart-two-"+ percentage +" animate"}>
                                     <svg role="img" xmlns="http://www.w3.org/2000/svg">
                                         <title>Pourcentage rapprochement</title>
                                         <circle className="circle-background"/>
                                         <circle className="circle-foreground"/>
                                     </svg>
-                                    <figcaption>{prospect.search ? "80%" : "0%"} of all males like donuts.</figcaption>
+                                    <figcaption>{prospect.search ? percentage : "0%"}</figcaption>
                                 </figure>
-                                <div></div>
                             </div>
                             {prospect.negotiator && <NegociatorBubble elem={prospect.negotiator} onOpen={this.handleOpenHelp} />}
                         </div>

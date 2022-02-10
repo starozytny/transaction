@@ -77,13 +77,13 @@ class ImBien extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $codeTypeAd;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $codeTypeBien;
 
@@ -147,7 +147,7 @@ class ImBien extends DataEntity
     /**
      * @ORM\OneToOne(targetEntity=ImArea::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $area;
 
@@ -175,7 +175,7 @@ class ImBien extends DataEntity
     /**
      * @ORM\OneToOne(targetEntity=ImNumber::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $number;
 
@@ -189,7 +189,7 @@ class ImBien extends DataEntity
     /**
      * @ORM\OneToOne(targetEntity=ImAdvantage::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $advantage;
 
@@ -203,14 +203,14 @@ class ImBien extends DataEntity
     /**
      * @ORM\OneToOne(targetEntity=ImLocalisation::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $localisation;
 
     /**
      * @ORM\OneToOne(targetEntity=ImFinancial::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $financial;
 

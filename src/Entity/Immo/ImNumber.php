@@ -21,13 +21,13 @@ class ImNumber
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $piece;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $room;
 
@@ -45,19 +45,19 @@ class ImNumber
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $balcony;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $parking;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $box;
 

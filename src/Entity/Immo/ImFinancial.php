@@ -35,7 +35,7 @@ class ImFinancial
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $price;
 

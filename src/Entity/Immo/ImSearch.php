@@ -27,13 +27,13 @@ class ImSearch extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $codeTypeAd = 0;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "suivi:read"})
      */
     private $codeTypeBien = 0;
 

@@ -27,7 +27,7 @@ class ImAdvantage
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $hasTerrace = ImBien::ANSWER_UNKNOWN;
 
@@ -69,7 +69,7 @@ class ImAdvantage
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $hasLift = ImBien::ANSWER_UNKNOWN;
 

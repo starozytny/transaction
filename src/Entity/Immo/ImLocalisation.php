@@ -34,13 +34,13 @@ class ImLocalisation extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $city;
 

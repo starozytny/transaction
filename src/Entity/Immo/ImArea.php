@@ -27,13 +27,13 @@ class ImArea
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $habitable;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "suivi:read"})
      */
     private $land;
 

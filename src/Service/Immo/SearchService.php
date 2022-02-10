@@ -15,6 +15,10 @@ class SearchService
      */
     public function rapprochement(ImSearch $search, array $biens, $data = null): array
     {
+
+        $biens = $this->filterCode('codeTypeAd',    $biens, $search->getCodeTypeAd());
+        $biens = $this->filterCode('codeTypeBien',  $biens, $search->getCodeTypeBien());
+
         $biens = $this->filterLocalisation('zipcode', $biens, $search->getZipcode());
         $biens = $this->filterLocalisation('city',    $biens, $search->getCity());
 
@@ -29,6 +33,36 @@ class SearchService
         $biens = $this->filterMinMax('room',  $biens, $search->getMinRoom(),  $search->getMaxRoom(), $data ? $data->room ?? 0 : 0);
         $biens = $this->filterMinMax('area',  $biens, $search->getMinArea(),  $search->getMaxArea(), $data ? $data->area ?? 0 : 0);
         return $this->filterMinMax('land',  $biens, $search->getMinLand(),  $search->getMaxLand(), $data ? $data->land ?? 0 : 0);
+    }
+
+    /**
+     * @param $filter
+     * @param array $data
+     * @param $search
+     * @return array
+     */
+    public function filterCode($filter, array $data, $search): array
+    {
+        $nData = [];
+
+        foreach($data as $item){
+            switch ($filter){
+                case "codeTypeAd":
+                    $value = $item->getCodeTypeAd();
+                    break;
+                case "codeTypeBien":
+                    $value = $item->getCodeTypeBien();
+                    break;
+                default:
+                    break;
+            }
+
+            if(isset($value) && $value === $search){
+                $nData[] = $item;
+            }
+        }
+
+        return $nData;
     }
     
     /**
