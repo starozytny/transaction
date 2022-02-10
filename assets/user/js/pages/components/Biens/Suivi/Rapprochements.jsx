@@ -18,7 +18,8 @@ import Rapprochement from "@userComponents/functions/rapprochement";
 import { ProspectFormulaire }   from "@dashboardPages/components/Immo/Prospects/ProspectForm";
 import { SearchInfos }          from "@dashboardPages/components/Immo/Prospects/ProspectsItem";
 import { Prospects }            from "@dashboardPages/components/Immo/Prospects/Prospects";
-import { ContentNegotiatorBubble, NegociatorBubble } from "@userPages/components/Biens/AdCard";
+import { NegotiatorBubble }     from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
+import { ContentNegotiatorBubble } from "@userPages/components/Biens/AdCard";
 
 const SORTER = Sort.compareProspectLastname;
 let i = 0;
@@ -177,6 +178,7 @@ export class RapprochementsItem extends Component {
                                     <div>{prospect.email}</div>
                                     <div>{prospect.phone1}</div>
                                 </div>
+                                {prospect.negotiator && <NegotiatorBubble elem={prospect.negotiator} txt={null} />}
                             </div>
                         </div>
                         <div className="col-2">
@@ -192,8 +194,8 @@ export class RapprochementsItem extends Component {
                                     </svg>
                                     <figcaption>{prospect.search ? percentage : "0%"}</figcaption>
                                 </figure>
+                                <div className="tooltip">Rapprochement</div>
                             </div>
-                            {prospect.negotiator && <NegociatorBubble elem={prospect.negotiator} onOpen={this.handleOpenHelp} />}
                         </div>
                     </div>
                 </div>
