@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
@@ -35,7 +35,7 @@ export class OwnersItem extends Component {
                             {biens.length !== 0 && <div className="sub">{totalBiens} bien{totalBiens > 1 ? "s" : ""}</div>}
                         </div>
 
-                        {!isFormBien && <div className="col-2" onClick={() => onChangeContext("read", elem)}>
+                        {!isFormBien && <div className="col-2">
                             <OwnerContact elem={elem} />
                         </div>}
 
@@ -76,11 +76,22 @@ export function OwnerMainInfos ({ elem }) {
 }
 
 export function OwnerContact ({ elem }) {
+    const [open, setOpen] = useState(false);
+
     return <>
         <div className="sub">{elem.email}</div>
-        <div className="sub">{elem.phone1}</div>
-        <div className="sub">{elem.phone2}</div>
-        <div className="sub">{elem.phone3}</div>
+        <div className={"ut-phones" + (open ? " active" : "")}>
+            <div className="sub phone-main">
+                <span>{elem.phone1}</span>
+                {elem.phone2 !== "" && elem.phone3 !== "" && <div className="btn-phone-details" onClick={() => setOpen(!open)}>
+                    <span className={"icon-" + (open ? "minus" : "add")} />
+                    <span>Voir {open ? "moins" : "plus"}</span>
+                </div>}
+            </div>
+            <div className="sub phone-details">{elem.phone2}</div>
+            <div className="sub phone-details">{elem.phone3}</div>
+        </div>
+
     </>
 }
 
