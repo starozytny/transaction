@@ -122,15 +122,26 @@ export class Rapprochements extends Component {
         }
 
         return (<div className="details-tab-infos">
-            <div className="toolbar toolbar-prospect">
-                <div className="item create">
-                    <Button onClick={() => this.handleChangeContext('create')}>Ajouter un prospect</Button>
+            <div className="page-default">
+                <div className="page-col-1">
+                    <div className="body-col-1">
+                        <div className="content-col-1">
+                            <Button onClick={() => this.handleChangeContext('create')}>Ajouter un prospect</Button>
+                        </div>
+                        <div className="content-col-1">
+                            <Button onClick={() => this.handleChangeContext('select')}>Sélectionner un existant</Button>
+                        </div>
+                    </div>
                 </div>
-                <div className="item">
-                    <Button onClick={() => this.handleChangeContext('select')}>Sélectionner un existant</Button>
+                <div className="page-col-2">
+                    <div className="title-col-1">
+                        <span>Résultats :</span>
+                    </div>
+                    <div>
+                        {items && items.length !== 0 ? items : <Alert>Aucun résultat</Alert>}
+                    </div>
                 </div>
             </div>
-            {items && items.length !== 0 ? items : <Alert>Aucun résultat</Alert>}
 
             <Aside ref={this.aside} content={contentAside}/>
         </div>)

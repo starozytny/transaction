@@ -4,13 +4,6 @@
   .aside{
     width: 70%;
   }
-
-  .toolbar-prospect{
-    .filter-search{
-      margin-left: 0;
-      width: 100%;
-    }
-  }
 }
 
 .suivi-global{
@@ -147,15 +140,6 @@
 //                     |__|                    |__|
 @media (min-width:768px) {
   .suivi-container{
-    .toolbar-prospect{
-      flex-wrap: nowrap;
-
-      & > .item:not(:last-child){
-        margin-bottom: 0;
-        margin-right: 12px;
-      }
-    }
-
     .aside{
       width: 60%;
     }

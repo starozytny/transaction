@@ -117,8 +117,6 @@ function filterAdvantage(compteur, filter, data, search)
             let advantage = item.advantage;
             let number    = item.number;
 
-            console.log(item)
-
             let value;
             switch (filter){
                 case 'box':
