@@ -28,6 +28,10 @@
     border-radius: 12px;
     padding: 12px;
 
+    .btn{
+      width: 100%;
+    }
+
     &:not(:last-child){
       margin-bottom: 24px;
     }

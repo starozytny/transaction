@@ -131,6 +131,12 @@ export class Rapprochements extends Component {
                         <div className="content-col-1">
                             <Button onClick={() => this.handleChangeContext('select')}>Sélectionner un existant</Button>
                         </div>
+                        <div className="title-col-1">
+                            <span>Filtres :</span>
+                        </div>
+                        <div className="content-col-1">
+                            <div>Item</div>
+                        </div>
                     </div>
                 </div>
                 <div className="page-col-2">
