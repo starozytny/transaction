@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
 import { Selector }  from "@dashboardComponents/Layout/Selector";
-import { UtContact } from "@dashboardComponents/Tools/Utilitaire";
+import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
+import { UtContact, UtMainInfos }        from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
@@ -30,7 +30,7 @@ export class TenantsItem extends Component {
                 <div className="item-body">
                     <div className={"infos infos-col-" + ((isReadBien || isFormBien) ? "3" : "4")}>
                         <div className="col-1" onClick={onSelectTenant ? () => onSelectTenant(elem) : null}>
-                            <TenantMainInfos elem={elem} isClient={isClient} />
+                            <UtMainInfos elem={elem} isClient={isClient} />
                         </div>
                         {!isFormBien && <div className="col-2">
                             <UtContact elem={elem} />
@@ -52,13 +52,4 @@ export class TenantsItem extends Component {
             </div>
         </div>
     }
-}
-
-export function TenantMainInfos ({ elem, isClient }) {
-    return <>
-        <div className="name">
-            <span>{elem.lastname} {elem.firstname}</span>
-        </div>
-        {!isClient && <div className="sub">{elem.agency.name}</div>}
-    </>
 }

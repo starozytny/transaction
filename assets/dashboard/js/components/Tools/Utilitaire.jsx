@@ -29,3 +29,12 @@ export function UtContact ({ elem }) {
         <UtPhones elem={elem} />
     </>
 }
+
+export function UtMainInfos ({ elem, isClient }) {
+    return <>
+        <div className="name">
+            <span>{elem.fullname ? elem.fullname : elem.lastname + " " + elem.firstname}</span>
+        </div>
+        {!isClient && elem.agency && <div className="sub">{elem.agency.name}</div>}
+    </>
+}

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
-import { UtContact }    from "@dashboardComponents/Tools/Utilitaire";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
+import { UtContact, UtMainInfos }        from "@dashboardComponents/Tools/Utilitaire";
 
-import { TenantMainInfos }  from "@dashboardPages/components/Immo/Tenants/TenantsItem";
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
 export class BuyersItem extends Component {
@@ -30,7 +29,7 @@ export class BuyersItem extends Component {
                 <div className="item-body">
                     <div className="infos infos-col-4">
                         <div className="col-1" onClick={isSelect ? () => onSelectBuyer(elem) : null}>
-                            <TenantMainInfos elem={elem} isClient={isClient} />
+                            <UtMainInfos elem={elem} isClient={isClient} />
                             <div className="sub">Type d'acquéreur : {elem.typeString}</div>
                         </div>
 
