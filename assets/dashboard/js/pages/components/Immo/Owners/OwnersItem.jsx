@@ -4,6 +4,7 @@ import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.j
 
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
+import {NegotiatorBubble} from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
 export class OwnersItem extends Component {
     render () {
@@ -84,7 +85,5 @@ export function OwnerContact ({ elem }) {
 }
 
 export function OwnerNegotiator ({ elem }) {
-    return <>
-        <div className="sub">{elem.negotiator ? elem.negotiator.fullname : "/"}</div>
-    </>
+    return <NegotiatorBubble elem={elem.negotiator} />
 }
