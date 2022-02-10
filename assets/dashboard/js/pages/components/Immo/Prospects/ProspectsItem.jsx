@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import { ButtonIcon, ButtonIconContact, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
-import { Selector }         from "@dashboardComponents/Layout/Selector";
+import { Selector }  from "@dashboardComponents/Layout/Selector";
+import { UtPhones }  from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 import { SearchMainInfos1, SearchMainInfos2 } from "@dashboardPages/components/Immo/Searchs/SearchsItem";
@@ -33,8 +34,10 @@ export class ProspectsItem extends Component {
             <div className="item-content">
                 <div className="item-body">
                     <div className="infos infos-col-5">
-                        <div className="col-1" onClick={isSelect ? () => onSelectProspect(elem) : () => onChangeContext("read", elem)}>
-                            <ProspectsMainInfos elem={elem} isClient={isClient} />
+                        <div className="col-1">
+                            <ProspectsMainInfos elem={elem} isClient={isClient}
+                                                onClick={isSelect ? () => onSelectProspect(elem) : () => onChangeContext("read", elem)} />
+                            <UtPhones elem={elem} />
                         </div>
 
                         <div className="col-2" onClick={!isSelect ? () => onChangeContext("read", elem) : null}>
@@ -48,18 +51,13 @@ export class ProspectsItem extends Component {
                         </div>
 
                         <div className="col-3">
-                            {elem.search ? <>
-                                <SearchInfos elem={elem.search} />
-                                <div className="actions-crud-search">
-                                    <ButtonSearchCrud icon="layer" onClick={() => onChangeContext('read', elem)}>Résultats</ButtonSearchCrud>
-                                </div>
-                            </> : null}
+                            {elem.search ? <SearchInfos elem={elem.search} isRa={true} /> : null}
                         </div>
 
                         <div className="col-4">
                             {elem.search ? <>
-                                <SearchMainInfos2 elem={elem.search} />
                                 <div className="actions-crud-search">
+                                    <ButtonSearchCrud icon="layer" onClick={() => onChangeContext('read', elem)}>Résultats</ButtonSearchCrud>
                                     <ButtonSearchCrud icon="pencil" onClick={() => onChangeContext('customTwo', elem)}>Modifier</ButtonSearchCrud>
                                     <ButtonSearchCrud icon="trash" onClick={() => onDeleteSearch(elem)}>Supprimer</ButtonSearchCrud>
                                 </div>
@@ -79,17 +77,14 @@ export class ProspectsItem extends Component {
     }
 }
 
-export function ProspectsMainInfos ({ elem, isClient }) {
-    return <>
+export function ProspectsMainInfos ({ elem, isClient, onClick }) {
+    return <div onClick={onClick}>
         <div className="name">
             <span>{elem.lastname} {elem.firstname}</span>
         </div>
         {!isClient && <div className="sub">{elem.agency.name}</div>}
         <div className="sub">{elem.email}</div>
-        <div className="sub">{elem.phone1}</div>
-        <div className="sub">{elem.phone2}</div>
-        <div className="sub">{elem.phone3}</div>
-    </>
+    </div>
 }
 
 export function SearchInfos({ elem, isRa = false }) {

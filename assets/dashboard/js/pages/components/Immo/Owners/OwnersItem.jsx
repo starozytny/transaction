@@ -1,10 +1,12 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
-import { Selector }     from "@dashboardComponents/Layout/Selector";
-import {NegotiatorBubble} from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
+import { Selector }         from "@dashboardComponents/Layout/Selector";
+import { UtPhones }         from "@dashboardComponents/Tools/Utilitaire";
+
+import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
 export class OwnersItem extends Component {
     render () {
@@ -76,22 +78,9 @@ export function OwnerMainInfos ({ elem }) {
 }
 
 export function OwnerContact ({ elem }) {
-    const [open, setOpen] = useState(false);
-
     return <>
         <div className="sub">{elem.email}</div>
-        <div className={"ut-phones" + (open ? " active" : "")}>
-            <div className="sub phone-main">
-                <span>{elem.phone1}</span>
-                {elem.phone2 !== "" && elem.phone3 !== "" && <div className="btn-phone-details" onClick={() => setOpen(!open)}>
-                    <span className={"icon-" + (open ? "minus" : "add")} />
-                    <span>Voir {open ? "moins" : "plus"}</span>
-                </div>}
-            </div>
-            <div className="sub phone-details">{elem.phone2}</div>
-            <div className="sub phone-details">{elem.phone3}</div>
-        </div>
-
+        <UtPhones elem={elem} />
     </>
 }
 
