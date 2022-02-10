@@ -254,10 +254,10 @@ export class Form extends Component {
 
         let minTimeStart = Helper.createTimeHoursMinutes(8);
         let maxTimeStart = Helper.createTimeHoursMinutes(22);
-        let minTimeEnd   = startAt
+        let minTimeEnd   = (startAt && !endAt) || (startAt && endAt
                             && startAt.getDay() === endAt.getDay()
                             && startAt.getMonth() === endAt.getMonth()
-                            && startAt.getFullYear() === endAt.getFullYear() ? startAt : Helper.createTimeHoursMinutes(8);
+                            && startAt.getFullYear() === endAt.getFullYear()) ? startAt : Helper.createTimeHoursMinutes(8);
         let maxTimeEnd   = Helper.createTimeHoursMinutes(22);
 
         return <>
