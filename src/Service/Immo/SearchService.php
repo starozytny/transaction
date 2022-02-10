@@ -170,7 +170,7 @@ class SearchService
                 }
 
                 if(isset($value) && ($value == $search || $value == 99)){
-                    $nData = $item;
+                    $nData[] = $item;
                 }
             }
         }else{
