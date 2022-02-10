@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
+import Filter            from "@commonComponents/functions/filter";
+import TopToolbar        from "@commonComponents/functions/topToolbar";
 
 import { OwnersList }       from "./OwnersList";
 import { OwnerFormulaire }  from "./OwnerForm";
@@ -15,29 +17,11 @@ let SORTER = Sort.compareLastname;
 
 let sorters = [
     { value: 0, label: 'Nom',    identifiant: 'sorter-nom' },
-    { value: 1, label: 'code',   identifiant: 'sorter-code' },
+    { value: 1, label: 'Code',   identifiant: 'sorter-code' },
     { value: 2, label: 'Email',  identifiant: 'sorter-email' },
 ];
 
 let sortersFunction = [Sort.compareLastname, Sort.compareCode, Sort.compareEmail];
-
-function filterFunction(dataImmuable, filters){
-    let newData = [];
-    if(filters.length === 0) {
-        newData = dataImmuable
-    }else{
-        dataImmuable.forEach(el => {
-            filters.forEach(filter => {
-                if((filter === 1 && el.isGerance) || (filter === 0 && !el.isGerance)){
-                    newData.filter(elem => elem.id !== el.id)
-                    newData.push(el);
-                }
-            })
-        })
-    }
-
-    return newData;
-}
 
 export class Owners extends Component {
     constructor(props) {
@@ -86,9 +70,9 @@ export class Owners extends Component {
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, filterFunction); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterGerance); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "owner", true, filterFunction); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "owner", true, Filter.filterGerance); }
 
     handleUpdateSelectOwner = (owner) => { this.setState({ owner }) }
 

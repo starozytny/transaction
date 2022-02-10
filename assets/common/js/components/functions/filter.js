@@ -5,10 +5,25 @@ function filter(dataImmuable, filters, property) {
     }else{
         dataImmuable.forEach(el => {
             filters.forEach(filter => {
-                if(filter === el[property]){
+                let push = false;
+                switch (property){
+                    case "gerance":
+                        if((filter === 1 && el.isGerance) || (filter === 0 && !el.isGerance)){
+                            push = true;
+                        }
+                        break;
+                    default:
+                        if(filter === el[property]){
+                            push = true;
+                        }
+                        break;
+                }
+
+                if(push){
                     newData.filter(elem => elem.id !== el.id)
                     newData.push(el);
                 }
+
             })
         })
     }
@@ -24,8 +39,13 @@ function filterStatus(dataImmuable, filters){
     return filter(dataImmuable, filters, "status");
 }
 
+function filterGerance(dataImmuable, filters){
+    return filter(dataImmuable, filters, "gerance");
+}
+
 module.exports = {
     filter,
     filterHighRoleCode,
-    filterStatus
+    filterStatus,
+    filterGerance
 }
