@@ -25,6 +25,7 @@ import { PageError }        from "@dashboardComponents/Layout/PageError";
 import { LoaderElement }    from "@dashboardComponents/Layout/Loader";
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
 import { Filter, FilterSelected } from "@dashboardComponents/Layout/Filter";
+import {SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
 
 const URL_DELETE_ELEMENT = 'api_agenda_events_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer cet évènement ?';
@@ -68,7 +69,9 @@ export class Agenda extends Component {
             dataImmuable: data,
             data: data,
             initialView: (window.matchMedia("(min-width: 768px)").matches) ? "timeGridWeek" : "timeGridDay",
-            filters: []
+            filters: [],
+            errors: [],
+            user: ""
         }
 
         this.aside = React.createRef();
@@ -79,6 +82,7 @@ export class Agenda extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleGetFilters = this.handleGetFilters.bind(this);
         this.handleFilter = this.handleFilter.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
 
         this.handleDateClick = this.handleDateClick.bind(this);
         this.handleEventClick = this.handleEventClick.bind(this);
@@ -87,6 +91,8 @@ export class Agenda extends Component {
     }
 
     componentDidMount = () => { AgendaData.getData(this, URL_GET_DATA); }
+
+    handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
 
     handleGetFilters = (filters, dataIm = null) => {
         const { dataImmuable } = this.state;
@@ -185,7 +191,7 @@ export class Agenda extends Component {
     }
 
     render () {
-        const { context, loadPageError, loadData, data, initialView, element, users, filters } = this.state;
+        const { context, errors, loadPageError, loadData, data, initialView, element, users, filters, user } = this.state;
 
         let contentAside;
         switch (context){
@@ -215,6 +221,12 @@ export class Agenda extends Component {
             { value: 2, id: filtersId[2], label: filtersLabel[2]}
         ];
 
+        let selectUsers = [
+            { value: 0, id: filtersId[0], label: filtersLabel[0]},
+            { value: 1, id: filtersId[1], label: filtersLabel[1] },
+            { value: 2, id: filtersId[2], label: filtersLabel[2]}
+        ];
+
         return <>
             {loadPageError ? <div className="main-content"><PageError /></div> : <div id="calendar" className="main-content">
                 {loadData ? <LoaderElement /> : <>
@@ -225,6 +237,19 @@ export class Agenda extends Component {
                         <div className="item filter-search">
                             <Filter ref={this.filter} items={itemsFilter} onGetFilters={this.handleGetFilters} />
                             <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
+                        </div>
+                    </div>
+
+                    <div className="ag-selectors">
+                        <div className="title">Filtre par personnes</div>
+                        <div className="line line-4">
+                            <SelectReactSelectize items={selectUsers} identifiant="user"
+                                                  valeur={user} errors={errors} onChange={(e) => this.handleChangeSelect('users', e)}>
+                                Utilisateur
+                            </SelectReactSelectize>
+                            <div className="form-group"/>
+                            <div className="form-group"/>
+                            <div className="form-group"/>
                         </div>
                     </div>
                     <FullCalendar

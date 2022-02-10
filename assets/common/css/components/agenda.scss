@@ -175,6 +175,21 @@
     }
   }
 }
+
+.ag-selectors{
+  margin-bottom: 24px;
+  background-color: var(--alpha);
+  border-radius: 4px;
+  border: 1px solid var(--grey);
+  padding: 12px;
+
+  .title{
+    margin-bottom: 8px;
+    @include fontSemibold();
+    text-transform: uppercase;
+  }
+}
+
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
