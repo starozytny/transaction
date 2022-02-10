@@ -165,8 +165,13 @@ export class Form extends Component {
             }
 
             if(endAt !== ""){
-                let minH = startAt ? startAt.getHours() : 8;
+                let minH = startAt
+                    && startAt.getDay() === endAt.getDay()
+                    && startAt.getMonth() === endAt.getMonth()
+                    && startAt.getFullYear() === endAt.getFullYear() ? startAt.getHours() : 8;
+
                 let minM = startAt && startAt.getHours() === endAt.getHours() ? startAt.getMinutes() : 0;
+
                 paramsToValidate = [...paramsToValidate, ...[
                     {type: "dateLimitHM", id: 'endAt', value: endAt, minH: minH, maxH: 22, minM: minM, maxM: 59},
                     {type: "dateCompare", id: 'startAt', value: startAt, valueCheck: endAt}
@@ -249,7 +254,10 @@ export class Form extends Component {
 
         let minTimeStart = Helper.createTimeHoursMinutes(8);
         let maxTimeStart = Helper.createTimeHoursMinutes(22);
-        let minTimeEnd   = startAt ? startAt : Helper.createTimeHoursMinutes(8);
+        let minTimeEnd   = startAt
+                            && startAt.getDay() === endAt.getDay()
+                            && startAt.getMonth() === endAt.getMonth()
+                            && startAt.getFullYear() === endAt.getFullYear() ? startAt : Helper.createTimeHoursMinutes(8);
         let maxTimeEnd   = Helper.createTimeHoursMinutes(22);
 
         return <>
