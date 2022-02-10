@@ -26,11 +26,11 @@ export function LocalisationContact ({ errors, onChange, address, complement, zi
             </div>
 
             <div className="line">
-                <Input valeur={email} identifiant="email" errors={errors} onChange={onChange} type="email" >Adresse e-mail</Input>
+                <Input valeur={email} identifiant="email" errors={errors} onChange={onChange} type="email" >Adresse e-mail *</Input>
             </div>
 
             <div className="line line-3">
-                <Input valeur={phone1} identifiant="phone1" errors={errors} onChange={onChange}>Téléphone 1</Input>
+                <Input valeur={phone1} identifiant="phone1" errors={errors} onChange={onChange}>Téléphone 1 *</Input>
                 <Input valeur={phone2} identifiant="phone2" errors={errors} onChange={onChange}>Téléphone 2</Input>
                 <Input valeur={phone3} identifiant="phone3" errors={errors} onChange={onChange}>Téléphone 3</Input>
             </div>

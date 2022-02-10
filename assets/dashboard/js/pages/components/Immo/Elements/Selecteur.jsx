@@ -3,6 +3,7 @@ import React from "react";
 import { SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert } from "@dashboardComponents/Tools/Alert";
 
+import Sort from "@commonComponents/functions/sort";
 import Helper from "@commonComponents/functions/helper";
 
 export function SelecteurNegociateur ({ isClient, society, agency, negotiator, errors, onChangeSelect, societies, agencies, negotiators })
@@ -11,11 +12,17 @@ export function SelecteurNegociateur ({ isClient, society, agency, negotiator, e
     let selectAgency = [];
     let selectNegotiator = [];
     if(!isClient){
+        societies = societies.sort(Sort.compareName);
+        agencies = agencies.sort(Sort.compareName);
+        negotiators = negotiators.sort(Sort.compareLastname);
+
         let selectorsData = Helper.selectorsImmo(societies, society, agencies, agency, negotiators, negotiator);
         selectSociety = selectorsData[0];
         selectAgency = selectorsData[1];
         selectNegotiator = selectorsData[2];
     }else{
+        negotiators = negotiators.sort(Sort.compareLastname);
+
         negotiators.forEach(elem => {
             let add = agency === "" ? true : (elem.agency.id === agency);
             if(add){
