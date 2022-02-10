@@ -88,6 +88,7 @@ export class Agenda extends Component {
             initialView: (window.matchMedia("(min-width: 768px)").matches) ? "timeGridWeek" : "timeGridDay",
             filters: [],
             errors: [],
+            selActive: "",
             user: ""
         }
 
@@ -116,7 +117,7 @@ export class Agenda extends Component {
         let newData = filterFunction(dataImmuable, search !== "" ? [name] : ["all"], search);
         let newData1 = filterFunction(newData, filters);
 
-        this.setState({ data: newData1, filters: filters, [name]: search });
+        this.setState({ data: newData1, filters: filters, [name]: search, selActive: search === "" ? "" : name });
     }
 
     handleGetFilters = (filters, dataIm = null) => {
@@ -216,7 +217,8 @@ export class Agenda extends Component {
     }
 
     render () {
-        const { context, errors, loadPageError, loadData, data, initialView, element, users, filters, user } = this.state;
+        const { context, errors, loadPageError, loadData, data, initialView, element, users, filters,
+            selActive, user } = this.state;
 
         let contentAside;
         switch (context){
@@ -269,7 +271,7 @@ export class Agenda extends Component {
                     <div className="ag-selectors">
                         <div className="title">Filtre par personnes</div>
                         <div className="line line-4">
-                            <SelectReactSelectize items={selectUsers} identifiant="user"
+                            <SelectReactSelectize items={selectUsers} identifiant="user" disabled={selActive !== "" && selActive !== "user"}
                                                   valeur={user} errors={errors} onChange={(e) => this.handleChangeSelect('user', e)}>
                                 Utilisateur
                             </SelectReactSelectize>
