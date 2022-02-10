@@ -240,6 +240,7 @@ export class Form extends Component {
             {value: 0, label: "Inactif", identifiant: "s-inactif"},
             {value: 1, label: "Actif",   identifiant: "s-actif"},
             {value: 2, label: "Annulé",  identifiant: "s-cancel"},
+            {value: 3, label: "Fini",    identifiant: "s-end"},
         ]
 
         let switcherItems = [ { value: 1, label: 'oui', identifiant: 'oui' } ]
@@ -262,61 +263,65 @@ export class Form extends Component {
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
-                <div className="line">
-                    <Radiobox items={statusItems} identifiant="status" valeur={status} errors={errors} onChange={this.handleChange}>
-                        Statut
-                    </Radiobox>
-                </div>
+                <div className="col-1">
+                    <div className="line">
+                        <Radiobox items={statusItems} identifiant="status" valeur={status} errors={errors} onChange={this.handleChange}>
+                            Statut
+                        </Radiobox>
+                    </div>
 
-                <div className="line line-2">
-                    <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Intitulé</Input>
-                    <Input valeur={location} identifiant="location" errors={errors} onChange={this.handleChange}>Lieu de rendez-vous</Input>
-                </div>
+                    <div className="line line-2">
+                        <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Intitulé</Input>
+                        <Input valeur={location} identifiant="location" errors={errors} onChange={this.handleChange}>Lieu de rendez-vous</Input>
+                    </div>
 
-                <div className="line">
-                    <Checkbox isSwitcher={true} items={switcherItems} identifiant="allDay" valeur={allDay} errors={errors} onChange={this.handleChange}>
-                        Toute la journée
-                    </Checkbox>
-                </div>
+                    <div className="line">
+                        <Checkbox isSwitcher={true} items={switcherItems} identifiant="allDay" valeur={allDay} errors={errors} onChange={this.handleChange}>
+                            Toute la journée
+                        </Checkbox>
+                    </div>
 
-                <div className="line line-2">
-                    {allDay[0] === 1 ? <>
+                    <div className="line line-2">
+                        {allDay[0] === 1 ? <>
                             <DatePick identifiant="startAt" valeur={startAt} errors={errors} onChange={(e) => this.handleChangeDate("startAt", e)}>
                                 Jour du rendez-vous
                             </DatePick>
                             <div className="form-group" />
                         </> : <>
-                        <DateTimePick identifiant="startAt" valeur={startAt} errors={errors}
-                                      minTime={minTimeStart} maxTime={maxTimeStart}
-                                      onChange={(e) => this.handleChangeDate("startAt", e)}>
-                            Début du rendez-vous
-                        </DateTimePick>
-                        <DateTimePick identifiant="endAt" valeur={endAt} errors={errors}
-                                      minTime={minTimeEnd} maxTime={maxTimeEnd}
-                                      onChange={(e) => this.handleChangeDate("endAt", e)}>
-                            Fin du rendez-vous
-                        </DateTimePick>
-                    </>}
+                            <DateTimePick identifiant="startAt" valeur={startAt} errors={errors}
+                                          minTime={minTimeStart} maxTime={maxTimeStart}
+                                          onChange={(e) => this.handleChangeDate("startAt", e)}>
+                                Début du rendez-vous
+                            </DateTimePick>
+                            <DateTimePick identifiant="endAt" valeur={endAt} errors={errors}
+                                          minTime={minTimeEnd} maxTime={maxTimeEnd}
+                                          onChange={(e) => this.handleChangeDate("endAt", e)}>
+                                Fin du rendez-vous
+                            </DateTimePick>
+                        </>}
+                    </div>
+
+                    <div className="line">
+                        <TextArea identifiant="comment" valeur={comment} errors={errors} onChange={this.handleChange}>Commentaire</TextArea>
+                    </div>
                 </div>
 
-                <div className="line">
-                    <TextArea identifiant="comment" valeur={comment} errors={errors} onChange={this.handleChange}>Commentaire</TextArea>
+                <div className="col-2">
+                    <div className="line">
+                        <Selecteur refSelecteur={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}
+                                   errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                            Utilisateurs concernés
+                        </Selecteur>
+                    </div>
+
+                    <div className="line">
+                        <Checkbox items={checkboxItems} identifiant="visibilities" valeur={visibilities} errors={errors} onChange={this.handleChange}>
+                            Qui peut voir ce rendez-vous ?
+                        </Checkbox>
+                    </div>
                 </div>
 
-                <div className="line">
-                    <Selecteur refSelecteur={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}
-                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
-                        Utilisateurs concernés
-                    </Selecteur>
-                </div>
-
-                <div className="line">
-                    <Checkbox items={checkboxItems} identifiant="visibilities" valeur={visibilities} errors={errors} onChange={this.handleChange}>
-                        Qui peut voir ce rendez-vous ?
-                    </Checkbox>
-                </div>
-
-                <div className="line">
+                <div className="line line-buttons">
                     <div className="form-button">
                         <Button isSubmit={true}>{context === "create" ? TXT_CREATE_BUTTON_FORM : TXT_UPDATE_BUTTON_FORM}</Button>
                     </div>
