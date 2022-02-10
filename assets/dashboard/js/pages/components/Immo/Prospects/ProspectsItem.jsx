@@ -5,7 +5,7 @@ import { Selector }  from "@dashboardComponents/Layout/Selector";
 import { UtPhones }  from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
-import { SearchMainInfos1, SearchMainInfos2 } from "@dashboardPages/components/Immo/Searchs/SearchsItem";
+import { SearchMainInfos1 } from "@dashboardPages/components/Immo/Searchs/SearchsItem";
 
 export class ProspectsItem extends Component {
     render () {
@@ -68,7 +68,6 @@ export class ProspectsItem extends Component {
                             <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>
-                            {!isSelect && <ButtonIcon icon="cancel" onClick={() => onSelectProspect(elem)}>Enlever</ButtonIcon>}
                         </div>
                     </div>
                 </div>
