@@ -221,11 +221,12 @@ export class Agenda extends Component {
             { value: 2, id: filtersId[2], label: filtersLabel[2]}
         ];
 
-        let selectUsers = [
-            { value: 0, id: filtersId[0], label: filtersLabel[0]},
-            { value: 1, id: filtersId[1], label: filtersLabel[1] },
-            { value: 2, id: filtersId[2], label: filtersLabel[2]}
-        ];
+        let selectUsers = [];
+        if(users){
+            users.forEach(u => {
+                selectUsers.push({ value: u.id, label: u.fullname, identifiant: "ag-se-" + u.id })
+            });
+        }
 
         return <>
             {loadPageError ? <div className="main-content"><PageError /></div> : <div id="calendar" className="main-content">
@@ -244,7 +245,7 @@ export class Agenda extends Component {
                         <div className="title">Filtre par personnes</div>
                         <div className="line line-4">
                             <SelectReactSelectize items={selectUsers} identifiant="user"
-                                                  valeur={user} errors={errors} onChange={(e) => this.handleChangeSelect('users', e)}>
+                                                  valeur={user} errors={errors} onChange={(e) => this.handleChangeSelect('user', e)}>
                                 Utilisateur
                             </SelectReactSelectize>
                             <div className="form-group"/>
