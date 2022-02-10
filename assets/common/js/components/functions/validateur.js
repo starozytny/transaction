@@ -137,7 +137,6 @@ function validateDateLimitMinutes($value, $min, $max) {
 }
 
 function validateDateLimitHoursMinutes($value, $minH, $maxH, $minM, $maxM) {
-    console.log($value, $value.getMinutes(), $minM, $maxM)
     if($value.getHours() < $minH || $value.getHours() > $maxH){
         return {
             'code': false,
