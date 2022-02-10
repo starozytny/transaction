@@ -22,3 +22,10 @@ export function UtPhones({ elem, phone1 = "", phone2 = "", phone3 = "" }) {
 
     </>
 }
+
+export function UtContact ({ elem }) {
+    return <>
+        <div className="sub">{elem.email}</div>
+        <UtPhones elem={elem} />
+    </>
+}

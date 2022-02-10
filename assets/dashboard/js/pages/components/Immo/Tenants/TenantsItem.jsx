@@ -4,9 +4,9 @@ import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.j
 
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
 import { Selector } from "@dashboardComponents/Layout/Selector";
-import { UtPhones } from "@dashboardComponents/Tools/Utilitaire";
+import { UtContact } from "@dashboardComponents/Tools/Utilitaire";
 
-import { OwnerContact, OwnerNegotiator } from "@dashboardPages/components/Immo/Owners/OwnersItem";
+import { OwnerNegotiator } from "@dashboardPages/components/Immo/Owners/OwnersItem";
 
 export class TenantsItem extends Component {
     render () {
@@ -33,7 +33,7 @@ export class TenantsItem extends Component {
                             <TenantMainInfos elem={elem} isClient={isClient} />
                         </div>
                         {!isFormBien && <div className="col-2">
-                            <OwnerContact elem={elem} />
+                            <UtContact elem={elem} />
                         </div>}
                         <div className={isFormBien ? "col-2" : "col-3"} onClick={onSelectTenant ? () => onSelectTenant(elem) : null}>
                             <OwnerNegotiator elem={elem} />

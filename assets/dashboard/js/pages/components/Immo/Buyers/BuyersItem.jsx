@@ -4,7 +4,8 @@ import { Selector }     from "@dashboardComponents/Layout/Selector";
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
 
 import { TenantMainInfos }               from "@dashboardPages/components/Immo/Tenants/TenantsItem";
-import { OwnerContact, OwnerNegotiator } from "@dashboardPages/components/Immo/Owners/OwnersItem";
+import { OwnerNegotiator } from "@dashboardPages/components/Immo/Owners/OwnersItem";
+import { UtContact } from "@dashboardComponents/Tools/Utilitaire";
 
 export class BuyersItem extends Component {
     render () {
@@ -34,7 +35,7 @@ export class BuyersItem extends Component {
                         </div>
 
                         <div className="col-2">
-                            <OwnerContact elem={elem} />
+                            <UtContact elem={elem} />
                         </div>
 
                         <div className="col-3">

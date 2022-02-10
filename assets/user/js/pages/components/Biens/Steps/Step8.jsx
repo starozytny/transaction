@@ -8,10 +8,10 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 import helper   from "@userPages/components/Biens/helper";
 
 import {
-    OwnerContact,
     OwnerMainInfos,
     OwnerNegotiator,
 } from "@dashboardPages/components/Immo/Owners/OwnersItem";
+import { UtContact } from "@dashboardComponents/Tools/Utilitaire";
 
 const CURRENT_STEP = 8;
 
@@ -59,7 +59,7 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                         </div>
 
                                         <div className="col-2">
-                                            <OwnerContact elem={itemOwner} />
+                                            <UtContact elem={itemOwner} />
                                         </div>
 
                                         <div className="col-3">

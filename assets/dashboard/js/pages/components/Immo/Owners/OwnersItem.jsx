@@ -4,7 +4,7 @@ import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.j
 
 import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
 import { Selector }         from "@dashboardComponents/Layout/Selector";
-import { UtPhones }         from "@dashboardComponents/Tools/Utilitaire";
+import { UtContact } from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
@@ -38,7 +38,7 @@ export class OwnersItem extends Component {
                         </div>
 
                         {!isFormBien && <div className="col-2">
-                            <OwnerContact elem={elem} />
+                            <UtContact elem={elem} />
                         </div>}
 
                         <div className={isFormBien ? "col-2" : "col-3"} onClick={onSelectOwner ? () => onSelectOwner(elem) : () => onChangeContext("read", elem)}>
@@ -74,13 +74,6 @@ export function OwnerMainInfos ({ elem }) {
         <div className="name">
             <span>{elem.fullname}</span>
         </div>
-    </>
-}
-
-export function OwnerContact ({ elem }) {
-    return <>
-        <div className="sub">{elem.email}</div>
-        <UtPhones elem={elem} />
     </>
 }
 
