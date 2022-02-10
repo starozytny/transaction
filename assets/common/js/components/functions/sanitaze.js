@@ -99,7 +99,6 @@ module.exports = {
     toFormatPhone,
     toFormatCurrency,
     toFormatBytesToSize,
-    addZeroToNumber,
     toFormatDataAgenda,
     toFormatDateTimeMidString,
     toFormatTimeHoursMinutes
