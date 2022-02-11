@@ -17,11 +17,13 @@ export class BuyersList extends Component {
         this.filterMultiple = React.createRef();
     }
 
-    handleFilter = (e) => { this.filterMultiple.current.handleChange(e, true); }
-    handleFilterNego = (e) => { this.filterMultiple.current.handleChange(e, true); }
+    handleFilter = (e) => {
+        let elem = document.getElementById(e.currentTarget.dataset.id);
+        if(elem) elem.click()
+    }
 
     render () {
-        const { isClient, dataImmuable, data, onChangeContext, onDeleteAll, onGetFilters, filters, filtersNego, onSearch,
+        const { isClient, dataImmuable, data, onChangeContext, onDeleteAll, onGetFilters, filters, onSearch,
             onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille } = this.props;
 
         let filtersLabel = ["Acheteur", "Investisseur", "Autre"];
@@ -48,8 +50,8 @@ export class BuyersList extends Component {
                                         titleTwo="Négociateurs" iconTwo="group" widthTwo={164} classesTwo="filter-nego"
                         />
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom ou téléphone"/>
-                        {/*<FilterSelected filters={filters} items={itemsFilter} onChange={this.handleFilter}/>*/}
-                        {/*<FilterSelected filters={filtersNego} items={negotiatorsFilter} onChange={this.handleFilterNego}/>*/}
+                        <FilterSelected filters={filters[0]} items={itemsFilter} onChange={this.handleFilter}/>
+                        <FilterSelected filters={filters[1]} items={negotiatorsFilter} onChange={this.handleFilter}/>
                     </div>
                 </div>
 
