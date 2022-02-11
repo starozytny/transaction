@@ -16,6 +16,7 @@ import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
+import Sort                    from "@commonComponents/functions/sort";
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
@@ -26,7 +27,7 @@ const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelete, custom, element, refAside, useAside,
-                                      users, managers, negotiators, owners, tenants, prospects, biens, bienId ="",
+                                      users, managers, negotiators, owners, tenants, prospects, buyers, biens, bienId ="",
                                       url_create=null, url_update=null, params_update={} })
 {
     let title = "Ajouter une visite";
@@ -65,6 +66,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelet
         owners={owners}
         tenants={tenants}
         prospects={prospects}
+        buyers={buyers}
         biens={biens}
 
         refAside={refAside}
@@ -95,6 +97,7 @@ export class Form extends Component {
             owners: getPersonsData(props.persons ? props.persons.owners : []),
             tenants: getPersonsData(props.persons ? props.persons.tenants : []),
             prospects: getPersonsData(props.prospects ? props.persons.prospects : []),
+            buyers: getPersonsData(props.buyers ? props.persons.buyers : []),
             bien: props.bien,
             errors: [],
             success: false
@@ -106,6 +109,7 @@ export class Form extends Component {
         this.selectMultiple3 = React.createRef();
         this.selectMultiple4 = React.createRef();
         this.selectMultiple5 = React.createRef();
+        this.selectMultiple6 = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
@@ -147,9 +151,9 @@ export class Form extends Component {
     handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
 
     handleChangeSelectMultipleAdd = (name, valeurs) => {
-        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects, buyers } = this.state;
 
-        let donnees = getDataSelecteurFromName(this, name, users, managers, negotiators, owners, tenants, prospects);
+        let donnees = getDataSelecteurFromName(this, name, users, managers, negotiators, owners, tenants, prospects, buyers);
         let selecteur = donnees[0];
 
         this.setState({ [name]: valeurs })
@@ -157,9 +161,9 @@ export class Form extends Component {
     }
 
     handleChangeSelectMultipleDel = (name, valeur) => {
-        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects, buyers } = this.state;
 
-        let donnees = getDataSelecteurFromName(this, name, users, managers, negotiators, owners, tenants, prospects);
+        let donnees = getDataSelecteurFromName(this, name, users, managers, negotiators, owners, tenants, prospects, buyers);
         let selecteur = donnees[0];
         let data = donnees[1];
 
@@ -245,6 +249,7 @@ export class Form extends Component {
                                 owners: [],
                                 tenants: [],
                                 prospects: [],
+                                buyers: [],
                                 bien: ""
                             })
                         }
@@ -264,7 +269,7 @@ export class Form extends Component {
     render () {
         const { context, onDelete } = this.props;
         const { errors, success, name, startAt, endAt, allDay, location, comment, status, visibilities,
-            users, managers, negotiators, owners, tenants, prospects } = this.state;
+            users, managers, negotiators, owners, tenants, prospects, buyers } = this.state;
 
         let checkboxItems = [
             { value: 0, label: 'Personnes concernées',    identifiant: 'v-related' },
@@ -289,6 +294,7 @@ export class Form extends Component {
         let selectOwners        = getSelectData(this.props.owners, "own");
         let selectTenants       = getSelectData(this.props.tenants, "tenant");
         let selectProspects     = getSelectData(this.props.prospects, "pros");
+        let selectBuyers        = getSelectData(this.props.buyers, "buyers");
 
         let minTimeStart = Helper.createTimeHoursMinutes(8);
         let maxTimeStart = Helper.createTimeHoursMinutes(22);
@@ -317,18 +323,18 @@ export class Form extends Component {
                     </div>
 
 
-                <div className="line">
-                    <div className="form-group">
-                        <div className="line-separator">
-                            <div className="title">Évènement</div>
+                    <div className="line">
+                        <div className="form-group">
+                            <div className="line-separator">
+                                <div className="title">Évènement</div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="line line-2">
-                    <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Intitulé</Input>
-                    <Input valeur={location} identifiant="location" errors={errors} onChange={this.handleChange}>Lieu de rendez-vous</Input>
-                </div>
+                    <div className="line line-2">
+                        <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Intitulé</Input>
+                        <Input valeur={location} identifiant="location" errors={errors} onChange={this.handleChange}>Lieu de rendez-vous</Input>
+                    </div>
 
                     <div className="line">
                         <Checkbox isSwitcher={true} items={switcherItems} identifiant="allDay" valeur={allDay} errors={errors} onChange={this.handleChange}>
@@ -356,44 +362,54 @@ export class Form extends Component {
                         </>}
                     </div>
 
-                <div className="line">
-                    <div className="form-group">
-                        <div className="line-separator">
-                            <div className="title">Personnes concernées</div>
+                    <div className="line">
+                        <div className="form-group">
+                            <div className="line-separator">
+                                <div className="title">Personnes concernées</div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="line line-2">
-                    <Selecteur refSelecteur={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}
-                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
-                        Utilisateurs concernés
-                    </Selecteur>
-                    <Selecteur refSelecteur={this.selectMultiple1} items={selectManagers} identifiant="managers" valeur={managers}
-                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
-                        Managers concernés
-                    </Selecteur>
-                </div>
-                <div className="line line-2">
-                    <Selecteur refSelecteur={this.selectMultiple2} items={selectNegotiators} identifiant="negotiators" valeur={negotiators}
-                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
-                        Negociateurs concernés
-                    </Selecteur>
-                    <Selecteur refSelecteur={this.selectMultiple5} items={selectProspects} identifiant="prospects" valeur={prospects}
-                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
-                        Prospects concernés
-                    </Selecteur>
-                </div>
-                <div className="line line-2">
-                    <Selecteur refSelecteur={this.selectMultiple3} items={selectOwners} identifiant="owners" valeur={owners}
-                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
-                        Propriétaires concernés
-                    </Selecteur>
-                    <Selecteur refSelecteur={this.selectMultiple4} items={selectTenants} identifiant="tenants" valeur={tenants}
-                               errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
-                        Locataires concernés
-                    </Selecteur>
-                </div>
+                    <div className="line line-2">
+                        <Selecteur refSelecteur={this.selectMultiple} items={selectUsers} identifiant="users" valeur={users}
+                                   errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                            Utilisateurs concernés
+                        </Selecteur>
+                        <Selecteur refSelecteur={this.selectMultiple1} items={selectManagers} identifiant="managers" valeur={managers}
+                                   errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                            Managers concernés
+                        </Selecteur>
+                    </div>
+
+                    <div className="line line-2">
+                        <Selecteur refSelecteur={this.selectMultiple2} items={selectNegotiators} identifiant="negotiators" valeur={negotiators}
+                                   errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                            Negociateurs concernés
+                        </Selecteur>
+                        <Selecteur refSelecteur={this.selectMultiple3} items={selectOwners} identifiant="owners" valeur={owners}
+                                   errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                            Propriétaires concernés
+                        </Selecteur>
+                    </div>
+
+                    <div className="line line-2">
+                        <Selecteur refSelecteur={this.selectMultiple4} items={selectTenants} identifiant="tenants" valeur={tenants}
+                                   errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                            Locataires concernés
+                        </Selecteur>
+                        <Selecteur refSelecteur={this.selectMultiple6} items={selectBuyers} identifiant="buyers" valeur={buyers}
+                                   errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                            Acquéreurs concernés
+                        </Selecteur>
+                    </div>
+
+                    <div className="line line-2">
+                        <Selecteur refSelecteur={this.selectMultiple5} items={selectProspects} identifiant="prospects" valeur={prospects}
+                                   errors={errors} onChangeAdd={this.handleChangeSelectMultipleAdd} onChangeDel={this.handleChangeSelectMultipleDel}>
+                            Prospects concernés
+                        </Selecteur>
+                        <div className="form-group" />
+                    </div>
 
                     <div className="line">
                         <Checkbox items={checkboxItems} identifiant="visibilities" valeur={visibilities} errors={errors} onChange={this.handleChange}>
@@ -438,6 +454,7 @@ function Selecteur ({ refSelecteur, items, identifiant, valeur, errors, onChange
 
 function getSelectData (data, pre) {
     let tab = [];
+    data.sort(Sort.compareLastname)
     data.forEach(el => {
         tab.push({ value: el.id, label: el.fullname, identifiant: pre + "-" + el.id, email: el.email })
     })

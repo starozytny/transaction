@@ -22,7 +22,7 @@ class ImTenant extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read"})
      */
     private $lastname;
 

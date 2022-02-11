@@ -173,14 +173,14 @@ export class Agenda extends Component {
 
     // init event
     handleEventDidMount = (e) => {
-        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects, buyers } = this.state;
 
-        addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects);
+        addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects, buyers);
     }
 
     // move event
     handleEventDrop = (e) => {
-        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects, buyers } = this.state;
 
         const self = this;
         Swal.fire(SwalOptions.options("Déplacer le rendez-vous", ""
@@ -197,7 +197,7 @@ export class Agenda extends Component {
                         }})
                         .then(function (response) {
                             toastr.info("Données mises à jour");
-                            addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects);
+                            addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects, buyers);
                         })
                         .catch(function (error) {
                             toastr.error("Une erreur est survenue.");
@@ -233,7 +233,7 @@ export class Agenda extends Component {
 
     render () {
         const { context, errors, loadPageError, loadData, data, initialView, element,
-            users, managers, negotiators, owners, tenants, prospects, biens,
+            users, managers, negotiators, owners, tenants, prospects, buyers, biens,
             filters, selActive, user } = this.state;
 
         let contentAside;
@@ -241,14 +241,14 @@ export class Agenda extends Component {
             case "create":
                 contentAside = <AgendaFormulaire type="create" custom={element} refAside={this.aside}
                                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 prospects={prospects} biens={biens}
+                                                 prospects={prospects} buyers={buyers} biens={biens}
                                                  onUpdateList={this.handleUpdateList}
                                                  />
                 break;
             case "update":
                 contentAside = <AgendaFormulaire type="update" element={element} refAside={this.aside}
                                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 prospects={prospects} biens={biens}
+                                                 prospects={prospects} buyers={buyers} biens={biens}
                                                  onUpdateList={this.handleUpdateList} onDelete={() => this.handleDelete(element)} />
                 break;
             default:
@@ -331,7 +331,7 @@ export class Agenda extends Component {
     }
 }
 
-function addEventElement (bloc, event, users, managers, negotiators, owners, tenants, prospects) {
+function addEventElement (bloc, event, users, managers, negotiators, owners, tenants, prospects, buyers) {
     bloc.innerHTML = "";
 
     let props = event.extendedProps;
@@ -362,6 +362,7 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
     let data3 = getDataPerson(persons.owners, owners);
     let data4 = getDataPerson(persons.tenants, tenants);
     let data5 = getDataPerson(persons.prospects, prospects);
+    let data6 = getDataPerson(persons.buyers, buyers);
 
     if(data0.length !== 0){
         let items0 = getPersonAvatar(data0);
@@ -370,6 +371,7 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
         let items3 = getPersonTotal(data3, "propriétaire");
         let items4 = getPersonTotal(data4, "locataire");
         let items5 = getPersonTotal(data5, "prospect");
+        let items6 = getPersonTotal(data6, "buyers");
 
         bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
             items0.join("") +
@@ -393,6 +395,11 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
         if(data5.length > 0){
             bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
                 items5 +
+                '</div>')
+        }
+        if(data6.length > 0){
+            bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
+                items6 +
                 '</div>')
         }
     }

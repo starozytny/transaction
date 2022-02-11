@@ -84,6 +84,7 @@ class FakeAgendaCreateCommand extends Command
                 "owners" => [],
                 "tenants" => [],
                 "prospects" => [],
+                "buyers" => [],
                 "visibilities" => [$fake->numberBetween(0, 3)],
             ];
 

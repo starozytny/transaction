@@ -25,7 +25,7 @@ class ImBuyer extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "agenda:read"})
      */
     private $lastname;
 
