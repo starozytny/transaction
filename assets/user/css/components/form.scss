@@ -6,8 +6,10 @@
   border: 1px solid var(--grey);
 }
 
-.form-group .simple-select.react-selectize.default.root-node:not(.open) .react-selectize-control{
-  background: var(--alpha);
+.form-group .react-selectize.default.root-node:not(.open) {
+  .react-selectize-control{
+    background: var(--alpha);
+  }
 }
 
 .react-selectize.default.root-node .react-selectize-control .react-selectize-placeholder{
