@@ -79,6 +79,11 @@ class FakeAgendaCreateCommand extends Command
                 "location" => $fake->streetName,
                 "comment" => $fake->sentence,
                 "users" => $users,
+                "managers" => [],
+                "negotiators" => [],
+                "owners" => [],
+                "tenants" => [],
+                "prospects" => [],
                 "visibilities" => [$fake->numberBetween(0, 3)],
             ];
 
