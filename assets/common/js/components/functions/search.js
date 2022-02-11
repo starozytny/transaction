@@ -29,6 +29,8 @@ function switchFunction(type, search, v) {
                 || v.code.toLowerCase() === search
                 || v.firstname.toLowerCase().startsWith(search)
                 || v.lastname.toLowerCase().startsWith(search)
+                || (v.phone && v.phone.startsWith(search))
+                || (v.phone2 && v.phone2.startsWith(search))
             ){
                 return v;
             }
@@ -37,6 +39,9 @@ function switchFunction(type, search, v) {
             if( v.code.toLowerCase().startsWith(search)
                 || v.firstname.toLowerCase().startsWith(search)
                 || v.lastname.toLowerCase().startsWith(search)
+                || (v.phone1 && v.phone1.startsWith(search))
+                || (v.phone2 && v.phone2.startsWith(search))
+                || (v.phone3 && v.phone3.startsWith(search))
             ){
                 return v;
             }
@@ -46,6 +51,9 @@ function switchFunction(type, search, v) {
         case "tenant":
             if( v.firstname.toLowerCase().startsWith(search)
                 || v.lastname.toLowerCase().startsWith(search)
+                || (v.phone1 && v.phone1.startsWith(search))
+                || (v.phone2 && v.phone2.startsWith(search))
+                || (v.phone3 && v.phone3.startsWith(search))
             ){
                 return v;
             }
