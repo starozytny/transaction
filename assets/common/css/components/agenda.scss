@@ -1,5 +1,21 @@
 #calendar{
 
+  .fc .fc-button-primary{
+    background-color: var(--primaryShadow);
+    border-color: var(--primaryShadow);
+    transition: all 0.2s ease-in-out;
+
+    &.fc-button-active{
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    &:hover{
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+  }
+
   .fc .fc-scroller,
   .fc .fc-scroller-liquid-absolute{
     @include scrollbar();
@@ -144,15 +160,36 @@
         }
       }
     }
+  }
 
-    //@each $number, $bg in $status {
-    //  &.event-#{$number}{
-    //    background-color: $bg;
-    //    border-color: $bg;
-    //  }
-    //}
+  .toolbar{
+    .filter-search{
+      .dropdown-btn{
+        border-right: 1px solid var(--grey);
+        border-radius: 3px;
+      }
+    }
+
+    .filters-items-checked{
+      margin-left: 12px;
+    }
   }
 }
+
+.ag-selectors{
+  margin-bottom: 24px;
+  background-color: var(--alpha);
+  border-radius: 4px;
+  border: 1px solid var(--grey);
+  padding: 12px;
+
+  .title{
+    margin-bottom: 8px;
+    @include fontSemibold();
+    text-transform: uppercase;
+  }
+}
+
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
@@ -161,6 +198,9 @@
 //                     |__|                    |__|
 @media (min-width:768px) {
   #calendar {
+    .aside{
+      width: 80%;
+    }
 
     .fc-view-harness.fc-view-harness-active{
       min-height: 200vh;
@@ -172,6 +212,50 @@
       & > * {
         margin-bottom: 0;
       }
+    }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  #calendar{
+    .col-1, .col-2{
+      display: inline-block;
+      width: calc(50% - 24px);
+      vertical-align: top;
+    }
+    .col-1{
+      margin-right: 24px;
+    }
+    .col-2{
+      margin-left: 24px;
+    }
+
+    .line-buttons{
+      .form-button{
+        & > .btn{
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+//                      __   _  __    ___   ___    __
+//                     | _| / |/ /_  / _ \ / _ \  |_ |
+//    _____ _____ _____| |  | | '_ \| | | | | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | | (_) | |_| | |_| |  | |_____|_____|_____|
+//                     | |  |_|\___/ \___/ \___/   | |
+//                     |__|                       |__|
+@media (min-width: 1600px){
+  #calendar {
+    .aside {
+      width: 70%;
     }
   }
 }
