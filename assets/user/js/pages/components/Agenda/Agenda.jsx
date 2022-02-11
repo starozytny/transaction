@@ -108,7 +108,10 @@ export class Agenda extends Component {
         this.handleEventDidMount = this.handleEventDidMount.bind(this);
     }
 
-    componentDidMount = () => { AgendaData.getData(this, URL_GET_DATA); }
+    componentDidMount = () => {
+        AgendaData.getData(this, URL_GET_DATA);
+        this.handleChangeSelect(this.state.selActive, { value: this.state[this.state.selActive] })
+    }
 
     handleChangeSelect = (name, e) => {
         const { dataImmuable, filters } = this.state;
