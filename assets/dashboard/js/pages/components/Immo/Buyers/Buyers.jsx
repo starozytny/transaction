@@ -69,7 +69,7 @@ export class Buyers extends Component {
     handleGetFiltersNego = (filters) => { this.layout.current.handleGetFiltersTwo(filters, Filter.filterNego, null,
         this.layout.current.state.filters, Filter.filterType); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "buyer", true, Filter.filterType); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "buyer", true, Filter.filterType, Filter.filterNego); }
 
     handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
 

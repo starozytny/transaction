@@ -147,8 +147,8 @@ export class Layout extends Component {
         this.setState({ context: newContext, data: data, loadPageError: false, loadData: false, element: elem })
     }
 
-    handleSearch = (search, type, haveFilter = false, filterFunction) => {
-        const { dataImmuable, filters, perPage, sorter } = this.state;
+    handleSearch = (search, type, haveFilter = false, filterFunction, filterTwo) => {
+        const { dataImmuable, filters, filtersTwo, perPage, sorter } = this.state;
 
         let d = dataImmuable
         if(!haveFilter){
@@ -157,8 +157,14 @@ export class Layout extends Component {
             }
         }else{
             let dataSearch = this.handleGetFilters(filters, filterFunction);
+            if(filterTwo){
+                dataSearch = this.handleGetFilters(filters, filterFunction, dataSearch, filtersTwo, filterTwo);
+            }
             if(search === "") {
                 this.handleGetFilters(filters, filterFunction)
+                if(filterTwo){
+                    this.handleGetFilters(filters, filterFunction, dataSearch, filtersTwo, filterTwo);
+                }
             }else{
                 d = dataSearch
             }
