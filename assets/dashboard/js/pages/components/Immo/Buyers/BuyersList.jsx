@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
+import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
 
 import { BuyersItem }   from "./BuyersItem";
 import {Filter, FilterSelected} from "@dashboardComponents/Layout/Filter";
-import {TopSorterPagination} from "@dashboardComponents/Layout/Pagination";
 
 export class BuyersList extends Component {
     constructor(props) {
@@ -46,7 +46,7 @@ export class BuyersList extends Component {
 
                     {!isFromRead && <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
-                        <Search onSearch={onSearch} placeholder="Recherche par nom, prénom ou téléphone.."/>
+                        <Search onSearch={onSearch} placeholder="Recherche par nom, prénom ou téléphone"/>
                         <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                     </div>}
                 </div>}

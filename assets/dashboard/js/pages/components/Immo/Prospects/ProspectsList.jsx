@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
+import { Filter, FilterSelected } from "@dashboardComponents/Layout/Filter";
+import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
 
 import { ProspectsItem }   from "./ProspectsItem";
-import {Filter, FilterSelected} from "@dashboardComponents/Layout/Filter";
-import {TopSorterPagination} from "@dashboardComponents/Layout/Pagination";
 
 export class ProspectsList extends Component {
     constructor(props) {

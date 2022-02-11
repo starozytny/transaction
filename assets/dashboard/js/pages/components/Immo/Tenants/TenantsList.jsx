@@ -1,26 +1,16 @@
 import React, { Component } from 'react';
 
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
-import { Button, ButtonIcon }       from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
+import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
 
 import { TenantsItem }   from "./TenantsItem";
 
 export class TenantsList extends Component {
-    constructor(props) {
-        super(props);
-
-        this.filter = React.createRef();
-
-        this.handleFilter = this.handleFilter.bind(this);
-    }
-
-    handleFilter = (e) => {
-        this.filter.current.handleChange(e, true);
-    }
-
     render () {
-        const { isFormBien, isClient, data, onSearch, onChangeContext, onDeleteAll } = this.props;
+        const { isFormBien, isClient, data, onSearch, onChangeContext, onDeleteAll, onPerPage,
+            onPaginationClick, currentPage, sorters, onSorter, perPage, taille } = this.props;
 
         return <>
             <div>
@@ -32,6 +22,9 @@ export class TenantsList extends Component {
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom.."/>
                     </div>
                 </div>
+
+                <TopSorterPagination sorters={sorters} onSorter={onSorter}
+                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
 
                 <div className="items-table">
                     <div className="items items-default">
