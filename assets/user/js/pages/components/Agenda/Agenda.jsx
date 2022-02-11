@@ -44,7 +44,7 @@ function filterFunction(dataImmuable, filters, search = null) {
                     case "user":
                         if(el.persons && el.persons.users){
                             el.persons.users.forEach(u => {
-                                if(u.value === search){
+                                if(parseInt(u.value) === parseInt(search)){
                                     push = true;
                                 }
                             })
@@ -108,7 +108,17 @@ export class Agenda extends Component {
         this.handleEventDidMount = this.handleEventDidMount.bind(this);
     }
 
-    componentDidMount = () => { AgendaData.getData(this, URL_GET_DATA); }
+    componentDidMount = () => {
+        const { selActive, filters } = this.state;
+
+        AgendaData.getData(this, URL_GET_DATA);
+        if(selActive !== ""){
+            this.handleChangeSelect(selActive, { value: this.state[selActive] })
+        }
+        if(selActive === "" && filters.length !== 0){
+            this.handleGetFilters(filters)
+        }
+    }
 
     handleChangeSelect = (name, e) => {
         const { dataImmuable, filters } = this.state;
@@ -156,6 +166,7 @@ export class Agenda extends Component {
 
         this.setState({
             data: newData,
+            dataImmuable: newData,
             element: element
         })
     }
@@ -273,7 +284,7 @@ export class Agenda extends Component {
                             <Button onClick={this.handleAdd}>Ajouter un évènement</Button>
                         </div>
                         <div className="item filter-search">
-                            <Filter ref={this.filter} items={itemsFilter} onGetFilters={this.handleGetFilters} />
+                            <Filter ref={this.filter} filters={filters} items={itemsFilter} onGetFilters={this.handleGetFilters} />
                             <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                         </div>
                     </div>
