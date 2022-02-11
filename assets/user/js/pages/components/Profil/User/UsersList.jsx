@@ -8,6 +8,7 @@ import { Search }                 from "@dashboardComponents/Layout/Search";
 import { Filter, FilterSelected } from "@dashboardComponents/Layout/Filter";
 
 import { UsersItem }   from "./UsersItem";
+import {TopSorterPagination} from "@dashboardComponents/Layout/Pagination";
 
 export class UsersList extends Component {
     constructor(props) {
@@ -23,7 +24,8 @@ export class UsersList extends Component {
     }
 
     render () {
-        const { isUser, data, onSearch, filters, onGetFilters } = this.props;
+        const { isUser, taille, data, perPage, onSearch, filters, onGetFilters, onPerPage,
+            onPaginationClick, currentPage, sorters, onSorter } = this.props;
 
         let filtersLabel = ["Utilisateur", "Manager"];
         let filtersId    = ["f-user", "f-manager"];
@@ -45,6 +47,9 @@ export class UsersList extends Component {
                         <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                     </div>
                 </div>}
+
+                <TopSorterPagination sorters={sorters} onSorter={onSorter}
+                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
 
                 <div className="items-table">
                     <div className="items items-default">
