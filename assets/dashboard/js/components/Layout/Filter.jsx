@@ -30,7 +30,7 @@ export class Filter extends Component {
     }
 
     render () {
-        const { items, title, icon, width } = this.props;
+        const { items, title, icon, width, classes } = this.props;
         const { filters } = this.state;
 
         let style = null;
@@ -38,7 +38,7 @@ export class Filter extends Component {
             style = { width: width + "px" }
         }
 
-        return <div className="filter" style={style}>
+        return <div className={"filter" + (classes ? " " + classes : "")} style={style}>
             <div className="dropdown">
                 <div className={`dropdown-btn ${filters.length !== 0 ? "active" : ""}`}>
                     <span>{title ? title : "Filtre"}</span>
