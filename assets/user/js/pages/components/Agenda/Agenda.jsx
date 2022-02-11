@@ -44,7 +44,7 @@ function filterFunction(dataImmuable, filters, search = null) {
                     case "user":
                         if(el.persons && el.persons.users){
                             el.persons.users.forEach(u => {
-                                if(u.value === search){
+                                if(parseInt(u.value) === parseInt(search)){
                                     push = true;
                                 }
                             })
@@ -156,6 +156,7 @@ export class Agenda extends Component {
 
         this.setState({
             data: newData,
+            dataImmuable: newData,
             element: element
         })
     }
