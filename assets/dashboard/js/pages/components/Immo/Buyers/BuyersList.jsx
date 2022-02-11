@@ -13,17 +13,23 @@ export class BuyersList extends Component {
         super(props);
 
         this.filter = React.createRef();
+        this.filterNego = React.createRef();
 
         this.handleFilter = this.handleFilter.bind(this);
+        this.handleFilterNego = this.handleFilterNego.bind(this);
     }
 
     handleFilter = (e) => {
         this.filter.current.handleChange(e, true);
     }
 
+    handleFilterNego = (e) => {
+        this.filterNego.current.handleChange(e, true);
+    }
+
     render () {
-        const { isSelect=false, isFromRead=false, isClient, data, onChangeContext, onDeleteAll, onGetFilters, filters, onSearch, onPerPage,
-            onPaginationClick, currentPage, sorters, onSorter, perPage, taille } = this.props;
+        const { isSelect=false, isFromRead=false, isClient, data, onChangeContext, onDeleteAll, onGetFilters, filters, filtersNego, onSearch,
+            onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille } = this.props;
 
         let filtersLabel = ["Acheteur", "Investisseur", "Autre"];
         let filtersId    = ["f-buyer", "f-invest", "f-other"];
@@ -46,9 +52,10 @@ export class BuyersList extends Component {
 
                     {!isFromRead && <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
-                        <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} title="Négociateurs" icon="group" width={164} classes="filter-nego" />
+                        <Filter ref={this.filterNego} items={itemsFilter} onGetFilters={onGetFilters} title="Négociateurs" icon="group" width={164} classes="filter-nego" />
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom ou téléphone"/>
                         <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
+                        <FilterSelected filters={filtersNego} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilterNego}/>
                     </div>}
                 </div>}
 
