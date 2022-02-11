@@ -41,15 +41,6 @@ function filterFunction(dataImmuable, filters, search = null) {
             filters.forEach(filter => {
                 let push = false;
                 switch (filter){
-                    case "user":
-                        if(el.persons && el.persons.users){
-                            el.persons.users.forEach(u => {
-                                if(parseInt(u.value) === parseInt(search)){
-                                    push = true;
-                                }
-                            })
-                        }
-                        break;
                     case "all":
                         push = true;
                         break;
@@ -59,6 +50,13 @@ function filterFunction(dataImmuable, filters, search = null) {
                         }
                         break;
                     default:
+                        if(el.persons && el.persons[filter]){
+                            el.persons[filter].forEach(u => {
+                                if(parseInt(u.value) === parseInt(search)){
+                                    push = true;
+                                }
+                            })
+                        }
                         break;
                 }
 
@@ -130,7 +128,7 @@ export class Agenda extends Component {
         const { dataImmuable, filters } = this.state;
 
         let search = e !== undefined ? e.value : "";
-        let newData = filterFunction(dataImmuable, search !== "" ? [name] : ["all"], search);
+        let newData = filterFunction(dataImmuable, search !== "" ? [name + "s"] : ["all"], search);
         let newData1 = filterFunction(newData, filters);
 
         this.setState({ data: newData1, filters: filters, [name]: search, selActive: search === "" ? "" : name });
