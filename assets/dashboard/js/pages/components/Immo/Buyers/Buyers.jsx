@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
 import { Layout }        from "@dashboardComponents/Layout/Page";
+
 import Sort              from "@commonComponents/functions/sort";
+import Filter            from "@commonComponents/functions/filter";
+import TopToolbar        from "@commonComponents/functions/topToolbar";
 
 import { BuyersList }       from "./BuyersList";
 import { BuyerFormulaire }  from "./BuyerForm";
@@ -10,7 +13,14 @@ const URL_DELETE_ELEMENT = 'api_buyers_delete';
 const URL_DELETE_GROUP   = 'api_buyers_delete_group';
 const MSG_DELETE_ELEMENT = 'Supprimer cet acquéreur ?';
 const MSG_DELETE_GROUP   = 'Aucun acquéreur sélectionné.';
-const SORTER = Sort.compareLastname;
+let SORTER = Sort.compareLastname;
+
+let sorters = [
+    { value: 0, label: 'Nom',           identifiant: 'sorter-nom' },
+    { value: 2, label: 'Email',         identifiant: 'sorter-email' },
+]
+
+let sortersFunction = [Sort.compareLastname, Sort.compareEmail];
 
 export class Buyers extends Component {
     constructor(props) {
@@ -18,6 +28,7 @@ export class Buyers extends Component {
 
         this.state = {
             perPage: 10,
+            currentPage: 0,
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
@@ -37,6 +48,10 @@ export class Buyers extends Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleGetFilters = this.handleGetFilters.bind(this);
+        this.handlePerPage = this.handlePerPage.bind(this);
+        this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
+        this.handleSorter = this.handleSorter.bind(this);
 
         this.handleContentCreate = this.handleContentCreate.bind(this);
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
@@ -47,7 +62,15 @@ export class Buyers extends Component {
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "buyer"); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterHighRoleCode); }
+
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "buyer", true, Filter.filterHighRoleCode); }
+
+    handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
+
+    handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
+
+    handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
     handleContentList = (currentData, changeContext) => {
         return <BuyersList onChangeContext={changeContext}
