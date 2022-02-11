@@ -93,8 +93,7 @@ export class Buyers extends Component {
                            sorters={sorters}
                            onSorter={this.handleSorter}
                            //data
-                           isClient={isClient}
-                           dataImmuable={this.layout.current.state.dataImmuable}
+                           isClient={this.state.isClient}
                            data={currentData} />
     }
 
