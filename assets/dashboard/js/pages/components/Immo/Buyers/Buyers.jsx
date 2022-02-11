@@ -49,6 +49,7 @@ export class Buyers extends Component {
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleGetFilters = this.handleGetFilters.bind(this);
+        this.handleGetFiltersNego = this.handleGetFiltersNego.bind(this);
         this.handlePerPage = this.handlePerPage.bind(this);
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
         this.handleSorter = this.handleSorter.bind(this);
@@ -62,7 +63,11 @@ export class Buyers extends Component {
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterType); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterType, null,
+        this.layout.current.state.filtersTwo, Filter.filterNego); }
+
+    handleGetFiltersNego = (filters) => { this.layout.current.handleGetFiltersTwo(filters, Filter.filterNego, null,
+        this.layout.current.state.filters, Filter.filterType); }
 
     handleSearch = (search) => { this.layout.current.handleSearch(search, "buyer", true, Filter.filterType); }
 
@@ -72,8 +77,8 @@ export class Buyers extends Component {
 
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
-    handleContentList = (currentData, changeContext, getFilters, filters, data) => {
-        const { perPage, currentPage } = this.state;
+    handleContentList = (currentData, changeContext, getFilters, filters, data, filtersTwo) => {
+        const { perPage, currentPage, isClient } = this.state;
 
         return <BuyersList onChangeContext={changeContext}
                            onDelete={this.layout.current.handleDelete}
@@ -81,7 +86,9 @@ export class Buyers extends Component {
                            //filter-search
                            onSearch={this.handleSearch}
                            filters={filters}
+                           filtersNego={filtersTwo}
                            onGetFilters={this.handleGetFilters}
+                           onGetFiltersNego={this.handleGetFiltersNego}
                            //changeNumberPerPage
                            perPage={perPage}
                            onPerPage={this.handlePerPage}
@@ -93,7 +100,8 @@ export class Buyers extends Component {
                            sorters={sorters}
                            onSorter={this.handleSorter}
                            //data
-                           isClient={this.state.isClient}
+                           isClient={isClient}
+                           dataImmuable={this.layout.current.state.dataImmuable}
                            data={currentData} />
     }
 

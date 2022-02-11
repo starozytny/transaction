@@ -8,6 +8,7 @@ import { LoaderElement }    from "@dashboardComponents/Layout/Loader";
 
 import Search               from "@commonComponents/functions/search";
 import Formulaire           from "@dashboardComponents/functions/Formulaire";
+import {data} from "autoprefixer";
 
 export class Page extends Component {
     constructor(props) {
@@ -50,6 +51,7 @@ export class Layout extends Component {
             currentData: null,
             element: null,
             filters: [],
+            filtersTwo: [],
             classes: props.classes ? props.classes : "main-content",
             sorter: props.sorter ? props.sorter : null,
             perPage: props.perPage,
@@ -64,6 +66,7 @@ export class Layout extends Component {
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleGetFilters = this.handleGetFilters.bind(this);
+        this.handleGetFiltersTwo = this.handleGetFiltersTwo.bind(this);
         this.handleSetDataPagination = this.handleSetDataPagination.bind(this);
         this.handleSetData = this.handleSetData.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -170,20 +173,21 @@ export class Layout extends Component {
         }
     }
 
-    handleGetFilters = (filters, filterFunction, dataIm = null) => {
-        const { dataImmuable, perPage, sessionName, sorter } = this.state;
+    handleGetFilters = (filters, filterFunction, dataIm = null, filtersTwo, filterTwo) => {
+        const { perPage } = this.state;
 
-        let newData = filterFunction(dataIm ? dataIm : dataImmuable, filters);
-        if(sorter){
-            newData.sort(sorter)
-        }
-
-        if(dataIm == null){
-            sessionStorage.setItem(sessionName, "0")
-            this.page.current.pagination.current.handlePageOne();
-        }
+        let newData = callFilter(this, filters, filterFunction, dataIm, filtersTwo, filterTwo);
 
         this.setState({ data: newData, currentData: newData.slice(0, perPage), filters: filters });
+        return newData;
+    }
+
+    handleGetFiltersTwo = (filters, filterFunction, dataIm = null, filtersTwo, filterTwo) => {
+        const { perPage } = this.state;
+
+        let newData = callFilter(this, filters, filterFunction, dataIm, filtersTwo, filterTwo);
+
+        this.setState({ data: newData, currentData: newData.slice(0, perPage), filtersTwo: filters });
         return newData;
     }
 
@@ -215,7 +219,7 @@ export class Layout extends Component {
     render () {
         const { onContentList, onContentCreate, onContentUpdate, onContentRead, onContentCustomOne, onContentCustomTwo,
             onChangeCurrentPage, classes } = this.props;
-        const { perPage, loadPageError, context, loadData, data, currentData, element, sessionName, filters } = this.state;
+        const { perPage, loadPageError, context, loadData, data, currentData, element, sessionName, filters, filtersTwo } = this.state;
 
         let content, havePagination = false;
         switch (context){
@@ -236,7 +240,7 @@ export class Layout extends Component {
                 break;
             default:
                 havePagination = true;
-                content = loadData ? <LoaderElement /> : onContentList(currentData, this.handleChangeContext, this.handleGetFilters, filters, data)
+                content = loadData ? <LoaderElement /> : onContentList(currentData, this.handleChangeContext, this.handleGetFilters, filters, data, filtersTwo)
                 break;
         }
 
@@ -303,4 +307,24 @@ function getData(donnees, sorter, search, type, context, nContext)
     let newContext = element[1];
 
     return [data, dataImmuable, elem, newContext];
+}
+
+function callFilter(self, filters, filterFunction, dataIm = null, filtersTwo, filterTwo)
+{
+    const { dataImmuable, sessionName, sorter } = self.state;
+
+    let newData = filterFunction(dataIm ? dataIm : dataImmuable, filters);
+    if(filterTwo){
+        newData = filterTwo(newData, filtersTwo)
+    }
+    if(sorter){
+        newData.sort(sorter)
+    }
+
+    if(dataIm == null){
+        sessionStorage.setItem(sessionName, "0")
+        self.page.current.pagination.current.handlePageOne();
+    }
+
+    return newData;
 }
