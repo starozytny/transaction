@@ -5,10 +5,12 @@ import { Search }                   from "@dashboardComponents/Layout/Search";
 import { Alert }                    from "@dashboardComponents/Tools/Alert";
 
 import { NegotiatorsItem }   from "./NegotiatorsItem";
+import {TopSorterPagination} from "@dashboardComponents/Layout/Pagination";
 
 export class NegotiatorsList extends Component {
     render () {
-        const { isClient, data, onChangeContext, onDeleteAll, onSearch } = this.props;
+        const { isClient, taille, data, perPage, onChangeContext, onDeleteAll, onSearch, onPerPage,
+            onPaginationClick, currentPage, sorters, onSorter } = this.props;
 
         return <>
             <div>
@@ -20,6 +22,10 @@ export class NegotiatorsList extends Component {
                         <Search onSearch={onSearch} placeholder="Recherche par code, nom, prénom ou email.."/>
                     </div>
                 </div>
+
+                <TopSorterPagination sorters={sorters} onSorter={onSorter}
+                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
+
                 <div className="items-table">
                     <div className="items items-default">
                         <div className="item item-header">

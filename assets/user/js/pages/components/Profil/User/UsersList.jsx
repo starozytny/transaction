@@ -6,9 +6,9 @@ import { Alert }                  from "@dashboardComponents/Tools/Alert";
 import { Button }                 from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
 import { Filter, FilterSelected } from "@dashboardComponents/Layout/Filter";
+import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
 
 import { UsersItem }   from "./UsersItem";
-import {TopSorterPagination} from "@dashboardComponents/Layout/Pagination";
 
 export class UsersList extends Component {
     constructor(props) {

@@ -86,7 +86,8 @@ export class Users extends Component {
     render () {
         return <>
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
-                    onContentList={this.handleContentList}/>
+                    onContentList={this.handleContentList}
+                    onChangeCurrentPage={this.handleChangeCurrentPage}/>
         </>
     }
 }
