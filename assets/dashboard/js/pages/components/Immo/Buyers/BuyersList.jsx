@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
-import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
+import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
+import { Filter, FilterSelected } from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
 
 import { BuyersItem }   from "./BuyersItem";
-import {Filter, FilterSelected} from "@dashboardComponents/Layout/Filter";
 
 export class BuyersList extends Component {
     constructor(props) {
@@ -28,7 +28,7 @@ export class BuyersList extends Component {
     }
 
     render () {
-        const { isSelect=false, isFromRead=false, isClient, data, onChangeContext, onDeleteAll, onGetFilters, filters, filtersNego, onSearch,
+        const { isClient, data, onChangeContext, onDeleteAll, onGetFilters, filters, filtersNego, onSearch,
             onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille } = this.props;
 
         let filtersLabel = ["Acheteur", "Investisseur", "Autre"];
@@ -42,30 +42,27 @@ export class BuyersList extends Component {
 
         return <>
             <div>
-                {!isSelect && <div className="toolbar">
+                <div className="toolbar">
                     <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter un acquéreur</Button>
                     </div>
-                    {isFromRead && <div className="item">
-                        <Button onClick={() => onChangeContext("select")}>Sélectionner un existant</Button>
-                    </div>}
 
-                    {!isFromRead && <div className="item filter-search">
+                    <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
                         <Filter ref={this.filterNego} items={itemsFilter} onGetFilters={onGetFilters} title="Négociateurs" icon="group" width={164} classes="filter-nego" />
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom ou téléphone"/>
-                        <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
-                        <FilterSelected filters={filtersNego} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilterNego}/>
-                    </div>}
-                </div>}
+                        <FilterSelected filters={filters} items={itemsFilter} onChange={this.handleFilter}/>
+                        <FilterSelected filters={filtersNego} items={itemsFilter} onChange={this.handleFilterNego}/>
+                    </div>
+                </div>
 
-                {!isFromRead && <TopSorterPagination sorters={sorters} onSorter={onSorter}
-                                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>}
+                <TopSorterPagination sorters={sorters} onSorter={onSorter}
+                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
 
                 <div className="items-table">
                     <div className="items items-default">
                         <div className="item item-header">
-                            {(!isClient || isSelect) && <div className="item-header-selector" />}
+                            {!isClient && <div className="item-header-selector" />}
                             <div className="item-content">
                                 <div className="item-body">
                                     <div className="infos infos-col-4">
@@ -83,7 +80,7 @@ export class BuyersList extends Component {
                     </div>
                 </div>
 
-                {(!isFromRead && data && data.length !== 0 && !isClient) && <div className="page-actions">
+                {(data && data.length !== 0 && !isClient) && <div className="page-actions">
                     <div className="selectors-actions">
                         <div className="item" onClick={onDeleteAll}>
                             <ButtonIcon icon="trash" text="Supprimer la sélection" />
