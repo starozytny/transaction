@@ -364,44 +364,42 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
     let data5 = getDataPerson(persons.prospects, prospects);
     let data6 = getDataPerson(persons.buyers, buyers);
 
-    if(data0.length !== 0){
-        let items0 = getPersonAvatar(data0);
-        let items1 = getPersonAvatar(data1);
-        let items2 = getPersonAvatar(data2);
-        let items3 = getPersonTotal(data3, "propriétaire");
-        let items4 = getPersonTotal(data4, "locataire");
-        let items5 = getPersonTotal(data5, "prospect");
-        let items6 = getPersonTotal(data6, "buyers");
+    let items0 = getPersonAvatar(data0);
+    let items1 = getPersonAvatar(data1);
+    let items2 = getPersonAvatar(data2);
+    let items3 = getPersonTotal(data3, "propriétaire");
+    let items4 = getPersonTotal(data4, "locataire");
+    let items5 = getPersonTotal(data5, "prospect");
+    let items6 = getPersonTotal(data6, "acquéreur");
 
-        bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
-            items0.join("") +
+    bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
+        items0.join("") +
+    '</div>')
+    bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
+        items1.join("") +
+    '</div>')
+    bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
+        items2.join("") +
+    '</div>')
+    if(data3.length > 0){
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
+            items3 +
         '</div>')
-        bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
-            items1.join("") +
+    }
+    if(data4.length > 0){
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
+            items4 +
         '</div>')
-        bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
-            items2.join("") +
-        '</div>')
-        if(data3.length > 0){
-            bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-                items3 +
+    }
+    if(data5.length > 0){
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
+            items5 +
             '</div>')
-        }
-        if(data4.length > 0){
-            bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-                items4 +
+    }
+    if(data6.length > 0){
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
+            items6 +
             '</div>')
-        }
-        if(data5.length > 0){
-            bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-                items5 +
-                '</div>')
-        }
-        if(data6.length > 0){
-            bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-                items6 +
-                '</div>')
-        }
     }
 
 }
