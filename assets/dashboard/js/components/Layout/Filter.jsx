@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 export class Filter extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             filters: props.filters ? props.filters : []
