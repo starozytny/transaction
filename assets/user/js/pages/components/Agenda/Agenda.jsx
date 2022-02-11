@@ -109,8 +109,15 @@ export class Agenda extends Component {
     }
 
     componentDidMount = () => {
+        const { selActive, filters } = this.state;
+
         AgendaData.getData(this, URL_GET_DATA);
-        this.handleChangeSelect(this.state.selActive, { value: this.state[this.state.selActive] })
+        if(selActive !== ""){
+            this.handleChangeSelect(selActive, { value: this.state[selActive] })
+        }
+        if(selActive === "" && filters.length !== 0){
+            this.handleGetFilters(filters)
+        }
     }
 
     handleChangeSelect = (name, e) => {
@@ -267,7 +274,7 @@ export class Agenda extends Component {
                             <Button onClick={this.handleAdd}>Ajouter un évènement</Button>
                         </div>
                         <div className="item filter-search">
-                            <Filter ref={this.filter} items={itemsFilter} onGetFilters={this.handleGetFilters} />
+                            <Filter ref={this.filter} filters={filters} items={itemsFilter} onGetFilters={this.handleGetFilters} />
                             <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                         </div>
                     </div>
