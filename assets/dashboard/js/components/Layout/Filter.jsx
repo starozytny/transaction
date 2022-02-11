@@ -30,14 +30,14 @@ export class Filter extends Component {
     }
 
     render () {
-        const { items } = this.props;
+        const { items, title, icon } = this.props;
         const { filters } = this.state;
 
         return <div className="filter">
             <div className="dropdown">
                 <div className={`dropdown-btn ${filters.length !== 0 ? "active" : ""}`}>
-                    <span>Filtre</span>
-                    <span className="icon-filter" />
+                    <span>{title ? title : "Filtre"}</span>
+                    <span className={"icon-" + (icon ? icon : "filter")} />
                 </div>
                 <div className="dropdown-items">
                     {items.map((el, index) => {
