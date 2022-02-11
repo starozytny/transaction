@@ -25,7 +25,7 @@ import { PageError }        from "@dashboardComponents/Layout/PageError";
 import { LoaderElement }    from "@dashboardComponents/Layout/Loader";
 import { AgendaFormulaire } from "@userPages/components/Agenda/AgendaForm";
 import { Filter, FilterSelected } from "@dashboardComponents/Layout/Filter";
-import {SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
+import { SelectReactSelectize }   from "@dashboardComponents/Tools/Fields";
 
 const URL_DELETE_ELEMENT = 'api_agenda_events_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer cet évènement ?';

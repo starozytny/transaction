@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Agenda;
 
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
@@ -51,12 +52,13 @@ class AgendaController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $allUsers = $em->getRepository(User::class)->findAll();
-        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
-        $owners = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
-        $tenants = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgency()]);
-        $prospects = $em->getRepository(ImProspect::class)->findBy(['agency' => $user->getAgency()]);
-        $biens = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
+        $allUsers       = $em->getRepository(User::class)->findAll();
+        $negotiators    = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+        $owners         = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
+        $tenants        = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgency()]);
+        $prospects      = $em->getRepository(ImProspect::class)->findBy(['agency' => $user->getAgency()]);
+        $buyers         = $em->getRepository(ImBuyer::class)->findBy(['agency' => $user->getAgency()]);
+        $biens          = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
 
         $users = []; $managers = [];
         foreach($allUsers as $user){
@@ -72,12 +74,13 @@ class AgendaController extends AbstractController
 
         $users = $serializer->serialize($users, 'json', ['groups' => User::AGENDA_READ]);
 
-        $managers = $serializer->serialize($managers, 'json', ['groups' => User::AGENDA_READ]);
-        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::AGENDA_READ]);
-        $owners = $serializer->serialize($owners, 'json', ['groups' => User::AGENDA_READ]);
-        $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::AGENDA_READ]);
-        $prospects = $serializer->serialize($prospects, 'json', ['groups' => User::AGENDA_READ]);
-        $biens = $serializer->serialize($biens, 'json', ['groups' => User::AGENDA_READ]);
+        $managers       = $serializer->serialize($managers, 'json', ['groups' => User::AGENDA_READ]);
+        $negotiators    = $serializer->serialize($negotiators, 'json', ['groups' => User::AGENDA_READ]);
+        $owners         = $serializer->serialize($owners, 'json', ['groups' => User::AGENDA_READ]);
+        $tenants        = $serializer->serialize($tenants, 'json', ['groups' => User::AGENDA_READ]);
+        $prospects      = $serializer->serialize($prospects, 'json', ['groups' => User::AGENDA_READ]);
+        $buyers         = $serializer->serialize($buyers, 'json', ['groups' => User::AGENDA_READ]);
+        $biens          = $serializer->serialize($biens, 'json', ['groups' => User::AGENDA_READ]);
 
         return $apiResponse->apiJsonResponse([
             "users" => $users,
@@ -86,6 +89,7 @@ class AgendaController extends AbstractController
             "owners" => $owners,
             "tenants" => $tenants,
             "prospects" => $prospects,
+            "buyers" => $buyers,
             "biens" => $biens,
         ]);
     }
