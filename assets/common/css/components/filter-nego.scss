@@ -1,0 +1,36 @@
+.toolbar{
+  .filter-nego{
+    margin-bottom: 12px;
+
+    .dropdown-btn{
+      border-right: 1px solid var(--grey);
+      border-radius: 3px;
+    }
+
+    & + .search{
+      width: 100%;
+    }
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .toolbar{
+    .filter-nego{
+
+      .dropdown-btn{
+        border-right: none;
+        border-radius: 3px 0 0 3px;
+      }
+
+      & + .search{
+        width: calc(100% - 264px);
+      }
+    }
+  }
+}
