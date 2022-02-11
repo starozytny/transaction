@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
+import Actions from "@userComponents/functions/actions";
+
 import { ButtonIcon, ButtonIconContact, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 import { Selector }  from "@dashboardComponents/Layout/Selector";
 import { UtPhones }  from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 import { SearchMainInfos1 } from "@dashboardPages/components/Immo/Searchs/SearchsItem";
-import Actions from "@userComponents/functions/actions";
 
 export class ProspectsItem extends Component {
     render () {

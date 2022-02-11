@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
+import Actions from "@userComponents/functions/actions";
+
 import { Selector }     from "@dashboardComponents/Layout/Selector";
-import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
-import { UtContact, UtMainInfos }        from "@dashboardComponents/Tools/Utilitaire";
+import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
+import { UtContact, UtMainInfos }         from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 
@@ -42,9 +44,9 @@ export class BuyersItem extends Component {
                         </div>
 
                         <div className="col-4 actions">
-                            <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "buyer")}>Autres</ButtonIconDropdown>
                             {(isFromRead && !isSelect) && <ButtonIcon icon="cancel" onClick={() => onSelectBuyer(elem)}>Enlever</ButtonIcon>}
                         </div>
                     </div>
