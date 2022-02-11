@@ -2,6 +2,7 @@ const axios      = require("axios");
 const Routing    = require("@publicFolder/bundles/fosjsrouting/js/router.min.js");
 
 const Formulaire = require("@dashboardComponents/functions/Formulaire");
+const Sort       = require("@commonComponents/functions/sort");
 
 function getData(self, url) {
     axios({ method: "GET", url: Routing.generate(url), data: {}})
@@ -70,8 +71,21 @@ function createElement(elem) {
     }
 }
 
+function getSelecteurData (data, pre) {
+    let tab = [];
+    if(data){
+        data.sort(Sort.compareLastname)
+        data.forEach(el => {
+            tab.push({ value: el.id, label: el.fullname, identifiant: pre + "-" + el.id, email: el.email })
+        })
+    }
+
+    return tab
+}
+
 module.exports = {
     getData,
     createElement,
-    createEventStructure
+    createEventStructure,
+    getSelecteurData
 }

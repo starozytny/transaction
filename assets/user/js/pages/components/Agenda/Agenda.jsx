@@ -89,7 +89,13 @@ export class Agenda extends Component {
             filters: [],
             errors: [],
             selActive: "",
-            user: ""
+            user: "",
+            manager: "",
+            negotiator: "",
+            owner: "",
+            tenant: "",
+            buyer: "",
+            prospect: "",
         }
 
         this.aside = React.createRef();
@@ -234,7 +240,7 @@ export class Agenda extends Component {
     render () {
         const { context, errors, loadPageError, loadData, data, initialView, element,
             users, managers, negotiators, owners, tenants, prospects, buyers, biens,
-            filters, selActive, user } = this.state;
+            filters, selActive, user, manager, negotiator, owner, tenant, buyer, prospect } = this.state;
 
         let contentAside;
         switch (context){
@@ -269,12 +275,13 @@ export class Agenda extends Component {
             { value: 2, id: filtersId[2], label: filtersLabel[2]}
         ];
 
-        let selectUsers = [];
-        if(users){
-            users.forEach(u => {
-                selectUsers.push({ value: u.id, label: u.fullname, identifiant: "ag-se-" + u.id })
-            });
-        }
+        let selectUsers         = AgendaData.getSelecteurData(users, 'sp-user');
+        let selectManagers      = AgendaData.getSelecteurData(managers, 'sp-ma');
+        let selectNegotiators   = AgendaData.getSelecteurData(negotiators, 'sp-ne');
+        let selectOwners        = AgendaData.getSelecteurData(owners, 'sp-ow');
+        let selectTenants       = AgendaData.getSelecteurData(tenants, 'sp-te');
+        let selectBuyers        = AgendaData.getSelecteurData(buyers, 'sp-by');
+        let selectProspects     = AgendaData.getSelecteurData(prospects, 'sp-pr');
 
         return <>
             {loadPageError ? <div className="main-content"><PageError /></div> : <div id="calendar" className="main-content">
@@ -291,14 +298,37 @@ export class Agenda extends Component {
 
                     <div className="ag-selectors">
                         <div className="title">Filtre par personnes</div>
-                        <div className="line line-4">
+                        <div className="line line-3">
                             <SelectReactSelectize items={selectUsers} identifiant="user" disabled={selActive !== "" && selActive !== "user"}
                                                   valeur={user} errors={errors} onChange={(e) => this.handleChangeSelect('user', e)}>
                                 Utilisateur
                             </SelectReactSelectize>
-                            <div className="form-group"/>
-                            <div className="form-group"/>
-                            <div className="form-group"/>
+                            <SelectReactSelectize items={selectManagers} identifiant="manager" disabled={selActive !== "" && selActive !== "manager"}
+                                                  valeur={manager} errors={errors} onChange={(e) => this.handleChangeSelect('manager', e)}>
+                                Manager
+                            </SelectReactSelectize>
+                            <SelectReactSelectize items={selectNegotiators} identifiant="negotiator" disabled={selActive !== "" && selActive !== "negotiator"}
+                                                  valeur={negotiator} errors={errors} onChange={(e) => this.handleChangeSelect('negotiator', e)}>
+                                Négociateur
+                            </SelectReactSelectize>
+                        </div>
+                        <div className="line line-4">
+                            <SelectReactSelectize items={selectOwners} identifiant="owner" disabled={selActive !== "" && selActive !== "owner"}
+                                                  valeur={owner} errors={errors} onChange={(e) => this.handleChangeSelect('owner', e)}>
+                                Propriétaire
+                            </SelectReactSelectize>
+                            <SelectReactSelectize items={selectTenants} identifiant="tenant" disabled={selActive !== "" && selActive !== "tenant"}
+                                                  valeur={tenant} errors={errors} onChange={(e) => this.handleChangeSelect('tenant', e)}>
+                                Locataire
+                            </SelectReactSelectize>
+                            <SelectReactSelectize items={selectBuyers} identifiant="buyer" disabled={selActive !== "" && selActive !== "buyer"}
+                                                  valeur={buyer} errors={errors} onChange={(e) => this.handleChangeSelect('buyer', e)}>
+                                Acquéreur
+                            </SelectReactSelectize>
+                            <SelectReactSelectize items={selectProspects} identifiant="prospect" disabled={selActive !== "" && selActive !== "prospect"}
+                                                  valeur={prospect} errors={errors} onChange={(e) => this.handleChangeSelect('prospect', e)}>
+                                Prospect
+                            </SelectReactSelectize>
                         </div>
                     </div>
                     <FullCalendar

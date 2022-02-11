@@ -16,10 +16,10 @@ import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
-import Sort                    from "@commonComponents/functions/sort";
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
+import AgendaData              from "./agendaData";
 
 const URL_CREATE_ELEMENT     = "api_agenda_events_create";
 const URL_UPDATE_GROUP       = "api_agenda_events_update";
@@ -288,13 +288,13 @@ export class Form extends Component {
 
         let switcherItems = [ { value: 1, label: 'oui', identifiant: 'oui' } ]
 
-        let selectUsers         = getSelectData(this.props.users, "user");
-        let selectManagers      = getSelectData(this.props.managers, "mana");
-        let selectNegotiators   = getSelectData(this.props.negotiators, "nego");
-        let selectOwners        = getSelectData(this.props.owners, "own");
-        let selectTenants       = getSelectData(this.props.tenants, "tenant");
-        let selectProspects     = getSelectData(this.props.prospects, "pros");
-        let selectBuyers        = getSelectData(this.props.buyers, "buyers");
+        let selectUsers         = AgendaData.getSelecteurData(this.props.users, "user");
+        let selectManagers      = AgendaData.getSelecteurData(this.props.managers, "mana");
+        let selectNegotiators   = AgendaData.getSelecteurData(this.props.negotiators, "nego");
+        let selectOwners        = AgendaData.getSelecteurData(this.props.owners, "own");
+        let selectTenants       = AgendaData.getSelecteurData(this.props.tenants, "tenant");
+        let selectProspects     = AgendaData.getSelecteurData(this.props.prospects, "pros");
+        let selectBuyers        = AgendaData.getSelecteurData(this.props.buyers, "buyers");
 
         let minTimeStart = Helper.createTimeHoursMinutes(8);
         let maxTimeStart = Helper.createTimeHoursMinutes(22);
@@ -450,16 +450,6 @@ function Selecteur ({ refSelecteur, items, identifiant, valeur, errors, onChange
             {children} concernés
         </SelectizeMultiple>
     </>
-}
-
-function getSelectData (data, pre) {
-    let tab = [];
-    data.sort(Sort.compareLastname)
-    data.forEach(el => {
-        tab.push({ value: el.id, label: el.fullname, identifiant: pre + "-" + el.id, email: el.email })
-    })
-
-    return tab
 }
 
 function getPersonsData (data) {
