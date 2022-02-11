@@ -473,9 +473,13 @@ function getPersonsData (data) {
     return tab;
 }
 
-function getDataSelecteurFromName (self, name, users, managers, negotiators, owners, tenants, prospects) {
+function getDataSelecteurFromName (self, name, users, managers, negotiators, owners, tenants, prospects, buyers) {
     let data, selecteur;
     switch (name){
+        case "buyers":
+            data = buyers
+            selecteur = self.selectMultiple6.current;
+            break;
         case "prospects":
             data = prospects
             selecteur = self.selectMultiple5.current;
