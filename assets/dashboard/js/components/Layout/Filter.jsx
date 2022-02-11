@@ -5,7 +5,7 @@ export class Filter extends Component {
         super();
 
         this.state = {
-            filters: []
+            filters: props.filters ? props.filters : []
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -41,8 +41,15 @@ export class Filter extends Component {
                 </div>
                 <div className="dropdown-items">
                     {items.map((el, index) => {
+                        let checked = false;
+                        filters.forEach(filter => {
+                            if(el.value === filter){
+                                checked = true;
+                            }
+                        })
+
                         return <div className="item" key={index}>
-                            <input type="checkbox" name="filters" id={el.id} value={el.value} onChange={this.handleChange}/>
+                            <input type="checkbox" name="filters" id={el.id} value={el.value} defaultChecked={checked} onChange={this.handleChange}/>
                             <label htmlFor={el.id}>{el.label}</label>
                         </div>
                     })}
