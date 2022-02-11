@@ -542,6 +542,7 @@ class DataImmo extends DataConstructor
             ->setLastContactAt($this->createDate($data->lastContactAt))
             ->setType((int) $data->type)
             ->setStatus((int) $data->status)
+            ->setCommentary($this->sanitizeData->trimData($data->commentary))
         ;
     }
 

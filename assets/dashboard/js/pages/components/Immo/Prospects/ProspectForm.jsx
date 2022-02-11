@@ -58,6 +58,7 @@ export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, eleme
         lastContactAt={element ? Formulaire.setDateOrEmptyIfNull(element.lastContactAtJavascript, "") : ""}
         type={element ? Formulaire.setValueEmptyIfNull(element.type, 0) : 0}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 2) : 2}
+        commentary={element ? Formulaire.setValueEmptyIfNull(element.commentary) : ""}
 
         bienId={bienId}
 
@@ -98,6 +99,7 @@ export class ProspectForm extends Component {
             lastContactAt: props.lastContactAt,
             type: props.type,
             status: props.status,
+            commentary: props.commentary,
 
             bienId: props.bienId,
 
@@ -205,7 +207,8 @@ export class ProspectForm extends Component {
                                     birthday: "",
                                     lastContactAt: "",
                                     type: 0,
-                                    status: 2
+                                    status: 2,
+                                    commentary: ""
                                 })
                             }
                         }
@@ -224,7 +227,7 @@ export class ProspectForm extends Component {
     render () {
         const { context } = this.props;
         const { critere, errors, success, society, agency, negotiator, lastname, firstname, civility, birthday,
-            lastContactAt, type, status } = this.state;
+            lastContactAt, type, status, commentary } = this.state;
 
         let civilityItems = [
             {value: 0, label: "Mr",      identifiant: "mr"},
@@ -302,6 +305,11 @@ export class ProspectForm extends Component {
                     <DatePick identifiant="lastContactAt" valeur={lastContactAt} errors={errors} onChange={(e) => this.handleChangeDate("lastContactAt", e)}>
                         Dernier contact
                     </DatePick>
+                </div>
+
+                <div className="line line-2">
+                    <div className="form-group" />
+                    <Input valeur={commentary} identifiant="commentary" errors={errors} onChange={this.handleChange}>Observation</Input>
                 </div>
 
                 <div className="line line-critere">

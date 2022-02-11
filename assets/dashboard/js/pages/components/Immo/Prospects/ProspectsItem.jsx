@@ -74,6 +74,9 @@ export class ProspectsItem extends Component {
                         </div>
                     </div>
                 </div>
+                {elem.commentary && <div className="item-body">
+                    <div className="sub">Observation : {elem.commentary}</div>
+                </div>}
             </div>
         </div>
     }

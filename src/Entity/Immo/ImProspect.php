@@ -157,6 +157,12 @@ class ImProspect extends DataEntity
      */
     private $search;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $commentary;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -511,6 +517,18 @@ class ImProspect extends DataEntity
     public function setSearch(?ImSearch $search): self
     {
         $this->search = $search;
+
+        return $this;
+    }
+
+    public function getCommentary(): ?string
+    {
+        return $this->commentary;
+    }
+
+    public function setCommentary(?string $commentary): self
+    {
+        $this->commentary = $commentary;
 
         return $this;
     }
