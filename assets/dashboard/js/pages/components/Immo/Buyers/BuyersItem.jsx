@@ -28,8 +28,8 @@ export class BuyersItem extends Component {
                 <div className="item-body">
                     <div className="infos infos-col-4">
                         <div className="col-1">
+                            <div className={"badge badge-" + elem.type}>{elem.typeString}</div>
                             <UtMainInfos elem={elem} isClient={isClient} />
-                            <div className="sub">Type d'acquéreur : {elem.typeString}</div>
                         </div>
 
                         <div className="col-2">

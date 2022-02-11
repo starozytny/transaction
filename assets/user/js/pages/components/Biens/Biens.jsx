@@ -175,7 +175,7 @@ export class Biens extends Component {
                           tenants={JSON.parse(this.props.tenants)}
                           pageStatus={this.props.pageStatus !== "" ? parseInt(this.props.pageStatus) : false}
                           onUpdateList={this.handleUpdateList}
-                          dataFilters={this.layout.current.state.data}
+                          dataFilters={data}
                           rapprochements={JSON.parse(this.props.rapprochements)}
                           data={currentData} />
     }

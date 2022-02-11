@@ -73,7 +73,7 @@ export class Buyers extends Component {
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
-        const { perPage, currentPage } = this.state;
+        const { perPage, currentPage, isClient } = this.state;
 
         return <BuyersList onChangeContext={changeContext}
                            onDelete={this.layout.current.handleDelete}
@@ -93,7 +93,8 @@ export class Buyers extends Component {
                            sorters={sorters}
                            onSorter={this.handleSorter}
                            //data
-                           isClient={this.state.isClient}
+                           isClient={isClient}
+                           dataImmuable={this.layout.current.state.dataImmuable}
                            data={currentData} />
     }
 
