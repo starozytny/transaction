@@ -55,7 +55,7 @@ export class OwnersItem extends Component {
                                 <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
                             </>}
-                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem)}>Autres</ButtonIconDropdown>
+                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "owner")}>Autres</ButtonIconDropdown>
                         </div>}
                     </div>
                 </div>

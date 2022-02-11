@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
+import Actions from "@userComponents/functions/actions";
+
+import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class NegotiatorsItem extends Component {
@@ -44,11 +46,11 @@ export class NegotiatorsItem extends Component {
                                 <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'fn': elem.id})}>
                                     Biens
                                 </ButtonIcon>}
-                            <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             {!isUser && <>
                                 <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                             </>}
+                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "negotiator")}>Autres</ButtonIconDropdown>
                         </div>
                     </div>
                 </div>
