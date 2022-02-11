@@ -6,6 +6,7 @@ import { UtPhones }  from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 import { SearchMainInfos1 } from "@dashboardPages/components/Immo/Searchs/SearchsItem";
+import Actions from "@userComponents/functions/actions";
 
 export class ProspectsItem extends Component {
     render () {
@@ -68,6 +69,7 @@ export class ProspectsItem extends Component {
                             <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>
+                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "prospect")}>Autres</ButtonIconDropdown>
                         </div>
                     </div>
                 </div>
