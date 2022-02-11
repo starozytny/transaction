@@ -40,14 +40,32 @@ function filterFunction(dataImmuable, filters, search = null) {
         dataImmuable.forEach(el => {
             filters.forEach(filter => {
                 let push = false;
+                let person = false;
                 switch (filter){
+                    case 6:
+                        person = "prospects";
+                        break;
+                    case 5:
+                        person = "buyers";
+                        break;
+                    case 4:
+                        person = "tenants";
+                        break;
+                    case 3:
+                        person = "owners";
+                        break;
+                    case 2:
+                        person = "negotiators";
+                        break;
+                    case 1:
+                        person = "managers";
+                        break;
+                    case 0:
+                        person = "users";
+                        break;
+                    // ci-dessous, filter by selectors
                     case "all":
                         push = true;
-                        break;
-                    case 0: //users
-                        if(el.persons && el.persons.users && el.persons.users.length > 0){
-                            push = true;
-                        }
                         break;
                     default:
                         if(el.persons && el.persons[filter]){
@@ -60,9 +78,15 @@ function filterFunction(dataImmuable, filters, search = null) {
                         break;
                 }
 
+                if(person){
+                    if(el.persons && el.persons[person] && el.persons[person].length > 0){
+                        push = true;
+                    }
+                }
+
                 if(push){
                     newData.filter(elem => elem.id !== el.id)
-                    newData.push(el);
+                    newData = [...newData, ...[el]];
                 }
             })
         })
@@ -138,6 +162,7 @@ export class Agenda extends Component {
         const { dataImmuable } = this.state;
 
         let newData = filterFunction(dataIm ? dataIm : dataImmuable, filters);
+        newData = [...new Set(newData)];
 
         this.setState({ data: newData, filters: filters });
     }
@@ -264,13 +289,17 @@ export class Agenda extends Component {
             events.push(AgendaData.createEventStructure(elem, elem.imVisit))
         })
 
-        let filtersLabel = ["Utilisateur", "Développeur", "Administrateur"];
-        let filtersId    = ["f-user", "f-dev", "f-admin"];
+        let filtersLabel = ["Utilisateurs", "Managers", "Négociateurs", "Propriétaires", "Locataires", "Acquéreurs", "Prospects"];
+        let filtersId    = ["ff-user", "ff-mana", "ff-nego", "ff-ow", "ff-ten", "ff-ac", "ff-pr"];
 
         let itemsFilter = [
-            { value: 0, id: filtersId[0], label: filtersLabel[0]},
+            { value: 0, id: filtersId[0], label: filtersLabel[0] },
             { value: 1, id: filtersId[1], label: filtersLabel[1] },
-            { value: 2, id: filtersId[2], label: filtersLabel[2]}
+            { value: 2, id: filtersId[2], label: filtersLabel[2] },
+            { value: 3, id: filtersId[3], label: filtersLabel[3] },
+            { value: 4, id: filtersId[4], label: filtersLabel[4] },
+            { value: 5, id: filtersId[5], label: filtersLabel[5] },
+            { value: 6, id: filtersId[6], label: filtersLabel[6] },
         ];
 
         let selectUsers         = AgendaData.getSelecteurData(users, 'sp-user');
