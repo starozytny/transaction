@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 
 import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
+import Actions from "@userComponents/functions/actions";
+
 import { Selector }  from "@dashboardComponents/Layout/Selector";
-import { ButtonIcon, ButtonIconContact } from "@dashboardComponents/Tools/Button";
+import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 import { UtContact, UtMainInfos }        from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
@@ -43,9 +45,9 @@ export class TenantsItem extends Component {
                                 <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'ft': elem.bien.id})}>
                                     Bien
                                 </ButtonIcon>}
-                            <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
+                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "tenant")}>Autres</ButtonIconDropdown>
                         </div>}
                     </div>
                 </div>
