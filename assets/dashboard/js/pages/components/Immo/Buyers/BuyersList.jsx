@@ -21,13 +21,8 @@ export class BuyersList extends Component {
         this.handleFilterNego = this.handleFilterNego.bind(this);
     }
 
-    handleFilter = (e) => {
-        this.filter.current.handleChange(e, true);
-    }
-
-    handleFilterNego = (e) => {
-        this.filterNego.current.handleChange(e, true);
-    }
+    handleFilter = (e) => { this.filter.current.handleChange(e, true); }
+    handleFilterNego = (e) => { this.filterNego.current.handleChange(e, true); }
 
     render () {
         const { isClient, dataImmuable, data, onChangeContext, onDeleteAll, onGetFilters, filters, filtersNego, onSearch,

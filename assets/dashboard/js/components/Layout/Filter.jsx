@@ -82,7 +82,6 @@ export class FilterSelected extends Component {
                     })
                 }
 
-
                 return <div className="item" key={el}>
                     <div className="role">
                         <input type="checkbox" name="filters-checked" id={`fcheck-${el}`} data-id={id} value={el} onChange={onChange}/>

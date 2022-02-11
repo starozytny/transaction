@@ -1,3 +1,5 @@
+const Sort = require("@commonComponents/functions/sort");
+
 function filter(dataImmuable, filters, property) {
     let newData = [];
     if(filters.length === 0) {
