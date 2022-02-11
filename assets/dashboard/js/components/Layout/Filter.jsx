@@ -1,5 +1,37 @@
 import React, { Component } from 'react';
 
+function FilterComponent({ type="simple", typeFilter, items, title, icon, width, classes, filters, onChange }) {
+    let style = null;
+    if(width){
+        style = { width: width + "px" }
+    }
+
+    return <div className={"filter" + (classes ? " " + classes : "")} style={style}>
+        <div className="dropdown">
+            <div className={`dropdown-btn ${filters.length !== 0 ? "active" : ""}`}>
+                <span>{title ? title : "Filtre"}</span>
+                <span className={"icon-" + (icon ? icon : "filter")} />
+            </div>
+            <div className="dropdown-items">
+                {items.map((el, index) => {
+                    let checked = false;
+                    filters.forEach(filter => {
+                        if(el.value === filter){
+                            checked = true;
+                        }
+                    })
+
+                    return <div className="item" key={index}>
+                        <input type="checkbox" name={type === "simple" ? "filters" : typeFilter}
+                               id={el.id} value={el.value} defaultChecked={checked} onChange={onChange}/>
+                        <label htmlFor={el.id}>{el.label}</label>
+                    </div>
+                })}
+            </div>
+        </div>
+    </div>
+}
+
 export class Filter extends Component {
     constructor(props) {
         super(props);
@@ -30,37 +62,62 @@ export class Filter extends Component {
     }
 
     render () {
-        const { items, title, icon, width, classes } = this.props;
-        const { filters } = this.state;
+        return <FilterComponent {...this.props} {...this.state} onChange={this.handleChange} />
+    }
+}
 
-        let style = null;
-        if(width){
-            style = { width: width + "px" }
+export class FilterMultiple extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            filtersOne: props.filters[0],
+            filtersTwo: props.filters[1],
         }
 
-        return <div className={"filter" + (classes ? " " + classes : "")} style={style}>
-            <div className="dropdown">
-                <div className={`dropdown-btn ${filters.length !== 0 ? "active" : ""}`}>
-                    <span>{title ? title : "Filtre"}</span>
-                    <span className={"icon-" + (icon ? icon : "filter")} />
-                </div>
-                <div className="dropdown-items">
-                    {items.map((el, index) => {
-                        let checked = false;
-                        filters.forEach(filter => {
-                            if(el.value === filter){
-                                checked = true;
-                            }
-                        })
+        this.handleFilter = this.handleFilter.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
 
-                        return <div className="item" key={index}>
-                            <input type="checkbox" name="filters" id={el.id} value={el.value} defaultChecked={checked} onChange={this.handleChange}/>
-                            <label htmlFor={el.id}>{el.label}</label>
-                        </div>
-                    })}
-                </div>
-            </div>
-        </div>
+    handleFilter = (type, value) => {
+        const { filtersOne, filtersTwo } = this.state;
+
+        let nFiltersOne = filtersOne;
+        let nFiltersTwo = filtersTwo;
+
+        value = parseInt(value);
+
+        switch (type){
+            case "filtersTwo":
+                nFiltersTwo = updateTab(filtersTwo, value, nFiltersTwo);
+                break;
+            default:
+                nFiltersOne = updateTab(filtersOne, value, nFiltersOne);
+                break;
+        }
+
+        this.setState({ filtersOne: nFiltersOne, filtersTwo: nFiltersTwo });
+        this.props.onGetFilters([nFiltersOne, nFiltersTwo])
+    }
+
+    handleChange = (e) => { this.handleFilter(e.currentTarget.name, e.currentTarget.value); }
+
+    handleChangeSelect = (name, e) => {
+        this.handleFilter(name, e !== undefined ? e.value : "");
+    }
+
+    render () {
+        const { itemsOne, titleOne, iconOne, widthOne, classesOne,
+            itemsTwo, titleTwo, iconTwo, widthTwo, classesTwo } = this.props;
+
+        const { filtersOne, filtersTwo } = this.state;
+
+        return <>
+            <FilterComponent type="multiple" typeFilter="filtersOne" items={itemsOne} filters={filtersOne} onChange={this.handleChange}
+                             title={titleOne} icon={iconOne} width={widthOne} classes={classesOne} />
+            <FilterComponent type="multiple" typeFilter="filtersTwo" items={itemsTwo} filters={filtersTwo} onChange={this.handleChange}
+                             title={titleTwo} icon={iconTwo} width={widthTwo} classes={classesTwo} />
+        </>
     }
 }
 
@@ -82,7 +139,6 @@ export class FilterSelected extends Component {
                     })
                 }
 
-
                 return <div className="item" key={el}>
                     <div className="role">
                         <input type="checkbox" name="filters-checked" id={`fcheck-${el}`} data-id={id} value={el} onChange={onChange}/>
@@ -95,4 +151,21 @@ export class FilterSelected extends Component {
             })}
         </div>
     }
+}
+
+function updateTab(initTable, value, newTable) {
+    let find = false;
+    initTable.forEach(el => {
+        if(el === value){
+            find = true;
+        }
+    })
+
+    if(find){
+        newTable = initTable.filter(el => { return el !== value });
+    }else{
+        newTable.push(value);
+    }
+
+    return newTable;
 }
