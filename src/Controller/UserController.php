@@ -392,19 +392,27 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/agenda", name="agenda")
+     * @Route("/agenda", options={"expose"=true}, name="agenda")
      */
-    public function agenda(AgEventRepository $repository, SerializerInterface $serializer, EventService $eventService): Response
+    public function agenda(Request $request, AgEventRepository $repository, SerializerInterface $serializer, EventService $eventService): Response
     {
+        $route = 'user/pages/agenda/index.html.twig';
+
         /** @var User $user */
         $user = $this->getUser();
         $objs = $repository->findAll();
         $data = $eventService->getEvents($objs, $user);
         $objs = $serializer->serialize($data, 'json', ['groups' => User::AGENDA_READ]);
 
-        return $this->render('user/pages/agenda/index.html.twig', [
-            'donnees' => $objs,
-        ]);
+        $params = ['donnees' => $objs];
+
+        $ty = $request->query->get('ty');
+        $search = $request->query->get('se');
+        if($search && $ty){
+            return $this->render($route, array_merge($params, ['type' => $ty, 'search' => $search]));
+        }
+
+        return $this->render($route, $params);
     }
 
     /**

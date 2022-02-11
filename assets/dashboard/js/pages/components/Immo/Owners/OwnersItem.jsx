@@ -24,7 +24,7 @@ export class OwnersItem extends Component {
 
         let actions = [
             {data: <LinkContact isClient={isClient} email={elem.email} />},
-            {data: <a>Voir ses rendez-vous</a>},
+            {data: <a href={Routing.generate('user_agenda', {'ty': 'owner', 'se': elem.id})}>Voir ses rendez-vous</a>},
         ]
 
         return <div className="item">

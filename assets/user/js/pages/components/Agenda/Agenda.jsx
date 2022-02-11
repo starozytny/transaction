@@ -95,6 +95,10 @@ function filterFunction(dataImmuable, filters, search = null) {
     return newData;
 }
 
+function setSelectorDefault(name, type, search){
+    return type && type === name ? parseInt(search) : "";
+}
+
 export class Agenda extends Component {
     constructor(props) {
         super(props);
@@ -110,14 +114,14 @@ export class Agenda extends Component {
             initialView: (window.matchMedia("(min-width: 768px)").matches) ? "timeGridWeek" : "timeGridDay",
             filters: [],
             errors: [],
-            selActive: "",
-            user: "",
-            manager: "",
-            negotiator: "",
-            owner: "",
-            tenant: "",
-            buyer: "",
-            prospect: "",
+            selActive: props.type ? props.type : "",
+            user: setSelectorDefault("user", props.type, props.search),
+            manager: setSelectorDefault("manager", props.type, props.search),
+            negotiator: setSelectorDefault("negotiator", props.type, props.search),
+            owner: setSelectorDefault("owner", props.type, props.search),
+            tenant: setSelectorDefault("tenant", props.type, props.search),
+            buyer: setSelectorDefault("buyer", props.type, props.search),
+            prospect: setSelectorDefault("prospect", props.type, props.search),
         }
 
         this.aside = React.createRef();
@@ -309,6 +313,8 @@ export class Agenda extends Component {
         let selectTenants       = AgendaData.getSelecteurData(tenants, 'sp-te');
         let selectBuyers        = AgendaData.getSelecteurData(buyers, 'sp-by');
         let selectProspects     = AgendaData.getSelecteurData(prospects, 'sp-pr');
+
+        console.log(selActive)
 
         return <>
             {loadPageError ? <div className="main-content"><PageError /></div> : <div id="calendar" className="main-content">
