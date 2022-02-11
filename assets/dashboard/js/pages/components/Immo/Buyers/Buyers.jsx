@@ -41,6 +41,7 @@ export class Buyers extends Component {
             agencies: props.agencies ? JSON.parse(props.agencies) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             isClient: props.isClient ? props.isClient : false,
+            filters: [[], []]
         }
 
         this.layout = React.createRef();
@@ -58,13 +59,13 @@ export class Buyers extends Component {
         this.handleContentList = this.handleContentList.bind(this);
     }
 
-    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
+    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "id", this.state.filters, Filter.filterBuyers); }
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterType); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterBuyers); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "buyer", true, Filter.filterType); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "buyer", true, Filter.filterBuyers); }
 
     handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
 

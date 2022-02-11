@@ -66,11 +66,43 @@ function getNegotiators(dataImmuable)
     return nData;
 }
 
+function filterBuyers(dataImmuable, filters){
+    let newData = [], newData1 = [];
+
+    let filtersOne = filters[0];
+    let filtersTwo = filters[1];
+
+    if(filters.length === 0) {
+        newData = dataImmuable
+    }else{
+        newData = filter(dataImmuable, filtersOne, "type");
+
+        if(filtersTwo.length === 0){
+            newData1 = newData
+        }else{
+            newData.forEach(el => {
+                filtersTwo.forEach(filter => {
+                    if(el.negotiator && filter === el.negotiator.id){
+                        newData1.filter(elem => elem.id !== el.id)
+                        newData1.push(el);
+                    }
+                })
+            })
+        }
+
+
+        newData = newData1;
+    }
+
+    return newData;
+}
+
 module.exports = {
     filter,
     filterHighRoleCode,
     filterStatus,
     filterType,
     filterGerance,
+    filterBuyers,
     getNegotiators,
 }

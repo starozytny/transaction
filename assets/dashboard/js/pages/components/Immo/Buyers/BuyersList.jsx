@@ -5,7 +5,7 @@ import FilterFunction from "@commonComponents/functions/filter";
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
 import { Search }                 from "@dashboardComponents/Layout/Search";
 import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
-import { Filter, FilterSelected } from "@dashboardComponents/Layout/Filter";
+import { FilterMultiple, FilterSelected } from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
 
 import { BuyersItem }   from "./BuyersItem";
@@ -14,15 +14,11 @@ export class BuyersList extends Component {
     constructor(props) {
         super(props);
 
-        this.filter = React.createRef();
-        this.filterNego = React.createRef();
-
-        this.handleFilter = this.handleFilter.bind(this);
-        this.handleFilterNego = this.handleFilterNego.bind(this);
+        this.filterMultiple = React.createRef();
     }
 
-    handleFilter = (e) => { this.filter.current.handleChange(e, true); }
-    handleFilterNego = (e) => { this.filterNego.current.handleChange(e, true); }
+    handleFilter = (e) => { this.filterMultiple.current.handleChange(e, true); }
+    handleFilterNego = (e) => { this.filterMultiple.current.handleChange(e, true); }
 
     render () {
         const { isClient, dataImmuable, data, onChangeContext, onDeleteAll, onGetFilters, filters, filtersNego, onSearch,
@@ -47,12 +43,13 @@ export class BuyersList extends Component {
                     </div>
 
                     <div className="item filter-search">
-                        <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
-                        <Filter ref={this.filterNego} items={negotiatorsFilter} onGetFilters={onGetFilters}
-                                title="Négociateurs" icon="group" width={164} classes="filter-nego" />
+                        <FilterMultiple ref={this.filterMultiple} data={dataImmuable} onGetFilters={onGetFilters} filters={filters}
+                                        itemsOne={itemsFilter} itemsTwo={negotiatorsFilter}
+                                        titleTwo="Négociateurs" iconTwo="group" widthTwo={164} classesTwo="filter-nego"
+                        />
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom ou téléphone"/>
-                        <FilterSelected filters={filters} items={itemsFilter} onChange={this.handleFilter}/>
-                        <FilterSelected filters={filtersNego} items={negotiatorsFilter} onChange={this.handleFilterNego}/>
+                        {/*<FilterSelected filters={filters} items={itemsFilter} onChange={this.handleFilter}/>*/}
+                        {/*<FilterSelected filters={filtersNego} items={negotiatorsFilter} onChange={this.handleFilterNego}/>*/}
                     </div>
                 </div>
 
