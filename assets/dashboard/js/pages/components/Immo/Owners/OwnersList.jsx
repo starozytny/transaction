@@ -41,7 +41,7 @@ export class OwnersList extends Component {
                     </div>
                     <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
-                        <Search onSearch={onSearch} placeholder="Recherche par code, nom, prénom.."/>
+                        <Search onSearch={onSearch} placeholder="Recherche par code, nom, prénom ou téléphone"/>
                         <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                     </div>
                 </div>

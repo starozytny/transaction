@@ -44,7 +44,7 @@ export class ProspectsList extends Component {
                     </div>}
                     <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
-                        <Search onSearch={onSearch} placeholder="Recherche par nom, prénom, téléphone.."/>
+                        <Search onSearch={onSearch} placeholder="Recherche par nom, prénom ou téléphone"/>
                         <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                     </div>
                 </div>

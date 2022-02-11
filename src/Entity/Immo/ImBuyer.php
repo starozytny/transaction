@@ -12,8 +12,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImBuyer extends DataEntity
 {
-    const TYPE_NONE = 0;
+    const TYPE_BUYER = 0;
     const TYPE_INVEST = 1;
+    const TYPE_AUTRE = 2;
 
     /**
      * @ORM\Id
@@ -22,6 +23,12 @@ class ImBuyer extends DataEntity
      * @Groups({"admin:read", "agenda:read"})
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"admin:read"})
+     */
+    private $type = self::TYPE_BUYER;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -95,15 +102,14 @@ class ImBuyer extends DataEntity
     private $birthday;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived = false;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"admin:read"})
-     */
-    private $type = self::TYPE_NONE;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="buyers")
@@ -117,11 +123,6 @@ class ImBuyer extends DataEntity
      * @Groups({"admin:read"})
      */
     private $agency;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isArchived;
 
     public function __construct()
     {
@@ -367,7 +368,7 @@ class ImBuyer extends DataEntity
      */
     public function getTypeString(): string
     {
-        $types = ["Aucun", "Location", "Vente", "Investisseur", "Autre"];
+        $types = ["Acheteur", "Investisseur", "Autre"];
 
         return $types[$this->type];
     }

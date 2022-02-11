@@ -89,7 +89,7 @@ class FakeBuyersCreate extends Command
                 "zipcode" => $fake->postcode,
                 "city" => $fake->city,
                 "birthday" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
-                "type" => $fake->numberBetween(0, 4),
+                "type" => $fake->numberBetween(0, 2),
             ];
 
             $data = json_decode(json_encode($data));

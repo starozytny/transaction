@@ -23,7 +23,7 @@
 }
 
 #buyers{
-  @include toolbarCreateSearch(197);
+  @include toolbarCreateFilterSearch(197);
 }
 
 .card-ad{

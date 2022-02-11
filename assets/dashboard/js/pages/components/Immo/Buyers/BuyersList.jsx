@@ -5,6 +5,8 @@ import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
 
 import { BuyersItem }   from "./BuyersItem";
+import {Filter, FilterSelected} from "@dashboardComponents/Layout/Filter";
+import {TopSorterPagination} from "@dashboardComponents/Layout/Pagination";
 
 export class BuyersList extends Component {
     constructor(props) {
@@ -20,7 +22,17 @@ export class BuyersList extends Component {
     }
 
     render () {
-        const { isSelect=false, isFromRead=false, isClient, data, onSearch, onChangeContext, onDeleteAll } = this.props;
+        const { isSelect=false, isFromRead=false, isClient, data, onChangeContext, onDeleteAll, onGetFilters, filters, onSearch, onPerPage,
+            onPaginationClick, currentPage, sorters, onSorter, perPage, taille } = this.props;
+
+        let filtersLabel = ["Acheteur", "Investisseur", "Autre"];
+        let filtersId    = ["f-buyer", "f-invest", "f-other"];
+
+        let itemsFilter = [
+            { value: 0, id: filtersId[0], label: filtersLabel[0] },
+            { value: 1, id: filtersId[1], label: filtersLabel[1] },
+            { value: 2, id: filtersId[2], label: filtersLabel[2] },
+        ];
 
         return <>
             <div>
@@ -31,10 +43,16 @@ export class BuyersList extends Component {
                     {isFromRead && <div className="item">
                         <Button onClick={() => onChangeContext("select")}>Sélectionner un existant</Button>
                     </div>}
+
                     {!isFromRead && <div className="item filter-search">
-                        <Search onSearch={onSearch} placeholder="Recherche par nom, prénom.."/>
+                        <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
+                        <Search onSearch={onSearch} placeholder="Recherche par nom, prénom ou téléphone.."/>
+                        <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
                     </div>}
                 </div>}
+
+                {!isFromRead && <TopSorterPagination sorters={sorters} onSorter={onSorter}
+                                                     currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>}
 
                 <div className="items-table">
                     <div className="items items-default">

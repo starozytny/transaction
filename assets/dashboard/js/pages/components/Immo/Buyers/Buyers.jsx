@@ -62,9 +62,9 @@ export class Buyers extends Component {
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterHighRoleCode); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterType); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "buyer", true, Filter.filterHighRoleCode); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "buyer", true, Filter.filterType); }
 
     handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
 
@@ -72,11 +72,27 @@ export class Buyers extends Component {
 
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
-    handleContentList = (currentData, changeContext) => {
+    handleContentList = (currentData, changeContext, getFilters, filters, data) => {
+        const { perPage, currentPage } = this.state;
+
         return <BuyersList onChangeContext={changeContext}
                            onDelete={this.layout.current.handleDelete}
                            onDeleteAll={this.layout.current.handleDeleteGroup}
+                           //filter-search
                            onSearch={this.handleSearch}
+                           filters={filters}
+                           onGetFilters={this.handleGetFilters}
+                           //changeNumberPerPage
+                           perPage={perPage}
+                           onPerPage={this.handlePerPage}
+                           //twice pagination
+                           currentPage={currentPage}
+                           onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
+                           taille={data.length}
+                           //sorter
+                           sorters={sorters}
+                           onSorter={this.handleSorter}
+                           //data
                            isClient={this.state.isClient}
                            data={currentData} />
     }
@@ -99,7 +115,8 @@ export class Buyers extends Component {
         return <>
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
                     onContentList={this.handleContentList}
-                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}/>
+                    onContentCreate={this.handleContentCreate} onContentUpdate={this.handleContentUpdate}
+                    onChangeCurrentPage={this.handleChangeCurrentPage}/>
         </>
     }
 }
