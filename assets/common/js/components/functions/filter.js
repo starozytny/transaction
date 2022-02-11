@@ -39,6 +39,10 @@ function filterStatus(dataImmuable, filters){
     return filter(dataImmuable, filters, "status");
 }
 
+function filterType(dataImmuable, filters){
+    return filter(dataImmuable, filters, "type");
+}
+
 function filterGerance(dataImmuable, filters){
     return filter(dataImmuable, filters, "gerance");
 }
@@ -47,5 +51,6 @@ module.exports = {
     filter,
     filterHighRoleCode,
     filterStatus,
+    filterType,
     filterGerance
 }
