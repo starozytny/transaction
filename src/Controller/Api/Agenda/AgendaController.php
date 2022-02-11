@@ -47,7 +47,10 @@ class AgendaController extends AbstractController
 
         $users = [];
         foreach($allUsers as $user){
-            if($user->getHighRoleCode() === User::CODE_ROLE_USER){
+            if($user->getHighRoleCode() === User::CODE_ROLE_USER
+                || $user->getHighRoleCode() === User::CODE_ROLE_DEVELOPER
+                || $user->getHighRoleCode() === User::CODE_ROLE_ADMIN
+            ){
                 $users[] = $user;
             }
         }
