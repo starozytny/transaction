@@ -72,6 +72,12 @@ export function ButtonIconDropdown(props){
     </div>
 }
 
+export function LinkContact({ isClient=true, email }){
+    return <a href={Routing.generate(isClient ? "user_mails_send" : "admin_mails_send", {'dest': [email]})}>
+        Envoyer un mail
+    </a>
+}
+
 export function ButtonIconContact({ isClient=true, email }){
     return <ButtonIcon icon="chat-2" onClick={Routing.generate(isClient ? "user_mails_send" : "admin_mails_send", {'dest': [email]})} element="a">
         Contacter
