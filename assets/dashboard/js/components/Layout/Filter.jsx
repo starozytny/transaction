@@ -66,15 +66,28 @@ export class Filter extends Component {
 
 export class FilterSelected extends Component {
     render () {
-        const { filters, itemsFiltersLabel, itemsFiltersId, onChange } = this.props;
+        const { filters, items, itemsFiltersLabel, itemsFiltersId, onChange } = this.props;
 
         return <div className="filters-items-checked">
             {filters && filters.map(el => {
+
+                let id = itemsFiltersId ? itemsFiltersId[el] : "";
+                let label = itemsFiltersLabel ? itemsFiltersLabel[el] : "";
+
+                if(items){
+                    items.forEach(item => {
+                        if(item.value === el){
+                            id = item.id; label = item.label;
+                        }
+                    })
+                }
+
+
                 return <div className="item" key={el}>
                     <div className="role">
-                        <input type="checkbox" name="filters-checked" id={`fcheck-${el}`} data-id={itemsFiltersId[el]} value={el} onChange={onChange}/>
+                        <input type="checkbox" name="filters-checked" id={`fcheck-${el}`} data-id={id} value={el} onChange={onChange}/>
                         <label htmlFor={`fcheck-${el}`}>
-                            {itemsFiltersLabel[el]}
+                            {label}
                             <span className="icon-cancel" />
                         </label>
                     </div>
