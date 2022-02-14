@@ -52,6 +52,7 @@ export class Prospects extends Component {
             isClient: props.isClient ? props.isClient : false,
             isSelect: props.isSelect ? props.isSelect : false,
             classes: props.classes ? props.classes : "main-content",
+            filters: [[], []]
         }
 
         this.layout = React.createRef();
@@ -73,13 +74,13 @@ export class Prospects extends Component {
         this.handleContentCustomTwo = this.handleContentCustomTwo.bind(this);
     }
 
-    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "id"); }
+    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "id", this.state.filters, Filter.filterProspects); }
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "prospect", true, Filter.filterStatus); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "prospect", true, Filter.filterProspects); }
 
-    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterStatus); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterProspects); }
 
     handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
 
@@ -160,6 +161,7 @@ export class Prospects extends Component {
                               onSwitchArchived={this.handleSwitchArchived}
                               onSelectProspect={this.props.onSelectProspect}
                               prospects={this.props.prospects}
+                              dataImmuable={this.layout.current.state.dataImmuable}
                               data={currentData} />
     }
 

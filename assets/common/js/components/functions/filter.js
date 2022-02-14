@@ -54,6 +54,32 @@ function filterGerance(dataImmuable, filters){
     return filter(dataImmuable, filters, "gerance");
 }
 
+function filterCustomNego(dataImmuable, filters, property){
+    let newData = [], newData1 = [];
+
+    let filtersOne = filters[0];
+    let filtersTwo = filters[1];
+
+    if(filters.length === 0) {
+        newData = dataImmuable
+    }else{
+        newData = filter(dataImmuable, filtersOne, property);
+        newData1 = filter(newData, filtersTwo, "nego");
+
+        newData = newData1;
+    }
+
+    return newData;
+}
+
+function filterBuyers(dataImmuable, filters){
+    return filterCustomNego(dataImmuable, filters, "type");
+}
+
+function filterProspects(dataImmuable, filters){
+    return filterCustomNego(dataImmuable, filters, "status");
+}
+
 function getNegotiators(dataImmuable)
 {
     let nData = [], noDuplicate = [];
@@ -71,24 +97,6 @@ function getNegotiators(dataImmuable)
     return nData;
 }
 
-function filterBuyers(dataImmuable, filters){
-    let newData = [], newData1 = [];
-
-    let filtersOne = filters[0];
-    let filtersTwo = filters[1];
-
-    if(filters.length === 0) {
-        newData = dataImmuable
-    }else{
-        newData = filter(dataImmuable, filtersOne, "type");
-        newData1 = filter(newData, filtersTwo, "nego");
-
-        newData = newData1;
-    }
-
-    return newData;
-}
-
 module.exports = {
     filter,
     filterHighRoleCode,
@@ -96,5 +104,6 @@ module.exports = {
     filterType,
     filterGerance,
     filterBuyers,
+    filterProspects,
     getNegotiators,
 }

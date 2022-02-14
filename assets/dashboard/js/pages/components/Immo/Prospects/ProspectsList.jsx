@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
+import FilterFunction from "@commonComponents/functions/filter";
+
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
-import { Filter, FilterSelected } from "@dashboardComponents/Layout/Filter";
+import {Filter, FilterMultiple, FilterSelected} from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
 
 import { ProspectsItem }   from "./ProspectsItem";
@@ -14,15 +16,16 @@ export class ProspectsList extends Component {
 
         this.filter = React.createRef();
 
-        this.handleFilter = this.handleFilter.bind(this);
+        this.filterMultiple = React.createRef();
     }
 
     handleFilter = (e) => {
-        this.filter.current.handleChange(e, true);
+        let elem = document.getElementById(e.currentTarget.dataset.id);
+        if(elem) elem.click()
     }
 
     render () {
-        const { isSelect=false, isClient, data, onSearch, onChangeContext, onDeleteAll, onGetFilters, filters,
+        const { isSelect=false, isClient, data, dataImmuable, onSearch, onChangeContext, onDeleteAll, onGetFilters, filters,
             sorters, onSorter, currentPage, perPage, onPerPage, taille, onPaginationClick } = this.props;
 
         let filtersLabel = ["Aucun", "En recherche", "A compléter", "A contacter", "En offre"];
@@ -36,6 +39,8 @@ export class ProspectsList extends Component {
             { value: 4, id: filtersId[4], label: filtersLabel[4] }
         ];
 
+        let negotiatorsFilter = FilterFunction.getNegotiators(dataImmuable);
+
         return <>
             <div>
                 <div className="toolbar toolbar-prospect">
@@ -43,9 +48,13 @@ export class ProspectsList extends Component {
                         <Button onClick={() => onChangeContext("create")}>Ajouter un prospect</Button>
                     </div>}
                     <div className="item filter-search">
-                        <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
+                        <FilterMultiple ref={this.filterMultiple} data={dataImmuable} onGetFilters={onGetFilters} filters={filters}
+                                        itemsOne={itemsFilter} itemsTwo={negotiatorsFilter}
+                                        titleTwo="Négociateurs" iconTwo="group" widthTwo={164} classesTwo="filter-nego"
+                        />
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom ou téléphone"/>
-                        <FilterSelected filters={filters} itemsFiltersLabel={filtersLabel} itemsFiltersId={filtersId} onChange={this.handleFilter}/>
+                        <FilterSelected filters={filters[0]} items={itemsFilter} onChange={this.handleFilter}/>
+                        <FilterSelected filters={filters[1]} items={negotiatorsFilter} onChange={this.handleFilter}/>
                     </div>
                 </div>
 
