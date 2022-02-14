@@ -1,0 +1,16 @@
+{% extends 'user/layout/layout.html.twig' %}
+
+{% set submenu = [
+    { 'label': "Paramètres", 'path': path('user_settings_biens') },
+    { 'label': "Biens", 'path': path('user_settings_biens') },
+] %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('user_setting') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('user_setting') }}
+{% endblock %}

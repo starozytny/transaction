@@ -5,6 +5,7 @@ namespace App\Entity\Donnee;
 use App\Entity\Immo\ImAgency;
 use App\Repository\Donnee\DoQuartierRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=DoQuartierRepository::class)
@@ -15,11 +16,13 @@ class DoQuartier
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"donnee:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"donnee:read"})
      */
     private $name;
 

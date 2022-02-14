@@ -90,6 +90,7 @@ Encore
     .addEntry('user_buyer', './assets/user/js/pages/buyer.js')
     .addEntry('user_agenda', './assets/user/js/pages/agenda.js')
     .addEntry('user_visite', './assets/user/js/pages/visite.js')
+    .addEntry('user_setting', './assets/user/js/pages/setting.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')

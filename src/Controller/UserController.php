@@ -2,14 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Donnee\DoQuartier;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
-use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImRoom;
-use App\Entity\Immo\ImSearch;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
@@ -434,7 +433,6 @@ class UserController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/visites", options={"expose"=true}, name="visites")
      */
@@ -450,6 +448,24 @@ class UserController extends AbstractController
         $objs    = $serializer->serialize($objs, 'json', ['groups' => ImVisit::VISIT_READ]);
 
         return $this->render('user/pages/visits/index.html.twig', [
+            'donnees' => $objs,
+        ]);
+    }
+
+    /**
+     * @Route("/paramètres/biens", name="settings_biens")
+     */
+    public function parametresBiens(SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $objs = $em->getRepository(DoQuartier::class)->findBy(['agency' => $user->getAgency()]);
+
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::DONNEE_READ]);
+
+        return $this->render('user/pages/settings/biens.html.twig', [
             'donnees' => $objs,
         ]);
     }
