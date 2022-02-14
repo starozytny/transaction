@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 
 import { ButtonIcon } from "@dashboardComponents/Tools/Button";
-import { Selector }   from "@dashboardComponents/Layout/Selector";
 
 export class QuartiersItem extends Component {
     render () {
-        const { elem, onDelete, onSelectors, onChangeContext } = this.props;
+        const { elem, onDelete, onChangeContext } = this.props;
 
         return <div className="item">
-            <Selector id={elem.id} onSelectors={onSelectors} />
-
             <div className="item-content">
                 <div className="item-body">
                     <div className="infos infos-col-2">

@@ -22,7 +22,7 @@ export class QuartiersList extends Component {
     }
 
     render () {
-        const { data, onChangeContext, onDeleteAll, onGetFilters, filters, onSearch, onPerPage,
+        const { data, onChangeContext, onGetFilters, filters, onSearch, onPerPage,
             onPaginationClick, currentPage, sorters, onSorter, perPage, taille } = this.props;
 
         let filtersLabel = ["Libre", "Natif"];
@@ -52,7 +52,6 @@ export class QuartiersList extends Component {
                 <div className="items-table">
                     <div className="items items-default">
                         <div className="item item-header">
-                            <div className="item-header-selector" />
                             <div className="item-content">
                                 <div className="item-body">
                                     <div className="infos infos-col-2">
@@ -67,14 +66,6 @@ export class QuartiersList extends Component {
                         }) : <Alert>Aucun résultat</Alert>}
                     </div>
                 </div>
-
-                {(data && data.length !== 0) && <div className="page-actions">
-                    <div className="selectors-actions">
-                        <div className="item" onClick={onDeleteAll}>
-                            <ButtonIcon icon="trash" text="Supprimer la sélection" />
-                        </div>
-                    </div>
-                </div>}
             </div>
         </>
     }

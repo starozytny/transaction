@@ -7,9 +7,7 @@ export class SettingsBiens extends Component {
         super(props);
 
         this.state = {
-            context: "quartier",
-            idAgency: parseInt(props.agencyId),
-            idSociety: parseInt(props.societyId)
+            context: "quartier"
         }
 
         this.layout = React.createRef();
@@ -21,7 +19,7 @@ export class SettingsBiens extends Component {
 
     render () {
         const { quartiers } = this.props;
-        const { context, idAgency, idSociety } = this.state;
+        const { context } = this.state;
 
         let menu = [
             { value: "quartier", label: "Quartier" }
@@ -30,7 +28,7 @@ export class SettingsBiens extends Component {
         let content;
         switch (context){
             default:
-                content = <Quartiers idAgency={idAgency} idSociety={idSociety} donnees={quartiers} />
+                content = <Quartiers donnees={quartiers} />
                 break;
         }
 

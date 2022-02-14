@@ -5,13 +5,11 @@ import Sort              from "@commonComponents/functions/sort";
 import Filter            from "@commonComponents/functions/filter";
 import TopToolbar        from "@commonComponents/functions/topToolbar";
 
-import { QuartiersList }    from "./QuartiersList";
-import { OwnerFormulaire }  from "./QuartierForm";
+import { QuartiersList }      from "./QuartiersList";
+import { QuartierFormulaire } from "./QuartierForm";
 
-const URL_DELETE_ELEMENT = 'api_owners_delete';
-const URL_DELETE_GROUP   = 'api_owners_delete_group';
+const URL_DELETE_ELEMENT = 'api_donnees_quartiers_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer ce quartier ?';
-const MSG_DELETE_GROUP   = 'Aucun quartier sélectionné.';
 let SORTER = Sort.compareName;
 
 let sorters = [
@@ -30,11 +28,7 @@ export class Quartiers extends Component {
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
-            pathDeleteGroup: URL_DELETE_GROUP,
-            msgDeleteGroup: MSG_DELETE_GROUP,
-            sessionName: "settings.biens.quartier.pagination",
-            idAgency: props.agencyId,
-            idSociety: props.societyId
+            sessionName: "settings.biens.quartier.pagination"
         }
 
         this.layout = React.createRef();
@@ -71,35 +65,30 @@ export class Quartiers extends Component {
 
         return <QuartiersList onChangeContext={changeContext}
                               onDelete={this.layout.current.handleDelete}
-                              onDeleteAll={this.layout.current.handleDeleteGroup}
-                           //filter-search
+                              //filter-search
                               onSearch={this.handleSearch}
                               filters={filters}
                               onGetFilters={this.handleGetFilters}
-                           //changeNumberPerPage
+                              //changeNumberPerPage
                               perPage={perPage}
                               onPerPage={this.handlePerPage}
-                           //twice pagination
+                              //twice pagination
                               currentPage={currentPage}
                               onPaginationClick={this.layout.current.handleGetPaginationClick(this)}
                               taille={data.length}
-                           //sorter
+                              //sorter
                               sorters={sorters}
                               onSorter={this.handleSorter}
-                           //data
+                              //data
                               data={currentData} />
     }
 
     handleContentCreate = (changeContext) => {
-        const { idSociety, idAgency } = this.state;
-        return <OwnerFormulaire type="create" societyId={idSociety} agencyId={idAgency}
-                                onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        return <QuartierFormulaire type="create" onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     handleContentUpdate = (changeContext, element) => {
-        const { idSociety, idAgency } = this.state;
-        return <OwnerFormulaire type="update" societyId={idSociety} agencyId={idAgency} element={element}
-                                onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
+        return <QuartierFormulaire type="update" element={element} onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
     render () {

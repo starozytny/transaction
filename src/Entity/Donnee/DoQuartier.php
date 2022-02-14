@@ -27,7 +27,14 @@ class DoQuartier
     private $name;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"donnee:read"})
+     */
+    private $isNative = false;
+
+    /**
      * @ORM\Column(type="json", nullable=true)
+     * @Groups({"donnee:read"})
      */
     private $polygon = [];
 
@@ -35,11 +42,6 @@ class DoQuartier
      * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="doQuartiers")
      */
     private $agency;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isNative;
 
     public function getId(): ?int
     {

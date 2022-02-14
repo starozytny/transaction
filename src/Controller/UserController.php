@@ -466,7 +466,6 @@ class UserController extends AbstractController
         $quartiers = $serializer->serialize($quartiers, 'json', ['groups' => User::DONNEE_READ]);
 
         return $this->render('user/pages/settings/biens.html.twig', [
-            'user' => $user,
             'quartiers' => $quartiers,
         ]);
     }
