@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Entity\Donnee\DoQuartier;
 use App\Entity\Immo\ImAdvantage;
 use App\Entity\Immo\ImAdvert;
 use App\Entity\Immo\ImArea;
@@ -19,6 +20,7 @@ use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
+use App\Service\Data\Donnee\DataDonnee;
 use App\Service\FileUploader;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -96,8 +98,8 @@ class BienController extends AbstractController
     /**
      * @throws Exception
      */
-    public function submitForm($type, ImBien $obj, Request $request, ApiResponse $apiResponse,
-                               ValidatorService $validator, DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
+    public function submitForm($type, ImBien $obj, Request $request, ApiResponse $apiResponse, FileUploader $fileUploader,
+                               ValidatorService $validator, DataImmo $dataEntity, DataDonnee $dataDonnee): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
@@ -216,6 +218,17 @@ class BienController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
+        if($data->newQuartier && $data->newQuartier[0] == 1){
+            $quartier = $dataDonnee->setDataQuartier(new DoQuartier(), $data, $data->quartier);
+
+            /** @var User $user */
+            $user = $this->getUser();
+            $quartier->setAgency($user->getAgency());
+
+            $em->persist($quartier);
+            $em->flush();
+        }
+
         return $apiResponse->apiJsonResponse($obj, User::USER_READ);
     }
 
@@ -284,14 +297,15 @@ class BienController extends AbstractController
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
      * @param DataImmo $dataEntity
+     * @param DataDonnee $dataDonnee
      * @param FileUploader $fileUploader
      * @return JsonResponse
      * @throws Exception
      */
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
-                           DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
+                           DataImmo $dataEntity, DataDonnee $dataDonnee, FileUploader $fileUploader): JsonResponse
     {
-        return $this->submitForm("create", new ImBien(), $request, $apiResponse, $validator, $dataEntity, $fileUploader);
+        return $this->submitForm("create", new ImBien(), $request, $apiResponse, $fileUploader, $validator, $dataEntity, $dataDonnee);
     }
 
     /**
@@ -311,14 +325,15 @@ class BienController extends AbstractController
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
      * @param DataImmo $dataEntity
+     * @param DataDonnee $dataDonnee
      * @param FileUploader $fileUploader
      * @return JsonResponse
      * @throws Exception
      */
     public function update(ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
-                           DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
+                           DataImmo $dataEntity, DataDonnee $dataDonnee, FileUploader $fileUploader): JsonResponse
     {
-        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $fileUploader);
+        return $this->submitForm("update", $obj, $request, $apiResponse, $fileUploader, $validator, $dataEntity, $dataDonnee);
     }
 
     /**
