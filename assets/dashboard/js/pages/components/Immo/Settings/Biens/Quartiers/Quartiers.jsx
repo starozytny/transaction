@@ -28,7 +28,8 @@ export class Quartiers extends Component {
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
-            sessionName: "settings.biens.quartier.pagination"
+            sessionName: "settings.biens.quartier.pagination",
+            classes: props.classes ? props.classes : ""
         }
 
         this.layout = React.createRef();

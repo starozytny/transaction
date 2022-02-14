@@ -28,7 +28,9 @@ export class SettingsBiens extends Component {
         let content;
         switch (context){
             default:
-                content = <Quartiers donnees={quartiers} />
+                content = <div id="list-quartiers">
+                    <Quartiers donnees={quartiers} />
+                </div>
                 break;
         }
 
