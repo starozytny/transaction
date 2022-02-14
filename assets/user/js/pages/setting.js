@@ -5,7 +5,7 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min';
 
 import React from "react";
 import { render } from "react-dom";
-import { SettingsBiens } from "@userPages/components/Settings/Biens/SettingsBiens";
+import { SettingsBiens } from "@dashboardPages/components/Immo/Settings/Biens/SettingsBiens";
 
 Routing.setRoutingData(routes);
 

@@ -19,6 +19,11 @@ function filter(dataImmuable, filters, property) {
                             push = true;
                         }
                         break;
+                    case "native":
+                        if((filter === 1 && el.isNative) || (filter === 0 && !el.isNative)){
+                            push = true;
+                        }
+                        break;
                     default:
                         if(filter === el[property]){
                             push = true;
@@ -52,6 +57,10 @@ function filterType(dataImmuable, filters){
 
 function filterGerance(dataImmuable, filters){
     return filter(dataImmuable, filters, "gerance");
+}
+
+function filterNative(dataImmuable, filters){
+    return filter(dataImmuable, filters, "native");
 }
 
 function filterCustomNego(dataImmuable, filters, property){
@@ -107,6 +116,7 @@ module.exports = {
     filterStatus,
     filterType,
     filterGerance,
+    filterNative,
     filterBuyers,
     filterProspects,
     filterOwners,

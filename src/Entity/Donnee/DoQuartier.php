@@ -36,6 +36,11 @@ class DoQuartier
      */
     private $agency;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isNative;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -73,6 +78,18 @@ class DoQuartier
     public function setAgency(?ImAgency $agency): self
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function getIsNative(): ?bool
+    {
+        return $this->isNative;
+    }
+
+    public function setIsNative(bool $isNative): self
+    {
+        $this->isNative = $isNative;
 
         return $this;
     }

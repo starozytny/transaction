@@ -461,12 +461,13 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $objs = $em->getRepository(DoQuartier::class)->findBy(['agency' => $user->getAgency()]);
+        $quartiers = $em->getRepository(DoQuartier::class)->findBy(['agency' => $user->getAgency()]);
 
-        $objs = $serializer->serialize($objs, 'json', ['groups' => User::DONNEE_READ]);
+        $quartiers = $serializer->serialize($quartiers, 'json', ['groups' => User::DONNEE_READ]);
 
         return $this->render('user/pages/settings/biens.html.twig', [
-            'donnees' => $objs,
+            'user' => $user,
+            'quartiers' => $quartiers,
         ]);
     }
 }

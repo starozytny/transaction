@@ -1,10 +1,14 @@
 {% extends 'user/pages/settings/template.html.twig' %}
 
 {% set page_title %}Paramètres des biens{% endset %}
-{% set submenuActive = "Biens" %}
+{% set submenuActive = "Infos biens" %}
 
 {% block main_content %}
-    <div id="settings-biens" data-donnees="{{ donnees }}">
+    <div id="settings-biens"
+         data-quartiers="{{ quartiers }}"
+         data-society-id="{{ user.society.id }}"
+         data-agency-id="{{ user.agency.id }}"
+    >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

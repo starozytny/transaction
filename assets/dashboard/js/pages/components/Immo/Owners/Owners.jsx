@@ -54,8 +54,6 @@ export class Owners extends Component {
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleGetFilters = this.handleGetFilters.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-        this.handleContentCreate = this.handleContentCreate.bind(this);
-        this.handleContentUpdate = this.handleContentUpdate.bind(this);
         this.handleUpdateSelectOwner = this.handleUpdateSelectOwner.bind(this);
         this.handlePerPage = this.handlePerPage.bind(this);
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
