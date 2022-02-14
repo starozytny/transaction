@@ -6,7 +6,7 @@ import "leaflet-ajax/dist/leaflet.ajax.min";
 
 import Map from "@commonComponents/functions/map";
 
-import {Input, Radiobox, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
+import {Checkbox, Input, Radiobox, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
 
 import { Alert }        from "@dashboardComponents/Tools/Alert";
 import { Button }       from "@dashboardComponents/Tools/Button";
@@ -33,7 +33,7 @@ export class Step5 extends Component {
 
     render () {
         const { step, errors, quartiers, onNext, onDraft, onChange, onChangeSelect, onChangeZipcode, onChangeGeo,
-            address, hideAddress, zipcode, city, country, departement, quartier, lat, lon, hideMap } = this.props;
+            address, hideAddress, zipcode, city, country, departement, newQuartier, quartier, lat, lon, hideMap } = this.props;
 
         const divStyle = {
             height: '50vh'
@@ -48,6 +48,8 @@ export class Step5 extends Component {
         quartiers.forEach(ne => {
             quartiersItems.push({ value: ne.name, label: ne.name + ", " + ne.zipcode + " - " + ne.city, identifiant: "quart-" + ne.id })
         })
+
+        let switcherItems = [ { value: 1, label: 'Oui', identifiant: 'oui' } ]
 
         return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
             <div className="line-infos">
@@ -77,22 +79,23 @@ export class Step5 extends Component {
                         <span>Pays *</span>
                     </Input>
                 </div>
-                <div className="line line-3">
-                    <Input identifiant="departement" valeur={departement} errors={errors} onChange={onChange}>
-                        <span>Département</span>
-                    </Input>
-                    {/*<Input identifiant="quartier" valeur={quartier} errors={errors} onChange={onChange}>*/}
-                    {/*    <span>Quartier</span>*/}
-                    {/*</Input>*/}
-                    <div className="form-group" />
-                    <div className="form-group" />
-                </div>
+                {/*<div className="line line-3">*/}
+                {/*    <Input identifiant="departement" valeur={departement} errors={errors} onChange={onChange}>*/}
+                {/*        <span>Département</span>*/}
+                {/*    </Input>*/}
+                {/*    <div className="form-group" />*/}
+                {/*    <div className="form-group" />*/}
+                {/*</div>*/}
                 <div className="line line-2">
-                    <div className="form-group" />
-                    <SelectReactSelectize items={quartiersItems} identifiant="quartier" valeur={quartier} errors={errors}
-                                          onChange={(e) => onChangeSelect('quartier', e)}>
+                    <Checkbox isSwitcher={true} items={switcherItems} identifiant="newQuartier" valeur={newQuartier} errors={errors} onChange={onChange}>
+                        Ajouter un quartier à la base de donnée ?
+                    </Checkbox>
+                    {newQuartier[0] === 1 ? <Input identifiant="quartier" valeur={quartier} errors={errors} onChange={onChange}>
+                            <span>Quartier</span>
+                        </Input> : <SelectReactSelectize items={quartiersItems} identifiant="quartier" valeur={quartier} errors={errors}
+                                                         onChange={(e) => onChangeSelect('quartier', e)}>
                         Quartier
-                    </SelectReactSelectize>
+                    </SelectReactSelectize>}
                 </div>
             </div>
 

@@ -205,6 +205,10 @@ export class Form extends Component {
         calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
             provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail);
 
+        if(name === "newQuartier"){
+            value = (e.currentTarget.checked) ? [parseInt(value)] : [] // parseInt because work with int this time
+        }
+
         this.setState({[name]: value});
     }
 
