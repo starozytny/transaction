@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
 import Filter            from "@commonComponents/functions/filter";
+import TopToolbar        from "@commonComponents/functions/topToolbar";
 
 import { OwnersList }       from "./OwnersList";
 import { OwnerFormulaire }  from "./OwnerForm";
@@ -76,20 +77,11 @@ export class Owners extends Component {
 
     handleUpdateSelectOwner = (owner) => { this.setState({ owner }) }
 
-    handlePerPage = (perPage) => {
-        this.layout.current.handleUpdatePerPage(SORTER, perPage);
-        this.setState({ perPage: perPage });
-    }
+    handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
 
     handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
 
-    handleSorter = (nb) => {
-        const { perPage } = this.state;
-
-        SORTER = sortersFunction[nb];
-        this.layout.current.handleUpdatePerPage(SORTER, perPage);
-        this.setState({ sorter: SORTER });
-    }
+    handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { perPage, currentPage } = this.state;
