@@ -18,7 +18,7 @@ let sorters = [
     { value: 2, label: 'Ville',          identifiant: 'sorter-ville' },
 ];
 
-let sortersFunction = [Sort.compareLastname, Sort.compareZipcode, Sort.compareCity];
+let sortersFunction = [Sort.compareName, Sort.compareZipcode, Sort.compareCity];
 
 export class Quartiers extends Component {
     constructor(props) {
