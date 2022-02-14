@@ -5,16 +5,14 @@ import FilterFunction from "@commonComponents/functions/filter";
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
-import {Filter, FilterMultiple, FilterSelected} from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
+import { FilterMultiple, FilterSelected } from "@dashboardComponents/Layout/Filter";
 
 import { ProspectsItem }   from "./ProspectsItem";
 
 export class ProspectsList extends Component {
     constructor(props) {
         super(props);
-
-        this.filter = React.createRef();
 
         this.filterMultiple = React.createRef();
     }

@@ -80,6 +80,10 @@ function filterProspects(dataImmuable, filters){
     return filterCustomNego(dataImmuable, filters, "status");
 }
 
+function filterOwners(dataImmuable, filters){
+    return filterCustomNego(dataImmuable, filters, "gerance");
+}
+
 function getNegotiators(dataImmuable)
 {
     let nData = [], noDuplicate = [];
@@ -105,5 +109,6 @@ module.exports = {
     filterGerance,
     filterBuyers,
     filterProspects,
+    filterOwners,
     getNegotiators,
 }

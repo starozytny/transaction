@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
 import Filter            from "@commonComponents/functions/filter";
-import TopToolbar        from "@commonComponents/functions/topToolbar";
 
 import { OwnersList }       from "./OwnersList";
 import { OwnerFormulaire }  from "./OwnerForm";
@@ -45,6 +44,7 @@ export class Owners extends Component {
             isClient: props.isClient ? props.isClient : false,
             isFormBien: props.isFormBien ? props.isFormBien : false,
             owner: props.owner ? (props.owner !== "" ? parseInt(props.owner) : "") : "",
+            filters: [[], []]
         }
 
         this.layout = React.createRef();
@@ -66,13 +66,13 @@ export class Owners extends Component {
         this.handleContentRead = this.handleContentRead.bind(this);
     }
 
-    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "id"); }
+    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "id", this.state.filters, Filter.filterOwners); }
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterGerance); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterOwners); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "owner", true, Filter.filterGerance); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "owner", true, Filter.filterOwners); }
 
     handleUpdateSelectOwner = (owner) => { this.setState({ owner }) }
 
@@ -117,6 +117,7 @@ export class Owners extends Component {
                            owner={this.state.owner}
                            onSelectOwner={this.props.onSelectOwner ? this.props.onSelectOwner : null}
                            biens={this.state.biens}
+                           dataImmuable={this.layout.current.state.dataImmuable}
                            data={currentData} />
     }
 
