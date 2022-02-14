@@ -9,6 +9,11 @@ function filter(dataImmuable, filters, property) {
             filters.forEach(filter => {
                 let push = false;
                 switch (property){
+                    case "nego":
+                        if(el.negotiator && filter === el.negotiator.id){
+                            push = true
+                        }
+                        break;
                     case "gerance":
                         if((filter === 1 && el.isGerance) || (filter === 0 && !el.isGerance)){
                             push = true;
@@ -76,20 +81,7 @@ function filterBuyers(dataImmuable, filters){
         newData = dataImmuable
     }else{
         newData = filter(dataImmuable, filtersOne, "type");
-
-        if(filtersTwo.length === 0){
-            newData1 = newData
-        }else{
-            newData.forEach(el => {
-                filtersTwo.forEach(filter => {
-                    if(el.negotiator && filter === el.negotiator.id){
-                        newData1.filter(elem => elem.id !== el.id)
-                        newData1.push(el);
-                    }
-                })
-            })
-        }
-
+        newData1 = filter(newData, filtersTwo, "nego");
 
         newData = newData1;
     }

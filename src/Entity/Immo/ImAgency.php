@@ -3,6 +3,7 @@
 namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
+use App\Entity\Donnee\DoQuartier;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Repository\Immo\ImAgencyRepository;
@@ -224,6 +225,11 @@ class ImAgency extends DataEntity
      */
     private $buyers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DoQuartier::class, mappedBy="agency")
+     */
+    private $doQuartiers;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
@@ -234,6 +240,7 @@ class ImAgency extends DataEntity
         $this->prospects = new ArrayCollection();
         $this->photos = new ArrayCollection();
         $this->buyers = new ArrayCollection();
+        $this->doQuartiers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -796,6 +803,36 @@ class ImAgency extends DataEntity
             // set the owning side to null (unless already changed)
             if ($photo->getAgency() === $this) {
                 $photo->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DoQuartier[]
+     */
+    public function getDoQuartiers(): Collection
+    {
+        return $this->doQuartiers;
+    }
+
+    public function addDoQuartier(DoQuartier $doQuartier): self
+    {
+        if (!$this->doQuartiers->contains($doQuartier)) {
+            $this->doQuartiers[] = $doQuartier;
+            $doQuartier->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDoQuartier(DoQuartier $doQuartier): self
+    {
+        if ($this->doQuartiers->removeElement($doQuartier)) {
+            // set the owning side to null (unless already changed)
+            if ($doQuartier->getAgency() === $this) {
+                $doQuartier->setAgency(null);
             }
         }
 
