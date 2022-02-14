@@ -30,6 +30,14 @@ function compareEmail(a, b){
     return comparison(a.email, b.email);
 }
 
+function compareZipcode(a, b){
+    return comparison(a.zipcode, b.zipcode);
+}
+
+function compareCity(a,b){
+    return comparison(a.city, b.city);
+}
+
 function compareRank(a, b){
     return comparison(a.rank, b.rank);
 }
@@ -81,6 +89,8 @@ module.exports = {
     compareCreatedAt,
     compareCreatedAtInverse,
     compareEmail,
+    compareZipcode,
+    compareCity,
     compareRank,
     compareAgEventStartAt,
     compareCode,
