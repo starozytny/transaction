@@ -11,6 +11,8 @@ class DataDonnee extends DataConstructor
     {
         return ($obj)
             ->setName($this->sanitizeData->trimData($data->name))
+            ->setZipcode($this->sanitizeData->trimData($data->zipcode))
+            ->setCity($this->sanitizeData->trimData($data->city))
             ->setPolygon($data->polygon ?: null)
         ;
     }

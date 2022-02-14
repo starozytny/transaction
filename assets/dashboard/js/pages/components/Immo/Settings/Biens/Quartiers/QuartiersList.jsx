@@ -54,9 +54,10 @@ export class QuartiersList extends Component {
                         <div className="item item-header">
                             <div className="item-content">
                                 <div className="item-body">
-                                    <div className="infos infos-col-2">
+                                    <div className="infos infos-col-3">
                                         <div className="col-1">Intitulé</div>
-                                        <div className="col-2 actions">Actions</div>
+                                        <div className="col-2">Informations</div>
+                                        <div className="col-3 actions">Actions</div>
                                     </div>
                                 </div>
                             </div>

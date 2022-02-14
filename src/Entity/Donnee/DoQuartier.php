@@ -21,16 +21,28 @@ class DoQuartier
     private $id;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"donnee:read"})
+     */
+    private $isNative = false;
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"donnee:read"})
      */
     private $name;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=10)
      * @Groups({"donnee:read"})
      */
-    private $isNative = false;
+    private $zipcode;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"donnee:read"})
+     */
+    private $city;
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -92,6 +104,30 @@ class DoQuartier
     public function setIsNative(bool $isNative): self
     {
         $this->isNative = $isNative;
+
+        return $this;
+    }
+
+    public function getZipcode(): ?string
+    {
+        return $this->zipcode;
+    }
+
+    public function setZipcode(string $zipcode): self
+    {
+        $this->zipcode = $zipcode;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

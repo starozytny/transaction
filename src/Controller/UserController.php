@@ -461,7 +461,9 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $quartiers = $em->getRepository(DoQuartier::class)->findBy(['agency' => $user->getAgency()]);
+        $nativeQuartiers = $em->getRepository(DoQuartier::class)->findBy(['isNative' => true]);
+        $customQuartiers = $em->getRepository(DoQuartier::class)->findBy(['agency' => $user->getAgency()]);
+        $quartiers = array_merge($nativeQuartiers, $customQuartiers);
 
         $quartiers = $serializer->serialize($quartiers, 'json', ['groups' => User::DONNEE_READ]);
 
