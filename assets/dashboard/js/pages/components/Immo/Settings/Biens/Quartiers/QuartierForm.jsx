@@ -18,6 +18,8 @@ const URL_UPDATE_GROUP       = "api_donnees_quartiers_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
+let arrayZipcodeSave = [];
+
 export function QuartierFormulaire ({ type, onChangeContext, onUpdateList, element })
 {
     let title = "Ajouter un quartier";
@@ -34,6 +36,8 @@ export function QuartierFormulaire ({ type, onChangeContext, onUpdateList, eleme
         context={type}
         url={url}
         name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
+        zipcode={element ? Formulaire.setValueEmptyIfNull(element.zipcode) : ""}
+        city={element ? Formulaire.setValueEmptyIfNull(element.city) : ""}
         polygon={element ? Formulaire.setValueEmptyIfNull(element.polygon, []) : []}
 
         onUpdateList={onUpdateList}
@@ -51,6 +55,8 @@ export class QuartierForm extends Component {
 
         this.state = {
             name: props.name,
+            zipcode: props.zipcode,
+            city: props.city,
             polygon: props.polygon,
             errors: [],
             success: false,
@@ -58,15 +64,23 @@ export class QuartierForm extends Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeZipcode = this.handleChangeZipcode.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         Helper.toTop();
+        Helper.getPostalCodes(this);
         document.getElementById("name").focus()
     }
 
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
+
+    handleChangeZipcode = (e) => {
+        const { arrayPostalCode } = this.state;
+
+        Helper.setCityFromZipcode(this, e, arrayPostalCode ? arrayPostalCode : arrayZipcodeSave)
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -92,6 +106,10 @@ export class QuartierForm extends Component {
             }else{
                 Formulaire.loader(true);
                 let self = this;
+
+                arrayZipcodeSave = this.state.arrayPostalCode;
+                delete this.state.arrayPostalCode;
+
                 axios({ method: method, url: url, data: this.state })
                     .then(function (response) {
                         let data = response.data;
@@ -123,7 +141,7 @@ export class QuartierForm extends Component {
 
     render () {
         const { context } = this.props;
-        const { critere, errors, success, name } = this.state;
+        const { critere, errors, success, name, zipcode, city } = this.state;
 
         return <>
             <form onSubmit={this.handleSubmit}>
@@ -132,6 +150,11 @@ export class QuartierForm extends Component {
 
                 <div className="line">
                     <Input identifiant="name" valeur={name} errors={errors} onChange={this.handleChange}>Intitulé</Input>
+                </div>
+
+                <div className="line line-2">
+                    <Input identifiant="zipcode" valeur={zipcode} errors={errors} onChange={this.handleChangeZipcode}>Code postal</Input>
+                    <Input identifiant="city" valeur={city} errors={errors} onChange={this.handleChange}>Ville</Input>
                 </div>
 
                 <div className="line line-critere">
