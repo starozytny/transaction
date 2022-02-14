@@ -13,10 +13,12 @@ const MSG_DELETE_ELEMENT = 'Supprimer ce quartier ?';
 let SORTER = Sort.compareName;
 
 let sorters = [
-    { value: 0, label: 'Nom',    identifiant: 'sorter-nom' }
+    { value: 0, label: 'Nom',            identifiant: 'sorter-nom' },
+    { value: 1, label: 'Code postal',    identifiant: 'sorter-code-postal' },
+    { value: 2, label: 'Ville',          identifiant: 'sorter-ville' },
 ];
 
-let sortersFunction = [Sort.compareLastname];
+let sortersFunction = [Sort.compareLastname, Sort.compareZipcode, Sort.compareCity];
 
 export class Quartiers extends Component {
     constructor(props) {
