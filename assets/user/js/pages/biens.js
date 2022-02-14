@@ -35,6 +35,7 @@ if(el){
                            societyId={parseInt(el.dataset.societyId)}
                            agencyId={parseInt(el.dataset.agencyId)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
+                           quartiers={JSON.parse(el.dataset.quartiers)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 
@@ -46,6 +47,7 @@ if(el){
                            societyId={parseInt(el.dataset.societyId)}
                            agencyId={parseInt(el.dataset.agencyId)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
+                           quartiers={JSON.parse(el.dataset.quartiers)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 

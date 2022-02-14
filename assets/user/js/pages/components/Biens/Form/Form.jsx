@@ -527,7 +527,7 @@ export class Form extends Component {
     }
 
     render () {
-        const { negotiators, societyId, agencyId } = this.props;
+        const { negotiators, quartiers, societyId, agencyId } = this.props;
         const { step, contentHelpBubble, codeTypeAd, owner, allOwners } = this.state;
 
         let steps = [
@@ -600,9 +600,9 @@ export class Form extends Component {
                                refAside={this.aside3} onOpenAside={this.handleOpenAside}
                                 ref={this.rooms}/>
 
-                        <Step5 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
-                               onChange={this.handleChange} onChangeZipcode={this.handleChangeZipcode}
-                               onChangeGeo={this.handleChangeGeo} />
+                        <Step5 {...this.state}  onDraft={this.handleSubmit} onNext={this.handleNext}
+                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeZipcode={this.handleChangeZipcode}
+                               onChangeGeo={this.handleChangeGeo} quartiers={quartiers} />
 
                         {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                                              onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} />

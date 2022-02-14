@@ -43,6 +43,19 @@ class UserController extends AbstractController
         $this->doctrine = $doctrine;
     }
 
+    private function getDonneeData($em, $class, User $user, ?SerializerInterface $serializer, $group = User::DONNEE_READ)
+    {
+        $natives = $em->getRepository($class)->findBy(['isNative' => true]);
+        $customs = $em->getRepository($class)->findBy(['agency' => $user->getAgency()]);
+        $data = array_merge($natives, $customs);
+
+        if($serializer){
+            $data = $serializer->serialize($data, 'json', ['groups' => $group]);
+        }
+
+        return $data;
+    }
+
     /**
      * @Route("/", options={"expose"=true}, name="homepage")
      */
@@ -150,6 +163,8 @@ class UserController extends AbstractController
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
         $allOwners = $serializer->serialize($allOwners, 'json', ['groups' => User::ADMIN_READ]);
 
+        $quartiers = $this->getDonneeData($em, DoQuartier::class, $user, $serializer);
+
         return $this->render($route, [
             'element' => $element,
             'tenants' => $tenants,
@@ -158,16 +173,17 @@ class UserController extends AbstractController
             'negotiators' => $negotiators,
             'allOwners' => $allOwners,
             'user' => $user,
+            'quartiers' => $quartiers,
         ]);
     }
 
     private function bienData($type, Request $request, SerializerInterface $serializer, $slug): Response
     {
         $em = $this->doctrine->getManager();
-        $obj = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
+        $obj     = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
         $tenants = $em->getRepository(ImTenant::class)->findBy(["bien" => $obj]);
-        $photos = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
-        $rooms = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
+        $photos  = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
+        $rooms   = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
 
         $element = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
         $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
@@ -461,11 +477,7 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $nativeQuartiers = $em->getRepository(DoQuartier::class)->findBy(['isNative' => true]);
-        $customQuartiers = $em->getRepository(DoQuartier::class)->findBy(['agency' => $user->getAgency()]);
-        $quartiers = array_merge($nativeQuartiers, $customQuartiers);
-
-        $quartiers = $serializer->serialize($quartiers, 'json', ['groups' => User::DONNEE_READ]);
+        $quartiers = $this->getDonneeData($em, DoQuartier::class, $user, $serializer);
 
         return $this->render('user/pages/settings/biens.html.twig', [
             'quartiers' => $quartiers,
