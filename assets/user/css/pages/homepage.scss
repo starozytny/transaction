@@ -40,21 +40,12 @@
   }
 }
 
-//                      __   _ ____  ___   ___    __
-//                     | _| / |___ \( _ ) / _ \  |_ |
-//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
-//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
-//                     | |  |_|_____\___/ \___/   | |
-//                     |__|                      |__|
-@media (min-width:1280px) {
-  .dash-card-1:not(:last-child){
-    margin-bottom: 0;
-  }
-}
-@import "../vars/vars";
-
 .dash-card-changelogs{
   max-width: 1024px;
+
+  &:hover{
+    transform: none;
+  }
 
   .card-header{
     @include flex(row, center, flex-start);
@@ -107,9 +98,7 @@
       border-bottom: 2px solid var(--greyShadow);
     }
   }
-
 }
-
 
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
@@ -146,6 +135,10 @@
 //                     | |  |_|_____\___/ \___/   | |
 //                     |__|                      |__|
 @media (min-width:1280px) {
+  .dash-card-1:not(:last-child){
+    margin-bottom: 0;
+  }
+
   .dash-card-changelogs{
     width: calc(60% - 48px);
   }
