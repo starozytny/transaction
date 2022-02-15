@@ -4,8 +4,8 @@ import { Button } from "@dashboardComponents/Tools/Button";
 
 export function ButtonBack ({ onChangeContext, url = null, text = "Retour à la liste"})
 {
-    return onChangeContext ? <Button outline={true} icon="left-arrow" type="primary" onClick={() => onChangeContext("list")}>{text}</Button>
-        :  <Button element="a" outline={true} icon="left-arrow" type="primary" onClick={url}>{text}</Button>
+    return onChangeContext ? <Button icon="left-arrow" type="reverse" onClick={() => onChangeContext("list")}>{text}</Button>
+        :  <Button element="a" icon="left-arrow" type="reverse" onClick={url}>{text}</Button>
 }
 
 export class FormLayout extends Component{
