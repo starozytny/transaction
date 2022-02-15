@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Changelog;
 use App\Entity\Donnee\DoQuartier;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
@@ -13,6 +14,7 @@ use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImBuyerRepository;
 use App\Repository\Immo\ImOwnerRepository;
@@ -65,6 +67,7 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
+        $changelogs     = $em->getRepository(Changelog::class)->findBy(['isPublished' => true], ['createdAt' => 'DESC'], 5);
         $biensAgency    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'isArchived' => false, 'isDraft' => false]);
         $biensVisits    = $em->getRepository(ImBien::class)->findBy(['user' => $user]);
         $biensUser      = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'isArchived' => false, 'isDraft' => false]);
@@ -75,6 +78,7 @@ class UserController extends AbstractController
         $visits = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
 
         return $this->render('user/pages/index.html.twig', [
+            'changelogs' => $changelogs,
             'biensAgency' => count($biensAgency),
             'biensUser' => count($biensUser),
             'biensDraft' => count($biensDraft),

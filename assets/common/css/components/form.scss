@@ -45,6 +45,16 @@
   }
 }
 
+.line:first-child{
+  .line-separator{
+    margin-top: 0;
+
+    .title{
+      margin-top: 0;
+    }
+  }
+}
+
 .preview-form-oldFile{
   img{
     width: 42px; height: 42px;
