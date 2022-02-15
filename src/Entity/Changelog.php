@@ -49,6 +49,7 @@ class Changelog extends DataEntity
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"user:read"})
      */
     private $createdAt;
 

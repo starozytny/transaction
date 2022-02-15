@@ -8,17 +8,18 @@ import TopToolbar        from "@commonComponents/functions/topToolbar";
 import { ChangelogsList }       from "./ChangelogsList";
 import { ChangelogFormulaire }  from "./ChangelogForm";
 
-const URL_DELETE_ELEMENT    = 'api_users_delete';
+const URL_DELETE_ELEMENT    = 'api_changelogs_delete';
 const MSG_DELETE_ELEMENT    = 'Supprimer cet changelog ?';
-const URL_DELETE_GROUP      = 'api_users_delete_group';
+const URL_DELETE_GROUP      = 'api_changelogs_delete_group';
 const MSG_DELETE_GROUP      = 'Aucun changelog sélectionné.';
-let SORTER = Sort.compareName;
+let SORTER = Sort.compareCreatedAtInverse;
 
 let sorters = [
-    { value: 0, label: 'Nom',           identifiant: 'sorter-nom' },
+    { value: 0, label: 'Création',  identifiant: 'sorter-created' },
+    { value: 1, label: 'Nom',       identifiant: 'sorter-nom' },
 ]
 
-let sortersFunction = [Sort.compareName];
+let sortersFunction = [Sort.compareCreatedAtInverse, Sort.compareName];
 
 export class Changelogs extends Component {
     constructor(props) {

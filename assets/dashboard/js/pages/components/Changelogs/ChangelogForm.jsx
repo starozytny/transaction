@@ -13,8 +13,8 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_users_create";
-const URL_UPDATE_GROUP       = "api_users_update";
+const URL_CREATE_ELEMENT     = "api_changelogs_create";
+const URL_UPDATE_GROUP       = "api_changelogs_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
@@ -140,7 +140,7 @@ export class Form extends Component {
                 {success !== false && <Alert type="info">{success}</Alert>}
 
                 <div className="line line-2">
-                    <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange} type="email" >Intitulé</Input>
+                    <Input valeur={name} identifiant="name" errors={errors} onChange={this.handleChange}>Intitulé</Input>
                     <Radiobox items={typeItems} identifiant="type" valeur={type} errors={errors} onChange={this.handleChange}>Type</Radiobox>
                 </div>
 
