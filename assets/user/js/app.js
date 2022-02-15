@@ -15,7 +15,7 @@ Routing.setRoutingData(routes);
 const menu = document.getElementById("menu");
 if(menu) {
     render(
-        <Menu {...menu.dataset} />, menu
+        <Menu isVertical={true} {...menu.dataset} />, menu
     )
 }
 

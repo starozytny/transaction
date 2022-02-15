@@ -27,33 +27,36 @@
         'name': 'visites'
     },
     {
-        'path': path('user_prospects'),
+        'dropdown': true,
         'icon': 'group',
-        'label': 'Prospects',
-        'name': 'prospects'
-    },
-    {
-        'path': path('user_buyers'),
-        'icon': 'group',
-        'label': 'Acquéreurs',
-        'name': 'acquereurs'
-    },
-    {
-        'path': path('user_owners'),
-        'icon': 'group',
-        'label': 'Propriétaires',
-        'name': 'proprietaires'
-    },
-    {
-        'path': path('user_tenants'),
-        'icon': 'group',
-        'label': 'Locataires',
-        'name': 'locataires'
+        'label': 'Acteurs humain',
+        'items': [
+            {
+                'path': path('user_prospects'),
+                'label': 'Prospects',
+                'name': 'prospects'
+            },
+            {
+                'path': path('user_buyers'),
+                'label': 'Acquéreurs',
+                'name': 'acquereurs'
+            },
+            {
+                'path': path('user_owners'),
+                'label': 'Propriétaires',
+                'name': 'proprietaires'
+            },
+            {
+                'path': path('user_tenants'),
+                'label': 'Locataires',
+                'name': 'locataires'
+            },
+        ]
     },
     {
         'path': path('user_profil'),
-        'icon': 'user',
-        'label': 'Compte',
+        'icon': 'shield',
+        'label': 'Agence',
         'name': 'compte'
     },
     {

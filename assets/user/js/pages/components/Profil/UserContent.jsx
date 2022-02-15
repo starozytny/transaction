@@ -9,7 +9,7 @@ export class UserContent extends Component {
         super(props);
 
         this.state = {
-            context: "negotiators",
+            context: props.context ? props.context : "agencies",
             id: parseInt(props.id),
             idAgency: parseInt(props.agencyId),
             idSociety: parseInt(props.societyId),

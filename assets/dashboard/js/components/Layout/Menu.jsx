@@ -48,7 +48,7 @@ export class Menu extends Component {
     }
 
     render () {
-        const { menu, menuBottom } = this.props
+        const { isVertical = false, menu, menuBottom } = this.props
         const { isOpened, active } = this.state
 
         return <>
@@ -57,10 +57,10 @@ export class Menu extends Component {
             </div>
             <div className={`nav-body ${isOpened}`}>
                 <div className="items">
-                    { <MenuItem menu={menu} active={active} /> }
+                    { <MenuItem menu={menu} isVertical={isVertical} active={active} /> }
                 </div>
                 {menuBottom &&  <div className="items">
-                    { <MenuItem menu={menuBottom} active={active}/> }
+                    { <MenuItem menu={menuBottom} isVertical={isVertical} active={active}/> }
                 </div>}
             </div>
         </>
@@ -68,7 +68,7 @@ export class Menu extends Component {
 }
 
 function MenuItem (props){
-    const { menu, active } = props
+    const { menu, isVertical, active } = props
 
     return (
         JSON.parse(menu).map((el, index) => {
@@ -79,7 +79,9 @@ function MenuItem (props){
                 })
 
                 return <div key={index} className="item item-dropdown">
-                    <span>{el.label} <span className="icon-right-chevron" /></span>
+                    <div className="item-dropdown-title">
+                        {(isVertical && el.icon) && <span className={`icon-${el.icon}`} />} <span>{el.label} {!isVertical && <span className="icon-right-chevron" />}</span>
+                    </div>
                     <div className="item-dropdown-items">
                         <div className="item-dropdown-items-container">
                             {items}
