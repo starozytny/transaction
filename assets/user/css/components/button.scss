@@ -6,6 +6,8 @@
   @include fontSemibold();
 
   [class^="icon-"]{
+    display: inline-block;
+    transform: translateY(2px);
     font-size: 18px;
   }
 }
@@ -19,9 +21,9 @@
   &:before{
     content: "";
     display: block;
-    width: 75%; height: 100%;
+    width: 85%; height: 100%;
     position: absolute;
-    top: 6px; left: 12.5%;
+    top: 4px; left: 2.5%;
     border-radius: 4px;
     filter: blur(6px);
     z-index: -1;
@@ -64,7 +66,7 @@ $icons:
         "success" var(--success) var(--successShadow),
         "warning" var(--warning) var(--warningShadow),
         "color0" var(--color0) var(--color0Shadow),
-        "reverse" var(--grey) var(--greyShadow);
+        "reverse" var(--grey) var(--grey);
 
 @each $name, $color, $bg in $icons {
   .btn-#{$name} {
