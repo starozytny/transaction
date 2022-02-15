@@ -95,10 +95,19 @@
                     </div>
                 </div>
             </div>
-            <div class="dash-line-2-line-1">
-                <div class="title">Visites</div>
-                <div id="visits" data-visits="{{ visits }}">
-                    {% include "dashboard/layout/components/spinner.html.twig" %}
+        </div>
+        <div class="dash-line-2">
+            <div class="dash-card-1 dash-card-changelogs">
+                <div class="card-header">
+                    <div class="icon">
+                        <span class="icon-map"></span>
+                    </div>
+                    <div class="title">Visites</div>
+                </div>
+                <div>
+                    <div id="visits" data-visits="{{ visits }}">
+                        {% include "dashboard/layout/components/spinner.html.twig" %}
+                    </div>
                 </div>
             </div>
         </div>
