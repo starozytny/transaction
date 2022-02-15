@@ -126,6 +126,18 @@ class Changelog extends DataEntity
      * @return string|null
      * @Groups({"user:read"})
      */
+    public function getTypeString(): ?string
+    {
+        $values = ["Information", "Attention", "Danger"];
+
+        return $values[$this->type];
+    }
+
+
+    /**
+     * @return string|null
+     * @Groups({"user:read"})
+     */
     public function getTypeIcon(): ?string
     {
         $values = ["exclamation", "warning", "warning"];
@@ -139,6 +151,6 @@ class Changelog extends DataEntity
      */
     public function getCreatedAtString(): ?string
     {
-        return $this->getFullDateString($this->createdAt);
+        return $this->getFullDateString($this->createdAt, 'llll');
     }
 }

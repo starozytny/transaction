@@ -1,3 +1,5 @@
 @import "../vars/vars";
 
-@include toolbarCreateFilterSearch(198)
+@import "../../../common/css/pages/changelog";
+
+@include toolbarCreateFilterSearch(198);

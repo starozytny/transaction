@@ -50,13 +50,13 @@ export class Changelogs extends Component {
         this.handleContentUpdate = this.handleContentUpdate.bind(this);
     }
 
-    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "username", this.state.filters, Filter.filterStatus); }
+    handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "username", this.state.filters, Filter.filterType); }
 
     handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
 
-    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterStatus); }
+    handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterType); }
 
-    handleSearch = (search) => { this.layout.current.handleSearch(search, "changelog", true, Filter.filterStatus); }
+    handleSearch = (search) => { this.layout.current.handleSearch(search, "changelog", true, Filter.filterType); }
 
     handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
 

@@ -17,10 +17,11 @@ export class ChangelogsItem extends Component {
                     <div className="infos infos-col-3">
                         <div className="col-1">
                             <div className="name">
-                                <span>{elem.name}</span>
-                                <span className={"badge badge-" + elem.type}>
+                                <span className={"badge-changelog badge badge-" + elem.type}>
                                     <span className={"icon-" + elem.typeIcon} />
+                                    <span className="tooltip">{elem.typeString}</span>
                                 </span>
+                                <span>{elem.name}</span>
                             </div>
                             <div className="sub">{elem.createdAtString}</div>
                         </div>
