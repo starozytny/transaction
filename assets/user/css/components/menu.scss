@@ -38,8 +38,8 @@ nav{
       display: inline-block;
       margin-right: 8px;
       transform: translateY(-1px);
+      font-size: 18px;
     }
-
 
     &:hover{
       transform: translateX(5px);
@@ -109,20 +109,23 @@ nav{
 
     a {
       position: relative;
-      color: var(--grey2);
+      color: var(--txt);
       opacity: 1;
       border-radius: 8px;
       margin-bottom: 4px;
       z-index: 5;
       padding: 8px 12px;
 
+      &:hover,
+      &.active{
+        color: var(--primary);
+      }
+
       &:hover{
         transform: translateX(0);
-        color: var(--txt);
       }
 
       &.active{
-        color: var(--txt);
         background-color: var(--color0Shadow2);
       }
     }

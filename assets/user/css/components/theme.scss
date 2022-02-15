@@ -10,7 +10,7 @@
   .switcher-items .switcher-item label {
     &:after {
       content: "\e911";
-      left: 8.5px;
+      left: 7.5px;
       color: var(--txt);
     }
   }
@@ -29,6 +29,10 @@
         color: var(--txt);
       }
     }
+  }
+
+  .nav-body {
+    background: url("../../images/menu-light.jpg") no-repeat center;
   }
 
   .card-ad {
@@ -50,6 +54,14 @@
   .dark-mode {
     nav {
       background-color: var(--fond);
+    }
+
+    .nav-body{
+      a{
+        &.active{
+          background-color: var(--fond);
+        }
+      }
     }
   }
 }
