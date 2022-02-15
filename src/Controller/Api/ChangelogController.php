@@ -109,6 +109,25 @@ class ChangelogController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/is-published", name="switch_isPublished", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns object",
+     * )
+     *
+     * @OA\Tag(name="Contact")
+     *
+     * @param Changelog $obj
+     * @param DataService $dataService
+     * @return JsonResponse
+     */
+    public function switchIsPublished(Changelog $obj, DataService $dataService): JsonResponse
+    {
+        return $dataService->switchIsPublished($obj, User::USER_READ);
+    }
+
+    /**
      * @Route("/{id}", name="delete", options={"expose"=true}, methods={"DELETE"})
      *
      * @OA\Response(

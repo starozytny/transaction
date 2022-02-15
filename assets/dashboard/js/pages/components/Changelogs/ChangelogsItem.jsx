@@ -7,7 +7,7 @@ import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class ChangelogsItem extends Component {
     render () {
-        const { elem, onChangeContext, onDelete, onSelectors } = this.props
+        const { elem, onChangeContext, onDelete, onSelectors, onSwitchPublished } = this.props
 
         return <div className="item">
             <Selector id={elem.id} onSelectors={onSelectors} />
@@ -29,6 +29,9 @@ export class ChangelogsItem extends Component {
                             <div className="sub">{elem.content ? parse(elem.content) : null}</div>
                         </div>
                         <div className="col-3 actions">
+                            <div className={"btn-isPublished " + elem.isPublished}>
+                                <ButtonIcon icon="alarm" onClick={() => onSwitchPublished(elem)}>{elem.isPublished ? "Cacher" : "Publier"}</ButtonIcon>
+                            </div>
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>
