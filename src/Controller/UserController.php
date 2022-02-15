@@ -23,7 +23,6 @@ use App\Repository\Immo\ImSearchRepository;
 use App\Repository\Immo\ImTenantRepository;
 use App\Repository\UserRepository;
 use App\Service\Immo\SearchService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Repository\Agenda\AgEventRepository;
 use App\Service\Agenda\EventService;
