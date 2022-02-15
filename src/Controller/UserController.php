@@ -65,22 +65,18 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $biensAgency    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
-        $biensArchived  = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ARCHIVE]);
-        $biensUsers     = $em->getRepository(ImBien::class)->findBy(['user' => $user]);
-        $biensActif     = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'status' => ImBien::STATUS_ACTIF]);
-        $biensInactif   = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'status' => ImBien::STATUS_INACTIF]);
-        $biensDraft     = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'isDraft' => true]);
+        $biensAgency    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'isArchived' => false, 'isDraft' => false]);
+        $biensVisits    = $em->getRepository(ImBien::class)->findBy(['user' => $user]);
+        $biensUser      = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'isArchived' => false, 'isDraft' => false]);
+        $biensDraft     = $em->getRepository(ImBien::class)->findBy(['user' => $user,  'isArchived' => false, 'isDraft' => true]);
 
-        $visits = $em->getRepository(ImVisit::class)->findBy(['bien' => $biensUsers]);
+        $visits = $em->getRepository(ImVisit::class)->findBy(['bien' => $biensVisits]);
 
         $visits = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
 
         return $this->render('user/pages/index.html.twig', [
-            'biensAgency' => abs(count($biensAgency) - count($biensArchived)),
-            'biensArchived' => count($biensArchived),
-            'biensActif' => count($biensActif),
-            'biensInactif' => count($biensInactif),
+            'biensAgency' => count($biensAgency),
+            'biensUser' => count($biensUser),
             'biensDraft' => count($biensDraft),
             'visits' => $visits
         ]);

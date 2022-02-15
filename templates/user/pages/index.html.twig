@@ -12,11 +12,13 @@
         <div class="dash-line-1">
             <div class="welcome-back">
                 <div class="avatar">
-                    {% if app.user.avatar %}
-                        <img src="{{ asset(app.user.avatarFile) }}" alt="Avatar de {{ app.user.userIdentifier }}">
-                    {% else %}
-                        <img src="https://robohash.org/{{ app.user.userIdentifier }}?size=126x126" alt="Avatar de {{ app.user.userIdentifier }}"/>
-                    {% endif %}
+                    <a href="{{ path('user_profil') }}" title="Mon profil">
+                        {% if app.user.avatar %}
+                            <img src="{{ asset(app.user.avatarFile) }}" alt="Avatar de {{ app.user.userIdentifier }}">
+                        {% else %}
+                            <img src="https://robohash.org/{{ app.user.userIdentifier }}?size=126x126" alt="Avatar de {{ app.user.userIdentifier }}"/>
+                        {% endif %}
+                    </a>
                 </div>
                 <div class="me">
                     <p>Bon retour,</p>
@@ -28,27 +30,37 @@
             </div>
             <div class="dash-line-1-col-2">
                 <a href="{{ path('user_biens') }}" class="dash-card-1">
-                    <div class="icon">
-                        <span class="icon-home"></span>
+                    <div class="card-header">
+                        <div class="icon">
+                            <span class="icon-home"></span>
+                        </div>
+                        <div class="title">{{ app.user.agency.name }}</div>
                     </div>
-                    <div class="title">{{ app.user.agency.name }}</div>
-                    <div>{{ biensAgency }} {{ biensAgency > 1 ? "biens immobiliers" : "bien immobilier" }}</div>
-                    <div>{{ biensArchived }} {{ biensArchived > 1 ? "biens archivés" : "bien archivé" }}</div>
+                    <div class="card-body">
+                        <div class="number">{{ biensAgency }} {{ biensAgency > 1 ? "biens immobiliers" : "bien immobilier" }}</div>
+                    </div>
                 </a>
                 <a href="{{ path('user_biens', {'fu': app.user.userIdentifier}) }}" class="dash-card-1">
-                    <div class="icon">
-                        <span class="icon-layer"></span>
+                    <div class="card-header">
+                        <div class="icon">
+                            <span class="icon-layer"></span>
+                        </div>
+                        <div class="title">Mes biens</div>
                     </div>
-                    <div class="title">Mes biens</div>
-                    <div>{{ biensActif }} / {{ biensAgency }} actif{{ biensActif > 1 ? "s" : "" }}</div>
-                    <div>{{ biensInactif }} / {{ biensAgency }} inactif{{ biensInactif > 1 ? "s" : "" }}</div>
+                    <div class="card-body">
+                        <div class="number">{{ biensUser }} biens</div>
+                    </div>
                 </a>
                 <a href="{{ path('user_biens_create') }}" class="dash-card-1">
-                    <div class="icon">
-                        <span class="icon-add-square"></span>
+                    <div class="card-header">
+                        <div class="icon">
+                            <span class="icon-add-square"></span>
+                        </div>
+                        <div class="title">Ajouter un bien</div>
                     </div>
-                    <div class="title">Ajouter un bien</div>
-                    <div><div>{{ biensDraft }} / {{ biensActif + biensInactif }} en brouillon</div></div>
+                    <div class="card-body">
+                        <div class="number">{{ biensDraft }} en brouillon</div>
+                    </div>
                 </a>
             </div>
         </div>
