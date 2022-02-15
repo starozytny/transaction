@@ -35,6 +35,10 @@
     background: url("../../images/menu-light.jpg") no-repeat center;
   }
 
+  .dash-card-1{
+    background: var(--fondContent);
+  }
+
   .card-ad {
     &.card-draft {
       .card-footer {

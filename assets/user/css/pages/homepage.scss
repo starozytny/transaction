@@ -15,16 +15,10 @@
 
 .dash-card-1{
   color: var(--txt);
-}
+  transition: all 0.2s ease-in-out;
 
-.dark-mode{
-  .dash-card-1{
-    background: var(--fondContent);
-    transition: all 0.2s ease-in-out;
-
-    &:hover{
-      transform: scale(1.01);
-    }
+  &:hover{
+    transform: scale(1.01);
   }
 }
 
