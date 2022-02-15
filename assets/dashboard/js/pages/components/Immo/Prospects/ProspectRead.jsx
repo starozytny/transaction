@@ -73,7 +73,7 @@ export class ProspectRead extends Component {
                     </div>
                 </div>
 
-                <div>
+                <div className="item-content-2">
                     {elem.search ? <SearchRead elem={elem.search} follows={[]} prospectId={elem.id}
                                                onUpdateFollows={null} onChangeContext={onChangeContext} />
                         : <Button icon="add-square" onClick={() => onChangeContext('customOne', elem)}>Ajouter une recherche</Button>}
