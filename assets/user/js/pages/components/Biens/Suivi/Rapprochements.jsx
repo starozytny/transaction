@@ -126,23 +126,21 @@ export class Rapprochements extends Component {
                 <div className="page-col-1">
                     <div className="body-col-1">
                         <div className="content-col-1">
-                            <Button onClick={() => this.handleChangeContext('create')}>Ajouter un prospect</Button>
-                        </div>
-                        <div className="content-col-1">
-                            <Button onClick={() => this.handleChangeContext('select')}>Sélectionner un existant</Button>
-                        </div>
-                        <div className="title-col-1">
-                            <span>Filtres :</span>
-                        </div>
-                        <div className="content-col-1">
-                            <div>Item</div>
+                            <div className="ra-pr-image">
+
+                            </div>
+                            <div className="ra-pr-text">
+                                <p>
+                                    Vous pouvez sélectionner ou ajouter un prospect à la liste des
+                                    rapprochements manuellement en cliquant sur le bouton correspondant.
+                                </p>
+                            </div>
+                            <Button onClick={() => this.handleChangeContext('select')}>Sélectionner</Button>
+                            <Button onClick={() => this.handleChangeContext('create')}>Ajouter</Button>
                         </div>
                     </div>
                 </div>
                 <div className="page-col-2">
-                    <div className="title-col-1">
-                        <span>Résultats :</span>
-                    </div>
                     <div>
                         {items && items.length !== 0 ? items : <Alert>Aucun résultat</Alert>}
                     </div>

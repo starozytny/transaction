@@ -2,6 +2,11 @@
 
 @import "../../../common/css/components/homepage";
 @import "./split/biens/suivi";
+@import "../../../common/css/pages/changelog";
+
+.badge-changelog.badge{
+  color: var(--alpha);
+}
 
 .welcome-back{
   .avatar{
