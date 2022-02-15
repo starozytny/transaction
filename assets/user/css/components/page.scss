@@ -57,21 +57,20 @@
         color: var(--grey2);
       }
 
-      &:not(.active):hover{
-        color: var(--txt);
-
+      &:not(.active):hover,
+      &.active{
         & > a{
           color: var(--txt);
         }
       }
 
-      &.active{
+      &:not(.active):hover{
         color: var(--txt);
-        border-bottom: 2px solid var(--primary);
+      }
 
-        & > a{
-          color: var(--txt);
-        }
+      &.active{
+        color: var(--primary);
+        border-bottom: 2px solid var(--primary);
       }
     }
   }
