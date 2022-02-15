@@ -25,13 +25,11 @@ class UserController extends AbstractController
     /**
      * @Route("/", options={"expose"=true}, name="homepage")
      */
-    public function index(SerializerInterface $serializer): Response
+    public function index(): Response
     {
         $em = $this->doctrine->getManager();
 
         $changelogs = $em->getRepository(Changelog::class)->findBy(['isPublished' => true], ['createdAt' => 'DESC'], 5);
-
-        $changelogs = $serializer->serialize($changelogs, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/index.html.twig', [
             'changelogs' => $changelogs
