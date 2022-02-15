@@ -95,6 +95,32 @@
   }
 }
 
+.item-nav-2{
+  border: 2px solid var(--greyShadow);
+  border-bottom: none;
+  margin-top: 24px;
+
+  .details-nav{
+    background: var(--alpha);
+    margin-top: 0;
+
+    .details-nav-items{
+      & > div{
+        padding: 24px 0 12px 0;
+
+        &:first-child{
+          margin-left: 12px;
+        }
+      }
+    }
+  }
+
+  & + .item-content-2{
+    border-top: none;
+    padding: 0 12px 24px 12px;
+  }
+}
+
 .item-content-2{
   background: var(--alpha);
   border: 2px solid var(--greyShadow);

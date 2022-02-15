@@ -55,26 +55,37 @@ export class Suivi extends Component {
         return <div className="main-content">
             <div className="details-container">
                 <div className="details-content-container suivi-container">
-                    <AdMainInfos elem={elem} />
-                    <div className="details-general">
-                        <AdBadges elem={elem} />
-                        <div className="details-ad-actions">
-                            <ButtonIcon element="a" icon="vision" onClick={Routing.generate('user_biens_read', {'slug': elem.slug})}>Détails</ButtonIcon>
+                    <div className="details-card">
+                        <div className="details-image">
+                            <img src={elem.mainPhotoFile} alt="Illustration bien"/>
+                        </div>
+                        <div>
+                            <AdMainInfos elem={elem} />
+                            <div className="details-general">
+                                <AdBadges elem={elem} />
+                                <div className="details-ad-actions">
+                                    <ButtonIcon element="a" icon="vision" onClick={Routing.generate('user_biens_read', {'slug': elem.slug})}>Détails</ButtonIcon>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <Navigation context={context} onChangeContext={this.handleChangeContext} />
-                    <div className="details-content">
-                        {content}
-                    </div>
+                </div>
+            </div>
+            <div className="item-nav-2">
+                <Navigation context={context} onChangeContext={this.handleChangeContext} />
+            </div>
+            <div className="item-content-2">
+                <div>
+                    {content}
                 </div>
             </div>
         </div>
     }
 }
 
-function Navigation({ onChangeContext, context }){
+function Navigation({ onChangeContext, context, menu = null }){
 
-    let items = [
+    let items = menu ? menu : [
         {context: "global",            label: "Global"},
         {context: "visites",           label: "Visites"},
         {context: "rapprochements",    label: "Rapprochements"},

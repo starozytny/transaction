@@ -1,8 +1,21 @@
 @import "../../../vars/vars";
 
-.details-container,
-.details-content-container{
-  margin-bottom: 48px;
+.details-card{
+  background: var(--alpha);
+  border: 2px solid var(--greyShadow);
+  border-radius: 4px;
+
+  .details-main-infos, .details-general{
+    padding: 12px;
+  }
+}
+
+.details-image{
+  border-radius: 4px;
+
+  img{
+    border-radius: 4px;
+  }
 }
 
 .details-pretitle{
@@ -192,6 +205,35 @@
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
+  .details-card{
+    @include flex(row, flex-start, flex-start);
+    padding: 12px;
+
+    .details-main-infos, .details-general{
+      padding: 0;
+    }
+
+    .details-image{
+      & + div{
+        width: calc(100% - 310px - 24px);
+        margin-left: 24px;
+        @include flex(column, flex-start, space-between);
+
+        & > *{
+          width: 100%;
+        }
+      }
+    }
+
+    .details-general{
+      align-items: flex-end;
+    }
+  }
+
+  .details-image{
+    width: 310px;
+  }
+
   .details-tab-infos-main{
     @include flex(row, flex-start, flex-start);
     flex-wrap: wrap;
