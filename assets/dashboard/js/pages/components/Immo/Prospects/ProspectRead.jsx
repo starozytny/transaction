@@ -24,7 +24,6 @@ export class ProspectRead extends Component {
                                 <div className="name">
                                     <span>{elem.fullname}</span>
                                     <div className="actions">
-                                        <ButtonIcon icon="search" onClick={() => onChangeContext('update', elem)} text="Recherches" />
                                         <ButtonIcon icon="pencil" onClick={() => onChangeContext('update', elem)} text="Modifier" />
                                     </div>
                                 </div>
