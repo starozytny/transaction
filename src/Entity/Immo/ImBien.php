@@ -271,6 +271,11 @@ class ImBien extends DataEntity
      */
     private $mandat;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImOffer::class, mappedBy="bien")
+     */
+    private $offers;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -279,6 +284,7 @@ class ImBien extends DataEntity
         $this->visits = new ArrayCollection();
         $this->rooms = new ArrayCollection();
         $this->suivis = new ArrayCollection();
+        $this->offers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -861,6 +867,36 @@ class ImBien extends DataEntity
     public function setIsArchived(bool $isArchived): self
     {
         $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImOffer[]
+     */
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    public function addOffer(ImOffer $offer): self
+    {
+        if (!$this->offers->contains($offer)) {
+            $this->offers[] = $offer;
+            $offer->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(ImOffer $offer): self
+    {
+        if ($this->offers->removeElement($offer)) {
+            // set the owning side to null (unless already changed)
+            if ($offer->getBien() === $this) {
+                $offer->setBien(null);
+            }
+        }
 
         return $this;
     }
