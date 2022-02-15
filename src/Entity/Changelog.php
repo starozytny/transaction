@@ -123,10 +123,10 @@ class Changelog extends DataEntity
     }
 
     /**
-     * @return int|null
+     * @return string|null
      * @Groups({"user:read"})
      */
-    public function getTypeIcon(): ?int
+    public function getTypeIcon(): ?string
     {
         $values = ["exclamation", "warning", "warning"];
 

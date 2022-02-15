@@ -133,7 +133,7 @@ class AdminController extends AbstractController
      */
     public function changelogs(SerializerInterface $serializer): Response
     {
-        $objs = $this->getAllData(Changelog::class, $serializer);
+        $objs = $this->getAllData(Changelog::class, $serializer, User::USER_READ);
 
         return $this->render('admin/pages/changelog/index.html.twig', [
             'donnees' => $objs
