@@ -1,12 +1,12 @@
 import React from "react";
 
 import { Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
-import { Alert }  from "@dashboardComponents/Tools/Alert";
-import { Button } from "@dashboardComponents/Tools/Button";
+import { Alert }    from "@dashboardComponents/Tools/Alert";
+import { Button }   from "@dashboardComponents/Tools/Button";
+import { DatePick } from "@dashboardComponents/Tools/DatePicker";
 
 import helper from "@userPages/components/Biens/helper";
 import Sort from "@commonComponents/functions/sort";
-import {DatePick} from "@dashboardComponents/Tools/DatePicker";
 
 const CURRENT_STEP = 1;
 
@@ -56,12 +56,17 @@ export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </div>}
         </div>
 
-        <div className="line line-2">
-            <SelectReactSelectize items={negociateurs} identifiant="negotiator" valeur={negotiator} errors={errors}
-                                  onChange={(e) => onChangeSelect('negotiator', e)}>
-                Négociateur *
-            </SelectReactSelectize>
-            <div className="form-group" />
+        <div className="line special-line">
+            <div className="form-group">
+                <label>Négociateur *</label>
+            </div>
+
+            <div className="line line-3">
+                <div className="form-group" />
+                <SelectReactSelectize items={negociateurs} identifiant="negotiator" valeur={negotiator} errors={errors}
+                                      onChange={(e) => onChangeSelect('negotiator', e)} />
+                <div className="form-group" />
+            </div>
         </div>
 
         <div className="line line-buttons">

@@ -119,7 +119,7 @@ class ImTenant extends DataEntity
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isArchived;
+    private $isArchived = false;
 
     public function getId(): ?int
     {
