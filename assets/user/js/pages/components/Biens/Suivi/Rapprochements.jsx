@@ -15,11 +15,12 @@ import Helper        from "@commonComponents/functions/helper";
 import Formulaire    from "@dashboardComponents/functions/Formulaire";
 import Rapprochement from "@userComponents/functions/rapprochement";
 
-import { ProspectFormulaire }   from "@dashboardPages/components/Immo/Prospects/ProspectForm";
-import { SearchInfos }          from "@dashboardPages/components/Immo/Prospects/ProspectsItem";
-import { Prospects }            from "@dashboardPages/components/Immo/Prospects/Prospects";
-import { NegotiatorBubble }     from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
-import { ContentNegotiatorBubble } from "@userPages/components/Biens/AdCard";
+import { ProspectFormulaire }       from "@dashboardPages/components/Immo/Prospects/ProspectForm";
+import { SearchInfos }              from "@dashboardPages/components/Immo/Prospects/ProspectsItem";
+import { Prospects }                from "@dashboardPages/components/Immo/Prospects/Prospects";
+import { NegotiatorBubble }         from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
+import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offer/OfferForm";
+import { ContentNegotiatorBubble }  from "@userPages/components/Biens/AdCard";
 
 const SORTER = Sort.compareProspectLastname;
 let i = 0;
@@ -49,6 +50,9 @@ export class Rapprochements extends Component {
 
     handleChangeContext = (context, element) => {
         switch (context){
+            case "create-offer":
+                this.aside.current.handleOpen("Faire une offre pour " + element.fullname);
+                break;
             case "update":
                 this.aside.current.handleOpen("Modifier " + element.fullname);
                 break;
@@ -104,12 +108,15 @@ export class Rapprochements extends Component {
         let items = [];
         let prospects = [];
         data.forEach(elem => {
-            items.push(<RapprochementsItem elem={elem} onSelectProspect={this.handleSelectProspect} key={elem.id} />)
+            items.push(<RapprochementsItem elem={elem} onSelectProspect={this.handleSelectProspect} onChangeContext={this.handleChangeContext} key={elem.id} />)
             prospects.push(elem.prospect)
         })
 
         let contentAside;
         switch (context) {
+            case "create-offer":
+                contentAside = <OfferFormulaire type="create" bienId={elem.id} prospect={element} onUpdateList={this.handleUpdateListProspects}/>;
+                break
             case "update":
                 contentAside = <ProspectFormulaire type="update" isFromRead={true} isClient={true} element={element} bienId={elem.id} negotiators={negotiators}
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
@@ -172,7 +179,7 @@ export class RapprochementsItem extends Component {
     }
 
     render () {
-        const { elem, onSelectProspect } = this.props;
+        const { elem, onSelectProspect, onChangeContext } = this.props;
 
         let prospect = elem.prospect;
         let bien     = elem.bien;
@@ -231,7 +238,7 @@ export class RapprochementsItem extends Component {
 
                     <div className="footer-actions">
                         <div className="actions">
-                            <ButtonIcon icon="receipt-edit" text="Faire une offre" />
+                            <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />
                         </div>
                     </div>
                 </div>
