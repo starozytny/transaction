@@ -9,7 +9,8 @@ import { AdBadges, AdMainInfos } from "@userPages/components/Biens/Read/AdItem";
 
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
-import DataState from "@userPages/components/Biens/Form/data";
+import DataState  from "@userPages/components/Biens/Form/data";
+import UpdateList from "@dashboardComponents/functions/updateList";
 
 export class Suivi extends Component {
     constructor(props) {
@@ -26,12 +27,20 @@ export class Suivi extends Component {
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleUpdateVisits = this.handleUpdateVisits.bind(this);
+        this.handleUpdateOffers = this.handleUpdateOffers.bind(this);
     }
 
     handleChangeContext = (context) => { this.setState({ context }) }
 
     handleUpdateVisits = () => {
         DataState.getVisits(this, this.state.elem);
+    }
+
+    handleUpdateOffers = (context, element) => {
+        const { offers } = this.state;
+
+        let newData = UpdateList.update(context, offers, element);
+        this.setState({ offers: newData })
     }
 
     render () {
@@ -44,7 +53,7 @@ export class Suivi extends Component {
                 break;
             case "rapprochements":
                 content = <Rapprochements elem={elem} data={suivis} societyId={elem.agency.society.id} agencyId={elem.agency.id}
-                                          negotiators={negotiators} offers={offers}/>
+                                          negotiators={negotiators} offers={offers} onUpdateOffers={this.handleUpdateOffers}/>
                 break;
             case "visites":
                 content = <Visits bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits} isSuiviPage={true} classes={""}/>

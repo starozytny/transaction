@@ -51,6 +51,8 @@ export class Rapprochements extends Component {
     }
 
     handleChangeContext = (context, element, offer = null) => {
+        let nElement = element ? element : this.state.element;
+
         switch (context){
             case "update-offer":
                 this.aside.current.handleOpen("Modifier l'offre de " + element.fullname);
@@ -64,12 +66,17 @@ export class Rapprochements extends Component {
             case "create":
                 this.aside.current.handleOpen("Ajouter un prospect");
                 break;
-            default:
+            case "select":
                 this.aside.current.handleOpen("Sélectionner un existant");
+                break;
+            default:
+                if(this.aside.current){
+                    this.aside.current.handleClose()
+                }
                 break;
         }
 
-        this.setState({ context, element, offer })
+        this.setState({ context: context, element: nElement, offer: offer })
     }
 
     handleUpdateListProspects = (element, newContext = null) => {
@@ -105,7 +112,7 @@ export class Rapprochements extends Component {
     }
 
     render () {
-        const { elem, societyId, agencyId, negotiators, offers } = this.props;
+        const { elem, societyId, agencyId, negotiators, offers, onUpdateOffers } = this.props;
         const { context, data, allProspects, sorter, element, offer } = this.state;
 
         data.sort(sorter)
@@ -121,10 +128,12 @@ export class Rapprochements extends Component {
         let contentAside;
         switch (context) {
             case "update-offer":
-                contentAside = <OfferFormulaire type="update" bien={elem} prospect={element} element={offer} onUpdateList={this.handleUpdateListProspects}/>;
+                contentAside = <OfferFormulaire type="update" bien={elem} prospect={element} element={offer}
+                                                onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
                 break
             case "create-offer":
-                contentAside = <OfferFormulaire type="create" bien={elem} prospect={element} onUpdateList={this.handleUpdateListProspects}/>;
+                contentAside = <OfferFormulaire type="create" bien={elem} prospect={element}
+                                                onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
                 break
             case "update":
                 contentAside = <ProspectFormulaire type="update" isFromRead={true} isClient={true} element={element} bienId={elem.id} negotiators={negotiators}
@@ -134,10 +143,12 @@ export class Rapprochements extends Component {
                 contentAside = <ProspectFormulaire type="create" isFromRead={true} isClient={true} bienId={elem.id} negotiators={negotiators}
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
                 break
-            default:
+            case "select":
                 contentAside = <Prospects isSelect={true} isClient={true}
                                           donnees={JSON.stringify(allProspects)} prospects={prospects} classes={" "}
                                           onSelectProspect={this.handleSelectProspect} key={i++} />
+                break;
+            default:
                 break;
         }
 

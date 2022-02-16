@@ -95,8 +95,8 @@ export class OfferForm extends Component {
                         Helper.toTop();
 
                         if(self.props.onUpdateList){
-                            self.props.onUpdateList(data);
-                            self.props.onChangeContext("list");
+                            self.props.onUpdateList(context, data);
+                            self.props.onChangeContext("rapprochements");
                         }
                     })
                     .catch(function (error) {

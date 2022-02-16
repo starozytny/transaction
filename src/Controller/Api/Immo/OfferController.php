@@ -2,17 +2,13 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\Changelog;
 use App\Entity\Immo\ImOffer;
-use App\Entity\User;
 use App\Service\ApiResponse;
-use App\Service\Data\DataChangelog;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +50,7 @@ class OfferController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponse($obj, User::USER_READ);
+        return $apiResponse->apiJsonResponse($obj, ImOffer::OFFER_READ);
     }
 
     /**
