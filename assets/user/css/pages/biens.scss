@@ -37,6 +37,19 @@
   margin-top: 8px;
 }
 
+.page-default{
+  .ra-pr-text{
+    margin: 24px 0;
+    font-size: 15px;
+  }
+
+  .ra-pr-actions{
+    .btn:not(:last-child){
+      margin-bottom: 12px;
+    }
+  }
+}
+
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
@@ -71,5 +84,11 @@
   .suivi-container{
     width: 100%;
     margin-right: 0;
+  }
+
+  .page-default{
+    .ra-pr-content{
+      padding: 24px;
+    }
   }
 }

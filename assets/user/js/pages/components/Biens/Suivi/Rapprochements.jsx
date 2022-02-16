@@ -79,6 +79,7 @@ export class Rapprochements extends Component {
     handleSelectProspect = (prospect) => {
         const { elem } = this.props; //bien
 
+        Formulaire.loader(true)
         const self = this;
         axios.post(Routing.generate('api_suivis_link_bien_prospect', {'bien': elem.id, 'prospect': prospect.id}), {})
             .then(function (response) {
@@ -87,6 +88,9 @@ export class Rapprochements extends Component {
             })
             .catch(function (error) {
                 Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+            })
+            .then(function (){
+                Formulaire.loader(false)
             })
         ;
     }
@@ -125,9 +129,9 @@ export class Rapprochements extends Component {
             <div className="page-default">
                 <div className="page-col-1">
                     <div className="body-col-1">
-                        <div className="content-col-1">
-                            <div className="ra-pr-image">
-
+                        <div className="content-col-1 ra-pr-content">
+                            <div>
+                                <img src="/build/user/images/add-prospect.png" alt="illustration add prospect"/>
                             </div>
                             <div className="ra-pr-text">
                                 <p>
@@ -135,8 +139,10 @@ export class Rapprochements extends Component {
                                     rapprochements manuellement en cliquant sur le bouton correspondant.
                                 </p>
                             </div>
-                            <Button onClick={() => this.handleChangeContext('select')}>Sélectionner</Button>
-                            <Button onClick={() => this.handleChangeContext('create')}>Ajouter</Button>
+                            <div className="ra-pr-actions">
+                                <Button onClick={() => this.handleChangeContext('select')}>Sélectionner</Button>
+                                <Button outline={true} onClick={() => this.handleChangeContext('create')}>Ajouter</Button>
+                            </div>
                         </div>
                     </div>
                 </div>
