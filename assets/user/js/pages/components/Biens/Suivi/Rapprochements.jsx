@@ -101,6 +101,7 @@ export class Rapprochements extends Component {
         const { data, context, sorter} = this.state;
 
         Formulaire.updateData(this, sorter, newContext, context, data, element);
+        this.props.onUpdateSuivis(this.state.data)
     }
 
     handleSelectProspect = (prospect) => {
@@ -324,7 +325,10 @@ function swalOfferAction(self, method, url, offer, context, title, text="") {
                 Formulaire.loader(true)
                 axios({ method: method, url: url, data: {} })
                     .then(function (response) {
-                        self.props.onUpdateOffers(context === "delete" ? offer : response.data, context);
+                        let offer = JSON.parse(response.data.offer);
+                        let suivi = JSON.parse(response.data.suivi);
+
+                        self.props.onUpdateOffers(offer, suivi, context);
                     })
                     .catch(function (error) {
                         Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")

@@ -25,6 +25,8 @@ export class Suivi extends Component {
             context: props.context ? props.context : "global",
         }
 
+        this.rapprochement = React.createRef();
+
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleUpdateVisits = this.handleUpdateVisits.bind(this);
         this.handleUpdateOffers = this.handleUpdateOffers.bind(this);
@@ -32,15 +34,19 @@ export class Suivi extends Component {
 
     handleChangeContext = (context) => { this.setState({ context }) }
 
+    handleUpdateSuivis = (nSuivis) => { this.setState({ suivis: nSuivis }) }
+
     handleUpdateVisits = () => {
         DataState.getVisits(this, this.state.elem);
     }
 
-    handleUpdateOffers = (element, context) => {
+    handleUpdateOffers = (offer, suivi, context) => {
         const { offers } = this.state;
 
-        let newData = UpdateList.update(context, offers, element);
-        this.setState({ offers: newData })
+        this.rapprochement.current.handleUpdateList(suivi, 'update');
+        let nOffers = UpdateList.update(context, offers, offer);
+
+        this.setState({ offers: nOffers })
     }
 
     render () {
@@ -52,8 +58,9 @@ export class Suivi extends Component {
                 content = <div>Offres</div>
                 break;
             case "rapprochements":
-                content = <Rapprochements elem={elem} data={suivis} societyId={elem.agency.society.id} agencyId={elem.agency.id}
-                                          negotiators={negotiators} offers={offers} onUpdateOffers={this.handleUpdateOffers}/>
+                content = <Rapprochements ref={this.rapprochement} elem={elem} data={suivis} societyId={elem.agency.society.id} agencyId={elem.agency.id}
+                                          negotiators={negotiators} offers={offers}
+                                          onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
                 break;
             case "visites":
                 content = <Visits bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits} isSuiviPage={true} classes={""}/>
