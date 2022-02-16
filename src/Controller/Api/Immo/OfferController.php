@@ -11,6 +11,7 @@ use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,6 +31,9 @@ class OfferController extends AbstractController
         $this->doctrine = $doctrine;
     }
 
+    /**
+     * @throws Exception
+     */
     public function submitForm($type, ImOffer $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
@@ -73,6 +77,7 @@ class OfferController extends AbstractController
      * @param ApiResponse $apiResponse
      * @param DataImmo $dataEntity
      * @return JsonResponse
+     * @throws Exception
      */
     public function create(Request $request, ValidatorService $validator, ApiResponse $apiResponse, DataImmo $dataEntity): JsonResponse
     {
@@ -80,7 +85,7 @@ class OfferController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="update", options={"expose"=true}, methods={"POST"})
+     * @Route("/{id}", name="update", options={"expose"=true}, methods={"PUT"})
      *
      * @OA\Response(
      *     response=200,
@@ -103,6 +108,7 @@ class OfferController extends AbstractController
      * @param ImOffer $obj
      * @param DataImmo $dataEntity
      * @return JsonResponse
+     * @throws Exception
      */
     public function update(Request $request, ValidatorService $validator,  ApiResponse $apiResponse, ImOffer $obj, DataImmo $dataEntity): JsonResponse
     {

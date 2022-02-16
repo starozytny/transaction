@@ -20,6 +20,7 @@ export class Suivi extends Component {
             suivis: props.suivis ? JSON.parse(props.suivis) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
+            offers: props.offers ? JSON.parse(props.offers) : [],
             context: props.context ? props.context : "global",
         }
 
@@ -34,7 +35,7 @@ export class Suivi extends Component {
     }
 
     render () {
-        const { elem, context, suivis, negotiators, allVisits } = this.state;
+        const { elem, context, suivis, negotiators, allVisits, offers } = this.state;
 
         let content;
         switch (context){
@@ -42,7 +43,8 @@ export class Suivi extends Component {
                 content = <div>Offres</div>
                 break;
             case "rapprochements":
-                content = <Rapprochements elem={elem} data={suivis} societyId={elem.agency.society.id} agencyId={elem.agency.id} negotiators={negotiators} />
+                content = <Rapprochements elem={elem} data={suivis} societyId={elem.agency.society.id} agencyId={elem.agency.id}
+                                          negotiators={negotiators} offers={offers}/>
                 break;
             case "visites":
                 content = <Visits bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits} isSuiviPage={true} classes={""}/>

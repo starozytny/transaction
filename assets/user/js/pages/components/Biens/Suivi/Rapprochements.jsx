@@ -12,6 +12,7 @@ import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 import DataState     from "@userPages/components/Biens/Form/data";
 import Sort          from "@commonComponents/functions/sort";
 import Helper        from "@commonComponents/functions/helper";
+import Sanitaze      from "@commonComponents/functions/sanitaze";
 import Formulaire    from "@dashboardComponents/functions/Formulaire";
 import Rapprochement from "@userComponents/functions/rapprochement";
 
@@ -34,6 +35,7 @@ export class Rapprochements extends Component {
             sorter: SORTER,
             data: props.data,
             element: null,
+            offer: null,
             allProspects: [],
         }
 
@@ -48,10 +50,13 @@ export class Rapprochements extends Component {
         DataState.getProspects(this);
     }
 
-    handleChangeContext = (context, element) => {
+    handleChangeContext = (context, element, offer = null) => {
         switch (context){
+            case "update-offer":
+                this.aside.current.handleOpen("Modifier l'offre de " + element.fullname);
+                break;
             case "create-offer":
-                this.aside.current.handleOpen("Faire une offre pour " + element.fullname);
+                this.aside.current.handleOpen("Faire une offre de la part de " + element.fullname);
                 break;
             case "update":
                 this.aside.current.handleOpen("Modifier " + element.fullname);
@@ -64,7 +69,7 @@ export class Rapprochements extends Component {
                 break;
         }
 
-        this.setState({ context, element })
+        this.setState({ context, element, offer })
     }
 
     handleUpdateListProspects = (element, newContext = null) => {
@@ -100,22 +105,26 @@ export class Rapprochements extends Component {
     }
 
     render () {
-        const { elem, societyId, agencyId, negotiators } = this.props;
-        const { context, data, allProspects, sorter, element } = this.state;
+        const { elem, societyId, agencyId, negotiators, offers } = this.props;
+        const { context, data, allProspects, sorter, element, offer } = this.state;
 
         data.sort(sorter)
 
         let items = [];
         let prospects = [];
         data.forEach(elem => {
-            items.push(<RapprochementsItem elem={elem} onSelectProspect={this.handleSelectProspect} onChangeContext={this.handleChangeContext} key={elem.id} />)
+            items.push(<RapprochementsItem elem={elem} offer={getOffer(offers, elem.prospect)}
+                                           onSelectProspect={this.handleSelectProspect} onChangeContext={this.handleChangeContext} key={elem.id} />)
             prospects.push(elem.prospect)
         })
 
         let contentAside;
         switch (context) {
+            case "update-offer":
+                contentAside = <OfferFormulaire type="update" bien={elem} prospect={element} element={offer} onUpdateList={this.handleUpdateListProspects}/>;
+                break
             case "create-offer":
-                contentAside = <OfferFormulaire type="create" bienId={elem.id} prospect={element} onUpdateList={this.handleUpdateListProspects}/>;
+                contentAside = <OfferFormulaire type="create" bien={elem} prospect={element} onUpdateList={this.handleUpdateListProspects}/>;
                 break
             case "update":
                 contentAside = <ProspectFormulaire type="update" isFromRead={true} isClient={true} element={element} bienId={elem.id} negotiators={negotiators}
@@ -179,7 +188,7 @@ export class RapprochementsItem extends Component {
     }
 
     render () {
-        const { elem, onSelectProspect, onChangeContext } = this.props;
+        const { elem, offer, onSelectProspect, onChangeContext } = this.props;
 
         let prospect = elem.prospect;
         let bien     = elem.bien;
@@ -234,11 +243,16 @@ export class RapprochementsItem extends Component {
                     </div>
                 </div>
                 <div className="card-footer">
-                    {/*<div className="commentary">Commentaire : </div>*/}
+                    {offer && <div className="offer">
+                        <div>
+                            Offre proposé : <span className="pricePropal">{Sanitaze.toFormatCurrency(offer.pricePropal)}</span>
+                        </div>
+                    </div>}
 
                     <div className="footer-actions">
                         <div className="actions">
-                            <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />
+                            {!offer && <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />}
+                            {(offer && offer.status === 0) && <ButtonIcon icon="receipt-edit" text="Modifier l'offre" onClick={() => onChangeContext("update-offer", prospect, offer)} />}
                         </div>
                     </div>
                 </div>
@@ -247,4 +261,15 @@ export class RapprochementsItem extends Component {
             {prospect.negotiator && <HelpBubble ref={this.helpBubble} content={<ContentNegotiatorBubble elem={prospect.negotiator} />}>Négociateur</HelpBubble>}
         </div>
     }
+}
+
+function getOffer(offers, prospect) {
+    let offer = null
+    offers.forEach(of => {
+        if(of.prospect.id === prospect.id){
+            offer = of;
+        }
+    })
+
+    return offer;
 }

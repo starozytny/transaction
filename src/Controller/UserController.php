@@ -7,6 +7,7 @@ use App\Entity\Donnee\DoQuartier;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
+use App\Entity\Immo\ImOffer;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImRoom;
@@ -191,13 +192,15 @@ class UserController extends AbstractController
 
         if($type !== "update"){
             $context = $request->query->get("ct");
-            $suivis = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
             $visits = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
+            $suivis = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
+            $offers = $em->getRepository(ImOffer::class)->findBy(['bien' => $obj]);
             $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
 
             $suivis         = $serializer->serialize($suivis,       'json', ['groups' => ImSuivi::SUIVI_READ]);
             $negotiators    = $serializer->serialize($negotiators,  'json', ['groups' => User::ADMIN_READ]);
             $visits         = $serializer->serialize($visits,       'json', ['groups' => ImVisit::VISIT_READ]);
+            $offers         = $serializer->serialize($offers,       'json', ['groups' => ImOffer::OFFER_READ]);
         }
 
         return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',
@@ -211,6 +214,7 @@ class UserController extends AbstractController
                 'suivis' => $suivis,
                 'negotiators' => $negotiators,
                 'visits' => $visits,
+                'offers' => $offers,
                 'context' => $context
         ]);
     }

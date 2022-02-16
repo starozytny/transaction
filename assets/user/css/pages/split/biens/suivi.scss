@@ -121,6 +121,17 @@
     padding: 4px 12px;
     background-color: var(--fondContent);
 
+    .offer{
+      padding-top: 12px;
+      color: var(--grey3);
+      font-size: 15px;
+
+      .pricePropal{
+        color: var(--txt);
+        @include fontSemibold();
+      }
+    }
+
     .footer-actions{
       margin-top: 12px;
     }

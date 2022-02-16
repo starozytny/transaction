@@ -30,7 +30,7 @@ class ImProspect extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "agenda:read", "suivi:read"})
+     * @Groups({"admin:read", "agenda:read", "suivi:read", "offer:read"})
      */
     private $id;
 

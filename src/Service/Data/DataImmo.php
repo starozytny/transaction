@@ -635,9 +635,26 @@ class DataImmo extends DataConstructor
         ;
     }
 
+    /**
+     * @throws Exception
+     */
     public function setDataOffer(ImOffer $obj, $data): ImOffer
     {
+        dump($data);
+
+        $prospect = $this->em->getRepository(ImProspect::class)->find($data->prospect->id);
+        if(!$prospect){
+            throw new Exception("Prospect introuvable.");
+        }
+
+        $bien = $this->em->getRepository(ImBien::class)->find($data->bien->id);
+        if(!$bien){
+            throw new Exception("Bien introuvable.");
+        }
+
         return ($obj)
+            ->setBien($bien)
+            ->setProspect($prospect)
             ->setPricePropal($this->setToNullFloat($data->pricePropal))
         ;
     }

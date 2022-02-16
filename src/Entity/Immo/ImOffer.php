@@ -4,43 +4,56 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImOfferRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImOfferRepository::class)
  */
 class ImOffer
 {
+    const OFFER_READ = ["offer:read"];
+
+    const STATUS_PROPAL = 0;
+    const STATUS_ACCEPT = 1;
+    const STATUS_REFUSE = 2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"offer:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"offer:read"})
      */
-    private $status;
+    private $status = self::STATUS_PROPAL;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"offer:read"})
      */
     private $pricePropal;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"offer:read"})
      */
     private $priceFinal;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBien::class, inversedBy="offers")
+     * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="offers")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"offer:read"})
      */
     private $bien;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImProspect::class, inversedBy="offers")
+     * @ORM\ManyToOne(targetEntity=ImProspect::class, fetch="EAGER", inversedBy="offers")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"offer:read"})
      */
     private $prospect;
 
@@ -107,5 +120,16 @@ class ImOffer
         $this->prospect = $prospect;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"offer:read"})
+     */
+    public function getStatusString(): string
+    {
+        $values = ["Proposition", "Acceptée", "Refusée"];
+
+        return $values[$this->status];
     }
 }
