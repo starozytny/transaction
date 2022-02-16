@@ -490,7 +490,7 @@ class UserController extends AbstractController
     /**
      * @Route("/publication", name="publications")
      */
-    public function publications(): Response
+    public function publications(SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
 
@@ -498,6 +498,10 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $data = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF, 'isDraft' => false, 'isArchived' => false]);
 
-        return $this->render('user/pages/publications/index.html.twig');
+        $data = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/publications/index.html.twig', [
+            'donnees' => $data
+        ]);
     }
 }

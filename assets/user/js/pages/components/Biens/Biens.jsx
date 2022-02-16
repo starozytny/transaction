@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
 import Sort          from "@commonComponents/functions/sort";
+import TopToolbar    from "@commonComponents/functions/topToolbar";
 
 import { Layout }    from "@dashboardComponents/Layout/Page";
 
 import { BiensList } from "./BiensList";
-import TopToolbar from "@commonComponents/functions/topToolbar";
 
 const URL_DELETE_ELEMENT    = 'api_biens_delete';
 const URL_DELETE_GROUP      = 'api_contact_delete_group';
