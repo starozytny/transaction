@@ -324,7 +324,7 @@ function swalOfferAction(self, method, url, offer, context, title, text="") {
                 Formulaire.loader(true)
                 axios({ method: method, url: url, data: {} })
                     .then(function (response) {
-                        self.props.onUpdateOffers(offer, context);
+                        self.props.onUpdateOffers(context === "delete" ? offer : response.data, context);
                     })
                     .catch(function (error) {
                         Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
