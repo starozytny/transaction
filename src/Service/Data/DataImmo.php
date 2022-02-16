@@ -92,7 +92,7 @@ class DataImmo extends DataConstructor
 
         $isDraft = (int) $data->isDraft;
         if($isDraft){
-            $obj->setStatus(ImBien::STATUS_INACTIF);
+            $obj->setStatus(ImBien::STATUS_DRAFT);
         }
 
         foreach($rooms as $room){
@@ -266,7 +266,7 @@ class DataImmo extends DataConstructor
             ->setTypeCalcul($this->setToNullInteger($data->typeCalcul))
             ->setTypeCharges($this->setToNullInteger($data->typeCharges))
             ->setTotalGeneral($this->setToNullFloat($data->totalGeneral))
-            ->setTypeBail($this->setToNullInteger($data->typeBail))
+            ->setTypeBail($this->setToZeroEmpty($data->typeBail))
             ->setDurationBail($this->setToNullFloat($data->durationBail))
             ->setChargesMensuelles($this->setToNullFloat($data->chargesMensuelles))
             ->setNotaire($this->setToNullFloat($data->notaire))

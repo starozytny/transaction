@@ -55,11 +55,12 @@ function getItems (type, prefix) {
             ];
         case "bails":
             return [
-                { value: 0, label: 'Habitation',     identifiant: 'habitation' },
-                { value: 1, label: 'Commercial',     identifiant: 'commercial' },
-                { value: 2, label: 'Meublé',         identifiant: 'meublé' },
-                { value: 3, label: 'Professionnel',  identifiant: 'professionnel' },
-                { value: 4, label: 'Garage',         identifiant: 'garage' },
+                { value: 0, label: 'Aucun',          identifiant: 'bail-aucun' },
+                { value: 1, label: 'Habitation',     identifiant: 'habitation' },
+                { value: 2, label: 'Commercial',     identifiant: 'commercial' },
+                { value: 3, label: 'Meublé',         identifiant: 'meublé' },
+                { value: 4, label: 'Professionnel',  identifiant: 'professionnel' },
+                { value: 5, label: 'Garage',         identifiant: 'garage' },
             ];
         case "charges":
             return [

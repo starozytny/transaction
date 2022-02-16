@@ -78,7 +78,7 @@ function getDataState (props) {
         city: props.city,
         country: props.country,
         departement: props.departement,
-        newQuartier: props.quartier ? [0] : [1],
+        newQuartier: props.quartier ? [0] : [0],
         quartier: props.quartier,
         lat: props.lat,
         lon: props.lon,

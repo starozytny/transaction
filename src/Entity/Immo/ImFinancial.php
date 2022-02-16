@@ -540,7 +540,7 @@ class ImFinancial
      */
     public function getTypeBailString(): string
     {
-        $charges = ["Habitation", "Commercial", "Meublé", "Professionnel", "Garage"];
+        $charges = ["", "Habitation", "Commercial", "Meublé", "Professionnel", "Garage"];
 
         return $charges[$this->typeBail];
     }

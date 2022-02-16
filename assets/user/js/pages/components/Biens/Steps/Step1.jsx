@@ -47,11 +47,12 @@ export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             {parseInt(codeTypeMandat) !== 0 && <div className="line line-2">
                 <DatePick identifiant="startAt" valeur={startAt} errors={errors}
                           onChange={(e) => onChangeDate("startAt", e)}>
-                    Date disponible
+                    Début du mandat
                 </DatePick>
                 <DatePick identifiant="endAt" valeur={endAt} errors={errors}
+                          minDate={startAt ? startAt : null} maxDate={null}
                           onChange={(e) => onChangeDate("endAt", e)}>
-                    Date disponible
+                    Fin du mandat
                 </DatePick>
             </div>}
         </div>
