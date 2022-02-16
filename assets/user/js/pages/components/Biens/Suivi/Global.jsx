@@ -49,7 +49,7 @@ export class Global extends Component {
         let contentHelpBubble = visit ? <VisitsMainInfos havePersons={true} inline={false} event={visit.agEvent} persons={visit.agEvent.persons}/> : null;
 
         return <div className="suivi-global">
-            <div className="cards">
+            {elem && <div className="cards">
                 <a className="card" href={Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "rapprochements"})}>
                     <div className="card-header">
                         <div className="icon">
@@ -73,7 +73,7 @@ export class Global extends Component {
                         <div className="number">{totalVisits}</div>
                     </div>
                 </a>
-            </div>
+            </div>}
 
             <div className="global-visits">
                 {itemsVisits}
