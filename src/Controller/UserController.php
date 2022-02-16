@@ -115,22 +115,7 @@ class UserController extends AbstractController
             $objs = $repository->findBy(['agency' => $user->getAgency(), 'status' => (int) $status]);
         }
 
-        $searchs = $searchRepository->findBy(['isActive' => true]);
-
-        //Rapprochement
-        $rapprochements = [];
-        foreach($objs as $obj){
-            foreach($searchs as $search){
-                $find = $searchService->rapprochement($search, [$obj]);
-
-                if(count($find) > 0){
-                    $rapprochements[] = [
-                        'bien' => $obj->getId()
-                    ];
-                }
-            }
-        }
-
+        $rapprochements = $searchService->getRapprochementBySearchs($objs);
         $tenants = $tenantRepository->findBy(['bien' => $objs]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
@@ -177,7 +162,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    private function bienData($type, Request $request, SerializerInterface $serializer, $slug): Response
+    private function bienData($type, Request $request, SerializerInterface $serializer, $slug, SearchService $searchService = null): Response
     {
         $em = $this->doctrine->getManager();
         $obj     = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
@@ -201,6 +186,11 @@ class UserController extends AbstractController
             $negotiators    = $serializer->serialize($negotiators,  'json', ['groups' => User::ADMIN_READ]);
             $visits         = $serializer->serialize($visits,       'json', ['groups' => ImVisit::VISIT_READ]);
             $offers         = $serializer->serialize($offers,       'json', ['groups' => ImOffer::OFFER_READ]);
+
+            if($type === "suivi"){
+                $rapprochements = $searchService->getRapprochementBySearchs([$obj]);
+                $rapprochements = json_encode($rapprochements);
+            }
         }
 
         return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',
@@ -215,6 +205,7 @@ class UserController extends AbstractController
                 'negotiators' => $negotiators,
                 'visits' => $visits,
                 'offers' => $offers,
+                'rapprochements' => $rapprochements,
                 'context' => $context
         ]);
     }
@@ -246,9 +237,9 @@ class UserController extends AbstractController
     /**
      * @Route("/biens/bien/suivi/{slug}",options={"expose"=true}, name="biens_suivi")
      */
-    public function suiviBien(Request $request, $slug, SerializerInterface $serializer): Response
+    public function suiviBien(Request $request, $slug, SerializerInterface $serializer, SearchService $searchService): Response
     {
-        return $this->bienData("suivi", $request, $serializer, $slug);
+        return $this->bienData("suivi", $request, $serializer, $slug, $searchService);
     }
 
     /**

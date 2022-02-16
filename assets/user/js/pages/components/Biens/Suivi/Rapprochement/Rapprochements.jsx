@@ -6,9 +6,10 @@ import Swal         from "sweetalert2";
 import SwalOptions  from "@commonComponents/functions/swalOptions";
 import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Aside }      from "@dashboardComponents/Tools/Aside";
-import { Alert }      from "@dashboardComponents/Tools/Alert";
-import { Button }     from "@dashboardComponents/Tools/Button";
+import { Aside }         from "@dashboardComponents/Tools/Aside";
+import { Alert }         from "@dashboardComponents/Tools/Alert";
+import { Button }        from "@dashboardComponents/Tools/Button";
+import { LoaderElement } from "@dashboardComponents/Layout/Loader";
 
 import DataState     from "@userPages/components/Biens/Form/data";
 import Sort          from "@commonComponents/functions/sort";
@@ -22,6 +23,10 @@ import { RapprochementsItem }       from "@userPages/components/Biens/Suivi/Rapp
 
 const URL_DELETE_OFFER = "api_offers_delete";
 const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
+
+const STATUS_SUIVI_TO_PROCESS = 0;
+const STATUS_SUIVI_PROCESSING = 1;
+const STATUS_SUIVI_ENDING = 2;
 
 const STATUS_PROPAL = 0;
 const STATUS_ACCEPT = 1;
@@ -38,10 +43,12 @@ export class Rapprochements extends Component {
             context: "list",
             subContext: "tous",
             sorter: SORTER,
+            loadDataProspects: false,
+            allProspects: [],
             data: props.data,
+            rapprochements: props.rapprochements,
             element: null,
             offer: null,
-            allProspects: [],
         }
 
         this.aside = React.createRef();
@@ -56,6 +63,8 @@ export class Rapprochements extends Component {
     componentDidMount() {
         DataState.getProspects(this);
     }
+
+    handleChangeSubContext = (subContext) => { this.setState({ subContext })}
 
     handleChangeContext = (context, element, offer = null) => {
         let nElement = element ? element : this.state.element;
@@ -135,17 +144,68 @@ export class Rapprochements extends Component {
 
     render () {
         const { elem, societyId, agencyId, negotiators, offers, onUpdateOffers } = this.props;
-        const { context, subContext, data, allProspects, sorter, element, offer } = this.state;
+        const { loadDataProspects, context, subContext, data, allProspects, element, offer, rapprochements } = this.state;
 
-        data.sort(sorter)
+        let nData = [];
 
         let items = [];
-        let prospects = [];
-        data.forEach(elem => {
-            items.push(<RapprochementsItem elem={elem} offer={getOffer(offers, elem.prospect)} key={elem.id}
-                                           onSelectProspect={this.handleSelectProspect} onChangeContext={this.handleChangeContext}
-                                           onDeleteOffer={this.handleDeleteOffer} onSwitchStatusOffer={this.handleSwitchStatusOffer} />)
-            prospects.push(elem.prospect)
+        let prospects = [], prospectsUsed = [];
+        data.forEach(el => {
+            nData.push({ lastname: el.prospect.lastname, suivi: el, rapprochement: null })
+            prospects.push(el.prospect);
+            prospectsUsed.push(el.prospect.id);
+        })
+
+        if(allProspects.length !== 0){
+            rapprochements.forEach(el => {
+                if(!prospectsUsed.includes(el.prospect)){
+                    let prospect = getProspect(allProspects, el.prospect);
+                    nData.push({ lastname: prospect.lastname, suivi: null, rapprochement: prospect })
+                }
+            })
+        }
+
+        nData.sort(Sort.compareLastname);
+        nData.forEach((item, index) => {
+            let canAdd = false;
+
+            switch (subContext) {
+                case "ending":
+                    if(item.suivi && item.rapprochement === null && item.suivi.status === STATUS_SUIVI_ENDING){
+                        canAdd = true;
+                    }
+                    break;
+                case "processing":
+                    if(item.suivi && item.rapprochement === null && item.suivi.status === STATUS_SUIVI_PROCESSING){
+                        canAdd = true;
+                    }
+                    break;
+                case "to_process":
+                    if(item.suivi && item.rapprochement === null && item.suivi.status === STATUS_SUIVI_TO_PROCESS){
+                        canAdd = true;
+                    }
+                    break;
+                case "possibilities":
+                    if(item.suivi === null && item.rapprochement){
+                        canAdd = true;
+                    }
+                    break;
+                default:
+                    canAdd = true;
+                    break;
+            }
+
+            if(canAdd){
+                if(item.suivi){
+                    let el = item.suivi;
+                    items.push(<RapprochementsItem elem={el} prospect={el.prospect} bien={elem} offer={getOffer(offers, el.prospect)} key={index}
+                                                   onSelectProspect={this.handleSelectProspect} onChangeContext={this.handleChangeContext}
+                                                   onDeleteOffer={this.handleDeleteOffer} onSwitchStatusOffer={this.handleSwitchStatusOffer} />)
+                }else{
+                    let el = item.rapprochement;
+                    items.push(<RapprochementsItem elem={null} prospect={el} bien={elem} key={index} />)
+                }
+            }
         })
 
         let contentAside;
@@ -212,12 +272,16 @@ export class Rapprochements extends Component {
                     <div className="title-col-2">
                         <div className="tab-col-2">
                             {subMenu.map((sub, index) => {
-                                return <div className={"item" + (sub.value === subContext ? " active" : "")} key={index}>{sub.label}</div>
+                                return <div className={"item" + (sub.value === subContext ? " active" : "")}
+                                            onClick={() => this.handleChangeSubContext(sub.value)}
+                                            key={index}>
+                                    {sub.label}
+                                </div>
                             })}
                         </div>
                     </div>
                     <div>
-                        {items && items.length !== 0 ? items : <Alert>Aucun résultat</Alert>}
+                        {!loadDataProspects ? <LoaderElement /> : (items && items.length !== 0 ? items : <Alert>Aucun résultat</Alert>)}
                     </div>
                 </div>
             </div>
@@ -225,6 +289,17 @@ export class Rapprochements extends Component {
             <Aside ref={this.aside} content={contentAside}/>
         </div>)
     }
+}
+
+function getProspect(prospects, id){
+    let prospect = null;
+    prospects.forEach(el => {
+        if(el.id === id){
+            prospect = el;
+        }
+    })
+
+    return prospect;
 }
 
 function getOffer(offers, prospect) {

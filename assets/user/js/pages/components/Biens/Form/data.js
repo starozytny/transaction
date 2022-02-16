@@ -165,7 +165,7 @@ function getProspects (self) {
     axios.get(Routing.generate('api_prospects_user_agency'), {})
         .then(function (response) {
             let data = response.data;
-            self.setState({ allProspects: data })
+            self.setState({ allProspects: data, loadDataProspects: true })
         })
         .catch(function (error) {
             Formulaire.displayErrors(self, error);

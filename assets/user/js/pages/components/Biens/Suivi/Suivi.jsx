@@ -22,6 +22,7 @@ export class Suivi extends Component {
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
             offers: props.offers ? JSON.parse(props.offers) : [],
+            rapprochements: props.rapprochements ? JSON.parse(props.rapprochements) : [],
             context: props.context ? props.context : "global",
         }
 
@@ -48,7 +49,7 @@ export class Suivi extends Component {
     }
 
     render () {
-        const { elem, context, suivis, negotiators, allVisits, offers } = this.state;
+        const { elem, context, suivis, negotiators, allVisits, offers, rapprochements } = this.state;
 
         let content;
         switch (context){
@@ -56,7 +57,8 @@ export class Suivi extends Component {
                 content = <div>Offres</div>
                 break;
             case "rapprochements":
-                content = <Rapprochements ref={this.rapprochement} elem={elem} data={suivis} societyId={elem.agency.society.id} agencyId={elem.agency.id}
+                content = <Rapprochements ref={this.rapprochement} elem={elem} data={suivis} rapprochements={rapprochements}
+                                          societyId={elem.agency.society.id} agencyId={elem.agency.id}
                                           negotiators={negotiators} offers={offers}
                                           onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
                 break;

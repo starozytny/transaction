@@ -4,9 +4,43 @@ namespace App\Service\Immo;
 
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImSearch;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SearchService
 {
+    private $em;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+
+        $this->em = $entityManager;
+    }
+
+    /**
+     * @param ImBien[] $biens
+     */
+    public function getRapprochementBySearchs(array $biens): array
+    {
+        $searchs = $this->em->getRepository(ImSearch::class)->findBy(['isActive' => true]);
+
+        //Rapprochement
+        $rapprochements = [];
+        foreach($biens as $obj){
+            foreach($searchs as $search){
+                $find = $this->rapprochement($search, [$obj]);
+
+                if(count($find) > 0){
+                    $rapprochements[] = [
+                        'bien' => $obj->getId(),
+                        'prospect' => $search->getProspect()->getId()
+                    ];
+                }
+            }
+        }
+
+        return $rapprochements;
+    }
+
     /**
      * @param ImSearch $search
      * @param ImBien[] $biens

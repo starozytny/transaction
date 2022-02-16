@@ -34,10 +34,7 @@ export class RapprochementsItem extends Component {
     }
 
     render () {
-        const { elem, offer, onSelectProspect, onChangeContext, onDeleteOffer, onSwitchStatusOffer } = this.props;
-
-        let prospect = elem.prospect;
-        let bien     = elem.bien;
+        const { elem, prospect, bien, offer, onSelectProspect, onChangeContext, onDeleteOffer, onSwitchStatusOffer } = this.props;
 
         let percentage = 0;
         if(prospect.search){
@@ -50,14 +47,14 @@ export class RapprochementsItem extends Component {
 
         return <div className="card-ra">
             <div className="selector">
-                <ButtonIcon icon="cancel" onClick={() => onSelectProspect(prospect)}>Enlever</ButtonIcon>
+                {elem && <ButtonIcon icon="cancel" onClick={() => onSelectProspect(prospect)}>Enlever</ButtonIcon>}
             </div>
             <div className="card-main">
                 <div className="card-body">
                     <div className="infos">
                         <div className="col-1">
                             <div className="badges">
-                                <div className={"badge badge-" + elem.status}>{elem.statusString}</div>
+                                {elem ? <div className={"badge badge-" + elem.status}>{elem.statusString}</div> : <div className="badge badge-default">Possibilité</div>}
                             </div>
                             <div className="identifier">
                                 <div className="title">
@@ -89,28 +86,36 @@ export class RapprochementsItem extends Component {
                     </div>
                 </div>
                 <div className="card-footer">
-                    {offer && <div className="offer">
-                        <div>
-                            Offre proposée : <span className="pricePropal">{Sanitaze.toFormatCurrency(offer.pricePropal)}</span>
-                        </div>
-                        {offer.status === STATUS_REFUSE ? <div className="offer-answer txt-danger">Offre refusée</div> : null}
-                        {offer.status === STATUS_ACCEPT ? <div className="offer-answer txt-primary">Offre acceptée</div> : null}
-                    </div>}
+                    {elem ? <>
+                        {offer && <div className="offer">
+                            <div>
+                                Offre proposée : <span className="pricePropal">{Sanitaze.toFormatCurrency(offer.pricePropal)}</span>
+                            </div>
+                            {offer.status === STATUS_REFUSE ? <div className="offer-answer txt-danger">Offre refusée</div> : null}
+                            {offer.status === STATUS_ACCEPT ? <div className="offer-answer txt-primary">Offre acceptée</div> : null}
+                        </div>}
 
-                    <div className="footer-actions">
-                        <div className="actions">
-                            {!offer && <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />}
-                            {(offer && offer.status === STATUS_PROPAL) && <>
-                                <ButtonIcon icon="flag" text="Finaliser" onClick={() => onChangeContext("final-offer", prospect, offer)} />
-                                <ButtonIcon icon="cancel" text="Refuser" onClick={() => onSwitchStatusOffer(offer, STATUS_REFUSE)} />
-                                <ButtonIcon icon="receipt-edit" text="Modifier" onClick={() => onChangeContext("update-offer", prospect, offer)} />
-                                <ButtonIcon icon="trash" text="Supprimer" onClick={() => onDeleteOffer(offer)}/>
-                            </>}
-                            {(offer && offer.status !== STATUS_PROPAL) && <>
-                                <ButtonIcon icon="cancel" text="Rétablir" onClick={() => onSwitchStatusOffer(offer, STATUS_PROPAL)} />
-                            </>}
+                        <div className="footer-actions">
+                            <div className="actions">
+                                {!offer && <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />}
+                                {(offer && offer.status === STATUS_PROPAL) && <>
+                                    <ButtonIcon icon="flag" text="Finaliser" onClick={() => onChangeContext("final-offer", prospect, offer)} />
+                                    <ButtonIcon icon="cancel" text="Refuser" onClick={() => onSwitchStatusOffer(offer, STATUS_REFUSE)} />
+                                    <ButtonIcon icon="receipt-edit" text="Modifier" onClick={() => onChangeContext("update-offer", prospect, offer)} />
+                                    <ButtonIcon icon="trash" text="Supprimer" onClick={() => onDeleteOffer(offer)}/>
+                                </>}
+                                {(offer && offer.status !== STATUS_PROPAL) && <>
+                                    <ButtonIcon icon="cancel" text="Rétablir" onClick={() => onSwitchStatusOffer(offer, STATUS_PROPAL)} />
+                                </>}
+                            </div>
                         </div>
-                    </div>
+                    </> : <>
+                        <div className="footer-actions">
+                            <div className="actions">
+                                <ButtonIcon icon="add-square" text="Ajouter à la liste" />
+                            </div>
+                        </div>
+                    </>}
                 </div>
             </div>
 
