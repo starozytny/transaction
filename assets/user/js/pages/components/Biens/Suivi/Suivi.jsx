@@ -36,9 +36,7 @@ export class Suivi extends Component {
 
     handleUpdateSuivis = (nSuivis) => { this.setState({ suivis: nSuivis }) }
 
-    handleUpdateVisits = () => {
-        DataState.getVisits(this, this.state.elem);
-    }
+    handleUpdateVisits = () => { DataState.getVisits(this, this.state.elem); }
 
     handleUpdateOffers = (offer, suivi, context) => {
         const { offers } = this.state;

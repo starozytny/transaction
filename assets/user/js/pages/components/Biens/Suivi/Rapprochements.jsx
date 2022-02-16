@@ -24,7 +24,7 @@ import { Prospects }                from "@dashboardPages/components/Immo/Prospe
 import { NegotiatorBubble }         from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offer/OfferForm";
 import { ContentNegotiatorBubble }  from "@userPages/components/Biens/AdCard";
-import {OfferFinalFormulaire} from "@userPages/components/Biens/Suivi/Offer/OfferFinalForm";
+import { OfferFinalFormulaire }     from "@userPages/components/Biens/Suivi/Offer/OfferFinalForm";
 
 const URL_DELETE_OFFER = "api_offers_delete";
 const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
