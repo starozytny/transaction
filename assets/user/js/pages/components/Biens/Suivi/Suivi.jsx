@@ -36,7 +36,7 @@ export class Suivi extends Component {
         DataState.getVisits(this, this.state.elem);
     }
 
-    handleUpdateOffers = (context, element) => {
+    handleUpdateOffers = (element, context) => {
         const { offers } = this.state;
 
         let newData = UpdateList.update(context, offers, element);

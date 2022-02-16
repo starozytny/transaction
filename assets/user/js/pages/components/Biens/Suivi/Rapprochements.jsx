@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 
-import axios    from "axios";
-import toastr   from "toastr";
-import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+import axios        from "axios";
+import toastr       from "toastr";
+import Swal         from "sweetalert2";
+import SwalOptions  from "@commonComponents/functions/swalOptions";
+import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Aside }      from "@dashboardComponents/Tools/Aside";
 import { Alert }      from "@dashboardComponents/Tools/Alert";
@@ -23,6 +25,7 @@ import { NegotiatorBubble }         from "@dashboardPages/components/Immo/Negoci
 import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offer/OfferForm";
 import { ContentNegotiatorBubble }  from "@userPages/components/Biens/AdCard";
 
+const URL_DELETE_OFFER = "api_offers_delete";
 const SORTER = Sort.compareProspectLastname;
 let i = 0;
 
@@ -44,6 +47,7 @@ export class Rapprochements extends Component {
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleSelectProspect = this.handleSelectProspect.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
+        this.handleDeleteOffer = this.handleDeleteOffer.bind(this);
     }
 
     componentDidMount() {
@@ -111,6 +115,28 @@ export class Rapprochements extends Component {
         ;
     }
 
+    handleDeleteOffer = (offer) => {
+        const self = this;
+        Swal.fire(SwalOptions.options("Supprimer cette offre", "Action irréversible."))
+            .then((result) => {
+                if (result.isConfirmed) {
+                    Formulaire.loader(true)
+                    axios.delete(Routing.generate(URL_DELETE_OFFER, {'id': offer.id}), {})
+                        .then(function (response) {
+                            self.props.onUpdateOffers(offer, "delete");
+                        })
+                        .catch(function (error) {
+                            Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+                        })
+                        .then(() => {
+                            Formulaire.loader(false);
+                        })
+                    ;
+                }
+            })
+        ;
+    }
+
     render () {
         const { elem, societyId, agencyId, negotiators, offers, onUpdateOffers } = this.props;
         const { context, data, allProspects, sorter, element, offer } = this.state;
@@ -120,8 +146,8 @@ export class Rapprochements extends Component {
         let items = [];
         let prospects = [];
         data.forEach(elem => {
-            items.push(<RapprochementsItem elem={elem} offer={getOffer(offers, elem.prospect)}
-                                           onSelectProspect={this.handleSelectProspect} onChangeContext={this.handleChangeContext} key={elem.id} />)
+            items.push(<RapprochementsItem elem={elem} offer={getOffer(offers, elem.prospect)} key={elem.id}
+                                           onSelectProspect={this.handleSelectProspect} onChangeContext={this.handleChangeContext} onDeleteOffer={this.handleDeleteOffer} />)
             prospects.push(elem.prospect)
         })
 
@@ -199,7 +225,7 @@ export class RapprochementsItem extends Component {
     }
 
     render () {
-        const { elem, offer, onSelectProspect, onChangeContext } = this.props;
+        const { elem, offer, onSelectProspect, onChangeContext, onDeleteOffer } = this.props;
 
         let prospect = elem.prospect;
         let bien     = elem.bien;
@@ -263,7 +289,10 @@ export class RapprochementsItem extends Component {
                     <div className="footer-actions">
                         <div className="actions">
                             {!offer && <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />}
-                            {(offer && offer.status === 0) && <ButtonIcon icon="receipt-edit" text="Modifier l'offre" onClick={() => onChangeContext("update-offer", prospect, offer)} />}
+                            {(offer && offer.status === 0) && <>
+                                <ButtonIcon icon="receipt-edit" text="Modifier l'offre" onClick={() => onChangeContext("update-offer", prospect, offer)} />
+                                <ButtonIcon icon="trash" text="Supprimer l'offre" onClick={() => onDeleteOffer(offer)}/>
+                            </>}
                         </div>
                     </div>
                 </div>
