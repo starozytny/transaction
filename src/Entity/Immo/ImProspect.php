@@ -134,6 +134,13 @@ class ImProspect extends DataEntity
     private $isArchived = false;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $commentary;
+
+
+    /**
      * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="prospects")
      * @Groups({"admin:read", "suivi:read"})
      */
@@ -156,12 +163,6 @@ class ImProspect extends DataEntity
      * @Groups({"admin:read", "suivi:read"})
      */
     private $search;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Groups({"admin:read"})
-     */
-    private $commentary;
 
     /**
      * @ORM\OneToMany(targetEntity=ImOffer::class, mappedBy="prospect")

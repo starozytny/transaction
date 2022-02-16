@@ -17,6 +17,7 @@ use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImMandat;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImNumber;
+use App\Entity\Immo\ImOffer;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImProspect;
@@ -631,6 +632,13 @@ class DataImmo extends DataConstructor
             ->setHasBalcony($this->setToNullInteger($data->hasBalcony))
             ->setHasParking($this->setToNullInteger($data->hasParking))
             ->setHasBox($this->setToNullInteger($data->hasBox))
+        ;
+    }
+
+    public function setDataOffer(ImOffer $obj, $data): ImOffer
+    {
+        return ($obj)
+            ->setPricePropal($this->setToNullFloat($data->pricePropal))
         ;
     }
 }

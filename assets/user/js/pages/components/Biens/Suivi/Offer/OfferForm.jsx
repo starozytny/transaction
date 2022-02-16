@@ -7,14 +7,13 @@ import Routing                 from '@publicFolder/bundles/fosjsrouting/js/route
 import { Input }               from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
-import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_negotiators_create";
-const URL_UPDATE_GROUP       = "api_negotiators_update";
+const URL_CREATE_ELEMENT     = "api_offers_create";
+const URL_UPDATE_GROUP       = "api_offers_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
