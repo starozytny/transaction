@@ -107,7 +107,7 @@ function Navigation({ onChangeContext, context, menu = null }){
         {context: "global",            label: "Global"},
         {context: "visites",           label: "Visites"},
         {context: "rapprochements",    label: "Rapprochements"},
-        {context: "offres",            label: "Offres"},
+        // {context: "offres",            label: "Offres"},
     ]
 
     return (
