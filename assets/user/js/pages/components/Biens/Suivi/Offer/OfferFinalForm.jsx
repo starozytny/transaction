@@ -81,11 +81,13 @@ export class OfferFinalForm extends Component {
 
                 axios({ method: method, url: url, data: this.state })
                     .then(function (response) {
-                        let data = response.data;
                         Helper.toTop();
 
                         if(self.props.onUpdateList){
-                            self.props.onUpdateList(data, context);
+                            let offer = JSON.parse(response.data.offer);
+                            let suivi = JSON.parse(response.data.suivi);
+
+                            self.props.onUpdateList(offer, suivi, context);
                             self.props.onChangeContext("rapprochements");
                         }
                     })

@@ -95,7 +95,10 @@ export class OfferForm extends Component {
                         Helper.toTop();
 
                         if(self.props.onUpdateList){
-                            self.props.onUpdateList(data, context);
+                            let offer = JSON.parse(response.data.offer);
+                            let suivi = JSON.parse(response.data.suivi);
+
+                            self.props.onUpdateList(offer, suivi, context);
                             self.props.onChangeContext("rapprochements");
                         }
                     })
