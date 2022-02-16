@@ -130,7 +130,7 @@ export class Rapprochements extends Component {
                 <div className="page-col-1">
                     <div className="body-col-1">
                         <div className="content-col-1 ra-pr-content">
-                            <div>
+                            <div className="ra-pr-image">
                                 <img src="/build/user/images/add-prospect.png" alt="illustration add prospect"/>
                             </div>
                             <div className="ra-pr-text">

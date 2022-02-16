@@ -38,6 +38,12 @@ class ImOffer
      */
     private $bien;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ImProspect::class, inversedBy="offers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $prospect;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +93,18 @@ class ImOffer
     public function setBien(?ImBien $bien): self
     {
         $this->bien = $bien;
+
+        return $this;
+    }
+
+    public function getProspect(): ?ImProspect
+    {
+        return $this->prospect;
+    }
+
+    public function setProspect(?ImProspect $prospect): self
+    {
+        $this->prospect = $prospect;
 
         return $this;
     }

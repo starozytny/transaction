@@ -1,5 +1,15 @@
 @import "../../../vars/vars";
 
+.details-container{
+  & + .item-nav-2{
+    .details-nav-items{
+      & > div{
+        padding: 12px 0;
+      }
+    }
+  }
+}
+
 .details-card{
   background: var(--alpha);
   border: 2px solid var(--greyShadow);

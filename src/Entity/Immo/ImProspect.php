@@ -163,10 +163,16 @@ class ImProspect extends DataEntity
      */
     private $commentary;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImOffer::class, mappedBy="prospect")
+     */
+    private $offers;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
         $this->suivis = new ArrayCollection();
+        $this->offers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -529,6 +535,36 @@ class ImProspect extends DataEntity
     public function setCommentary(?string $commentary): self
     {
         $this->commentary = $commentary;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImOffer[]
+     */
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    public function addOffer(ImOffer $offer): self
+    {
+        if (!$this->offers->contains($offer)) {
+            $this->offers[] = $offer;
+            $offer->setProspect($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(ImOffer $offer): self
+    {
+        if ($this->offers->removeElement($offer)) {
+            // set the owning side to null (unless already changed)
+            if ($offer->getProspect() === $this) {
+                $offer->setProspect(null);
+            }
+        }
 
         return $this;
     }
