@@ -486,4 +486,12 @@ class UserController extends AbstractController
             'quartiers' => $quartiers,
         ]);
     }
+
+    /**
+     * @Route("/publication", name="publications")
+     */
+    public function publications(): Response
+    {
+        return $this->render('user/pages/publications/index.html.twig');
+    }
 }
