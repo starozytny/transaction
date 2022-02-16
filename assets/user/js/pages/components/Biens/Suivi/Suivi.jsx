@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Rapprochements } from "@userPages/components/Biens/Suivi/Rapprochements";
+import { Rapprochements } from "@userPages/components/Biens/Suivi/Rapprochement/Rapprochements";
 import { Global }         from "@userPages/components/Biens/Suivi/Global";
 import { Visits }         from "@dashboardPages/components/Immo/Visits/Visits";
 import { AdBadges, AdMainInfos } from "@userPages/components/Biens/Read/AdItem";
