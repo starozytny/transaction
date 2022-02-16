@@ -227,11 +227,11 @@ export class RapprochementsItem extends Component {
                     </div>
                 </div>
                 <div className="card-footer">
-                    <div className="commentary">Commentaire : </div>
+                    {/*<div className="commentary">Commentaire : </div>*/}
 
                     <div className="footer-actions">
                         <div className="actions">
-                            <ButtonIcon icon="phone" text={"0"}>0 mails envoyés</ButtonIcon>
+                            <ButtonIcon icon="receipt-edit" text="Faire une offre" />
                         </div>
                     </div>
                 </div>
