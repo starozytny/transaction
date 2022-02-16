@@ -158,7 +158,7 @@ class OfferController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/{status}", name="switch_status", options={"expose"=true}, methods={"PUT"})
+     * @Route("/{id}/status/{status}", name="switch_status", options={"expose"=true}, methods={"PUT"})
      *
      * @OA\Response(
      *     response=200,
@@ -192,6 +192,55 @@ class OfferController extends AbstractController
             }
         }
 
+        $em->flush();
+
+        return $this->returnData($apiResponse, $serializer, $obj, $suivi);
+    }
+
+    /**
+     * @Route("/{id}/final", name="final", options={"expose"=true}, methods={"PUT"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Return message successful",
+     * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Forbidden for not good role or user",
+     * )
+     *
+     * @OA\Tag(name="Offers")
+     *
+     * @param Request $request
+     * @param SerializerInterface $serializer
+     * @param ValidatorService $validator
+     * @param ApiResponse $apiResponse
+     * @param ImOffer $obj
+     * @param DataImmo $dataEntity
+     * @return JsonResponse
+     */
+    public function final(Request $request, SerializerInterface $serializer, ValidatorService $validator,  ApiResponse $apiResponse,
+                          ImOffer $obj, DataImmo $dataEntity): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $data = json_decode($request->getContent());
+
+        if ($data === null) {
+            return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
+        }
+
+        $obj = $dataEntity->setDataOfferFinal($obj, $data);
+
+        $noErrors = $validator->validate($obj);
+        if ($noErrors !== true) {
+            return $apiResponse->apiJsonResponseValidationFailed($noErrors);
+        }
+
+        if($suivi = $this->getSuivi($obj->getBien(), $obj->getProspect())){
+            $suivi->setStatus(ImSuivi::STATUS_END);
+        }
+
+        $em->persist($obj);
         $em->flush();
 
         return $this->returnData($apiResponse, $serializer, $obj, $suivi);

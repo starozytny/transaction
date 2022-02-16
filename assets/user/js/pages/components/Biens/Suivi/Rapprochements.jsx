@@ -24,6 +24,7 @@ import { Prospects }                from "@dashboardPages/components/Immo/Prospe
 import { NegotiatorBubble }         from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offer/OfferForm";
 import { ContentNegotiatorBubble }  from "@userPages/components/Biens/AdCard";
+import {OfferFinalFormulaire} from "@userPages/components/Biens/Suivi/Offer/OfferFinalForm";
 
 const URL_DELETE_OFFER = "api_offers_delete";
 const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
@@ -65,6 +66,9 @@ export class Rapprochements extends Component {
         let nElement = element ? element : this.state.element;
 
         switch (context){
+            case "final-offer":
+                this.aside.current.handleOpen("Finaliser l'offre de " + element.fullname);
+                break;
             case "update-offer":
                 this.aside.current.handleOpen("Modifier l'offre de " + element.fullname);
                 break;
@@ -151,6 +155,10 @@ export class Rapprochements extends Component {
 
         let contentAside;
         switch (context) {
+            case "final-offer":
+                contentAside = <OfferFinalFormulaire type="update" element={offer}
+                                                    onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
+                break
             case "update-offer":
                 contentAside = <OfferFormulaire type="update" bien={elem} prospect={element} element={offer}
                                                 onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
@@ -283,6 +291,7 @@ export class RapprochementsItem extends Component {
                             Offre proposée : <span className="pricePropal">{Sanitaze.toFormatCurrency(offer.pricePropal)}</span>
                         </div>
                         {offer.status === STATUS_REFUSE ? <div className="offer-answer txt-danger">Offre refusée</div> : null}
+                        {offer.status === STATUS_ACCEPT ? <div className="offer-answer txt-primary">Offre acceptée</div> : null}
                     </div>}
 
                     <div className="footer-actions">

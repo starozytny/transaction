@@ -641,4 +641,12 @@ class DataImmo extends DataConstructor
             ->setPricePropal($this->setToNullFloat($data->pricePropal))
         ;
     }
+
+    public function setDataOfferFinal(ImOffer $obj, $data): ImOffer
+    {
+        return ($obj)
+            ->setPriceFinal($this->setToNullFloat($data->priceFinal))
+            ->setStatus(ImOffer::STATUS_ACCEPT)
+        ;
+    }
 }
