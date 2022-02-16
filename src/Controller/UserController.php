@@ -492,6 +492,12 @@ class UserController extends AbstractController
      */
     public function publications(): Response
     {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF, 'isDraft' => false, 'isArchived' => false]);
+
         return $this->render('user/pages/publications/index.html.twig');
     }
 }
