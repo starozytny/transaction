@@ -26,6 +26,12 @@ import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offe
 import { ContentNegotiatorBubble }  from "@userPages/components/Biens/AdCard";
 
 const URL_DELETE_OFFER = "api_offers_delete";
+const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
+
+const STATUS_PROPAL = 0;
+const STATUS_ACCEPT = 1;
+const STATUS_REFUSE = 2;
+
 const SORTER = Sort.compareProspectLastname;
 let i = 0;
 
@@ -48,6 +54,7 @@ export class Rapprochements extends Component {
         this.handleSelectProspect = this.handleSelectProspect.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleDeleteOffer = this.handleDeleteOffer.bind(this);
+        this.handleSwitchStatusOffer = this.handleSwitchStatusOffer.bind(this);
     }
 
     componentDidMount() {
@@ -116,25 +123,14 @@ export class Rapprochements extends Component {
     }
 
     handleDeleteOffer = (offer) => {
-        const self = this;
-        Swal.fire(SwalOptions.options("Supprimer cette offre", "Action irréversible."))
-            .then((result) => {
-                if (result.isConfirmed) {
-                    Formulaire.loader(true)
-                    axios.delete(Routing.generate(URL_DELETE_OFFER, {'id': offer.id}), {})
-                        .then(function (response) {
-                            self.props.onUpdateOffers(offer, "delete");
-                        })
-                        .catch(function (error) {
-                            Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
-                        })
-                        .then(() => {
-                            Formulaire.loader(false);
-                        })
-                    ;
-                }
-            })
-        ;
+        swalOfferAction(this, "DELETE", Routing.generate(URL_DELETE_OFFER, {'id': offer.id}),
+            offer, "delete", "Supprimer cette offre", "Action irréversible.")
+    }
+
+    handleSwitchStatusOffer = (offer, status) => {
+        let title = offer.status === STATUS_PROPAL ? "Refuser cette offre" : "Rétablir l'offre";
+        swalOfferAction(this, "PUT", Routing.generate(URL_SWITCH_STATUS_OFFER, {'id': offer.id, 'status': status}),
+            offer, "update", title)
     }
 
     render () {
@@ -147,7 +143,8 @@ export class Rapprochements extends Component {
         let prospects = [];
         data.forEach(elem => {
             items.push(<RapprochementsItem elem={elem} offer={getOffer(offers, elem.prospect)} key={elem.id}
-                                           onSelectProspect={this.handleSelectProspect} onChangeContext={this.handleChangeContext} onDeleteOffer={this.handleDeleteOffer} />)
+                                           onSelectProspect={this.handleSelectProspect} onChangeContext={this.handleChangeContext}
+                                           onDeleteOffer={this.handleDeleteOffer} onSwitchStatusOffer={this.handleSwitchStatusOffer} />)
             prospects.push(elem.prospect)
         })
 
@@ -225,7 +222,7 @@ export class RapprochementsItem extends Component {
     }
 
     render () {
-        const { elem, offer, onSelectProspect, onChangeContext, onDeleteOffer } = this.props;
+        const { elem, offer, onSelectProspect, onChangeContext, onDeleteOffer, onSwitchStatusOffer } = this.props;
 
         let prospect = elem.prospect;
         let bien     = elem.bien;
@@ -282,16 +279,22 @@ export class RapprochementsItem extends Component {
                 <div className="card-footer">
                     {offer && <div className="offer">
                         <div>
-                            Offre proposé : <span className="pricePropal">{Sanitaze.toFormatCurrency(offer.pricePropal)}</span>
+                            Offre proposée : <span className="pricePropal">{Sanitaze.toFormatCurrency(offer.pricePropal)}</span>
                         </div>
+                        {offer.status === STATUS_REFUSE ? <div className="offer-answer txt-danger">Offre refusée</div> : null}
                     </div>}
 
                     <div className="footer-actions">
                         <div className="actions">
                             {!offer && <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />}
-                            {(offer && offer.status === 0) && <>
-                                <ButtonIcon icon="receipt-edit" text="Modifier l'offre" onClick={() => onChangeContext("update-offer", prospect, offer)} />
-                                <ButtonIcon icon="trash" text="Supprimer l'offre" onClick={() => onDeleteOffer(offer)}/>
+                            {(offer && offer.status === STATUS_PROPAL) && <>
+                                <ButtonIcon icon="flag" text="Finaliser" onClick={() => onChangeContext("final-offer", prospect, offer)} />
+                                <ButtonIcon icon="cancel" text="Refuser" onClick={() => onSwitchStatusOffer(offer, STATUS_REFUSE)} />
+                                <ButtonIcon icon="receipt-edit" text="Modifier" onClick={() => onChangeContext("update-offer", prospect, offer)} />
+                                <ButtonIcon icon="trash" text="Supprimer" onClick={() => onDeleteOffer(offer)}/>
+                            </>}
+                            {(offer && offer.status !== STATUS_PROPAL) && <>
+                                <ButtonIcon icon="cancel" text="Rétablir" onClick={() => onSwitchStatusOffer(offer, STATUS_PROPAL)} />
                             </>}
                         </div>
                     </div>
@@ -312,4 +315,25 @@ function getOffer(offers, prospect) {
     })
 
     return offer;
+}
+
+function swalOfferAction(self, method, url, offer, context, title, text="") {
+    Swal.fire(SwalOptions.options(title, text))
+        .then((result) => {
+            if (result.isConfirmed) {
+                Formulaire.loader(true)
+                axios({ method: method, url: url, data: {} })
+                    .then(function (response) {
+                        self.props.onUpdateOffers(offer, context);
+                    })
+                    .catch(function (error) {
+                        Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+                    })
+                    .then(() => {
+                        Formulaire.loader(false);
+                    })
+                ;
+            }
+        })
+    ;
 }

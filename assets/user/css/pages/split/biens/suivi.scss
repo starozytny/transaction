@@ -122,12 +122,21 @@
     background-color: var(--fondContent);
 
     .offer{
+      @include flex(row, flex-start, flex-start);
       padding-top: 12px;
       color: var(--grey3);
       font-size: 15px;
 
+      & > div:not(:last-child){
+        margin-right: 12px;
+      }
+
       .pricePropal{
         color: var(--txt);
+        @include fontSemibold();
+      }
+
+      .offer-answer{
         @include fontSemibold();
       }
     }

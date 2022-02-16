@@ -133,4 +133,33 @@ class OfferController extends AbstractController
     {
         return $dataService->delete($obj);
     }
+
+    /**
+     * @Route("/{id}/{status}", name="switch_status", options={"expose"=true}, methods={"PUT"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Return message successful",
+     * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Forbidden for not good role or user",
+     * )
+     *
+     * @OA\Tag(name="Changelogs")
+     *
+     * @param ImOffer $obj
+     * @param $status
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function switchStatus(ImOffer $obj, $status, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        $obj->setStatus($status);
+
+        $em->flush();
+        return $apiResponse->apiJsonResponse($obj, ImOffer::OFFER_READ);
+    }
 }

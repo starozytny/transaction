@@ -32,7 +32,7 @@ export function OfferFormulaire ({ type, onChangeContext, onUpdateList, element,
         url={url}
         bien={bien}
         prospect={prospect}
-        pricePropal={element ? Formulaire.setValueEmptyIfNull(element.pricePropal) : ""}
+        pricePropal={element ? Formulaire.setValueEmptyIfNull(element.pricePropal) : bien.financial.price}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
