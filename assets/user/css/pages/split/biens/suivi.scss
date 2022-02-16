@@ -18,23 +18,29 @@
 }
 
 .suivi-global{
+
   .card{
     padding: 12px;
     background-color: var(--fondContent);
-    @include fontSemibold();
-    @include flex(row, center, flex-start);
+    @include flex(column, flex-start, space-between);
     border: 1px solid var(--grey);
     border-radius: 4px;
     margin-bottom: 12px;
+    color: var(--txt);
 
-    [class^="icon-"]{
-      display: inline-block;
-      margin-right: 4px;
-      transform: translateY(2px);
+    .icon{
+      font-size: 26px;
+      margin-bottom: 10px;
     }
 
-    a{
-      color: var(--txt);
+    .title{
+      opacity: 0.7;
+      margin-bottom: 24px;
+    }
+
+    .number{
+      font-size: 18px;
+      @include fontSemibold();
     }
   }
 
@@ -191,6 +197,28 @@
   .suivi-container{
     .aside{
       width: 60%;
+    }
+  }
+
+  .suivi-global{
+    .cards{
+      @include flex(row, flex-start, flex-start);
+      width: calc(100% + 12px);
+
+      .card{
+        width: calc(25% - 12px);
+        margin-right: 12px;
+      }
+    }
+  }
+
+  #read-bien{
+    .suivi-global{
+      .cards{
+        .card{
+          width: calc(50% - 12px);
+        }
+      }
     }
   }
 
