@@ -7,6 +7,7 @@
   padding: 12px;
   margin-bottom: 24px;
   overflow: hidden;
+  width: calc(100% - 24px);
 
   &:before{
     content: "";
@@ -137,6 +138,7 @@
 @media (min-width: 1024px) {
   .item-read-2-container{
     padding: 24px;
+    width: calc(100% - 48px);
   }
 
   .item-read-2{

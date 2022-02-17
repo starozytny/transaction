@@ -1,12 +1,14 @@
 import React from "react";
 
+import helper   from "@userPages/components/Biens/functions/helper";
+import Sort     from "@commonComponents/functions/sort";
+
 import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }    from "@dashboardComponents/Tools/Alert";
 import { Button }   from "@dashboardComponents/Tools/Button";
 import { DatePick } from "@dashboardComponents/Tools/DatePicker";
 
-import helper from "@userPages/components/Biens/functions/helper";
-import Sort from "@commonComponents/functions/sort";
+import { ReadCard } from "@userComponents/Layout/Read";
 
 const CURRENT_STEP = 1;
 
@@ -18,10 +20,16 @@ export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect,
     let typeBienItems = helper.getItems("biens");
     let typeMandatItems = helper.getItems("mandats");
 
+    let itemNegotiator = null;
     let negociateurs = []
     negotiators.sort(Sort.compareLastname)
     negotiators.forEach(ne => {
-        negociateurs.push({ value: ne.id, label: "#" + ne.code + " - " + ne.fullname, identifiant: "neg-" + ne.id })
+        negociateurs.push({ value: ne.id, label: "#" + ne.code + " - " + ne.fullname, identifiant: "neg-" + ne.id });
+
+        if(ne.id === negotiator){
+            console.log(ne)
+            itemNegotiator = <ReadCard elem={ne} avatar={ne.avatarFile} displayActions={false} />
+        }
     })
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
@@ -46,7 +54,7 @@ export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </Radiobox>
 
             {parseInt(codeTypeMandat) !== 0 && <>
-                <div className="line line-3">
+                <div className="line line-3 line-mt">
                     <DatePick identifiant="startAt" valeur={startAt} errors={errors}
                               onChange={(e) => onChangeDate("startAt", e)}>
                         Début du mandat
@@ -83,6 +91,10 @@ export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                       onChange={(e) => onChangeSelect('negotiator', e)} />
                 <div className="form-group" />
             </div>
+
+            {itemNegotiator && <div className="line">
+                <div className="form-group">{itemNegotiator}</div>
+            </div>}
         </div>
 
         <div className="line line-buttons">
