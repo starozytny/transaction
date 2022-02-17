@@ -3,13 +3,19 @@
 namespace App\Service\Data\Donnee;
 
 use App\Entity\Donnee\DoQuartier;
+use App\Entity\Donnee\DoSol;
 use App\Service\Data\DataConstructor;
 
 class DataDonnee extends DataConstructor
 {
+    private function setNameSanitaze($data, $name = null)
+    {
+        return mb_strtoupper($this->sanitizeData->trimData($name ?: $data->name));
+    }
+
     public function setDataQuartier(DoQuartier $obj, $data, $name = null): DoQuartier
     {
-        $name = mb_strtoupper($this->sanitizeData->trimData($name ?: $data->name));
+        $name = $this->setNameSanitaze($data, $name);
         $zipcode = $this->sanitizeData->trimData($data->zipcode);
         $city = $this->sanitizeData->trimData($data->city);
 
@@ -31,6 +37,26 @@ class DataDonnee extends DataConstructor
             ->setZipcode($zipcode)
             ->setCity($city)
             ->setPolygon(isset($data->polygon) ? ($data->polygon ?: null) : null)
+        ;
+    }
+
+    public function setDataSol(DoSol $obj, $data, $name = null): DoSol
+    {
+        $name = $this->setNameSanitaze($data, $name);
+
+        if($name){
+            $exist = $this->em->getRepository(DoSol::class)->findOneBy([
+                'name' => $name,
+                'isNative' => false
+            ]);
+
+            if($exist){
+                $obj = $exist;
+            }
+        }
+
+        return ($obj)
+            ->setName($name)
         ;
     }
 }

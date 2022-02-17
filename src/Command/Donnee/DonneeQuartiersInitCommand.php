@@ -12,10 +12,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class DonneeQuartierInitCommand extends Command
+class DonneeQuartiersInitCommand extends Command
 {
-    protected static $defaultName = 'donnee:quartier:init';
-    protected static $defaultDescription = 'Initiate data quartier';
+    protected static $defaultName = 'donnee:quartiers:init';
+    protected static $defaultDescription = 'Initiate data quartiers';
     private $em;
     private $privateDirectory;
     private $dataDonnee;
@@ -55,9 +55,10 @@ class DonneeQuartierInitCommand extends Command
         $content = file_get_contents($importFile);
         $content = json_decode($content);
 
+        $io->title('Création des quartiers');
+
         $progressBar = new ProgressBar($output, count($content->features));
         $progressBar->start();
-
         foreach($content->features as $item){
 
             $zipcode = $this->setRightZipcode($item->properties->DEPCO);

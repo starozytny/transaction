@@ -44,15 +44,6 @@ function getItems (type, prefix) {
                 { value: 1, label: 'Vendeur',               identifiant: 'vendeur' },
                 { value: 2, label: 'Acquéreur et vendeur',  identifiant: 'acquereur-vendeur' },
             ];
-        case "sols":
-            return [
-                { value: 0, label: 'Carrelage',             identifiant: 'carrelage' },
-                { value: 1, label: 'Moquette',              identifiant: 'moquette' },
-                { value: 2, label: 'Moquette + carrelage',  identifiant: 'moquette-carrelage' },
-                { value: 3, label: 'Parquet',               identifiant: 'parquet' },
-                { value: 4, label: 'Synthétique',           identifiant: 'synthetique' },
-                { value: 5, label: 'Tomette',               identifiant: 'tomette' },
-            ];
         case "bails":
             return [
                 { value: 0, label: 'Aucun',          identifiant: 'bail-aucun' },
@@ -135,14 +126,14 @@ function getItems (type, prefix) {
             ]
         case "answers-search":
             return [
-                { value: 1, label: 'Oui',               identifiant: 'answer-' + prefix + '-oui' },
-                { value: 0, label: 'Non',               identifiant: 'answer-' + prefix + '-non' },
+                { value: 1,  label: 'Oui',              identifiant: 'answer-' + prefix + '-oui' },
+                { value: 0,  label: 'Non',              identifiant: 'answer-' + prefix + '-non' },
                 { value: 99, label: 'Indifférent',      identifiant: 'answer-' + prefix + '-ok' },
             ]
         case "answers":
             return [
-                { value: 1, label: 'Oui',               identifiant: 'answer-' + prefix + '-oui' },
-                { value: 0, label: 'Non',               identifiant: 'answer-' + prefix + '-non' },
+                { value: 1,  label: 'Oui',              identifiant: 'answer-' + prefix + '-oui' },
+                { value: 0,  label: 'Non',              identifiant: 'answer-' + prefix + '-non' },
                 { value: 99, label: 'Je ne sais pas',   identifiant: 'answer-' + prefix + '-ne-sais-pas' },
             ]
         case "answers-simple":
