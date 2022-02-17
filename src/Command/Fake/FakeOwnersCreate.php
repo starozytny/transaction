@@ -6,6 +6,7 @@ use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
@@ -43,7 +44,13 @@ class FakeOwnersCreate extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [ImSuivi::class, ImVisit::class, ImBien::class, ImOwner::class]);
+        $this->databaseService->resetTable($io, [
+            ImSuivi::class,
+            ImVisit::class,
+            ImRoom::class,
+            ImBien::class,
+            ImOwner::class
+        ]);
 
         $societies = $this->em->getRepository(Society::class)->findAll();
         $nbSocieties = count($societies);
