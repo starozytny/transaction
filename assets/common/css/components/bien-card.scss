@@ -61,6 +61,7 @@
     border-radius: 4px;
     background-color: var(--alpha);
     border: 1px solid var(--grey);
+    box-shadow: 0 4px 12px var(--greyShadow);
     //width: calc(100% - 13px - 12px);
     width: calc(100% - 2px);
   }

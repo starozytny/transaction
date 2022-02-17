@@ -536,9 +536,9 @@ export class BienForm extends Component {
                                onGenerateContent={this.handleGenerateContent}
                                negotiators={negotiators} />
 
-                        {step === 9 && <div className="step-section active">
+                        {step === 10 && <div className="step-section active">
                             <div className="line line-buttons">
-                                <div className="btns-submit">
+                                <div className="btn-submit">
                                     <Button isSubmit={true}>Enregistrer le bien</Button>
                                 </div>
                             </div>
