@@ -4,6 +4,7 @@ import { PageInfos } from "@userComponents/Layout/Page";
 
 import { Quartiers } from "@dashboardPages/components/Immo/Settings/Biens/Quartiers/Quartiers";
 import { Sols }      from "@dashboardPages/components/Immo/Settings/Biens/Sols/Sols";
+import { SousTypes } from "@dashboardPages/components/Immo/Settings/Biens/SousTypes/SousTypes";
 
 export class SettingsBiens extends Component {
     constructor(props) {
@@ -21,16 +22,20 @@ export class SettingsBiens extends Component {
     handleChangeContext = (context) => { this.setState({ context }) }
 
     render () {
-        const { quartiers, sols } = this.props;
+        const { quartiers, sols, sousTypes } = this.props;
         const { context } = this.state;
 
         let menu = [
-            { value: "quartier", label: "Quartiers" },
-            { value: "sol",      label: "Sols" },
+            { value: "quartier",  label: "Quartiers" },
+            { value: "sol",       label: "Sols" },
+            { value: "sous-type", label: "Sous types de biens" },
         ];
 
         let content;
         switch (context){
+            case "sous-type":
+                content = <div id="list-sous-types"><SousTypes donnees={sousTypes}/></div>
+                break;
             case "sol":
                 content = <div id="list-sols"><Sols donnees={sols}/></div>
                 break;
