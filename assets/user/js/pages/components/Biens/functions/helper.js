@@ -321,7 +321,7 @@ function setContentFull(self){
             break;
         default:
             pre0 = "un "
-            pre1 = "Cet"
+            pre1 = "Cet "
             pre3 = "Il "
             amenage = "aménagé"
             secure = "sécurisé"
@@ -332,9 +332,9 @@ function setContentFull(self){
 
     let content = quartier ? "A proximité de " + quartier + ", n" : "N";
     content += "ous vous proposons "
+        + (cTypeAd === 0 || cTypeAd === 1 ? " à la " : " en ") + typeAdString.toLowerCase()
         + pre0 + typeBienString
         + (cTypeBien !== 2 && cTypeBien !== 3 ? " de " + cPiece + " pièce" + (cPiece > 1 ? "s" : "") : "")
-        + (cTypeAd === 0 || cTypeAd === 1 ? " à la " : " en ") + typeAdString.toLowerCase()
         + " de " + areaHabitable + "m²"
         + (cTypeAd === 0 && cIsMeuble === 1 ? " loué meublé" : "")
         + (parseFloat(areaTerrace) > 0 ? " avec une terrasse de " + areaTerrace + "m²" : "")

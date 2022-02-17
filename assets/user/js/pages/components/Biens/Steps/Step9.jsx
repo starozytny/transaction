@@ -86,8 +86,8 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                             <span>{libelle}</span>
                                         </div>
                                         <div className="address">
-                                            <div>{address}</div>
-                                            <div>{zipcode}, {city}</div>
+                                            <div>{address ? address : "[Adresse ?]"}</div>
+                                            <div>{zipcode ? zipcode : "[Code postal ?]"}, {city ? city : "[Ville ?]"}</div>
                                         </div>
                                     </div>
                                 </div>

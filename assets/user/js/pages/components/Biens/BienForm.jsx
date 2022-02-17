@@ -443,15 +443,16 @@ export class BienForm extends Component {
         const { step, contentHelpBubble, codeTypeAd, owner, allOwners } = this.state;
 
         let steps = [
-            {id: 1, label: "Informations globales"},
-            {id: 2, label: "Details du bien (1/2)"},
-            {id: 3, label: "Details du bien (2/2)"},
-            {id: 4, label: "Details des pièces"},
-            {id: 5, label: "Localisation"},
-            {id: 6, label: "Financier"},
-            {id: 7, label: "Photos"},
-            {id: 8, label: "Contacts"},
-            {id: 9, label: "Publication"},
+            {id: 1,  label: "Informations globales"},
+            {id: 2,  label: "Details du bien (1/2)"},
+            {id: 3,  label: "Details du bien (2/2)"},
+            {id: 4,  label: "Details des pièces"},
+            {id: 5,  label: "Localisation"},
+            {id: 6,  label: "Financier"},
+            {id: 7,  label: "Photos"},
+            {id: 8,  label: "Contacts"},
+            {id: 9,  label: "Description"},
+            {id: 10, label: "Publication"},
         ];
 
         let stepTitle = "Etape 1 : Informations globales";
