@@ -7,6 +7,7 @@ import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/functions/helper";
+import {ButtonIcon} from "@dashboardComponents/Tools/Button";
 
 const CURRENT_STEP = 2;
 
@@ -28,7 +29,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
-            <Alert iconCustom="exclamation" type="reverse">
+            <Alert>
                 (*) Champs obligatoires. <br/><br/>
                 Une fiche bien remplie permet un meilleur référencement de l'agence
                 auprès des moteurs de recherche tel que Google. Donc, plus de visiteurs qui verront cette annonce.

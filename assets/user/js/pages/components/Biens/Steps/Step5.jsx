@@ -4,16 +4,14 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet/dist/leaflet";
 import "leaflet-ajax/dist/leaflet.ajax.min";
 
-import Map from "@commonComponents/functions/map";
+import Map      from "@commonComponents/functions/map";
+import helper   from "@userPages/components/Biens/functions/helper";
+import Sort     from "@commonComponents/functions/sort";
 
-import {Checkbox, Input, Radiobox, SelectReactSelectize} from "@dashboardComponents/Tools/Fields";
-
+import { Checkbox, Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }        from "@dashboardComponents/Tools/Alert";
 import { Button }       from "@dashboardComponents/Tools/Button";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
-
-import helper from "@userPages/components/Biens/functions/helper";
-import Sort from "@commonComponents/functions/sort";
 
 const CURRENT_STEP = 5;
 let mymap = null;
@@ -63,7 +61,7 @@ export class Step5 extends Component {
 
         return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
             <div className="line-infos">
-                <Alert iconCustom="exclamation" type="reverse">(*) Champs obligatoires.</Alert>
+                <Alert>(*) Champs obligatoires.</Alert>
             </div>
 
             <div className="line special-line">
