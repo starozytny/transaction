@@ -17,7 +17,7 @@ let sorters = [
     { value: 1, label: 'Date création',  identifiant: 'sorter-created' },
 ];
 
-let sortersFunction = [Sort.compareName, Sort.compareCreatedAt];
+let sortersFunction = [Sort.compareName, Sort.compareCreatedAtInverse];
 
 export class Sols extends Component {
     constructor(props) {

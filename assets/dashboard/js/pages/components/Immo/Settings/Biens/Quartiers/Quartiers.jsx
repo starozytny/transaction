@@ -14,11 +14,12 @@ let SORTER = Sort.compareName;
 
 let sorters = [
     { value: 0, label: 'Nom',            identifiant: 'sorter-nom' },
-    { value: 1, label: 'Code postal',    identifiant: 'sorter-code-postal' },
-    { value: 2, label: 'Ville',          identifiant: 'sorter-ville' },
+    { value: 1, label: 'Date création',  identifiant: 'sorter-created' },
+    { value: 2, label: 'Code postal',    identifiant: 'sorter-code-postal' },
+    { value: 3, label: 'Ville',          identifiant: 'sorter-ville' },
 ];
 
-let sortersFunction = [Sort.compareName, Sort.compareZipcode, Sort.compareCity];
+let sortersFunction = [Sort.compareName, Sort.compareCreatedAtInverse, Sort.compareZipcode, Sort.compareCity];
 
 export class Quartiers extends Component {
     constructor(props) {
