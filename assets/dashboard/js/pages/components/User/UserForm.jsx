@@ -12,6 +12,7 @@ import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
+import NegotiatorFunction      from "@commonComponents/functions/negotiator";
 
 const URL_CREATE_ELEMENT     = "api_users_create";
 const URL_UPDATE_GROUP       = "api_users_update";
@@ -96,7 +97,7 @@ export class Form extends Component {
         this.setState({[name]: value})
     }
 
-    handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
+    handleChangeSelect = (name, e) => { NegotiatorFunction.changeSelectNegotiator(this, this.state.negotiator, name, e); }
 
     handleSubmit = (e) => {
         e.preventDefault();

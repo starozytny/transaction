@@ -12,11 +12,11 @@ import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
+import NegotiatorFunction      from "@commonComponents/functions/negotiator";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
 import { SelecteurNegociateur } from "@dashboardPages/components/Immo/Elements/Selecteur";
 import { LocalisationContact }  from "@dashboardPages/components/Immo/Elements/Contact";
-import NegotiatorFunction from "@commonComponents/functions/negotiator";
 
 const URL_CREATE_ELEMENT     = "api_buyers_create";
 const URL_UPDATE_GROUP       = "api_buyers_update";
