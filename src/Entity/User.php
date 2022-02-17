@@ -151,6 +151,11 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $agEvents;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $negotiatorId;
+
+    /**
      * @throws Exception
      */
     public function __construct()
@@ -593,6 +598,18 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
                 $agEvent->setCreator(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNegotiatorId(): ?int
+    {
+        return $this->negotiatorId;
+    }
+
+    public function setNegotiatorId(?int $negotiatorId): self
+    {
+        $this->negotiatorId = $negotiatorId;
 
         return $this;
     }

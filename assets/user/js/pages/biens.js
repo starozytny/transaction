@@ -32,6 +32,7 @@ if(el){
 el = document.getElementById("create-bien");
 if(el){
     render(<BienFormulaire type="create"
+                           negotiatorId={el.dataset.negotiatorId ? parseInt(el.dataset.negotiatorId) : null}
                            societyId={parseInt(el.dataset.societyId)}
                            agencyId={parseInt(el.dataset.agencyId)}
                            negotiators={JSON.parse(el.dataset.negotiators)}

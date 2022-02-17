@@ -4,11 +4,12 @@ const Routing = require("@publicFolder/bundles/fosjsrouting/js/router.min.js");
 const Formulaire = require("@dashboardComponents/functions/Formulaire");
 
 function getDataState (props) {
+    console.log(props.negotiatorId)
     return {
         codeTypeAd: props.codeTypeAd,
         codeTypeBien: props.codeTypeBien,
         libelle: props.libelle,
-        negotiator: props.negotiator,
+        negotiator: props.negotiator ? props.negotiator : (props.negotiatorId ? props.negotiatorId : ""),
 
         areaTotal: props.areaTotal,
         areaHabitable: props.areaHabitable,
