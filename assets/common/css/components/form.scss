@@ -45,6 +45,7 @@
   }
 }
 
+.alert + .line:nth-child(2),
 .line:first-child{
   .line-separator{
     margin-top: 0;
