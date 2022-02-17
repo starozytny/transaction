@@ -8,7 +8,7 @@ import TopToolbar        from "@commonComponents/functions/topToolbar";
 import { SousTypesList }      from "./SousTypesList";
 import { SousTypeFormulaire } from "./SousTypeForm";
 
-const URL_DELETE_ELEMENT = 'api_donnees_sols_delete';
+const URL_DELETE_ELEMENT = 'api_donnees_soustypes_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer ce sous type de bien ?';
 let SORTER = Sort.compareName;
 
