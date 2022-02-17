@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Donnee;
 
-use App\Entity\Donnee\DoQuartier;
+use App\Entity\Donnee\DoSol;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataService;
@@ -17,9 +17,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
 
 /**
- * @Route("/api/donnees/quartiers", name="api_donnees_quartiers_")
+ * @Route("/api/donnees/sols", name="api_donnees_sols_")
  */
-class QuartierController extends AbstractController
+class SolController extends AbstractController
 {
     private $doctrine;
 
@@ -31,7 +31,7 @@ class QuartierController extends AbstractController
     /**
      * @throws Exception
      */
-    public function submitForm($type, DoQuartier $obj, Request $request, ApiResponse $apiResponse,
+    public function submitForm($type, DoSol $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataDonnee $dataEntity): JsonResponse
     {
         $em = $this->doctrine->getManager();
@@ -41,7 +41,7 @@ class QuartierController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataQuartier($obj, $data);
+        $obj = $dataEntity->setDataSol($obj, $data);
 
         /** @var User $user */
         $user = $this->getUser();
@@ -77,7 +77,7 @@ class QuartierController extends AbstractController
      */
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataDonnee $dataEntity): JsonResponse
     {
-        return $this->submitForm("create", new DoQuartier(), $request, $apiResponse, $validator, $dataEntity);
+        return $this->submitForm("create", new DoSol(), $request, $apiResponse, $validator, $dataEntity);
     }
 
     /**
@@ -90,7 +90,7 @@ class QuartierController extends AbstractController
      *
      * @OA\Tag(name="Donnees")
      *
-     * @param DoQuartier $obj
+     * @param DoSol $obj
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -98,7 +98,7 @@ class QuartierController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(DoQuartier $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataDonnee $dataEntity): JsonResponse
+    public function update(DoSol $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataDonnee $dataEntity): JsonResponse
     {
         if($obj->getIsNative()){
             return $apiResponse->apiJsonResponseBadRequest("Vous ne pouvez pas modifier cette donnée.");
@@ -117,12 +117,12 @@ class QuartierController extends AbstractController
      *
      * @OA\Tag(name="Donnees")
      *
-     * @param DoQuartier $obj
+     * @param DoSol $obj
      * @param ApiResponse $apiResponse
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(DoQuartier $obj, ApiResponse $apiResponse, DataService $dataService): JsonResponse
+    public function delete(DoSol $obj, ApiResponse $apiResponse, DataService $dataService): JsonResponse
     {
         if($obj->getIsNative()){
             return $apiResponse->apiJsonResponseBadRequest("Vous ne pouvez pas modifier cette donnée.");

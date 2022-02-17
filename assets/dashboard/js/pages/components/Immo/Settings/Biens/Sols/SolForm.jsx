@@ -13,8 +13,8 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_donnees_quartiers_create";
-const URL_UPDATE_GROUP       = "api_donnees_quartiers_update";
+const URL_CREATE_ELEMENT     = "api_donnees_sols_create";
+const URL_UPDATE_GROUP       = "api_donnees_sols_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 

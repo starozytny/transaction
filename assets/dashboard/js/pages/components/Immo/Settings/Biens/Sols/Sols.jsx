@@ -8,7 +8,7 @@ import TopToolbar        from "@commonComponents/functions/topToolbar";
 import { SolsList }      from "./SolsList";
 import { SolFormulaire } from "./SolForm";
 
-const URL_DELETE_ELEMENT = 'api_donnees_quartiers_delete';
+const URL_DELETE_ELEMENT = 'api_donnees_sols_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer ce quartier ?';
 let SORTER = Sort.compareName;
 
