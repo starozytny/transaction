@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import axios    from "axios";
 import toastr   from "toastr";
-import { uid }  from 'uid';
-import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import helper           from "@userPages/components/Biens/helper";
 import Helper           from "@commonComponents/functions/helper";
@@ -11,6 +9,8 @@ import Validateur       from "@commonComponents/functions/validateur";
 import Sort             from "@commonComponents/functions/sort";
 import Formulaire       from "@dashboardComponents/functions/Formulaire";
 import DataState        from "./Form/data";
+import Automate         from "./functions/automate";
+import Changer          from "./functions/changer";
 
 import { HelpBubble }   from "@dashboardComponents/Tools/HelpBubble";
 import { Button }       from "@dashboardComponents/Tools/Button";
@@ -32,120 +32,6 @@ import { Owners}        from "@dashboardPages/components/Immo/Owners/Owners";
 let arrayZipcodeSave = [];
 let arrayOwnersSave = [];
 let initRank = null;
-
-function getValueFloat(value){
-    return value !== "" ? parseFloat(value) : 0;
-}
-
-function consequenceValueToBoolean(self, name, value, compareName, compareValue, toName, booleanValue=99) {
-    if(name === compareName){
-        if(value > parseFloat(compareValue)){
-            self.setState({ [toName]: 1 })
-        }else{
-            self.setState({ [toName]: booleanValue })
-        }
-    }
-}
-
-function consequenceValueToRooms(self, name, value, rooms, compareName, codeTypeRoom, elStep) {
-    if(name === compareName){
-        let iteration = value !== "" ? parseInt(value) : 0;
-
-        let nRooms = [];
-        let total = 0;
-        rooms.forEach(ro => {
-            if(ro.typeRoom === codeTypeRoom){
-                total++;
-            }
-
-            if(!ro.isGenerique){
-                nRooms.push(ro);
-            }
-
-            if(ro.isGenerique && ro.typeRoom !== codeTypeRoom){
-                nRooms.push(ro);
-            }
-        })
-        iteration = iteration - total;
-
-         rooms.filter(r => {return (r.isGenerique !== false && r.isGenerique !== undefined) || r.typeRoom !== codeTypeRoom});
-        for(let i = 0 ; i < (iteration > 0 ? iteration : 0) ; i++){
-            let newRoom = elStep.handleAddGeneriqueRoom(null, codeTypeRoom);
-            nRooms.push(newRoom)
-        }
-
-        self.setState({ rooms: nRooms })
-    }
-}
-
-function calculateFinancial(self, name, value, codeTypeAd,
-                            price, notaire, honoraireTtc, honorairePourcentage, provisionCharges, provisionOrdures,
-                            typeCalcul, tva, honoraireBail)
-{
-    let nPrice      = name === "price" ? value : price;
-    let nNotaire    = name === "notaire" ? value : notaire;
-    let nHonoTtc    = name === "honoraireTtc" ? value : honoraireTtc;
-    let nHonoPour   = name === "honorairePourcentage" ? value : honorairePourcentage;
-    let nProvChar   = name === "provisionCharges" ? value : provisionCharges;
-    let nProvOrd    = name === "provisionOrdures" ? value : provisionOrdures;
-    let nTva        = name === "tva" ? value : tva;
-    let nHonoBail   = name === "honoraireBail" ? value : honoraireBail;
-    let nTypeCalcul = name === "typeCalcul" ? value : typeCalcul;
-
-    if(parseInt(codeTypeAd) !== 1){
-        let nPriceHoAcq = getValueFloat(nPrice) + getValueFloat(nNotaire);
-
-        if(name === "price" || name === "honorairePourcentage"){
-            nHonoTtc = (getValueFloat(nPrice) * getValueFloat(nHonoPour)) / 100
-            self.setState({ honoraireTtc: nHonoTtc })
-        }
-
-        if(name === "honoraireTtc"){
-            nHonoPour = (getValueFloat(nHonoTtc)/getValueFloat(nPrice)) * 100;
-            self.setState({ honorairePourcentage: nHonoPour })
-        }
-
-        let totalGeneral = getValueFloat(nPrice) + getValueFloat(nNotaire) + getValueFloat(nHonoTtc);
-        self.setState({ totalGeneral: totalGeneral, priceHorsAcquereur: nPriceHoAcq })
-    }else{
-        let totalTerme, totalGeneral;
-        switch (nTypeCalcul){
-            case 2:
-                totalTerme = getValueFloat(nPrice) + getValueFloat(nProvChar) + getValueFloat(nTva) + getValueFloat(nProvOrd);
-                break;
-            case 1:
-                totalTerme = getValueFloat(nPrice) + getValueFloat(nProvChar) + getValueFloat(nTva);
-                break;
-            default:
-                totalTerme = getValueFloat(nPrice) + getValueFloat(nProvChar) + getValueFloat(nProvOrd);
-                break;
-        }
-
-        totalGeneral = totalTerme + getValueFloat(nHonoTtc) + getValueFloat(nHonoBail);
-
-        self.setState({ totalTerme, totalGeneral })
-    }
-}
-
-function getBase64(file, self, rank) {
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-        self.setState({ photos: [...self.state.photos, ...[{
-            uid: uid(),
-            file: reader.result,
-            name: file.name,
-            legend: "",
-            size: file.size,
-            rank: rank,
-            is64: true,
-            isTrash: false
-        }]] })
-    };
-    reader.onerror = function (error) {
-        toastr.error('Error: ', error);
-    };
-}
 
 export class BienForm extends Component {
     constructor(props) {
@@ -186,30 +72,34 @@ export class BienForm extends Component {
 
     handleChange = (e) => {
         const { codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail } = this.state;
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, startAt } = this.state;
 
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
 
-        consequenceValueToBoolean(this, name, value, "areaGarden",  0, "hasGarden");
-        consequenceValueToBoolean(this, name, value, "areaTerrace", 0, "hasTerrace");
-        consequenceValueToBoolean(this, name, value, "areaCave",    0, "hasCave");
+        Automate.consequenceValueToBoolean(this, name, value, "areaGarden",  0, "hasGarden");
+        Automate.consequenceValueToBoolean(this, name, value, "areaTerrace", 0, "hasTerrace");
+        Automate.consequenceValueToBoolean(this, name, value, "areaCave",    0, "hasCave");
 
         let elStep = this.rooms.current;
-        consequenceValueToRooms(this, name, value, rooms, "room",       4, elStep);
-        consequenceValueToRooms(this, name, value, rooms, "bathroom",   9, elStep);
-        consequenceValueToRooms(this, name, value, rooms, "wc",         12, elStep);
-        consequenceValueToRooms(this, name, value, rooms, "balcony",    1, elStep);
-        consequenceValueToRooms(this, name, value, rooms, "box",        2, elStep);
+        Automate.consequenceValueToRooms(this, name, value, rooms, "room",       4, elStep);
+        Automate.consequenceValueToRooms(this, name, value, rooms, "bathroom",   9, elStep);
+        Automate.consequenceValueToRooms(this, name, value, rooms, "wc",         12, elStep);
+        Automate.consequenceValueToRooms(this, name, value, rooms, "balcony",    1, elStep);
+        Automate.consequenceValueToRooms(this, name, value, rooms, "box",        2, elStep);
 
-        calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+        Automate.calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
             provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail);
 
         if(name === "newQuartier"){
             value = (e.currentTarget.checked) ? [parseInt(value)] : [] // parseInt because work with int this time
         }
 
-        this.setState({[name]: value});
+        if(name === "nbMonthMandat"){
+            Changer.setEndMandat(this, startAt, value)
+        }
+
+        this.setState({[name]: value });
     }
 
     handleChangeSelect = (name, e) => {
@@ -219,11 +109,26 @@ export class BienForm extends Component {
         let value = e !== undefined ? e.value : "";
 
         if(name === "typeCalcul"){
-            calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+            Automate.calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
                 provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail);
         }
 
         this.setState({ [name]: value })
+    }
+
+    handleChangeDate = (name, e) => {
+        const { nbMonthMandat } = this.state;
+
+        let value = e !== null ? e : "";
+        if(name === "startAt"){ Changer.setEndMandat(this, value, nbMonthMandat) }
+
+        this.setState({ [name]: value })
+    }
+
+    handleChangeZipcode = (e) => {
+        const { arrayPostalCode } = this.state;
+
+        Helper.setCityFromZipcode(this, e, arrayPostalCode ? arrayPostalCode : arrayZipcodeSave)
     }
 
     handleChangeGeo = () => {
@@ -272,7 +177,7 @@ export class BienForm extends Component {
                         toastr.error("Le fichier est trop gros.")
                     }else{
                         if (/\.(jpe?g|png|gif)$/i.test(file.name)){
-                            getBase64(file, self, rank);
+                            Automate.getBase64(file, self, rank);
                             rank++;
                         }
                     }
@@ -283,16 +188,7 @@ export class BienForm extends Component {
         }
     }
 
-    handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
-
-    handleChangeZipcode = (e) => {
-        const { arrayPostalCode } = this.state;
-
-        Helper.setCityFromZipcode(this, e, arrayPostalCode ? arrayPostalCode : arrayZipcodeSave)
-    }
-
     handleGenerateContent = (type) => {
-        console.log(this.state)
         if(type === "simple"){
             this.setState({ contentSimple: helper.setContentSimple(this) })
         }else{

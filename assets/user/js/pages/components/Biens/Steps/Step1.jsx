@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }    from "@dashboardComponents/Tools/Alert";
 import { Button }   from "@dashboardComponents/Tools/Button";
 import { DatePick } from "@dashboardComponents/Tools/DatePicker";
@@ -11,7 +11,7 @@ import Sort from "@commonComponents/functions/sort";
 const CURRENT_STEP = 1;
 
 export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate, negotiators,
-                          codeTypeAd, codeTypeBien, codeTypeMandat, startAt, endAt, negotiator })
+                          codeTypeAd, codeTypeBien, codeTypeMandat, startAt, nbMonthMandat, endAt, negotiator })
 {
     let typeAdItems = helper.getItems("ads");
     let typeBienItems = helper.getItems("biens");
@@ -44,11 +44,14 @@ export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 Type de mandat *
             </Radiobox>
 
-            {parseInt(codeTypeMandat) !== 0 && <div className="line line-2">
+            {parseInt(codeTypeMandat) !== 0 && <div className="line line-3">
                 <DatePick identifiant="startAt" valeur={startAt} errors={errors}
                           onChange={(e) => onChangeDate("startAt", e)}>
                     Début du mandat
                 </DatePick>
+                <Input type="number" min={0} identifiant="nbMonthMandat" valeur={nbMonthMandat} errors={errors} onChange={onChange}>
+                    <span>Nombre de mois</span>
+                </Input>
                 <DatePick identifiant="endAt" valeur={endAt} errors={errors}
                           minDate={startAt ? startAt : null} maxDate={null}
                           onChange={(e) => onChangeDate("endAt", e)}>

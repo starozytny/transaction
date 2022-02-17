@@ -133,6 +133,7 @@ function getDataState (props) {
         codeTypeMandat: props.codeTypeMandat,
         startAt: props.startAt,
         endAt: props.endAt,
+        nbMonthMandat: 3,
 
         rooms: props.rooms,
 
