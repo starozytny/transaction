@@ -350,7 +350,7 @@ class DataImmo extends DataConstructor
             ->setTypeRoom((int) $data->typeRoom)
             ->setName($this->sanitizeData->trimData($data->name))
             ->setArea($this->setToNullFloat($data->area))
-            ->setSol($this->setToNullInteger($data->sol))
+            ->setSol($this->sanitizeData->trimData($data->sol))
             ->setHasBalcony((int) $data->hasBalcony)
             ->setHasTerrace((int) $data->hasTerrace)
             ->setHasGarden((int) $data->hasGarden)

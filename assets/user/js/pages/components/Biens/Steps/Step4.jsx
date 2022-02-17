@@ -110,13 +110,13 @@ export class Step4 extends Component {
     }
 
     render () {
-        const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, rooms, codeTypeBien } = this.props;
+        const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, sols, rooms, codeTypeBien } = this.props;
 
         const { errors, typeRoom, uid, name, area, sol,
             hasBalcony, hasTerrace, hasGarden, areaBalcony, areaTerrace, areaGarden } = this.state;
 
         let roomItems = helper.getItems("rooms");
-        let solItems = helper.getItems("sols");
+        let solItems = helper.getItemsFromDB(sols, sol, 'sol');
 
         let typeInt = helper.getIntValue(typeRoom);
         let codeTypeBienInt = helper.getIntValue(codeTypeBien);
