@@ -11,7 +11,8 @@ import Sort from "@commonComponents/functions/sort";
 const CURRENT_STEP = 1;
 
 export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate, negotiators,
-                          codeTypeAd, codeTypeBien, codeTypeMandat, startAt, nbMonthMandat, endAt, negotiator })
+                          codeTypeAd, codeTypeBien, codeTypeMandat, startAt, nbMonthMandat, endAt, priceEstimate, fee,
+                          negotiator })
 {
     let typeAdItems = helper.getItems("ads");
     let typeBienItems = helper.getItems("biens");
@@ -44,20 +45,31 @@ export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 Type de mandat *
             </Radiobox>
 
-            {parseInt(codeTypeMandat) !== 0 && <div className="line line-3">
-                <DatePick identifiant="startAt" valeur={startAt} errors={errors}
-                          onChange={(e) => onChangeDate("startAt", e)}>
-                    Début du mandat
-                </DatePick>
-                <Input type="number" min={0} identifiant="nbMonthMandat" valeur={nbMonthMandat} errors={errors} onChange={onChange}>
-                    <span>Nombre de mois</span>
-                </Input>
-                <DatePick identifiant="endAt" valeur={endAt} errors={errors}
-                          minDate={startAt ? startAt : null} maxDate={null}
-                          onChange={(e) => onChangeDate("endAt", e)}>
-                    Fin du mandat
-                </DatePick>
-            </div>}
+            {parseInt(codeTypeMandat) !== 0 && <>
+                <div className="line line-3">
+                    <DatePick identifiant="startAt" valeur={startAt} errors={errors}
+                              onChange={(e) => onChangeDate("startAt", e)}>
+                        Début du mandat
+                    </DatePick>
+                    <Input type="number" min={0} identifiant="nbMonthMandat" valeur={nbMonthMandat} errors={errors} onChange={onChange}>
+                        <span>Nombre de mois</span>
+                    </Input>
+                    <DatePick identifiant="endAt" valeur={endAt} errors={errors}
+                              minDate={startAt ? startAt : null} maxDate={null}
+                              onChange={(e) => onChangeDate("endAt", e)}>
+                        Fin du mandat
+                    </DatePick>
+                </div>
+                {parseInt(codeTypeAd) === 0 && <div className="line line-3">
+                    <Input type="number" min={0} any="step" identifiant="priceEstimate" valeur={priceEstimate} errors={errors} onChange={onChange}>
+                        <span>Prix estimé</span>
+                    </Input>
+                    <Input type="number" min={0} any="step" identifiant="fee" valeur={fee} errors={errors} onChange={onChange}>
+                        <span>Commission vendeur</span>
+                    </Input>
+                    <div className="form-group" />
+                </div>}
+            </>}
         </div>
 
         <div className="line special-line">

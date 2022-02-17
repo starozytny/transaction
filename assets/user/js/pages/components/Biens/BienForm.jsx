@@ -198,7 +198,7 @@ export class BienForm extends Component {
 
     handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
-            areaTotal, piece } = this.state;
+            areaTotal, piece, priceEstimate, price } = this.state;
 
         let paramsToValidate = [];
         if(stepInitial === null || fromMenu === true){
@@ -218,6 +218,10 @@ export class BienForm extends Component {
                         {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
                         {type: "text",      id: 'negotiator',     value: negotiator}
                     ];
+
+                    if(priceEstimate !== "" && price === ""){
+                        this.setState({ price: priceEstimate })
+                    }
                     break;
                 default:
                     break;

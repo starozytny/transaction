@@ -134,6 +134,8 @@ function getDataState (props) {
         startAt: props.startAt,
         endAt: props.endAt,
         nbMonthMandat: 3,
+        priceEstimate: props.priceEstimate,
+        fee: props.fee,
 
         rooms: props.rooms,
 
