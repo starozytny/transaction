@@ -25,7 +25,7 @@ class DoSousType extends DataEntity
      * @ORM\Column(type="boolean")
      * @Groups({"donnee:read"})
      */
-    private $isNative;
+    private $isNative = false;
 
     /**
      * @ORM\Column(type="string", length=255)
