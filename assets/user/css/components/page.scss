@@ -78,6 +78,43 @@
   .title-col-2{
     margin-bottom: 24px;
   }
+
+  .page-default-menu{
+    .item{
+      @include flex(row, center, flex-start);
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      border-radius: 4px;
+      padding: 6px 4px;
+
+      &:not(:last-child){
+        margin-bottom: 8px;
+      }
+
+      &:before{
+        content: "";
+        display: block;
+        width: 6px; height: 6px;
+        border-radius: 12px;
+        background-color: var(--grey2);
+        margin-right: 8px;
+        transition: all 0.2s ease-in-out;
+      }
+
+      &:hover,
+      &.active{
+        color: var(--primary);
+
+        &:before{
+          background-color: var(--primary);
+        }
+      }
+
+      &.active{
+        background-color: var(--color0Shadow2);
+      }
+    }
+  }
 }
 
 //                      __   _____ __    ___    __

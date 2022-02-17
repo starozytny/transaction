@@ -22,11 +22,15 @@ export class SettingsBiens extends Component {
         const { context } = this.state;
 
         let menu = [
-            { value: "quartier", label: "Quartier" }
+            { value: "quartier", label: "Quartiers" },
+            { value: "sol",      label: "Sols" },
         ];
 
         let content;
         switch (context){
+            case "sol":
+                content = <div>Sols</div>
+                break;
             default:
                 content = <div id="list-quartiers">
                     <Quartiers donnees={quartiers} />
@@ -42,9 +46,17 @@ export class SettingsBiens extends Component {
                             <span>Infos biens :</span>
                         </div>
                         <div className="content-col-1">
-                            {menu.map((el, index) => {
-                                return <div key={index} onClick={() => this.handleChangeContext(el.value)}>{el.label}</div>
-                            })}
+                            <div className="page-default-menu">
+                                <div className="items">
+                                    {menu.map((el, index) => {
+                                        return <div key={index} className={"item" + (el.value === context ? " active" : "")}
+                                                    onClick={() => this.handleChangeContext(el.value)}
+                                        >
+                                            {el.label}
+                                        </div>
+                                    })}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
