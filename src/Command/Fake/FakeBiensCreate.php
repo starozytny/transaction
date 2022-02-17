@@ -228,6 +228,8 @@ class FakeBiensCreate extends Command
                 "codeTypeMandat" => (string) $fake->numberBetween(0, 3),
                 "startAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "endAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
+                "priceEstimate" => "",
+                "fee" => "",
             ];
 
             $data = json_decode(json_encode($data));
