@@ -94,28 +94,6 @@ class ImBien extends DataEntity
     private $libelle;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
-     */
-    private $createdBy;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $updatedAt;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $updatedBy;
-
-    /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"user:read"})
      */
@@ -275,6 +253,29 @@ class ImBien extends DataEntity
      * @ORM\OneToMany(targetEntity=ImOffer::class, mappedBy="bien")
      */
     private $offers;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Groups({"user:read"})
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
+     */
+    private $createdBy;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $updatedBy;
 
     public function __construct()
     {
