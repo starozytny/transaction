@@ -127,6 +127,12 @@ class DataImmo extends DataConstructor
      */
     public function setDataMandat(ImMandat $obj, $data): ImMandat
     {
+
+        if($data->codeTypeAd == ImBien::AD_VENTE && $data->codeTypeMandat != ImMandat::TYPE_NONE){
+            $obj->setPriceEstimate($this->setToNullFloat($data->priceEstimate));
+            $obj->setFee($this->setToNullFloat($data->fee));
+        }
+
         return ($obj)
             ->setCodeTypeMandat((int) $data->codeTypeMandat)
             ->setStartAt($this->createDate($data->startAt))

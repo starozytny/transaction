@@ -3,7 +3,7 @@ function setEndMandat(self, startAt, nbMonthMandat) {
         let nValue = new Date(startAt);
         let nEndAt = nValue.setMonth(startAt.getMonth() + parseInt(nbMonthMandat));
 
-        self.setState({ endAt: nEndAt })
+        self.setState({ endAt: new Date(nEndAt) })
     }
 }
 

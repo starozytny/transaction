@@ -196,50 +196,6 @@ export class BienForm extends Component {
         }
     }
 
-    handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
-        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
-            areaTotal, piece, priceEstimate, price } = this.state;
-
-        let paramsToValidate = [];
-        if(stepInitial === null || fromMenu === true){
-            let stepValue = fromMenu ? stepInitial + 1 : stepClicked;
-            switch (stepValue){
-                case 3:
-                    paramsToValidate = [
-                        {type: "text",      id: 'areaTotal',      value: areaTotal},
-                        {type: "text",      id: 'piece',          value: piece}
-                    ];
-                    break;
-                case 2:
-                    paramsToValidate = [
-                        {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
-                        {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
-                        {type: "text",      id: 'libelle',        value: libelle},
-                        {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
-                        {type: "text",      id: 'negotiator',     value: negotiator}
-                    ];
-
-                    if(priceEstimate !== "" && price === ""){
-                        this.setState({ price: priceEstimate })
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-        }
-
-        // validate global
-        let validate = Validateur.validateur(paramsToValidate);
-
-        Helper.toTop();
-        if(!validate.code){
-            Formulaire.showErrors(this, validate);
-        }else{
-            this.setState({ errors: [], step: stepClicked })
-        }
-    }
-
     handleOpenHelp = (type) => {
         let content = "";
         switch (type) {
@@ -366,11 +322,59 @@ export class BienForm extends Component {
         this.aside3.current.handleClose();
     }
 
+    handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
+        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
+            areaTotal, piece, priceEstimate, price } = this.state;
+
+        this.setState({ errors: [] })
+
+        let paramsToValidate = [];
+        if(stepInitial === null || fromMenu === true){
+            let stepValue = fromMenu ? stepInitial + 1 : stepClicked;
+            switch (stepValue){
+                case 3:
+                    paramsToValidate = [
+                        {type: "text",      id: 'areaTotal',      value: areaTotal},
+                        {type: "text",      id: 'piece',          value: piece}
+                    ];
+                    break;
+                case 2:
+                    paramsToValidate = [
+                        {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
+                        {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
+                        {type: "text",      id: 'libelle',        value: libelle},
+                        {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
+                        {type: "text",      id: 'negotiator',     value: negotiator}
+                    ];
+
+                    if(priceEstimate !== "" && price === ""){
+                        this.setState({ price: priceEstimate })
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        // validate global
+        let validate = Validateur.validateur(paramsToValidate);
+
+        Helper.toTop();
+        if(!validate.code){
+            Formulaire.showErrors(this, validate);
+        }else{
+            this.setState({ errors: [], step: stepClicked })
+        }
+    }
+
     handleSubmit = (e, isDraft = true) => {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator, photos } = this.state;
+
+        this.setState({ errors: [] })
 
         // TODO : ----------------------------------
         // TODO : recheck all data before send

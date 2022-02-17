@@ -12,6 +12,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImMandat extends DataEntity
 {
+    const TYPE_NONE = 0;
+    const TYPE_SIMPLE = 1;
+    const TYPE_EXCLUSIF = 2;
+    const TYPE_SEMI = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -23,7 +28,7 @@ class ImMandat extends DataEntity
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $codeTypeMandat = 0;
+    private $codeTypeMandat = self::TYPE_NONE;
 
     /**
      * @ORM\Column(type="date", nullable=true)
