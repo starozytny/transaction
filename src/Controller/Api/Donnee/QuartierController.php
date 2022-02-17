@@ -47,6 +47,10 @@ class QuartierController extends AbstractController
         $user = $this->getUser();
         $obj->setAgency($user->getAgency());
 
+        if($type === "update"){
+            $obj->setUpdatedAt(new DateTime());
+        }
+
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Donnee;
 
+use App\Entity\DataEntity;
 use App\Entity\Immo\ImAgency;
 use App\Repository\Donnee\DoSolRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=DoSolRepository::class)
  */
-class DoSol
+class DoSol extends DataEntity
 {
     /**
      * @ORM\Id
@@ -36,6 +37,21 @@ class DoSol
      * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="doSols")
      */
     private $agency;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = $this->initNewDate();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +90,31 @@ class DoSol
     public function setAgency(?ImAgency $agency): self
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $updatedAt->setTimezone(new \DateTimeZone("Europe/Paris"));
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
