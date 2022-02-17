@@ -13,7 +13,7 @@ import Helper                  from "@commonComponents/functions/helper";
 import Sort                    from "@commonComponents/functions/sort";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_UPDATE_GROUP       = "api_owners_update";
+const URL_UPDATE_GROUP       = "api_immo_settings_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
@@ -25,7 +25,7 @@ export function GenerauxFormulaire ({ type, element, negotiators })
     let form = <GenerauxForm
         context={type}
         url={url}
-        negotiatorDefault={Formulaire.setValueEmptyIfNull(element.negotiatorDefault)}
+        negotiatorDefault={Formulaire.setValueEmptyIfNull(element.negotiatorDefault !== 0 ? element.negotiatorDefault : "")}
         mandatMonthVente={Formulaire.setValueEmptyIfNull(element.mandatMonthVente)}
         mandatMonthLocation={Formulaire.setValueEmptyIfNull(element.mandatMonthLocation)}
 
@@ -65,15 +65,19 @@ class GenerauxForm extends Component {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
-        const { critere, negotiatorDefault } = this.state;
+        const { critere, negotiatorDefault, mandatMonthVente, mandatMonthLocation } = this.state;
 
         if(critere !== ""){
             toastr.error("Veuillez rafraichir la page.");
         }else{
             this.setState({ errors: [], success: false });
 
+            console.log(this.state)
+
             let paramsToValidate = [
-                {type: "text", id: 'negotiatorDefault', value: negotiatorDefault},
+                {type: "text", id: 'negotiatorDefault',   value: negotiatorDefault},
+                {type: "text", id: 'mandatMonthVente',    value: mandatMonthVente},
+                {type: "text", id: 'mandatMonthLocation', value: mandatMonthLocation},
             ];
 
             // validate global
@@ -124,7 +128,7 @@ class GenerauxForm extends Component {
                         <div className="line">
                             <SelectReactSelectize items={selectNegotiator} identifiant="negotiatorDefault" valeur={negotiatorDefault}
                                                   placeholder={"Sélectionner le négociateur"}
-                                                  errors={errors} onChange={(e) => this.handleChangeSelect("negotiator", e)}
+                                                  errors={errors} onChange={(e) => this.handleChangeSelect("negotiatorDefault", e)}
                             >
                                 Négociateur par défaut
                             </SelectReactSelectize>

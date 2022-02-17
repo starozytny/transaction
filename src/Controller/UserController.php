@@ -482,7 +482,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/paramètres/generaux", name="settings_generaux")
+     * @Route("/parametres/generaux", name="settings_generaux")
      */
     public function parametresGeneraux(ImSettingsRepository $settingsRepository, ImNegotiatorRepository $negotiatorRepository,
                                        SerializerInterface $serializer): Response
@@ -502,7 +502,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/paramètres/biens", name="settings_biens")
+     * @Route("/parametres/biens", name="settings_biens")
      */
     public function parametresBiens(SerializerInterface $serializer): Response
     {

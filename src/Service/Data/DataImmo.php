@@ -23,6 +23,7 @@ use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImSearch;
+use App\Entity\Immo\ImSettings;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
@@ -119,6 +120,15 @@ class DataImmo extends DataConstructor
             ->setAdvert($advert)
             ->setMandat($mandat)
             ->setIsDraft($isDraft)
+        ;
+    }
+
+    public function setDataSettings(ImSettings $obj, $data): ImSettings
+    {
+        return ($obj)
+            ->setNegotiatorDefault($this->setToZeroEmpty($data->negotiatorDefault))
+            ->setMandatMonthVente($this->setToZeroEmpty($data->mandatMonthVente))
+            ->setMandatMonthLocation($this->setToZeroEmpty($data->mandatMonthLocation))
         ;
     }
 
