@@ -47,10 +47,10 @@ function getItems (type, prefix) {
             ];
         case "informs":
             return [
-                { value: 0, label: 'Personne',       identifiant: 'inform-nobody' },
-                { value: 1, label: 'Propriétaire',   identifiant: 'inform-owner' },
-                { value: 2, label: 'Locataire(s)',   identifiant: 'inform-tenant' },
-                { value: 3, label: 'Autres',         identifiant: 'inform-others' },
+                { value: 0, label: 'Personne à contacter',  identifiant: 'inform-nobody' },
+                { value: 1, label: 'Propriétaire',          identifiant: 'inform-owner' },
+                // { value: 2, label: 'Locataire(s)',          identifiant: 'inform-tenant' },
+                { value: 3, label: 'Autres',                identifiant: 'inform-others' },
             ];
         case "occupations":
             return [

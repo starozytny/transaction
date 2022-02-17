@@ -3,16 +3,11 @@ import React from "react";
 import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
 import { Button }       from "@dashboardComponents/Tools/Button";
-import { UtContact }    from "@dashboardComponents/Tools/Utilitaire";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper   from "@userPages/components/Biens/functions/helper";
 
-import {
-    OwnerMainInfos,
-} from "@dashboardPages/components/Immo/Owners/OwnersItem";
-import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
-import {ReadCard} from "@userComponents/Layout/Read";
+import { ReadCard } from "@userComponents/Layout/Read";
 
 const CURRENT_STEP = 8;
 
