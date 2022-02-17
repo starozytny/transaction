@@ -4,6 +4,7 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImSettingsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImSettingsRepository::class)
@@ -14,21 +15,25 @@ class ImSettings
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $negotiatorDefault = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
      */
     private $mandatMonthVente = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
      */
     private $mandatMonthLocation = 0;
 

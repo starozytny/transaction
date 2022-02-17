@@ -15,6 +15,7 @@ use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
+use App\Repository\Immo\ImSettingsRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImBuyerRepository;
@@ -476,6 +477,22 @@ class UserController extends AbstractController
 
         return $this->render('user/pages/visits/index.html.twig', [
             'donnees' => $objs,
+        ]);
+    }
+
+    /**
+     * @Route("/paramètres/generaux", name="settings_generaux")
+     */
+    public function parametresGeneraux(ImSettingsRepository $settingsRepository, SerializerInterface $serializer): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $settingsRepository->findOneBy(['agency' => $user->getAgency()]);
+
+        $data = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/settings/index.html.twig', [
+            'donnees' => $data,
         ]);
     }
 
