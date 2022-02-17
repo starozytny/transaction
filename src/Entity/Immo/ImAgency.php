@@ -4,6 +4,7 @@ namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
 use App\Entity\Donnee\DoQuartier;
+use App\Entity\Donnee\DoSol;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Repository\Immo\ImAgencyRepository;
@@ -230,6 +231,11 @@ class ImAgency extends DataEntity
      */
     private $doQuartiers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DoSol::class, mappedBy="agency")
+     */
+    private $doSols;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
@@ -241,6 +247,7 @@ class ImAgency extends DataEntity
         $this->photos = new ArrayCollection();
         $this->buyers = new ArrayCollection();
         $this->doQuartiers = new ArrayCollection();
+        $this->doSols = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -833,6 +840,36 @@ class ImAgency extends DataEntity
             // set the owning side to null (unless already changed)
             if ($doQuartier->getAgency() === $this) {
                 $doQuartier->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DoSol[]
+     */
+    public function getDoSols(): Collection
+    {
+        return $this->doSols;
+    }
+
+    public function addDoSol(DoSol $doSol): self
+    {
+        if (!$this->doSols->contains($doSol)) {
+            $this->doSols[] = $doSol;
+            $doSol->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDoSol(DoSol $doSol): self
+    {
+        if ($this->doSols->removeElement($doSol)) {
+            // set the owning side to null (unless already changed)
+            if ($doSol->getAgency() === $this) {
+                $doSol->setAgency(null);
             }
         }
 
