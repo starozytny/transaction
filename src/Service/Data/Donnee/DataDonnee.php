@@ -4,6 +4,7 @@ namespace App\Service\Data\Donnee;
 
 use App\Entity\Donnee\DoQuartier;
 use App\Entity\Donnee\DoSol;
+use App\Entity\Donnee\DoSousType;
 use App\Service\Data\DataConstructor;
 
 class DataDonnee extends DataConstructor
@@ -58,5 +59,25 @@ class DataDonnee extends DataConstructor
         return ($obj)
             ->setName($name)
         ;
+    }
+
+    public function setDataSousType(DoSousType $obj, $data, $name = null): DoSousType
+    {
+        $name = $this->setNameSanitaze($data, $name);
+
+        if($name){
+            $exist = $this->em->getRepository(DoSousType::class)->findOneBy([
+                'name' => $name,
+                'isNative' => false
+            ]);
+
+            if($exist){
+                $obj = $exist;
+            }
+        }
+
+        return ($obj)
+            ->setName($name)
+            ;
     }
 }

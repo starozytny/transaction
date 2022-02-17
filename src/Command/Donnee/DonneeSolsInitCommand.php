@@ -37,14 +37,14 @@ class DonneeSolsInitCommand extends Command
 //        $io->title('Reset des tables');
 //        $this->databaseService->resetTable($io, [DoSol::class]);
 
-        $quartiers = $this->em->getRepository(DoSol::class)->findBy(['isNative' => true]);
-        if(count($quartiers) > 1){
+        $objs = $this->em->getRepository(DoSol::class)->findBy(['isNative' => true]);
+        if(count($objs) > 1){
             $io->text("Sol déjà initialisé.");
             return Command::FAILURE;
         }
 
         $items = ["Carrelage", "Moquette", "Moquette et carrelage", "Parquet", "Synthétique", "Tomette",
-            "Béton", "Béton ciré", "Parquet stratifié", "Lino", "Carreaux", ];
+            "Béton", "Béton ciré", "Parquet stratifié", "Lino", "Carreaux"];
 
         sort($items);
 

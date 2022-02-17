@@ -40,8 +40,8 @@ class DonneeQuartiersInitCommand extends Command
 //        $io->title('Reset des tables');
 //        $this->databaseService->resetTable($io, [DoQuartier::class]);
 
-        $quartiers = $this->em->getRepository(DoQuartier::class)->findBy(['isNative' => true]);
-        if(count($quartiers) > 1){
+        $objs = $this->em->getRepository(DoQuartier::class)->findBy(['isNative' => true]);
+        if(count($objs) > 1){
             $io->text("Quartier déjà initialisé.");
             return Command::FAILURE;
         }
