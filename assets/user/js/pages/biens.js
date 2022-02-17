@@ -7,7 +7,7 @@ import React from "react";
 import { render } from "react-dom";
 
 import { Biens }          from "./components/Biens/Biens";
-import { BienFormulaire } from "./components/Biens/BienForm";
+import { BienFormulaire } from "./components/Biens/Form/Form";
 import { Visits }         from "@dashboardPages/components/Immo/Visits/Visits";
 import { AdItem }         from "@userPages/components/Biens/Read/AdItem";
 import { Suivi }          from "@userPages/components/Biens/Suivi/Suivi";
