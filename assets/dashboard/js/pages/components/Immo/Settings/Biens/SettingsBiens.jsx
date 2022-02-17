@@ -64,10 +64,11 @@ export class SettingsBiens extends Component {
                 <div className="page-col-2">
                     <PageInfos>
                         <p>
-                            Les données ci-dessous représentent les éléments sélectionnables lors de la
-                            création ou la modification d'un bien.
+                            Les données ci-dessous sont les éléments sélectionnables lors de la
+                            création ou la modification d'un bien. <br/> Vous pouvez personnaliser cette liste
+                            en ajoutant manuellement un élément.
                             <br/><br/>
-                            Les éléments en <span className="badge">Natif</span> ne peuvent pas être supprimés ou modifiés.
+                            Les éléments <span className="badge">Natif</span> ne peuvent pas être supprimés ou modifiés.
                         </p>
                     </PageInfos>
                     {content}
