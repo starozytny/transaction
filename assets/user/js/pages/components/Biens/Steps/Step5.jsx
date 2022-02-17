@@ -41,22 +41,7 @@ export class Step5 extends Component {
             let marker = L.marker([lat, lon], {icon: Map.getOriginalLeafletIcon("../")}).addTo(mymap);
         }
 
-        let quartiersItems = [],
-            findQuartier   = false
-        ;
-
-        quartiers.sort(Sort.compareName)
-        quartiers.forEach(ne => {
-            if(ne.name === quartier){
-                findQuartier = true;
-            }
-            quartiersItems.push({ value: ne.name, label: ne.name + ", " + ne.zipcode + " - " + ne.city, identifiant: "quart-" + ne.id })
-        })
-
-        if(!findQuartier){
-            quartiersItems.push({ value: quartier, label: quartier + " (introuvable dans la base de donnée)", identifiant: "quart-custom" })
-        }
-
+        let quartiersItems = helper.getItemsFromDB(quartiers, quartier, 'quart', true);
         let switcherItems = [ { value: 1, label: 'Oui', identifiant: 'oui' } ]
 
         return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>

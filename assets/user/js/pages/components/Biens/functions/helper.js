@@ -1,5 +1,25 @@
 const toastr = require("toastr");
 const Sanitaze = require("@commonComponents/functions/sanitaze");
+const Sort = require("@commonComponents/functions/sort");
+
+function getItemsFromDB(data, correspondance, pre, isQuartier = false)
+{
+    let items = [], find   = false;
+
+    data.sort(Sort.compareName)
+    data.forEach(ne => {
+        if(ne.name === correspondance){
+            find = true;
+        }
+        items.push({ value: ne.name, label: ne.name + (isQuartier ? ", " + ne.zipcode + " - " + ne.city : ""), identifiant: pre + "-" + ne.id })
+    })
+
+    if(!find && correspondance !== ""){
+        items.push({ value: correspondance, label: correspondance + " (introuvable dans la base de donnée)", identifiant: pre + "-custom" })
+    }
+
+    return items;
+}
 
 function getItems (type, prefix) {
     switch (type) {
@@ -423,6 +443,7 @@ function numberString(value, text, plurial = "s") {
 }
 
 module.exports = {
+    getItemsFromDB,
     getItems,
     addOrRemove,
     getIntValue,

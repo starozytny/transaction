@@ -10,7 +10,7 @@ import helper from "@userPages/components/Biens/functions/helper";
 
 const CURRENT_STEP = 3;
 
-export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate,
+export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate, sols, sousTypes,
                           codeTypeBien,
                           hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian,
                           hasAlarme, hasLift, hasClim, hasCalme, hasInternet,
@@ -18,8 +18,8 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                           beforeJuly, isVirgin, isSend, createdAtDpe, referenceDpe, dpeLetter, 
                           gesLetter, dpeValue, gesValue, minAnnual, maxAnnual }) 
 {
-    let soustypeItems = helper.getItems("soustypes");
-    let solItems = helper.getItems("sols");
+    let solItems = helper.getItemsFromDB(sols, sol, 'sol');
+    let soustypeItems = helper.getItemsFromDB(sousTypes, sousType, 'sous-types');
     let diag0Items = helper.getItems("diags", 0);
     let diag1Items = helper.getItems("diags", 1);
 

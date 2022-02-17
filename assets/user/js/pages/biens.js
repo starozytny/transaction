@@ -38,6 +38,8 @@ if(el){
                            settings={JSON.parse(el.dataset.settings)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
                            quartiers={JSON.parse(el.dataset.quartiers)}
+                           sols={JSON.parse(el.dataset.sols)}
+                           sousTypes={JSON.parse(el.dataset.sousTypes)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 
@@ -51,6 +53,8 @@ if(el){
                            settings={JSON.parse(el.dataset.settings)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
                            quartiers={JSON.parse(el.dataset.quartiers)}
+                           sols={JSON.parse(el.dataset.sols)}
+                           sousTypes={JSON.parse(el.dataset.sousTypes)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 

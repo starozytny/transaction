@@ -439,7 +439,7 @@ export class BienForm extends Component {
     }
 
     render () {
-        const { negotiators, quartiers, societyId, agencyId, settings } = this.props;
+        const { negotiators, quartiers, sols, sousTypes, societyId, agencyId, settings } = this.props;
         const { step, contentHelpBubble, codeTypeAd, owner, allOwners } = this.state;
 
         let steps = [
@@ -502,12 +502,13 @@ export class BienForm extends Component {
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
                         <Step3 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
-                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
+                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
+                               sols={sols} sousTypes={sousTypes}/>
 
                         <Step4 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onSelectRooms={this.handleSelectRooms}
                                refAside={this.aside3} onOpenAside={this.handleOpenAside}
-                                ref={this.rooms}/>
+                               ref={this.rooms} sols={sols}/>
 
                         <Step5 {...this.state}  onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeZipcode={this.handleChangeZipcode}

@@ -25,7 +25,7 @@ function setValueEmptyIfNull (parentValue, value) {
     return ""
 }
 
-export function BienFormulaire ({ type, element, rooms, photos, negotiators, allOwners, quartiers,
+export function BienFormulaire ({ type, element, rooms, photos, negotiators, allOwners, quartiers, sols, sousTypes,
                                     societyId, agencyId, negotiatorId, settings })
 {
     let title = "Ajouter un bien";
@@ -190,6 +190,8 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         negotiators={negotiators}
         allOwners={allOwners}
         quartiers={quartiers}
+        sols={sols}
+        sousTypes={sousTypes}
         negotiatorId={negotiatorId ? negotiatorId : ""}
         societyId={societyId}
         agencyId={agencyId}

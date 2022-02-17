@@ -155,6 +155,8 @@ class UserController extends AbstractController
         $settings    = $serializer->serialize($settings,'json', ['groups' => User::USER_READ]);
 
         $quartiers = $this->getDonneeData($em, DoQuartier::class, $user, $serializer);
+        $sols      = $this->getDonneeData($em, DoSol::class, $user, $serializer);
+        $sousTypes = $this->getDonneeData($em, DoSousType::class, $user, $serializer);
 
         return $this->render($route, [
             'element' => $element,
@@ -166,6 +168,8 @@ class UserController extends AbstractController
             'settings' => $settings,
             'user' => $user,
             'quartiers' => $quartiers,
+            'sols' => $sols,
+            'sousTypes' => $sousTypes,
         ]);
     }
 
