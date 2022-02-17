@@ -506,7 +506,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/parametres/biens", name="settings_biens")
+     * @Route("/parametres/infos-biens", name="settings_biens")
      */
     public function parametresBiens(SerializerInterface $serializer): Response
     {

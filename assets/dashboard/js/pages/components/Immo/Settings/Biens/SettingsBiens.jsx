@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { Quartiers } from "@dashboardPages/components/Immo/Settings/Biens/Quartiers/Quartiers";
+import {PageInfos} from "@userComponents/Layout/Page";
 
 export class SettingsBiens extends Component {
     constructor(props) {
@@ -61,6 +62,14 @@ export class SettingsBiens extends Component {
                     </div>
                 </div>
                 <div className="page-col-2">
+                    <PageInfos>
+                        <p>
+                            Les données ci-dessous représentent les éléments sélectionnables lors de la
+                            création ou la modification d'un bien.
+                            <br/><br/>
+                            Les éléments en <span className="badge">Natif</span> ne peuvent pas être supprimés ou modifiés.
+                        </p>
+                    </PageInfos>
                     {content}
                 </div>
             </div>
