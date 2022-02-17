@@ -1,5 +1,10 @@
 {% extends 'user/layout/layout.html.twig' %}
 
+{% set submenu = [
+    { 'label': "Liste des biens", 'path': path('user_biens', {'st': 1}) },
+    { 'label': "Ajouter un bien", 'path': path('user_biens_create') },
+] %}
+
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('user_biens') }}

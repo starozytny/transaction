@@ -29,7 +29,7 @@
                 {% endif %}
             </div>
             <div class="dash-line-1-col-2">
-                <a href="{{ path('user_biens') }}" class="dash-card-1">
+                <a href="{{ path('user_biens', {'st': 1}) }}" class="dash-card-1">
                     <div class="card-header">
                         <div class="icon">
                             <span class="icon-home"></span>
@@ -40,7 +40,7 @@
                         <div class="number">{{ biensAgency }} {{ biensAgency > 1 ? "biens immobiliers" : "bien immobilier" }}</div>
                     </div>
                 </a>
-                <a href="{{ path('user_biens', {'fu': app.user.userIdentifier}) }}" class="dash-card-1">
+                <a href="{{ path('user_biens', {'st': 1, 'fu': app.user.userIdentifier}) }}" class="dash-card-1">
                     <div class="card-header">
                         <div class="icon">
                             <span class="icon-layer"></span>
