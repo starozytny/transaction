@@ -47,7 +47,13 @@ class AdminUsersCreateCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [Notification::class, User::class, ImAgency::class, Society::class]);
+        $this->databaseService->resetTable($io, [
+            Notification::class,
+            User::class,
+            ImSettings::class,
+            ImAgency::class,
+            Society::class
+        ]);
 
         $users = array(
             [
@@ -213,12 +219,12 @@ class AdminUsersCreateCommand extends Command
             }
             $io->text('AGENCE : Agences fake créées' );
 
-            $io->title('Création de 110 utilisateurs fake');
+            $io->title('Création de 550 utilisateurs fake');
             $fake = Factory::create();
-            for($i=0; $i<110 ; $i++) {
+            for($i=0; $i<550 ; $i++) {
                 $agency = $agencies[$fake->numberBetween(0,9)];
                 $new = (new User())
-                    ->setUsername($fake->userName)
+                    ->setUsername($fake->userName . $i)
                     ->setEmail($fake->freeEmail)
                     ->setRoles(['ROLE_USER'])
                     ->setFirstname(ucfirst($fake->firstName))
