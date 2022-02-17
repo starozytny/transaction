@@ -131,6 +131,9 @@ class AdminUsersCreateCommand extends Command
             "))
         ;
 
+        $setting = (new ImSettings())->setAgency($agency);
+
+        $this->em->persist($setting);
         $this->em->persist($agency);
         $io->text('AGENCE : Logilink créée' );
 

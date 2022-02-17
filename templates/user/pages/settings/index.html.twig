@@ -4,8 +4,9 @@
 {% set submenuActive = "Paramètres" %}
 
 {% block main_content %}
-    <div id="settings-params"
-         data-donnees="{{ donnees }}"
+    <div id="settings-generaux"
+         data-element="{{ element }}"
+         data-negotiators="{{ negotiators }}"
     >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>

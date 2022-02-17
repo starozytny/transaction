@@ -15,6 +15,7 @@ use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
+use App\Repository\Immo\ImNegotiatorRepository;
 use App\Repository\Immo\ImSettingsRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use App\Repository\Immo\ImBienRepository;
@@ -483,16 +484,20 @@ class UserController extends AbstractController
     /**
      * @Route("/paramètres/generaux", name="settings_generaux")
      */
-    public function parametresGeneraux(ImSettingsRepository $settingsRepository, SerializerInterface $serializer): Response
+    public function parametresGeneraux(ImSettingsRepository $settingsRepository, ImNegotiatorRepository $negotiatorRepository,
+                                       SerializerInterface $serializer): Response
     {
         /** @var User $user */
         $user = $this->getUser();
         $data = $settingsRepository->findOneBy(['agency' => $user->getAgency()]);
+        $negotiators = $negotiatorRepository->findBy(['agency' => $user->getAgency()]);
 
         $data = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/settings/index.html.twig', [
-            'donnees' => $data,
+            'element' => $data,
+            'negotiators' => $negotiators,
         ]);
     }
 
