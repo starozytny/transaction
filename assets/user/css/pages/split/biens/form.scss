@@ -176,7 +176,7 @@
 }
 
 .contact-aside{
-  @include toolbarCreateSearch(224);
+  @include toolbarCreateFilterSearch(224);
 
   .selector, .col-1, .col-2, .col-3{
     cursor: pointer;

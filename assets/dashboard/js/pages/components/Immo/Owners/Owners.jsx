@@ -45,6 +45,7 @@ export class Owners extends Component {
             isClient: props.isClient ? props.isClient : false,
             isFormBien: props.isFormBien ? props.isFormBien : false,
             owner: props.owner ? (props.owner !== "" ? parseInt(props.owner) : "") : "",
+            classes: props.isFormBien ? "" : "main-content",
             filters: [[], []]
         }
 
