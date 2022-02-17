@@ -12,6 +12,7 @@ import {
     OwnerMainInfos,
 } from "@dashboardPages/components/Immo/Owners/OwnersItem";
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
+import {ReadCard} from "@userComponents/Layout/Read";
 
 const CURRENT_STEP = 8;
 
@@ -33,48 +34,16 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
         <div className="line special-line contact-line">
             <div className="form-group">
                 <label>Propriétaire</label>
-
-                <Button type="default" onClick={() => onOpenAside("owner-select")}>Sélectionner/ajouter un propriétaire</Button>
-
-                {itemOwner && <div className="items-table">
-                    <div className="items items-default">
-                        <div className="item item-header">
-                            <div className="item-content">
-                                <div className="item-body">
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">Propriétaire</div>
-                                        <div className="col-2">Contact</div>
-                                        <div className="col-3">Négociateur</div>
-                                        <div className="col-4 actions" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="item">
-                            <div className="item-content">
-                                <div className="item-body">
-                                    <div className="infos infos-col-4">
-                                        <div className="col-1">
-                                            <OwnerMainInfos elem={itemOwner} />
-                                        </div>
-
-                                        <div className="col-2">
-                                            <UtContact elem={itemOwner} />
-                                        </div>
-
-                                        <div className="col-3">
-                                            <NegotiatorBubble elem={itemOwner.negotiator} />
-                                        </div>
-                                        <div className="col-4 actions">
-                                            <div className="sub">Sélectionné</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>}
             </div>
+            <div className="line line-3">
+                <div className="form-group" />
+                <div className="form-group">
+                    <Button type="default" onClick={() => onOpenAside("owner-select")}>Sélectionner ou ajouter un propriétaire</Button>
+                </div>
+                <div className="form-group" />
+            </div>
+
+            {itemOwner && <ReadCard elem={itemOwner} displayActions={false} />}
         </div>
 
         <div className="line special-line">
