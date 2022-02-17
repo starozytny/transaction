@@ -6,7 +6,7 @@ import { Button }       from "@dashboardComponents/Tools/Button";
 import { UtContact }    from "@dashboardComponents/Tools/Utilitaire";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
-import helper   from "@userPages/components/Biens/helper";
+import helper   from "@userPages/components/Biens/functions/helper";
 
 import {
     OwnerMainInfos,

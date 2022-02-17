@@ -12,7 +12,7 @@ import { Alert }        from "@dashboardComponents/Tools/Alert";
 import { Button }       from "@dashboardComponents/Tools/Button";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
-import helper from "@userPages/components/Biens/helper";
+import helper from "@userPages/components/Biens/functions/helper";
 import Sort from "@commonComponents/functions/sort";
 
 const CURRENT_STEP = 5;

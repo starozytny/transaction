@@ -4,7 +4,7 @@ import { Input, SelectReactSelectize, TextArea } from "@dashboardComponents/Tool
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
-import helper    from "@userPages/components/Biens/helper";
+import helper    from "@userPages/components/Biens/functions/helper";
 import Sort      from "@commonComponents/functions/sort";
 import Sanitaze  from "@commonComponents/functions/sanitaze";
 

@@ -6,7 +6,7 @@ import { Alert }        from "@dashboardComponents/Tools/Alert";
 import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
-import helper from "@userPages/components/Biens/helper";
+import helper from "@userPages/components/Biens/functions/helper";
 
 const CURRENT_STEP = 3;
 

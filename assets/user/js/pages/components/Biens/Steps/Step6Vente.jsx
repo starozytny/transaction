@@ -5,7 +5,7 @@ import { Input, Radiobox, SelectReactSelectize, TextArea } from "@dashboardCompo
 import { Alert }        from "@dashboardComponents/Tools/Alert";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
-import helper from "@userPages/components/Biens/helper";
+import helper from "@userPages/components/Biens/functions/helper";
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
 const CURRENT_STEP = 6

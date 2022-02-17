@@ -12,7 +12,7 @@ import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
-import helper                  from "@userPages/components/Biens/helper";
+import helper                  from "@userPages/components/Biens/functions/helper";
 
 const URL_CREATE_ELEMENT     = "api_searchs_create";
 const URL_UPDATE_GROUP       = "api_searchs_update";

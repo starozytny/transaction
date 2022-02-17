@@ -1,6 +1,6 @@
 import React     from "react";
 
-import helper    from "../../helper";
+import helper    from "@userPages/components/Biens/functions/helper";
 
 import { OwnersItem }  from "@dashboardPages/components/Immo/Owners/OwnersItem";
 import { TenantsItem } from "@dashboardPages/components/Immo/Tenants/TenantsItem";

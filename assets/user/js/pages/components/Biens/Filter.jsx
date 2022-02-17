@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 
 import Helper from "@commonComponents/functions/helper";
-import helper from "./helper";
+import helper from "@userPages/components/Biens/functions/helper";
 
 function updateTab(initTable, value, newTable) {
     let find = false;

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import axios    from "axios";
 import toastr   from "toastr";
 
-import helper           from "@userPages/components/Biens/helper";
+import helper           from "@userPages/components/Biens/functions/helper";
 import Helper           from "@commonComponents/functions/helper";
 import Validateur       from "@commonComponents/functions/validateur";
 import Sort             from "@commonComponents/functions/sort";

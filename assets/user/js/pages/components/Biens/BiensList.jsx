@@ -4,10 +4,10 @@ import Routing    from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Button } from "@dashboardComponents/Tools/Button";
 import { Alert }  from "@dashboardComponents/Tools/Alert";
+import { TopSorterPagination } from "@dashboardComponents/Layout/Pagination";
 
 import { AdCard } from "./AdCard";
 import { Filter } from "./Filter";
-import {TopSorterPagination} from "@dashboardComponents/Layout/Pagination";
 
 function getItemsSelect (data, noDuplication, el, pref, typeValue = "id") {
     if(el){

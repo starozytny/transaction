@@ -5,7 +5,7 @@ import { Alert }    from "@dashboardComponents/Tools/Alert";
 import { Button }   from "@dashboardComponents/Tools/Button";
 import { DatePick } from "@dashboardComponents/Tools/DatePicker";
 
-import helper from "@userPages/components/Biens/helper";
+import helper from "@userPages/components/Biens/functions/helper";
 import Sort from "@commonComponents/functions/sort";
 
 const CURRENT_STEP = 1;

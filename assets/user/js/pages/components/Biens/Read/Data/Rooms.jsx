@@ -1,6 +1,6 @@
 import React     from "react";
 
-import helper from "@userPages/components/Biens/helper";
+import helper from "@userPages/components/Biens/functions/helper";
 
 import { RoomItem } from "@userPages/components/Biens/Steps/Step4";
 
