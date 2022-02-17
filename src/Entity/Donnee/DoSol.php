@@ -40,6 +40,7 @@ class DoSol extends DataEntity
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"donnee:read"})
      */
     private $createdAt;
 

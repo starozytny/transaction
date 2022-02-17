@@ -4,14 +4,14 @@ namespace App\Entity\Donnee;
 
 use App\Entity\DataEntity;
 use App\Entity\Immo\ImAgency;
-use App\Repository\Donnee\DoQuartierRepository;
+use App\Repository\Donnee\DoSousTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=DoQuartierRepository::class)
+ * @ORM\Entity(repositoryClass=DoSousTypeRepository::class)
  */
-class DoQuartier extends DataEntity
+class DoSousType extends DataEntity
 {
     /**
      * @ORM\Id
@@ -25,7 +25,7 @@ class DoQuartier extends DataEntity
      * @ORM\Column(type="boolean")
      * @Groups({"donnee:read"})
      */
-    private $isNative = false;
+    private $isNative;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -34,25 +34,7 @@ class DoQuartier extends DataEntity
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=10)
-     * @Groups({"donnee:read"})
-     */
-    private $zipcode;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"donnee:read"})
-     */
-    private $city;
-
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     * @Groups({"donnee:read"})
-     */
-    private $polygon = [];
-
-    /**
-     * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="doQuartiers")
+     * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="doSousTypes")
      */
     private $agency;
 
@@ -77,42 +59,6 @@ class DoQuartier extends DataEntity
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getPolygon(): ?array
-    {
-        return $this->polygon;
-    }
-
-    public function setPolygon(?array $polygon): self
-    {
-        $this->polygon = $polygon;
-
-        return $this;
-    }
-
-    public function getAgency(): ?ImAgency
-    {
-        return $this->agency;
-    }
-
-    public function setAgency(?ImAgency $agency): self
-    {
-        $this->agency = $agency;
-
-        return $this;
-    }
-
     public function getIsNative(): ?bool
     {
         return $this->isNative;
@@ -125,26 +71,26 @@ class DoQuartier extends DataEntity
         return $this;
     }
 
-    public function getZipcode(): ?string
+    public function getName(): ?string
     {
-        return $this->zipcode;
+        return $this->name;
     }
 
-    public function setZipcode(string $zipcode): self
+    public function setName(string $name): self
     {
-        $this->zipcode = $zipcode;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getAgency(): ?ImAgency
     {
-        return $this->city;
+        return $this->agency;
     }
 
-    public function setCity(string $city): self
+    public function setAgency(?ImAgency $agency): self
     {
-        $this->city = $city;
+        $this->agency = $agency;
 
         return $this;
     }

@@ -5,6 +5,7 @@ namespace App\Entity\Immo;
 use App\Entity\DataEntity;
 use App\Entity\Donnee\DoQuartier;
 use App\Entity\Donnee\DoSol;
+use App\Entity\Donnee\DoSousType;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Repository\Immo\ImAgencyRepository;
@@ -236,6 +237,11 @@ class ImAgency extends DataEntity
      */
     private $doSols;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DoSousType::class, mappedBy="agency")
+     */
+    private $doSousTypes;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
@@ -248,6 +254,7 @@ class ImAgency extends DataEntity
         $this->buyers = new ArrayCollection();
         $this->doQuartiers = new ArrayCollection();
         $this->doSols = new ArrayCollection();
+        $this->doSousTypes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -870,6 +877,36 @@ class ImAgency extends DataEntity
             // set the owning side to null (unless already changed)
             if ($doSol->getAgency() === $this) {
                 $doSol->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DoSousType[]
+     */
+    public function getDoSousTypes(): Collection
+    {
+        return $this->doSousTypes;
+    }
+
+    public function addDoSousType(DoSousType $doSousType): self
+    {
+        if (!$this->doSousTypes->contains($doSousType)) {
+            $this->doSousTypes[] = $doSousType;
+            $doSousType->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDoSousType(DoSousType $doSousType): self
+    {
+        if ($this->doSousTypes->removeElement($doSousType)) {
+            // set the owning side to null (unless already changed)
+            if ($doSousType->getAgency() === $this) {
+                $doSousType->setAgency(null);
             }
         }
 
