@@ -226,8 +226,8 @@ class DataImmo extends DataConstructor
             ->setHasHandi($this->setToUnknownEmpty($data->hasHandi))
             ->setHasFibre($this->setToUnknownEmpty($data->hasFibre))
             ->setSituation($this->sanitizeData->trimData($data->situation))
-            ->setSousType($this->setToNullInteger($data->sousType))
-            ->setSol($this->setToNullInteger($data->sol))
+            ->setSousType($this->sanitizeData->trimData($data->sousType))
+            ->setSol($this->sanitizeData->trimData($data->sol))
         ;
     }
 

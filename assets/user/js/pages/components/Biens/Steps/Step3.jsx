@@ -93,14 +93,14 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                         <span>Situation</span>
                     </Input>
                     <SelectReactSelectize items={soustypeItems} identifiant="sousType" valeur={sousType} errors={errors}
-                                          onChange={(e) => onChangeSelect('codeKitchen', e)}>
+                                          onChange={(e) => onChangeSelect('sousType', e)}>
                         Sous type de bien
                     </SelectReactSelectize>
                 </div>
 
                 <div className="line line-2">
                     <SelectReactSelectize items={solItems} identifiant="sol" valeur={sol} errors={errors}
-                                          onChange={(e) => onChangeSelect('codeKitchen', e)}>
+                                          onChange={(e) => onChangeSelect('sol', e)}>
                         Type de sol
                     </SelectReactSelectize>
                     <div className="form-group" />

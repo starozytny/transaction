@@ -44,7 +44,7 @@ class ImRoom
     private $area;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user:read"})
      */
     private $sol;
@@ -132,12 +132,12 @@ class ImRoom
         return $this;
     }
 
-    public function getSol(): ?int
+    public function getSol(): ?string
     {
         return $this->sol;
     }
 
-    public function setSol(?int $sol): self
+    public function setSol(?string $sol): self
     {
         $this->sol = $sol;
 

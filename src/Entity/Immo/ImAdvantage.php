@@ -110,13 +110,13 @@ class ImAdvantage
     private $situation;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user:read"})
      */
     private $sousType;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user:read"})
      */
     private $sol;
@@ -306,24 +306,24 @@ class ImAdvantage
         return $this;
     }
 
-    public function getSousType(): ?int
+    public function getSousType(): ?string
     {
         return $this->sousType;
     }
 
-    public function setSousType(?int $sousType): self
+    public function setSousType(?string $sousType): self
     {
         $this->sousType = $sousType;
 
         return $this;
     }
 
-    public function getSol(): ?int
+    public function getSol(): ?string
     {
         return $this->sol;
     }
 
-    public function setSol(?int $sol): self
+    public function setSol(?string $sol): self
     {
         $this->sol = $sol;
 
