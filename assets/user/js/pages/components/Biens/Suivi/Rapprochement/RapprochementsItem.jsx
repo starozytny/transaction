@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 
-import axios        from "axios";
-import Swal         from "sweetalert2";
-import SwalOptions  from "@commonComponents/functions/swalOptions";
-
 import { HelpBubble } from "@dashboardComponents/Tools/HelpBubble";
 import { ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import Helper        from "@commonComponents/functions/helper";
 import Sanitaze      from "@commonComponents/functions/sanitaze";
-import Formulaire    from "@dashboardComponents/functions/Formulaire";
 import Rapprochement from "@userComponents/functions/rapprochement";
 
 import { SearchInfos }              from "@dashboardPages/components/Immo/Prospects/ProspectsItem";
@@ -112,7 +107,7 @@ export class RapprochementsItem extends Component {
                     </> : <>
                         <div className="footer-actions">
                             <div className="actions">
-                                <ButtonIcon icon="add-square" text="Ajouter à la liste" />
+                                <ButtonIcon icon="add-square" text="Ajouter à la liste" onClick={() => onSelectProspect(prospect)} />
                             </div>
                         </div>
                     </>}

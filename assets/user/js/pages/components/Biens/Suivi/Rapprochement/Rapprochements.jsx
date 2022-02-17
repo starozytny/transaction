@@ -203,7 +203,8 @@ export class Rapprochements extends Component {
                                                    onDeleteOffer={this.handleDeleteOffer} onSwitchStatusOffer={this.handleSwitchStatusOffer} />)
                 }else{
                     let el = item.rapprochement;
-                    items.push(<RapprochementsItem elem={null} prospect={el} bien={elem} key={index} />)
+                    items.push(<RapprochementsItem elem={null} prospect={el} bien={elem} key={index}
+                                                   onSelectProspect={this.handleSelectProspect}/>)
                 }
             }
         })
