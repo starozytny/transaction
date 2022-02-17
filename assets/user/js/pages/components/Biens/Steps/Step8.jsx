@@ -66,32 +66,20 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </div>}
         </div>
         <div className="line special-line">
-            <div className="line line-2">
-                <div className="form-group">
-                    <div className="line line-2">
-                        <DatePick identifiant="visiteAt" valeur={visiteAt} errors={errors}
-                                  onChange={(e) => onChangeDate("visiteAt", e)}>
-                            Visite à partir de quelle date
-                        </DatePick>
-                        <div className="form-group" />
-                    </div>
-                </div>
-
-                <div className="form-group" />
+            <div className="form-group">
+                <label>Confidentiel</label>
             </div>
-            <div className="line line-2">
-                <div className="form-group">
-                    <div className="line line-2">
-                        <Input valeur={keysNumber} identifiant="keysNumber" errors={errors} onChange={onChange} type="number">
-                            Nombre de clés
-                        </Input>
-                        <Input valeur={keysWhere} identifiant="keysWhere" errors={errors} onChange={onChange}>
-                            Où trouver les clés
-                        </Input>
-                    </div>
-                </div>
-
-                <div className="form-group" />
+            <div className="line line-3">
+                <DatePick identifiant="visiteAt" valeur={visiteAt} errors={errors}
+                          onChange={(e) => onChangeDate("visiteAt", e)}>
+                    Visite à partir de quelle date
+                </DatePick>
+                <Input valeur={keysNumber} identifiant="keysNumber" errors={errors} onChange={onChange} type="number">
+                    Nombre de clés
+                </Input>
+                <Input valeur={keysWhere} identifiant="keysWhere" errors={errors} onChange={onChange} placeholder="A récupérer auprès de..">
+                    Où trouver les clés
+                </Input>
             </div>
         </div>
 
