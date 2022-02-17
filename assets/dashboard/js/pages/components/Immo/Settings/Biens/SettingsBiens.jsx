@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
+import { PageInfos } from "@userComponents/Layout/Page";
+
 import { Quartiers } from "@dashboardPages/components/Immo/Settings/Biens/Quartiers/Quartiers";
-import {PageInfos} from "@userComponents/Layout/Page";
+import { Sols }      from "@dashboardPages/components/Immo/Settings/Biens/Sols/Sols";
 
 export class SettingsBiens extends Component {
     constructor(props) {
@@ -19,7 +21,7 @@ export class SettingsBiens extends Component {
     handleChangeContext = (context) => { this.setState({ context }) }
 
     render () {
-        const { quartiers } = this.props;
+        const { quartiers, sols } = this.props;
         const { context } = this.state;
 
         let menu = [
@@ -30,12 +32,10 @@ export class SettingsBiens extends Component {
         let content;
         switch (context){
             case "sol":
-                content = <div>Sols</div>
+                content = <div id="list-sols"><Sols donnees={sols}/></div>
                 break;
             default:
-                content = <div id="list-quartiers">
-                    <Quartiers donnees={quartiers} />
-                </div>
+                content = <div id="list-quartiers"><Quartiers donnees={quartiers} /></div>
                 break;
         }
 

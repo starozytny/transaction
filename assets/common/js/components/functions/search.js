@@ -19,6 +19,7 @@ function switchFunction(type, search, v) {
                 return v;
             }
             break;
+        case "sol":
         case "changelog":
         case "quartier":
         case "society":

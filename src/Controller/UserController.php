@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Changelog;
 use App\Entity\Donnee\DoQuartier;
+use App\Entity\Donnee\DoSol;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
@@ -515,9 +516,11 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $quartiers = $this->getDonneeData($em, DoQuartier::class, $user, $serializer);
+        $sols      = $this->getDonneeData($em, DoSol::class, $user, $serializer);
 
         return $this->render('user/pages/settings/biens.html.twig', [
             'quartiers' => $quartiers,
+            'sols' => $sols,
         ]);
     }
 

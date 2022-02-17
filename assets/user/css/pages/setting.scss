@@ -3,3 +3,7 @@
 #list-quartiers{
   @include toolbarCreateFilterSearch(192)
 }
+
+#list-sols{
+  @include toolbarCreateFilterSearch(154)
+}
