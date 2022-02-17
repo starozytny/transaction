@@ -48,6 +48,7 @@ class DataUser
             ->setEmail($data->email)
             ->setSociety($society)
             ->setAgency($agency)
+            ->setNegotiatorId($this->sanitizeData->setToInteger($data->negotiator))
         ;
     }
 }
