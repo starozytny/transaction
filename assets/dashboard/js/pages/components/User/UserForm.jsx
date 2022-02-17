@@ -18,7 +18,7 @@ const URL_UPDATE_GROUP       = "api_users_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, societies, agencies })
+export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, societies, agencies, negotiators })
 {
     let title = "Ajouter un utilisateur";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -46,6 +46,7 @@ export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, 
         messageSuccess={msg}
         societies={societies}
         agencies={agencies}
+        negotiators={negotiators}
     />
 
     return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>

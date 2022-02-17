@@ -11,6 +11,7 @@ import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
+import NegotiatorFunction      from "@commonComponents/functions/negotiator";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
 import { SelecteurNegociateur } from "@dashboardPages/components/Immo/Elements/Selecteur";
@@ -126,24 +127,7 @@ export class OwnerForm extends Component {
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
 
     handleChangeSelect = (name, e) => {
-        const { negotiator } = this.state;
-        let nego = negotiator;
-        if(name === "society" || name === "agency"){
-            if(e === undefined){
-                nego = "";
-                let label = document.querySelector("label[for='negotiator'] + .react-selectize .simple-value > span");
-                if(label){
-                    label.innerHTML = "";
-                }
-            }
-        }
-
-        if(name !== "negotiator"){
-            this.setState({ [name]: e !== undefined ? e.value : "", negotiator: nego })
-        }else{
-            this.setState({ [name]: e !== undefined ? e.value : ""})
-        }
-
+        NegotiatorFunction.changeSelectNegotiator(this, this.state.negotiator, name, e);
     }
 
     handleSubmit = (e) => {

@@ -16,6 +16,7 @@ import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
 import { SelecteurNegociateur } from "@dashboardPages/components/Immo/Elements/Selecteur";
 import { LocalisationContact }  from "@dashboardPages/components/Immo/Elements/Contact";
+import NegotiatorFunction from "@commonComponents/functions/negotiator";
 
 const URL_CREATE_ELEMENT     = "api_buyers_create";
 const URL_UPDATE_GROUP       = "api_buyers_update";
@@ -116,24 +117,7 @@ export class BuyerForm extends Component {
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
 
     handleChangeSelect = (name, e) => {
-        const { negotiator } = this.state;
-        let nego = negotiator;
-        if(name === "society" || name === "agency"){
-            if(e === undefined){
-                nego = "";
-                let label = document.querySelector("label[for='negotiator'] + .react-selectize .simple-value > span");
-                if(label){
-                    label.innerHTML = "";
-                }
-            }
-        }
-
-        if(name !== "negotiator"){
-            this.setState({ [name]: e !== undefined ? e.value : "", negotiator: nego })
-        }else{
-            this.setState({ [name]: e !== undefined ? e.value : ""})
-        }
-
+        NegotiatorFunction.changeSelectNegotiator(this, this.state.negotiator, name, e);
     }
 
     handleChangeDate = (name, e) => { this.setState({ [name]: e !== null ? e : "" }) }
