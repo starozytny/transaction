@@ -152,6 +152,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"admin:read"})
      */
     private $negotiatorId;
 

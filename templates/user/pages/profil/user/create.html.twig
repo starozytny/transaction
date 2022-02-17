@@ -3,7 +3,11 @@
 {% set page_title %}Ajouter un utilisateur{% endset %}
 
 {% block main_content %}
-    <div id="user-create" data-society-id="{{ elem.society.id }}" data-agency-id="{{ elem.agency.id }}">
+    <div id="user-create"
+         data-society-id="{{ elem.society.id }}"
+         data-agency-id="{{ elem.agency.id }}"
+         data-negotiators="{{ negotiators }}"
+    >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

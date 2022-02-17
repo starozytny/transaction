@@ -13,6 +13,8 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 import NegotiatorFunction      from "@commonComponents/functions/negotiator";
+import Sort from "@commonComponents/functions/sort";
+import {SelecteurNegociateur} from "@dashboardPages/components/Immo/Elements/Selecteur";
 
 const URL_CREATE_ELEMENT     = "api_users_create";
 const URL_UPDATE_GROUP       = "api_users_update";
@@ -42,6 +44,7 @@ export function UserFormulaire ({ type, onChangeContext, onUpdateList, element, 
         roles={element ? element.roles : []}
         society={element ? element.society.id : ""}
         agency={element ? element.agency.id : ""}
+        negotiator={element ? element.negotiatorId : ""}
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
@@ -66,6 +69,7 @@ export class Form extends Component {
             avatar: props.avatar,
             society: props.society,
             agency: props.agency,
+            negotiator: props.negotiator,
             password: '',
             passwordConfirm: '',
             errors: [],
@@ -164,6 +168,7 @@ export class Form extends Component {
                             roles: [],
                             society: '',
                             agency: '',
+                            negotiator: '',
                             password: '',
                             passwordConfirm: '',
                         })
@@ -180,8 +185,8 @@ export class Form extends Component {
     }
 
     render () {
-        const { context, societies, agencies, isProfil=false } = this.props;
-        const { errors, success, username, firstname, lastname, email, password, passwordConfirm, roles, avatar, society, agency } = this.state;
+        const { context, isProfil=false } = this.props;
+        const { errors, success, username, firstname, lastname, email, password, passwordConfirm, roles, avatar, society, agency, negotiator } = this.state;
 
         let rolesItems = [
             { value: 'ROLE_ADMIN',      label: 'Admin',          identifiant: 'admin' },
@@ -191,14 +196,6 @@ export class Form extends Component {
 
         if(isProfil){
             rolesItems.shift();
-        }
-
-        let selectSociety = [];
-        let selectAgency = [];
-        if(context !== "profil" && !isProfil){
-            let selectorsData = Helper.selectorsImmo(societies, society, agencies, agency);
-            selectSociety = selectorsData[0];
-            selectAgency = selectorsData[1];
         }
 
         return <>
@@ -219,28 +216,20 @@ export class Form extends Component {
                     <Input valeur={lastname} identifiant="lastname" errors={errors} onChange={this.handleChange} >Nom</Input>
                 </div>
 
-                <div className="line line-2">
-                    {context !== "profil" ? <Checkbox items={rolesItems} identifiant="roles" valeur={roles} errors={errors} onChange={this.handleChange}>Roles</Checkbox>
-                        : <div className="form-group" />}
+                {context !== "profil" && <div className="line line-2">
+                    <Checkbox items={rolesItems} identifiant="roles" valeur={roles} errors={errors} onChange={this.handleChange}>Roles</Checkbox>
+                    <div className="form-group" />
+                </div>}
 
+
+                <div className="line line-2">
+                    <div className="form-group">
+                        <SelecteurNegociateur {...this.props} isClient={isProfil} onChangeSelect={this.handleChangeSelect} errors={errors}
+                                              society={society} agency={agency} negotiator={negotiator}/>
+                    </div>
                     <Drop ref={this.inputAvatar} identifiant="avatar" previewFile={avatar} errors={errors} accept={"image/*"} maxFiles={1}
                           label="Téléverser un avatar" labelError="Seules les images sont acceptées.">Avatar (facultatif)</Drop>
                 </div>
-
-                {context !== "profil" && !isProfil && <div className="line line-2">
-                    <SelectReactSelectize items={selectSociety} identifiant="society" valeur={society}
-                                          placeholder={"Sélectionner la société"}
-                                          errors={errors} onChange={(e) => this.handleChangeSelect("society", e)}
-                    >
-                        Société
-                    </SelectReactSelectize>
-                    <SelectReactSelectize items={selectAgency} identifiant="agency" valeur={agency}
-                                          placeholder={"Sélectionner l'agence"}
-                                          errors={errors} onChange={(e) => this.handleChangeSelect("agency", e)}
-                    >
-                        Agence
-                    </SelectReactSelectize>
-                </div>}
 
                 {(context === "create" || context === "profil") ? <>
                     {context !== "profil" && <Alert type="reverse">
@@ -255,7 +244,7 @@ export class Form extends Component {
                         <Input type="password" valeur={password} identifiant="password" errors={errors} onChange={this.handleChange} >Mot de passe (facultatif)</Input>
                         <Input type="password" valeur={passwordConfirm} identifiant="passwordConfirm" errors={errors} onChange={this.handleChange} >Confirmer le mot de passe</Input>
                     </div>
-                </> : <Alert type="warning">Le mot de passe est modifiable exclusivement par l'utilisateur lui même grâce à la fonction <u>Mot de passe oublié ?</u></Alert>}
+                </> : <Alert type="warning">Le mot de passe est modifiable exclusivement par l'utilisateur lui même.</Alert>}
 
                 <div className="line">
                     <div className="form-button">

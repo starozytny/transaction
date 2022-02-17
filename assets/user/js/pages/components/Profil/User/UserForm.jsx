@@ -8,7 +8,7 @@ import {FormLayout} from "@dashboardComponents/Layout/Elements";
 const URL_CREATE_ELEMENT  = "api_users_create";
 const URL_UPDATE_GROUP  = "api_users_update";
 
-export function UserFormulaire ({ type, element, societyId, agencyId })
+export function UserFormulaire ({ type, element, societyId, agencyId, negotiators })
 {
     let title = "Ajouter un utilisateur";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -29,8 +29,10 @@ export function UserFormulaire ({ type, element, societyId, agencyId })
         email={element ? element.email : ""}
         avatar={element ? element.avatarFile : null}
         roles={element ? element.roles : []}
+        negotiator={element ? element.negotiatorId : ""}
         society={element ? element.society.id : societyId}
         agency={element ? element.agency.id : agencyId}
+        negotiators={negotiators}
         messageSuccess={msg}
         isProfil={true}
     />

@@ -15,6 +15,7 @@ if(el){
     render(<div className="main-content">
         <UserFormulaire type="profil"
                         element={JSON.parse(el.dataset.donnees)}
+                        negotiators={JSON.parse(el.dataset.negotiators)}
                         societyId={el.dataset.societyId} agencyId={el.dataset.agencyId} />
     </div>, el)
 }
@@ -27,13 +28,15 @@ if(el){
 el = document.getElementById("user-create");
 if(el){
     render(<div className="main-content">
-        <UserFormulaire type="create" societyId={el.dataset.societyId} agencyId={el.dataset.agencyId} />
+        <UserFormulaire type="create" societyId={el.dataset.societyId} agencyId={el.dataset.agencyId}
+                        negotiators={JSON.parse(el.dataset.negotiators)} />
     </div>, el)
 }
 
 el = document.getElementById("user-update");
 if(el){
     render(<div className="main-content">
-        <UserFormulaire type="update" element={JSON.parse(el.dataset.donnees)} societyId={el.dataset.societyId} agencyId={el.dataset.agencyId} />
+        <UserFormulaire type="update" element={JSON.parse(el.dataset.donnees)} societyId={el.dataset.societyId} agencyId={el.dataset.agencyId}
+                        negotiators={JSON.parse(el.dataset.negotiators)} />
     </div>, el)
 }

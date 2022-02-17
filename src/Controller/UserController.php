@@ -20,7 +20,6 @@ use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImBuyerRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
-use App\Repository\Immo\ImSearchRepository;
 use App\Repository\Immo\ImTenantRepository;
 use App\Repository\UserRepository;
 use App\Service\Immo\SearchService;
@@ -98,7 +97,7 @@ class UserController extends AbstractController
      * @Route("/biens", options={"expose"=true}, name="biens")
      */
     public function biens(Request $request, ImBienRepository $repository, ImTenantRepository $tenantRepository,
-                          ImSearchRepository $searchRepository, SerializerInterface $serializer, SearchService $searchService): Response
+                          SerializerInterface $serializer, SearchService $searchService): Response
     {
         $status = $request->query->get('st');
         $filterOwner = $request->query->get('fo');
@@ -276,10 +275,16 @@ class UserController extends AbstractController
      */
     public function profilUpdate(SerializerInterface $serializer): Response
     {
+        $em = $this->doctrine->getManager();
+
         /** @var User $obj */
         $obj = $this->getUser();
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
+
         $data = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
-        return $this->render('user/pages/profil/update.html.twig',  ['elem' => $obj, 'donnees' => $data]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('user/pages/profil/update.html.twig',  ['elem' => $obj, 'donnees' => $data, 'negotiators' => $negotiators]);
     }
 
     /**
@@ -287,11 +292,17 @@ class UserController extends AbstractController
      *
      * @Security("is_granted('ROLE_MANAGER')")
      */
-    public function userCreate(): Response
+    public function userCreate(SerializerInterface $serializer): Response
     {
+        $em = $this->doctrine->getManager();
+
         /** @var User $obj */
         $obj = $this->getUser();
-        return $this->render('user/pages/profil/user/create.html.twig', ['elem' => $obj]);
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
+
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('user/pages/profil/user/create.html.twig', ['elem' => $obj, 'negotiators' => $negotiators]);
     }
 
     /**
@@ -301,8 +312,14 @@ class UserController extends AbstractController
      */
     public function userUpdate(User $obj, SerializerInterface $serializer): Response
     {
+        $em = $this->doctrine->getManager();
+
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
+
         $data = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
-        return $this->render('user/pages/profil/user/update.html.twig', ['elem' => $obj, 'donnees' => $data]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('user/pages/profil/user/update.html.twig', ['elem' => $obj, 'donnees' => $data, 'negotiators' => $negotiators]);
     }
 
     /**
