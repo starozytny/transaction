@@ -71,8 +71,8 @@ export class BienForm extends Component {
     componentDidMount = () => { Helper.getPostalCodes(this); }
 
     handleChange = (e) => {
-        const { codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, startAt } = this.state;
+        const { settings, codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage,
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, startAt, nbMonthMandat } = this.state;
 
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
@@ -97,6 +97,10 @@ export class BienForm extends Component {
 
         if(name === "nbMonthMandat"){
             Changer.setEndMandat(this, startAt, value)
+        }
+
+        if(name === "codeTypeAd" && nbMonthMandat === "init"){
+            this.setState({ nbMonthMandat: parseInt(value) === 1 ? settings.mandatMonthLocation : settings.mandatMonthVente })
         }
 
         this.setState({[name]: value });
@@ -435,7 +439,7 @@ export class BienForm extends Component {
     }
 
     render () {
-        const { negotiators, quartiers, societyId, agencyId } = this.props;
+        const { negotiators, quartiers, societyId, agencyId, settings } = this.props;
         const { step, contentHelpBubble, codeTypeAd, owner, allOwners } = this.state;
 
         let steps = [
@@ -492,7 +496,7 @@ export class BienForm extends Component {
 
                         <Step1 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
-                               negotiators={negotiators} />
+                               negotiators={negotiators} settings={settings} />
 
                         <Step2 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />

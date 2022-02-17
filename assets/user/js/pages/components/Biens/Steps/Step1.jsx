@@ -27,7 +27,6 @@ export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect,
         negociateurs.push({ value: ne.id, label: "#" + ne.code + " - " + ne.fullname, identifiant: "neg-" + ne.id });
 
         if(ne.id === negotiator){
-            console.log(ne)
             itemNegotiator = <ReadCard elem={ne} avatar={ne.avatarFile} displayActions={false} />
         }
     })

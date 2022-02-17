@@ -5,12 +5,13 @@ const Formulaire = require("@dashboardComponents/functions/Formulaire");
 
 function getDataState (props) {
     return {
+        context: props.context,
         step: 1,
 
         codeTypeAd: props.codeTypeAd,
         codeTypeBien: props.codeTypeBien,
         libelle: props.libelle,
-        negotiator: props.negotiator ? props.negotiator : (props.negotiatorId ? props.negotiatorId : ""),
+        negotiator: props.negotiator ? props.negotiator : (props.negotiatorId ? props.negotiatorId : props.settings.negotiatorDefault),
 
         areaTotal: props.areaTotal,
         areaHabitable: props.areaHabitable,
@@ -135,11 +136,13 @@ function getDataState (props) {
         codeTypeMandat: props.codeTypeMandat,
         startAt: props.startAt,
         endAt: props.endAt,
-        nbMonthMandat: 3,
+        nbMonthMandat: props.nbMonthMandat,
         priceEstimate: props.priceEstimate,
         fee: props.fee,
 
         rooms: props.rooms,
+
+        settings: props.settings,
 
         isDraft: true,
         id: null,

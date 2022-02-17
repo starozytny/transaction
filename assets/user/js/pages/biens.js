@@ -35,6 +35,7 @@ if(el){
                            negotiatorId={el.dataset.negotiatorId ? parseInt(el.dataset.negotiatorId) : null}
                            societyId={parseInt(el.dataset.societyId)}
                            agencyId={parseInt(el.dataset.agencyId)}
+                           settings={JSON.parse(el.dataset.settings)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
                            quartiers={JSON.parse(el.dataset.quartiers)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
@@ -47,6 +48,7 @@ if(el){
                            photos={JSON.parse(el.dataset.photos)}
                            societyId={parseInt(el.dataset.societyId)}
                            agencyId={parseInt(el.dataset.agencyId)}
+                           settings={JSON.parse(el.dataset.settings)}
                            negotiators={JSON.parse(el.dataset.negotiators)}
                            quartiers={JSON.parse(el.dataset.quartiers)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)

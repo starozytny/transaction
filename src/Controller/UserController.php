@@ -11,6 +11,7 @@ use App\Entity\Immo\ImOffer;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImRoom;
+use App\Entity\Immo\ImSettings;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
@@ -144,10 +145,12 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
-        $allOwners = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
+        $allOwners   = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
+        $settings    = $em->getRepository(ImSettings::class)->findOneBy(['agency' => $user->getAgency()]);
 
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
-        $allOwners = $serializer->serialize($allOwners, 'json', ['groups' => User::ADMIN_READ]);
+        $allOwners   = $serializer->serialize($allOwners, 'json', ['groups' => User::ADMIN_READ]);
+        $settings    = $serializer->serialize($settings,'json', ['groups' => User::USER_READ]);
 
         $quartiers = $this->getDonneeData($em, DoQuartier::class, $user, $serializer);
 
@@ -158,6 +161,7 @@ class UserController extends AbstractController
             'photos' => $photos,
             'negotiators' => $negotiators,
             'allOwners' => $allOwners,
+            'settings' => $settings,
             'user' => $user,
             'quartiers' => $quartiers,
         ]);
@@ -173,8 +177,8 @@ class UserController extends AbstractController
 
         $element = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
         $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
-        $rooms   = $serializer->serialize($rooms,   'json', ['groups' => User::USER_READ]);
         $photos  = $serializer->serialize($photos,  'json', ['groups' => User::USER_READ]);
+        $rooms   = $serializer->serialize($rooms,   'json', ['groups' => User::USER_READ]);
 
         if($type !== "update"){
             $context = $request->query->get("ct");

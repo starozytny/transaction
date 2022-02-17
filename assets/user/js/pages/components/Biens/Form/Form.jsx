@@ -25,7 +25,8 @@ function setValueEmptyIfNull (parentValue, value) {
     return ""
 }
 
-export function BienFormulaire ({ type, element, rooms, photos, negotiators, allOwners, quartiers, societyId, agencyId, negotiatorId })
+export function BienFormulaire ({ type, element, rooms, photos, negotiators, allOwners, quartiers,
+                                    societyId, agencyId, negotiatorId, settings })
 {
     let title = "Ajouter un bien";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -176,6 +177,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         contentFull={element ? setValueEmptyIfNull(advert, advert.contentFull) : ""}
 
         codeTypeMandat={element ? setValueEmptyIfNull(mandat, mandat.codeTypeMandat) : 0}
+        nbMonthMandat={element ? "" : "init"}
         startAt={element ? (setValueEmptyIfNull(mandat, mandat.startAtJavascript) !== "" ? new Date(mandat.startAtJavascript) : "" ) : ""}
         endAt={element ? (setValueEmptyIfNull(mandat, mandat.endAtJavascript) !== "" ? new Date(mandat.endAtJavascript) : "" ) : ""}
         priceEstimate={element ? setValueEmptyIfNull(mandat, mandat.priceEstimate) : ""}
@@ -191,6 +193,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         negotiatorId={negotiatorId ? negotiatorId : ""}
         societyId={societyId}
         agencyId={agencyId}
+        settings={settings}
     />
 
     return <div className="main-content">{form}</div>
