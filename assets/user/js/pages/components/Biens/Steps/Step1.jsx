@@ -25,7 +25,7 @@ export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect,
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
-            <Alert iconCustom="exclamation" type="reverse">(*) Champs obligatoires.</Alert>
+            <Alert>(*) Champs obligatoires.</Alert>
         </div>
         <div className="line special-line">
             <Radiobox items={typeAdItems} identifiant="codeTypeAd" valeur={codeTypeAd} errors={errors} onChange={onChange}>

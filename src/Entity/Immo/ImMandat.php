@@ -35,6 +35,16 @@ class ImMandat extends DataEntity
      */
     private $endAt;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $priceEstimate;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $fee;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,5 +131,29 @@ class ImMandat extends DataEntity
     public function getEndAtJavascript(): ?string
     {
         return $this->setDateJavascript($this->endAt);
+    }
+
+    public function getPriceEstimate(): ?float
+    {
+        return $this->priceEstimate;
+    }
+
+    public function setPriceEstimate(?float $priceEstimate): self
+    {
+        $this->priceEstimate = $priceEstimate;
+
+        return $this;
+    }
+
+    public function getFee(): ?float
+    {
+        return $this->fee;
+    }
+
+    public function setFee(?float $fee): self
+    {
+        $this->fee = $fee;
+
+        return $this;
     }
 }
