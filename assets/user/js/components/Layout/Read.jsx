@@ -45,8 +45,8 @@ export function ReadCard (props)
                             <div className="badge badge-default">{elem.codeGerance}</div>
                             {totalBiens !== null && <div className="badge">{totalBiens} bien{totalBiens > 1 ? "s" : ""}</div>}
                         </>}
-                        {elem.status && <div className={"badge badge-" + elem.status}>{elem.statusString}</div>}
-                        {elem.type && <div className="badge badge-default">Type de prospect : {elem.typeString}</div>}
+                        {elem.status !== null && <div className={"badge badge-" + elem.status}>{elem.statusString}</div>}
+                        {elem.type !== null && <div className="badge badge-default">Type de prospect : {elem.typeString}</div>}
                     </div>
                     <NegotiatorBubble elem={elem.negotiator} txt={null}/>
                 </div>
