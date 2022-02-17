@@ -46,30 +46,8 @@
   }
 }
 
-.step-section{
-  & > .line:not(.line-buttons){
-    padding-bottom: 32px;
-    margin-bottom: 32px;
-  }
-}
-
 .special-line:not(.line-buttons){
   border-bottom: 1px solid var(--fondContent);
-}
-
-.line-buttons{
-  margin-top: 32px;
-
-  .btns-submit > .btn:not(:last-child),
-  & > .btn:not(:last-child){
-    margin-bottom: 12px;
-  }
-
-  .btns-submit{
-    & > .btn {
-      width: 100%;
-    }
-  }
 }
 
 .special-line{
@@ -77,10 +55,11 @@
     align-items: center;
 
     & > label{
-      @include fontSemibold();
+      @include fontBold();
       color: var(--txt);
       margin-bottom: 16px;
       text-transform: uppercase;
+      font-size: 20px;
     }
 
     .radiobox-items{
@@ -88,7 +67,13 @@
     }
 
     .radiobox-item label{
-      padding: 6px 24px;
+      padding: 8px 24px;
+      width: calc(220px - 48px - 2px);
+      text-align: center;
+    }
+
+    & + .line{
+      margin-top: 6px;
     }
   }
 
@@ -104,6 +89,26 @@
 
   &.active{
     display: block;
+  }
+
+  & > .line:not(.line-buttons){
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+  }
+}
+
+.line-buttons{
+  margin-top: 32px;
+
+  .btns-submit > .btn:not(:last-child),
+  & > .btn:not(:last-child){
+    margin-bottom: 12px;
+  }
+
+  .btns-submit{
+    & > .btn {
+      width: 100%;
+    }
   }
 }
 
