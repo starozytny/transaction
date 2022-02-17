@@ -43,8 +43,8 @@ export class BienForm extends Component {
         this.aside0 = React.createRef(); //image
         this.aside1 = React.createRef(); //owner
         this.aside3 = React.createRef(); //piece
-        this.owner = React.createRef();
-        this.rooms = React.createRef();
+        this.owner  = React.createRef();
+        this.rooms  = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeFile = this.handleChangeFile.bind(this);

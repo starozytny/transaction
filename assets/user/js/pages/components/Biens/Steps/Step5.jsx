@@ -6,7 +6,6 @@ import "leaflet-ajax/dist/leaflet.ajax.min";
 
 import Map      from "@commonComponents/functions/map";
 import helper   from "@userPages/components/Biens/functions/helper";
-import Sort     from "@commonComponents/functions/sort";
 
 import { Checkbox, Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }        from "@dashboardComponents/Tools/Alert";
@@ -15,10 +14,20 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 const CURRENT_STEP = 5;
 let mymap = null;
+let marker = null;
 
 export class Step5 extends Component {
+    constructor(props) {
+        super(props);
 
-    componentDidMount () {
+        this.state = {
+            init: false
+        }
+
+        this.handleShowMap = this.handleShowMap.bind(this);
+    }
+
+    handleShowMap = () => {
         // navigator.geolocation.getCurrentPosition(function (pos) {
         //     let crd = pos.coords;
         //
@@ -26,19 +35,21 @@ export class Step5 extends Component {
         // }, function () {
         //     mymap = Map.createMap(43.297648, 5.372835, 15, 13, 30);
         // })
-        mymap = Map.createMap(43.297648, 5.372835, 15, 13, 30);
+
+        if(!this.state.init){
+            mymap = Map.createMap(43.297648, 5.372835, 15, 13, 30);
+        }
+
+        this.setState({ init: true })
     }
 
     render () {
         const { step, errors, quartiers, onNext, onDraft, onChange, onChangeSelect, onChangeZipcode, onChangeGeo,
             address, hideAddress, zipcode, city, country, departement, newQuartier, quartier, lat, lon, hideMap } = this.props;
 
-        const divStyle = {
-            height: '50vh'
-        };
-
         if(lat && lon && mymap){
-            let marker = L.marker([lat, lon], {icon: Map.getOriginalLeafletIcon("../")}).addTo(mymap);
+            if(marker) mymap.removeLayer(marker)
+            marker = L.marker([lat, lon], {icon: Map.getOriginalLeafletIcon("../../")}).addTo(mymap);
         }
 
         let quartiersItems = helper.getItemsFromDB(quartiers, quartier, 'quart', true);
@@ -112,10 +123,17 @@ export class Step5 extends Component {
                         Masquer la géolocalisation
                     </Radiobox>
                 </div>
+                <div className="line line-3">
+                    <div className="form-group">
+                        <Button outline={true} type="default" icon="map" onClick={this.handleShowMap}>Afficher la carte</Button>
+                    </div>
+                    <div className="form-group" />
+                    <div className="form-group" />
+                </div>
             </div>
 
             <div className="line special-line">
-                <div id="mapid" style={divStyle} />
+                <div id="mapid" />
             </div>
 
             <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
