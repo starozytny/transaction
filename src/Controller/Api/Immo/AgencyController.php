@@ -4,6 +4,7 @@ namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImNegotiator;
+use App\Entity\Immo\ImSettings;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
@@ -118,6 +119,15 @@ class AgencyController extends AbstractController
         if ($file) {
             $fileName = $fileUploader->upload($file, ImAgency::FOLDER_TARIF);
             $obj->setTarif($fileName);
+        }
+
+        $settings = $em->getRepository(ImSettings::class)->findOneBy(['agency' => $obj]);
+        if(!$settings){
+            $setting = (new ImSettings())
+                ->setAgency($obj)
+            ;
+
+            $em->persist($setting);
         }
 
         $noErrors = $validator->validate($obj);

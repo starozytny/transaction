@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImSettings;
 use App\Entity\Notification;
 use App\Entity\Society;
 use App\Entity\User;
@@ -200,7 +201,11 @@ class AdminUsersCreateCommand extends Command
                     "))
                 ;
 
+                $setting = (new ImSettings())->setAgency($new);
+
+                $this->em->persist($setting);
                 $this->em->persist($new);
+
                 $agencies[] = [
                     'agency' => $new,
                     'society' => $agenceSociety
