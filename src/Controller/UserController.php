@@ -15,6 +15,7 @@ use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImSettings;
 use App\Entity\Immo\ImSuivi;
+use App\Entity\Immo\ImSupport;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
@@ -528,6 +529,24 @@ class UserController extends AbstractController
             'quartiers' => $quartiers,
             'sols' => $sols,
             'sousTypes' => $sousTypes,
+        ]);
+    }
+
+    /**
+     * @Route("/parametres/supports", name="settings_supports")
+     */
+    public function parametresSupports(SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $em->getRepository(ImSupport::class)->findBy(['agency' => $user->getAgency()]);
+
+        $data = $serializer->serialize($data, 'json', ['groups' => ImSupport::SUPPORT_READ]);
+
+        return $this->render('user/pages/settings/supports.html.twig', [
+            'donnees' => $data,
         ]);
     }
 

@@ -4,12 +4,15 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImSupportRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImSupportRepository::class)
  */
 class ImSupport
 {
+    const SUPPORT_READ = ["support:read"];
+
     const CODE_SELOGER = 1;
     const CODE_LOGICIMMO = 2;
     const CODE_LEBONCOIN = 3;
@@ -22,54 +25,63 @@ class ImSupport
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"support:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"support:read"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"support:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"support:read"})
      */
     private $ftpServer;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"support:read"})
      */
     private $ftpUser;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"support:read"})
      */
     private $ftpPassword;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"support:read"})
      */
     private $ftpPort;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"support:read"})
      */
     private $maxPhotos;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"support:read"})
+     */
+    private $filename;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, inversedBy="supports")
      * @ORM\JoinColumn(nullable=false)
      */
     private $agency;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $filename;
 
     public function getId(): ?int
     {
