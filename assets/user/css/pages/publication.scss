@@ -1,1 +1,23 @@
 @import "../vars/vars";
+
+@import "../components/card";
+
+#list-publishes{
+  .card-ad{
+    margin-bottom: 12px;
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  #list-publishes{
+    .card-ad{
+      margin-bottom: 24px;
+    }
+  }
+}

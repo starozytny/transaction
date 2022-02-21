@@ -22,8 +22,9 @@ class ImPublish
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBien::class, inversedBy="publishes")
+     * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="publishes")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"publish:read"})
      */
     private $bien;
 

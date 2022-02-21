@@ -64,7 +64,7 @@ export class AdCard extends Component {
     }
 
     render () {
-        const { isOwnerPage=false, isProspectPage=false, rapprochements, follows, el, onDelete, onLinkToProspect } = this.props;
+        const { isPublishePage=false, isOwnerPage=false, isProspectPage=false, rapprochements, follows, el, onDelete, onLinkToProspect, publishes } = this.props;
 
         let items = [
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
@@ -92,6 +92,15 @@ export class AdCard extends Component {
             rapprochements.forEach(ra => {
                 if(el.id === ra.bien){
                     nbRapprochements++;
+                }
+            })
+        }
+
+        let supports = [];
+        if(publishes){
+            publishes.forEach(pu => {
+                if(el.id === pu.bien.id){
+                    supports.push(pu.support.name)
                 }
             })
         }
@@ -145,12 +154,13 @@ export class AdCard extends Component {
                     </div>
                 </div>
                 <div className="card-footer">
-                    {el.confidential.commentary && <div className="commentary">{parse(el.confidential.commentary)}</div>}
+                    {(!isPublishePage && el.confidential.commentary) && <div className="commentary">{parse(el.confidential.commentary)}</div>}
+                    {isPublishePage && <div className="commentary">Diffusion sur : {supports.length > 0 ? supports.join().replaceAll(",", ", ") : "Aucune plateforme sélectionnée."}</div>}
 
                     <div className="footer-actions">
-                        <div className="createdAt">
+                        {!isPublishePage ? <div className="createdAt">
                             Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par " + el.updatedBy)}
-                        </div>
+                        </div> : <div className="createdAt" />}
                         <div className={"actions" + (isProspectPage && followed ? " followed" : "")}>
                             {(rapprochements && nbRapprochements > 0) && <ButtonIcon icon="group" tooltipWidth={120} text={""+nbRapprochements}>
                                 {nbRapprochements} rapprochement{nbRapprochements > 1 ? "s" : ""}
@@ -162,7 +172,7 @@ export class AdCard extends Component {
 
                             <ButtonIcon icon="follow" element="a" target="_blank" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>
                             <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
-                            {(!isProspectPage && !isOwnerPage) && <ButtonIconDropdown icon="trash" items={itemsTrash}>Suppression</ButtonIconDropdown>}
+                            {(!isProspectPage && !isOwnerPage && !isPublishePage) && <ButtonIconDropdown icon="trash" items={itemsTrash}>Suppression</ButtonIconDropdown>}
                             <ButtonIconDropdown icon="dropdown" items={items}>Autres</ButtonIconDropdown>
                         </div>
                     </div>

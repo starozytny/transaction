@@ -39,7 +39,7 @@ class ImSupport
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"support:read", "user:read"})
+     * @Groups({"support:read", "user:read", "publish:read"})
      */
     private $name;
 

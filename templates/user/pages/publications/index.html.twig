@@ -3,8 +3,9 @@
 {% set page_title %}Publication des annonces{% endset %}
 
 {% block main_content %}
-    <div id="list-publications"
+    <div id="list-publishes"
          data-donnees="{{ donnees }}"
+         data-publishes="{{ publishes }}"
     >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>

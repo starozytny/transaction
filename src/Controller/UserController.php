@@ -567,11 +567,14 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $data = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF, 'isDraft' => false, 'isArchived' => false]);
+        $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $data]);
 
         $data = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
+        $publishes = $serializer->serialize($publishes, 'json', ['groups' => ImPublish::PUBLISH_READ]);
 
         return $this->render('user/pages/publications/index.html.twig', [
-            'donnees' => $data
+            'donnees' => $data,
+            'publishes' => $publishes,
         ]);
     }
 }
