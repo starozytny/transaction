@@ -11,7 +11,7 @@ export class PublishesList extends Component {
     render () {
         const { data, onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille, publishes } = this.props;
 
-        let actions = <Button>Lancer la publication</Button>
+        let actions = <Button>Envoyer</Button>
 
         return <>
             <div className="page-default">
