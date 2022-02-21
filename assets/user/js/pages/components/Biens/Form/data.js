@@ -142,8 +142,9 @@ function getDataState (props) {
 
         rooms: props.rooms,
 
-        settings: props.settings,
         supports: props.supports,
+
+        settings: props.settings,
         allSupports: props.allSupports,
 
         isDraft: true,

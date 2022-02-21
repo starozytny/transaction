@@ -185,6 +185,8 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
 
         rooms={element ? rooms : []}
 
+        supports={[]}
+
         messageSuccess={msg}
 
         negotiators={negotiators}

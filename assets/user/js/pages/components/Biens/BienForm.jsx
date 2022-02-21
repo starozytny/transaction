@@ -73,7 +73,7 @@ export class BienForm extends Component {
 
     handleChange = (e) => {
         const { settings, codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, startAt, nbMonthMandat } = this.state;
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, startAt, nbMonthMandat, supports } = this.state;
 
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
@@ -102,6 +102,10 @@ export class BienForm extends Component {
 
         if(name === "codeTypeAd" && nbMonthMandat === "init"){
             this.setState({ nbMonthMandat: parseInt(value) === 1 ? settings.mandatMonthLocation : settings.mandatMonthVente })
+        }
+
+        if(name === "supports"){
+            value = Formulaire.updateValueCheckbox(e, supports, parseInt(value));
         }
 
         this.setState({[name]: value });
@@ -537,7 +541,8 @@ export class BienForm extends Component {
                                onGenerateContent={this.handleGenerateContent}
                                negotiators={negotiators} />
 
-                        <Step10 {...this.state} onSubmit={this.handleSubmit} allSupports={allSupports}/>
+                        <Step10 {...this.state} onSubmit={this.handleSubmit}
+                                onChange={this.handleChange} allSupports={allSupports}/>
 
                     </form>
 
