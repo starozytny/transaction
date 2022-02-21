@@ -11,3 +11,16 @@
 #list-sous-types{
   @include toolbarCreateFilterSearch(204)
 }
+
+#settings-supports{
+  .toolbar{
+    .filter-search{
+      margin-left: 0;
+      width: 100%;
+
+      .search{
+        width: 100%;
+      }
+    }
+  }
+}

@@ -6,7 +6,8 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min';
 import React from "react";
 import { render } from "react-dom";
 import { SettingsBiens } from "@dashboardPages/components/Immo/Settings/Biens/SettingsBiens";
-import {GenerauxFormulaire} from "@dashboardPages/components/Immo/Settings/Generaux/GenerauxForm";
+import { GenerauxFormulaire } from "@dashboardPages/components/Immo/Settings/Generaux/GenerauxForm";
+import { Supports } from "@userPages/components/Support/Supports";
 
 Routing.setRoutingData(routes);
 
@@ -22,4 +23,9 @@ if(el){
                             element={JSON.parse(el.dataset.element)}
                             negotiators={JSON.parse(el.dataset.negotiators)} />
     </div>, el)
+}
+
+el = document.getElementById("settings-supports");
+if(el){
+    render(<Supports {...el.dataset} />, el)
 }

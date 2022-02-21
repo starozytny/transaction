@@ -19,6 +19,7 @@ function switchFunction(type, search, v) {
                 return v;
             }
             break;
+        case "support":
         case "sousTypes":
         case "sol":
         case "changelog":
