@@ -155,7 +155,8 @@ export class AdCard extends Component {
                 </div>
                 <div className="card-footer">
                     {(!isPublishePage && el.confidential.commentary) && <div className="commentary">{parse(el.confidential.commentary)}</div>}
-                    {isPublishePage && <div className="commentary">Diffusion sur : {supports.length > 0 ? supports.join().replaceAll(",", ", ") : "Aucune plateforme sélectionnée."}</div>}
+                    {isPublishePage && <div className="commentary">Diffusion sur : {supports.length > 0 ? supports.join().replaceAll(",", ", ")
+                        : <span className="txt-danger">Aucune plateforme sélectionnée.</span>}</div>}
 
                     <div className="footer-actions">
                         {!isPublishePage ? <div className="createdAt">

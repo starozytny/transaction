@@ -10,3 +10,17 @@ export function PageInfos ({ image, children }) {
         </div>
     </div>
 }
+
+export function PageInfos2 ({ image, children, actions }) {
+    return <div className="content-col-1 page-infos-2-content">
+        <div className="page-infos-2-image">
+            <img src={image ? image : "/build/user/images/add-prospect.png"} alt="illustration"/>
+        </div>
+        <div className="page-infos-2-text">
+            {children}
+        </div>
+        <div className="page-infos-2-actions">
+            {actions}
+        </div>
+    </div>
+}

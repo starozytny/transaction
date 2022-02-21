@@ -612,7 +612,7 @@ class ImBien extends DataEntity
      */
     public function getStatusString(): string
     {
-        $status = ["Inactif", "Active", "Archive", "Brouillon"];
+        $status = ["Inactif", "Actif", "Archive", "Brouillon"];
 
         return $status[$this->status];
     }

@@ -1,23 +1,29 @@
 import React, { Component } from 'react';
 
-import { Alert }                  from "@dashboardComponents/Tools/Alert";
-import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
+import { Alert }                from "@dashboardComponents/Tools/Alert";
+import { AdCard }               from "@userPages/components/Biens/AdCard";
+import { PageInfos2 }           from "@userComponents/Layout/Page";
+import { Button }               from "@dashboardComponents/Tools/Button";
+import { TopSorterPagination }  from "@dashboardComponents/Layout/Pagination";
 
-import { AdCard } from "@userPages/components/Biens/AdCard";
 
 export class PublishesList extends Component {
     render () {
         const { data, onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille, publishes } = this.props;
 
+        let actions = <Button>Lancer la publication</Button>
+
         return <>
             <div className="page-default">
                 <div className="page-col-1">
                     <div className="body-col-1">
-                        <div className="title-col-1">
-                            <span>Infos :</span>
-                        </div>
                         <div className="content-col-1">
-                            <div>Item</div>
+                            <PageInfos2 image="/build/user/images/publish.png" actions={actions}>
+                                <p>
+                                    Lancer la publication permet d'envoyer les données vers les différents supports qui
+                                    se chargeront eux-même de mettre à jours leurs données.
+                                </p>
+                            </PageInfos2>
                         </div>
                     </div>
                 </div>

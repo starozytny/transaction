@@ -20,6 +20,7 @@ import { Prospects }                from "@dashboardPages/components/Immo/Prospe
 import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offer/OfferForm";
 import { OfferFinalFormulaire }     from "@userPages/components/Biens/Suivi/Offer/OfferFinalForm";
 import { RapprochementsItem }       from "@userPages/components/Biens/Suivi/Rapprochement/RapprochementsItem";
+import {PageInfos2} from "@userComponents/Layout/Page";
 
 const URL_DELETE_OFFER = "api_offers_delete";
 const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
@@ -248,25 +249,21 @@ export class Rapprochements extends Component {
             { value: 'ending',          label: 'Finalisés' },
         ]
 
+        let pageInfosActions = <>
+            <Button onClick={() => this.handleChangeContext('select')}>Sélectionner</Button>
+            <Button outline={true} onClick={() => this.handleChangeContext('create')}>Ajouter</Button>
+        </>
+
         return (<div className="details-tab-infos">
             <div className="page-default">
                 <div className="page-col-1">
                     <div className="body-col-1">
-                        <div className="content-col-1 ra-pr-content">
-                            <div className="ra-pr-image">
-                                <img src="/build/user/images/add-prospect.png" alt="illustration add prospect"/>
-                            </div>
-                            <div className="ra-pr-text">
-                                <p>
-                                    Vous pouvez sélectionner ou ajouter un prospect à la liste des
-                                    rapprochements manuellement en cliquant sur le bouton correspondant.
-                                </p>
-                            </div>
-                            <div className="ra-pr-actions">
-                                <Button onClick={() => this.handleChangeContext('select')}>Sélectionner</Button>
-                                <Button outline={true} onClick={() => this.handleChangeContext('create')}>Ajouter</Button>
-                            </div>
-                        </div>
+                        <PageInfos2 image="/build/user/images/add-prospect.png" actions={pageInfosActions}>
+                            <p>
+                                Vous pouvez sélectionner ou ajouter un prospect à la liste des
+                                rapprochements manuellement en cliquant sur le bouton correspondant.
+                            </p>
+                        </PageInfos2>
                     </div>
                 </div>
                 <div className="page-col-2">
