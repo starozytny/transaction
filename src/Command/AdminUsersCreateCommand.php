@@ -3,12 +3,16 @@
 namespace App\Command;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImNegotiator;
+use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSettings;
 use App\Entity\Notification;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Service\Data\Society\DataSociety;
 use App\Service\DatabaseService;
+use App\Service\Immo\ImmoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use Symfony\Component\Console\Command\Command;
@@ -23,15 +27,17 @@ class AdminUsersCreateCommand extends Command
     private $em;
     private $databaseService;
     private $dataSociety;
+    private $immoService;
 
     public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService,
-                                DataSociety $dataSociety)
+                                DataSociety $dataSociety, ImmoService $immoService)
     {
         parent::__construct();
 
         $this->em = $entityManager;
         $this->databaseService = $databaseService;
         $this->dataSociety = $dataSociety;
+        $this->immoService = $immoService;
     }
 
     protected function configure()
@@ -49,6 +55,9 @@ class AdminUsersCreateCommand extends Command
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
             Notification::class,
+            ImOwner::class,
+            ImProspect::class,
+            ImNegotiator::class,
             User::class,
             ImSettings::class,
             ImAgency::class,
@@ -132,6 +141,7 @@ class AdminUsersCreateCommand extends Command
         ;
 
         $setting = (new ImSettings())->setAgency($agency);
+        $this->immoService->initiateSupport($agency);
 
         $this->em->persist($setting);
         $this->em->persist($agency);
@@ -211,6 +221,7 @@ class AdminUsersCreateCommand extends Command
                 ;
 
                 $setting = (new ImSettings())->setAgency($new);
+                $this->immoService->initiateSupport($new);
 
                 $this->em->persist($setting);
                 $this->em->persist($new);

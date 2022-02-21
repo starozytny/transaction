@@ -25,6 +25,7 @@ use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImSearch;
 use App\Entity\Immo\ImSettings;
 use App\Entity\Immo\ImSuivi;
+use App\Entity\Immo\ImSupport;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
@@ -663,6 +664,18 @@ class DataImmo extends DataConstructor
         return ($obj)
             ->setPriceFinal($this->setToNullFloat($data->priceFinal))
             ->setStatus(ImOffer::STATUS_ACCEPT)
+        ;
+    }
+
+    public function setDataSupport(ImSupport $obj, $data): ImSupport
+    {
+        return ($obj)
+            ->setCode((int) $data->code)
+            ->setName($this->sanitizeData->trimData($data->name))
+            ->setFtpServer($this->sanitizeData->trimData($data->ftpServer))
+            ->setFtpPort($this->setToNullInteger($data->ftpPort))
+            ->setMaxPhotos($this->setToZeroEmpty($data->maxPhotos))
+            ->setFilename($this->sanitizeData->trimData($data->filename))
         ;
     }
 }

@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ImSupport
 {
+    const CODE_SELOGER = 1;
+    const CODE_LOGICIMMO = 2;
+    const CODE_LEBONCOIN = 3;
+    const CODE_PARUVENDU = 4;
+    const CODE_ANNONCESJAUNES = 5;
+    const CODE_TOPANNONCES = 6;
+    const CODE_SITIMMO = 7;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -57,6 +65,11 @@ class ImSupport
      * @ORM\JoinColumn(nullable=false)
      */
     private $agency;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $filename;
 
     public function getId(): ?int
     {
@@ -155,6 +168,18 @@ class ImSupport
     public function setAgency(?ImAgency $agency): self
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(?string $filename): self
+    {
+        $this->filename = $filename;
 
         return $this;
     }
