@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 
-import { Layout }        from "@dashboardComponents/Layout/Page";
+import axios       from "axios";
+import Swal        from "sweetalert2";
+import SwalOptions from "@commonComponents/functions/swalOptions";
+import Routing     from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import Sort              from "@commonComponents/functions/sort";
+import Formulaire        from "@dashboardComponents/functions/Formulaire";
 import TopToolbar        from "@commonComponents/functions/topToolbar";
+
+import { Layout }        from "@dashboardComponents/Layout/Page";
 
 import { PublishesList } from "./PublishesList";
 
@@ -37,6 +44,7 @@ export class Publishes extends Component {
         this.handlePerPage = this.handlePerPage.bind(this);
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
         this.handleSorter = this.handleSorter.bind(this);
+        this.handlePublish = this.handlePublish.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
     }
@@ -50,6 +58,31 @@ export class Publishes extends Component {
     handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
 
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
+
+    handlePublish = () => {
+        let data = this.layout.current.state.data;
+
+        const self = this;
+        Swal.fire(SwalOptions.options("Êtes-vous sûr de vouloir envoyer les nouvelles données aux plateformes de diffusions d'annonces ?", "Action irréversible."))
+            .then((result) => {
+                if (result.isConfirmed) {
+                    Formulaire.loader(true)
+                    axios.post(Routing.generate('api_immo_publish_send'), data)
+                        .then(function (response) {
+                            Swal.fire(response.data.message, '', 'success');
+                            setTimeout(function () {
+                                location.reload();
+                            }, 5000)
+                        })
+                        .catch(function (error) {
+                            Formulaire.loader(false);
+                            Formulaire.displayErrors(self, error, "Une erreur est survenue, veuillez contacter le support.")
+                        })
+                    ;
+                }
+            })
+        ;
+    }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { perPage, currentPage, publishes } = this.state;
@@ -66,6 +99,7 @@ export class Publishes extends Component {
                               sorters={sorters}
                               onSorter={this.handleSorter}
                              //data
+                              onPublish={this.handlePublish}
                               publishes={publishes}
                               data={currentData} />
     }

@@ -6,12 +6,11 @@ import { PageInfos2 }           from "@userComponents/Layout/Page";
 import { Button }               from "@dashboardComponents/Tools/Button";
 import { TopSorterPagination }  from "@dashboardComponents/Layout/Pagination";
 
-
 export class PublishesList extends Component {
     render () {
-        const { data, onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille, publishes } = this.props;
+        const { data, onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille, publishes, onPublish } = this.props;
 
-        let actions = <Button>Envoyer</Button>
+        let actions = <Button onClick={onPublish}>Envoyer</Button>
 
         return <>
             <div className="page-default">
