@@ -3,7 +3,10 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImPublish;
+use App\Entity\Immo\ImSupport;
 use App\Service\ApiResponse;
+use App\Service\Immo\PublishService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,7 +44,7 @@ class PublishController extends AbstractController
      * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
-    public function update(Request $request, ApiResponse $apiResponse): JsonResponse
+    public function update(Request $request, ApiResponse $apiResponse, PublishService $publishService): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
@@ -51,9 +54,10 @@ class PublishController extends AbstractController
             $bien->setIsPublished(false);
         }
 
-        $biens = $em->getRepository(ImBien::class)->findBy(['id' => $data]);
+        $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $data]);
 
-        dump($biens);
+        $publishService->createFile($publishes);
+
 
         return $apiResponse->apiJsonResponseSuccessful("L'envoie s'est bien passé. La page va se rafraîchir automatiquement dans 5 secondes.");
     }

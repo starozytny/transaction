@@ -35,7 +35,7 @@ class Export
         return $val == null ? "" : $val;
     }
 
-    public function createFile($format, $title, $filename, $header, $data, $max, $folder=""): JsonResponse
+    public function createFile($format, $title, $filename, $header, $data, $max, $folder="", $delimiter=";"): JsonResponse
     {
         $spreadsheet = new Spreadsheet();
 
@@ -64,8 +64,13 @@ class Export
         $sheet->setShowGridlines(false);
 
         // Fill excel header
-        $this->fill($header, $max, $sheet, 1);
-        $this->fill($data, $max, $sheet, 2);
+        if($header) {
+            $this->fill($header, $max, $sheet, 1);
+            $this->fill($data, $max, $sheet, 2);
+        }else{
+            $this->fill($data, $max, $sheet, 1);
+        }
+
 
         // Create your Office 2007 Excel (XLSX Format)
         if($format == 'excel'){
@@ -73,7 +78,7 @@ class Export
         }else{
             $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
             $writer->setUseBOM(true);
-            $writer->setDelimiter(';');
+            $writer->setDelimiter($delimiter);
             $writer->setEnclosure('');
             $writer->setLineEnding("\r\n");
         }
