@@ -62,12 +62,17 @@ export class Publishes extends Component {
     handlePublish = () => {
         let data = this.layout.current.state.data;
 
+        let biens = [];
+        data.forEach(item => {
+            biens.push(item.id)
+        })
+
         const self = this;
         Swal.fire(SwalOptions.options("Êtes-vous sûr de vouloir envoyer les nouvelles données aux plateformes de diffusions d'annonces ?", "Action irréversible."))
             .then((result) => {
                 if (result.isConfirmed) {
                     Formulaire.loader(true)
-                    axios.post(Routing.generate('api_immo_publish_send'), data)
+                    axios.post(Routing.generate('api_immo_publish_send'), biens)
                         .then(function (response) {
                             Swal.fire(response.data.message, '', 'success');
                             setTimeout(function () {

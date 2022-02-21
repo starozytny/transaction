@@ -51,7 +51,9 @@ class PublishController extends AbstractController
             $bien->setIsPublished(false);
         }
 
-        dump($data);
+        $biens = $em->getRepository(ImBien::class)->findBy(['id' => $data]);
+
+        dump($biens);
 
         return $apiResponse->apiJsonResponseSuccessful("L'envoie s'est bien passé. La page va se rafraîchir automatiquement dans 5 secondes.");
     }
