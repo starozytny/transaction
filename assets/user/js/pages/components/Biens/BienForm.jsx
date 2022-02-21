@@ -26,6 +26,7 @@ import { Step6Vente }   from "@userPages/components/Biens/Steps/Step6Vente";
 import { Step7 }        from "@userPages/components/Biens/Steps/Step7";
 import { Step8 }        from "@userPages/components/Biens/Steps/Step8";
 import { Step9 }        from "@userPages/components/Biens/Steps/Step9";
+import { Step10 }       from "@userPages/components/Biens/Steps/Step10";
 
 import { Owners}        from "@dashboardPages/components/Immo/Owners/Owners";
 
@@ -439,7 +440,7 @@ export class BienForm extends Component {
     }
 
     render () {
-        const { negotiators, quartiers, sols, sousTypes, societyId, agencyId, settings } = this.props;
+        const { negotiators, quartiers, sols, sousTypes, societyId, agencyId, settings, allSupports } = this.props;
         const { step, contentHelpBubble, codeTypeAd, owner, allOwners } = this.state;
 
         let steps = [
@@ -452,7 +453,7 @@ export class BienForm extends Component {
             {id: 7,  label: "Photos"},
             {id: 8,  label: "Contacts"},
             {id: 9,  label: "Description"},
-            {id: 10, label: "Publication"},
+            {id: 10, label: "Diffusions"},
         ];
 
         let stepTitle = "Etape 1 : Informations globales";
@@ -536,13 +537,7 @@ export class BienForm extends Component {
                                onGenerateContent={this.handleGenerateContent}
                                negotiators={negotiators} />
 
-                        {step === 10 && <div className="step-section active">
-                            <div className="line line-buttons">
-                                <div className="btn-submit">
-                                    <Button isSubmit={true}>Enregistrer le bien</Button>
-                                </div>
-                            </div>
-                        </div>}
+                        <Step10 {...this.state} onSubmit={this.handleSubmit} allSupports={allSupports}/>
 
                     </form>
 

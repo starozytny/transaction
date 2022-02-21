@@ -25,7 +25,7 @@ class ImSupport
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"support:read"})
+     * @Groups({"support:read", "user:read"})
      */
     private $id;
 
@@ -37,7 +37,7 @@ class ImSupport
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"support:read"})
+     * @Groups({"support:read", "user:read"})
      */
     private $name;
 

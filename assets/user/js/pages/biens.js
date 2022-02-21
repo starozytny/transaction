@@ -40,6 +40,7 @@ if(el){
                            quartiers={JSON.parse(el.dataset.quartiers)}
                            sols={JSON.parse(el.dataset.sols)}
                            sousTypes={JSON.parse(el.dataset.sousTypes)}
+                           allSupports={JSON.parse(el.dataset.allSupports)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 
@@ -55,6 +56,7 @@ if(el){
                            quartiers={JSON.parse(el.dataset.quartiers)}
                            sols={JSON.parse(el.dataset.sols)}
                            sousTypes={JSON.parse(el.dataset.sousTypes)}
+                           allSupports={JSON.parse(el.dataset.allSupports)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 

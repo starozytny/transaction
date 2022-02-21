@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { BienForm } from "@userPages/components/Biens/BienForm";
-import {Button} from "@dashboardComponents/Tools/Button";
+import { Button } from "@dashboardComponents/Tools/Button";
 
 const URL_CREATE_ELEMENT     = "api_biens_create";
 const URL_UPDATE_GROUP       = "api_biens_update";
@@ -26,7 +26,7 @@ function setValueEmptyIfNull (parentValue, value) {
 }
 
 export function BienFormulaire ({ type, element, rooms, photos, negotiators, allOwners, quartiers, sols, sousTypes,
-                                    societyId, agencyId, negotiatorId, settings })
+                                    societyId, agencyId, negotiatorId, settings, allSupports })
 {
     let title = "Ajouter un bien";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -196,19 +196,20 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         societyId={societyId}
         agencyId={agencyId}
         settings={settings}
+        allSupports={allSupports}
     />
 
     return <div className="main-content">{form}</div>
 }
 
 
-export function FormActions ({ onNext, onDraft, currentStep }) {
+export function FormActions ({ onNext, onDraft, currentStep, onSubmit, isFinal = false }) {
     return <div className="line line-buttons">
         <Button type="reverse" onClick={() => onNext(currentStep - 1, currentStep)}>Etape précédente</Button>
         <div/>
         <div className="btns-submit">
             <Button type="warning" onClick={onDraft}>Enregistrer le brouillon</Button>
-            <Button onClick={() => onNext(currentStep + 1)}>Etape suivante</Button>
+            {isFinal ? <Button onClick={(e) => onSubmit(e, false)}>Enregistrer le bien</Button> : <Button onClick={() => onNext(currentStep + 1)}>Etape suivante</Button>}
         </div>
     </div>
 }

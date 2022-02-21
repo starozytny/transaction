@@ -150,10 +150,12 @@ class UserController extends AbstractController
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
         $allOwners   = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
         $settings    = $em->getRepository(ImSettings::class)->findOneBy(['agency' => $user->getAgency()]);
+        $allSupports = $em->getRepository(ImSupport::class)->findBy(['agency' => $user->getAgency()]);
 
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
         $allOwners   = $serializer->serialize($allOwners, 'json', ['groups' => User::ADMIN_READ]);
         $settings    = $serializer->serialize($settings,'json', ['groups' => User::USER_READ]);
+        $allSupports = $serializer->serialize($allSupports,'json', ['groups' => User::USER_READ]);
 
         $quartiers = $this->getDonneeData($em, DoQuartier::class, $user, $serializer);
         $sols      = $this->getDonneeData($em, DoSol::class, $user, $serializer);
@@ -171,6 +173,7 @@ class UserController extends AbstractController
             'quartiers' => $quartiers,
             'sols' => $sols,
             'sousTypes' => $sousTypes,
+            'allSupports' => $allSupports,
         ]);
     }
 
