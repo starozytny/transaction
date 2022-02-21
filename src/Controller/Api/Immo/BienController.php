@@ -15,7 +15,9 @@ use App\Entity\Immo\ImLocalisation;
 use App\Entity\Immo\ImMandat;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImPhoto;
+use App\Entity\Immo\ImPublish;
 use App\Entity\Immo\ImRoom;
+use App\Entity\Immo\ImSupport;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
@@ -209,6 +211,7 @@ class BienController extends AbstractController
         }
 
         $obj = $this->addPhotos($em, $fileUploader, $folderPhoto, $dataEntity, $user, $obj, $files, $data->photos);
+        $obj = $this->addSupports($em, $obj, $data);
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
@@ -230,6 +233,45 @@ class BienController extends AbstractController
         }
 
         return $apiResponse->apiJsonResponse($obj, User::USER_READ);
+    }
+
+    private function addSupports($em, ImBien $obj, $data): ImBien
+    {
+        $existes = []; $supports = [];
+        $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $obj]);
+
+        /** @var ImPublish $publish */
+        foreach($publishes as $publish){
+            $find = false;
+            foreach($data->supports as $support){
+                if($support == $publish->getSupport()->getId()){
+                    $find = true;
+                    $existes[] = $support;
+                }
+            }
+
+            if(!$find){
+                $em->remove($publish);
+            }
+        }
+
+        foreach($data->supports as $support){
+            if(!in_array($support, $existes)){
+                $supports[] = $support;
+            }
+        }
+
+        $supports = $em->getRepository(ImSupport::class)->findBy(['id' => $supports]);
+        foreach($supports as $support){
+            $publish = (new ImPublish())
+                ->setBien($obj)
+                ->setSupport($support)
+            ;
+
+            $em->persist($publish);
+        }
+
+        return $obj;
     }
 
     private function addPhotos($em, FileUploader $fileUploader, $folderPhoto, DataImmo $dataEntity,

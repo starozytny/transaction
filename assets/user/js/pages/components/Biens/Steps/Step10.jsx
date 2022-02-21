@@ -22,6 +22,6 @@ export function Step10({ step, errors, onSubmit, onNext, onChange, allSupports, 
             </Checkbox>
         </div>
 
-        <FormActions onNext={onNext} onSubmit={onSubmit} isFinal={true} currentStep={CURRENT_STEP} />
+        <FormActions onNext={onNext} onDraft={onSubmit} onSubmit={onSubmit} isFinal={true} currentStep={CURRENT_STEP} />
     </div>
 }

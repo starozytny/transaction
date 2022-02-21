@@ -4,16 +4,20 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImPublishRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImPublishRepository::class)
  */
 class ImPublish
 {
+    const PUBLISH_READ = ["publish:read"];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"publish:read"})
      */
     private $id;
 
@@ -24,8 +28,9 @@ class ImPublish
     private $bien;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImSupport::class, inversedBy="publishes")
+     * @ORM\ManyToOne(targetEntity=ImSupport::class, fetch="EAGER", inversedBy="publishes")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"publish:read"})
      */
     private $support;
 
