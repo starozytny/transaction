@@ -277,6 +277,11 @@ class ImBien extends DataEntity
      */
     private $updatedBy;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImPublish::class, mappedBy="bien")
+     */
+    private $publishes;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -286,6 +291,7 @@ class ImBien extends DataEntity
         $this->rooms = new ArrayCollection();
         $this->suivis = new ArrayCollection();
         $this->offers = new ArrayCollection();
+        $this->publishes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -896,6 +902,36 @@ class ImBien extends DataEntity
             // set the owning side to null (unless already changed)
             if ($offer->getBien() === $this) {
                 $offer->setBien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImPublish[]
+     */
+    public function getPublishes(): Collection
+    {
+        return $this->publishes;
+    }
+
+    public function addPublish(ImPublish $publish): self
+    {
+        if (!$this->publishes->contains($publish)) {
+            $this->publishes[] = $publish;
+            $publish->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublish(ImPublish $publish): self
+    {
+        if ($this->publishes->removeElement($publish)) {
+            // set the owning side to null (unless already changed)
+            if ($publish->getBien() === $this) {
+                $publish->setBien(null);
             }
         }
 

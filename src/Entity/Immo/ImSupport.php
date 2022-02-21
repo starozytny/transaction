@@ -3,6 +3,8 @@
 namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImSupportRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -92,6 +94,16 @@ class ImSupport
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $updatedBy;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ImPublish::class, mappedBy="support")
+     */
+    private $publishes;
+
+    public function __construct()
+    {
+        $this->publishes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -227,6 +239,36 @@ class ImSupport
     public function setUpdatedBy(?string $updatedBy): self
     {
         $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImPublish[]
+     */
+    public function getPublishes(): Collection
+    {
+        return $this->publishes;
+    }
+
+    public function addPublish(ImPublish $publish): self
+    {
+        if (!$this->publishes->contains($publish)) {
+            $this->publishes[] = $publish;
+            $publish->setSupport($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublish(ImPublish $publish): self
+    {
+        if ($this->publishes->removeElement($publish)) {
+            // set the owning side to null (unless already changed)
+            if ($publish->getSupport() === $this) {
+                $publish->setSupport(null);
+            }
+        }
 
         return $this;
     }
