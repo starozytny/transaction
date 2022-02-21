@@ -94,11 +94,12 @@ class AgencyController extends AbstractController
      * @param ApiResponse $apiResponse
      * @param FileUploader $fileUploader
      * @param DataImmo $dataEntity
+     * @param ImmoService $immoService
      * @return JsonResponse
      * @throws Exception
      */
     public function create(Request $request, ValidatorService $validator, ApiResponse $apiResponse,
-                           FileUploader $fileUploader, DataImmo $dataEntity): JsonResponse
+                           FileUploader $fileUploader, DataImmo $dataEntity, ImmoService $immoService): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
@@ -108,6 +109,8 @@ class AgencyController extends AbstractController
         }
 
         $obj = $dataEntity->setDataAgency(new ImAgency(), $data);
+
+        $immoService->initiateSupport($obj);
 
         $file = $request->files->get('logo');
         if ($file) {
@@ -224,6 +227,7 @@ class AgencyController extends AbstractController
      * @param ApiResponse $apiResponse
      * @param ImAgency $obj
      * @param ImmoService $immoService
+     * @param FileUploader $fileUploader
      * @return JsonResponse
      */
     public function delete(ApiResponse $apiResponse, ImAgency $obj, ImmoService $immoService, FileUploader $fileUploader): JsonResponse
