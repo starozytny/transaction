@@ -13,7 +13,7 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_UPDATE_GROUP       = "api_owners_update";
+const URL_UPDATE_GROUP       = "api_immo_supports_update";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function SupportFormulaire ({ type, onChangeContext, onUpdateList, element })
@@ -26,11 +26,14 @@ export function SupportFormulaire ({ type, onChangeContext, onUpdateList, elemen
         context={type}
         url={url}
 
+        code={Formulaire.setValueEmptyIfNull(element.code)}
+        name={Formulaire.setValueEmptyIfNull(element.name)}
         filename={Formulaire.setValueEmptyIfNull(element.filename)}
         ftpServer={Formulaire.setValueEmptyIfNull(element.ftpServer)}
         ftpPort={Formulaire.setValueEmptyIfNull(element.ftpPort)}
         ftpUser={Formulaire.setValueEmptyIfNull(element.ftpUser)}
         ftpPassword={Formulaire.setValueEmptyIfNull(element.ftpPassword)}
+        maxPhotos={Formulaire.setValueEmptyIfNull(element.maxPhotos)}
 
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
@@ -46,11 +49,14 @@ export class SupportForm extends Component {
         super(props);
 
         this.state = {
+            code: props.code,
+            name: props.name,
             filename: props.filename,
             ftpServer: props.ftpServer,
             ftpPort: props.ftpPort,
             ftpUser: props.ftpUser,
             ftpPassword: props.ftpPassword,
+            maxPhotos: props.maxPhotos,
             errors: [],
             success: false,
             critere: ""

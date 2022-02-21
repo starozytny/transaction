@@ -674,6 +674,8 @@ class DataImmo extends DataConstructor
             ->setName($this->sanitizeData->trimData($data->name))
             ->setFtpServer($this->sanitizeData->trimData($data->ftpServer))
             ->setFtpPort($this->setToNullInteger($data->ftpPort))
+            ->setFtpUser($this->sanitizeData->trimData($data->ftpUser))
+            ->setFtpPassword($this->sanitizeData->trimData($data->ftpPassword))
             ->setMaxPhotos($this->setToZeroEmpty($data->maxPhotos))
             ->setFilename($this->sanitizeData->trimData($data->filename))
         ;
