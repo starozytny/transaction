@@ -135,6 +135,19 @@
   }
 }
 
+.page-actions{
+  .common-actions{
+    .dropdown{
+      .dropdown-btn{
+        background: transparent;
+        border: none;
+        padding: 8px;
+        justify-content: flex-start;
+      }
+    }
+  }
+}
+
 //                      __   _____ __    ___    __
 //                     | _| |___  / /_  ( _ )  |_ |
 //    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
@@ -184,6 +197,29 @@
 
     .content{
       width: calc(100% - 20%);
+    }
+  }
+
+  .page-actions{
+    @include flex(row, flex-start, space-between);
+
+    & > *{
+      width: 50%;
+    }
+
+    .common-actions{
+      @include flex(row, flex-start, flex-end);
+      flex-wrap: wrap;
+
+      & > *:not(:first-child){
+        margin-left: 8px;
+      }
+
+      .dropdown{
+        .dropdown-btn{
+          justify-content: center;
+        }
+      }
     }
   }
 }

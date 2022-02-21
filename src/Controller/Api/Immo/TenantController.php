@@ -2,18 +2,18 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImTenant;
 use App\Entity\User;
-use App\Repository\Immo\ImTenantRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
+use App\Service\Immo\ImmoService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -148,5 +148,26 @@ class TenantController extends AbstractController
     public function deleteSelected(Request $request, DataService $dataService): JsonResponse
     {
         return $dataService->deleteSelected(ImTenant::class, json_decode($request->getContent()));
+    }
+
+    /**
+     * @Route("/export/{format}", name="export", options={"expose"=true}, methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Return file",
+     * )
+     *
+     * @OA\Tag(name="Owners")
+     *
+     * @param $format
+     * @param ImmoService $immoService
+     * @return BinaryFileResponse
+     */
+    public function export($format, ImmoService $immoService): BinaryFileResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        return $immoService->exportData($format, $user, ImTenant::class, 'locataires');
     }
 }

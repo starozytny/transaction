@@ -11,11 +11,13 @@ use App\Repository\Immo\ImProspectRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
+use App\Service\Immo\ImmoService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -249,5 +251,26 @@ class ProspectController extends AbstractController
         $em->flush();
 
         return $apiResponse->apiJsonResponse($obj, User::ADMIN_READ);
+    }
+
+    /**
+     * @Route("/export/{format}", name="export", options={"expose"=true}, methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Return file",
+     * )
+     *
+     * @OA\Tag(name="Owners")
+     *
+     * @param $format
+     * @param ImmoService $immoService
+     * @return BinaryFileResponse
+     */
+    public function export($format, ImmoService $immoService): BinaryFileResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        return $immoService->exportData($format, $user, ImProspect::class, 'prospects');
     }
 }

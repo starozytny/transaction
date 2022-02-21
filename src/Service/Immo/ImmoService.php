@@ -6,24 +6,33 @@ namespace App\Service\Immo;
 
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImSupport;
+use App\Entity\User;
 use App\Service\Data\DataImmo;
+use App\Service\Export;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ImmoService
 {
     private $em;
     private $imagesDirectory;
     private $thumbsDirectory;
+    private $privateDirectory;
     private $dataImmo;
+    private $export;
 
-    public function __construct($imagesDirectory, $thumbsDirectory, EntityManagerInterface $entityManager, DataImmo $dataImmo)
+    public function __construct($imagesDirectory, $thumbsDirectory, $privateDirectory, EntityManagerInterface $entityManager,
+                                DataImmo $dataImmo, Export $export)
     {
 
         $this->em = $entityManager;
         $this->imagesDirectory = $imagesDirectory;
         $this->thumbsDirectory = $thumbsDirectory;
+        $this->privateDirectory = $privateDirectory;
         $this->dataImmo = $dataImmo;
+        $this->export = $export;
     }
 
     public function getImagesDirectory()
@@ -34,6 +43,11 @@ class ImmoService
     public function getThumbsDirectory()
     {
         return $this->thumbsDirectory;
+    }
+
+    public function getPrivateDirectory()
+    {
+        return $this->privateDirectory;
     }
 
     /**
@@ -67,6 +81,35 @@ class ImmoService
 
         //remove agency
         $this->em->remove($agency);
+    }
+
+    public function exportData($format, User $user, $class, $nameFile): BinaryFileResponse
+    {
+        $objs = $this->em->getRepository($class)->findBy(["agency" => $user->getAgency()], ['lastname' => 'ASC']);
+        $data = [];
+
+        $nameFolder = 'export/';
+
+        foreach ($objs as $obj) {
+            $tmp = [
+                $obj->getId(),
+                $obj->getLastname(),
+                $obj->getFirstname(),
+                $obj->getEmail(),
+                $obj->getPhone1(),
+                $obj->getPhone2(),
+                $obj->getPhone3(),
+            ];
+            if(!in_array($tmp, $data)){
+                $data[] = $tmp;
+            }
+        }
+
+        $fileName = $nameFile . '.xlsx';
+        $header = array(array('Code', 'Nom', 'Prénom', 'Email', 'Téléphone 1', 'Téléphone 2', 'Téléphone 3'));
+
+        $this->export->createFile($format, 'Liste des ' . $nameFile, $fileName , $header, $data, 7, $nameFolder);
+        return new BinaryFileResponse($this->getPrivateDirectory(). $nameFolder . $fileName);
     }
 
     public function initiateSupport(ImAgency $agency): bool

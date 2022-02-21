@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 
+import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import FilterFunction from "@commonComponents/functions/filter";
 
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
 import { Search }                 from "@dashboardComponents/Layout/Search";
-import { Button, ButtonIcon }     from "@dashboardComponents/Tools/Button";
-import { FilterMultiple, FilterSelected } from "@dashboardComponents/Layout/Filter";
 import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
+import { FilterMultiple, FilterSelected } from "@dashboardComponents/Layout/Filter";
+import { Button, ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
 import { BuyersItem }   from "./BuyersItem";
 
@@ -36,6 +38,13 @@ export class BuyersList extends Component {
         ];
 
         let negotiatorsFilter = FilterFunction.getNegotiators(dataImmuable);
+
+
+        let dropdownItems = [
+            {data: <a className="item" download="acquereurs.xlsx" href={Routing.generate('api_buyers_export', {'format': 'excel'})}>
+                    <ButtonIcon icon="file" text="Exporter en Excel" />
+                </a>}
+        ]
 
         return <>
             <div>
@@ -79,10 +88,15 @@ export class BuyersList extends Component {
                     </div>
                 </div>
 
-                {(data && data.length !== 0 && !isClient) && <div className="page-actions">
+                {(data && data.length !== 0) && <div className="page-actions">
                     <div className="selectors-actions">
-                        <div className="item" onClick={onDeleteAll}>
-                            <ButtonIcon icon="trash" text="Supprimer la sélection" />
+                        {!isClient && <div className="item" onClick={onDeleteAll}>
+                            <ButtonIcon icon="trash" text="Supprimer la sélection"/>
+                        </div>}
+                    </div>
+                    <div className="common-actions">
+                        <div className="item">
+                            <ButtonIconDropdown icon="download" text="Exporter" items={dropdownItems} />
                         </div>
                     </div>
                 </div>}

@@ -6,6 +6,7 @@ use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImPublish;
 use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImVisit;
@@ -45,6 +46,7 @@ class FakeOwnersCreate extends Command
 
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
+            ImPublish::class,
             ImSuivi::class,
             ImVisit::class,
             ImRoom::class,
