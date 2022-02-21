@@ -206,10 +206,11 @@ class UserController extends AbstractController
             $visits         = $serializer->serialize($visits,       'json', ['groups' => ImVisit::VISIT_READ]);
             $offers         = $serializer->serialize($offers,       'json', ['groups' => ImOffer::OFFER_READ]);
 
+            $rapprochements = [];
             if($type === "suivi"){
                 $rapprochements = $searchService->getRapprochementBySearchs([$obj]);
-                $rapprochements = json_encode($rapprochements);
             }
+            $rapprochements = json_encode($rapprochements);
         }
 
         return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',

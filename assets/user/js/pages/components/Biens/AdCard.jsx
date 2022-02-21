@@ -120,7 +120,10 @@ export class AdCard extends Component {
                         <div className="col-1">
                             <div className="badges">
                                 <div className={"status status-" + el.status}
-                                     onClick={(el.status === 1 || el.status === 0) ? () => this.handleChangeStatus(el, el.status === 1 ? 0 : 1) : null}>{el.statusString}</div>
+                                     onClick={((el.status === 1 || el.status === 0) && !isPublishePage && !isOwnerPage && !isProspectPage) ?
+                                         () => this.handleChangeStatus(el, el.status === 1 ? 0 : 1) : null}>
+                                    {el.statusString}
+                                </div>
                                 <div className="status">{el.typeBienString}</div>
                             </div>
                             <a className="identifier" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
