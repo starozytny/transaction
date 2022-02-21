@@ -41,6 +41,7 @@ if(el){
                            sols={JSON.parse(el.dataset.sols)}
                            sousTypes={JSON.parse(el.dataset.sousTypes)}
                            allSupports={JSON.parse(el.dataset.allSupports)}
+                           publishes={JSON.parse(el.dataset.publishes)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 
@@ -57,6 +58,7 @@ if(el){
                            sols={JSON.parse(el.dataset.sols)}
                            sousTypes={JSON.parse(el.dataset.sousTypes)}
                            allSupports={JSON.parse(el.dataset.allSupports)}
+                           publishes={JSON.parse(el.dataset.publishes)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 

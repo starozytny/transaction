@@ -26,7 +26,7 @@ function setValueEmptyIfNull (parentValue, value) {
 }
 
 export function BienFormulaire ({ type, element, rooms, photos, negotiators, allOwners, quartiers, sols, sousTypes,
-                                    societyId, agencyId, negotiatorId, settings, allSupports })
+                                    societyId, agencyId, negotiatorId, settings, allSupports, publishes })
 {
     let title = "Ajouter un bien";
     let url = Routing.generate(URL_CREATE_ELEMENT);
@@ -48,6 +48,14 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
     let confidential = element ? element.confidential : null;
     let advert = element ? element.advert : null;
     let mandat = element ? element.mandat : null;
+
+    let supports = [];
+    publishes.forEach(publish => {
+        supports.push(publish.support.id)
+    })
+
+    console.log(publishes)
+    console.log(supports)
 
     let form = <BienForm
         title={title}
@@ -185,7 +193,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
 
         rooms={element ? rooms : []}
 
-        supports={[]}
+        supports={supports}
 
         messageSuccess={msg}
 

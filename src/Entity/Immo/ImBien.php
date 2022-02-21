@@ -255,6 +255,11 @@ class ImBien extends DataEntity
     private $offers;
 
     /**
+     * @ORM\OneToMany(targetEntity=ImPublish::class, mappedBy="bien")
+     */
+    private $publishes;
+
+    /**
      * @ORM\Column(type="datetime")
      * @Groups({"user:read"})
      */
@@ -276,11 +281,6 @@ class ImBien extends DataEntity
      * @Groups({"user:read"})
      */
     private $updatedBy;
-
-    /**
-     * @ORM\OneToMany(targetEntity=ImPublish::class, mappedBy="bien")
-     */
-    private $publishes;
 
     public function __construct()
     {

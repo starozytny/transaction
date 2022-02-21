@@ -12,6 +12,7 @@ use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOffer;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
+use App\Entity\Immo\ImPublish;
 use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImSettings;
 use App\Entity\Immo\ImSuivi;
@@ -141,7 +142,7 @@ class UserController extends AbstractController
     /**
      * Common return createBien and updateBien
      */
-    private function formBien(SerializerInterface $serializer, $route, $element = null, $tenants = "[]", $rooms = "[]", $photos="[]"): Response
+    private function formBien(SerializerInterface $serializer, $route, $obj = null, $element = null, $tenants = "[]", $rooms = "[]", $photos="[]"): Response
     {
         $em = $this->doctrine->getManager();
 
@@ -151,11 +152,13 @@ class UserController extends AbstractController
         $allOwners   = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
         $settings    = $em->getRepository(ImSettings::class)->findOneBy(['agency' => $user->getAgency()]);
         $allSupports = $em->getRepository(ImSupport::class)->findBy(['agency' => $user->getAgency()]);
+        $publishes   = $em->getRepository(ImPublish::class)->findBy(['bien' => $obj]);
 
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
         $allOwners   = $serializer->serialize($allOwners, 'json', ['groups' => User::ADMIN_READ]);
         $settings    = $serializer->serialize($settings,'json', ['groups' => User::USER_READ]);
         $allSupports = $serializer->serialize($allSupports,'json', ['groups' => User::USER_READ]);
+        $publishes   = $serializer->serialize($publishes,'json', ['groups' => ImPublish::PUBLISH_READ]);
 
         $quartiers = $this->getDonneeData($em, DoQuartier::class, $user, $serializer);
         $sols      = $this->getDonneeData($em, DoSol::class, $user, $serializer);
@@ -174,6 +177,7 @@ class UserController extends AbstractController
             'sols' => $sols,
             'sousTypes' => $sousTypes,
             'allSupports' => $allSupports,
+            'publishes' => $publishes,
         ]);
     }
 
@@ -209,7 +213,7 @@ class UserController extends AbstractController
         }
 
         return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',
-            $element, $tenants, $rooms, $photos)
+            $obj, $element, $tenants, $rooms, $photos)
             : $this->render($type === "read" ? "user/pages/biens/read.html.twig" : "user/pages/biens/suivi.html.twig", [
                 'elem' => $obj,
                 'data' => $element,
