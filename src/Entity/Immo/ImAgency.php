@@ -242,6 +242,11 @@ class ImAgency extends DataEntity
      */
     private $doSousTypes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImSupport::class, mappedBy="agency")
+     */
+    private $supports;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
@@ -255,6 +260,7 @@ class ImAgency extends DataEntity
         $this->doQuartiers = new ArrayCollection();
         $this->doSols = new ArrayCollection();
         $this->doSousTypes = new ArrayCollection();
+        $this->supports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -907,6 +913,36 @@ class ImAgency extends DataEntity
             // set the owning side to null (unless already changed)
             if ($doSousType->getAgency() === $this) {
                 $doSousType->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImSupport[]
+     */
+    public function getSupports(): Collection
+    {
+        return $this->supports;
+    }
+
+    public function addSupport(ImSupport $support): self
+    {
+        if (!$this->supports->contains($support)) {
+            $this->supports[] = $support;
+            $support->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupport(ImSupport $support): self
+    {
+        if ($this->supports->removeElement($support)) {
+            // set the owning side to null (unless already changed)
+            if ($support->getAgency() === $this) {
+                $support->setAgency(null);
             }
         }
 
