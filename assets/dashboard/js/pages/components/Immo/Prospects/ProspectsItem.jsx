@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Actions from "@userComponents/functions/actions";
 
-import { ButtonIcon, ButtonIconContact, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
+import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 import { Selector }  from "@dashboardComponents/Layout/Selector";
 import { UtPhones }  from "@dashboardComponents/Tools/Utilitaire";
 
@@ -67,7 +67,6 @@ export class ProspectsItem extends Component {
                         </div>
 
                         <div className="col-5 actions">
-                            <ButtonIconContact isClient={isClient} email={elem.email} />
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>
                             <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "prospect")}>Autres</ButtonIconDropdown>
