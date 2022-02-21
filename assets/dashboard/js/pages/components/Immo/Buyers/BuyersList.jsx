@@ -74,7 +74,7 @@ export class BuyersList extends Component {
                             <div className="item-content">
                                 <div className="item-body">
                                     <div className="infos infos-col-4">
-                                        <div className="col-1">Prospect</div>
+                                        <div className="col-1">Acquéreur</div>
                                         <div className="col-2">Contact</div>
                                         <div className="col-3">Négociateur</div>
                                         <div className="col-4 actions">Actions</div>
