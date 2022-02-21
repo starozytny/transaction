@@ -50,12 +50,16 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
     let mandat = element ? element.mandat : null;
 
     let supports = [];
-    publishes.forEach(publish => {
-        supports.push(publish.support.id)
-    })
 
-    console.log(publishes)
-    console.log(supports)
+    if(type === "create"){
+        allSupports.forEach(support => {
+            supports.push(support.id)
+        })
+    }else{
+        publishes.forEach(publish => {
+            supports.push(publish.support.id)
+        })
+    }
 
     let form = <BienForm
         title={title}

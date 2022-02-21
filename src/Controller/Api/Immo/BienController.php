@@ -425,6 +425,13 @@ class BienController extends AbstractController
      */
     public function delete(ImBien $obj, DataService $dataService): JsonResponse
     {
+        $em = $this->doctrine->getManager();
+
+        $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $obj]);
+        foreach($publishes as $publish){
+            $em->remove($publish);
+        }
+
         return $dataService->delete($obj);
     }
 }
