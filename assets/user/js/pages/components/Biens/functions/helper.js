@@ -95,6 +95,13 @@ function getItems (type, prefix) {
                 { value: 5, label: 'F', identifiant: 'diag-' + prefix + '-f' },
                 { value: 6, label: 'G', identifiant: 'diag-' + prefix + '-g' },
             ];
+        case "situations":
+            return [
+                { value: 'ville',    label: 'Ville',       identifiant: 'ville' },
+                { value: 'campagne', label: 'Campagne',    identifiant: 'campagne' },
+                { value: 'montagne', label: 'Montagne',    identifiant: 'montagne' },
+                { value: 'mer',      label: 'Mer',         identifiant: 'mer' },
+            ];
         case "cuisines":
             return [
                 { value: 1, label: 'Aucune',               identifiant: 'aucune' },

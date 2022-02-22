@@ -120,7 +120,7 @@ class PublishService
             $codeExposition == 99 ? "" : (($codeExposition == 3 || $codeExposition == 5 || $codeExposition == 7) ? "OUI" : "NON"),
             $codeExposition == 99 ? "" : (($codeExposition == 0 || $codeExposition == 4 || $codeExposition == 5) ? "OUI" : "NON"),
             $number->getBalcony(),
-            "",                                  // 40
+            "", //sf balcon ?
             $this->convertBoolean($advantage->getHasLift()),
             $this->convertBoolean($advantage->getHasCave()),
             $number->getParking(),

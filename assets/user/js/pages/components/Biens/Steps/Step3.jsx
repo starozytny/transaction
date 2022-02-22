@@ -20,6 +20,7 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
 {
     let solItems = helper.getItemsFromDB(sols, sol, 'sol');
     let soustypeItems = helper.getItemsFromDB(sousTypes, sousType, 'sous-types');
+    let situationItems = helper.getItems("situations", 'situation');
     let diag0Items = helper.getItems("diags", 0);
     let diag1Items = helper.getItems("diags", 1);
 
@@ -89,9 +90,10 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 </div>
 
                 <div className="line line-2">
-                    <Input identifiant="situation" valeur={situation} errors={errors} onChange={onChange}>
-                        <span>Situation</span>
-                    </Input>
+                    <SelectReactSelectize items={situationItems} identifiant="situation" valeur={situation} errors={errors}
+                                          onChange={(e) => onChangeSelect('situation', e)}>
+                        Situation
+                    </SelectReactSelectize>
                     <SelectReactSelectize items={soustypeItems} identifiant="sousType" valeur={sousType} errors={errors}
                                           onChange={(e) => onChangeSelect('sousType', e)}>
                         Sous type de bien
