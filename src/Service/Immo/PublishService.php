@@ -75,10 +75,10 @@ class PublishService
             $agency->getDirname(),
             $bien->getReference(),
             $bien->getTypeAdSeloger(),
-            $bien->getTypeBienString(),
-            $localisation->getHideAddress() ? "" : $localisation->getZipcode(),        // 5
-            $localisation->getHideAddress() ? "" : $localisation->getCity(),
-            $localisation->getHideAddress() ? "" : $localisation->getCountry(),
+            $bien->getTypeBienSeloger(),
+            $localisation->getZipcode(),        // 5
+            $localisation->getCity(),
+            $localisation->getCountry(),
             $localisation->getHideAddress() ? "" : $localisation->getAddress(),
             $localisation->getHideAddress() ? "" : $localisation->getQuartier(),
             "",                                 // 10
