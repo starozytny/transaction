@@ -58,7 +58,7 @@ class ImmoService
 
         $year = (new \DateTime())->format('y');
 
-        $nbZero = 5 - count($tab);
+        $nbZero = 6 - count($tab);
 
         $counter = $year . str_repeat("0", $nbZero);
         $counter .= $agency->getCounter();
