@@ -28,12 +28,14 @@ class PublishService
     {
         $data = [];
         foreach($publishes as $publish){
-            switch ($publish->getSupport()->getCode()){
-                case ImSupport::CODE_SELOGER:
-                    $data[] = $this->createSeloger($publish->getBien(), $photos);
-                    break;
-                default:
-                    break;
+            if($publish->getBien()->getStatus() == ImBien::STATUS_ACTIF){
+                switch ($publish->getSupport()->getCode()){
+                    case ImSupport::CODE_SELOGER:
+                        $data[] = $this->createSeloger($publish->getBien(), $photos);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 

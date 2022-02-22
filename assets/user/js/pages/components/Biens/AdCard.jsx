@@ -64,7 +64,8 @@ export class AdCard extends Component {
     }
 
     render () {
-        const { isPublishePage=false, isOwnerPage=false, isProspectPage=false, rapprochements, follows, el, onDelete, onLinkToProspect, publishes } = this.props;
+        const { isPublishePage=false, isOwnerPage=false, isProspectPage=false, rapprochements, follows, el, onDelete,
+            onLinkToProspect, publishes, toPublishes, onSelectPublish } = this.props;
 
         let items = [
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
@@ -105,8 +106,19 @@ export class AdCard extends Component {
             })
         }
 
+        let activePublish = false;
+        if(toPublishes){
+            toPublishes.forEach(te => {
+                if(te.id === el.id){
+                    activePublish = true;
+                }
+            })
+        }
+
         return <div className={"card-ad" + (el.isDraft ? " card-draft" : "")}>
-            {/*<Selector id={el.id} />*/}
+            {isPublishePage && <div className="selector" onClick={() => onSelectPublish(el, activePublish)}>
+                <label className={"item-selector " + activePublish}/>
+            </div>}
 
             <div className="card-main">
                 <div className="card-body">

@@ -34,7 +34,8 @@ export class Publishes extends Component {
             currentPage: 0,
             sorter: SORTER,
             sessionName: "supports.pagination",
-            publishes: props.publishes ? JSON.parse(props.publishes) : []
+            publishes: props.publishes ? JSON.parse(props.publishes) : [],
+            toPublishes: props.donnees ? JSON.parse(props.donnees) : [],
         }
 
         this.layout = React.createRef();
@@ -45,6 +46,7 @@ export class Publishes extends Component {
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
         this.handleSorter = this.handleSorter.bind(this);
         this.handlePublish = this.handlePublish.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
 
         this.handleContentList = this.handleContentList.bind(this);
     }
@@ -59,11 +61,24 @@ export class Publishes extends Component {
 
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
+    handleSelect = (elem, active) => {
+        const { toPublishes } = this.state;
+
+        let nToPublishes = toPublishes;
+        if(active){
+            nToPublishes = toPublishes.filter(el => el.id !== elem.id)
+        }else{
+            nToPublishes.push(elem);
+        }
+
+        this.setState({ toPublishes: nToPublishes })
+    }
+
     handlePublish = () => {
-        let data = this.layout.current.state.data;
+        const { toPublishes } = this.state;
 
         let biens = [];
-        data.forEach(item => {
+        toPublishes.forEach(item => {
             biens.push(item.id)
         })
 
@@ -90,7 +105,7 @@ export class Publishes extends Component {
     }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
-        const { perPage, currentPage, publishes } = this.state;
+        const { perPage, currentPage, publishes, toPublishes } = this.state;
 
         return <PublishesList onChangeContext={changeContext}
                              //changeNumberPerPage
@@ -106,6 +121,8 @@ export class Publishes extends Component {
                              //data
                               onPublish={this.handlePublish}
                               publishes={publishes}
+                              toPublishes={toPublishes}
+                              onSelect={this.handleSelect}
                               data={currentData} />
     }
 

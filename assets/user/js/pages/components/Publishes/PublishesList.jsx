@@ -8,7 +8,7 @@ import { TopSorterPagination }  from "@dashboardComponents/Layout/Pagination";
 
 export class PublishesList extends Component {
     render () {
-        const { data, onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille, publishes, onPublish } = this.props;
+        const { data, onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille, publishes, onPublish, toPublishes, onSelect } = this.props;
 
         let actions = <Button onClick={onPublish}>Envoyer</Button>
 
@@ -33,7 +33,7 @@ export class PublishesList extends Component {
                     </div>
                     <div>
                         {data && data.length !== 0 ? data.map(elem => {
-                            return <AdCard el={elem} isPublishePage={true} publishes={publishes} key={elem.id}/>
+                            return <AdCard el={elem} isPublishePage={true} publishes={publishes} toPublishes={toPublishes} onSelectPublish={onSelect} key={elem.id}/>
                         }) : <Alert>Aucun résultat</Alert>}
                     </div>
                 </div>
