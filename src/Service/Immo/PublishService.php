@@ -42,7 +42,7 @@ class PublishService
         header('Content-Type: application/csv');
         header('Content-Disposition: attachment; filename="'.$fileName.'"');
 
-        $this->export->createFile("csv", 'Liste', $fileName , null, $data, 328, "export/", "!#");
+        $this->export->createFile("csv", 'Liste', $fileName , null, $data, 330, "export/", "!#");
     }
 
     private function convertBoolean($value): string
