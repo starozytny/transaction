@@ -47,51 +47,61 @@ class ImMandat extends DataEntity
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
      */
     private $priceEstimate;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
      */
     private $fee;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read"})
      */
     private $raisonSocial;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"user:read"})
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=40, nullable=true)
+     * @Groups({"user:read"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"user:read"})
      */
     private $commentary;
 

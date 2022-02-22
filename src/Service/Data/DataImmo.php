@@ -154,10 +154,13 @@ class DataImmo extends DataConstructor
             $agency->setCounterMandat($agency->getCounterMandat() + 1);
             $numero = $immoService->getNumeroMandat($agency);
 
+            $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->mandatLastname));
+            $firstname = ucfirst($this->sanitizeData->sanitizeString($data->mandatFirstname));
+
             $obj = ($obj)
                 ->setRaisonSocial($this->sanitizeData->trimData($data->mandatRaison))
-                ->setLastname($this->sanitizeData->trimData($data->mandatLastname))
-                ->setFirstname($this->sanitizeData->trimData($data->mandatFirstname))
+                ->setLastname($lastname)
+                ->setFirstname($firstname)
                 ->setPhone($this->sanitizeData->trimData($data->mandatPhone))
                 ->setAddress($this->sanitizeData->trimData($data->mandatAddress))
                 ->setZipcode($this->sanitizeData->trimData($data->mandatZipcode))

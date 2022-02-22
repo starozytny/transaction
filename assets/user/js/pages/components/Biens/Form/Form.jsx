@@ -193,6 +193,14 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         endAt={element ? (setValueEmptyIfNull(mandat, mandat.endAtJavascript) !== "" ? new Date(mandat.endAtJavascript) : "" ) : ""}
         priceEstimate={element ? setValueEmptyIfNull(mandat, mandat.priceEstimate) : ""}
         fee={element ? setValueEmptyIfNull(mandat, mandat.fee) : ""}
+        mandatRaison={element ? setValueEmptyIfNull(mandat, mandat.raisonSocial) : ""}
+        mandatLastname={element ? setValueEmptyIfNull(mandat, mandat.lastname) : ""}
+        mandatFirstname={element ? setValueEmptyIfNull(mandat, mandat.firstname) : ""}
+        mandatPhone={element ? setValueEmptyIfNull(mandat, mandat.phone) : ""}
+        mandatAddress={element ? setValueEmptyIfNull(mandat, mandat.address) : ""}
+        mandatZipcode={element ? setValueEmptyIfNull(mandat, mandat.zipcode) : ""}
+        mandatCity={element ? setValueEmptyIfNull(mandat, mandat.city) : ""}
+        mandatCommentary={element ? setValueEmptyIfNull(mandat, mandat.commentary) : ""}
 
         rooms={element ? rooms : []}
 

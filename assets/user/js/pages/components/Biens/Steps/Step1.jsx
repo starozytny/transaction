@@ -3,7 +3,7 @@ import React from "react";
 import helper   from "@userPages/components/Biens/functions/helper";
 import Sort     from "@commonComponents/functions/sort";
 
-import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import {Input, Radiobox, SelectReactSelectize, TextArea} from "@dashboardComponents/Tools/Fields";
 import { Alert }    from "@dashboardComponents/Tools/Alert";
 import { Button }   from "@dashboardComponents/Tools/Button";
 import { DatePick } from "@dashboardComponents/Tools/DatePicker";
@@ -14,6 +14,7 @@ const CURRENT_STEP = 1;
 
 export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate, negotiators,
                           codeTypeAd, codeTypeBien, codeTypeMandat, startAt, nbMonthMandat, endAt, priceEstimate, fee,
+                          mandatRaison, mandatLastname, mandatFirstname, mandatPhone, mandatAddress, mandatZipcode, mandatCity, mandatCommentary,
                           negotiator })
 {
     let typeAdItems = helper.getItems("ads");
@@ -67,15 +68,44 @@ export function Step1({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                         Fin du mandat
                     </DatePick>
                 </div>
-                {parseInt(codeTypeAd) === 0 && <div className="line line-3">
-                    <Input type="number" min={0} any="step" identifiant="priceEstimate" valeur={priceEstimate} errors={errors} onChange={onChange}>
-                        <span>Prix estimé</span>
-                    </Input>
-                    <Input type="number" min={0} any="step" identifiant="fee" valeur={fee} errors={errors} onChange={onChange}>
-                        <span>Commission vendeur</span>
-                    </Input>
-                    <div className="form-group" />
-                </div>}
+                {parseInt(codeTypeAd) === 0 && <>
+                    <div className="line line-3">
+                        <Input type="number" min={0} any="step" identifiant="priceEstimate" valeur={priceEstimate} errors={errors} onChange={onChange}>
+                            <span>Prix estimé</span>
+                        </Input>
+                        <Input type="number" min={0} any="step" identifiant="fee" valeur={fee} errors={errors} onChange={onChange}>
+                            <span>Commission vendeur</span>
+                        </Input>
+                        <div className="form-group" />
+                    </div>
+                    <div className="line line-3">
+                        <Input identifiant="mandatRaison" valeur={mandatRaison} errors={errors} onChange={onChange}>
+                            <span>Raison sociale</span>
+                        </Input>
+                        <Input identifiant="mandatLastname" valeur={mandatLastname} errors={errors} onChange={onChange}>
+                            <span>Nom</span>
+                        </Input>
+                        <Input identifiant="mandatFirstname" valeur={mandatFirstname} errors={errors} onChange={onChange}>
+                            <span>Prénom</span>
+                        </Input>
+                    </div>
+                    <div className="line line-3">
+                        <Input identifiant="mandatAddress" valeur={mandatAddress} errors={errors} onChange={onChange}>
+                            <span>Adresse</span>
+                        </Input>
+                        <Input identifiant="mandatZipcode" valeur={mandatZipcode} errors={errors} onChange={onChange}>
+                            <span>Code postal</span>
+                        </Input>
+                        <Input identifiant="mandatCity" valeur={mandatCity} errors={errors} onChange={onChange}>
+                            <span>Ville</span>
+                        </Input>
+                    </div>
+                    <div className="line">
+                        <TextArea identifiant="mandatCommentary" valeur={mandatCommentary} errors={errors} onChange={onChange}>
+                            Commentaires
+                        </TextArea>
+                    </div>
+                </>}
             </>}
         </div>
 
