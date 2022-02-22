@@ -54,7 +54,16 @@ class ImmoService
     {
         $data = ["VE", "LO", "VI", "PI", "CB", "LV", "VP", "FC"];
 
-        return $agency->getCounter() .$agency->getCode() . $data[$codeTypeAd];
+        $tab = array_map('intval', str_split($agency->getCounter()));
+
+        $year = (new \DateTime())->format('y');
+
+        $nbZero = 5 - count($tab);
+
+        $counter = $year . str_repeat("0", $nbZero);
+        $counter .= $agency->getCounter();
+
+        return $counter .$agency->getCode() . $data[$codeTypeAd];
     }
 
     /**
