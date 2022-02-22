@@ -215,15 +215,15 @@ class PublishService
             "",
             $mandat->getId(), // TODO : set numero auto
             $mandat->getStartAt() ? $mandat->getStartAt()->format("d/m/Y") : "",
-            "", // TODO : add nom, prénom et raison sociale du mandataire
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            $confidential->getKeysWhere(),
+            $mandat->getLastname(), // TODO : add nom, prénom et raison sociale du mandataire
+            $mandat->getFirstname(),
+            $mandat->getRaisonSocial(),
+            $mandat->getAddress(),
+            $mandat->getZipcode(),
+            $mandat->getCity(),
+            $mandat->getPhone(),
+            $mandat->getCommentary(),
+            $confidential->getCommentary(),
             $negotiator->getCode(),
             "",
             "",
@@ -249,6 +249,9 @@ class PublishService
             "",
             "",
             "",
+            // ---------------------------------------------------------------------------------
+            // -------------------------------- PAGE 5 -----------------------------------------
+            // ---------------------------------------------------------------------------------
             "",
             "",
             "",
@@ -262,7 +265,7 @@ class PublishService
             "",
             "",
             "",
-            $isLocation ? $bien-$financial->getCaution() : "",              // 161
+            $isLocation ? $financial->getCaution() : "",              // 161
             "", // TODO : add récent
             "", // TODO : travaux à prévoir
             "",
@@ -276,13 +279,13 @@ class PublishService
             "",
             "",
             "",
-            $bien->getIdentifiant(), // TODO : limit to 30
+            $bien->getIdentifiant(),
             $diagnostic->getDpeValue(),
-            $diagnostic->getIsVirgin() ? "VI" : $diagnostic->getDpeLetterString(), // TODO : check dpe non soumis
+            $diagnostic->getIsVirgin() ? "VI" : ($diagnostic->getDpeLetterString() ?: (!$diagnostic ->getIsSend() ? "NS" : "")),
             $diagnostic->getGesValue(),
-            $diagnostic->getGesLetterString(),
+            $diagnostic->getIsVirgin() ? "VI" : ($diagnostic->getGesLetterString() ?: (!$diagnostic ->getIsSend() ? "NS" : "")),
             "",
-            $advantage->getSousType(),
+            $advantage->getSousTypeSeloger(),
             "",
             "",
             "",

@@ -164,16 +164,21 @@ class ImConfidential extends DataEntity
         return $this;
     }
 
+    public function getKeySentence(): string
+    {
+        $nbKeys = $this->keysNumber ?: 0;
+        $txtKeys = $nbKeys !== 0 ? $nbKeys . " clée" . ($nbKeys > 1 ? "s": "") . "." : "";
+        $txtKeys .= $this->keysWhere ? " " . $this->keysWhere . "." : "";
+        return trim($txtKeys);
+    }
+
     /**
      * @return string
      * @Groups({"user:read"})
      */
     public function getCommentary(): string
     {
-        $nbKeys = $this->keysNumber ?: 0;
-        $txtKeys = $nbKeys !== 0 ? $nbKeys . " clée" . ($nbKeys > 1 ? "s": "") . "." : "";
-        $txtKeys .= $this->keysWhere ? " " . $this->keysWhere . "." : "";
-        $txtKeys = trim($txtKeys);
+        $txtKeys = $this->getKeySentence();
 
         $txtVisits = $this->visiteAt ? "Visites à partir du " . $this->getFullDateString($this->visiteAt) . "." : "";
 

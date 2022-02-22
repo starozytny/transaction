@@ -306,6 +306,38 @@ class ImAdvantage
         return $this;
     }
 
+    public function getSousTypeSeloger(): ?string
+    {
+        $items = [
+            "bastide", "bastidon", "bergerie",
+            "cabanon", "Chalet", "Chambre de service", "corps de ferme",
+            "demeure", "domaine", "Duplex",
+            "échoppe", "Entrepôt", "Exploitation agricole", "Exploitation viticole",
+            "ferme", "Fermette",
+            "grange",
+            "Île", "Ile", "Immeuble commercial", "Immeuble de bureaux", "Immeuble mixte",
+            "Local d'activités", "Local de stockage", "Loft", "Lotissement",
+            "maison ancienne", "maison basque", "maison charentaise", "maison contemporaine", "maison d'architecte",
+            "Maison d'hôte", "Maison de loisirs", "maison de maître", "maison de village", "maison de ville",
+            "Maison en pierre", "maison jumelée", "maison landaise", "maison longère", "Maison provençale",
+            "Maison traditionnelle", "manoir", "mas", "mazet", "moulin",
+            "pavillon", "Programme", "propriété", "Propriété de chasse", "Propriété équestre",
+            "Restauration", "Riad",
+            "Studette",
+            "Terrain agricole", "Terrain commercial", "Terrain de loisirs", "Terrain industriel", "Terrain viticole",
+            "toulousaine", "Triplex",
+            "villa"
+        ];
+
+        foreach($items as $item){
+            if($this->getSousType() == mb_strtoupper($item)){
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
     public function getSousType(): ?string
     {
         return $this->sousType;

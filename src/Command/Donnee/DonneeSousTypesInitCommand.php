@@ -43,7 +43,7 @@ class DonneeSousTypesInitCommand extends Command
         }
 
         $items = [
-            "Bastide", "Bastion", "Bergerie",
+            "Bastide", "Bastidon", "Bergerie",
             "Cabanon", "Chalet", "Chambre de service", "Corps de ferme",
             "Demeure", "Domaine", "Duplex",
             "Echoppe", "Entrepôt", "Exploitation agricole", "Exploitation viticole",

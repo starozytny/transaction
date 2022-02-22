@@ -299,7 +299,7 @@ class FakeBiensCreate extends Command
             $obj = ($obj)
                 ->setUser($user)
                 ->setCreatedBy($user->getShortFullName())
-                ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(8))) . $i)
+                ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(4))) . $i)
                 ->setAgency($user->getAgency())
                 ->setOwner($owner)
             ;
