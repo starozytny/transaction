@@ -77,7 +77,7 @@ class Export
             $writer = new Xlsx($spreadsheet);
         }else{
             $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
-            $writer->setUseBOM(true);
+//            $writer->setUseBOM(true);
             $writer->setDelimiter($delimiter);
             $writer->setEnclosure('');
             $writer->setLineEnding("\r\n");
@@ -101,13 +101,13 @@ class Export
     }
 
     protected function fill($data, $max, $sheet, $begin){
-        $letters = array(
-            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-            'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ',
-            'BA', 'BB', 'BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ',
-            'CA', 'CB', 'CC','CD','CE','CF','CG','CH','CI','CBJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ',
-            'DA', 'DB', 'DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ',
-        );
+        $lettersDefault = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+        $letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+        foreach($lettersDefault as $l){
+            for($i = 1 ; $i <= 15 ; $i++){
+                $letters[] = $l . $lettersDefault[$i];
+            }
+        }
 
         // DATA
         $styleArray = [
@@ -167,6 +167,9 @@ class Export
 
         $this->styleMainCell($data, $sheet);
 
+        if(count($data) >= 1){
+            $sheet->removeRow(count($data) + 1,1);
+        }
     }
 
     protected function styleMainCell($data, $sheet){

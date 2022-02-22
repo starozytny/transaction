@@ -8,7 +8,6 @@ use App\Entity\Immo\ImMandat;
 use App\Entity\Immo\ImPublish;
 use App\Entity\Immo\ImSupport;
 use App\Service\Export;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class PublishService
 {
@@ -41,7 +40,7 @@ class PublishService
         header('Content-Type: application/csv');
         header('Content-Disposition: attachment; filename="'.$fileName.'"');
 
-        $this->export->createFile("csv", 'Liste', $fileName , null, $data, 330, "export/", "!#");
+        $this->export->createFile("csv", 'Liste', $fileName , null, $data, 328, "export/", "!#");
     }
 
     private function convertBoolean($value): string
@@ -358,7 +357,7 @@ class PublishService
             "",
             "",
             "",
-            "", // price terrain if construire
+            "TEST", // price terrain if construire
             "", // if construire
             "", // if construire
             $localisation->getLat(),
