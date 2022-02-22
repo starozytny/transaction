@@ -179,7 +179,6 @@ function getItems (type, prefix) {
                 { value: 6, label: 'Château',           identifiant: 'chateau' },
                 { value: 7, label: 'Immeuble',          identifiant: 'immeuble' },
                 { value: 8, label: 'Terrain + Maison',  identifiant: 'terrain-maison' },
-                { value: 9, label: 'Divers',            identifiant: 'divers' },
             ];
         default:
             return [

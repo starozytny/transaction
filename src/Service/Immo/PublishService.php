@@ -132,6 +132,9 @@ class PublishService
             $this->convertBoolean($advantage->getHasClim()),
             $this->convertBoolean($advantage->getHasPool()),
             $this->convertBoolean($advantage->getHasHandi()),
+            // ------------------------------------------ ---------- -----------------------------------
+            // ------------------------------------------ FIN PAGE 2 -----------------------------------
+            // ------------------------------------------ ---------- -----------------------------------
             "",
             "",
             "",

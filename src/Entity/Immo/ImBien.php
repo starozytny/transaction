@@ -48,7 +48,6 @@ class ImBien extends DataEntity
     const BIEN_CHATEAU          = 6;
     const BIEN_IMMEUBLE         = 7;
     const BIEN_TERRAIN_MAISON   = 8;
-    const BIEN_DIVERS           = 9;
 
     const BUSY_NONE = 0;
     const BUSY_OWNER = 1;
