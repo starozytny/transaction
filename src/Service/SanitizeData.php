@@ -79,6 +79,15 @@ class SanitizeData
         return $return;
     }
 
+
+    public function todayDate($timezone="Europe/Paris"): \DateTime
+    {
+        $date = new \DateTime();
+        $date->setTimezone(new \DateTimeZone($timezone));
+
+        return $date;
+    }
+
     /**
      * @throws Exception
      */

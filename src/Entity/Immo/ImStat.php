@@ -96,4 +96,9 @@ class ImStat extends DataEntity
 
         return $this;
     }
+
+    public function getPublishedAtString(): ?string
+    {
+        return $this->getFullDateString($this->publishedAt, 'LLLL');
+    }
 }

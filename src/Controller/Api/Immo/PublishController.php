@@ -5,9 +5,12 @@ namespace App\Controller\Api\Immo;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImPublish;
+use App\Entity\Immo\ImStat;
 use App\Entity\Immo\ImSupport;
+use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Immo\PublishService;
+use App\Service\SanitizeData;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,10 +49,13 @@ class PublishController extends AbstractController
      * @param PublishService $publishService
      * @return JsonResponse
      */
-    public function update(Request $request, ApiResponse $apiResponse, PublishService $publishService): JsonResponse
+    public function update(Request $request, ApiResponse $apiResponse, PublishService $publishService, SanitizeData $sanitizeData): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
+
+        /** @var User $user */
+        $user = $this->getUser();
 
         $biens = $em->getRepository(ImBien::class)->findBy(['isPublished' => true]);
         foreach($biens as $bien){
@@ -60,6 +66,15 @@ class PublishController extends AbstractController
         $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $data]);
 
         $publishService->createFile($publishes, $photos);
+
+        $stat = (new ImStat())
+            ->setAgency($user->getAgency())
+            ->setNbBiens(count($data))
+            ->setPublishedAt($sanitizeData->todayDate())
+        ;
+
+        $em->persist($stat);
+        $em->flush();
 
         return $apiResponse->apiJsonResponseSuccessful("L'envoie s'est bien passé. La page va se rafraîchir automatiquement dans 5 secondes.");
     }
