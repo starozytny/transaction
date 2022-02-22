@@ -79,6 +79,21 @@
             <div class="dash-card-1 dash-card-changelogs">
                 <div class="card-header">
                     <div class="icon">
+                        <span class="icon-map"></span>
+                    </div>
+                    <div class="title">Visites</div>
+                </div>
+                <div>
+                    <div id="visits" data-visits="{{ visits }}">
+                        {% include "dashboard/layout/components/spinner.html.twig" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dash-line-2">
+            <div class="dash-card-1 dash-card-changelogs">
+                <div class="card-header">
+                    <div class="icon">
                         <span class="icon-follow"></span>
                     </div>
                     <div class="title">Changelog</div>
@@ -103,21 +118,6 @@
                                 <div>Aucune nouvelle modification.</div>
                             </div>
                         {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="dash-line-2">
-            <div class="dash-card-1 dash-card-changelogs">
-                <div class="card-header">
-                    <div class="icon">
-                        <span class="icon-map"></span>
-                    </div>
-                    <div class="title">Visites</div>
-                </div>
-                <div>
-                    <div id="visits" data-visits="{{ visits }}">
-                        {% include "dashboard/layout/components/spinner.html.twig" %}
                     </div>
                 </div>
             </div>
