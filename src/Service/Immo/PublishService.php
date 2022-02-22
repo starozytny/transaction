@@ -444,7 +444,7 @@ class PublishService
             $diagnostic->getBeforeJuly() ? "DPE_v01-2011" : "DPE_v07-2021",
             $diagnostic->getMinAnnual(),
             $diagnostic->getMaxAnnual(),
-            "", //TODO : date référence change to date,
+            "01/01/" . $diagnostic->getReferenceDpe(),
             $area->getTerrace(),
             "",
         ];
