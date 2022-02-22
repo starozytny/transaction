@@ -107,7 +107,7 @@ class ImBien extends DataEntity
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $status = self::STATUS_INACTIF;
+    private $status = self::STATUS_ACTIF;
 
     /**
      * @ORM\Column(type="boolean")
