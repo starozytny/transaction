@@ -79,7 +79,6 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         areaCave={element ? setValueEmptyIfNull(area, area.cave) : ""}
         areaBathroom={element ? setValueEmptyIfNull(area, area.bathroom) : ""}
         areaLiving={element ? setValueEmptyIfNull(area, area.living) : ""}
-        areaDining={element ? setValueEmptyIfNull(area, area.dining) : ""}
 
         piece={element ? setValueEmptyIfNull(number, number.piece) : 1}
         room={element ? setValueEmptyIfNull(number, number.room) : ""}

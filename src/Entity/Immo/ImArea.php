@@ -67,12 +67,6 @@ class ImArea
      */
     private $living;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $dining;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -170,18 +164,6 @@ class ImArea
     public function setLiving(?float $living): self
     {
         $this->living = $living;
-
-        return $this;
-    }
-
-    public function getDining(): ?float
-    {
-        return $this->dining;
-    }
-
-    public function setDining(?float $dining): self
-    {
-        $this->dining = $dining;
 
         return $this;
     }

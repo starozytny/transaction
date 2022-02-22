@@ -166,7 +166,6 @@ class DataImmo extends DataConstructor
             ->setCave($this->setToNullFloat($data->areaCave))
             ->setBathroom($this->setToNullFloat($data->areaBathroom))
             ->setLiving($this->setToNullFloat($data->areaLiving))
-            ->setDining($this->setToNullFloat($data->areaDining))
         ;
     }
 

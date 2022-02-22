@@ -80,10 +80,6 @@ export function Features({ elem }){
                 <div className="label">Salon</div>
                 <div>{area.living}</div>
             </div>
-            <div>
-                <div className="label">Salle à manger</div>
-                <div>{area.dining}</div>
-            </div>
         </div>
 
         <div className="details-tab-infos-main">

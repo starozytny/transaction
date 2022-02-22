@@ -12,7 +12,7 @@ const CURRENT_STEP = 2;
 
 export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate,
                           codeTypeAd, codeTypeBien,
-                          areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
+                          areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving,
                           piece, room, bathroom, wc, balcony, parking, box,
                           dispoAt, busy, buildAt, isMeuble, isNew, floor, nbFloor,
                           codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0 })
@@ -90,9 +90,6 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     </Input>
                     <Input type="number" step="any" min={0} identifiant="areaLiving" valeur={areaLiving} errors={errors} onChange={onChange}>
                         <span>Salon</span>
-                    </Input>
-                    <Input type="number" step="any" min={0} identifiant="areaDining" valeur={areaDining} errors={errors} onChange={onChange}>
-                        <span>Salle à manger</span>
                     </Input>
                 </>}
             </div>
