@@ -27,11 +27,11 @@ export function Infos({ elem }){
         <div className="details-tab-infos-content">
             <div className="content">
                 <div className="label">Courte description du bien immobilier</div>
-                <p>{parseHtml(elem.advert.contentSimple)}</p>
+                <p>{elem.advert.contentSimple ? parseHtml(elem.advert.contentSimple) : ""}</p>
             </div>
             <div className="content">
                 <div className="label">Complète description du bien immobilier</div>
-                <p>{parseHtml(elem.advert.contentFull)}</p>
+                <p>{elem.advert.contentFull ? parseHtml(elem.advert.contentFull) : ""}</p>
             </div>
         </div>
     </div>)

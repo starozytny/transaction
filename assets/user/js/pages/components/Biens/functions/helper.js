@@ -97,40 +97,40 @@ function getItems (type, prefix) {
             ];
         case "cuisines":
             return [
-                { value: 0, label: 'Aucune',               identifiant: 'aucune' },
-                { value: 1, label: 'Américaine',           identifiant: 'américaine' },
-                { value: 2, label: 'Séparée',              identifiant: 'separee' },
-                { value: 3, label: 'Industrielle',         identifiant: 'industrielle' },
-                { value: 4, label: 'Coin cuisine',         identifiant: 'coin-cuisine' },
-                { value: 5, label: 'Américaine équipée',   identifiant: 'américaine-equipee' },
-                { value: 6, label: 'Séparée équipée',      identifiant: 'separee-equipee' },
-                { value: 7, label: 'Coin cuisine équipé',  identifiant: 'coin-cuisine-equipe' },
-                { value: 8, label: 'Equipée',              identifiant: 'equipee' },
+                { value: 1, label: 'Aucune',               identifiant: 'aucune' },
+                { value: 2, label: 'Américaine',           identifiant: 'américaine' },
+                { value: 3, label: 'Séparée',              identifiant: 'separee' },
+                { value: 4, label: 'Industrielle',         identifiant: 'industrielle' },
+                { value: 5, label: 'Coin cuisine',         identifiant: 'coin-cuisine' },
+                { value: 6, label: 'Américaine équipée',   identifiant: 'américaine-equipee' },
+                { value: 7, label: 'Séparée équipée',      identifiant: 'separee-equipee' },
+                { value: 8, label: 'Coin cuisine équipé',  identifiant: 'coin-cuisine-equipe' },
+                { value: 9, label: 'Equipée',              identifiant: 'equipee' },
             ];
         case "water":
         case "chauffages-0":
             return [
-                { value: 0, label: 'Collectif',  identifiant: 'collectif' },
-                { value: 1, label: 'Individuel', identifiant: 'individuel' },
+                { value: 4096, label: 'Collectif',  identifiant: 'collectif' },
+                { value: 8192, label: 'Individuel', identifiant: 'individuel' },
             ]
         case "chauffages-1":
             return [
-                { value: 0, label: 'Radiateur',                 identifiant: 'radiateur' },
-                { value: 1, label: 'Sol',                       identifiant: 'sol' },
-                { value: 2, label: 'Mixte',                     identifiant: 'mixte' },
-                { value: 3, label: 'Gaz',                       identifiant: 'gaz' },
-                { value: 4, label: 'Gaz radiateur',             identifiant: 'gaz-radiateur' },
-                { value: 5, label: 'Gaz sol',                   identifiant: 'gaz-sol' },
-                { value: 6, label: 'Gaz mixte',                 identifiant: 'gaz-mixte' },
-                { value: 7, label: 'Fuel',                      identifiant: 'fuel' },
-                { value: 8, label: 'Fuel radiateur',            identifiant: 'fuel-radiateur' },
-                { value: 9, label: 'Fuel sol',                  identifiant: 'fuel-sol' },
-                { value: 10, label: 'Fuel mixte',               identifiant: 'fuel-mixte' },
-                { value: 11, label: 'Electrique',               identifiant: 'electrique' },
-                { value: 12, label: 'Electrique radiateur',     identifiant: 'electrique-radiateur' },
-                { value: 13, label: 'Electrique sol',           identifiant: 'electrique-sol' },
-                { value: 14, label: 'Electrique mixte',         identifiant: 'electrique-mixte' },
-                { value: 15, label: 'Climatisation réversible', identifiant: 'climatisation-reversible' },
+                { value: 128, label: 'Radiateur',                 identifiant: 'radiateur' },
+                { value: 256, label: 'Sol',                       identifiant: 'sol' },
+                { value: 384, label: 'Mixte',                     identifiant: 'mixte' },
+                { value: 512, label: 'Gaz',                       identifiant: 'gaz' },
+                { value: 640, label: 'Gaz radiateur',             identifiant: 'gaz-radiateur' },
+                { value: 768, label: 'Gaz sol',                   identifiant: 'gaz-sol' },
+                { value: 896, label: 'Gaz mixte',                 identifiant: 'gaz-mixte' },
+                { value: 1024, label: 'Fuel',                      identifiant: 'fuel' },
+                { value: 1152, label: 'Fuel radiateur',            identifiant: 'fuel-radiateur' },
+                { value: 1280, label: 'Fuel sol',                  identifiant: 'fuel-sol' },
+                { value: 1408, label: 'Fuel mixte',               identifiant: 'fuel-mixte' },
+                { value: 2048, label: 'Electrique',               identifiant: 'electrique' },
+                { value: 2176, label: 'Electrique radiateur',     identifiant: 'electrique-radiateur' },
+                { value: 2304, label: 'Electrique sol',           identifiant: 'electrique-sol' },
+                { value: 2432, label: 'Electrique mixte',         identifiant: 'electrique-mixte' },
+                { value: 16384, label: 'Climatisation réversible', identifiant: 'climatisation-reversible' },
             ];
         case "expositions":
             return [

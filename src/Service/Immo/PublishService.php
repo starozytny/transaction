@@ -71,6 +71,8 @@ class PublishService
 
         $isLocation = $bien->getCodeTypeAd() == ImBien::AD_LOCATION;
 
+        $codeHeater = $feature->getCodeHeater() + $feature->getCodeHeater0();
+
         $data = [
             $agency->getDirname(),
             $bien->getReference(),
@@ -91,20 +93,20 @@ class PublishService
             $area->getLand(),
             $number->getPiece(),
             $number->getRoom(),
-            $bien->getLibelle(),                // 20
-            $advert->getContentFull(), //TODO: limit to 4k carac
+            $bien->getLibelle(),
+            $advert->getContentFull(),
             $feature->getDispoAt() ? $feature->getDispoAt()->format("d/m/Y") : "",
             $isLocation ? $financial->getChargesMensuelles() : "",
-            $feature->getFloor(), //TODO: integer
-            $feature->getNbFloor(),             // 25
+            $feature->getFloor(),
+            $feature->getNbFloor(),
             $this->convertBoolean($feature->getIsMeuble()),
             $feature->getBuildAt(),
             $this->convertBoolean($feature->getIsNew()),
             $number->getBathroom(),
-            0,                                  // 30
+            "", //NB de salles d'eau
             $number->getWc(),
             $this->convertBoolean($feature->getIsWcSeparate()),
-            $feature->getCodeHeater(), //TODO : with codeHeater0 and correspondance avec le cahier seloger
+            $codeHeater > 0 ? $codeHeater : "",
             $feature->getCodeKitchen(),
             "",                        //TODO : check code exposition
             "",
