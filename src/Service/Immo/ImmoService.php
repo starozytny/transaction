@@ -50,6 +50,13 @@ class ImmoService
         return $this->privateDirectory;
     }
 
+    public function getReference(ImAgency $agency, $codeTypeAd): string
+    {
+        $data = ["VE", "LO", "VI", "PI", "CB", "LV", "VP", "FC"];
+
+        return $agency->getCounter() .$agency->getCode() . $data[$codeTypeAd];
+    }
+
     /**
      * @param ImAgency $agency
      */
@@ -124,42 +131,49 @@ class ImmoService
                 "code" => ImSupport::CODE_SELOGER,
                 "name" => "SeLoger",
                 "filename" => "annonces",
+                "ftpUser" => "", "ftpPassword" => "",
                 "ftpServer" => "transferts.seloger.com", "ftpPort" => 21, "maxPhotos" => 9
             ],
             [
                 "code" => ImSupport::CODE_LOGICIMMO,
                 "name" => "Logic Immo",
                 "filename" => null,
+                "ftpUser" => "", "ftpPassword" => "",
                 "ftpServer" => "Zimport.logic-immo.com", "ftpPort" => 21, "maxPhotos" => 5
             ],
             [
                 "code" => ImSupport::CODE_LEBONCOIN,
                 "name" => "Leboncoin",
                 "filename" => null,
+                "ftpUser" => "", "ftpPassword" => "",
                 "ftpServer" => null, "ftpPort" => 21, "maxPhotos" => 9
             ],
             [
                 "code" => ImSupport::CODE_PARUVENDU,
                 "name" => "ParuVendu",
                 "filename" => "Annonces",
+                "ftpUser" => "", "ftpPassword" => "",
                 "ftpServer" => "Z212.95.67.167", "ftpPort" => 21, "maxPhotos" => 9
             ],
             [
                 "code" => ImSupport::CODE_ANNONCESJAUNES,
                 "name" => "Annonces Jaunes",
                 "filename" => null,
+                "ftpUser" => "", "ftpPassword" => "",
                 "ftpServer" => "Zfluxftp.annoncesjaunes.fr", "ftpPort" => 21, "maxPhotos" => 6
             ],
             [
                 "code" => ImSupport::CODE_TOPANNONCES,
                 "name" => "Topannonces",
                 "filename" => null,
+                "ftpUser" => "", "ftpPassword" => "",
                 "ftpServer" => "Zpasserelles-ftp-topannonces.hopps-group.com", "ftpPort" => 21, "maxPhotos" => 5
             ],
             [
                 "code" => ImSupport::CODE_SITIMMO,
                 "name" => "Sitimmo",
                 "filename" => "Annonces",
+                "ftpUser" => "", "ftpPassword" => "",
                 "ftpServer" => "Zftp.sitimmo.com", "ftpPort" => 21, "maxPhotos" => 6
             ],
         ];
@@ -176,4 +190,5 @@ class ImmoService
 
         return true;
     }
+
 }

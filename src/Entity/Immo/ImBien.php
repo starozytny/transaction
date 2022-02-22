@@ -2,7 +2,6 @@
 
 namespace App\Entity\Immo;
 
-use App\Entity\Agenda\AgEvent;
 use App\Entity\DataEntity;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
@@ -62,7 +61,7 @@ class ImBien extends DataEntity
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=20, unique=true)
      * @Groups({"user:read"})
      */
     private $reference;

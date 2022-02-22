@@ -3,17 +3,22 @@
 namespace App\Command;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSettings;
+use App\Entity\Immo\ImSupport;
+use App\Entity\Immo\ImTenant;
 use App\Entity\Notification;
 use App\Entity\Society;
 use App\Entity\User;
+use App\Service\Data\DataImmo;
 use App\Service\Data\Society\DataSociety;
 use App\Service\DatabaseService;
 use App\Service\Immo\ImmoService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Faker\Factory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,9 +33,10 @@ class AdminUsersCreateCommand extends Command
     private $databaseService;
     private $dataSociety;
     private $immoService;
+    private $dataImmo;
 
     public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService,
-                                DataSociety $dataSociety, ImmoService $immoService)
+                                DataSociety $dataSociety, DataImmo $dataImmo, ImmoService $immoService)
     {
         parent::__construct();
 
@@ -38,6 +44,7 @@ class AdminUsersCreateCommand extends Command
         $this->databaseService = $databaseService;
         $this->dataSociety = $dataSociety;
         $this->immoService = $immoService;
+        $this->dataImmo = $dataImmo;
     }
 
     protected function configure()
@@ -48,6 +55,9 @@ class AdminUsersCreateCommand extends Command
         ;
     }
 
+    /**
+     * @throws Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -55,6 +65,9 @@ class AdminUsersCreateCommand extends Command
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
             Notification::class,
+            ImTenant::class,
+            ImSupport::class,
+            ImBuyer::class,
             ImOwner::class,
             ImProspect::class,
             ImNegotiator::class,
@@ -109,6 +122,7 @@ class AdminUsersCreateCommand extends Command
         $io->title('Création de l\'agence Logilink');
         $agency = (new ImAgency())
             ->setSociety($society)
+            ->setCode("LO0")
             ->setName("Logilink")
             ->setDirname('logilinkZip')
             ->setWebsite('logilink.fr')
@@ -182,43 +196,45 @@ class AdminUsersCreateCommand extends Command
             }
             $io->text('SOCIETE : Sociétés fake créées' );
 
+            $this->em->flush();
+
             $io->title('Création de 20 agences fake');
             $agencies = [];
             $fake = Factory::create();
             for($i=0; $i<20 ; $i++) {
                 $agenceSociety = $i == 0 ? $society : $societies[$fake->numberBetween(0,9)];
-                $new = (new ImAgency())
-                    ->setSociety($agenceSociety)
-                    ->setName($fake->name)
-                    ->setDirname("fake-" . $i)
-                    ->setWebsite($fake->domainName)
-                    ->setEmail($fake->email)
-                    ->setEmailLocation($fake->email)
-                    ->setEmailVente($fake->email)
-                    ->setPhone($fake->e164PhoneNumber)
-                    ->setPhoneLocation($fake->e164PhoneNumber)
-                    ->setPhoneVente($fake->e164PhoneNumber)
-                    ->setAddress($fake->address)
-                    ->setZipcode($fake->postcode)
-                    ->setCity($fake->city)
-                    ->setLat($fake->randomFloat(5))
-                    ->setLon($fake->randomFloat(5))
-                    ->setIdentifiant("fake-" . $i . time())
-                    ->setType($fake->name)
-                    ->setSiret("307 772 269 000")
-                    ->setRcs("307 772 269")
-                    ->setCartePro("CPI 8550 250 666 546 789")
-                    ->setGarantie("Galian 140 000€")
-                    ->setAffiliation("FNAIM")
-                    ->setDescription(trim("
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut interdum scelerisque nisl 
-                        ac rutrum. Mauris in ex nibh. Donec tincidunt diam sit amet eros fringilla vehicula e
-                        t at arcu. Vestibulum iaculis arcu vitae hendrerit auctor. Morbi non libero velit. Al
-                        iquam erat volutpat. Pellentesque sodales, ex a facilisis sodales, sapien dui hendrer
-                        it orci, non posuere enim enim ut turpis. Aenean dolor nisl, mollis ac orci fermentum
-                        , imperdiet tincidunt est. Sed varius augue erat, lobortis vehicula quam volutpat et. 
-                    "))
-                ;
+
+                $data = [
+                    "society" => $agenceSociety->getId(),
+                    "name" => $fake->name,
+                    "dirname" => "fake-" . $i,
+                    "website" => $fake->domainName,
+                    "email" => $fake->email,
+                    "emailLocation" => $fake->email,
+                    "emailVente" => $fake->email,
+                    "phone" => $fake->e164PhoneNumber,
+                    "phoneLocation" => $fake->e164PhoneNumber,
+                    "phoneVente" => $fake->e164PhoneNumber,
+                    "address" => $fake->address,
+                    "zipcode" => $fake->postcode,
+                    "city" => $fake->city,
+                    "lat" => $fake->randomFloat(5),
+                    "lon" => $fake->randomFloat(5),
+                    "description" => [
+                        "html" => $fake->sentence
+                    ],
+                    "type" => $fake->streetName,
+                    "siret" => "",
+                    "rcs" => "",
+                    "cartePro" => "",
+                    "garantie" => "",
+                    "affiliation" => "",
+                    "mediation" => "",
+                ];
+
+                $data = json_decode(json_encode($data));
+
+                $new = $this->dataImmo->setDataAgency(new ImAgency(), $data);
 
                 $setting = (new ImSettings())->setAgency($new);
                 $this->immoService->initiateSupport($new);

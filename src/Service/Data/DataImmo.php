@@ -29,6 +29,7 @@ use App\Entity\Immo\ImSupport;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
+use App\Service\Immo\ImmoService;
 use Exception;
 
 class DataImmo extends DataConstructor
@@ -53,10 +54,10 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataBien(ImBien $obj, $data, ImArea $area, ImNumber $number, ImFeature $feature,
-                                ImAdvantage $advantage, ImDiag $diag, ImLocalisation $localisation,
-                                ImFinancial $financial, ImConfidential $confidential, ImAdvert $advert,
-                                ImMandat $mandat, array $rooms)
+    public function setDataBien(ImmoService $immoService, ImAgency $agency, ImBien $obj, $data, ImArea $area,
+                                ImNumber $number, ImFeature $feature, ImAdvantage $advantage, ImDiag $diag,
+                                ImLocalisation $localisation, ImFinancial $financial, ImConfidential $confidential,
+                                ImAdvert $advert, ImMandat $mandat, array $rooms)
     {
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
@@ -101,6 +102,8 @@ class DataImmo extends DataConstructor
             $obj->addRoom($room);
         }
 
+        $agency->setCounter($agency->getCounter() + 1);
+
         // Création de l'objet
         return ($obj)
             ->setSlug(null)
@@ -108,7 +111,7 @@ class DataImmo extends DataConstructor
             ->setCodeTypeBien((int) $codeTypeBien)
             ->setLibelle($this->sanitizeData->trimData($libelle))
             ->setNegotiator($negotiator)
-            ->setReference(substr(mb_strtoupper(uniqid().bin2hex(random_bytes(1))), 0, 10).random_int(100,999))
+            ->setReference($immoService->getReference($agency, (int) $codeTypeAd))
             ->setArea($area)
             ->setNumber($number)
             ->setFeature($feature)
@@ -382,9 +385,21 @@ class DataImmo extends DataConstructor
             throw new Exception("Société introuvable.");
         }
 
+        $name = $this->sanitizeData->sanitizeString($data->name);
+
+        $i = 0;
+        $code = mb_strtoupper(substr($name, 0, 2)) . $i;
+        do{
+            $existe = $this->em->getRepository(ImAgency::class)->findOneBy(['code' => $code]);
+            if($existe){
+                $code .= $i++;
+            }
+        }while($existe);
+
         return ($obj)
             ->setSociety($society)
-            ->setName($this->sanitizeData->sanitizeString($data->name))
+            ->setName($name)
+            ->setCode($code)
             ->setDirname($this->sanitizeData->sanitizeString($data->dirname))
             ->setWebsite($this->sanitizeData->sanitizeString($data->website))
             ->setEmail($this->sanitizeData->trimData($data->email))

@@ -27,6 +27,7 @@ use App\Entity\Society;
 use App\Entity\User;
 use App\Service\Data\DataImmo;
 use App\Service\DatabaseService;
+use App\Service\Immo\ImmoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Faker\Factory;
@@ -41,14 +42,16 @@ class FakeBiensCreate extends Command
     protected $em;
     private $databaseService;
     private $dataImmo;
+    private $immoService;
 
-    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService, DataImmo $dataImmo)
+    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService, DataImmo $dataImmo, ImmoService $immoService)
     {
         parent::__construct();
 
         $this->em = $entityManager;
         $this->databaseService = $databaseService;
         $this->dataImmo = $dataImmo;
+        $this->immoService = $immoService;
     }
 
     protected function configure()
@@ -247,7 +250,7 @@ class FakeBiensCreate extends Command
             $area           = $this->dataImmo->setDataArea(new ImArea(), $data);
             $mandat         = $this->dataImmo->setDataMandat(new ImMandat(), $data);
 
-            $obj = $this->dataImmo->setDataBien(new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
+            $obj = $this->dataImmo->setDataBien($this->immoService, $user->getAgency(), new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
                 $localisation, $financial, $confidential, $advert, $mandat, []);
 
             $choicesOwners = [];
@@ -288,7 +291,6 @@ class FakeBiensCreate extends Command
             $obj = ($obj)
                 ->setUser($user)
                 ->setCreatedBy($user->getShortFullName())
-                ->setReference("REF" . $i)
                 ->setIdentifiant(uniqid().bin2hex(random_bytes(8)) . random_int(100,999))
                 ->setAgency($user->getAgency())
                 ->setOwner($owner)

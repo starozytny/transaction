@@ -181,6 +181,16 @@ class ImAgency extends DataEntity
     private $identifiant;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $counter = 0;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $code;
+
+    /**
      * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="agency", orphanRemoval=true)
      */
     private $biens;
@@ -945,6 +955,30 @@ class ImAgency extends DataEntity
                 $support->setAgency(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCounter(): ?int
+    {
+        return $this->counter;
+    }
+
+    public function setCounter(int $counter): self
+    {
+        $this->counter = $counter;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

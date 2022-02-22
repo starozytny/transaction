@@ -24,6 +24,7 @@ use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
 use App\Service\Data\Donnee\DataDonnee;
 use App\Service\FileUploader;
+use App\Service\Immo\ImmoService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
@@ -101,7 +102,7 @@ class BienController extends AbstractController
      * @throws Exception
      */
     public function submitForm($type, ImBien $obj, Request $request, ApiResponse $apiResponse, FileUploader $fileUploader,
-                               ValidatorService $validator, DataImmo $dataEntity, DataDonnee $dataDonnee): JsonResponse
+                               ValidatorService $validator, DataImmo $dataEntity, DataDonnee $dataDonnee, $immoService): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
@@ -179,27 +180,28 @@ class BienController extends AbstractController
             }
         }
 
+        /** @var User $user */
+        $user = $this->getUser();
+        $agency = $user->getAgency();
+
         $rooms = $dataEntity->setDataRooms($data, $type == "create" ? [] : $obj->getRooms());
 
-        $obj = $dataEntity->setDataBien($obj, $data, $area, $number, $feature, $advantage, $diag,
+        $obj = $dataEntity->setDataBien($immoService, $agency, $obj, $data, $area, $number, $feature, $advantage, $diag,
             $localisation, $financial, $confidential, $advert, $mandat, $rooms);
         if(!$obj instanceof ImBien){
             return $apiResponse->apiJsonResponseValidationFailed($obj);
         }
 
-        /** @var User $user */
-        $user = $this->getUser();
-
         $files = $request->files->get('photos');
         $oriPhotos = $obj->getPhotos();
-        $folderPhoto = ImBien::FOLDER_PHOTOS . "/" . $user->getAgency()->getDirname();
+        $folderPhoto = ImBien::FOLDER_PHOTOS . "/" . $agency->getDirname();
 
         if($type == "create"){
             $obj = ($obj)
                 ->setUser($user)
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(uniqid().bin2hex(random_bytes(8)))
-                ->setAgency($user->getAgency())
+                ->setAgency($agency)
             ;
         }else{
             $obj = ($obj)
@@ -341,13 +343,14 @@ class BienController extends AbstractController
      * @param DataImmo $dataEntity
      * @param DataDonnee $dataDonnee
      * @param FileUploader $fileUploader
+     * @param ImmoService $immoService
      * @return JsonResponse
      * @throws Exception
      */
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
-                           DataImmo $dataEntity, DataDonnee $dataDonnee, FileUploader $fileUploader): JsonResponse
+                           DataImmo $dataEntity, DataDonnee $dataDonnee, FileUploader $fileUploader, ImmoService $immoService): JsonResponse
     {
-        return $this->submitForm("create", new ImBien(), $request, $apiResponse, $fileUploader, $validator, $dataEntity, $dataDonnee);
+        return $this->submitForm("create", new ImBien(), $request, $apiResponse, $fileUploader, $validator, $dataEntity, $dataDonnee, $immoService);
     }
 
     /**
@@ -369,13 +372,14 @@ class BienController extends AbstractController
      * @param DataImmo $dataEntity
      * @param DataDonnee $dataDonnee
      * @param FileUploader $fileUploader
+     * @param ImmoService $immoService
      * @return JsonResponse
      * @throws Exception
      */
     public function update(ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
-                           DataImmo $dataEntity, DataDonnee $dataDonnee, FileUploader $fileUploader): JsonResponse
+                           DataImmo $dataEntity, DataDonnee $dataDonnee, FileUploader $fileUploader, ImmoService $immoService): JsonResponse
     {
-        return $this->submitForm("update", $obj, $request, $apiResponse, $fileUploader, $validator, $dataEntity, $dataDonnee);
+        return $this->submitForm("update", $obj, $request, $apiResponse, $fileUploader, $validator, $dataEntity, $dataDonnee, $immoService);
     }
 
     /**
