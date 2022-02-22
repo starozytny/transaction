@@ -86,11 +86,11 @@ class FakeBiensCreate extends Command
 
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
+            ImPhoto::class,
             ImPublish::class,
             ImOffer::class,
             ImSuivi::class,
             ImVisit::class,
-            ImPhoto::class,
             ImRoom::class,
             ImBien::class,
             ImAdvantage::class,
@@ -233,8 +233,16 @@ class FakeBiensCreate extends Command
                 "codeTypeMandat" => (string) $fake->numberBetween(0, 3),
                 "startAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "endAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
-                "priceEstimate" => "",
-                "fee" => "",
+                "priceEstimate" => $fake->randomFloat(2),
+                "fee" => $fake->randomFloat(1),
+                "mandatRaison" => $fake->streetName,
+                "mandatLastname" => $fake->lastName,
+                "mandatFirstname" => $fake->firstName,
+                "mandatPhone" => $fake->e164PhoneNumber,
+                "mandatAddress" => $fake->streetName,
+                "mandatZipcode" => $fake->postcode,
+                "mandatCity" => $fake->city,
+                "mandatCommentary" => $fake->sentence,
             ];
 
             $data = json_decode(json_encode($data));
@@ -248,7 +256,7 @@ class FakeBiensCreate extends Command
             $feature        = $this->dataImmo->setDataFeature(new ImFeature(), $data);
             $number         = $this->dataImmo->setDataNumber(new ImNumber(), $data);
             $area           = $this->dataImmo->setDataArea(new ImArea(), $data);
-            $mandat         = $this->dataImmo->setDataMandat(new ImMandat(), $data);
+            $mandat         = $this->dataImmo->setDataMandat($this->immoService, new ImMandat(), $data, $user->getAgency());
 
             $obj = $this->dataImmo->setDataBien($this->immoService, $user->getAgency(), new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
                 $localisation, $financial, $confidential, $advert, $mandat, []);

@@ -50,6 +50,20 @@ class ImmoService
         return $this->privateDirectory;
     }
 
+    public function getNumeroMandat(ImAgency $agency): string
+    {
+        $tab = array_map('intval', str_split($agency->getCounterMandat()));
+
+        $year = (new \DateTime())->format('y');
+
+        $nbZero = 6 - count($tab);
+
+        $counter = $year . str_repeat("0", $nbZero);
+        $counter .= $agency->getCounter();
+
+        return $counter;
+    }
+
     public function getReference(ImAgency $agency, $codeTypeAd): string
     {
         $data = ["VE", "LO", "VI", "PI", "CB", "LV", "VP", "FC"];
@@ -63,7 +77,7 @@ class ImmoService
         $counter = $year . str_repeat("0", $nbZero);
         $counter .= $agency->getCounter();
 
-        return $counter .$agency->getCode() . $data[$codeTypeAd];
+        return $counter . $agency->getCode() . $data[$codeTypeAd];
     }
 
     /**

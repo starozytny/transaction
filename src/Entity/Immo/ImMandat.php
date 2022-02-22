@@ -25,6 +25,11 @@ class ImMandat extends DataEntity
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $numero;
+
+    /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
@@ -49,6 +54,56 @@ class ImMandat extends DataEntity
      * @ORM\Column(type="float", nullable=true)
      */
     private $fee;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $raisonSocial;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $zipcode;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $commentary;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = $this->initNewDate();
+    }
 
     public function getId(): ?int
     {
@@ -158,6 +213,126 @@ class ImMandat extends DataEntity
     public function setFee(?float $fee): self
     {
         $this->fee = $fee;
+
+        return $this;
+    }
+
+    public function getNumero(): ?string
+    {
+        return $this->numero;
+    }
+
+    public function setNumero(string $numero): self
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(?string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(?string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getZipcode(): ?string
+    {
+        return $this->zipcode;
+    }
+
+    public function setZipcode(?string $zipcode): self
+    {
+        $this->zipcode = $zipcode;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getCommentary(): ?string
+    {
+        return $this->commentary;
+    }
+
+    public function setCommentary(?string $commentary): self
+    {
+        $this->commentary = $commentary;
+
+        return $this;
+    }
+
+    public function getRaisonSocial(): ?string
+    {
+        return $this->raisonSocial;
+    }
+
+    public function setRaisonSocial(?string $raisonSocial): self
+    {
+        $this->raisonSocial = $raisonSocial;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

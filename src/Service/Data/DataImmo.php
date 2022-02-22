@@ -139,16 +139,36 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataMandat(ImMandat $obj, $data): ImMandat
+    public function setDataMandat(ImmoService $immoService, ImMandat $obj, $data, ImAgency $agency): ImMandat
     {
+        $codeTypeMandat = (int) $data->codeTypeMandat;
 
-        if($data->codeTypeAd == ImBien::AD_VENTE && $data->codeTypeMandat != ImMandat::TYPE_NONE){
+        if($data->codeTypeAd == ImBien::AD_VENTE && $codeTypeMandat != ImMandat::TYPE_NONE){
             $obj->setPriceEstimate($this->setToNullFloat($data->priceEstimate));
             $obj->setFee($this->setToNullFloat($data->fee));
         }
 
+        if($codeTypeMandat == ImMandat::TYPE_NONE){
+            $numero = 0;
+        }else{
+            $agency->setCounterMandat($agency->getCounterMandat() + 1);
+            $numero = $immoService->getNumeroMandat($agency);
+
+            $obj = ($obj)
+                ->setRaisonSocial($this->sanitizeData->trimData($data->mandatRaison))
+                ->setLastname($this->sanitizeData->trimData($data->mandatLastname))
+                ->setFirstname($this->sanitizeData->trimData($data->mandatFirstname))
+                ->setPhone($this->sanitizeData->trimData($data->mandatPhone))
+                ->setAddress($this->sanitizeData->trimData($data->mandatAddress))
+                ->setZipcode($this->sanitizeData->trimData($data->mandatZipcode))
+                ->setCity($this->sanitizeData->trimData($data->mandatCity))
+                ->setCommentary($this->sanitizeData->trimData($data->mandatCommentary))
+            ;
+        }
+
         return ($obj)
-            ->setCodeTypeMandat((int) $data->codeTypeMandat)
+            ->setCodeTypeMandat($codeTypeMandat)
+            ->setNumero($numero)
             ->setStartAt($this->createDate($data->startAt))
             ->setEndAt($this->createDate($data->endAt))
         ;

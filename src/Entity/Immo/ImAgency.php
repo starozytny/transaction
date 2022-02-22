@@ -181,14 +181,19 @@ class ImAgency extends DataEntity
     private $identifiant;
 
     /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $code;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $counter = 0;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="integer")
      */
-    private $code;
+    private $counterMandat = 0;
 
     /**
      * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="agency", orphanRemoval=true)
@@ -979,6 +984,18 @@ class ImAgency extends DataEntity
     public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getCounterMandat(): ?int
+    {
+        return $this->counterMandat;
+    }
+
+    public function setCounterMandat(int $counterMandat): self
+    {
+        $this->counterMandat = $counterMandat;
 
         return $this;
     }

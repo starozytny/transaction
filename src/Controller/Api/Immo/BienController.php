@@ -5,6 +5,7 @@ namespace App\Controller\Api\Immo;
 use App\Entity\Donnee\DoQuartier;
 use App\Entity\Immo\ImAdvantage;
 use App\Entity\Immo\ImAdvert;
+use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImConfidential;
@@ -49,11 +50,11 @@ class BienController extends AbstractController
     /**
      * @throws Exception
      */
-    public function setProperty($em, $type, $obj, $data, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
+    public function setProperty($em, $type, $obj, $data, ImAgency $agency, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity, ImmoService $immoService)
     {
         switch ($type){
             case "mandat":
-                $obj = $dataEntity->setDataMandat($obj, $data);
+                $obj = $dataEntity->setDataMandat($immoService, $obj, $data, $agency);
                 break;
             case "advert":
                 $obj = $dataEntity->setDataAdvert($obj, $data);
@@ -111,6 +112,10 @@ class BienController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
+        /** @var User $user */
+        $user = $this->getUser();
+        $agency = $user->getAgency();
+
         if($type === "create" && $data->id){
             $obj = $em->getRepository(ImBien::class)->find($data->id);
             if(!$obj){
@@ -135,7 +140,7 @@ class BienController extends AbstractController
         $financial = null; $confidential = null; $advert = null; $mandat = null;
         foreach($tab as $item){
             $donnee = $this->setProperty($em, $item["type"], $type == "create" ? $item["new"] : $item["existe"],
-                $data, $apiResponse, $validator, $dataEntity);
+                $data, $agency, $apiResponse, $validator, $dataEntity, $immoService);
             switch ($item["type"]){
                 case "mandat":
                     if(!$donnee instanceof ImMandat){ return $donnee; }
@@ -179,10 +184,6 @@ class BienController extends AbstractController
                     break;
             }
         }
-
-        /** @var User $user */
-        $user = $this->getUser();
-        $agency = $user->getAgency();
 
         $rooms = $dataEntity->setDataRooms($data, $type == "create" ? [] : $obj->getRooms());
 
