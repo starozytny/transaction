@@ -44,7 +44,7 @@ class ImFeature extends DataEntity
     private $buildAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
     private $floor;
@@ -168,12 +168,12 @@ class ImFeature extends DataEntity
         return $this;
     }
 
-    public function getFloor(): ?string
+    public function getFloor(): ?int
     {
         return $this->floor;
     }
 
-    public function setFloor(?string $floor): self
+    public function setFloor(?int $floor): self
     {
         $this->floor = $floor;
 

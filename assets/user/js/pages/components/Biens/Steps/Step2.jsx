@@ -127,10 +127,10 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
         </div>
         <div className="line special-line">
             <div className="line line-2">
-                <Input identifiant="floor" valeur={floor} errors={errors} onChange={onChange}>
+                <Input type="number" min={0} identifiant="floor" valeur={floor} errors={errors} onChange={onChange}>
                     <span>Etage</span>
                 </Input>
-                <Input type="number" min={0} identifiant="nbFloor" valeur={nbFloor} errors={errors} onChange={onChange}>
+                <Input type="number" min={floor ? parseInt(floor) : 0} identifiant="nbFloor" valeur={nbFloor} errors={errors} onChange={onChange}>
                     <span>Nombre d'étages</span>
                 </Input>
             </div>

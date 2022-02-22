@@ -197,7 +197,7 @@ class DataImmo extends DataConstructor
             ->setDispoAt($this->createDate($data->dispoAt))
             ->setBusy($this->setToZeroEmpty($data->busy))
             ->setBuildAt($this->setToNullInteger($data->buildAt))
-            ->setFloor($this->sanitizeData->trimData($data->floor))
+            ->setFloor($this->setToNullInteger($data->floor))
             ->setNbFloor($this->setToNullInteger($data->nbFloor))
             ->setCodeHeater($this->setToNullInteger($data->codeHeater))
             ->setCodeHeater0($this->setToNullInteger($data->codeHeater0))
