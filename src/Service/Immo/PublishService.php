@@ -52,6 +52,7 @@ class PublishService
 
     private function setValue($value): string
     {
+        $value = str_replace("<br />", "<BR>", $value);
         $value = str_replace('"', "'", $value);
         return '"' . $value . '"';
     }
