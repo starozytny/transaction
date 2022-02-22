@@ -1,5 +1,9 @@
 {% extends 'user/layout/layout.html.twig' %}
 
+{% set submenu = [
+    { 'label': "Agenda", 'path': path('user_agenda') },
+] %}
+
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('user_agenda') }}

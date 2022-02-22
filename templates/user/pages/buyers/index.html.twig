@@ -1,10 +1,15 @@
 {% extends 'user/pages/buyers/template.html.twig' %}
 
 {% set page_title %}Liste des acquéreurs{% endset %}
+{% set submenuActive = "Liste des acquéreurs" %}
 
 {% block main_content %}
-    <div id="list-buyers" data-donnees="{{ data }}" data-negotiators="{{ negotiators }}"
-         data-society-id="{{ user.society.id }}" data-agency-id="{{ user.agency.id }}">
+    <div id="list-buyers"
+         data-donnees="{{ data }}"
+         data-negotiators="{{ negotiators }}"
+         data-society-id="{{ user.society.id }}"
+         data-agency-id="{{ user.agency.id }}"
+    >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

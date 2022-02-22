@@ -1,5 +1,9 @@
 {% extends 'user/layout/layout.html.twig' %}
 
+{% set submenu = [
+    { 'label': "Mon profil", 'path': path('user_profil') },
+] %}
+
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('user_profil') }}

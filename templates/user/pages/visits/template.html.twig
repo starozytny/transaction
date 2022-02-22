@@ -1,5 +1,9 @@
 {% extends 'user/layout/layout.html.twig' %}
 
+{% set submenu = [
+    { 'label': "Liste des visites", 'path': path('user_visites') },
+] %}
+
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('user_biens') }}
