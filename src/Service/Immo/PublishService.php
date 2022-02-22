@@ -48,6 +48,12 @@ class PublishService
         return $value == 99 ? "" : ($value == 1 ? "OUI" : "NON");
     }
 
+    private function setValue($value): string
+    {
+        $value = str_replace('"', "'", $value);
+        return '"' . $value . '"';
+    }
+
     private function createSeloger(ImBien $bien): array
     {
         $agency       = $bien->getAgency();
@@ -65,7 +71,7 @@ class PublishService
 
         $isLocation = $bien->getCodeTypeAd() == ImBien::AD_LOCATION;
 
-        return [
+        $data = [
             $agency->getDirname(),
             $bien->getReference(),
             $bien->getTypeAdString(),
@@ -174,12 +180,14 @@ class PublishService
             "",
             "",                                         // 104
             $negotiator->getPhone() ?: $negotiator->getPhone2(),
+            $negotiator->getLastname(),
             $negotiator->getEmail(),
             $localisation->getZipcode(),
             $localisation->getCity(),
+            "",                                         // 110
             "",
             $mandat->getId(), // TODO : set numero auto
-            $mandat->getStartAt()->format("d/m/M"),
+            $mandat->getStartAt()->format("d/m/Y"),
             "", // TODO : add nom, prénom et raison sociale du mandataire
             "",
             "",
@@ -189,7 +197,7 @@ class PublishService
             "",
             "",
             $confidential->getKeysWhere(),
-            $negotiator->getLastname(),
+            $negotiator->getCode(),
             "",
             "",
             "",
@@ -360,7 +368,8 @@ class PublishService
             "",
             "",
             "",
-            "TEST", // price terrain if construire
+            "",
+            "", // price terrain if construire
             "", // if construire
             "", // if construire
             $localisation->getLat(),
@@ -399,5 +408,12 @@ class PublishService
             $area->getTerrace(),
             ""
         ];
+
+        $values = [];
+        foreach($data as $item){
+            $values[] = $this->setValue($item);
+        }
+
+        return $values;
     }
 }

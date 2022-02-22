@@ -104,7 +104,7 @@ class Export
         $lettersDefault = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
         $letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
         foreach($lettersDefault as $l){
-            for($i = 1 ; $i <= 15 ; $i++){
+            for($i = 0 ; $i <= 25 ; $i++){
                 $letters[] = $l . $lettersDefault[$i];
             }
         }
