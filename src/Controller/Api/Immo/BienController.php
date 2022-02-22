@@ -291,6 +291,11 @@ class BienController extends AbstractController
                         $donnee = $dataEntity->setDataPhoto(new ImPhoto(), $photo, $fileName, $user->getAgency());
                         $em->persist($donnee);
 
+                        if((int) $photo->rank == 1){
+                            $obj->setMainPhoto($donnee);
+                        }
+
+
                         $obj->addPhoto($donnee);
                         break;
                     }

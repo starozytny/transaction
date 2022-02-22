@@ -5,6 +5,7 @@ namespace App\Service\Immo;
 use App\Entity\Immo\ImAdvert;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImMandat;
+use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImPublish;
 use App\Entity\Immo\ImSupport;
 use App\Service\Export;
@@ -20,15 +21,16 @@ class PublishService
 
     /**
      * @param ImPublish[] $publishes
+     * @param ImPhoto[] $photos
      * @return void
      */
-    public function createFile(array $publishes)
+    public function createFile(array $publishes, array $photos)
     {
         $data = [];
         foreach($publishes as $publish){
             switch ($publish->getSupport()->getCode()){
                 case ImSupport::CODE_SELOGER:
-                    $data[] = $this->createSeloger($publish->getBien());
+                    $data[] = $this->createSeloger($publish->getBien(), $photos);
                     break;
                 default:
                     break;
@@ -54,7 +56,12 @@ class PublishService
         return '"' . $value . '"';
     }
 
-    private function createSeloger(ImBien $bien): array
+    /**
+     * @param ImBien $bien
+     * @param ImPhoto[] $allPhotos
+     * @return array
+     */
+    private function createSeloger(ImBien $bien, array $allPhotos): array
     {
         $agency       = $bien->getAgency();
         $localisation = $bien->getLocalisation();
@@ -68,6 +75,13 @@ class PublishService
         $confidential = $bien->getConfidential();
         $negotiator   = $bien->getNegotiator();
         $diagnostic   = $bien->getDiag();
+
+        $photos = [];
+        foreach($allPhotos as $photo){
+            if($photo->getBien()->getId() == $bien->getId()){
+                $photos[] = $photo;
+            }
+        }
 
         $isLocation = $bien->getCodeTypeAd() == ImBien::AD_LOCATION;
 
@@ -140,16 +154,17 @@ class PublishService
             $advantage->getSituation(),
             "",
             "",
-            "",                                 //60
-            $this->convertBoolean($advantage->getHasAlarme()),
             "",
+            $this->convertBoolean($advantage->getHasAlarme()),
+            "", //cable TV
             $this->convertBoolean($advantage->getHasCalme()),
             $this->convertBoolean($advantage->getHasClim()),
             $this->convertBoolean($advantage->getHasPool()),
             $this->convertBoolean($advantage->getHasHandi()),
-            // ------------------------------------------ ---------- -----------------------------------
-            // ------------------------------------------ FIN PAGE 2 -----------------------------------
-            // ------------------------------------------ ---------- -----------------------------------
+            // ---------------------------------------------------------------------------------
+            // -------------------------------- PAGE 3 -----------------------------------------
+            // ---------------------------------------------------------------------------------
+            "", //animaux acceptés - utile pour la location ?
             "",
             "",
             "",
@@ -163,37 +178,39 @@ class PublishService
             "",
             "",
             "",
-            "",                                     // 80
             "",
             "SL",
             $mandat->getCodeTypeMandat() == ImMandat::TYPE_EXCLUSIF ? "OUI" : "NON",
             $advert->getTypeAdvert() == ImAdvert::TYPE_HEART ? "OUI" : "NON",
-            "", //TODO : PHOTOS
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",                                         // 104
+            isset($photos[0]) ? $photos[0]->getFile() : "",
+            isset($photos[1]) ? $photos[1]->getFile() : "",
+            isset($photos[2]) ? $photos[2]->getFile() : "",
+            isset($photos[3]) ? $photos[3]->getFile() : "",
+            isset($photos[4]) ? $photos[4]->getFile() : "",
+            isset($photos[5]) ? $photos[5]->getFile() : "",
+            isset($photos[6]) ? $photos[6]->getFile() : "",
+            isset($photos[7]) ? $photos[7]->getFile() : "",
+            isset($photos[8]) ? $photos[8]->getFile() : "",
+            isset($photos[0]) ? $photos[0]->getLegend() : "",
+            isset($photos[1]) ? $photos[1]->getLegend() : "",
+            isset($photos[2]) ? $photos[2]->getLegend() : "",
+            isset($photos[3]) ? $photos[3]->getLegend() : "",
+            isset($photos[4]) ? $photos[4]->getLegend() : "",
+            isset($photos[5]) ? $photos[5]->getLegend() : "",
+            isset($photos[6]) ? $photos[6]->getLegend() : "",
+            isset($photos[7]) ? $photos[7]->getLegend() : "",
+            isset($photos[8]) ? $photos[8]->getLegend() : "",
+            "", //photo panoramique
+            "", //url visite virtuelle
             $negotiator->getPhone() ?: $negotiator->getPhone2(),
             $negotiator->getLastname(),
             $negotiator->getEmail(),
             $localisation->getZipcode(),
+            // ---------------------------------------------------------------------------------
+            // -------------------------------- PAGE 4 -----------------------------------------
+            // ---------------------------------------------------------------------------------
             $localisation->getCity(),
-            "",                                         // 110
+            "",
             "",
             $mandat->getId(), // TODO : set numero auto
             $mandat->getStartAt() ? $mandat->getStartAt()->format("d/m/Y") : "",

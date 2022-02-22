@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImPublish;
 use App\Entity\Immo\ImSupport;
 use App\Service\ApiResponse;
@@ -55,10 +56,10 @@ class PublishController extends AbstractController
             $bien->setIsPublished(false);
         }
 
+        $photos = $em->getRepository(ImPhoto::class)->findBy(['bien' => $data], ['rank' => 'ASC']);
         $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $data]);
 
-        $publishService->createFile($publishes);
-
+        $publishService->createFile($publishes, $photos);
 
         return $apiResponse->apiJsonResponseSuccessful("L'envoie s'est bien passé. La page va se rafraîchir automatiquement dans 5 secondes.");
     }
