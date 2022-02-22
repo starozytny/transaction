@@ -70,7 +70,7 @@
                         <div class="title">Publications</div>
                     </div>
                     <div class="card-body">
-                        <div class="number">Aller sur la page</div>
+                        <div class="number">{{ lastPublish is not null ? lastPublish | replace({':': 'h'}) : "Aller sur la page" }}</div>
                     </div>
                 </a>
             </div>

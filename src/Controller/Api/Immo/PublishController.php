@@ -47,6 +47,7 @@ class PublishController extends AbstractController
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param PublishService $publishService
+     * @param SanitizeData $sanitizeData
      * @return JsonResponse
      */
     public function update(Request $request, ApiResponse $apiResponse, PublishService $publishService, SanitizeData $sanitizeData): JsonResponse

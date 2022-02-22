@@ -15,6 +15,7 @@ use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImPublish;
 use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImSettings;
+use App\Entity\Immo\ImStat;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImSupport;
 use App\Entity\Immo\ImTenant;
@@ -78,6 +79,16 @@ class UserController extends AbstractController
         $biensVisits    = $em->getRepository(ImBien::class)->findBy(['user' => $user]);
         $biensUser      = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'isArchived' => false, 'isDraft' => false]);
         $biensDraft     = $em->getRepository(ImBien::class)->findBy(['user' => $user,  'isArchived' => false, 'isDraft' => true]);
+        $stats          = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['createdAt' => 'DESC']);
+
+        $lastPublish = null;
+
+        foreach($stats as $stat){
+            if($lastPublish == null && $stat->getPublishedAt()){
+                $lastPublish = $stat->getPublishedAtString();
+                break;
+            }
+        }
 
         $visits = $em->getRepository(ImVisit::class)->findBy(['bien' => $biensVisits]);
 
@@ -88,7 +99,9 @@ class UserController extends AbstractController
             'biensAgency' => count($biensAgency),
             'biensUser' => count($biensUser),
             'biensDraft' => count($biensDraft),
-            'visits' => $visits
+            'visits' => $visits,
+            'stats' => $stats,
+            'lastPublish' => $lastPublish
         ]);
     }
 
