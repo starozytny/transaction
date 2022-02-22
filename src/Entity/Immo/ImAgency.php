@@ -262,6 +262,11 @@ class ImAgency extends DataEntity
      */
     private $supports;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImStat::class, mappedBy="agency")
+     */
+    private $stats;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
@@ -276,6 +281,7 @@ class ImAgency extends DataEntity
         $this->doSols = new ArrayCollection();
         $this->doSousTypes = new ArrayCollection();
         $this->supports = new ArrayCollection();
+        $this->stats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -996,6 +1002,36 @@ class ImAgency extends DataEntity
     public function setCounterMandat(int $counterMandat): self
     {
         $this->counterMandat = $counterMandat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImStat[]
+     */
+    public function getStats(): Collection
+    {
+        return $this->stats;
+    }
+
+    public function addStat(ImStat $stat): self
+    {
+        if (!$this->stats->contains($stat)) {
+            $this->stats[] = $stat;
+            $stat->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStat(ImStat $stat): self
+    {
+        if ($this->stats->removeElement($stat)) {
+            // set the owning side to null (unless already changed)
+            if ($stat->getAgency() === $this) {
+                $stat->setAgency(null);
+            }
+        }
 
         return $this;
     }
