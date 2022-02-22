@@ -71,9 +71,13 @@ class PublishService
 
         $isLocation = $bien->getCodeTypeAd() == ImBien::AD_LOCATION;
 
-        $codeHeater = $feature->getCodeHeater() + $feature->getCodeHeater0();
+        $codeHeater     = $feature->getCodeHeater() + $feature->getCodeHeater0();
+        $codeExposition = $feature->getExposition();
 
         $data = [
+            // ---------------------------------------------------------------------------------
+            // -------------------------------- PAGE 1 -----------------------------------------
+            // ---------------------------------------------------------------------------------
             $agency->getDirname(),
             $bien->getReference(),
             $bien->getTypeAdSeloger(),
@@ -102,16 +106,19 @@ class PublishService
             $this->convertBoolean($feature->getIsMeuble()),
             $feature->getBuildAt(),
             $this->convertBoolean($feature->getIsNew()),
+            // ---------------------------------------------------------------------------------
+            // -------------------------------- PAGE 2 -----------------------------------------
+            // ---------------------------------------------------------------------------------
             $number->getBathroom(),
             "", //NB de salles d'eau
             $number->getWc(),
             $this->convertBoolean($feature->getIsWcSeparate()),
             $codeHeater > 0 ? $codeHeater : "",
             $feature->getCodeKitchen(),
-            "",                        //TODO : check code exposition
-            "",
-            "",
-            "",
+            $codeExposition == 99 ? "" : (($codeExposition == 2 || $codeExposition == 6 || $codeExposition == 7) ? "OUI" : "NON"),
+            $codeExposition == 99 ? "" : (($codeExposition == 1 || $codeExposition == 4 || $codeExposition == 6) ? "OUI" : "NON"),
+            $codeExposition == 99 ? "" : (($codeExposition == 3 || $codeExposition == 5 || $codeExposition == 7) ? "OUI" : "NON"),
+            $codeExposition == 99 ? "" : (($codeExposition == 0 || $codeExposition == 4 || $codeExposition == 5) ? "OUI" : "NON"),
             $number->getBalcony(),
             "",                                  // 40
             $this->convertBoolean($advantage->getHasLift()),
