@@ -198,9 +198,12 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     Description simple
                 </TextArea>
             </div>
-            <div className="line">
+            <div className="line line-2">
                 <div className="form-group">
                     <Button type="default" onClick={() => onGenerateContent("simple")}>Générer un texte simple par défaut</Button>
+                </div>
+                <div className="form-group">
+                    Nombre de caractères : {contentSimple ? contentSimple.length : 0}/250
                 </div>
             </div>
             <div className="line">
@@ -208,9 +211,12 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     Description complète
                 </TextArea>
             </div>
-            <div className="line">
+            <div className="line line-2">
                 <div className="form-group">
                     <Button type="default" onClick={() => onGenerateContent("complexe")}>Générer un texte complexe par défaut</Button>
+                </div>
+                <div className="form-group">
+                    Nombre de caractères : {contentFull ? contentFull.length : 0}/4000
                 </div>
             </div>
         </div>
