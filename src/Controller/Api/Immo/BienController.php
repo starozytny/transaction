@@ -200,7 +200,7 @@ class BienController extends AbstractController
             $obj = ($obj)
                 ->setUser($user)
                 ->setCreatedBy($user->getShortFullName())
-                ->setIdentifiant(uniqid().bin2hex(random_bytes(8)))
+                ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(8))))
                 ->setAgency($agency)
             ;
         }else{
