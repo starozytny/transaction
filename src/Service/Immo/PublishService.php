@@ -417,7 +417,7 @@ class PublishService
             $localisation->getLat(),
             $localisation->getLon(),
             1,
-            "4.09", // versions ?
+            "4.10",
             $financial->getHonoraireChargeDe() + 1,
             $financial->getPriceHorsAcquereur(),
             $financial->getTypeCharges() + 1,
