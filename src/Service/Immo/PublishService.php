@@ -87,7 +87,7 @@ class PublishService
             "OUI",
             "NON",
             $isLocation ? $financial->getHonoraireTtc() : $financial->getHonorairePourcentage(), //15
-            $area->getTotal(),
+            $area->getHabitable(),
             $area->getLand(),
             $number->getPiece(),
             $number->getRoom(),

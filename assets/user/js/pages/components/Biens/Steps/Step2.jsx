@@ -7,13 +7,12 @@ import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/functions/helper";
-import {ButtonIcon} from "@dashboardComponents/Tools/Button";
 
 const CURRENT_STEP = 2;
 
 export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate,
                           codeTypeAd, codeTypeBien,
-                          areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
+                          areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving, areaDining,
                           piece, room, bathroom, wc, balcony, parking, box,
                           dispoAt, busy, buildAt, isMeuble, isNew, floor, nbFloor,
                           codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0 })
@@ -70,13 +69,10 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <label>Surfaces (m²)</label>
             </div>
             <div className="line line-infinite">
-                <Input type="number" step="any" min={0} identifiant="areaTotal" valeur={areaTotal} errors={errors} onChange={onChange}>
-                    <span>Totale *</span>
+                <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={onChange}>
+                    <span>Habitable</span>
                 </Input>
                 {codeTypeBienInt !== 2 && <>
-                    <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={onChange}>
-                        <span>Habitable</span>
-                    </Input>
                     <Input type="number" step="any" min={0} identifiant="areaLand" valeur={areaLand} errors={errors} onChange={onChange}>
                         <span>Terrain</span>
                     </Input>

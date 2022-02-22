@@ -72,7 +72,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         negotiator={element ? element.negotiator.id : ""}
 
         areaTotal={element ? setValueEmptyIfNull(area, area.total) : 0}
-        areaHabitable={element ? setValueEmptyIfNull(area, area.habitable) : ""}
+        areaHabitable={element ? setValueEmptyIfNull(area, area.habitable) : 0}
         areaLand={element ? setValueEmptyIfNull(area, area.land) : ""}
         areaGarden={element ? setValueEmptyIfNull(area, area.garden) : ""}
         areaTerrace={element ? setValueEmptyIfNull(area, area.terrace) : ""}

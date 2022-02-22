@@ -333,7 +333,7 @@ export class BienForm extends Component {
 
     handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
-            areaTotal, piece, priceEstimate, price } = this.state;
+            areaHabitable, piece, priceEstimate, price } = this.state;
 
         this.setState({ errors: [] })
 
@@ -343,7 +343,7 @@ export class BienForm extends Component {
             switch (stepValue){
                 case 3:
                     paramsToValidate = [
-                        {type: "text",      id: 'areaTotal',      value: areaTotal},
+                        {type: "text",      id: 'areaHabitable',  value: areaHabitable},
                         {type: "text",      id: 'piece',          value: piece}
                     ];
                     break;
