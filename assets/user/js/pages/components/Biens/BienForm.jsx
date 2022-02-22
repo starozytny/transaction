@@ -333,7 +333,7 @@ export class BienForm extends Component {
 
     handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
-            areaHabitable, piece, priceEstimate, price, address, zipcode, city, country } = this.state;
+            areaHabitable, piece, priceEstimate, price, address, zipcode, city, country, contentSimple, contentFull } = this.state;
 
         this.setState({ errors: [] })
 
@@ -341,6 +341,16 @@ export class BienForm extends Component {
         if(stepInitial === null || fromMenu === true){
             let stepValue = fromMenu ? stepInitial + 1 : stepClicked;
             switch (stepValue){
+                case 10:
+                    paramsToValidate = [
+                        {type: "text",      id: 'libelle',        value: libelle},
+                        {type: "text",      id: 'contentSimple',  value: contentSimple},
+                        {type: "text",      id: 'contentFull',    value: contentFull},
+                        {type: "length",    id: 'libelle',        value: libelle,       min:0, max: 64},
+                        {type: "length",    id: 'contentSimple',  value: contentSimple, min:0, max: 250},
+                        {type: "length",    id: 'contentFull',    value: contentFull,   min:0, max: 4000},
+                    ]
+                    break;
                 case 6:
                     paramsToValidate = [
                         {type: "text",      id: 'address',  value: address},
@@ -359,7 +369,6 @@ export class BienForm extends Component {
                     paramsToValidate = [
                         {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
                         {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
-                        {type: "text",      id: 'libelle',        value: libelle},
                         {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
                         {type: "text",      id: 'negotiator',     value: negotiator}
                     ];
@@ -549,7 +558,7 @@ export class BienForm extends Component {
                                onGenerateContent={this.handleGenerateContent}
                                negotiators={negotiators} />
 
-                        <Step10 {...this.state} onSubmit={this.handleSubmit}
+                        <Step10 {...this.state} onSubmit={this.handleSubmit} onDraft={this.handleSubmit} onNext={this.handleNext}
                                 onChange={this.handleChange} allSupports={allSupports}/>
 
                     </form>

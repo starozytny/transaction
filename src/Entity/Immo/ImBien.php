@@ -86,7 +86,7 @@ class ImBien extends DataEntity
     private $codeTypeBien;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=64)
      * @Groups({"user:read", "suivi:read"})
      */
     private $libelle;

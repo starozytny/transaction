@@ -7,7 +7,7 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 const CURRENT_STEP = 10;
 
-export function Step10({ step, errors, onSubmit, onNext, onChange, allSupports, supports })
+export function Step10({ step, errors, onDraft, onSubmit, onNext, onChange, allSupports, supports })
 {
     let supportsItems = [];
     allSupports.sort(Sort.compareName)
@@ -22,6 +22,6 @@ export function Step10({ step, errors, onSubmit, onNext, onChange, allSupports, 
             </Checkbox>
         </div>
 
-        <FormActions onNext={onNext} onDraft={onSubmit} onSubmit={onSubmit} isFinal={true} currentStep={CURRENT_STEP} />
+        <FormActions onNext={onNext} onDraft={onDraft} onSubmit={onSubmit} isFinal={true} currentStep={CURRENT_STEP} />
     </div>
 }

@@ -214,8 +214,6 @@ function switchCase(element){
         case 'uniqueLength':
             validate = validateUniqueLength(element.value, element.size);
             break;
-        case 'minMax':
-            validate = validateMinMax(element.value, element.valueCheck);
         case 'dateCompare':
             validate = validateDateCompare(element.value, element.valueCheck);
             break;

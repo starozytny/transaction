@@ -76,17 +76,17 @@ class PublishService
             $bien->getReference(),
             $bien->getTypeAdSeloger(),
             $bien->getTypeBienSeloger(),
-            $localisation->getZipcode(),        // 5
+            $localisation->getZipcode(),
             $localisation->getCity(),
             $localisation->getCountry(),
             $localisation->getHideAddress() ? "" : $localisation->getAddress(),
             $localisation->getHideAddress() ? "" : $localisation->getQuartier(),
-            "",                                 // 10
+            "", // activité commerciales
             $financial->getPrice(),
-            "",                                 // cession bail
+            "", // cession bail - loyer/mois murs
             "OUI",
             "NON",
-            $isLocation ? $financial->getHonoraireTtc() : $financial->getHonorairePourcentage(), //15
+            $isLocation ? $financial->getHonoraireTtc() : $financial->getHonorairePourcentage(),
             $area->getHabitable(),
             $area->getLand(),
             $number->getPiece(),
