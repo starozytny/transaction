@@ -158,7 +158,7 @@ function ItemFilterBox ({ type, el, filters, onFilter, total }) {
             <div className="box" />
             <div>{el.label}</div>
         </div>
-        {total && <div className="item-filter-total">{total}</div>}
+        <div className="item-filter-total">{total > 0 ? total : 0}</div>
     </div>
 }
 

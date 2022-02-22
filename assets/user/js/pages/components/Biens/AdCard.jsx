@@ -69,7 +69,7 @@ export class AdCard extends Component {
 
         let items = [
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
-            {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "prospects"})} target="_blank">Liste des prospects</a>},
+            {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements"})} target="_blank">Liste des prospects</a>},
             {data: <a href={Routing.generate("user_mails_send", {'dest': [el.owner ? el.owner.email : ""]})} target="_blank">Envoyer un mail</a>},
             {data: <a href="/">Imprimer la fiche</a>}
         ]
@@ -178,7 +178,9 @@ export class AdCard extends Component {
                             Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par " + el.updatedBy)}
                         </div> : <div className="createdAt" />}
                         <div className={"actions" + (isProspectPage && followed ? " followed" : "")}>
-                            {(rapprochements && nbRapprochements > 0) && <ButtonIcon icon="group" tooltipWidth={120} text={""+nbRapprochements}>
+                            {(rapprochements && nbRapprochements > 0) && <ButtonIcon element="a" icon="group" tooltipWidth={120} text={""+nbRapprochements}
+                                                                                     onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "possibilities"})}
+                                >
                                 {nbRapprochements} rapprochement{nbRapprochements > 1 ? "s" : ""}
                             </ButtonIcon>}
 

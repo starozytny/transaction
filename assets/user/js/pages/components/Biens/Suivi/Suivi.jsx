@@ -49,6 +49,7 @@ export class Suivi extends Component {
     }
 
     render () {
+        const { contextRapprochement } = this.props;
         const { elem, context, suivis, negotiators, allVisits, offers, rapprochements } = this.state;
 
         let content;
@@ -59,7 +60,7 @@ export class Suivi extends Component {
             case "rapprochements":
                 content = <Rapprochements ref={this.rapprochement} elem={elem} data={suivis} rapprochements={rapprochements}
                                           societyId={elem.agency.society.id} agencyId={elem.agency.id}
-                                          negotiators={negotiators} offers={offers}
+                                          negotiators={negotiators} offers={offers} context={contextRapprochement}
                                           onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
                 break;
             case "visites":

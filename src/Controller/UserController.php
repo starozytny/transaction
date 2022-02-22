@@ -148,7 +148,7 @@ class UserController extends AbstractController
             'filterNego' => $filterNego,
             'filterUser' => $filterUser,
             'st' => $status,
-            'rapprochements' => json_encode($rapprochements)
+            'rapprochements' => json_encode($rapprochements),
         ]);
     }
 
@@ -197,6 +197,8 @@ class UserController extends AbstractController
     private function bienData($type, Request $request, SerializerInterface $serializer, $slug, SearchService $searchService = null): Response
     {
         $em = $this->doctrine->getManager();
+        $contextRapp = $request->query->get('ctra');
+
         $obj     = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
         $tenants = $em->getRepository(ImTenant::class)->findBy(["bien" => $obj]);
         $photos  = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
@@ -239,7 +241,8 @@ class UserController extends AbstractController
                 'visits' => $visits,
                 'offers' => $offers,
                 'rapprochements' => $rapprochements,
-                'context' => $context
+                'context' => $context,
+                'ctRa' => $contextRapp ?: "tous"
         ]);
     }
 

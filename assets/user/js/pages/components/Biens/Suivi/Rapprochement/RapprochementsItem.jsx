@@ -107,7 +107,7 @@ export class RapprochementsItem extends Component {
                     </> : <>
                         <div className="footer-actions">
                             <div className="actions">
-                                <ButtonIcon icon="add-square" text="Ajouter à la liste" onClick={() => onSelectProspect(prospect)} />
+                                <ButtonIcon icon="add-square" text="Ajouter à la liste 'A traiter'" onClick={() => onSelectProspect(prospect)} />
                             </div>
                         </div>
                     </>}

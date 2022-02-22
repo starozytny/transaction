@@ -6,6 +6,7 @@ import Swal         from "sweetalert2";
 import SwalOptions  from "@commonComponents/functions/swalOptions";
 import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
+import { PageInfos2 }    from "@userComponents/Layout/Page";
 import { Aside }         from "@dashboardComponents/Tools/Aside";
 import { Alert }         from "@dashboardComponents/Tools/Alert";
 import { Button }        from "@dashboardComponents/Tools/Button";
@@ -20,7 +21,6 @@ import { Prospects }                from "@dashboardPages/components/Immo/Prospe
 import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offer/OfferForm";
 import { OfferFinalFormulaire }     from "@userPages/components/Biens/Suivi/Offer/OfferFinalForm";
 import { RapprochementsItem }       from "@userPages/components/Biens/Suivi/Rapprochement/RapprochementsItem";
-import {PageInfos2} from "@userComponents/Layout/Page";
 
 const URL_DELETE_OFFER = "api_offers_delete";
 const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
@@ -42,7 +42,7 @@ export class Rapprochements extends Component {
 
         this.state = {
             context: "list",
-            subContext: "tous",
+            subContext: props.context ? props.context : "tous",
             sorter: SORTER,
             loadDataProspects: false,
             allProspects: [],
