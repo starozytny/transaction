@@ -74,7 +74,7 @@ class PublishService
         $data = [
             $agency->getDirname(),
             $bien->getReference(),
-            $bien->getTypeAdString(),
+            $bien->getTypeAdSeloger(),
             $bien->getTypeBienString(),
             $localisation->getHideAddress() ? "" : $localisation->getZipcode(),        // 5
             $localisation->getHideAddress() ? "" : $localisation->getCity(),
@@ -93,7 +93,7 @@ class PublishService
             $number->getRoom(),
             $bien->getLibelle(),                // 20
             $advert->getContentFull(), //TODO: limit to 4k carac
-            $feature->getDispoAt()->format("d/m/Y"),
+            $feature->getDispoAt() ? $feature->getDispoAt()->format("d/m/Y") : "",
             $isLocation ? $financial->getChargesMensuelles() : "",
             $feature->getFloor(), //TODO: integer
             $feature->getNbFloor(),             // 25
@@ -187,7 +187,7 @@ class PublishService
             "",                                         // 110
             "",
             $mandat->getId(), // TODO : set numero auto
-            $mandat->getStartAt()->format("d/m/Y"),
+            $mandat->getStartAt() ? $mandat->getStartAt()->format("d/m/Y") : "",
             "", // TODO : add nom, prénom et raison sociale du mandataire
             "",
             "",
@@ -400,7 +400,7 @@ class PublishService
             "",
             "",
             "",
-            $diagnostic->getCreatedAtDpe()->format("d/m/Y"),
+            $diagnostic->getCreatedAtDpe() ? $diagnostic->getCreatedAtDpe()->format("d/m/Y") : "",
             $diagnostic->getBeforeJuly() ? "DPE_v01-2011" : "DPE_v07-2021",
             $diagnostic->getMinAnnual(),
             $diagnostic->getMaxAnnual(),

@@ -144,7 +144,7 @@ class DataEntity
 
     public function getCodeTypeBienString($value): string
     {
-        $data = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison"];
+        $data = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Inconnu"];
 
         return $data[$value];
     }

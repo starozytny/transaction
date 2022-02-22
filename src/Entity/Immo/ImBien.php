@@ -326,6 +326,11 @@ class ImBien extends DataEntity
         return $this->codeTypeAd;
     }
 
+    public function getTypeAdSeloger(): string
+    {
+        return mb_strtolower($this->getCodeTypeAdString($this->codeTypeAd));
+    }
+
     /**
      * @return string
      * @Groups({"user:read"})
@@ -340,6 +345,13 @@ class ImBien extends DataEntity
         $this->codeTypeAd = $codeTypeAd;
 
         return $this;
+    }
+
+    public function getTypeBienSeloger(): string
+    {
+        $data = ["Appartement", "maison", "parking/Box", "terrain", "boutique", "bureaux", "château", "immeuble", "maison/villa", "inconnu"];
+
+        return $data[$this->codeTypeBien];
     }
 
     /**

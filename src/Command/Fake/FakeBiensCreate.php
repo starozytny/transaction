@@ -123,7 +123,7 @@ class FakeBiensCreate extends Command
 
             $data = [
                 "codeTypeAd" => (string) $fake->numberBetween(0, 7),
-                "codeTypeBien" => (string) $fake->numberBetween(0, 8),
+                "codeTypeBien" => (string) $fake->numberBetween(0, 9),
                 "libelle" => $fake->name,
                 "negotiator" => $negotiator->getId(),
                 "areaTotal" => (string) $fake->randomFloat(2),
