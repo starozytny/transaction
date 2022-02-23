@@ -3,9 +3,8 @@ import React     from "react";
 import helper    from "@userPages/components/Biens/functions/helper";
 
 import { OwnersItem }  from "@dashboardPages/components/Immo/Owners/OwnersItem";
-import { TenantsItem } from "@dashboardPages/components/Immo/Tenants/TenantsItem";
 
-export function Contact({ elem, tenants }){
+export function Contact({ elem }){
     return (<div className="details-tab-infos">
         <div className="details-tab-infos-content">
             <div className="content contacts">
@@ -65,10 +64,6 @@ export function Contact({ elem, tenants }){
                                 </div>
                             </div>
                         </div>
-                        {tenants.length !== 0 ? tenants.map(el => {
-                            return <TenantsItem isReadBien={true} isClient={true} isFormBien={false} elem={el} tenants={[]} key={el.id} />
-                        }) : <div className="item">Aucun locataire</div>}
-
                     </div>
                 </div>
             </div>

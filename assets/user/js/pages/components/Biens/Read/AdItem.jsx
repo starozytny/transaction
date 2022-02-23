@@ -23,7 +23,6 @@ export class AdItem extends Component {
 
         this.state = {
             elem: JSON.parse(props.elem),
-            tenants: props.tenants ? JSON.parse(props.tenants) : [],
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
             suivis: props.suivis ? JSON.parse(props.suivis) : [],
@@ -39,7 +38,7 @@ export class AdItem extends Component {
     handleChangeContext = (context) => { this.setState({ context }) }
 
     render () {
-        const { elem, context, tenants, rooms, photos, suivis, allVisits } = this.state;
+        const { elem, context, rooms, photos, suivis, allVisits } = this.state;
 
         let content;
         switch (context){
@@ -53,7 +52,7 @@ export class AdItem extends Component {
                 content = <Rooms rooms={rooms} />
                 break;
             case "contact":
-                content = <Contact elem={elem} tenants={tenants} />
+                content = <Contact elem={elem} />
                 break;
             case "financial":
                 content = elem.codeTypeAd === 1 ? <Financial elem={elem} /> : <FinancialVente elem={elem} />

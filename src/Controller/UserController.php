@@ -154,7 +154,7 @@ class UserController extends AbstractController
     /**
      * Common return createBien and updateBien
      */
-    private function formBien(SerializerInterface $serializer, $route, $obj = null, $element = null, $tenants = "[]", $rooms = "[]", $photos="[]"): Response
+    private function formBien(SerializerInterface $serializer, $route, $obj = null, $element = null, $rooms = "[]", $photos="[]"): Response
     {
         $em = $this->doctrine->getManager();
 
@@ -178,7 +178,6 @@ class UserController extends AbstractController
 
         return $this->render($route, [
             'element' => $element,
-            'tenants' => $tenants,
             'rooms' => $rooms,
             'photos' => $photos,
             'negotiators' => $negotiators,
@@ -199,12 +198,10 @@ class UserController extends AbstractController
         $contextRapp = $request->query->get('ctra');
 
         $obj     = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
-        $tenants = $em->getRepository(ImTenant::class)->findBy(["bien" => $obj]);
         $photos  = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
         $rooms   = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
 
         $element = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
-        $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
         $photos  = $serializer->serialize($photos,  'json', ['groups' => User::USER_READ]);
         $rooms   = $serializer->serialize($rooms,   'json', ['groups' => User::USER_READ]);
 
@@ -228,11 +225,10 @@ class UserController extends AbstractController
         }
 
         return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',
-            $obj, $element, $tenants, $rooms, $photos)
+            $obj, $element, $rooms, $photos)
             : $this->render($type === "read" ? "user/pages/biens/read.html.twig" : "user/pages/biens/suivi.html.twig", [
                 'elem' => $obj,
                 'data' => $element,
-                'tenants' => $tenants,
                 'rooms' => $rooms,
                 'photos' => $photos,
                 'suivis' => $suivis,
