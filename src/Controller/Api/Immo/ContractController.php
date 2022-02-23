@@ -71,7 +71,7 @@ class ContractController extends AbstractController
             "zipcode" => $prospect->getZipcode(),
             "city" => $prospect->getCity(),
             "birthday" => $prospect->getBirthdayJavascript(),
-            "type" => ImBuyer::TYPE_BUYER,
+            "type" => $bien->getCodeTypeAd() == ImBien::AD_PDT_INVEST ? ImBuyer::TYPE_INVEST : ImBuyer::TYPE_BUYER,
             "country" => "France",
             "negotiator" => null
         ];
