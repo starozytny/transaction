@@ -68,10 +68,10 @@ export class AdCard extends Component {
             onLinkToProspect, publishes, toPublishes, onSelectPublish, suivis } = this.props;
 
         let items = [
-            {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
-            {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements"})} target="_blank">Liste des prospects</a>},
-            {data: <a href={Routing.generate("user_mails_send", {'dest': [el.owner ? el.owner.email : ""]})} target="_blank">Envoyer un mail</a>},
-            {data: <a href="/">Imprimer la fiche</a>}
+            {data: <a target="_blank" href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})}>Liste des visites</a>},
+            {data: <a target="_blank" href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements"})}>Liste des prospects</a>},
+            {data: <a target="_blank" href={Routing.generate("user_mails_send",  {'dest': [el.owner ? el.owner.email : ""]})}>Envoyer un mail</a>},
+            {data: <a target="_blank" href={Routing.generate("user_biens_print", {'slug': el.slug})}>Imprimer la fiche</a>}
         ]
 
         let itemsTrash = [

@@ -53,3 +53,41 @@ b{
 .header td{
     padding: 24px;
 }
+
+/*
+ --------------- AD print ----------
+ */
+
+.ad{
+    font-size: 14px;
+}
+
+.ad .line-1 .col-1,
+.ad .line-1 .col-2{
+    width: 50%;
+    float: left;
+}
+
+.ad-title{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.ad-price{
+    margin: 12px 0;
+    font-size: 16px;
+    color: #0808ad;
+    font-weight: bold;
+}
+
+.ad-reference{
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+.line-3,
+.line-2{
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid grey;
+}

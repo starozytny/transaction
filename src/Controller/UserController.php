@@ -24,6 +24,7 @@ use App\Entity\User;
 use App\Repository\Immo\ImNegotiatorRepository;
 use App\Repository\Immo\ImSettingsRepository;
 use App\Repository\Immo\ImSuiviRepository;
+use App\Service\FileCreator;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImBuyerRepository;
@@ -32,6 +33,8 @@ use App\Repository\Immo\ImProspectRepository;
 use App\Repository\Immo\ImTenantRepository;
 use App\Repository\UserRepository;
 use App\Service\Immo\SearchService;
+use Mpdf\Mpdf;
+use Mpdf\MpdfException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Repository\Agenda\AgEventRepository;
 use App\Service\Agenda\EventService;
@@ -271,6 +274,22 @@ class UserController extends AbstractController
     public function suiviBien(Request $request, $slug, SerializerInterface $serializer, SearchService $searchService): Response
     {
         return $this->bienData("suivi", $request, $serializer, $slug, $searchService);
+    }
+
+
+    /**
+     * @Route("/biens/bien/impression/{slug}", options={"expose"=true}, name="biens_print")
+     * @throws MpdfException
+     */
+    public function print(ImBien $obj, FileCreator $fileCreator): Mpdf
+    {
+        $path = $obj->getMainPhoto() ? $this->getParameter('images_directory') . $obj->getAgency()->getDirname() . "/" : $this->getParameter('public_directory');
+        $image =  $path . $obj->getMainPhotoFile() ;
+
+        return $fileCreator->createPDF("test", "test.pdf", "user/pdf/bien.html.twig", [
+            'elem' => $obj,
+            'image' => $image
+        ]);
     }
 
     /**

@@ -17,7 +17,6 @@ use App\Entity\Immo\ImMandat;
 use App\Entity\Immo\ImNumber;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImPublish;
-use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImSupport;
 use App\Entity\User;
 use App\Service\ApiResponse;
