@@ -3,9 +3,12 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImContract;
+use App\Entity\Immo\ImContractant;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSuivi;
+use App\Entity\Immo\ImTenant;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\ValidatorService;
@@ -54,8 +57,46 @@ class ContractController extends AbstractController
 
         $prospect = $em->getRepository(ImProspect::class)->find($data->prospect->id);
 
+        $dataPerson = [
+            "agency" => $bien->getAgency()->getId(),
+            "lastname" => $prospect->getLastname(),
+            "firstname" => $prospect->getFirstname(),
+            "civility" => $prospect->getCivility(),
+            "email" => $prospect->getEmail(),
+            "phone1" => $prospect->getPhone1(),
+            "phone2" => $prospect->getPhone2(),
+            "phone3" => $prospect->getPhone3(),
+            "address" => $prospect->getAddress(),
+            "complement" => $prospect->getComplement(),
+            "zipcode" => $prospect->getZipcode(),
+            "city" => $prospect->getCity(),
+            "birthday" => $prospect->getBirthdayJavascript(),
+            "type" => ImBuyer::TYPE_BUYER,
+            "country" => "France",
+            "negotiator" => null
+        ];
+
+        $dataPerson = json_decode(json_encode($dataPerson));
+
+        $contractant = (new ImContractant())
+            ->setContract($obj)
+            ->setOwner($bien->getOwner())
+        ;
+
+        if($bien->getCodeTypeAd() == ImBien::AD_LOCATION || $bien->getCodeTypeAd() == ImBien::AD_LOCATION_VAC){
+            $tenant = $dataEntity->setDataTenant(new ImTenant(), $dataPerson);
+            $em->persist($tenant);
+
+            $contractant->setTenant($tenant);
+        }else{
+            $buyer = $dataEntity->setDataBuyer(new ImBuyer(), $dataPerson);
+            $em->persist($buyer);
+
+            $contractant->setBuyer($buyer);
+        }
+
         $noErrors = $validator->validate($obj);
-        if ($noErrors !== true) {
+        if ($noErrors != true) {
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
         }
 
@@ -63,6 +104,7 @@ class ContractController extends AbstractController
             $suivi->setStatus(ImSuivi::STATUS_END);
         }
 
+        $em->persist($contractant);
         $em->persist($obj);
         $em->flush();
 
@@ -82,7 +124,7 @@ class ContractController extends AbstractController
      *     description="JSON empty or missing data or validation failed",
      * )
      *
-     * @OA\Tag(name="Offers")
+     * @OA\Tag(name="Contracts")
      *
      * @param Request $request
      * @param SerializerInterface $serializer
@@ -113,7 +155,7 @@ class ContractController extends AbstractController
      *     description="Validation failed",
      * )
      *
-     * @OA\Tag(name="Offers")
+     * @OA\Tag(name="Contracts")
      *
      * @param Request $request
      * @param SerializerInterface $serializer

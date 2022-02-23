@@ -25,7 +25,6 @@ class ImContractant
 
     /**
      * @ORM\ManyToOne(targetEntity=ImOwner::class, inversedBy="contractants")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $owner;
 

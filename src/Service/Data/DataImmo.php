@@ -541,7 +541,10 @@ class DataImmo extends DataConstructor
         if(!$agency){
             throw new Exception("Agence introuvable.");
         }
-        $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+        $negotiator = null;
+        if($data->negotiator){
+            $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+        }
 
         $civility = (int) $data->civility;
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
@@ -627,7 +630,10 @@ class DataImmo extends DataConstructor
         if(!$agency){
             throw new Exception("Agence introuvable.");
         }
-        $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+        $negotiator = null;
+        if($data->negotiator){
+            $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+        }
 
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
         $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
