@@ -207,11 +207,6 @@ class ImBien extends DataEntity
     private $mainPhoto;
 
     /**
-     * @ORM\OneToMany(targetEntity=ImTenant::class, mappedBy="bien")
-     */
-    private $tenants;
-
-    /**
      * @ORM\OneToOne(targetEntity=ImConfidential::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"user:read"})
@@ -289,7 +284,6 @@ class ImBien extends DataEntity
     {
         $this->createdAt = $this->initNewDate();
         $this->photos = new ArrayCollection();
-        $this->tenants = new ArrayCollection();
         $this->visits = new ArrayCollection();
         $this->rooms = new ArrayCollection();
         $this->suivis = new ArrayCollection();
@@ -695,36 +689,6 @@ class ImBien extends DataEntity
     public function setMainPhoto(?ImPhoto $mainPhoto): self
     {
         $this->mainPhoto = $mainPhoto;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ImTenant[]
-     */
-    public function getTenants(): Collection
-    {
-        return $this->tenants;
-    }
-
-    public function addTenant(ImTenant $tenant): self
-    {
-        if (!$this->tenants->contains($tenant)) {
-            $this->tenants[] = $tenant;
-            $tenant->setBien($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTenant(ImTenant $tenant): self
-    {
-        if ($this->tenants->removeElement($tenant)) {
-            // set the owning side to null (unless already changed)
-            if ($tenant->getBien() === $this) {
-                $tenant->setBien(null);
-            }
-        }
 
         return $this;
     }

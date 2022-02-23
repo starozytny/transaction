@@ -22,7 +22,7 @@ function getItemsSelect (data, noDuplication, el, pref, typeValue = "id") {
 
 export class BiensList extends Component {
     render () {
-        const { dataFilters, pageStatus, data, onDelete, filters, onGetFilters, tenants, rapprochements, onUpdateList,
+        const { dataFilters, pageStatus, data, onDelete, filters, onGetFilters, rapprochements, onUpdateList,
             sorters, onSorter, currentPage, perPage, onPerPage, taille, onPaginationClick, suivis } = this.props;
 
         let items = [], owners = [], negotiators = [], users = [], noDuplicateOwners = [], noDuplicateNegotiators = [], noDuplicateUsers = [];
@@ -42,8 +42,7 @@ export class BiensList extends Component {
                             <span>Filtres :</span>
                         </div>
                         <div className="content-col-1">
-                            <Filter data={dataFilters} onGetFilters={onGetFilters} filters={filters}
-                                    tenants={tenants} owners={owners} negotiators={negotiators} users={users}/>
+                            <Filter data={dataFilters} onGetFilters={onGetFilters} filters={filters} owners={owners} negotiators={negotiators} users={users}/>
                         </div>
                     </div>
                 </div>

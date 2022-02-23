@@ -31,9 +31,8 @@ export class Filter extends Component {
             filtersBien: props.filters[1],
             filtersMandat: props.filters[2],
             filterOwner: props.filters[3],
-            filterTenant: props.filters[4],
-            filterNego: props.filters[5],
-            filterUser: props.filters[6],
+            filterNego: props.filters[4],
+            filterUser: props.filters[5],
         }
 
         this.handleFilter = this.handleFilter.bind(this);
@@ -41,13 +40,12 @@ export class Filter extends Component {
     }
 
     handleFilter = (type, value) => {
-        const { filtersAd, filtersBien, filtersMandat, filterOwner, filterTenant, filterNego, filterUser } = this.state;
+        const { filtersAd, filtersBien, filtersMandat, filterOwner, filterNego, filterUser } = this.state;
 
         let nFiltersAd = filtersAd;
         let nFiltersBien = filtersBien;
         let nFiltersMandat = filtersMandat;
         let nFilterOwner = filterOwner;
-        let nFilterTenant = filterTenant;
         let nFilterNego = filterNego;
         let nFilterUser = filterUser;
 
@@ -57,9 +55,6 @@ export class Filter extends Component {
                 break;
             case "filterNego":
                 nFilterNego = value;
-                break;
-            case "filterTenant":
-                nFilterTenant = value;
                 break;
             case "filterOwner":
                 nFilterOwner = value;
@@ -76,8 +71,8 @@ export class Filter extends Component {
         }
 
         this.setState({ filtersAd: nFiltersAd, filtersBien: nFiltersBien, filtersMandat: nFiltersMandat,
-            filterOwner: nFilterOwner, filterTenant: nFilterTenant, filterNego: nFilterNego, filterUser: nFilterUser });
-        this.props.onGetFilters([nFiltersAd, nFiltersBien, nFiltersMandat, nFilterOwner, nFilterTenant, nFilterNego, nFilterUser])
+            filterOwner: nFilterOwner, filterNego: nFilterNego, filterUser: nFilterUser });
+        this.props.onGetFilters([nFiltersAd, nFiltersBien, nFiltersMandat, nFilterOwner, nFilterNego, nFilterUser])
     }
 
     handleChange = (e) => { this.handleFilter(e.currentTarget.name, e.currentTarget.value); }
@@ -87,17 +82,12 @@ export class Filter extends Component {
     }
 
     render () {
-        const { data, owners, negotiators, tenants, users } = this.props;
-        const { filtersAd, filtersBien, filtersMandat, filterOwner, filterTenant, filterNego, filterUser } = this.state;
+        const { data, owners, negotiators, users } = this.props;
+        const { filtersAd, filtersBien, filtersMandat, filterOwner, filterNego, filterUser } = this.state;
 
         let itemsFiltersAd = helper.getItems("ads");
         let itemsFiltersBien = helper.getItems("biens");
         let itemsFiltersMandat = helper.getItems("mandats");
-
-        let itemsTenants = [];
-        tenants.forEach(elem => {
-            itemsTenants.push({ value: elem.bien.id, label: elem.fullname, identifiant: "tenant-" + elem.id })
-        })
 
         return <div className="filters">
             <ItemFilter type="codeTypeAd"     title="Annonce"      itemsFilters={itemsFiltersAd}     filters={filtersAd} onFilter={this.handleFilter} data={data}/>
@@ -106,7 +96,6 @@ export class Filter extends Component {
 
             <ItemFilterSelectize title="Négociateur"    items={negotiators}  identifiant="filterNego" valeur={filterNego} onChangeSelect={this.handleChangeSelect} />
             <ItemFilterSelectize title="Propriétaire"   items={owners}       identifiant="filterOwner" valeur={filterOwner} onChangeSelect={this.handleChangeSelect} />
-            <ItemFilterSelectize title="Locataire"      items={itemsTenants} identifiant="filterTenant" valeur={filterTenant} onChangeSelect={this.handleChangeSelect} />
             <ItemFilterSelectize title="Utilisateur"    items={users}        identifiant="filterUser" valeur={filterUser} onChangeSelect={this.handleChangeSelect} />
         </div>
     }

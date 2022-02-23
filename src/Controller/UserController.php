@@ -117,12 +117,11 @@ class UserController extends AbstractController
     /**
      * @Route("/biens", options={"expose"=true}, name="biens")
      */
-    public function biens(Request $request, ImBienRepository $repository, ImTenantRepository $tenantRepository,
-                          ImSuiviRepository $suiviRepository, SerializerInterface $serializer, SearchService $searchService): Response
+    public function biens(Request $request, ImBienRepository $repository, ImSuiviRepository $suiviRepository,
+                          SerializerInterface $serializer, SearchService $searchService): Response
     {
         $status = $request->query->get('st');
         $filterOwner = $request->query->get('fo');
-        $filterTenant = $request->query->get('ft');
         $filterNego = $request->query->get('fn');
         $filterUser = $request->query->get('fu');
 
@@ -136,18 +135,14 @@ class UserController extends AbstractController
         }
 
         $rapprochements = $searchService->getRapprochementBySearchs($objs);
-        $tenants = $tenantRepository->findBy(['bien' => $objs]);
         $suivis  = $suiviRepository->findByStatusProcessAndBiens($objs);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
-        $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
         $suivis  = $serializer->serialize($suivis, 'json', ['groups' => ImSuivi::SUIVI_READ]);
 
         return $this->render('user/pages/biens/index.html.twig', [
             'data' => $objs,
-            'tenants' => $tenants,
             'filterOwner' => $filterOwner,
-            'filterTenant' => $filterTenant,
             'filterNego' => $filterNego,
             'filterUser' => $filterUser,
             'st' => $status,

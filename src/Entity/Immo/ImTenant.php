@@ -100,12 +100,6 @@ class ImTenant extends DataEntity
     private $birthday;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="tenants")
-     * @Groups({"admin:read", "user:read"})
-     */
-    private $bien;
-
-    /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="tenants")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"admin:read", "user:read"})
@@ -308,18 +302,6 @@ class ImTenant extends DataEntity
     public function setBirthday(?\DateTimeInterface $birthday): self
     {
         $this->birthday = $birthday;
-
-        return $this;
-    }
-
-    public function getBien(): ?ImBien
-    {
-        return $this->bien;
-    }
-
-    public function setBien(?ImBien $bien): self
-    {
-        $this->bien = $bien;
 
         return $this;
     }

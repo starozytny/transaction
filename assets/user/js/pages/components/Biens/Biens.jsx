@@ -38,11 +38,6 @@ function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
                         newTable.push(el)
                     }
                     break;
-                case "tenant":
-                    if(el.id === initTab){
-                        newTable.push(el)
-                    }
-                    break;
                 default:
                     if(comparateur && comparateur.id === initTab){
                         newTable.push(el)
@@ -59,15 +54,14 @@ function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
 }
 
 function filterFunction(dataImmuable, filters){
-    let newData = [], newData1 = [], newData2 = [], newData3 = [], newData4 = [], newData5 = [], newData6 = [];
+    let newData = [], newData1 = [], newData2 = [], newData3 = [], newData4 = [], newData5 = [];
 
     let filtersAd = filters[0];
     let filtersBien = filters[1];
     let filtersMandat = filters[2];
     let filterOwner = filters[3];
-    let filterTenant = filters[4];
-    let filterNego = filters[5];
-    let filterUser = filters[6];
+    let filterNego = filters[4];
+    let filterUser = filters[5];
 
     if(filters.length === 0) {
         newData = dataImmuable
@@ -85,16 +79,13 @@ function filterFunction(dataImmuable, filters){
             newData3 = setNewTab("select", filterOwner, el, el.owner, newData3, "owner")
         })
         newData3.forEach(el => {
-            newData4 = setNewTab("select", filterTenant, el, el.tenants, newData4, "tenant")
+            newData4 = setNewTab("select", filterNego, el, el.negotiator, newData4, "nego")
         })
         newData4.forEach(el => {
-            newData5 = setNewTab("select", filterNego, el, el.negotiator, newData5, "nego")
-        })
-        newData5.forEach(el => {
-            newData6 = setNewTab("select", filterUser, el, el.user, newData6, "user")
+            newData5 = setNewTab("select", filterUser, el, el.user, newData5, "user")
         })
 
-        newData = newData6
+        newData = newData5
     }
 
     return newData;
@@ -121,7 +112,6 @@ export class Biens extends Component {
                 [],
                 [], //type mandat
                 props.filterOwner ? parseInt(props.filterOwner) : "", //owner
-                props.filterTenant ? parseInt(props.filterTenant) : "", //tenant - value == bienId
                 props.filterNego ? parseInt(props.filterNego) : "", //negotiator
                 props.filterUser ? props.filterUser : "", //utilisateur
             ]
@@ -173,7 +163,6 @@ export class Biens extends Component {
                           sorters={sorters}
                           onSorter={this.handleSorter}
                           //data
-                          tenants={JSON.parse(this.props.tenants)}
                           pageStatus={this.props.pageStatus !== "" ? parseInt(this.props.pageStatus) : false}
                           onUpdateList={this.handleUpdateList}
                           dataFilters={data}
