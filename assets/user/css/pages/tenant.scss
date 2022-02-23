@@ -2,3 +2,11 @@
 @import "~react-selectize/dist/index.min.css";
 
 @include toolbarFilterSearch();
+
+.toolbar{
+  .filter-search{
+    .search{
+      width: 100%;
+    }
+  }
+}
