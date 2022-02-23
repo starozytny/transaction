@@ -280,6 +280,11 @@ class ImBien extends DataEntity
      */
     private $updatedBy;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImContract::class, mappedBy="bien")
+     */
+    private $contracts;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -290,6 +295,7 @@ class ImBien extends DataEntity
         $this->suivis = new ArrayCollection();
         $this->offers = new ArrayCollection();
         $this->publishes = new ArrayCollection();
+        $this->contracts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -942,6 +948,36 @@ class ImBien extends DataEntity
             // set the owning side to null (unless already changed)
             if ($publish->getBien() === $this) {
                 $publish->setBien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImContract[]
+     */
+    public function getContracts(): Collection
+    {
+        return $this->contracts;
+    }
+
+    public function addContract(ImContract $contract): self
+    {
+        if (!$this->contracts->contains($contract)) {
+            $this->contracts[] = $contract;
+            $contract->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContract(ImContract $contract): self
+    {
+        if ($this->contracts->removeElement($contract)) {
+            // set the owning side to null (unless already changed)
+            if ($contract->getBien() === $this) {
+                $contract->setBien(null);
             }
         }
 
