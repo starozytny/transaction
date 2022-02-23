@@ -12,7 +12,7 @@ import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/Ne
 
 export class TenantsItem extends Component {
     render () {
-        const { isReadBien=false, isClient, isFormBien, tenants, elem,
+        const { isClient, isFormBien, tenants, elem,
             onDelete, onSelectors, onChangeContext, onSelectTenant } = this.props;
 
         let active = false;
@@ -30,7 +30,7 @@ export class TenantsItem extends Component {
 
             <div className="item-content">
                 <div className="item-body">
-                    <div className={"infos infos-col-" + ((isReadBien || isFormBien) ? "3" : "4")}>
+                    <div className={"infos infos-col-" + (isFormBien ? "3" : "4")}>
                         <div className="col-1" onClick={onSelectTenant ? () => onSelectTenant(elem) : null}>
                             <UtMainInfos elem={elem} isClient={isClient} />
                         </div>
@@ -40,15 +40,11 @@ export class TenantsItem extends Component {
                         <div className={isFormBien ? "col-2" : "col-3"} onClick={onSelectTenant ? () => onSelectTenant(elem) : null}>
                             <NegotiatorBubble elem={elem.negotiator} />
                         </div>
-                        {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
-                            {(elem.bien && !isFormBien) &&
-                                <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'ft': elem.bien.id})}>
-                                    Bien
-                                </ButtonIcon>}
+                        <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
                             <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "tenant")}>Autres</ButtonIconDropdown>
-                        </div>}
+                        </div>
                     </div>
                 </div>
             </div>
