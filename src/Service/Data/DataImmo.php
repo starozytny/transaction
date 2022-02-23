@@ -10,6 +10,7 @@ use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImConfidential;
+use App\Entity\Immo\ImContract;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
@@ -715,6 +716,19 @@ class DataImmo extends DataConstructor
             ->setFtpPassword($this->sanitizeData->trimData($data->ftpPassword))
             ->setMaxPhotos($this->setToZeroEmpty($data->maxPhotos))
             ->setFilename($this->sanitizeData->trimData($data->filename))
+        ;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setDataContract(ImContract $obj, $data, ImBien $bien): ImContract
+    {
+        return ($obj)
+            ->setBien($bien)
+            ->setSellAt($this->sanitizeData->createDate($data->sellAt))
+            ->setSellBy($this->setToZeroEmpty($data->sellBy))
+            ->setSellWhy($this->setToZeroEmpty($data->sellWhy))
         ;
     }
 }
