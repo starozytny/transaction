@@ -74,6 +74,9 @@ export class Rapprochements extends Component {
             case "final-offer":
                 this.aside.current.handleOpen("Finaliser l'offre de " + element.fullname);
                 break;
+            case "accept-offer":
+                this.aside.current.handleOpen("Accepter l'offre de " + element.fullname);
+                break;
             case "update-offer":
                 this.aside.current.handleOpen("Modifier l'offre de " + element.fullname);
                 break;
@@ -209,6 +212,9 @@ export class Rapprochements extends Component {
         let contentAside;
         switch (context) {
             case "final-offer":
+                contentAside = <div>Finaliser</div>;
+                break
+            case "accept-offer":
                 contentAside = <OfferFinalFormulaire type="update" element={offer}
                                                     onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
                 break
@@ -241,7 +247,7 @@ export class Rapprochements extends Component {
             { value: 'tous',            label: 'Tous' },
             { value: 'possibilities',   label: 'Possibilités' },
             { value: 'processing',      label: 'A traiter/En cours' },
-            { value: 'ending',          label: 'Finalisés' },
+            { value: 'ending',          label: 'Traités' },
         ]
 
         let pageInfosActions = <>

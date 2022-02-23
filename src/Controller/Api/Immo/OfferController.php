@@ -237,7 +237,7 @@ class OfferController extends AbstractController
         }
 
         if($suivi = $this->getSuivi($obj->getBien(), $obj->getProspect())){
-            $suivi->setStatus(ImSuivi::STATUS_END);
+            $suivi->setStatus(ImSuivi::STATUS_PROCESSING);
         }
 
         $em->persist($obj);

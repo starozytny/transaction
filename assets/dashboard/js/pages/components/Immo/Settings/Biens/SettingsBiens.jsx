@@ -28,7 +28,7 @@ export class SettingsBiens extends Component {
         let menu = [
             { value: "quartier",  label: "Quartiers" },
             { value: "sol",       label: "Sols" },
-            { value: "sous-type", label: "Sous types de biens" },
+            // { value: "sous-type", label: "Sous types de biens" },
         ];
 
         let content;

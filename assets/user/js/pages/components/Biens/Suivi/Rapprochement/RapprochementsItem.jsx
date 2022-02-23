@@ -94,13 +94,16 @@ export class RapprochementsItem extends Component {
                             <div className="actions">
                                 {!offer && <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />}
                                 {(offer && offer.status === STATUS_PROPAL) && <>
-                                    <ButtonIcon icon="check" text="Accepter" onClick={() => onChangeContext("final-offer", prospect, offer)} />
+                                    <ButtonIcon icon="check" text="Accepter" onClick={() => onChangeContext("accept-offer", prospect, offer)} />
                                     <ButtonIcon icon="cancel" text="Refuser" onClick={() => onSwitchStatusOffer(offer, STATUS_REFUSE)} />
                                     <ButtonIcon icon="receipt-edit" text="Modifier" onClick={() => onChangeContext("update-offer", prospect, offer)} />
                                     <ButtonIcon icon="trash" text="Supprimer" onClick={() => onDeleteOffer(offer)}/>
                                 </>}
                                 {(offer && offer.status !== STATUS_PROPAL) && <>
                                     <ButtonIcon icon="cancel" text="Rétablir l'offre" onClick={() => onSwitchStatusOffer(offer, STATUS_PROPAL)} />
+                                </>}
+                                {(offer && offer.status === STATUS_ACCEPT) && <>
+                                    <ButtonIcon icon="flag" text="Finaliser l'offre" onClick={() => onChangeContext("final-offer", prospect, offer)} />
                                 </>}
                             </div>
                         </div>
