@@ -24,6 +24,11 @@ export class OwnersItem extends Component {
             })
         }
 
+        let actions = Actions.getDefaultAction(isClient, elem, "owner");
+        actions = actions.concat([
+            {data: <a target="_blank" href={Routing.generate('user_printer_owner')}>Imprimer sa fiche</a>},
+        ])
+
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
             {isFormBien && <div className="selector" onClick={onSelectOwner ? () => onSelectOwner(elem) : null}>
@@ -55,7 +60,7 @@ export class OwnersItem extends Component {
                                 <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
                             </>}
-                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "owner")}>Autres</ButtonIconDropdown>
+                            <ButtonIconDropdown icon="dropdown" items={actions}>Autres</ButtonIconDropdown>
                         </div>}
                     </div>
                 </div>
