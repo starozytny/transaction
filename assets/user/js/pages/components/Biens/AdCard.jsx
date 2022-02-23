@@ -88,20 +88,22 @@ export class AdCard extends Component {
             })
         }
 
-        let nbRapprochements = 0;
-        if(rapprochements){
-            rapprochements.forEach(ra => {
-                if(el.id === ra.bien){
-                    nbRapprochements++;
-                }
-            })
-        }
-
+        let inSuivis = [];
         let nbSuivis = 0;
         if(suivis){
             suivis.forEach(su => {
                 if(el.id === su.bien.id){
                     nbSuivis++;
+                    inSuivis.push(su.prospect.id)
+                }
+            })
+        }
+
+        let nbRapprochements = 0;
+        if(rapprochements){
+            rapprochements.forEach(ra => {
+                if(el.id === ra.bien && !inSuivis.includes(ra.prospect)){
+                    nbRapprochements++;
                 }
             })
         }
@@ -187,10 +189,15 @@ export class AdCard extends Component {
                             Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par " + el.updatedBy)}
                         </div> : <div className="createdAt" />}
                         <div className={"actions" + (isProspectPage && followed ? " followed" : "")}>
-                            {(rapprochements && nbRapprochements > 0) && <ButtonIcon element="a" icon="group" tooltipWidth={120} text={""+nbRapprochements}
+                            {(rapprochements && nbRapprochements > 0) && <ButtonIcon element="a" icon="group" tooltipWidth={160} text={""+nbRapprochements}
                                                                                      onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "possibilities"})}
                                 >
-                                {nbRapprochements} rapprochement{nbRapprochements > 1 ? "s" : ""}
+                                {nbRapprochements} rapprochement{nbRapprochements > 1 ? "s" : ""} possible{nbRapprochements > 1 ? "s" : ""}
+                            </ButtonIcon>}
+                            {(suivis && nbSuivis > 0) && <ButtonIcon element="a" icon="group" tooltipWidth={120} text={""+nbSuivis}
+                                                                     onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "tous"})}
+                            >
+                                {nbSuivis} rapprochement{nbSuivis > 1 ? "s" : ""}
                             </ButtonIcon>}
 
                             {isProspectPage && <ButtonIcon icon="star" tooltipWidth={90} onClick={() => onLinkToProspect(el)}>
