@@ -21,7 +21,6 @@ use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImPublish;
 use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImSuivi;
-use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
 use App\Entity\User;
@@ -76,13 +75,6 @@ class FakeBiensCreate extends Command
         $users = $this->em->getRepository(User::class)->findBy(['society' => $society]);
         $nbUsers = count($users);
         $owners = $this->em->getRepository(ImOwner::class)->findBy(['society' => $society]);
-        $tenants = $this->em->getRepository(ImTenant::class)->findBy(['agency' => $agencies]);
-
-        foreach($tenants as $tenant){
-            $tenant->setBien(null);
-        }
-
-        $this->em->flush();
 
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
@@ -270,30 +262,6 @@ class FakeBiensCreate extends Command
             $owner = null;
             if(count($choicesOwners) > 0){
                 $owner = $choicesOwners[$fake->numberBetween(0,count($choicesOwners) - 1)];
-            }
-
-            $choicesTenants = [];
-            foreach($tenants as $te){
-                if($te->getAgency()->getId() == $user->getAgency()->getId()){
-                    $choicesTenants[] = $te;
-                }
-            }
-
-            if($fake->numberBetween(0,1) == 1 && count($choicesTenants) > 0){
-                shuffle($choicesTenants);
-
-                $limit = $fake->numberBetween(0, count($choicesTenants) - 1);
-
-                $finalTenants = [];
-                if($limit > 0){
-                    for($j = 0 ; $j < $limit ; $j++){
-                        $finalTenants[] = $choicesTenants[$j];
-                    }
-                }
-
-                foreach ($finalTenants as $te){
-                    $obj->addTenant($te);
-                }
             }
 
             $obj = ($obj)
