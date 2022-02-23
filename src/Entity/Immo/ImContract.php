@@ -7,6 +7,7 @@ use App\Repository\Immo\ImContractRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImContractRepository::class)
@@ -35,26 +36,31 @@ class ImContract extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"contract:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"contract:read"})
      */
     private $status = self::STATUS_PROCESSING;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"contract:read"})
      */
     private $sellAt;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"contract:read"})
      */
     private $sellBy = self::BY_AGENCY;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"contract:read"})
      */
     private $sellWhy =self::WHY_SELL;
 
@@ -71,6 +77,7 @@ class ImContract extends DataEntity
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"contract:read"})
      */
     private $createdAt;
 
@@ -192,20 +199,6 @@ class ImContract extends DataEntity
         return $this;
     }
 
-    public function getSellByString(): string
-    {
-        $values = ["Inconnu", "Agence", "Propriétaire", "Concurrence"];
-
-        return $values[$this->sellBy];
-    }
-
-    public function getSellWhyString(): string
-    {
-        $values = ["Inconnu", "Offre achat", "Compromis", "Vendu", "Annulé", "Suspendu"];
-
-        return $values[$this->sellWhy];
-    }
-
     /**
      * @return Collection|ImContractant[]
      */
@@ -234,5 +227,36 @@ class ImContract extends DataEntity
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"contract:read"})
+     */
+    public function getSellByString(): string
+    {
+        $values = ["Inconnu", "Agence", "Propriétaire", "Concurrence"];
+
+        return $values[$this->sellBy];
+    }
+
+    /**
+     * @return string
+     * @Groups({"contract:read"})
+     */
+    public function getSellWhyString(): string
+    {
+        $values = ["Inconnu", "Offre achat", "Compromis", "Vendu", "Annulé", "Suspendu"];
+
+        return $values[$this->sellWhy];
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"contract:read"})
+     */
+    public function getSellAtJavascript(): ?string
+    {
+        return $this->setDateJavascript($this->sellAt);
     }
 }

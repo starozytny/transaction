@@ -21,6 +21,7 @@ import { Prospects }                from "@dashboardPages/components/Immo/Prospe
 import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offer/OfferForm";
 import { OfferFinalFormulaire }     from "@userPages/components/Biens/Suivi/Offer/OfferFinalForm";
 import { RapprochementsItem }       from "@userPages/components/Biens/Suivi/Rapprochement/RapprochementsItem";
+import { ContractFormulaire }       from "@userPages/components/Biens/Suivi/Contract/ContractForm";
 
 const URL_DELETE_OFFER = "api_offers_delete";
 const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
@@ -212,7 +213,8 @@ export class Rapprochements extends Component {
         let contentAside;
         switch (context) {
             case "final-offer":
-                contentAside = <div>Finaliser</div>;
+                contentAside = <ContractFormulaire type="create" bien={elem} prospect={element}
+                                                   onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
                 break
             case "accept-offer":
                 contentAside = <OfferFinalFormulaire type="update" element={offer}
