@@ -1,4 +1,4 @@
 @import "../vars/vars";
 @import "~react-selectize/dist/index.min.css";
 
-@include toolbarCreateFilterSearch(208);
+@include toolbarFilterSearch();

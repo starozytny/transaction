@@ -70,6 +70,17 @@
   }
 }
 
+@mixin toolbarFilterSearch(){
+  @media (min-width:768px) {
+    .toolbar{
+      .filter-search{
+        width: 100%;
+        margin-left: 0;
+      }
+    }
+  }
+}
+
 @mixin avatar($taille) {
   width: #{$taille}px; height: #{$taille}px;
   border-radius: 300px;

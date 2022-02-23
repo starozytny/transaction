@@ -49,9 +49,9 @@ export class BuyersList extends Component {
         return <>
             <div>
                 <div className="toolbar">
-                    <div className="item create">
+                    {!isClient && <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter un acquéreur</Button>
-                    </div>
+                    </div>}
 
                     <div className="item filter-search">
                         <FilterMultiple ref={this.filterMultiple} data={dataImmuable} onGetFilters={onGetFilters} filters={filters}

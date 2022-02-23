@@ -23,9 +23,9 @@ export class TenantsList extends Component {
         return <>
             <div>
                 <div className="toolbar">
-                    <div className="item create">
+                    {!isClient && <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter un locataire</Button>
-                    </div>
+                    </div>}
                     <div className="item filter-search">
                         <Search onSearch={onSearch} placeholder="Recherche par nom, prénom.."/>
                     </div>
