@@ -104,9 +104,9 @@ class FakeBiensCreate extends Command
 
         $answers = [0,1,99];
 
-        $io->title('Création de 1000 biens fake');
+        $io->title('Création de 500 biens fake');
         $fake = Factory::create();
-        for($i=0; $i<1000 ; $i++) {
+        for($i=0; $i<500 ; $i++) {
             $negotiator = $negotiators[$fake->numberBetween(0,$nbNegotiators - 1)];
             $user = $users[$fake->numberBetween(0,$nbUsers - 1)];
 
