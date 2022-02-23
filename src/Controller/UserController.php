@@ -23,6 +23,7 @@ use App\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Repository\Immo\ImNegotiatorRepository;
 use App\Repository\Immo\ImSettingsRepository;
+use App\Repository\Immo\ImSuiviRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImBuyerRepository;
@@ -117,7 +118,7 @@ class UserController extends AbstractController
      * @Route("/biens", options={"expose"=true}, name="biens")
      */
     public function biens(Request $request, ImBienRepository $repository, ImTenantRepository $tenantRepository,
-                          SerializerInterface $serializer, SearchService $searchService): Response
+                          ImSuiviRepository $suiviRepository, SerializerInterface $serializer, SearchService $searchService): Response
     {
         $status = $request->query->get('st');
         $filterOwner = $request->query->get('fo');
@@ -136,9 +137,11 @@ class UserController extends AbstractController
 
         $rapprochements = $searchService->getRapprochementBySearchs($objs);
         $tenants = $tenantRepository->findBy(['bien' => $objs]);
+        $suivis  = $suiviRepository->findByStatusProcessAndBiens($objs);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
         $tenants = $serializer->serialize($tenants, 'json', ['groups' => User::ADMIN_READ]);
+        $suivis  = $serializer->serialize($suivis, 'json', ['groups' => ImSuivi::SUIVI_READ]);
 
         return $this->render('user/pages/biens/index.html.twig', [
             'data' => $objs,
@@ -149,6 +152,7 @@ class UserController extends AbstractController
             'filterUser' => $filterUser,
             'st' => $status,
             'rapprochements' => json_encode($rapprochements),
+            'suivis' => $suivis,
         ]);
     }
 

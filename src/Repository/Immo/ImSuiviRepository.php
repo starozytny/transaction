@@ -19,6 +19,22 @@ class ImSuiviRepository extends ServiceEntityRepository
         parent::__construct($registry, ImSuivi::class);
     }
 
+     /**
+      * @return ImSuivi[] Returns an array of ImSuivi objects
+      */
+    public function findByStatusProcessAndBiens(array $biens): array
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('b.id IN (:biens) AND (i.status = :st1 OR i.status = :st2)')
+            ->leftJoin('i.bien', 'b')
+            ->setParameter('biens', $biens)
+            ->setParameter('st1', ImSuivi::STATUS_TO_PROCESS)
+            ->setParameter('st2', ImSuivi::STATUS_PROCESSING)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return ImSuivi[] Returns an array of ImSuivi objects
     //  */

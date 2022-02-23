@@ -65,7 +65,7 @@ export class AdCard extends Component {
 
     render () {
         const { isPublishePage=false, isOwnerPage=false, isProspectPage=false, rapprochements, follows, el, onDelete,
-            onLinkToProspect, publishes, toPublishes, onSelectPublish } = this.props;
+            onLinkToProspect, publishes, toPublishes, onSelectPublish, suivis } = this.props;
 
         let items = [
             {data: <a href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})} target="_blank">Liste des visites</a>},
@@ -82,7 +82,7 @@ export class AdCard extends Component {
         let followed = false;
         if(isProspectPage){
             follows.forEach(follow => {
-                if(follow.bien.id === el.id){
+                if(el.id === follow.bien.id){
                     followed = true;
                 }
             })
@@ -93,6 +93,15 @@ export class AdCard extends Component {
             rapprochements.forEach(ra => {
                 if(el.id === ra.bien){
                     nbRapprochements++;
+                }
+            })
+        }
+
+        let nbSuivis = 0;
+        if(suivis){
+            suivis.forEach(su => {
+                if(el.id === su.bien.id){
+                    nbSuivis++;
                 }
             })
         }
@@ -109,7 +118,7 @@ export class AdCard extends Component {
         let activePublish = false;
         if(toPublishes){
             toPublishes.forEach(te => {
-                if(te.id === el.id){
+                if(el.id === te.id){
                     activePublish = true;
                 }
             })
