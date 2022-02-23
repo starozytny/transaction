@@ -27,7 +27,7 @@ export class Negotiators extends Component {
         super(props);
 
         this.state = {
-            perPage: 5,
+            perPage: props.perPage ? props.perPage : 5,
             currentPage: 0,
             sorter: SORTER,
             pathDeleteElement: URL_DELETE_ELEMENT,

@@ -1,0 +1,15 @@
+{% extends 'user/layout/layout.html.twig' %}
+
+{% set submenu = [
+    { 'label': "Liste des négociateurs", 'path': path('user_negotiators') },
+] %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('user_negotiator') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('user_negotiator') }}
+{% endblock %}

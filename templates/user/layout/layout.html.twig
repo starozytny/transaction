@@ -38,14 +38,14 @@
         'label': 'Acteurs humains',
         'items': [
             {
+                'path': path('user_negotiators'),
+                'label': 'Négociateurs',
+                'name': 'negociateurs'
+            },
+            {
                 'path': path('user_prospects'),
                 'label': 'Prospects',
                 'name': 'prospects'
-            },
-            {
-                'path': path('user_buyers'),
-                'label': 'Acquéreurs',
-                'name': 'acquereurs'
             },
             {
                 'path': path('user_owners'),
@@ -53,16 +53,21 @@
                 'name': 'proprietaires'
             },
             {
+                'path': path('user_buyers'),
+                'label': 'Acquéreurs',
+                'name': 'acquereurs'
+            },
+            {
                 'path': path('user_tenants'),
                 'label': 'Locataires',
                 'name': 'locataires'
-            },
+            }
         ]
     },
     {
         'path': path('user_profil'),
-        'icon': 'shield',
-        'label': 'Agence',
+        'icon': 'user',
+        'label': 'Mon compte',
         'name': 'compte'
     },
     {

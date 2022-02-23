@@ -276,9 +276,10 @@ class UserController extends AbstractController
     /**
      * @Route("/compte", options={"expose"=true}, name="profil")
      */
-    public function profil(SerializerInterface $serializer): Response
+    public function profil(Request $request, SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
+        $context = $request->query->get('ct');
 
         /** @var User $obj */
         $obj = $this->getUser();
@@ -298,7 +299,8 @@ class UserController extends AbstractController
             'users' => $users,
             'agencies' => $agencies,
             'negotiators' => $negotiators,
-            'biens' => $biens
+            'biens' => $biens,
+            'context' => $context ?: 'agencies'
         ]);
     }
 
@@ -352,6 +354,36 @@ class UserController extends AbstractController
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/profil/user/update.html.twig', ['elem' => $obj, 'donnees' => $data, 'negotiators' => $negotiators]);
+    }
+
+    /**
+     * @Route("/negociateurs", name="negotiators")
+     */
+    public function negotiators(Request $request, ImNegotiatorRepository $repository, SerializerInterface $serializer): Response
+    {
+        $route = 'user/pages/negotiators/index.html.twig';
+
+        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $objs = $repository->findBy(['agency' => $user->getAgency()]);
+        $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $objs]);
+
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
+        $biens = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
+
+        $params = [
+            'data' => $objs,
+            'user' => $user,
+            'biens' => $biens,
+        ];
+
+        $search = $request->query->get('search');
+        if($search){
+            return $this->render($route, array_merge($params, ['search' => $search]));
+        }
+
+        return $this->render($route, $params);
     }
 
     /**

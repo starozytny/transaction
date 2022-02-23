@@ -1,0 +1,17 @@
+{% extends 'user/pages/negotiators/template.html.twig' %}
+
+{% set page_title %}Liste des négociateurs{% endset %}
+{% set submenuActive = "Liste des négociateurs" %}
+
+{% block main_content %}
+    <div id="list-negotiators"
+         data-donnees="{{ data }}"
+         data-biens="{{ biens }}"
+         data-society-id="{{ user.society.id }}"
+         data-agency-id="{{ user.agency.id }}"
+         data-is-user="{{ app.user.highRoleCode == 0 ? true : false }}"
+         {% if search is defined %}data-search="{{ search }}"{% endif %}
+    >
+        {% include "dashboard/layout/components/spinner.html.twig" %}
+    </div>
+{% endblock %}

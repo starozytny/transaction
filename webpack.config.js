@@ -86,6 +86,7 @@ Encore
     .addEntry('user_biens', './assets/user/js/pages/biens.js')
     .addEntry('user_profil', './assets/user/js/pages/profil.js')
     .addEntry('user_owner', './assets/user/js/pages/owner.js')
+    .addEntry('user_negotiator', './assets/user/js/pages/negotiator.js')
     .addEntry('user_tenant', './assets/user/js/pages/tenant.js')
     .addEntry('user_prospect', './assets/user/js/pages/prospect.js')
     .addEntry('user_buyer', './assets/user/js/pages/buyer.js')
