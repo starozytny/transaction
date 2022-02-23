@@ -177,12 +177,8 @@ export class Rapprochements extends Component {
                     }
                     break;
                 case "processing":
-                    if(item.suivi && item.rapprochement === null && item.suivi.status === STATUS_SUIVI_PROCESSING){
-                        canAdd = true;
-                    }
-                    break;
                 case "to_process":
-                    if(item.suivi && item.rapprochement === null && item.suivi.status === STATUS_SUIVI_TO_PROCESS){
+                    if(item.suivi && item.rapprochement === null && (item.suivi.status === STATUS_SUIVI_TO_PROCESS || item.suivi.status === STATUS_SUIVI_PROCESSING)){
                         canAdd = true;
                     }
                     break;
@@ -244,8 +240,7 @@ export class Rapprochements extends Component {
         let subMenu = [
             { value: 'tous',            label: 'Tous' },
             { value: 'possibilities',   label: 'Possibilités' },
-            { value: 'to_process',      label: 'A traiter' },
-            { value: 'processing',      label: 'En cours' },
+            { value: 'processing',      label: 'A traiter/En cours' },
             { value: 'ending',          label: 'Finalisés' },
         ]
 

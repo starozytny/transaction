@@ -195,7 +195,7 @@ export class AdCard extends Component {
                                 {nbRapprochements} rapprochement{nbRapprochements > 1 ? "s" : ""} possible{nbRapprochements > 1 ? "s" : ""}
                             </ButtonIcon>}
                             {(suivis && nbSuivis > 0) && <ButtonIcon element="a" icon="group" tooltipWidth={120} text={""+nbSuivis}
-                                                                     onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "tous"})}
+                                                                     onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "processing"})}
                             >
                                 {nbSuivis} rapprochement{nbSuivis > 1 ? "s" : ""}
                             </ButtonIcon>}
