@@ -4,6 +4,8 @@ namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
 use App\Repository\Immo\ImContractRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -77,9 +79,15 @@ class ImContract extends DataEntity
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImContractant::class, mappedBy="contract")
+     */
+    private $contractants;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
+        $this->contractants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,5 +204,35 @@ class ImContract extends DataEntity
         $values = ["Inconnu", "Offre achat", "Compromis", "Vendu", "Annulé", "Suspendu"];
 
         return $values[$this->sellWhy];
+    }
+
+    /**
+     * @return Collection|ImContractant[]
+     */
+    public function getContractants(): Collection
+    {
+        return $this->contractants;
+    }
+
+    public function addContractant(ImContractant $contractant): self
+    {
+        if (!$this->contractants->contains($contractant)) {
+            $this->contractants[] = $contractant;
+            $contractant->setContract($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContractant(ImContractant $contractant): self
+    {
+        if ($this->contractants->removeElement($contractant)) {
+            // set the owning side to null (unless already changed)
+            if ($contractant->getContract() === $this) {
+                $contractant->setContract(null);
+            }
+        }
+
+        return $this;
     }
 }

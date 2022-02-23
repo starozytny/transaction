@@ -4,6 +4,8 @@ namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
 use App\Repository\Immo\ImTenantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -120,6 +122,16 @@ class ImTenant extends DataEntity
      * @ORM\Column(type="boolean")
      */
     private $isArchived = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ImContractant::class, mappedBy="tenant")
+     */
+    private $contractants;
+
+    public function __construct()
+    {
+        $this->contractants = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -371,6 +383,36 @@ class ImTenant extends DataEntity
     public function setIsArchived(bool $isArchived): self
     {
         $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImContractant[]
+     */
+    public function getContractants(): Collection
+    {
+        return $this->contractants;
+    }
+
+    public function addContractant(ImContractant $contractant): self
+    {
+        if (!$this->contractants->contains($contractant)) {
+            $this->contractants[] = $contractant;
+            $contractant->setTenant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContractant(ImContractant $contractant): self
+    {
+        if ($this->contractants->removeElement($contractant)) {
+            // set the owning side to null (unless already changed)
+            if ($contractant->getTenant() === $this) {
+                $contractant->setTenant(null);
+            }
+        }
 
         return $this;
     }

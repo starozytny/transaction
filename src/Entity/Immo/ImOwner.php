@@ -212,9 +212,15 @@ class ImOwner extends DataEntity
      */
     private $agency;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImContractant::class, mappedBy="owner")
+     */
+    private $contractants;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
+        $this->contractants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -650,6 +656,36 @@ class ImOwner extends DataEntity
     public function setAgency(?ImAgency $agency): self
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImContractant[]
+     */
+    public function getContractants(): Collection
+    {
+        return $this->contractants;
+    }
+
+    public function addContractant(ImContractant $contractant): self
+    {
+        if (!$this->contractants->contains($contractant)) {
+            $this->contractants[] = $contractant;
+            $contractant->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContractant(ImContractant $contractant): self
+    {
+        if ($this->contractants->removeElement($contractant)) {
+            // set the owning side to null (unless already changed)
+            if ($contractant->getOwner() === $this) {
+                $contractant->setOwner(null);
+            }
+        }
 
         return $this;
     }
