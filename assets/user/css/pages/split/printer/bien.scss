@@ -59,7 +59,7 @@
     .col-1{
       width: calc(60% - 48px);
       margin-right: 48px;
-      height: 290px;
+      height: 280px;
 
       .content{
         -webkit-line-clamp: 15; /* number of lines to show */
@@ -131,7 +131,7 @@
     color: var(--grey3);
 
     & > div{
-      margin-bottom: 4px;
+      margin-bottom: 8px;
     }
   }
 

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
 import { Printer } from "@userPages/components/Impressions/Printer";
-import {Diag} from "@userPages/components/Biens/Read/Data/Diag";
+import { Diag }    from "@userPages/components/Biens/Read/Data/Diag";
 
 export class PrintBien extends Component{
     constructor(props) {
@@ -41,7 +41,7 @@ export class PrintBien extends Component{
                         {elem.codeTypeAd === 1 ? <>
                             {elem.financial.provisionCharges && <div>
                                 <div>Provision pour charges<sup>(1)</sup> : {Sanitaze.toFormatCurrency(elem.financial.provisionCharges)}</div>
-                                <div className="sub"><sup>(1)</sup> {elem.financial.typeChargesString}</div>
+                                <div className="sub"><sup>(1)</sup> {(elem.financial.typeChargesString).toLowerCase()}</div>
                             </div>}
                             {elem.financial.honoraireTtc && <div>
                                 <div>Honoraires TTC : {Sanitaze.toFormatCurrency(elem.financial.honoraireTtc)}</div>
