@@ -104,6 +104,8 @@ class ContractController extends AbstractController
             $suivi->setStatus(ImSuivi::STATUS_END);
         }
 
+        $bien->setStatus(ImBien::STATUS_INACTIF);
+
         $em->persist($contractant);
         $em->persist($obj);
         $em->flush();

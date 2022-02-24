@@ -195,14 +195,14 @@ export class AdCard extends Component {
                             {(suivis && nbSuivis > 0) && <ButtonIcon element="a" icon="group" tooltipWidth={120} text={""+nbSuivis}
                                                                      onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "processing"})}
                             >
-                                {nbSuivis} rapprochement{nbSuivis > 1 ? "s" : ""}
+                                {nbSuivis} rapprochement en cours{nbSuivis > 1 ? "s" : ""}
                             </ButtonIcon>}
 
                             {isProspectPage && <ButtonIcon icon="star" tooltipWidth={90} onClick={() => onLinkToProspect(el)}>
                                 {followed ? "Lié" : "Lier"} au prospect
                             </ButtonIcon>}
 
-                            <ButtonIcon icon="follow" element="a" target="_blank" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>
+                            <ButtonIcon icon="follow" element="a" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>
                             <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
                             {(!isProspectPage && !isOwnerPage && !isPublishePage) && <ButtonIconDropdown icon="trash" items={itemsTrash}>Suppression</ButtonIconDropdown>}
                             <ButtonIconDropdown icon="dropdown" items={items}>Autres</ButtonIconDropdown>
