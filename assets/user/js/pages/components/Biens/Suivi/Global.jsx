@@ -38,9 +38,8 @@ export class Global extends Component {
                 totalVisits++;
 
                 if(totalVisits < maxResults){
-                    itemsVisits.push(<div className="item" onClick={() => this.handleOpenHelp(visit)} key={visit.id}>
-                        <VisitsMainInfos havePersons={false} inline={false} event={visit.agEvent} persons={visit.agEvent.persons}/>
-                        <div className="item-details">Voir le details</div>
+                    itemsVisits.push(<div className="visite" onClick={() => this.handleOpenHelp(visit)} key={visit.id}>
+                        <VisitsMainInfos havePersons={false} haveBubble={true} event={visit.agEvent} persons={visit.agEvent.persons}/>
                     </div>)
                 }
             }

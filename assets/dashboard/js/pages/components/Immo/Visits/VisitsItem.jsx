@@ -45,15 +45,18 @@ export class VisitsItem extends Component {
     }
 }
 
-export function VisitsMainInfos({ havePersons=false, inline=true, event, persons=null }) {
+export function VisitsMainInfos({ haveBubble=false, havePersons=false, inline=true, event, persons=null }) {
     return <>
-        <div className="name">
-            {event.name}
+        <div className="visite-date">{inline ? parse(event.fullDate) : event.fullDateInline}</div>
+        <div className="visite-content">
+            <div className="name">
+                <span>{event.name}</span> {event.location && <span>à {event.location}</span>}
+            </div>
+
+            {event.comment && <div className="sub">{event.comment}</div>}
+            {havePersons && <Persons persons={persons} />}
+            {haveBubble && <div className="item-details">Voir le details</div>}
         </div>
-        <div className="sub">{inline ? parse(event.fullDate) : event.fullDateInline}</div>
-        {event.location && <div className="sub">{event.location}</div>}
-        {event.comment && <div className="sub">{event.comment}</div>}
-        {havePersons && <Persons persons={persons} />}
     </>
 }
 

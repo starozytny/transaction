@@ -12,5 +12,5 @@ Routing.setRoutingData(routes);
 
 let el = document.getElementById("visits");
 if(el) {
-    render(<Global visits={JSON.parse(el.dataset.visits)} />, el)
+    render(<Global visits={JSON.parse(el.dataset.visits)} maxResults={10} />, el)
 }

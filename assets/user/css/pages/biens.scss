@@ -9,6 +9,11 @@
 @import "./split/biens/details";
 @import "./split/biens/suivi";
 @import "./split/biens/synthese";
+@import "./split/visite/visite";
+
+.global-visits{
+  margin-top: 24px;
+}
 
 .badges{
   margin-bottom: 8px;

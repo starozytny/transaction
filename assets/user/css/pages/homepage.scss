@@ -1,7 +1,7 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/homepage";
-@import "./split/biens/suivi";
+@import "./split/visite/visite";
 @import "../../../common/css/pages/changelog";
 
 .badge-changelog.badge{
@@ -126,12 +126,12 @@
       @include flex(row, flex-start, flex-start);
 
       .changelog-date{
-        width: 180px;
+        width: 200px;
       }
 
       .changelog-content{
         margin-left: 48px;
-        width: calc(100% - 180px - 48px);
+        width: calc(100% - 200px - 48px);
       }
     }
   }
