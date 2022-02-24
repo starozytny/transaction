@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\History\HiPublish;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImOwner;
+use App\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Repository\History\HiPublishRepository;
 use App\Repository\Immo\ImBienRepository;
@@ -46,19 +47,23 @@ class PrinterController extends AbstractController
     /**
      * @Route("/proprietaire/{id}", options={"expose"=true}, name="owner")
      */
-    public function owner(ImOwner $obj, ImBienRepository $bienRepository, HiPublishRepository $hiPublishRepository, SerializerInterface $serializer): Response
+    public function owner(ImOwner $obj, SerializerInterface $serializer): Response
     {
-        $biens     = $bienRepository->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
-        $publishes = $hiPublishRepository->findBy(['bien' => $biens]);
+        $em = $this->doctrine->getManager();
+        $biens     = $em->getRepository(ImBien::class)->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
+        $publishes = $em->getRepository(HiPublish::class)->findBy(['bien' => $biens]);
+        $visites   = $em->getRepository(ImVisit::class)->findBy(['bien' => $biens]);
 
-        $obj        = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
-        $biens      = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
+        $obj        = $serializer->serialize($obj,       'json', ['groups' => User::ADMIN_READ]);
+        $biens      = $serializer->serialize($biens,     'json', ['groups' => User::USER_READ]);
         $publishes  = $serializer->serialize($publishes, 'json', ['groups' => HiPublish::HISTORY_PUBLISH]);
+        $visites    = $serializer->serialize($visites,   'json', ['groups' => ImVisit::VISIT_READ]);
 
         return $this->render('user/pages/impressions/owner.html.twig', [
             'donnees' => $obj,
             'biens' => $biens,
             'publishes' => $publishes,
+            'visites' => $visites,
         ]);
     }
 }

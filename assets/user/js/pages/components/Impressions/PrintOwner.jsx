@@ -14,11 +14,14 @@ export class PrintOwner extends Component{
             elem: props.donnees ? JSON.parse(props.donnees) : null,
             biens: props.biens ? JSON.parse(props.biens) : [],
             publishes: props.publishes ? JSON.parse(props.publishes) : [],
+            visites: props.visites ? JSON.parse(props.visites) : [],
         }
     }
 
     render () {
-        const { elem, biens, publishes } = this.state;
+        const { elem, biens, publishes, visites } = this.state;
+
+        console.log(visites)
 
         let content = <div className="print-owner">
             <div className="file-date">
@@ -31,19 +34,17 @@ export class PrintOwner extends Component{
             <div className="file-content">
                 {biens.length !== 0 ? biens.map((el, index) => {
 
+                    let listVisites = [];
+                    visites.forEach(visite => {
+                        if(visite.bien.id === el.id){
+                            listVisites.push(<Visite visite={visite} key={visite.id} />);
+                        }
+                    })
+
                     let historyPublishes = [];
                     publishes.forEach(pub => {
                         if(pub.bien.id === el.id){
-                            historyPublishes.push(<div className="publication" key={pub.id}>
-                                <div className="time">
-                                    <span>{pub.createdAtString}</span>
-                                </div>
-                                <div className="supports">
-                                    {pub.supports.length !== 0 ? pub.supports.map((sup, index) => {
-                                        return <div key={index}><span>{sup}</span></div>
-                                    }) : "Aucun support sélectionné"}
-                                </div>
-                            </div>);
+                            historyPublishes.push(<Publication pub={pub} key={pub.id}/>);
                         }
                     })
 
@@ -55,13 +56,21 @@ export class PrintOwner extends Component{
                         <div className="sub-content">
                             <div className="title">Publications</div>
                             <div className="content">
-                                <div className="publications">
-                                    {historyPublishes}
+                                <div className="items">
+                                    {historyPublishes.length !== 0 ? historyPublishes : <Alert>Aucune publication enregistrée.</Alert>}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="sub-content">
+                            <div className="title">Visites</div>
+                            <div className="content">
+                                <div className="items">
+                                    {listVisites.length !== 0 ? listVisites : <Alert>Aucune visite enregistrée.</Alert>}
                                 </div>
                             </div>
                         </div>
                     </div>
-                }) : <Alert >Vous n'avez aucun bien actif.</Alert>}
+                }) : <Alert>Vous n'avez aucun bien actif.</Alert>}
             </div>
         </div>
 
@@ -96,6 +105,30 @@ function Card ({ el }) {
                 <div className="price">{Sanitaze.toFormatCurrency(el.financial.price)} cc/mois</div>
                 <div className="sub">{el.area.habitable}m² - {el.number.room} chambre{el.number.room > 1 ? "s" : ""}</div>
             </div>
+        </div>
+    </div>
+}
+
+function Publication ({ pub }) {
+    return <div className="publication">
+        <div className="time">
+            <span>{pub.createdAtString}</span>
+        </div>
+        <div className="supports">
+            {pub.supports.length !== 0 ? pub.supports.map((sup, index) => {
+                return <div key={index}><span>{sup}</span></div>
+            }) : "Aucun support sélectionné"}
+        </div>
+    </div>
+}
+
+function Visite ({ visite }) {
+    return <div className="visite">
+        <div className="time">
+            <span>{visite.agEvent.fullDateInline}</span>
+        </div>
+        <div className="infos">
+            - <span>{visite.agEvent.name}</span>
         </div>
     </div>
 }
