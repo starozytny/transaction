@@ -1,3 +1,26 @@
+.badge-bien.badge{
+  border-radius: 4px;
+  background-color: var(--grey2);
+  @include fontSemibold();
+  font-size: 14px;
+  color: var(--alpha);
+  padding: 2px 10px;
+
+  $status:
+          "0" var(--danger) "pointer",
+          "1" var(--primary) "pointer",
+          "2" var(--warning) "initial",
+          "3" var(--grey3) "initial"
+;
+
+  @each $number, $bg, $cursor in $status {
+    &.badge-#{$number}{
+      background-color: $bg;
+      cursor: #{$cursor};
+    }
+  }
+}
+
 .card-ad{
   @include flex(row, center, flex-start);
 
@@ -19,29 +42,6 @@
     overflow: hidden;
     object-fit: cover;
     border-radius: 4px 4px 0 0;
-  }
-
-  .status{
-    border-radius: 4px;
-    background-color: var(--grey2);
-    @include fontSemibold();
-    font-size: 14px;
-    color: var(--alpha);
-    padding: 2px 10px;
-
-    $status:
-            "0" var(--danger) "pointer",
-            "1" var(--primary) "pointer",
-            "2" var(--warning) "initial",
-            "3" var(--grey3) "initial"
-  ;
-
-    @each $number, $bg, $cursor in $status {
-      &.status-#{$number}{
-        background-color: $bg;
-        cursor: #{$cursor};
-      }
-    }
   }
 
   .title{
