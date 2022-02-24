@@ -3,6 +3,7 @@
 namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
+use App\Entity\History\HiPublish;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -56,7 +57,8 @@ class ImBien extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "agenda:read", "visit:read", "suivi:read", "offer:read", "publish:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "visit:read", "suivi:read", "offer:read",
+     *     "publish:read", "history:publish"})
      */
     private $id;
 
@@ -280,6 +282,11 @@ class ImBien extends DataEntity
      */
     private $contracts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=HiPublish::class, mappedBy="bien")
+     */
+    private $hiPublishes;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -290,6 +297,7 @@ class ImBien extends DataEntity
         $this->offers = new ArrayCollection();
         $this->publishes = new ArrayCollection();
         $this->contracts = new ArrayCollection();
+        $this->hiPublishes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -942,6 +950,36 @@ class ImBien extends DataEntity
             // set the owning side to null (unless already changed)
             if ($contract->getBien() === $this) {
                 $contract->setBien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HiPublish[]
+     */
+    public function getHiPublishes(): Collection
+    {
+        return $this->hiPublishes;
+    }
+
+    public function addHiPublish(HiPublish $hiPublish): self
+    {
+        if (!$this->hiPublishes->contains($hiPublish)) {
+            $this->hiPublishes[] = $hiPublish;
+            $hiPublish->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHiPublish(HiPublish $hiPublish): self
+    {
+        if ($this->hiPublishes->removeElement($hiPublish)) {
+            // set the owning side to null (unless already changed)
+            if ($hiPublish->getBien() === $this) {
+                $hiPublish->setBien(null);
             }
         }
 
