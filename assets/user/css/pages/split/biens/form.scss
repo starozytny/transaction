@@ -183,32 +183,6 @@
   }
 }
 
-.synthese-bloc{
-  .card-ad{
-    .card-main{
-      width: 100%;
-    }
-
-    .negociateur{
-      cursor: initial;
-    }
-
-    .card-footer{
-      & > div{
-        margin-bottom: 12px;
-      }
-      .footer-actions{
-        width: 100%;
-        margin-bottom: 0;
-
-        .createdAt{
-          font-size: 14px;
-        }
-      }
-    }
-  }
-}
-
 textarea{
   resize:vertical;
 }
@@ -256,21 +230,6 @@ textarea{
 
     & > .form-group-radiobox{
       width: 100%;
-    }
-  }
-
-  .synthese-bloc{
-    .card-ad{
-      .card-footer{
-        @include flex(row, flex-start, flex-start);
-        flex-wrap: wrap;
-
-        & > div{
-          width: 50%;
-        }
-        .footer-actions{
-        }
-      }
     }
   }
 }

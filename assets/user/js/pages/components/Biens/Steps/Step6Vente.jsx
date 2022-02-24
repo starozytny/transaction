@@ -56,7 +56,7 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSe
                 <Input type="number" step="any" identifiant="chargesMensuelles" valeur={chargesMensuelles} errors={errors} onChange={onChange}>
                     <span>Charges mensuelles</span>
                 </Input>
-                <Input type="number" step="any" identifiant="notaire" valeur={notaire} errors={errocvbrs} onChange={onChange}>
+                <Input type="number" step="any" identifiant="notaire" valeur={notaire} errors={errors} onChange={onChange}>
                     <span>Frais notaire</span>
                 </Input>
             </div>
