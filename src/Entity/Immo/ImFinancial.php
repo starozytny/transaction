@@ -28,12 +28,6 @@ class ImFinancial
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
-     */
-    private $typeCalcul;
-
-    /**
      * @ORM\Column(type="float")
      * @Groups({"user:read", "suivi:read"})
      */
@@ -44,24 +38,6 @@ class ImFinancial
      * @Groups({"user:read"})
      */
     private $provisionCharges;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $provisionOrdures;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $tva;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $totalTerme;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -80,12 +56,6 @@ class ImFinancial
      * @Groups({"user:read"})
      */
     private $edl;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $honoraireBail;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -116,7 +86,6 @@ class ImFinancial
      * @Groups({"user:read"})
      */
     private $priceHorsAcquereur;
-
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -189,18 +158,6 @@ class ImFinancial
         return $this->id;
     }
 
-    public function getTypeCalcul(): ?int
-    {
-        return $this->typeCalcul;
-    }
-
-    public function setTypeCalcul(int $typeCalcul): self
-    {
-        $this->typeCalcul = $typeCalcul;
-
-        return $this;
-    }
-
     public function getPrice(): ?float
     {
         return $this->price;
@@ -221,30 +178,6 @@ class ImFinancial
     public function setProvisionCharges(?float $provisionCharges): self
     {
         $this->provisionCharges = $provisionCharges;
-
-        return $this;
-    }
-
-    public function getTva(): ?float
-    {
-        return $this->tva;
-    }
-
-    public function setTva(?float $tva): self
-    {
-        $this->tva = $tva;
-
-        return $this;
-    }
-
-    public function getTotalTerme(): ?float
-    {
-        return $this->totalTerme;
-    }
-
-    public function setTotalTerme(?float $totalTerme): self
-    {
-        $this->totalTerme = $totalTerme;
 
         return $this;
     }
@@ -285,18 +218,6 @@ class ImFinancial
         return $this;
     }
 
-    public function getHonoraireBail(): ?float
-    {
-        return $this->honoraireBail;
-    }
-
-    public function setHonoraireBail(?float $honoraireBail): self
-    {
-        $this->honoraireBail = $honoraireBail;
-
-        return $this;
-    }
-
     public function getTypeCharges(): ?int
     {
         return $this->typeCharges;
@@ -317,18 +238,6 @@ class ImFinancial
     public function setTotalGeneral(?float $totalGeneral): self
     {
         $this->totalGeneral = $totalGeneral;
-
-        return $this;
-    }
-
-    public function getProvisionOrdures(): ?float
-    {
-        return $this->provisionOrdures;
-    }
-
-    public function setProvisionOrdures(?float $provisionOrdures): self
-    {
-        $this->provisionOrdures = $provisionOrdures;
 
         return $this;
     }
@@ -510,17 +419,6 @@ class ImFinancial
         $charges = ["Acquéreur", "Vendeur", "Acquéreur et vendeur"];
 
         return $charges[$this->honoraireChargeDe];
-    }
-
-    /**
-     * @return string
-     * @Groups({"user:read"})
-     */
-    public function getTypeCalculString(): string
-    {
-        $charges = ["Pas de taxe", "TVA/Loyer + Charges", "TVA/Loyer + Charges + Ordures ménagères"];
-
-        return $charges[$this->typeCalcul];
     }
 
     /**

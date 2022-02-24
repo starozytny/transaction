@@ -39,10 +39,14 @@ export class PrintBien extends Component{
                     </div>
                     <div className="infos-price">
                         {elem.codeTypeAd === 1 ? <>
-                            {elem.financial.provisionCharges && <>
-                                <div>Provision pour charges<sup>(1)</sup> : {Sanitaze.toFormatCurrency(elem.financial.privisionCharges)}</div>
-                                <div className="sub"><sup>(1)</sup> Soumis à régularisation annuelle</div>
-                            </>}
+                            {elem.financial.provisionCharges && <div>
+                                <div>Provision pour charges<sup>(1)</sup> : {Sanitaze.toFormatCurrency(elem.financial.provisionCharges)}</div>
+                                <div className="sub"><sup>(1)</sup> {elem.financial.typeChargesString}</div>
+                            </div>}
+                            {elem.financial.honoraireTtc && <div>
+                                <div>Honoraires TTC : {Sanitaze.toFormatCurrency(elem.financial.honoraireTtc)}</div>
+                                <div>- dont état des lieux : {Sanitaze.toFormatCurrency(elem.financial.edl)}</div>
+                            </div>}
                             {elem.financial.caution && <div>Caution : {Sanitaze.toFormatCurrency(elem.financial.caution)}</div>}
                         </> : <>
                             <div>Honoraires à la charge de {(elem.financial.honoraireChargeDeString).toLowerCase()}</div>

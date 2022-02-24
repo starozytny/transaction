@@ -146,12 +146,8 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         typeCalcul={element ? setValueEmptyIfNull(financial, financial.typeCalcul) : 0}
         price={element ? setValueEmptyIfNull(financial, financial.price) : ""}
         provisionCharges={element ? setValueEmptyIfNull(financial, financial.provisionCharges) : ""}
-        provisionOrdures={element ? setValueEmptyIfNull(financial, financial.provisionOrdures) : ""}
-        tva={element ? setValueEmptyIfNull(financial, financial.tva) : ""}
-        totalTerme={element ? setValueEmptyIfNull(financial, financial.totalTerme) : ""}
         caution={element ? setValueEmptyIfNull(financial, financial.caution) : ""}
         honoraireTtc={element ? setValueEmptyIfNull(financial, financial.honoraireTtc) : ""}
-        honoraireBail={element ? setValueEmptyIfNull(financial, financial.honoraireBail) : ""}
         edl={element ? setValueEmptyIfNull(financial, financial.edl) : ""}
         typeCharges={element ? setValueEmptyIfNull(financial, financial.typeCharges) : 0}
         totalGeneral={element ? setValueEmptyIfNull(financial, financial.totalGeneral) : ""}

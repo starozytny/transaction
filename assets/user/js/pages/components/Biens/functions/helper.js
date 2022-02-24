@@ -79,12 +79,6 @@ function getItems (type, prefix) {
                 { value: 1, label: 'Prévisionnelles mensuelles avec régularisation annuelle',  identifiant: 'regularisation' },
                 { value: 2, label: 'Remboursement annuel par le locataire',     identifiant: 'remboursement' },
             ];
-        case "calculs":
-            return [
-                { value: 0, label: 'Pas de taxe',                               identifiant: 'no-taxe' },
-                { value: 1, label: 'TVA/Loyer + Charges',                       identifiant: 'tva-l-c' },
-                { value: 2, label: 'TVA/Loyer + Charges + Ordures ménagères',   identifiant: 'tva-l-c-o' },
-            ];
         case "diags":
             return [
                 { value: 0, label: 'A', identifiant: 'diag-' + prefix + '-a' },

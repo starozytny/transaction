@@ -11,10 +11,8 @@ import Sanitaze from "@commonComponents/functions/sanitaze";
 const CURRENT_STEP = 6;
 
 export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
-                          typeCalcul, price, provisionCharges, provisionOrdures, tva, totalTerme, caution, honoraireTtc,
-                          honoraireBail, edl, typeCharges, totalGeneral, typeBail, durationBail })
+                          price, provisionCharges, caution, honoraireTtc, edl, typeCharges, totalGeneral, typeBail, durationBail })
 {
-    let calculItems = helper.getItems("calculs")
     let chargesItems = helper.getItems("charges")
     let bailsItems = helper.getItems("bails")
 
@@ -27,10 +25,7 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <label>Financier</label>
             </div>
             <div className="line line-2">
-                <SelectReactSelectize items={calculItems} identifiant="typeCalcul" valeur={typeCalcul} errors={errors}
-                                      onChange={(e) => onChangeSelect('typeCalcul', e)}>
-                    Type de calcul *
-                </SelectReactSelectize>
+                <div className="form-group" />
                 <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChange}>
                     <span>Loyer *</span>
                 </Input>
@@ -43,22 +38,6 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                       onChange={(e) => onChangeSelect('typeCharges', e)}>
                     Type de charges
                 </SelectReactSelectize>
-            </div>
-            <div className="line line-2">
-                <Input type="number" step="any" identifiant="provisionOrdures" valeur={provisionOrdures} errors={errors} onChange={onChange}>
-                    <span>Provision ordures ménagères</span>
-                </Input>
-                <div className="form-group" />
-            </div>
-            <div className="line line-2">
-                <div className="form-group">
-                    <label>Montant T.V.A</label>
-                    <div>{Sanitaze.toFormatCurrency(tva)}</div>
-                </div>
-                <div className="form-group">
-                    <label>Total Terme</label>
-                    <div>{Sanitaze.toFormatCurrency(totalTerme)}</div>
-                </div>
             </div>
         </div>
 
@@ -75,12 +54,6 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <div className="form-group" />
                 <Input type="number" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChange}>
                     <span>- dont état des lieux *</span>
-                </Input>
-            </div>
-            <div className="line line-2">
-                <div className="form-group" />
-                <Input type="number" step="any" identifiant="honoraireBail" valeur={honoraireBail} errors={errors} onChange={onChange}>
-                    <span>Honoraires rédaction bail</span>
                 </Input>
             </div>
             <div className="line line-2">

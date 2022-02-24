@@ -129,6 +129,10 @@
 
   .infos-price{
     color: var(--grey3);
+
+    & > div{
+      margin-bottom: 4px;
+    }
   }
 
   .infos-footer{

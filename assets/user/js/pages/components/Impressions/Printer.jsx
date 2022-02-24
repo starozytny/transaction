@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export class Printer extends Component{
     componentDidMount() {
-        window.print()
+        // window.print()
     }
 
     render () {
