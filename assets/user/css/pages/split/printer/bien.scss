@@ -59,11 +59,11 @@
     .col-1{
       width: calc(60% - 48px);
       margin-right: 48px;
-      height: 280px;
+      height: 240px;
 
       .content{
-        -webkit-line-clamp: 15; /* number of lines to show */
-        line-clamp: 15;
+        -webkit-line-clamp: 13; /* number of lines to show */
+        line-clamp: 13;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -122,16 +122,20 @@
 
   .price{
     margin-bottom: 24px;
-    @include fontSemibold();
-    color: var(--color0);
-    font-size: 26px;
+
+    & > span:first-child{
+      @include fontSemibold();
+      color: var(--color0);
+      font-size: 26px;
+    }
   }
 
   .infos-price{
     color: var(--grey3);
+    height: 150px;
 
     & > div{
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
   }
 

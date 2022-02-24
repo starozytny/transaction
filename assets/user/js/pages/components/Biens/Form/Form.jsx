@@ -143,7 +143,6 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         lon={element ? setValueEmptyIfNull(localisation, localisation.lon) : ""}
         hideMap={element ? setValueBoolean(localisation, localisation.hideMap) : 0}
 
-        typeCalcul={element ? setValueEmptyIfNull(financial, financial.typeCalcul) : 0}
         price={element ? setValueEmptyIfNull(financial, financial.price) : ""}
         provisionCharges={element ? setValueEmptyIfNull(financial, financial.provisionCharges) : ""}
         caution={element ? setValueEmptyIfNull(financial, financial.caution) : ""}

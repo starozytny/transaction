@@ -17,6 +17,8 @@ export class PrintBien extends Component{
 
     render () {
         const { elem, photos } = this.state;
+        
+        let financial = elem.financial;
 
         let content = <div className="print-ad">
             <div className="line-1">
@@ -35,21 +37,32 @@ export class PrintBien extends Component{
                         </div>
                     </div>
                     <div className="price">
-                        <span>{Sanitaze.toFormatCurrency(elem.financial.price)} {elem.codeTypeAd === 1 ? "cc/mois" : ""}</span>
+                        <span>{Sanitaze.toFormatCurrency(financial.price)} {elem.codeTypeAd === 1 ? "cc/mois" : ""}</span>
+                        {elem.codeTypeAd !== 1 && financial.honoraireChargeDe !== 1 && <span>Honoraires inclus</span>}
                     </div>
                     <div className="infos-price">
                         {elem.codeTypeAd === 1 ? <>
-                            {elem.financial.provisionCharges && <div>
-                                <div>Provision pour charges<sup>(1)</sup> : {Sanitaze.toFormatCurrency(elem.financial.provisionCharges)}</div>
-                                <div className="sub"><sup>(1)</sup> {(elem.financial.typeChargesString).toLowerCase()}</div>
+                            {financial.provisionCharges && <div>
+                                <div>Provision pour charges<sup>(1)</sup> : {Sanitaze.toFormatCurrency(financial.provisionCharges)}</div>
+                                <div className="sub"><sup>(1)</sup> {(financial.typeChargesString).toLowerCase()}</div>
                             </div>}
-                            {elem.financial.honoraireTtc && <div>
-                                <div>Honoraires TTC : {Sanitaze.toFormatCurrency(elem.financial.honoraireTtc)}</div>
-                                <div>- dont état des lieux : {Sanitaze.toFormatCurrency(elem.financial.edl)}</div>
+                            {financial.honoraireTtc && <div>
+                                <div>Honoraires TTC : {Sanitaze.toFormatCurrency(financial.honoraireTtc)}</div>
+                                <div>- dont état des lieux : {Sanitaze.toFormatCurrency(financial.edl)}</div>
                             </div>}
-                            {elem.financial.caution && <div>Caution : {Sanitaze.toFormatCurrency(elem.financial.caution)}</div>}
+                            {financial.caution && <div>Caution : {Sanitaze.toFormatCurrency(financial.caution)}</div>}
                         </> : <>
-                            <div>Honoraires à la charge de {(elem.financial.honoraireChargeDeString).toLowerCase()}</div>
+                            {financial.chargesMensuelles && <div>Charges mensuelles : {Sanitaze.toFormatCurrency(financial.chargesMensuelles)}</div>}
+                            {financial.foncier && <div>Taxe foncière : {Sanitaze.toFormatCurrency(financial.foncier)}</div>}
+                            {financial.taxeHabitation && <div>Taxe habitation : {Sanitaze.toFormatCurrency(financial.taxeHabitation)}</div>}
+                            {financial.notaire && <div>Frais de notaire : {Sanitaze.toFormatCurrency(financial.notaire)}</div>}
+                            {financial.honoraireChargeDe === 1 ? <>
+                                <div>Honoraires à la charge du {(financial.honoraireChargeDeString).toLowerCase()}</div>
+                            </> : <>
+                                <div>Honoraires à la charge de l'{(financial.honoraireChargeDeString).toLowerCase()}</div>
+                                {financial.honorairePourcentage && <div>{Sanitaze.toFormatCurrency(financial.honorairePourcentage)} % du prix du bien hors honoraires</div>}
+                                {financial.priceHorsAcquereur && <div>Prix du bien hors honoraires : {Sanitaze.toFormatCurrency(financial.priceHorsAcquereur)}</div>}
+                            </>}
                         </>}
                     </div>
                     <div className="infos-footer">

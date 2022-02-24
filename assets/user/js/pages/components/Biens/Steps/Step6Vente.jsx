@@ -29,15 +29,36 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSe
                 <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChange}>
                     <span>Prix *</span>
                 </Input>
+                <SelectReactSelectize items={honoraireItems} identifiant="honoraireChargeDe" valeur={honoraireChargeDe} errors={errors}
+                                      onChange={(e) => onChangeSelect('honoraireChargeDe', e)}>
+                    Honoraires à la charge *
+                </SelectReactSelectize>
+            </div>
+            {(honoraireChargeDe !== 1) && <div className="line line-2">
+                <Input type="number" step="any" identifiant="priceHorsAcquereur" valeur={priceHorsAcquereur} errors={errors} onChange={onChange}>
+                    <span>Prix hors honoraire acquéreur</span>
+                </Input>
+                <div className="form-group" />
+            </div>}
+
+            <div className="line line-2">
+                <Input type="number" step="any" identifiant="honorairePourcentage" valeur={honorairePourcentage} errors={errors} onChange={onChange} placeholder="%">
+                    <span>Pourcentage des honoraires (%) *</span>
+                </Input>
+                <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
+                    <span>Honoraires TTC *</span>
+                </Input>
+            </div>
+        </div>
+
+        <div className="line special-line">
+            <div className="line line-2">
                 <Input type="number" step="any" identifiant="chargesMensuelles" valeur={chargesMensuelles} errors={errors} onChange={onChange}>
                     <span>Charges mensuelles</span>
                 </Input>
-            </div>
-            <div className="line line-2">
-                <Input type="number" step="any" identifiant="notaire" valeur={notaire} errors={errors} onChange={onChange}>
+                <Input type="number" step="any" identifiant="notaire" valeur={notaire} errors={errocvbrs} onChange={onChange}>
                     <span>Frais notaire</span>
                 </Input>
-                <div className="form-group" />
             </div>
             <div className="line line-2">
                 <Input type="number" step="any" identifiant="foncier" valeur={foncier} errors={errors} onChange={onChange}>
@@ -47,27 +68,7 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSe
                     <span>Taxe habitation</span>
                 </Input>
             </div>
-        </div>
-
-        <div className="line special-line">
-            <div className="line line-3">
-                <SelectReactSelectize items={honoraireItems} identifiant="honoraireChargeDe" valeur={honoraireChargeDe} errors={errors}
-                                      onChange={(e) => onChangeSelect('honoraireChargeDe', e)}>
-                    Honoraires à la charge *
-                </SelectReactSelectize>
-                <Input type="number" step="any" identifiant="honorairePourcentage" valeur={honorairePourcentage} errors={errors} onChange={onChange} placeholder="%">
-                    <span>Pourcentage des honoraires (%) *</span>
-                </Input>
-                <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
-                    <span>Honoraires TTC *</span>
-                </Input>
-            </div>
-            <div className="line line-3">
-                {(honoraireChargeDe === 0 || honoraireChargeDe === 2) ? <>
-                    <Input type="number" step="any" identifiant="priceHorsAcquereur" valeur={priceHorsAcquereur} errors={errors} onChange={onChange}>
-                        <span>Prix hors honoraire acquéreur</span>
-                    </Input>
-                </> : <div className="form-group" />}
+            <div className="line line-2">
                 <div className="form-group" />
                 <div className="form-group">
                     <label>Total général</label>
