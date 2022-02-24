@@ -47,10 +47,20 @@ body{
 
     & > .title{
       @include fontSemibold();
-      font-size: 20px;
+      font-size: 22px;
       margin-bottom: 12px;
       border-bottom: 2px solid var(--txt);
       text-transform: uppercase;
+    }
+
+    .sub-content{
+      margin-top: 24px;
+
+      & > .title{
+        @include fontSemibold();
+        font-size: 20px;
+        margin-bottom: 6px;
+      }
     }
   }
 }
