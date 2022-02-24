@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Agenda\AgEvent;
+use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
@@ -85,6 +86,19 @@ class VisitController extends AbstractController
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
+        }
+
+        $existe = $em->getRepository(HiVisite::class)->findOneBy(['bien' => $bien], ['createdAt' => 'DESC']);
+        if($existe && $existe->getStatus() != $event->getStatus() || !$existe){
+            $historyVisite = (new HiVisite())
+                ->setBien($bien)
+                ->setStatus($event->getStatus())
+                ->setFullDate($event->getFullDate())
+                ->setName($event->getName())
+                ->setLocation($event->getLocation())
+            ;
+
+            $em->persist($historyVisite);
         }
 
         $em->persist($event);
