@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import {Button} from "@dashboardComponents/Tools/Button";
-import Sanitize from "@commonComponents/functions/sanitaze";
+
+import { Button } from "@dashboardComponents/Tools/Button";
 
 export class Diag extends Component{
     constructor(props) {
@@ -16,7 +16,7 @@ export class Diag extends Component{
     handleOpen = (status) => { this.setState({ status: !status }) }
 
     render () {
-        const { elem } = this.props;
+        const { isPrint = false, elem } = this.props;
         const { status } = this.state;
 
         let content = <div>Le diagnostic de performance énergétique et d'indice d'émission de gaz à effet de serre n'ont pas été soumis pour le moment.</div>
@@ -70,9 +70,9 @@ export class Diag extends Component{
             }
 
             content = <>
-                <div className="details-tab-infos-main">
+                {!isPrint && <div className="details-tab-infos-main">
                     {diagBeforeJuly}
-                </div>
+                </div>}
                 <div className="details-tab-infos-main">
                     {diag.dpeLetterString ? <>
                         {diag.dpeLetterString !== "NS" && diag.dpeLetterString !== "VI" ? <>
@@ -91,7 +91,7 @@ export class Diag extends Component{
                     </> : gesNotFound}
                 </div>
 
-                {savoirPlus}
+                {!isPrint ? savoirPlus : null}
             </>
         }
 

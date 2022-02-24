@@ -1,0 +1,144 @@
+@import "../../../vars/vars";
+
+.print-ad{
+
+  .line-1{
+    @include flex(row, flex-start, flex-start);
+    margin: 24px;
+
+    .col-1{
+      width: calc(50% - 48px);
+      margin-right: 48px;
+    }
+
+    .col-2{
+      width: 50%;
+    }
+
+    .image{
+      img{
+        width: 312px;
+        height: 312px;
+      }
+    }
+  }
+
+  .line-2{
+    position: relative;
+    margin-top: 48px;
+
+    &:before{
+      content: "";
+      background-color: var(--grey2);
+      display: block;
+      width: 100%; height: calc(100% - 72px);
+      position: absolute;
+      top: 48px;
+      z-index: 0;
+    }
+
+    .images{
+      position: relative;
+      z-index: 1;
+      @include flex(row, flex-start, space-between);
+      margin: 0 24px;
+
+      img{
+        width: 208px;
+        height: 208px;
+      }
+    }
+  }
+
+  .line-3{
+    @include flex(row, flex-start, flex-start);
+    margin: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--greyShadow);
+
+    .col-1{
+      width: calc(60% - 48px);
+      margin-right: 48px;
+      height: 290px;
+
+      .content{
+        -webkit-line-clamp: 15; /* number of lines to show */
+        line-clamp: 15;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+      }
+    }
+
+    .col-2{
+      width: 40%;
+    }
+  }
+
+  .line-4{
+    background-color: var(--greyShadow);
+    padding-top: 24px;
+
+    .col-1{
+      @include flex(row, flex-start, flex-start);
+    }
+
+    .image{
+      width: 128px;
+    }
+
+    .infos{
+      margin-left: 48px;
+
+      .name{
+        @include fontSemibold();
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .name-sub{
+        @include fontRegular();
+        text-decoration: underline;
+      }
+    }
+  }
+
+  h1{
+    font-size: 24px;
+  }
+
+  .address{
+    color: var(--grey3);
+    font-size: 20px;
+    @include fontSemibold();
+    margin-top: 4px;
+  }
+
+  .features{
+    margin-top: 12px;
+    margin-bottom: 24px;
+  }
+
+  .price{
+    margin-bottom: 24px;
+    @include fontSemibold();
+    color: var(--color0);
+    font-size: 26px;
+  }
+
+  .infos-price{
+    color: var(--grey3);
+  }
+
+  .infos-footer{
+    margin-top: 12px;
+    text-align: right;
+  }
+
+  .reference{
+    font-size: 14px;
+    color: var(--grey3);
+    margin-top: 8px;
+  }
+}

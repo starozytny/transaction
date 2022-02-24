@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImOwner;
 use App\Entity\User;
+use App\Repository\Immo\ImPhotoRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,12 +27,16 @@ class PrinterController extends AbstractController
     /**
      * @Route("/bien/{slug}", options={"expose"=true}, name="bien")
      */
-    public function bien(ImBien $obj, SerializerInterface $serializer): Response
+    public function bien(ImBien $obj, ImPhotoRepository $photoRepository, SerializerInterface $serializer): Response
     {
-        $obj = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
+        $photos = $photoRepository->findBy(['bien' => $obj], ['rank' => 'ASC'], 4);
+
+        $obj    = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
+        $photos = $serializer->serialize($photos, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/impressions/bien.html.twig', [
-            'donnees' => $obj
+            'donnees' => $obj,
+            'photos' => $photos,
         ]);
     }
 
