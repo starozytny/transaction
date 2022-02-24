@@ -26,7 +26,7 @@ export class OwnersItem extends Component {
 
         let actions = Actions.getDefaultAction(isClient, elem, "owner");
         actions = actions.concat([
-            {data: <a target="_blank" href={Routing.generate('user_printer_owner', {'id': elem.id})}>Imprimer sa fiche</a>},
+            {data: <a target="_blank" href={Routing.generate('user_printer_owner', {'id': elem.id})}>Imprimer rapport</a>},
         ])
 
         return <div className="item">
