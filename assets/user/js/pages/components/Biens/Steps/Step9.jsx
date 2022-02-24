@@ -137,7 +137,7 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                 {caution !== "" && <div>Caution : {Sanitaze.toFormatCurrency(caution)}</div>}
                                 {honoraireTtc !== "" && <div>Honoraire TTC : {Sanitaze.toFormatCurrency(honoraireTtc)}</div>}
                                 {edl !== "" && <div>Honoraire EDL : {Sanitaze.toFormatCurrency(edl)}</div>}
-                                {chargesMensuelles !== "" && <div>Charges mensuelles EDL : {Sanitaze.toFormatCurrency(chargesMensuelles)}</div>}
+                                {chargesMensuelles !== "" && <div>Charges mensuelles : {Sanitaze.toFormatCurrency(chargesMensuelles)}</div>}
                                 {notaire !== "" && <div>Notaire : {Sanitaze.toFormatCurrency(notaire)}</div>}
                                 {foncier !== "" && <div>Foncier : {Sanitaze.toFormatCurrency(foncier)}</div>}
                             </div>
