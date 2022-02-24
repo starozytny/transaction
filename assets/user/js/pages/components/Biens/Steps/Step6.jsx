@@ -25,10 +25,10 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <label>Financier</label>
             </div>
             <div className="line line-2">
-                <div className="form-group" />
                 <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChange}>
                     <span>Loyer *</span>
                 </Input>
+                <div className="form-group" />
             </div>
             <div className="line line-2">
                 <Input type="number" step="any" identifiant="provisionCharges" valeur={provisionCharges} errors={errors} onChange={onChange}>
@@ -46,23 +46,19 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <Input type="number" step="any" identifiant="caution" valeur={caution} errors={errors} onChange={onChange}>
                     <span>Caution</span>
                 </Input>
+                <div className="form-group" />
+            </div>
+            <div className="line line-2">
                 <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
                     <span>Honoraires (avec état des lieux) TTC *</span>
                 </Input>
-            </div>
-            <div className="line line-2">
-                <div className="form-group" />
                 <Input type="number" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChange}>
-                    <span>- dont état des lieux *</span>
+                    <span>Honoraires état des lieux *</span>
                 </Input>
             </div>
-            <div className="line line-2">
-                <div className="form-group" />
-                <div className="form-group">
-                    <label>Total général</label>
-                    <div>{Sanitaze.toFormatCurrency(totalGeneral)}</div>
-                </div>
-            </div>
+        </div>
+
+        <div className="line special-line">
             <div className="line line-2">
                 <SelectReactSelectize items={bailsItems} identifiant="typeBail" valeur={typeBail} errors={errors}
                                       onChange={(e) => onChangeSelect('typeBail', e)}>
