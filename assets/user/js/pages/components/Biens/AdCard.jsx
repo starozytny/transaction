@@ -180,14 +180,12 @@ export class AdCard extends Component {
                     </div>
                 </div>
                 <div className="card-footer">
-                    {(!isPublishePage && el.confidential.commentary) && <div className="commentary">{parse(el.confidential.commentary)}</div>}
                     {isPublishePage && <div className="commentary">Diffusion sur : {supports.length > 0 ? supports.join().replaceAll(",", ", ")
                         : <span className="txt-danger">Aucune plateforme sélectionnée.</span>}</div>}
 
                     <div className="footer-actions">
-                        {!isPublishePage ? <div className="createdAt">
-                            Ajouté le {el.createdAtString} par {el.createdBy} {el.updatedBy && ("- Modifié le " + el.updatedAtString + " par " + el.updatedBy)}
-                        </div> : <div className="createdAt" />}
+                        {(!isPublishePage && el.confidential.commentary) ? <div className="createdAt">{parse(el.confidential.commentary)}</div> : <div className="createdAt" />}
+
                         <div className={"actions" + (isProspectPage && followed ? " followed" : "")}>
                             {(rapprochements && nbRapprochements > 0) && <ButtonIcon element="a" icon="group" tooltipWidth={160} text={""+nbRapprochements}
                                                                                      onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "possibilities"})}
