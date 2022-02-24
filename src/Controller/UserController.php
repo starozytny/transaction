@@ -276,22 +276,6 @@ class UserController extends AbstractController
         return $this->bienData("suivi", $request, $serializer, $slug, $searchService);
     }
 
-
-    /**
-     * @Route("/biens/bien/impression/{slug}", options={"expose"=true}, name="biens_print")
-     * @throws MpdfException
-     */
-    public function print(ImBien $obj, FileCreator $fileCreator): Mpdf
-    {
-        $path = $obj->getMainPhoto() ? $this->getParameter('images_directory') . $obj->getAgency()->getDirname() . "/" : $this->getParameter('public_directory');
-        $image =  $path . $obj->getMainPhotoFile() ;
-
-        return $fileCreator->createPDF("test", "test.pdf", "user/pdf/bien.html.twig", [
-            'elem' => $obj,
-            'image' => $image
-        ]);
-    }
-
     /**
      * @Route("/compte", options={"expose"=true}, name="profil")
      */

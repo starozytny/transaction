@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImOwner;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -20,6 +21,18 @@ class PrinterController extends AbstractController
     public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+
+    /**
+     * @Route("/bien/{slug}", options={"expose"=true}, name="bien")
+     */
+    public function bien(ImBien $obj, SerializerInterface $serializer): Response
+    {
+        $obj = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/impressions/bien.html.twig', [
+            'donnees' => $obj
+        ]);
     }
 
     /**

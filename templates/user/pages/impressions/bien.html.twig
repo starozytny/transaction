@@ -1,0 +1,9 @@
+{% extends 'user/pages/impressions/template.html.twig' %}
+
+{% set page_title %}Bien{% endset %}
+
+{% block main_content %}
+    <div id="printer-bien" data-donnees="{{ donnees }}">
+        {% include "dashboard/layout/components/spinner.html.twig" %}
+    </div>
+{% endblock %}
