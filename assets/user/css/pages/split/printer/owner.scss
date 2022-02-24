@@ -1,7 +1,6 @@
 @import "../../../vars/vars";
 
 .print-owner{
-  margin: 24px;
 
   .print-card-ad{
     @include flex(row, flex-start, flex-start);
@@ -95,12 +94,37 @@
 
     .time{
       color: var(--grey3);
-      width: 360px;
+      width: 200px;
     }
 
     .infos{
-      width: calc(100% - 360px - 8px);
+      width: calc(100% - 200px - 8px);
       margin-left: 8px;
+    }
+
+    $status:
+            "0" var(--danger),
+            "1" var(--primary),
+            "2" var(--grey2),
+            "3" var(--warning),
+    ;
+
+    .badge{
+      display: inline-block;
+      padding: 2px 4px 1px 4px;
+      margin: 4px 4px 2px;
+      background: var(--primaryShadow);
+      border-radius: 4px;
+      font-size: 12px;
+      opacity: 0.8;
+      color: var(--alpha);
+      @include fontSemibold();
+
+      @each $number, $bg in $status {
+        &.badge-#{$number}{
+          background-color: $bg;
+        }
+      }
     }
   }
 }

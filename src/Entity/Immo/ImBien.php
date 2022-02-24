@@ -283,16 +283,6 @@ class ImBien extends DataEntity
      */
     private $contracts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=HiPublish::class, mappedBy="bien")
-     */
-    private $hiPublishes;
-
-    /**
-     * @ORM\OneToMany(targetEntity=HiVisite::class, mappedBy="bien")
-     */
-    private $hiVisites;
-
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -303,8 +293,6 @@ class ImBien extends DataEntity
         $this->offers = new ArrayCollection();
         $this->publishes = new ArrayCollection();
         $this->contracts = new ArrayCollection();
-        $this->hiPublishes = new ArrayCollection();
-        $this->hiVisites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -957,66 +945,6 @@ class ImBien extends DataEntity
             // set the owning side to null (unless already changed)
             if ($contract->getBien() === $this) {
                 $contract->setBien(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|HiPublish[]
-     */
-    public function getHiPublishes(): Collection
-    {
-        return $this->hiPublishes;
-    }
-
-    public function addHiPublish(HiPublish $hiPublish): self
-    {
-        if (!$this->hiPublishes->contains($hiPublish)) {
-            $this->hiPublishes[] = $hiPublish;
-            $hiPublish->setBien($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHiPublish(HiPublish $hiPublish): self
-    {
-        if ($this->hiPublishes->removeElement($hiPublish)) {
-            // set the owning side to null (unless already changed)
-            if ($hiPublish->getBien() === $this) {
-                $hiPublish->setBien(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|HiVisite[]
-     */
-    public function getHiVisites(): Collection
-    {
-        return $this->hiVisites;
-    }
-
-    public function addHiVisite(HiVisite $hiVisite): self
-    {
-        if (!$this->hiVisites->contains($hiVisite)) {
-            $this->hiVisites[] = $hiVisite;
-            $hiVisite->setBien($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHiVisite(HiVisite $hiVisite): self
-    {
-        if ($this->hiVisites->removeElement($hiVisite)) {
-            // set the owning side to null (unless already changed)
-            if ($hiVisite->getBien() === $this) {
-                $hiVisite->setBien(null);
             }
         }
 

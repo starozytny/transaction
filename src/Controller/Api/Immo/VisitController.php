@@ -88,10 +88,14 @@ class VisitController extends AbstractController
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
         }
 
-        $existe = $em->getRepository(HiVisite::class)->findOneBy(['bien' => $bien], ['createdAt' => 'DESC']);
+        $em->persist($event);
+        $em->persist($obj);
+
+        $existe = $em->getRepository(HiVisite::class)->findOneBy(['bienId' => $bien->getId(), 'visiteId' => $obj->getId()], ['createdAt' => 'DESC']);
         if($existe && $existe->getStatus() != $event->getStatus() || !$existe){
             $historyVisite = (new HiVisite())
-                ->setBien($bien)
+                ->setBienId($bien->getId())
+                ->setVisiteId($obj->getId())
                 ->setStatus($event->getStatus())
                 ->setFullDate($event->getFullDate())
                 ->setName($event->getName())
@@ -101,8 +105,6 @@ class VisitController extends AbstractController
             $em->persist($historyVisite);
         }
 
-        $em->persist($event);
-        $em->persist($obj);
         $em->flush();
 
         $data = $serializer->serialize($obj, "json", ['groups' => ImVisit::VISIT_READ]);

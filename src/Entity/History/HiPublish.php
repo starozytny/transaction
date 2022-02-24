@@ -3,7 +3,6 @@
 namespace App\Entity\History;
 
 use App\Entity\DataEntity;
-use App\Entity\Immo\ImBien;
 use App\Repository\History\HiPublishRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -23,11 +22,10 @@ class HiPublish extends DataEntity
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="hiPublishes")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="integer")
      * @Groups({"history:publish"})
      */
-    private $bien;
+    private $bienId;
 
     /**
      * @ORM\Column(type="datetime")
@@ -48,18 +46,6 @@ class HiPublish extends DataEntity
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getBien(): ?ImBien
-    {
-        return $this->bien;
-    }
-
-    public function setBien(?ImBien $bien): self
-    {
-        $this->bien = $bien;
-
-        return $this;
     }
 
     /**
@@ -91,6 +77,18 @@ class HiPublish extends DataEntity
     public function setSupports(?array $supports): self
     {
         $this->supports = $supports;
+
+        return $this;
+    }
+
+    public function getBienId(): ?int
+    {
+        return $this->bienId;
+    }
+
+    public function setBienId(int $bienId): self
+    {
+        $this->bienId = $bienId;
 
         return $this;
     }

@@ -65,10 +65,6 @@ export class PrintBien extends Component{
                             </>}
                         </>}
                     </div>
-                    <div className="infos-footer">
-                        <div className="badge badge-default">{elem.typeAdString}</div>
-                        <div className="reference">Référence : {elem.reference}</div>
-                    </div>
                 </div>
             </div>
 
@@ -86,6 +82,10 @@ export class PrintBien extends Component{
             <div className="line-3">
                 <div className="col-1">
                     <div className="content">{elem.advert.contentFull}</div>
+                    <div className="infos-footer">
+                        <div className="badge badge-default">{elem.typeAdString}</div>
+                        <div className="reference">Référence : {elem.reference}</div>
+                    </div>
                 </div>
                 <div className="col-2">
                     <Diag elem={elem} isPrint={true} />

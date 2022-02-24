@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\History\HiPublish;
+use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImVisit;
@@ -51,13 +52,13 @@ class PrinterController extends AbstractController
     {
         $em = $this->doctrine->getManager();
         $biens     = $em->getRepository(ImBien::class)->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
-        $publishes = $em->getRepository(HiPublish::class)->findBy(['bien' => $biens], ['createdAt' => 'DESC']);
-        $visites   = $em->getRepository(ImVisit::class)->findBy(['bien' => $biens]);
+        $publishes = $em->getRepository(HiPublish::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
+        $visites   = $em->getRepository(HiVisite::class)->findBy(['bienId' => $biens]);
 
         $obj        = $serializer->serialize($obj,       'json', ['groups' => User::ADMIN_READ]);
         $biens      = $serializer->serialize($biens,     'json', ['groups' => User::USER_READ]);
         $publishes  = $serializer->serialize($publishes, 'json', ['groups' => HiPublish::HISTORY_PUBLISH]);
-        $visites    = $serializer->serialize($visites,   'json', ['groups' => ImVisit::VISIT_READ]);
+        $visites    = $serializer->serialize($visites,   'json', ['groups' => HiVisite::HISTORY_VISITE]);
 
         return $this->render('user/pages/impressions/owner.html.twig', [
             'donnees' => $obj,

@@ -3,8 +3,7 @@
 .print-ad{
 
   .line-1{
-    @include flex(row, flex-start, flex-start);
-    margin: 24px;
+    @include flex(row, flex-start, flex-start);;
 
     .col-1{
       width: calc(50% - 48px);
@@ -25,7 +24,7 @@
 
   .line-2{
     position: relative;
-    margin-top: 48px;
+    margin-top: 24px;
 
     &:before{
       content: "";
@@ -52,14 +51,14 @@
 
   .line-3{
     @include flex(row, flex-start, flex-start);
-    margin: 24px;
+    margin: 24px 0;
     padding-top: 24px;
     border-top: 1px solid var(--greyShadow);
 
     .col-1{
       width: calc(60% - 48px);
       margin-right: 48px;
-      height: 240px;
+      height: 300px;
 
       .content{
         -webkit-line-clamp: 13; /* number of lines to show */
@@ -78,18 +77,23 @@
 
   .line-4{
     background-color: var(--greyShadow);
-    padding-top: 24px;
+    padding: 24px 0;
 
     .col-1{
       @include flex(row, flex-start, flex-start);
     }
 
     .image{
-      width: 128px;
+      width: 64px;
+      margin-left: 24px;
     }
 
     .infos{
-      margin-left: 48px;
+      margin-left: 24px;
+
+      &:not(:first-child){
+        margin-left: 48px;
+      }
 
       .name{
         @include fontSemibold();
@@ -99,7 +103,6 @@
 
       .name-sub{
         @include fontRegular();
-        text-decoration: underline;
       }
     }
   }
@@ -141,7 +144,6 @@
 
   .infos-footer{
     margin-top: 12px;
-    text-align: right;
   }
 
   .reference{

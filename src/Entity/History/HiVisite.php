@@ -23,11 +23,16 @@ class HiVisite extends DataEntity
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="hiVisites")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="integer")
      * @Groups({"history:visite"})
      */
-    private $bien;
+    private $bienId;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"history:visite"})
+     */
+    private $visiteId;
 
     /**
      * @ORM\Column(type="datetime")
@@ -68,14 +73,26 @@ class HiVisite extends DataEntity
         return $this->id;
     }
 
-    public function getBien(): ?ImBien
+    public function getBienId(): ?int
     {
-        return $this->bien;
+        return $this->bienId;
     }
 
-    public function setBien(?ImBien $bien): self
+    public function setBienId(int $bienId): self
     {
-        $this->bien = $bien;
+        $this->bienId = $bienId;
+
+        return $this;
+    }
+
+    public function getVisiteId(): ?int
+    {
+        return $this->visiteId;
+    }
+
+    public function setVisiteId(int $visiteId): self
+    {
+        $this->visiteId = $visiteId;
 
         return $this;
     }
@@ -147,5 +164,17 @@ class HiVisite extends DataEntity
         $this->status = $status;
 
         return $this;
+    }
+
+
+    /**
+     * @return string
+     * @Groups({"history:visite"})
+     */
+    public function getStatusString(): string
+    {
+        $status = ["Inactif", "Actif", "Annulé", "Fini"];
+
+        return $status[$this->status];
     }
 }

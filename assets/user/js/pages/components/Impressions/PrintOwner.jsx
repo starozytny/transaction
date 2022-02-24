@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import parse from "html-react-parser";
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
 import { Alert }    from "@dashboardComponents/Tools/Alert";
@@ -21,8 +22,6 @@ export class PrintOwner extends Component{
     render () {
         const { elem, biens, publishes, visites } = this.state;
 
-        console.log(visites)
-
         let content = <div className="print-owner">
             <div className="file-date">
                 <div>Créé le {(new Date()).toLocaleDateString()}</div>
@@ -36,14 +35,14 @@ export class PrintOwner extends Component{
 
                     let listVisites = [];
                     visites.forEach(visite => {
-                        if(visite.bien.id === el.id){
+                        if(visite.bienId === el.id){
                             listVisites.push(<Visite visite={visite} key={visite.id} />);
                         }
                     })
 
                     let historyPublishes = [];
                     publishes.forEach(pub => {
-                        if(pub.bien.id === el.id){
+                        if(pub.bienId === el.id){
                             historyPublishes.push(<Publication pub={pub} key={pub.id}/>);
                         }
                     })
@@ -125,10 +124,11 @@ function Publication ({ pub }) {
 function Visite ({ visite }) {
     return <div className="visite">
         <div className="time">
-            <span>{visite.agEvent.fullDateInline}</span>
+            <span>{parse(visite.fullDate)}</span>
         </div>
         <div className="infos">
-            - <span>{visite.agEvent.name}</span>
+            <span className={"badge badge-" + visite.status}>{visite.statusString}</span>
+            <span>{visite.name} {visite.location ? "à " + visite.location : null}</span>
         </div>
     </div>
 }

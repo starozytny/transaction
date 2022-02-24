@@ -85,7 +85,7 @@ class PublishController extends AbstractController
             }
 
             $historyPublish = (new HiPublish())
-                ->setBien($bien)
+                ->setBienId($bien->getId())
                 ->setSupports($supports)
             ;
 
