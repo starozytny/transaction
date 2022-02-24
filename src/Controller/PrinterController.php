@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Immo\ImOwner;
+use App\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/espace-membre/impression", name="user_printer_")
@@ -20,10 +23,14 @@ class PrinterController extends AbstractController
     }
 
     /**
-     * @Route("/proprietaire", options={"expose"=true}, name="owner")
+     * @Route("/proprietaire/{id}", options={"expose"=true}, name="owner")
      */
-    public function owner(): Response
+    public function owner(ImOwner $obj, SerializerInterface $serializer): Response
     {
-        return $this->render('user/pages/impressions/owner.html.twig');
+        $obj = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('user/pages/impressions/owner.html.twig', [
+            'donnees' => $obj
+        ]);
     }
 }

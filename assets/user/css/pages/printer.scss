@@ -1,4 +1,21 @@
+@import "../vars/vars";
+
 @page{
   size: auto;
   margin: 0;
+}
+
+#canvas-printer{
+  //opacity: 0;
+  //max-height: 1024px;
+  //overflow: hidden;
+}
+
+@media print{
+  #canvas-printer{
+    -webkit-print-color-adjust: exact;
+    opacity: 1;
+    max-height: initial;
+    overflow: initial;
+  }
 }
