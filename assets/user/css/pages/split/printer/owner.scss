@@ -3,35 +3,5 @@
 .print-owner{
   margin: 24px;
 
-  .file-title{
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--greyShadow);
 
-    h1{
-      margin-bottom: 12px;
-    }
-
-    .subtitle{
-      color: var(--grey3);
-      font-size: 24px;
-      @include fontSemibold();
-    }
-  }
-
-  .file-content{
-    .item{
-      margin-bottom: 48px;
-      padding-bottom: 48px;
-      border-bottom: 5px solid var(--greyShadow);
-
-      & > .title{
-        @include fontSemibold();
-        font-size: 20px;
-        margin-bottom: 12px;
-        border-bottom: 2px solid var(--txt);
-        text-transform: uppercase;
-      }
-    }
-  }
 }

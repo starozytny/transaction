@@ -19,13 +19,16 @@ export class PrintOwner extends Component{
         const { elem, biens } = this.state;
 
         let content = <div className="print-owner">
+            <div className="file-date">
+                <div>Créé le {(new Date()).toLocaleDateString()}</div>
+            </div>
             <div className="file-title">
-                <h1>Rapport du {(new Date()).toLocaleDateString()}</h1>
+                <h1>Rapport</h1>
                 <div className="subtitle">{elem.fullname}</div>
             </div>
             <div className="file-content">
                 {biens.length !== 0 ? biens.map((el, index) => {
-                    return <div className="item">
+                    return <div className="item" key={el.id}>
                         <div className="title">Bien ({index + 1} / {biens.length})</div>
                         <div className="content">
                             <div className="card-ad">
