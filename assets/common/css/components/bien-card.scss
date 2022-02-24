@@ -81,7 +81,7 @@
     .badges{
       @include flex(row, flex-start, flex-start);
 
-      & > .status:not(:last-child){
+      & > .badge:not(:last-child){
         margin-right: 4px;
       }
     }
