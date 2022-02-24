@@ -31,7 +31,6 @@ class HiPublish extends DataEntity
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"history:publish"})
      */
     private $createdAt;
 
@@ -69,7 +68,7 @@ class HiPublish extends DataEntity
      */
     public function getCreatedAtString(): ?string
     {
-        return $this->getFullDateString($this->createdAt, 'LLLL');
+        return $this->getFullDateString($this->createdAt, 'llll');
     }
 
     public function getCreatedAt(): ?\DateTimeInterface

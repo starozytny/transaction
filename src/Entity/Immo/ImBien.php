@@ -4,6 +4,7 @@ namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
 use App\Entity\History\HiPublish;
+use App\Entity\History\HiVisite;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -58,7 +59,7 @@ class ImBien extends DataEntity
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"admin:read", "user:read", "agenda:read", "visit:read", "suivi:read", "offer:read",
-     *     "publish:read", "history:publish"})
+     *     "publish:read", "history:publish", "history:visite"})
      */
     private $id;
 
@@ -287,6 +288,11 @@ class ImBien extends DataEntity
      */
     private $hiPublishes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=HiVisite::class, mappedBy="bien")
+     */
+    private $hiVisites;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -298,6 +304,7 @@ class ImBien extends DataEntity
         $this->publishes = new ArrayCollection();
         $this->contracts = new ArrayCollection();
         $this->hiPublishes = new ArrayCollection();
+        $this->hiVisites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -980,6 +987,36 @@ class ImBien extends DataEntity
             // set the owning side to null (unless already changed)
             if ($hiPublish->getBien() === $this) {
                 $hiPublish->setBien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HiVisite[]
+     */
+    public function getHiVisites(): Collection
+    {
+        return $this->hiVisites;
+    }
+
+    public function addHiVisite(HiVisite $hiVisite): self
+    {
+        if (!$this->hiVisites->contains($hiVisite)) {
+            $this->hiVisites[] = $hiVisite;
+            $hiVisite->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHiVisite(HiVisite $hiVisite): self
+    {
+        if ($this->hiVisites->removeElement($hiVisite)) {
+            // set the owning side to null (unless already changed)
+            if ($hiVisite->getBien() === $this) {
+                $hiVisite->setBien(null);
             }
         }
 
