@@ -3,7 +3,10 @@
 {% set page_title %}Propriétaire{% endset %}
 
 {% block main_content %}
-    <div id="printer-owner" data-donnees="{{ donnees }}">
+    <div id="printer-owner"
+         data-donnees="{{ donnees }}"
+         data-biens="{{ biens }}"
+    >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

@@ -1,6 +1,9 @@
 @import "../vars/vars";
 
+@import "../components/card";
+
 @import "./split/printer/bien";
+@import "./split/printer/owner";
 
 @page{
   size: auto;

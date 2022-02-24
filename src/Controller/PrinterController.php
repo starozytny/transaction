@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImOwner;
 use App\Entity\User;
+use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImPhotoRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,12 +44,16 @@ class PrinterController extends AbstractController
     /**
      * @Route("/proprietaire/{id}", options={"expose"=true}, name="owner")
      */
-    public function owner(ImOwner $obj, SerializerInterface $serializer): Response
+    public function owner(ImOwner $obj, ImBienRepository $bienRepository, SerializerInterface $serializer): Response
     {
+        $biens = $bienRepository->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
+
         $obj = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
+        $biens = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/impressions/owner.html.twig', [
-            'donnees' => $obj
+            'donnees' => $obj,
+            'biens' => $biens,
         ]);
     }
 }

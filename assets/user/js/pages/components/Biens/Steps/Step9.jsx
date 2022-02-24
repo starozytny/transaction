@@ -79,7 +79,7 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                             <div className="infos">
                                 <div className="col-1">
                                     <div className="badges">
-                                        <div className="status">{typeBienString}</div>
+                                        <div className="badge-bien badge">{typeBienString}</div>
                                     </div>
                                     <div className="identifier">
                                         <div className="title">
@@ -93,8 +93,8 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                 </div>
                                 <div className="col-2">
                                     <div className="badges">
-                                        <div className="status">{typeAdString}</div>
-                                        <div className="status">Mandat {typeMandatString}</div>
+                                        <div className="badge-bien badge">{typeAdString}</div>
+                                        <div className="badge-bien badge">Mandat {typeMandatString}</div>
                                     </div>
                                     <div className="identifier">
                                         <div className="price">{Sanitaze.toFormatCurrency(price)} cc/mois</div>

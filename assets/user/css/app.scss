@@ -82,6 +82,7 @@ html, body{
 body {
   color: var(--txt);
   @include fontRegular();
+  background-color: var(--fond);
 }
 
 img{
