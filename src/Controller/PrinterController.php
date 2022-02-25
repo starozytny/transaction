@@ -53,7 +53,7 @@ class PrinterController extends AbstractController
         $em = $this->doctrine->getManager();
         $biens     = $em->getRepository(ImBien::class)->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
         $publishes = $em->getRepository(HiPublish::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
-        $visites   = $em->getRepository(HiVisite::class)->findBy(['bienId' => $biens]);
+        $visites   = $em->getRepository(HiVisite::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
 
         $obj        = $serializer->serialize($obj,       'json', ['groups' => User::ADMIN_READ]);
         $biens      = $serializer->serialize($biens,     'json', ['groups' => User::USER_READ]);
