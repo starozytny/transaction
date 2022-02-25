@@ -7,10 +7,7 @@ use App\Entity\History\HiPublish;
 use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImOwner;
-use App\Entity\Immo\ImVisit;
 use App\Entity\User;
-use App\Repository\History\HiPublishRepository;
-use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImPhotoRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,17 +46,16 @@ class PrinterController extends AbstractController
     /**
      * @Route("/affiche/bien/{slug}", options={"expose"=true}, name="bien_rapport")
      */
-    public function rapportBien(ImBien $obj, ImPhotoRepository $photoRepository, SerializerInterface $serializer): Response
+    public function rapportBien(ImBien $obj, SerializerInterface $serializer): Response
     {
-        $photos = $photoRepository->findBy(['bien' => $obj], ['rank' => 'ASC'], 4);
+        $em = $this->doctrine->getManager();
+        $obj = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
 
-        $obj    = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
-        $photos = $serializer->serialize($photos, 'json', ['groups' => User::USER_READ]);
+        $data = $this->getDataHistoryBien($em, $serializer, $obj);
 
-        return $this->render('user/pages/impressions/bien.html.twig', [
+        return $this->render('user/pages/impressions/rapport_bien.html.twig', array_merge([
             'donnees' => $obj,
-            'photos' => $photos,
-        ]);
+        ], $data));
     }
 
     /**
@@ -69,22 +65,32 @@ class PrinterController extends AbstractController
     {
         $em = $this->doctrine->getManager();
         $biens     = $em->getRepository(ImBien::class)->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
+
+        $obj        = $serializer->serialize($obj,       'json', ['groups' => User::ADMIN_READ]);
+        $biens      = $serializer->serialize($biens,     'json', ['groups' => User::USER_READ]);
+
+        $data = $this->getDataHistoryBien($em, $serializer, $biens);
+
+        return $this->render('user/pages/impressions/rapport_owner.html.twig', array_merge([
+            'donnees' => $obj,
+            'biens' => $biens,
+        ], $data));
+    }
+
+    private function getDataHistoryBien($em, $serializer, $biens): array
+    {
         $publishes = $em->getRepository(HiPublish::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
         $visites   = $em->getRepository(HiVisite::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
         $prices    = $em->getRepository(HiPrice::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
 
-        $obj        = $serializer->serialize($obj,       'json', ['groups' => User::ADMIN_READ]);
-        $biens      = $serializer->serialize($biens,     'json', ['groups' => User::USER_READ]);
         $publishes  = $serializer->serialize($publishes, 'json', ['groups' => HiPublish::HISTORY_PUBLISH]);
         $visites    = $serializer->serialize($visites,   'json', ['groups' => HiVisite::HISTORY_VISITE]);
         $prices     = $serializer->serialize($prices,    'json', ['groups' => HiPrice::HISTORY_PRICE]);
 
-        return $this->render('user/pages/impressions/owner.html.twig', [
-            'donnees' => $obj,
-            'biens' => $biens,
+        return [
             'publishes' => $publishes,
             'visites' => $visites,
-            'prices' => $prices,
-        ]);
+            'prices' => $prices
+        ];
     }
 }

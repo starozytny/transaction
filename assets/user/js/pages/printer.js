@@ -15,7 +15,7 @@ if(el){
     render(<PrintBien {...el.dataset} />, el)
 }
 
-el = document.getElementById("printer-owner");
+el = document.getElementById("rapport-owner");
 if(el){
     render(<PrintOwner {...el.dataset} />, el)
 }
