@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import Sanitaze   from "@commonComponents/functions/sanitaze"
 import Formulaire from "@dashboardComponents/functions/Formulaire";
-import Validateur from "@commonComponents/functions/validateur";
 
 import { Input }  from "@dashboardComponents/Tools/Fields";
 import { Button } from "@dashboardComponents/Tools/Button";
@@ -14,7 +13,7 @@ export class Financial extends Component {
         super(props);
 
         this.state = {
-            price: "",
+            price: "100000",
             notaire: "8783",
             apport: "20000",
             garantie: "2000",
@@ -58,33 +57,19 @@ export class Financial extends Component {
 
         e.preventDefault();
 
-        let paramsToValidate = [
-            {type: "text",       id: 'price',       value: price},
-            {type: "text",       id: 'notaire',     value: notaire},
-            {type: "text",       id: 'apport',      value: apport},
-            {type: "text",       id: 'garantie',    value: garantie},
-            {type: "text",       id: 'assurance',   value: assurance},
-            {type: "text",       id: 'taux',        value: taux},
-            {type: "text",       id: 'years',       value: years},
-        ];
+        this.setState({ errors: [] })
 
-        let validate = Validateur.validateur(paramsToValidate)
-        if(!validate.code){
-            Formulaire.showErrors(this, validate);
-        }else{
+        let nPrice = Formulaire.setToFloat(price);
+        let nNotaire = Formulaire.setToFloat(notaire);
+        let nApport = Formulaire.setToFloat(apport);
+        let nGarantie = Formulaire.setToFloat(garantie);
+        let nAssurance = Formulaire.setToFloat(assurance);
+        let nTaux = Formulaire.setToFloat(taux);
+        let nYears = Formulaire.setToFloat(years);
 
-            let nPrice = Formulaire.setToFloat(price);
-            let nNotaire = Formulaire.setToFloat(notaire);
-            let nApport = Formulaire.setToFloat(apport);
-            let nGarantie = Formulaire.setToFloat(garantie);
-            let nAssurance = Formulaire.setToFloat(assurance);
-            let nTaux = Formulaire.setToFloat(taux);
-            let nYears = Formulaire.setToFloat(years);
+        let mensualite = ( ((nPrice - nApport + nNotaire + nGarantie + nAssurance) * ((nTaux/100)/12)) / (1 - ( Math.pow(1 + ((nTaux/100)/12), -(12*nYears)) )) )
 
-            let mensualite = ( ((nPrice - nApport + nNotaire + nGarantie + nAssurance) * ((nTaux/100)/12)) / (1 - ( Math.pow(1 + ((nTaux/100)/12), -(12*nYears)) )) )
-
-            this.setState({ mensualite: Math.round(mensualite) })
-        }
+        this.setState({ mensualite: Math.round(mensualite) })
     }
 
     render () {
