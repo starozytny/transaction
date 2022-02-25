@@ -89,8 +89,8 @@ class HiPrice extends DataEntity
      * @return string|null
      * @Groups({"history:price"})
      */
-    public function getCreatedAtJavascript(): ?string
+    public function getCreatedAtString(): ?string
     {
-        return $this->setDateJavascript($this->createdAt);
+        return $this->getFullDateString($this->createdAt, "llll");
     }
 }
