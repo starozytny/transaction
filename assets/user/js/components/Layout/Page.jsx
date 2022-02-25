@@ -19,8 +19,8 @@ export function PageInfos2 ({ image, children, actions }) {
         <div className="page-infos-2-text">
             {children}
         </div>
-        <div className="page-infos-2-actions">
+        {actions && <div className="page-infos-2-actions">
             {actions}
-        </div>
+        </div>}
     </div>
 }

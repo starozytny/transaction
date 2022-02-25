@@ -7,34 +7,3 @@
     @include fontSemibold();
   }
 }
-
-.page-default{
-  .page-infos-2-image{
-    max-width: 220px;
-  }
-
-  .page-infos-2-text{
-    margin: 24px 0;
-    font-size: 15px;
-  }
-
-  .page-infos-2-actions{
-    .btn:not(:last-child){
-      margin-bottom: 12px;
-    }
-  }
-}
-
-//                      __   _ ____  ___   ___    __
-//                     | _| / |___ \( _ ) / _ \  |_ |
-//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
-//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
-//                     | |  |_|_____\___/ \___/   | |
-//                     |__|                      |__|
-@media (min-width:1280px) {
-  .page-default{
-    .page-infos-2-content{
-      padding: 24px;
-    }
-  }
-}
