@@ -31,7 +31,7 @@ class PrinterController extends AbstractController
     }
 
     /**
-     * @Route("/bien/{slug}", options={"expose"=true}, name="bien")
+     * @Route("/affiche/bien/{slug}", options={"expose"=true}, name="bien")
      */
     public function bien(ImBien $obj, ImPhotoRepository $photoRepository, SerializerInterface $serializer): Response
     {
@@ -47,9 +47,25 @@ class PrinterController extends AbstractController
     }
 
     /**
-     * @Route("/proprietaire/{id}", options={"expose"=true}, name="owner")
+     * @Route("/affiche/bien/{slug}", options={"expose"=true}, name="bien_rapport")
      */
-    public function owner(ImOwner $obj, SerializerInterface $serializer): Response
+    public function rapportBien(ImBien $obj, ImPhotoRepository $photoRepository, SerializerInterface $serializer): Response
+    {
+        $photos = $photoRepository->findBy(['bien' => $obj], ['rank' => 'ASC'], 4);
+
+        $obj    = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
+        $photos = $serializer->serialize($photos, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/impressions/bien.html.twig', [
+            'donnees' => $obj,
+            'photos' => $photos,
+        ]);
+    }
+
+    /**
+     * @Route("/rapport/proprietaire/{id}", options={"expose"=true}, name="owner_rapport")
+     */
+    public function rapportOwner(ImOwner $obj, SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
         $biens     = $em->getRepository(ImBien::class)->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
