@@ -95,6 +95,7 @@ Encore
     .addEntry('user_setting', './assets/user/js/pages/setting.js')
     .addEntry('user_publication', './assets/user/js/pages/publication.js')
     .addEntry('user_printer', './assets/user/js/pages/printer.js')
+    .addEntry('user_utilities', './assets/user/js/pages/utilities.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')

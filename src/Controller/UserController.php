@@ -624,4 +624,12 @@ class UserController extends AbstractController
             'publishes' => $publishes,
         ]);
     }
+
+    /**
+     * @Route("/outils/fiancement", name="utilities_financial")
+     */
+    public function utilitiesFinancial(): Response
+    {
+        return $this->render('user/pages/utilities/financial.html.twig');
+    }
 }
