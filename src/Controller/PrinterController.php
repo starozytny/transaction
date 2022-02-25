@@ -49,9 +49,9 @@ class PrinterController extends AbstractController
     public function rapportBien(ImBien $obj, SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
-        $obj = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
-
         $data = $this->getDataHistoryBien($em, $serializer, $obj);
+
+        $obj = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/impressions/rapport_bien.html.twig', array_merge([
             'donnees' => $obj,
@@ -64,12 +64,11 @@ class PrinterController extends AbstractController
     public function rapportOwner(ImOwner $obj, SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
-        $biens     = $em->getRepository(ImBien::class)->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
+        $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
+        $data  = $this->getDataHistoryBien($em, $serializer, $biens);
 
         $obj        = $serializer->serialize($obj,       'json', ['groups' => User::ADMIN_READ]);
         $biens      = $serializer->serialize($biens,     'json', ['groups' => User::USER_READ]);
-
-        $data = $this->getDataHistoryBien($em, $serializer, $biens);
 
         return $this->render('user/pages/impressions/rapport_owner.html.twig', array_merge([
             'donnees' => $obj,
@@ -79,6 +78,7 @@ class PrinterController extends AbstractController
 
     private function getDataHistoryBien($em, $serializer, $biens): array
     {
+        dump($biens);
         $publishes = $em->getRepository(HiPublish::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
         $visites   = $em->getRepository(HiVisite::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
         $prices    = $em->getRepository(HiPrice::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);

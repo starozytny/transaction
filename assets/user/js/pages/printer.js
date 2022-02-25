@@ -5,8 +5,8 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min';
 
 import React from "react";
 import { render } from "react-dom";
-import { PrintOwner } from "@userPages/components/Impressions/PrintOwner";
 import { PrintBien } from "@userPages/components/Impressions/PrintBien";
+import { RapportOwner } from "@userPages/components/Impressions/Rapport/RapportOwner";
 
 Routing.setRoutingData(routes);
 
@@ -17,5 +17,5 @@ if(el){
 
 el = document.getElementById("rapport-owner");
 if(el){
-    render(<PrintOwner {...el.dataset} />, el)
+    render(<RapportOwner {...el.dataset} />, el)
 }
