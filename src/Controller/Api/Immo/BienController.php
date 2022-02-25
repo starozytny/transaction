@@ -24,6 +24,7 @@ use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
 use App\Service\Data\Donnee\DataDonnee;
 use App\Service\FileUploader;
+use App\Service\History\HistoryService;
 use App\Service\Immo\ImmoService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -102,7 +103,8 @@ class BienController extends AbstractController
      * @throws Exception
      */
     public function submitForm($type, ImBien $obj, Request $request, ApiResponse $apiResponse, FileUploader $fileUploader,
-                               ValidatorService $validator, DataImmo $dataEntity, DataDonnee $dataDonnee, $immoService): JsonResponse
+                               ValidatorService $validator, DataImmo $dataEntity, DataDonnee $dataDonnee, $immoService,
+                               HistoryService $historyService): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
@@ -222,6 +224,8 @@ class BienController extends AbstractController
 
         $em->persist($obj);
         $em->flush();
+
+        $historyService->createPrice($obj);
 
         if($data->newQuartier && $data->newQuartier[0] == 1){
             $quartier = $dataDonnee->setDataQuartier(new DoQuartier(), $data, $data->quartier);
@@ -345,17 +349,19 @@ class BienController extends AbstractController
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
+     * @param FileUploader $fileUploader
      * @param DataImmo $dataEntity
      * @param DataDonnee $dataDonnee
-     * @param FileUploader $fileUploader
      * @param ImmoService $immoService
+     * @param HistoryService $historyService
      * @return JsonResponse
      * @throws Exception
      */
-    public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
-                           DataImmo $dataEntity, DataDonnee $dataDonnee, FileUploader $fileUploader, ImmoService $immoService): JsonResponse
+    public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator ,FileUploader $fileUploader,
+                           DataImmo $dataEntity, DataDonnee $dataDonnee, ImmoService $immoService, HistoryService $historyService): JsonResponse
     {
-        return $this->submitForm("create", new ImBien(), $request, $apiResponse, $fileUploader, $validator, $dataEntity, $dataDonnee, $immoService);
+        return $this->submitForm("create", new ImBien(), $request, $apiResponse, $fileUploader, $validator,
+            $dataEntity, $dataDonnee, $immoService, $historyService);
     }
 
     /**
@@ -374,17 +380,19 @@ class BienController extends AbstractController
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
+     * @param FileUploader $fileUploader
      * @param DataImmo $dataEntity
      * @param DataDonnee $dataDonnee
-     * @param FileUploader $fileUploader
      * @param ImmoService $immoService
+     * @param HistoryService $historyService
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
-                           DataImmo $dataEntity, DataDonnee $dataDonnee, FileUploader $fileUploader, ImmoService $immoService): JsonResponse
+    public function update(ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, FileUploader $fileUploader,
+                           DataImmo $dataEntity, DataDonnee $dataDonnee, ImmoService $immoService, HistoryService $historyService): JsonResponse
     {
-        return $this->submitForm("update", $obj, $request, $apiResponse, $fileUploader, $validator, $dataEntity, $dataDonnee, $immoService);
+        return $this->submitForm("update", $obj, $request, $apiResponse, $fileUploader, $validator,
+            $dataEntity, $dataDonnee, $immoService, $historyService);
     }
 
     /**
