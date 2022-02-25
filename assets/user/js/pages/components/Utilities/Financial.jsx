@@ -14,7 +14,7 @@ export class Financial extends Component {
         super(props);
 
         this.state = {
-            price: "100000",
+            price: "",
             notaire: "8783",
             apport: "20000",
             garantie: "2000",
@@ -26,15 +26,17 @@ export class Financial extends Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeCleave = this.handleChangeCleave.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange = (e) => {
+    handleChangeCleave = (e) => {
         let name = e.currentTarget.name;
-        let value = e.currentTarget.value;
+        let value = e.currentTarget.rawValue;
+
+        value = Formulaire.setToFloat(value);
 
         if(name === "price"){
-            value = e.currentTarget.value !== "" ? parseFloat(e.currentTarget.value) : "";
 
             let nNotaire    = value !== "" ? Math.round(value * (8.783/100)) : "";
             let nApport     = value !== "" ? Math.round(value * (20/100)) : "";
@@ -47,26 +49,39 @@ export class Financial extends Component {
         this.setState({ [name]: value })
     }
 
+    handleChange = (e) => {
+        this.setState({ [e.currentTarget.name]: e.currentTarget.value })
+    }
+
     handleSubmit = (e) => {
         const { price, notaire, apport, garantie, assurance, taux, years } = this.state;
 
         e.preventDefault();
 
         let paramsToValidate = [
-            {type: "text",       id: 'price',   value: price},
-            {type: "text",       id: 'notaire', value: notaire},
-            {type: "text",       id: 'apport',  value: apport},
-            {type: "text",       id: 'garantie',  value: garantie},
-            {type: "text",       id: 'assurance',  value: assurance},
-            {type: "text",       id: 'taux',    value: taux},
-            {type: "text",       id: 'years',   value: years},
+            {type: "text",       id: 'price',       value: price},
+            {type: "text",       id: 'notaire',     value: notaire},
+            {type: "text",       id: 'apport',      value: apport},
+            {type: "text",       id: 'garantie',    value: garantie},
+            {type: "text",       id: 'assurance',   value: assurance},
+            {type: "text",       id: 'taux',        value: taux},
+            {type: "text",       id: 'years',       value: years},
         ];
 
         let validate = Validateur.validateur(paramsToValidate)
         if(!validate.code){
             Formulaire.showErrors(this, validate);
         }else{
-            let mensualite = ( ((price - apport + garantie + assurance) * ((taux/100)/12)) / (1 - ( Math.pow(1 + ((taux/100)/12), -(12*years)) )) )
+
+            let nPrice = Formulaire.setToFloat(price);
+            let nNotaire = Formulaire.setToFloat(notaire);
+            let nApport = Formulaire.setToFloat(apport);
+            let nGarantie = Formulaire.setToFloat(garantie);
+            let nAssurance = Formulaire.setToFloat(assurance);
+            let nTaux = Formulaire.setToFloat(taux);
+            let nYears = Formulaire.setToFloat(years);
+
+            let mensualite = ( ((nPrice - nApport + nNotaire + nGarantie + nAssurance) * ((nTaux/100)/12)) / (1 - ( Math.pow(1 + ((nTaux/100)/12), -(12*nYears)) )) )
 
             this.setState({ mensualite: Math.round(mensualite) })
         }
@@ -103,23 +118,23 @@ export class Financial extends Component {
                             </div>
 
                             <div className="line line-2">
-                                <Input type="cleave" valeur={price} identifiant="price" errors={errors} onChange={this.handleChange}>Prix du bien</Input>
-                                <Input type="cleave" valeur={notaire} identifiant="notaire" errors={errors} onChange={this.handleChange}>Frais de notaire</Input>
+                                <Input type="cleave" valeur={price} identifiant="price" errors={errors} onChange={this.handleChangeCleave}>Prix du bien</Input>
+                                <Input type="cleave" valeur={notaire} identifiant="notaire" errors={errors} onChange={this.handleChangeCleave}>Frais de notaire</Input>
                             </div>
 
                             <div className="line line-2">
-                                <Input type="cleave" valeur={apport} identifiant="apport" errors={errors} onChange={this.handleChange}>Apport</Input>
+                                <Input type="cleave" valeur={apport} identifiant="apport" errors={errors} onChange={this.handleChangeCleave}>Apport</Input>
                                 <div className="form-group" />
                             </div>
 
                             <div className="line line-2">
-                                <Input type="cleave" valeur={garantie} identifiant="garantie" errors={errors} onChange={this.handleChange}>Frais garantie du prêt (environ 2%)</Input>
-                                <Input type="cleave" valeur={assurance} identifiant="assurance" errors={errors} onChange={this.handleChange}>Frais assurance du prêt (environ 0.45%)</Input>
+                                <Input type="cleave" valeur={garantie} identifiant="garantie" errors={errors} onChange={this.handleChangeCleave}>Frais garantie du prêt (environ 2%)</Input>
+                                <Input type="cleave" valeur={assurance} identifiant="assurance" errors={errors} onChange={this.handleChangeCleave}>Frais assurance du prêt (environ 0.45%)</Input>
                             </div>
 
                             <div className="line line-2">
                                 <Input type="number" valeur={taux} identifiant="taux" errors={errors} onChange={this.handleChange}>Taux du crédit</Input>
-                                <Input type="cleave" valeur={years} identifiant="years" errors={errors} onChange={this.handleChange}>Durée du crédit en année</Input>
+                                <Input type="cleave" valeur={years} identifiant="years" errors={errors} onChange={this.handleChangeCleave}>Durée du crédit en année</Input>
                             </div>
 
                             <div className="line">
