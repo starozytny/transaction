@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import Cleave from 'cleave.js/react'
-
 import Sanitaze   from "@commonComponents/functions/sanitaze"
 import Formulaire from "@dashboardComponents/functions/Formulaire";
 import Validateur from "@commonComponents/functions/validateur";
@@ -16,13 +14,13 @@ export class Financial extends Component {
         super(props);
 
         this.state = {
-            price: 100000,
-            notaire: 8783,
-            apport: 20000,
-            garantie: 2000,
-            assurance: 2000,
+            price: "100000",
+            notaire: "8783",
+            apport: "20000",
+            garantie: "2000",
+            assurance: "2000",
             taux: 0.96,
-            years: 7,
+            years: "7",
             mensualite: "",
             errors: [],
         }
@@ -105,23 +103,23 @@ export class Financial extends Component {
                             </div>
 
                             <div className="line line-2">
-                                <Input valeur={price} identifiant="price" errors={errors} onChange={this.handleChange}>Prix du bien</Input>
-                                <Input valeur={notaire} identifiant="notaire" errors={errors} onChange={this.handleChange}>Frais de notaire</Input>
+                                <Input type="cleave" valeur={price} identifiant="price" errors={errors} onChange={this.handleChange}>Prix du bien</Input>
+                                <Input type="cleave" valeur={notaire} identifiant="notaire" errors={errors} onChange={this.handleChange}>Frais de notaire</Input>
                             </div>
 
                             <div className="line line-2">
-                                <Input valeur={apport} identifiant="apport" errors={errors} onChange={this.handleChange}>Apport</Input>
+                                <Input type="cleave" valeur={apport} identifiant="apport" errors={errors} onChange={this.handleChange}>Apport</Input>
                                 <div className="form-group" />
                             </div>
 
                             <div className="line line-2">
-                                <Input valeur={garantie} identifiant="garantie" errors={errors} onChange={this.handleChange}>Frais garantie du prêt (environ 2%)</Input>
-                                <Input valeur={assurance} identifiant="assurance" errors={errors} onChange={this.handleChange}>Frais assurance du prêt (environ 0.45%)</Input>
+                                <Input type="cleave" valeur={garantie} identifiant="garantie" errors={errors} onChange={this.handleChange}>Frais garantie du prêt (environ 2%)</Input>
+                                <Input type="cleave" valeur={assurance} identifiant="assurance" errors={errors} onChange={this.handleChange}>Frais assurance du prêt (environ 0.45%)</Input>
                             </div>
 
                             <div className="line line-2">
-                                <Input valeur={taux} identifiant="taux" errors={errors} onChange={this.handleChange}>Taux du crédit</Input>
-                                <Input valeur={years} identifiant="years" errors={errors} onChange={this.handleChange}>Durée du crédit en année</Input>
+                                <Input type="number" valeur={taux} identifiant="taux" errors={errors} onChange={this.handleChange}>Taux du crédit</Input>
+                                <Input type="cleave" valeur={years} identifiant="years" errors={errors} onChange={this.handleChange}>Durée du crédit en année</Input>
                             </div>
 
                             <div className="line">
