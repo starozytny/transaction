@@ -71,7 +71,8 @@ export class AdCard extends Component {
             {data: <a target="_blank" href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})}>Liste des visites</a>},
             {data: <a target="_blank" href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements"})}>Liste des prospects</a>},
             {data: <a target="_blank" href={Routing.generate("user_mails_send",  {'dest': [el.owner ? el.owner.email : ""]})}>Envoyer un mail</a>},
-            {data: <a target="_blank" href={Routing.generate("user_printer_bien", {'slug': el.slug})}>Imprimer la fiche</a>}
+            {data: <a target="_blank" href={Routing.generate("user_printer_bien_display", {'slug': el.slug})}>Imprimer la fiche</a>},
+            {data: <a target="_blank" href={Routing.generate("user_printer_bien_rapport", {'slug': el.slug})}>Imprimer le rapport</a>}
         ]
 
         let itemsTrash = [

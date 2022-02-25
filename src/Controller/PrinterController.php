@@ -28,7 +28,7 @@ class PrinterController extends AbstractController
     }
 
     /**
-     * @Route("/affiche/bien/{slug}", options={"expose"=true}, name="bien")
+     * @Route("/affiche/bien/{slug}", options={"expose"=true}, name="bien_display")
      */
     public function bien(ImBien $obj, ImPhotoRepository $photoRepository, SerializerInterface $serializer): Response
     {
@@ -44,7 +44,7 @@ class PrinterController extends AbstractController
     }
 
     /**
-     * @Route("/affiche/bien/{slug}", options={"expose"=true}, name="bien_rapport")
+     * @Route("/rapport/bien/{slug}", options={"expose"=true}, name="bien_rapport")
      */
     public function rapportBien(ImBien $obj, SerializerInterface $serializer): Response
     {

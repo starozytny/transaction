@@ -7,6 +7,7 @@ import React from "react";
 import { render } from "react-dom";
 import { PrintBien } from "@userPages/components/Impressions/PrintBien";
 import { RapportOwner } from "@userPages/components/Impressions/Rapport/RapportOwner";
+import { RapportBien } from "@userPages/components/Impressions/Rapport/RapportBien";
 
 Routing.setRoutingData(routes);
 
@@ -18,4 +19,9 @@ if(el){
 el = document.getElementById("rapport-owner");
 if(el){
     render(<RapportOwner {...el.dataset} />, el)
+}
+
+el = document.getElementById("rapport-bien");
+if(el){
+    render(<RapportBien {...el.dataset} />, el)
 }
