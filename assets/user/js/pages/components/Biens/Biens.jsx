@@ -105,6 +105,7 @@ export class Biens extends Component {
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "biens.pagination",
             classes: "",
+            agencyId: props.agencyId ? parseInt(props.agencyId) : "",
             filters: [
                 // [0, 1], // type ad
                 // [0, 1, 2, 3], // type bien
@@ -145,7 +146,7 @@ export class Biens extends Component {
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { rapprochements, suivis } = this.props;
-        const { perPage, currentPage } = this.state;
+        const { perPage, currentPage, agencyId } = this.state;
 
         return <BiensList onChangeContext={changeContext}
                           onDelete={this.layout.current.handleDelete}
@@ -163,6 +164,7 @@ export class Biens extends Component {
                           sorters={sorters}
                           onSorter={this.handleSorter}
                           //data
+                          agencyId={agencyId}
                           pageStatus={this.props.pageStatus !== "" ? parseInt(this.props.pageStatus) : false}
                           onUpdateList={this.handleUpdateList}
                           dataFilters={data}

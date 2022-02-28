@@ -64,7 +64,7 @@ export class AdCard extends Component {
     }
 
     render () {
-        const { isPublishePage=false, isOwnerPage=false, isProspectPage=false, rapprochements, follows, el, onDelete,
+        const { agencyId, isPublishePage=false, isOwnerPage=false, isProspectPage=false, rapprochements, follows, el, onDelete,
             onLinkToProspect, publishes, toPublishes, onSelectPublish, suivis } = this.props;
 
         let items = [
@@ -205,8 +205,13 @@ export class AdCard extends Component {
                             </ButtonIcon>}
 
                             <ButtonIcon icon="follow" element="a" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>
-                            <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
-                            {(!isProspectPage && !isOwnerPage && !isPublishePage) && <ButtonIconDropdown icon="trash" items={itemsTrash}>Suppression</ButtonIconDropdown>}
+
+                            {agencyId === el.agency.id && <>
+                                <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
+
+                                {(!isProspectPage && !isOwnerPage && !isPublishePage) && <ButtonIconDropdown icon="trash" items={itemsTrash}>Suppression</ButtonIconDropdown>}
+                            </>}
+
                             <ButtonIconDropdown icon="dropdown" items={items}>Autres</ButtonIconDropdown>
                         </div>
                     </div>

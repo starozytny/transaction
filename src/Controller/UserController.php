@@ -21,6 +21,7 @@ use App\Entity\Immo\ImSupport;
 use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
+use App\Repository\Immo\ImAgencyRepository;
 use App\Repository\Immo\ImNegotiatorRepository;
 use App\Repository\Immo\ImSettingsRepository;
 use App\Repository\Immo\ImSuiviRepository;
@@ -121,7 +122,7 @@ class UserController extends AbstractController
      * @Route("/biens", options={"expose"=true}, name="biens")
      */
     public function biens(Request $request, ImBienRepository $repository, ImSuiviRepository $suiviRepository,
-                          SerializerInterface $serializer, SearchService $searchService): Response
+                          ImAgencyRepository $agencyRepository, SerializerInterface $serializer, SearchService $searchService): Response
     {
         $status = $request->query->get('st');
         $filterOwner = $request->query->get('fo');
@@ -130,11 +131,12 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
+        $agencies = $agencyRepository->findBy(['society' => $user->getSociety()]);
 
         if($status == null){
-            $objs = $repository->findBy(['agency' => $user->getAgency()]);
+            $objs = $repository->findBy(['agency' => $agencies]);
         }else{
-            $objs = $repository->findBy(['agency' => $user->getAgency(), 'status' => (int) $status]);
+            $objs = $repository->findBy(['agency' => $agencies, 'status' => (int) $status]);
         }
 
         $rapprochements = $searchService->getRapprochementBySearchs($objs);
@@ -144,11 +146,12 @@ class UserController extends AbstractController
         $suivis  = $serializer->serialize($suivis, 'json', ['groups' => ImSuivi::SUIVI_READ]);
 
         return $this->render('user/pages/biens/index.html.twig', [
+            'user' => $user,
             'data' => $objs,
+            'st' => $status,
             'filterOwner' => $filterOwner,
             'filterNego' => $filterNego,
             'filterUser' => $filterUser,
-            'st' => $status,
             'rapprochements' => json_encode($rapprochements),
             'suivis' => $suivis,
         ]);

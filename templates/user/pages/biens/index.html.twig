@@ -4,7 +4,9 @@
 {% set submenuActive = "Liste des biens" %}
 
 {% block main_content %}
-    <div id="list-biens" data-donnees="{{ data }}"
+    <div id="list-biens"
+         data-agency-id="{{ user.agency.id }}"
+         data-donnees="{{ data }}"
          data-filter-owner="{{ filterOwner }}"
          data-filter-nego="{{ filterNego }}"
          data-filter-user="{{ filterUser }}"
