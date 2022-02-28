@@ -5,10 +5,10 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 import FilterFunction from "@commonComponents/functions/filter";
 
 import { Alert }                  from "@dashboardComponents/Tools/Alert";
-import {Button, ButtonIcon, ButtonIconDropdown} from "@dashboardComponents/Tools/Button";
 import { Search }                 from "@dashboardComponents/Layout/Search";
 import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
 import { FilterMultiple, FilterSelected } from "@dashboardComponents/Layout/Filter";
+import { Button, ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
 import { ProspectsItem }   from "./ProspectsItem";
 
