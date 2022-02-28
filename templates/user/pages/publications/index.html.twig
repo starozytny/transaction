@@ -5,6 +5,7 @@
 
 {% block main_content %}
     <div id="list-publishes"
+         data-is-user="{{ app.user.highRoleCode == 0 ? true : false }}"
          data-donnees="{{ donnees }}"
          data-publishes="{{ publishes }}"
     >

@@ -10,7 +10,8 @@ import { TopSorterPagination }  from "@dashboardComponents/Layout/Pagination";
 
 export class PublishesList extends Component {
     render () {
-        const { data, onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille, publishes, onPublish, toPublishes, onSelect } = this.props;
+        const { isUser, data, onPerPage, onPaginationClick, currentPage, sorters, onSorter, perPage, taille,
+            publishes, onPublish, toPublishes, onSelect } = this.props;
 
         let actionsPublish = <Button onClick={onPublish}>Envoyer</Button>
         let actionsPrinter = <>
@@ -22,14 +23,15 @@ export class PublishesList extends Component {
             <div className="page-default">
                 <div className="page-col-1">
                     <div className="body-col-1">
-                        <div className="content-col-1">
+                        {!isUser && <div className="content-col-1">
                             <PageInfos2 image="/build/user/images/publish.png" actions={actionsPublish}>
                                 <p>
                                     Lancer la publication permet d'envoyer les données vers les différents supports qui
                                     se chargeront eux-même de mettre à jours leurs données.
                                 </p>
                             </PageInfos2>
-                        </div>
+                        </div>}
+
                         <div className="content-col-1">
                             <PageInfos2 image="/build/user/images/display_bien.png" actions={actionsPrinter}>
                                 <p>

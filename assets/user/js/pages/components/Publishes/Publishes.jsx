@@ -34,6 +34,7 @@ export class Publishes extends Component {
             currentPage: 0,
             sorter: SORTER,
             sessionName: "supports.pagination",
+            isUser: props.isUser === "1",
             publishes: props.publishes ? JSON.parse(props.publishes) : [],
             toPublishes: props.donnees ? JSON.parse(props.donnees) : [],
         }
@@ -123,6 +124,7 @@ export class Publishes extends Component {
                               publishes={publishes}
                               toPublishes={toPublishes}
                               onSelect={this.handleSelect}
+                              isUser={this.state.isUser}
                               data={currentData} />
     }
 
