@@ -361,6 +361,7 @@ class UserController extends AbstractController
         $route = 'user/pages/negotiators/index.html.twig';
 
         $em = $this->doctrine->getManager();
+
         /** @var User $user */
         $user = $this->getUser();
         $agencies = $em->getRepository(ImAgency::class)->findBy(['society' => $user->getSociety()]);

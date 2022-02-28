@@ -35,7 +35,7 @@ export class Negotiators extends Component {
             pathDeleteGroup: URL_DELETE_GROUP,
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "negotiators.pagination",
-            idAgency: props.idAgency ? props.idAgency : "",
+            agencyId: props.agencyId ? parseInt(props.agencyId) : "",
             agencies: props.agencies ? JSON.parse(props.agencies) : [],
             biens: props.biens ? JSON.parse(props.biens) : [],
             isClient: props.isClient ? props.isClient : false,
@@ -87,7 +87,7 @@ export class Negotiators extends Component {
                                 sorters={sorters}
                                 onSorter={this.handleSorter}
                                 //data
-                                idAgency={this.state.idAgency}
+                                agencyId={this.state.agencyId}
                                 isClient={this.state.isClient}
                                 isUser={this.state.isUser}
                                 biens={this.state.biens}
@@ -95,14 +95,14 @@ export class Negotiators extends Component {
     }
 
     handleContentCreate = (changeContext) => {
-        const { agencies, isClient, isUser, idAgency } = this.state;
-        return <NegotiatorFormulaire type="create" agencies={agencies} agencyId={idAgency} isClient={isClient} isUser={isUser}
+        const { agencies, isClient, isUser, agencyId } = this.state;
+        return <NegotiatorFormulaire type="create" agencies={agencies} agencyId={agencyId} isClient={isClient} isUser={isUser}
                                      onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
-    handleContentUpdate = (changeContext, element) => {
+    handleContentUpdate = (changeContext, agencyId) => {
         const { agencies, isClient, isUser, idAgency } = this.state;
-        return <NegotiatorFormulaire type="update" agencies={agencies} agencyId={idAgency} isClient={isClient} isUser={isUser} element={element}
+        return <NegotiatorFormulaire type="update" agencies={agencies} agencyId={agencyId} isClient={isClient} isUser={isUser} element={element}
                                      onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>
     }
 
