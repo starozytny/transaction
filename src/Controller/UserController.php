@@ -289,7 +289,7 @@ class UserController extends AbstractController
 
         $users       = $em->getRepository(User::class)->findBy(['agency' => $obj->getAgency()]);
         $agencies    = $em->getRepository(ImAgency::class)->findBy(['society' => $obj->getSociety()]);
-        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
         $biens       = $em->getRepository(ImBien::class)->findBy(['agency' => $obj->getAgency()]);
 
         $users       = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
@@ -369,7 +369,8 @@ class UserController extends AbstractController
         $em = $this->doctrine->getManager();
         /** @var User $user */
         $user = $this->getUser();
-        $objs = $repository->findBy(['agency' => $user->getAgency()]);
+        $agencies = $em->getRepository(ImAgency::class)->findBy(['society' => $user->getSociety()]);
+        $objs = $repository->findBy(['agency' => $agencies]);
         $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $objs, 'status' => ImBien::STATUS_ACTIF]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
