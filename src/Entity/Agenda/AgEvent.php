@@ -129,9 +129,9 @@ class AgEvent extends DataEntity
     public function getStartAtString(): ?string
     {
         if($this->allDay){
-            return $this->startAt ? date_format($this->startAt, "D\\.d M Y") : null;
+            return $this->getFullDateString($this->startAt, 'll', true);
         }
-        return $this->setDateHumanHours($this->startAt);
+        return $this->getFullDateString($this->startAt, 'llll', true);
     }
 
     /**
@@ -164,13 +164,12 @@ class AgEvent extends DataEntity
         return $this;
     }
 
-
     /**
      * @return string|null
      */
     public function getEndAtString(): ?string
     {
-        return $this->setDateHumanHours($this->endAt);
+        return $this->getFullDateString($this->endAt, 'llll', true);
     }
 
     /**

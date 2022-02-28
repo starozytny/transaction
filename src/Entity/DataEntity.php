@@ -53,9 +53,10 @@ class DataEntity
      *
      * @param $date
      * @param string $format
+     * @param bool $isAgenda
      * @return string|null
      */
-    public function getFullDateString($date, string $format = "ll"): ?string
+    public function getFullDateString($date, string $format = "ll", bool $isAgenda = false): ?string
     {
         if($date){
             $frenchFactory = new Factory([
@@ -63,7 +64,9 @@ class DataEntity
                 'timezone' => 'Europe/Paris'
             ]);
             $time = Carbon::instance($date);
-            $time->subHours(1);
+            if(!$isAgenda){
+                $time->subHours(1);
+            }
 
             return $frenchFactory->make($time)->isoFormat($format);
         }
