@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Changelog;
 use App\Entity\User;
 use App\Repository\Agenda\AgEventRepository;
 use App\Service\Agenda\EventService;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,12 +17,25 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class UserController extends AbstractController
 {
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
      * @Route("/", options={"expose"=true}, name="homepage")
      */
     public function index(): Response
     {
-        return $this->render('user/pages/index.html.twig');
+        $em = $this->doctrine->getManager();
+
+        $changelogs = $em->getRepository(Changelog::class)->findBy(['isPublished' => true], ['createdAt' => 'DESC'], 5);
+
+        return $this->render('user/pages/index.html.twig', [
+            'changelogs' => $changelogs
+        ]);
     }
 
     /**
