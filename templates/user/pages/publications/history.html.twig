@@ -1,0 +1,10 @@
+{% extends 'user/pages/publications/template.html.twig' %}
+
+{% set page_title %}Historique des publications{% endset %}
+{% set submenuActive = "Historique des publications" %}
+
+{% block main_content %}
+    <div id="histories-publishes" data-donnees="{{ donnees }}">
+        {% include "dashboard/layout/components/spinner.html.twig" %}
+    </div>
+{% endblock %}

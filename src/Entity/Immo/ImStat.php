@@ -5,16 +5,20 @@ namespace App\Entity\Immo;
 use App\Entity\DataEntity;
 use App\Repository\Immo\ImStatRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImStatRepository::class)
  */
 class ImStat extends DataEntity
 {
+    const STAT_READ = ["stat:read"];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"stat:read"})
      */
     private $id;
 
@@ -31,6 +35,7 @@ class ImStat extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"stat:read"})
      */
     private $nbBiens = 0;
 
@@ -97,6 +102,10 @@ class ImStat extends DataEntity
         return $this;
     }
 
+    /**
+     * @return string|null
+     * @Groups({"stat:read"})
+     */
     public function getPublishedAtString(): ?string
     {
         return $this->getFullDateString($this->publishedAt, 'llll');

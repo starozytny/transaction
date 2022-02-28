@@ -6,6 +6,7 @@ use App\Entity\Changelog;
 use App\Entity\Donnee\DoQuartier;
 use App\Entity\Donnee\DoSol;
 use App\Entity\Donnee\DoSousType;
+use App\Entity\History\HiPublish;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
@@ -623,6 +624,24 @@ class UserController extends AbstractController
         return $this->render('user/pages/publications/index.html.twig', [
             'donnees' => $data,
             'publishes' => $publishes,
+        ]);
+    }
+
+    /**
+     * @Route("/publication/historique", name="publications_histories")
+     */
+    public function publicationsHistories(SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $stats = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['createdAt' => 'DESC']);
+
+        $stats = $serializer->serialize($stats, 'json', ['groups' => ImStat::STAT_READ]);
+
+        return $this->render('user/pages/publications/history.html.twig', [
+            'donnees' => $stats,
         ]);
     }
 
