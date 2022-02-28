@@ -68,7 +68,7 @@ class DataEntity
                 $time->subHours(1);
             }
 
-            return $frenchFactory->make($time)->isoFormat($format);
+            return ucfirst($frenchFactory->make($time)->isoFormat($format));
         }
 
         return null;
