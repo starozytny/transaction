@@ -138,9 +138,9 @@ class AgEvent extends DataEntity
     public function getStartAtString(): ?string
     {
         if($this->allDay){
-            return $this->startAt ? date_format($this->startAt, "D\\.d M Y") : null;
+            return $this->getFullDateString($this->startAt, 'll', true);
         }
-        return $this->startAt ? str_replace(":", "h", date_format($this->startAt, "D\\.d M Y \\à H\\hi")) : null;
+        return $this->getFullDateString($this->startAt, 'llll', true);
     }
 
     /**
@@ -179,7 +179,7 @@ class AgEvent extends DataEntity
      */
     public function getEndAtString(): ?string
     {
-        return $this->endAt ? str_replace(":", "h", date_format($this->endAt, "D\\.d M Y \\à H\\hi")) : null;
+        return $this->getFullDateString($this->endAt, 'llll', true);
     }
 
     /**
