@@ -40,11 +40,10 @@
       position: relative;
       z-index: 1;
       @include flex(row, flex-start, space-between);
-      margin: 0 24px;
 
       img{
-        width: 208px;
-        height: 208px;
+        width: 218px;
+        height: 218px;
       }
     }
   }
@@ -119,23 +118,24 @@
   }
 
   .features{
-    margin-top: 12px;
-    margin-bottom: 24px;
+    margin: 12px 0;
+    font-size: 18px;
   }
 
   .price{
-    margin-bottom: 24px;
+    margin-bottom: 12px;
 
     & > span:first-child{
       @include fontSemibold();
       color: var(--color0);
-      font-size: 26px;
+      font-size: 28px;
     }
   }
 
   .infos-price{
     color: var(--grey3);
     height: 150px;
+    font-size: 18px;
 
     & > div{
       margin-bottom: 4px;
@@ -150,5 +150,46 @@
     font-size: 14px;
     color: var(--grey3);
     margin-top: 8px;
+  }
+
+  .details-tab-infos-main{
+    + .details-tab-infos-main{
+      margin-top: 12px;
+    }
+  }
+
+  .diag-title{
+    margin-bottom: 4px;
+  }
+
+  .diagnostic-details{
+    .diag-dpe{
+      .dpe{
+        &.dpe_is-active2{
+          & + .number{
+            min-width: 40px;
+            padding: 6px 8px 4px 8px;
+            font-size: 18px;
+          }
+        }
+      }
+
+      $sizes: (
+              '1': 13%,
+              '2': 20%,
+              '3': 28%,
+              '4': 36%,
+              '5': 44%,
+              '6': 52%,
+              '7': 62%,
+      );
+
+      @each $i, $size in $sizes {
+        & > div:nth-child(#{$i}){
+          width: $size;
+        }
+
+      }
+    }
   }
 }

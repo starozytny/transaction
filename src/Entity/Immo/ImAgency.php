@@ -50,7 +50,7 @@ class ImAgency extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"user:read", "admin:read"})
      */
     private $website;
 

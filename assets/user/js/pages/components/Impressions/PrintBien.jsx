@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
 import { Printer } from "@userPages/components/Impressions/Printer";
-import { Diag }    from "@userPages/components/Biens/Read/Data/Diag";
+import { DiagPrint } from "@userPages/components/Biens/Read/Data/Diag";
 
 export class PrintBien extends Component{
     constructor(props) {
@@ -17,7 +17,7 @@ export class PrintBien extends Component{
 
     render () {
         const { elem, photos } = this.state;
-        
+
         let financial = elem.financial;
 
         let content = <div className="print-ad">
@@ -53,9 +53,9 @@ export class PrintBien extends Component{
                             {financial.caution && <div>Caution : {Sanitaze.toFormatCurrency(financial.caution)}</div>}
                         </> : <>
                             {financial.chargesMensuelles && <div>Charges mensuelles : {Sanitaze.toFormatCurrency(financial.chargesMensuelles)}</div>}
-                            {financial.foncier && <div>Taxe foncière : {Sanitaze.toFormatCurrency(financial.foncier)}</div>}
-                            {financial.taxeHabitation && <div>Taxe habitation : {Sanitaze.toFormatCurrency(financial.taxeHabitation)}</div>}
-                            {financial.notaire && <div>Frais de notaire : {Sanitaze.toFormatCurrency(financial.notaire)}</div>}
+                            {/*{financial.foncier && <div>Taxe foncière : {Sanitaze.toFormatCurrency(financial.foncier)}</div>}*/}
+                            {/*{financial.taxeHabitation && <div>Taxe habitation : {Sanitaze.toFormatCurrency(financial.taxeHabitation)}</div>}*/}
+                            {/*{financial.notaire && <div>Frais de notaire : {Sanitaze.toFormatCurrency(financial.notaire)}</div>}*/}
                             {financial.honoraireChargeDe === 1 ? <>
                                 <div>Honoraires à la charge du {(financial.honoraireChargeDeString).toLowerCase()}</div>
                             </> : <>
@@ -88,7 +88,7 @@ export class PrintBien extends Component{
                     </div>
                 </div>
                 <div className="col-2">
-                    <Diag elem={elem} isPrint={true} />
+                    <DiagPrint elem={elem} />
                 </div>
             </div>
 
@@ -99,8 +99,7 @@ export class PrintBien extends Component{
                     </div>
                     <div className="infos">
                         <div className="name">{elem.agency.name}</div>
-                        <div>{elem.agency.phone}</div>
-                        <div>{elem.agency.email}</div>
+                        <div>{elem.agency.website}</div>
                     </div>
                     <div className="infos">
                         <div className="name name-sub">Location</div>
