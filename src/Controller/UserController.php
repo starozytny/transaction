@@ -612,7 +612,9 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $data = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF, 'isDraft' => false, 'isArchived' => false]);
+        $data = $em->getRepository(ImBien::class)->findBy([
+            'agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF, 'isDraft' => false, 'isArchived' => false
+        ]);
         $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $data]);
 
         $data = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
