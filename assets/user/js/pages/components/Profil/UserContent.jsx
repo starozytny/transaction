@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import { Users }        from "@userPages/components/Profil/User/Users";
 import { Agencies }     from "@userPages/components/Profil/Agency/Agencies";
-import { Negotiators } from "@dashboardPages/components/Immo/Negociators/Negotiators";
 
 export class UserContent extends Component {
     constructor(props) {
@@ -15,9 +14,7 @@ export class UserContent extends Component {
             idSociety: parseInt(props.societyId),
             isUser: props.isUser === "true",
             users: props.users,
-            agencies: props.agencies,
-            negotiators: props.negotiators,
-            biens: props.biens,
+            agencies: props.agencies
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -29,14 +26,10 @@ export class UserContent extends Component {
 
     render () {
         const { role } = this.props;
-        const { context, id, idAgency, idSociety, isUser, users, agencies, negotiators, biens } = this.state;
+        const { context, id, idAgency, idSociety, isUser, users, agencies } = this.state;
 
         let content;
         switch (context){
-            case "negotiators":
-                content = <div id="profil-negotiators"><Negotiators donnees={negotiators} biens={biens} idAgency={idAgency} isUser={isUser}
-                                                                    isClient={true} classes=" "/></div>
-                break;
             case "agencies":
                 content = <div id="profil-agencies"><Agencies role={role} donnees={agencies} idSociety={idSociety} idAgency={idAgency} isUser={isUser}/></div>
                 break;
@@ -47,7 +40,6 @@ export class UserContent extends Component {
 
         let tabs = [
             { value: 'users', label: "Utilisateurs" },
-            { value: 'negotiators', label: "Négociateurs" },
             { value: 'agencies', label: "Agence" },
         ];
 

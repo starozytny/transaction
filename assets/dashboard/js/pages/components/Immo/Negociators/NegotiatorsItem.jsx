@@ -9,7 +9,9 @@ import { Selector }     from "@dashboardComponents/Layout/Selector";
 
 export class NegotiatorsItem extends Component {
     render () {
-        const { isClient, isUser, biens, elem, onDelete, onChangeContext, onSelectors } = this.props
+        const { idAgency, isClient, isUser, biens, elem, onDelete, onChangeContext, onSelectors } = this.props
+
+        console.log(idAgency)
 
         let totalBien = 0;
         biens.forEach(bien => {

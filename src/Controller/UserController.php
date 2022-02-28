@@ -289,20 +289,14 @@ class UserController extends AbstractController
 
         $users       = $em->getRepository(User::class)->findBy(['agency' => $obj->getAgency()]);
         $agencies    = $em->getRepository(ImAgency::class)->findBy(['society' => $obj->getSociety()]);
-        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
-        $biens       = $em->getRepository(ImBien::class)->findBy(['agency' => $obj->getAgency()]);
 
         $users       = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
         $agencies    = $serializer->serialize($agencies, 'json', ['groups' => User::ADMIN_READ]);
-        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
-        $biens       = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/profil/index.html.twig',  [
             'obj' => $obj,
             'users' => $users,
             'agencies' => $agencies,
-            'negotiators' => $negotiators,
-            'biens' => $biens,
             'context' => $context ?: 'agencies'
         ]);
     }
