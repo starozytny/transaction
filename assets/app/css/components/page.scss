@@ -36,6 +36,11 @@
       height: 300px;
       object-fit: cover;
       border-radius: 24px;
+      transition: all 0.2s ease-in-out;
+
+      &:hover{
+        transform: scale(0.97);
+      }
 
       &:not(:last-child){
         margin-right: 24px;
@@ -129,6 +134,26 @@
   }
 
   .app-header{
-    margin-left: 11%;
+    margin-left: 8%;
+  }
+}
+
+//                      __   _  ___ ____   ___    __
+//                     | _| / |/ _ \___ \ / _ \  |_ |
+//    _____ _____ _____| |  | | (_) |__) | | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |\__, / __/| |_| |  | |_____|_____|_____|
+//                     | |  |_|  /_/_____|\___/   | |
+//                     |__|                      |__|
+@media (min-width: 1920px){
+  .app-header{
+    margin-left: 15%;
+
+    .images {
+      max-height: 600px;
+
+      img {
+        height: 600px;
+      }
+    }
   }
 }
