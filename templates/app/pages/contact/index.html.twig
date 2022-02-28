@@ -1,19 +1,36 @@
 {% extends 'app/layout/layout.html.twig' %}
 
-{% block title %}Nous contacter{% endblock %}
+{% block title %}Prenons contact{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
+    {{ encore_entry_link_tags('security') }}
     {{ encore_entry_link_tags('contact') }}
 {% endblock %}
 
 {% block main_content %}
-    <div class="main-content">
-        <h1>Nous contacter</h1>
+    <div class="login-page">
+        <div class="col-1">
+            <div class="title-page">
+                <h1>Prenons contact !</h1>
+                <p class="subtitle">
+                    Nous équipe se chargera de revenir vers vous le plus rapidement possible pour répondre à toutes
+                    vos questions sur notre logiciel de transaction immobilière.
+                </p>
+            </div>
 
-        <div id="contact">
-            {% include "dashboard/layout/components/spinner.html.twig" %}
+            <div id="contact">
+                {% include "dashboard/layout/components/spinner.html.twig" %}
+            </div>
         </div>
+
+
+        <div class="col-2">
+            <div class="image">
+                <img src="{{ asset('build/app/images/image-6.jpg') }}" alt="formulaire connexion au logiciel de transaction">
+            </div>
+        </div>
+
     </div>
 {% endblock %}
 

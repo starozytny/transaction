@@ -3,6 +3,9 @@
 @import "../../../common/css/components/button";
 
 .btn{
+  @include fontSemibold();
+  text-transform: uppercase;
+  padding: 16px 32px;
   border-radius: 120px;
 }
 

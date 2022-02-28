@@ -1,1 +1,29 @@
 @import "../vars/vars";
+
+#contact{
+  padding: 0 12px;
+  margin-bottom: 48px;
+}
+
+.line-buttons{
+  margin-top: 24px;
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .login-page {
+    .col-1 {
+      margin-top: 48px;
+    }
+
+    #contact{
+      padding: 0 48px;
+      margin-bottom: 0;
+    }
+  }
+}

@@ -66,7 +66,10 @@ export class Reinit extends Component {
         const { errors, success, password, passwordConfirm } = this.state;
 
         return <>
-            <h1>Réinitialiser son mot de passe</h1>
+            <div className="title-page">
+                <h1>Réinitialiser son mot de passe</h1>
+            </div>
+
             <div className="form">
                 <form onSubmit={this.handleSubmit}>
 
@@ -95,9 +98,9 @@ export class Reinit extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="line">
+                        <div className="line line-buttons">
                             <div className="form-button">
-                                <Button isSubmit={true}>Modifier le mot de passe</Button>
+                                <Button isSubmit={true} type="color0">Modifier son mot de passe</Button>
                             </div>
                         </div>
                     </>}
