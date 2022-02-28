@@ -11,6 +11,7 @@ use App\Entity\User;
 use App\Repository\Immo\ImPhotoRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -30,8 +31,9 @@ class PrinterController extends AbstractController
     /**
      * @Route("/affiche/bien/{slug}", options={"expose"=true}, name="bien_display")
      */
-    public function bien(ImBien $obj, ImPhotoRepository $photoRepository, SerializerInterface $serializer): Response
+    public function bien(Request $request, ImBien $obj, ImPhotoRepository $photoRepository, SerializerInterface $serializer): Response
     {
+        $ori = $request->query->get('ori');
         $photos = $photoRepository->findBy(['bien' => $obj], ['rank' => 'ASC'], 4);
 
         $obj    = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
@@ -40,6 +42,7 @@ class PrinterController extends AbstractController
         return $this->render('user/pages/impressions/bien.html.twig', [
             'donnees' => $obj,
             'photos' => $photos,
+            'ori' => $ori ?: "landscape"
         ]);
     }
 
@@ -78,7 +81,6 @@ class PrinterController extends AbstractController
 
     private function getDataHistoryBien($em, $serializer, $biens): array
     {
-        dump($biens);
         $publishes = $em->getRepository(HiPublish::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
         $visites   = $em->getRepository(HiVisite::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
         $prices    = $em->getRepository(HiPrice::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);

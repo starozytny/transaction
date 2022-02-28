@@ -3,6 +3,20 @@
 {% set page_title %}Affiche du bien{% endset %}
 
 {% block main_content %}
+    {% if ori == "landscape" %}
+        <style>
+            @page{
+                size: landscape;
+            }
+        </style>
+    {% else %}
+        <style>
+            @page{
+                size: A4;
+            }
+        </style>
+    {% endif %}
+
     <div id="printer-bien"
          data-donnees="{{ donnees }}"
          data-photos="{{ photos }}"
