@@ -9,11 +9,11 @@ import { TopSorterPagination } from "@dashboardComponents/Layout/Pagination";
 import { AdCard } from "./AdCard";
 import { Filter } from "./Filter";
 
-function getItemsSelect (data, noDuplication, el, pref, typeValue = "id") {
+function getItemsSelect (data, noDuplication, el, pref, typeValue = "id", typeLabel = "fullname") {
     if(el){
         if(!noDuplication.includes(el.id)){
             noDuplication.push(el.id);
-            data.push({ value: typeValue === "id" ? el.id : el.username, label: el.fullname, identifiant: pref + "-" + el.id })
+            data.push({ value: el[typeValue], label: el[typeLabel], identifiant: pref + "-" + el.id })
         }
     }
 
@@ -22,17 +22,22 @@ function getItemsSelect (data, noDuplication, el, pref, typeValue = "id") {
 
 export class BiensList extends Component {
     render () {
-        const { agencyId, dataFilters, pageStatus, data, onDelete, filters, onGetFilters, rapprochements, onUpdateList,
+        const { agencyId, dataFilters, pageStatus, dataImmuable, data, onDelete, filters, onGetFilters, rapprochements, onUpdateList,
             sorters, onSorter, currentPage, perPage, onPerPage, taille, onPaginationClick, suivis } = this.props;
 
-        let items = [], owners = [], negotiators = [], users = [], noDuplicateOwners = [], noDuplicateNegotiators = [], noDuplicateUsers = [];
-        data.forEach(el => {
-            items.push(<AdCard el={el} agencyId={agencyId} rapprochements={rapprochements} suivis={suivis}
-                               onDelete={onDelete} onUpdateList={onUpdateList} key={el.id}/>)
+        let items = [], owners = [], negotiators = [], users = [], agencies = [];
+        let noDuplicateOwners = [], noDuplicateNegotiators = [], noDuplicateUsers = [], noDuplicateAgencies = [];
 
+        dataImmuable.forEach(el => {
             owners      = getItemsSelect(owners, noDuplicateOwners, el.owner, "owner");
             negotiators = getItemsSelect(negotiators, noDuplicateNegotiators, el.negotiator, "nego");
             users       = getItemsSelect(users, noDuplicateUsers, el.user, "user", "username");
+            agencies    = getItemsSelect(agencies, noDuplicateAgencies, el.agency, "agency", "id", "name");
+        })
+
+        data.forEach(el => {
+            items.push(<AdCard el={el} agencyId={agencyId} rapprochements={rapprochements} suivis={suivis}
+                               onDelete={onDelete} onUpdateList={onUpdateList} key={el.id}/>)
         })
 
         return <div className="list-biens">
@@ -43,7 +48,8 @@ export class BiensList extends Component {
                             <span>Filtres :</span>
                         </div>
                         <div className="content-col-1">
-                            <Filter data={dataFilters} onGetFilters={onGetFilters} filters={filters} owners={owners} negotiators={negotiators} users={users}/>
+                            <Filter data={dataFilters} onGetFilters={onGetFilters} filters={filters}
+                                    owners={owners} negotiators={negotiators} users={users} agencies={agencies} />
                         </div>
                     </div>
                 </div>

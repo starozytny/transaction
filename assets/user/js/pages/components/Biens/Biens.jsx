@@ -54,7 +54,7 @@ function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
 }
 
 function filterFunction(dataImmuable, filters){
-    let newData = [], newData1 = [], newData2 = [], newData3 = [], newData4 = [], newData5 = [];
+    let newData = [], newData1 = [], newData2 = [], newData3 = [], newData4 = [], newData5 = [], newData6 = [];
 
     let filtersAd = filters[0];
     let filtersBien = filters[1];
@@ -62,6 +62,7 @@ function filterFunction(dataImmuable, filters){
     let filterOwner = filters[3];
     let filterNego = filters[4];
     let filterUser = filters[5];
+    let filterAgency = filters[6];
 
     if(filters.length === 0) {
         newData = dataImmuable
@@ -84,8 +85,11 @@ function filterFunction(dataImmuable, filters){
         newData4.forEach(el => {
             newData5 = setNewTab("select", filterUser, el, el.user, newData5, "user")
         })
+        newData5.forEach(el => {
+            newData6 = setNewTab("array", filterAgency, el, el.agency.id, newData6)
+        })
 
-        newData = newData5
+        newData = newData6
     }
 
     return newData;
@@ -115,6 +119,7 @@ export class Biens extends Component {
                 props.filterOwner ? parseInt(props.filterOwner) : "", //owner
                 props.filterNego ? parseInt(props.filterNego) : "", //negotiator
                 props.filterUser ? props.filterUser : "", //utilisateur
+                [], //agency
             ]
         }
 
@@ -170,6 +175,7 @@ export class Biens extends Component {
                           dataFilters={data}
                           rapprochements={rapprochements ? JSON.parse(rapprochements) : []}
                           suivis={suivis ? JSON.parse(suivis) : []}
+                          dataImmuable={this.layout.current.state.dataImmuable}
                           data={currentData} />
     }
 

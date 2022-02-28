@@ -173,11 +173,12 @@ export class AdCard extends Component {
                             </div>
                         </a>
                         <div className="col-3">
+                            <div className="references">{el.agency.name}</div>
                             <a className="references" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
                                 <div>{el.reference}</div>
                                 <div>GERANCE01</div>
                             </a>
-                           <NegociatorBubble elem={el.negotiator} onOpen={this.handleOpenHelp} />
+                            <NegociatorBubble elem={el.negotiator} onOpen={this.handleOpenHelp} />
                         </div>
                     </div>
                 </div>
@@ -186,7 +187,9 @@ export class AdCard extends Component {
                         : <span className="txt-danger">Aucune plateforme sélectionnée.</span>}</div>}
 
                     <div className="footer-actions">
-                        {(!isPublishePage && el.confidential.commentary) ? <div className="createdAt">{parse(el.confidential.commentary)}</div> : <div className="createdAt" />}
+                        {(!isPublishePage && el.confidential.commentary && el.agency.id === agencyId) ? <div className="createdAt">
+                            {parse(el.confidential.commentary)}
+                        </div> : <div className="createdAt" />}
 
                         <div className={"actions" + (isProspectPage && followed ? " followed" : "")}>
                             {(rapprochements && nbRapprochements > 0) && <ButtonIcon element="a" icon="group" tooltipWidth={160} text={""+nbRapprochements}
