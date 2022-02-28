@@ -287,7 +287,7 @@ class UserController extends AbstractController
         /** @var User $obj */
         $obj = $this->getUser();
 
-        $users       = $em->getRepository(User::class)->findBy(['society' => $obj->getSociety()]);
+        $users       = $em->getRepository(User::class)->findBy(['agency' => $obj->getAgency()]);
         $agencies    = $em->getRepository(ImAgency::class)->findBy(['society' => $obj->getSociety()]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
         $biens       = $em->getRepository(ImBien::class)->findBy(['agency' => $obj->getAgency()]);
