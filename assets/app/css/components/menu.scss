@@ -53,6 +53,7 @@ nav.fixed{
     color: var(--txt);
     opacity: 0.6;
     @include fontSemibold();
+    text-transform: uppercase;
 
     [class^="icon-"]{
       display: inline-block;
@@ -217,11 +218,5 @@ nav.fixed{
 @media (min-width: 1600px){
   .nav-container{
     @include maxscreen();
-  }
-
-  .nav-body{
-    a{
-      width: 100%;
-    }
   }
 }
