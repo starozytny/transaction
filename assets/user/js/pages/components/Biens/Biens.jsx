@@ -119,7 +119,7 @@ export class Biens extends Component {
                 props.filterOwner ? parseInt(props.filterOwner) : "", //owner
                 props.filterNego ? parseInt(props.filterNego) : "", //negotiator
                 props.filterUser ? props.filterUser : "", //utilisateur
-                [], //agency
+                props.agencyId ? [parseInt(props.agencyId)] : [], //agency
             ]
         }
 
