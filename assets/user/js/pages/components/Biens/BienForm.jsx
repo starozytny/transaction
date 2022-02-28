@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import axios    from "axios";
 import toastr   from "toastr";
+import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import helper           from "@userPages/components/Biens/functions/helper";
 import Helper           from "@commonComponents/functions/helper";
@@ -447,10 +448,17 @@ export class BienForm extends Component {
 
             axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                 .then(function (response) {
-                    toastr.info(messageSuccess);
-                    setTimeout(function (){
-                        location.reload();
-                    }, 2000)
+                    toastr.info(isDraft ? "Brouillon enregistré ! " : messageSuccess);
+
+                    if(isDraft){
+                        setTimeout(function (){
+                            location.reload();
+                        }, 2000)
+                    }else{
+                        location.href = Routing.generate('user_biens', {'st': 1})
+                    }
+
+
                 })
                 .catch(function (error) {
                     Formulaire.displayErrors(self, error);
