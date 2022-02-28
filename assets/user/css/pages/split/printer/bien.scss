@@ -1,6 +1,8 @@
 @import "../../../vars/vars";
 
 .print-ad{
+  page-break-after: always;
+
   h1{
     font-size: 24px;
   }

@@ -8,6 +8,7 @@ use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImOwner;
 use App\Entity\User;
+use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImPhotoRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,11 +37,35 @@ class PrinterController extends AbstractController
         $ori = $request->query->get('ori');
         $photos = $photoRepository->findBy(['bien' => $obj], ['rank' => 'ASC'], 4);
 
-        $obj    = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
+        $obj    = $serializer->serialize([$obj], 'json', ['groups' => User::USER_READ]);
         $photos = $serializer->serialize($photos, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/impressions/bien.html.twig', [
             'donnees' => $obj,
+            'photos' => $photos,
+            'ori' => $ori ?: "landscape"
+        ]);
+    }
+
+    /**
+     * @Route("/affiche/biens", options={"expose"=true}, name="biens_display")
+     */
+    public function biens(Request $request, ImBienRepository $bienRepository, ImPhotoRepository $photoRepository,
+                          SerializerInterface $serializer): Response
+    {
+        $ori = $request->query->get('ori');
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $biens = $bienRepository->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF]);
+        $photos = $photoRepository->findBy(['bien' => $biens], ['rank' => 'ASC'], 4);
+
+        $biens    = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
+        $photos = $serializer->serialize($photos, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/impressions/bien.html.twig', [
+            'donnees' => $biens,
             'photos' => $photos,
             'ori' => $ori ?: "landscape"
         ]);

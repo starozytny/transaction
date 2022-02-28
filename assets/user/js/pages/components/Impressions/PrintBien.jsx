@@ -10,18 +10,23 @@ export class PrintBien extends Component{
         super(props);
 
         this.state = {
-            elem: props.donnees ? JSON.parse(props.donnees) : null,
+            data: props.donnees ? JSON.parse(props.donnees) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
         }
     }
 
     render () {
         const { ori } = this.props;
+        const { data, photos } = this.state;
 
-        let content = (ori === "landscape") ? <PrintBienLandscape {...this.state} /> : <PrintBienPortrait {...this.state} />;
+        let items = [];
+        data.forEach(elem => {
+            items.push((ori === "landscape") ? <PrintBienLandscape elem={elem} photos={photos} key={elem.id} />
+                : <PrintBienPortrait elem={elem} photos={photos} key={elem.id} />)
+        })
 
         return <>
-            <Printer content={content} />
+            <Printer content={items} />
         </>
     }
 }

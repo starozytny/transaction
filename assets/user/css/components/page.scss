@@ -96,6 +96,9 @@
     .btn:not(:last-child){
       margin-bottom: 12px;
     }
+    a.btn{
+      width: calc(100% - 48px);
+    }
   }
 }
 
