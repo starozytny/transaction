@@ -2,7 +2,10 @@
 
 .title-page{
   padding: 24px 12px 12px 12px;
-  max-width: 768px;
+
+  .subtitle{
+    opacity: 0.8;
+  }
 }
 
 .homepage{
@@ -12,6 +15,10 @@
 .app-header{
   @include flex(column, flex-start, center);
   margin-bottom: 48px;
+
+  .title-page{
+    max-width: 768px;
+  }
 
   .actions{
     margin-top: 24px;
@@ -41,10 +48,6 @@
       }
     }
   }
-
-  .subtitle{
-    opacity: 0.8;
-  }
 }
 
 //                      __   _____ __    ___    __
@@ -58,12 +61,12 @@
     min-height: 74vh;
   }
 
+  .title-page{
+    text-align: center;
+  }
+
   .app-header{
     align-items: center;
-
-    .title-page{
-      text-align: center;
-    }
   }
 }
 
