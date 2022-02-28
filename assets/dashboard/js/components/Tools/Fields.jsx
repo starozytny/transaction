@@ -23,9 +23,7 @@ export function Input (props) {
     }
 
     if(type === "cleave"){
-        content = <>
-            <Cleave placeholder={placeholder} name={identifiant} options={options} value={valeur} onChange={onChange}/>
-        </>
+        content = <Cleave placeholder={placeholder} name={identifiant} options={options} value={valeur} onChange={onChange}/>
     }
 
     return (<ClassiqueStructure {...props} content={content} label={children} />)

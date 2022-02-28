@@ -53,6 +53,7 @@ class DataEntity
      *
      * @param $date
      * @param string $format
+     * @param bool $isAgenda
      * @return string|null
      */
     public function getFullDateString($date, string $format = "ll", bool $isAgenda = false): ?string

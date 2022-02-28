@@ -173,7 +173,6 @@ class AgEvent extends DataEntity
         return $this;
     }
 
-
     /**
      * @return string|null
      */
