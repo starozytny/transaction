@@ -7,4 +7,30 @@
   .form{
     border: none;
   }
+
+  .fc-timegrid-event-harness{
+    & > .fc-timegrid-event{
+      .person{
+        img{
+          border: 1px solid var(--grey);
+          background-color: var(--fondContent);
+        }
+      }
+    }
+  }
+}
+
+.sub-persons{
+  @include flex(row, center, flex-start);
+}
+
+.ag-round{
+  @include flex(row, center, center);
+  width: 24px;
+  height: 24px;
+  border-radius: 60px;
+  margin-right: 4px;
+  border: 1px solid var(--grey);
+  background-color: var(--fondContent);
+  @include fontSemibold();
 }

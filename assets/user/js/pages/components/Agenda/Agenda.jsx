@@ -314,8 +314,6 @@ export class Agenda extends Component {
         let selectBuyers        = AgendaData.getSelecteurData(buyers, 'sp-by');
         let selectProspects     = AgendaData.getSelecteurData(prospects, 'sp-pr');
 
-        console.log(selActive)
-
         return <>
             {loadPageError ? <div className="main-content"><PageError /></div> : <div id="calendar" className="main-content">
                 {loadData ? <LoaderElement /> : <>
@@ -430,10 +428,10 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
     let items0 = getPersonAvatar(data0);
     let items1 = getPersonAvatar(data1);
     let items2 = getPersonAvatar(data2);
-    let items3 = getPersonTotal(data3, "propriétaire");
-    let items4 = getPersonTotal(data4, "locataire");
-    let items5 = getPersonTotal(data5, "prospect");
-    let items6 = getPersonTotal(data6, "acquéreur");
+    let items3 = getPersonTotal(data3, "Propriétaire");
+    let items4 = getPersonTotal(data4, "Locataire");
+    let items5 = getPersonTotal(data5, "Prospect");
+    let items6 = getPersonTotal(data6, "Acquéreur");
 
     bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
         items0.join("") +
@@ -445,24 +443,24 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
         items2.join("") +
     '</div>')
     if(data3.length > 0){
-        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-            items3 +
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub sub-persons">'
+            + '<span class="ag-round">' + data3.length + '</span>' + items3 +
         '</div>')
     }
     if(data4.length > 0){
-        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-            items4 +
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub sub-persons">'
+            + '<span class="ag-round">' + data4.length + '</span>' + items4 +
         '</div>')
     }
     if(data5.length > 0){
-        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-            items5 +
-            '</div>')
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub sub-persons">'
+            + '<span class="ag-round">' + data5.length + '</span>' + items5 +
+        '</div>')
     }
     if(data6.length > 0){
-        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-            items6 +
-            '</div>')
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub sub-persons">'
+            + '<span class="ag-round">' + data6.length + '</span>' + items6 +
+        '</div>')
     }
 
 }
@@ -491,5 +489,5 @@ function getPersonAvatar (data) {
 }
 
 function getPersonTotal (data, name) {
-    return data.length + " " + name + (data.length > 1 ? "s" : "");
+    return " " + name + (data.length > 1 ? "s" : "");
 }
