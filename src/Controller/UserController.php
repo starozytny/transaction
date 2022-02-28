@@ -300,7 +300,7 @@ class UserController extends AbstractController
             'obj' => $obj,
             'users' => $users,
             'agencies' => $agencies,
-            'context' => $context ?: 'agencies'
+            'context' => $context ?: 'users'
         ]);
     }
 
