@@ -68,15 +68,9 @@ export class Reinit extends Component {
         return <>
             <h1>Réinitialiser son mot de passe</h1>
             <div className="form">
-                <p className="form-infos">
-                    Une fois la demande réalisée, un mail est envoyé à l'adresse associé au compte.
-                    Ce mail contient un lien vous permettant de réinitialiser votre mot de passe. <br/> <br/>
-                    Pensez à vérifier vos spams/courriers indésirables.
-                </p>
                 <form onSubmit={this.handleSubmit}>
 
                     {success !== false && <Alert type="info">{success}</Alert>}
-
 
                     {success === false && <>
                         <div className="line line-2">
