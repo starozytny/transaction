@@ -12,7 +12,7 @@ export class UserContent extends Component {
             id: parseInt(props.id),
             idAgency: parseInt(props.agencyId),
             idSociety: parseInt(props.societyId),
-            isUser: props.isUser === "true",
+            isUser: props.isUser === "1",
             users: props.users,
             agencies: props.agencies
         }

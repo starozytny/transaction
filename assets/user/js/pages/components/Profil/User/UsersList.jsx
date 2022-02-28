@@ -35,6 +35,8 @@ export class UsersList extends Component {
             { value: 3, id: filtersId[1], label: filtersLabel[1] },
         ];
 
+        console.log(isUser)
+
         return <>
             <div>
                 {!isUser && <div className="toolbar">
