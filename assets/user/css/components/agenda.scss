@@ -8,6 +8,12 @@
     border: none;
   }
 
+  .fc{
+    .fc-button-primary{
+      border-color: var(--primaryShadow2);
+    }
+  }
+
   .fc-timegrid-event-harness{
     & > .fc-timegrid-event{
       .person{
