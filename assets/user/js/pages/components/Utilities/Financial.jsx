@@ -21,6 +21,7 @@ export class Financial extends Component {
             taux: 0.96,
             years: "7",
             mensualite: "",
+            interets: "",
             errors: [],
         }
 
@@ -67,13 +68,18 @@ export class Financial extends Component {
         let nTaux = Formulaire.setToFloat(taux);
         let nYears = Formulaire.setToFloat(years);
 
-        let mensualite = ( ((nPrice - nApport + nNotaire + nGarantie + nAssurance) * ((nTaux/100)/12)) / (1 - ( Math.pow(1 + ((nTaux/100)/12), -(12*nYears)) )) )
+        let total = (nPrice - nApport + nNotaire + nGarantie + nAssurance);
 
-        this.setState({ mensualite: Math.round(mensualite) })
+        let mensualite = ( (total * ((nTaux/100)/12)) / (1 - ( Math.pow(1 + ((nTaux/100)/12), -(12*nYears)) )) )
+
+        mensualite = Math.round(mensualite);
+        let interets = mensualite * (12*nYears) - total ;
+
+        this.setState({ mensualite, interets })
     }
 
     render () {
-        const { errors, price, notaire, apport, garantie, assurance, taux, years, mensualite } = this.state;
+        const { errors, price, notaire, apport, garantie, assurance, taux, years, mensualite, interets } = this.state;
 
         return <div className="main-content">
             <div className="page-default">
@@ -130,7 +136,8 @@ export class Financial extends Component {
 
                             <div className="line line-buttons">
                                 <div className="form-group">
-                                    <label>Estimation mensuelle : <span className="txt-primary"><b>{Sanitaze.toFormatCurrency(mensualite)}</b></span></label>
+                                    <label>Estimation mensuelle : <span className="txt-primary"><b>{Sanitaze.toFormatCurrency(mensualite)} / mois</b></span></label>
+                                    <label>Intérêts : <span className="txt-primary"><b>{Sanitaze.toFormatCurrency(interets)}</b></span></label>
                                 </div>
                                 <div className="form-group" />
                             </div>
