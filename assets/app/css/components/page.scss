@@ -2,25 +2,82 @@
 
 .title-page{
   padding: 24px 12px 12px 12px;
+  max-width: 768px;
 }
 
-.custom-shape-divider {
-  width: 100%;
-  overflow: hidden;
-  background-color: var(--greyShadow);
+.homepage{
+  min-height: 68vh;
 }
 
-.custom-shape-divider svg {
-  position: relative;
-  display: block;
-  width: calc(274% + 1.3px);
-  height: 180px;
+.app-header{
+  @include flex(column, flex-start, center);
+  margin-bottom: 48px;
+
+  .actions{
+    margin-top: 24px;
+
+    .btn{
+      @include fontSemibold();
+      text-transform: uppercase;
+      padding: 16px 32px;
+    }
+  }
+
+  .images{
+    @include flex(row, flex-start, flex-start);
+    overflow: hidden;
+    max-height: 500px;
+    margin-top: 48px;
+    margin-left: 12px;
+
+    img{
+      width: 33%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 24px;
+
+      &:not(:last-child){
+        margin-right: 24px;
+      }
+    }
+  }
+
+  .subtitle{
+    opacity: 0.8;
+  }
 }
 
-.custom-shape-divider .shape-fill {
-  fill: var(--fondContent);
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .homepage{
+    min-height: 74vh;
+  }
+
+  .app-header{
+    align-items: center;
+
+    .title-page{
+      text-align: center;
+    }
+  }
 }
 
+//                      __   _  ___ ____  _  _     __
+//                     | _| / |/ _ \___ \| || |   |_ |
+//    _____ _____ _____| |  | | | | |__) | || |_   | |_____ _____ _____
+//   |_____|_____|_____| |  | | |_| / __/|__   _|  | |_____|_____|_____|
+//                     | |  |_|\___/_____|  |_|    | |
+//                     |__|                       |__|
+@media (min-width: 1024px) {
+  .title-page{
+    padding: 32px;
+  }
+}
 
 //                      __   _ ____  ___   ___    __
 //                     | _| / |___ \( _ ) / _ \  |_ |
@@ -29,8 +86,37 @@
 //                     | |  |_|_____\___/ \___/   | |
 //                     |__|                      |__|
 @media (min-width:1280px) {
-  .title-page{
-    padding: 24px 32px;
+  .app-header{
+    flex-direction: row;
+
+    .title-page{
+      padding-top: 0;
+      text-align: left;
+      width: 650px;
+    }
+
+    .images{
+      margin-top: 0;
+      width: calc(100% - 710px);
+
+      img{
+        height: 500px;
+      }
+    }
+
+    .title-page,
+    .images{
+      margin-top: 48px;
+    }
+
+    h1{
+      font-size: 52px;
+    }
+
+    .subtitle{
+      font-size: 20px;
+      max-width: 414px;
+    }
   }
 }
 
@@ -42,8 +128,10 @@
 //                     |__|                       |__|
 @media (min-width: 1600px){
   .title-page{
-    @include maxscreen();
-    padding: 24px 32px;
-    margin-top: 48px;
+    margin: 48px auto 0 auto;
+  }
+
+  .app-header{
+    margin-left: 11%;
   }
 }
