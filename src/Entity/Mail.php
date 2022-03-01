@@ -142,7 +142,7 @@ class Mail extends DataEntity
      * @return string|null
      * @Groups({"mail:read"})
      */
-    public function createdAtString(): ?string
+    public function getCreatedAtString(): ?string
     {
         return $this->getFullDateString($this->createdAt, 'llll');
     }
