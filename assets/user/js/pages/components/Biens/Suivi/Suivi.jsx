@@ -48,7 +48,7 @@ export class Suivi extends Component {
 
     handleChangeContext = (context) => { this.setState({ context }) }
 
-    handleUpdateProspects = () => { DataState.getProspects(this); }
+    handleUpdateProspects = (allProspects) => { this.setState({ allProspects }); AgendaData.getData(this, URL_GET_DATA); }
 
     handleUpdateSuivis = (nSuivis) => { this.setState({ suivis: nSuivis }) }
 
@@ -65,7 +65,7 @@ export class Suivi extends Component {
 
     render () {
         const { contextRapprochement } = this.props;
-        const { elem, context, suivis, allVisits, loadDataProspects} = this.state;
+        const { elem, context, suivis, allVisits, loadDataProspects } = this.state;
 
         let content;
         switch (context){
@@ -96,32 +96,34 @@ export class Suivi extends Component {
         }
 
         return <div className="main-content">
-            <div className="details-container">
-                <div className="details-content-container suivi-container">
-                    <div className="details-card">
-                        <div className="details-image">
-                            <img src={elem.mainPhotoFile} alt="Illustration bien"/>
-                        </div>
-                        <div>
-                            <AdMainInfos elem={elem} />
-                            <div className="details-general">
-                                <AdBadges elem={elem} />
-                                <div className="details-ad-actions">
-                                    <ButtonIcon element="a" icon="vision" onClick={Routing.generate('user_biens_read', {'slug': elem.slug})}>Détails</ButtonIcon>
+            {!loadDataProspects ? <LoaderElement /> : <>
+                <div className="details-container">
+                    <div className="details-content-container suivi-container">
+                        <div className="details-card">
+                            <div className="details-image">
+                                <img src={elem.mainPhotoFile} alt="Illustration bien"/>
+                            </div>
+                            <div>
+                                <AdMainInfos elem={elem} />
+                                <div className="details-general">
+                                    <AdBadges elem={elem} />
+                                    <div className="details-ad-actions">
+                                        <ButtonIcon element="a" icon="vision" onClick={Routing.generate('user_biens_read', {'slug': elem.slug})}>Détails</ButtonIcon>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="item-nav-2">
-                <Navigation context={context} onChangeContext={this.handleChangeContext} />
-            </div>
-            <div className="item-content-2">
-                <div>
-                    {!loadDataProspects ? <LoaderElement /> : content}
+                <div className="item-nav-2">
+                    <Navigation context={context} onChangeContext={this.handleChangeContext} />
                 </div>
-            </div>
+                <div className="item-content-2">
+                    <div>
+                        {content}
+                    </div>
+                </div>
+            </>}
         </div>
     }
 }

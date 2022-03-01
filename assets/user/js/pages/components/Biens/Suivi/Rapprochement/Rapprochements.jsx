@@ -22,6 +22,7 @@ import { OfferFinalFormulaire }     from "@userPages/components/Biens/Suivi/Offe
 import { RapprochementsItem }       from "@userPages/components/Biens/Suivi/Rapprochement/RapprochementsItem";
 import { ContractFormulaire }       from "@userPages/components/Biens/Suivi/Contract/ContractForm";
 import {AgendaFormulaire} from "@userPages/components/Agenda/AgendaForm";
+import DataState from "@userPages/components/Biens/Form/data";
 
 const URL_DELETE_OFFER = "api_offers_delete";
 const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
@@ -56,6 +57,7 @@ export class Rapprochements extends Component {
         this.aside = React.createRef();
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
+        this.handleUpdateData = this.handleUpdateData.bind(this);
         this.handleSelectProspect = this.handleSelectProspect.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleDeleteOffer = this.handleDeleteOffer.bind(this);
@@ -102,11 +104,13 @@ export class Rapprochements extends Component {
         this.setState({ context: context, element: nElement, offer: offer })
     }
 
+    handleUpdateData = (allProspects) => { this.setState({ allProspects }) }
+
     handleUpdateListProspects = (element, newContext = null) => {
         const { data, context, sorter } = this.state;
 
         Formulaire.updateData(this, sorter, newContext, context, data, element);
-        this.props.onUpdateProspects();
+        DataState.getProspects(this, this.props.onUpdateProspects);
     }
 
     handleUpdateList = (element, newContext=null) => {
@@ -210,6 +214,12 @@ export class Rapprochements extends Component {
             }
         })
 
+        let nNegotiators = [];
+        negotiators.map(ne => {
+            ne.agency = { id: agencyId }
+            nNegotiators.push(ne)
+        })
+
         let contentAside;
         switch (context) {
             case "create-visit":
@@ -237,11 +247,11 @@ export class Rapprochements extends Component {
                                                 onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
                 break;
             case "update":
-                contentAside = <ProspectFormulaire type="update" isFromRead={true} isClient={true} element={element} bienId={elem.id} negotiators={negotiators}
+                contentAside = <ProspectFormulaire type="update" isFromRead={true} isClient={true} element={element} bienId={elem.id} negotiators={nNegotiators}
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
                 break;
             case "create":
-                contentAside = <ProspectFormulaire type="create" isFromRead={true} isClient={true} bienId={elem.id} negotiators={negotiators}
+                contentAside = <ProspectFormulaire type="create" isFromRead={true} isClient={true} bienId={elem.id} negotiators={nNegotiators}
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
                 break;
             case "select":

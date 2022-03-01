@@ -175,11 +175,14 @@ function getOwners (self) {
         })
 }
 
-function getProspects (self) {
+function getProspects (self, onUpdateData = null) {
     axios.get(Routing.generate('api_prospects_user_agency'), {})
         .then(function (response) {
             let data = response.data;
             self.setState({ allProspects: data, loadDataProspects: true })
+            if(onUpdateData){
+                onUpdateData(data);
+            }
         })
         .catch(function (error) {
             Formulaire.displayErrors(self, error);
