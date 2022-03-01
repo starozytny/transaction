@@ -187,4 +187,33 @@ class ContractController extends AbstractController
             'prospect' => $prospect
         ]);
     }
+
+    /**
+     * @Route("/{id}/status/{status}", name="switch_status", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Return message successful",
+     * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Forbidden for not good role or user",
+     * )
+     *
+     * @OA\Tag(name="Changelogs")
+     *
+     * @param ImContract $obj
+     * @param $status
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function switchStatus(ImContract $obj, $status, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        $obj->setStatus($status);
+        $em->flush();
+
+        return $apiResponse->apiJsonResponse($obj, ImContract::CONTRACT_READ);
+    }
 }

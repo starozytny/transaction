@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Routing           from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { Layout }        from "@dashboardComponents/Layout/Page";
 import Sort              from "@commonComponents/functions/sort";
 import Filter            from "@commonComponents/functions/filter";
@@ -7,7 +9,10 @@ import TopToolbar        from "@commonComponents/functions/topToolbar";
 
 import { ContractsList }       from "@userPages/components/Biens/Suivi/Contract/ContractsList";
 import { ContractFormulaire } from "@userPages/components/Biens/Suivi/Contract/ContractForm";
+import Swal from "sweetalert2";
+import SwalOptions from "@commonComponents/functions/swalOptions";
 
+const URL_SWITCH_STATUS  = 'api_contracts_switch_status';
 const URL_DELETE_ELEMENT = 'api_owners_delete';
 const MSG_DELETE_ELEMENT = 'Supprimer ce propriétaire ?';
 let SORTER = Sort.compareCreatedAtInverse;
@@ -60,6 +65,19 @@ export class Contracts extends Component {
 
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
+    handleSwitchStatus = (element, status) => {
+        Swal.fire(SwalOptions.options("Etes-vous sur de vouloir modifier le status de ce contrat ?", "Action irréversible"))
+            .then((result) => {
+                if (result.isConfirmed) {
+                    this.layout.current.handleSwitchData(this, status,
+                        Routing.generate(URL_SWITCH_STATUS, {'id': element.id, 'status': status}),
+                        "Statut" , " modifié", " modifié"
+                    )
+                }
+            })
+        ;
+        }
+
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { perPage, currentPage } = this.state;
 
@@ -79,6 +97,7 @@ export class Contracts extends Component {
                            sorters={sorters}
                            onSorter={this.handleSorter}
             //data
+                           onSwitchStatus={this.handleSwitchStatus}
                            data={currentData} />
     }
 

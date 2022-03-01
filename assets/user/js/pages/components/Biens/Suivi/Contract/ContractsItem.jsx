@@ -4,7 +4,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 export class ContractsItem extends Component {
     render () {
-        const { elem, onChangeContext, onDelete } = this.props
+        const { elem, onChangeContext, onDelete, onSwitchStatus } = this.props
 
         return <div className="item">
             <div className="item-content">
@@ -24,6 +24,8 @@ export class ContractsItem extends Component {
                         </div>
                         <div className="col-4 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
+                            {elem.status !== 2 && <ButtonIcon icon="cancel" onClick={() => onSwitchStatus(elem, 2)}>Annuler</ButtonIcon>}
+                            {elem.status !== 0 && <ButtonIcon icon="flag" onClick={() => onSwitchStatus(elem, 0)}>Terminer</ButtonIcon>}
                         </div>
                     </div>
                 </div>
