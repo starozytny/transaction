@@ -27,7 +27,7 @@ class AdminController extends AbstractController
     {
         $this->doctrine = $doctrine;
     }
-    
+
     private function getAllData($classe, SerializerInterface $serializer, $groups = User::ADMIN_READ): string
     {
         $em = $this->doctrine->getManager();
@@ -142,7 +142,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/boite-reception/envoyer", options={"expose"=true}, name="mails_send")
+     * @Route("/boite-mails/envoyer", options={"expose"=true}, name="mails_send")
      */
     public function mailsSend(Request $request, SerializerInterface $serializer): Response
     {
@@ -152,6 +152,16 @@ class AdminController extends AbstractController
         return $this->render('admin/pages/mails/send.html.twig', [
             'users' => $users,
             'dest' => $dest
+        ]);
+    }
+
+    /**
+     * @Route("/boite-mails/envoies", name="mails_sends")
+     */
+    public function mailsSends(Request $request, SerializerInterface $serializer): Response
+    {
+        return $this->render('admin/pages/mails/sends.html.twig', [
+            'donnees' => "[]",
         ]);
     }
 }
