@@ -45,8 +45,8 @@ export class Rapprochements extends Component {
             context: "list",
             subContext: props.context ? props.context : "tous",
             sorter: SORTER,
-            loadDataProspects: false,
-            allProspects: [],
+            loadDataProspects: props.loadDataProspects ? props.loadDataProspects : false,
+            allProspects: props.allProspects ? props.allProspects : [],
             data: props.data,
             rapprochements: props.rapprochements,
             element: null,
@@ -60,10 +60,6 @@ export class Rapprochements extends Component {
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleDeleteOffer = this.handleDeleteOffer.bind(this);
         this.handleSwitchStatusOffer = this.handleSwitchStatusOffer.bind(this);
-    }
-
-    componentDidMount() {
-        DataState.getProspects(this);
     }
 
     handleChangeSubContext = (subContext) => { this.setState({ subContext })}
@@ -107,7 +103,7 @@ export class Rapprochements extends Component {
         const { data, context, sorter } = this.state;
 
         Formulaire.updateData(this, sorter, newContext, context, data, element);
-        DataState.getProspects(this);
+        this.props.onUpdateProspects();
     }
 
     handleUpdateList = (element, newContext=null) => {

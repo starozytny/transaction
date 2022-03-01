@@ -152,14 +152,9 @@ class ProspectController extends AbstractController
     private function deleteProspect($em, $ids)
     {
         $suivis  = $em->getRepository(ImSuivi::class)->findBy(['prospect' => $ids]);
-        $searchs = $em->getRepository(ImSearch::class)->findBy(['prospect' => $ids]);
 
         foreach($suivis as $suivi){
             $em->remove($suivi);
-        }
-
-        foreach($searchs as $search){
-            $em->remove($search);
         }
     }
 
@@ -182,6 +177,11 @@ class ProspectController extends AbstractController
     public function delete(ImProspect $obj, DataService $dataService): JsonResponse
     {
         $em = $this->doctrine->getManager();
+
+        if($obj->getSearch()){
+            $em->remove($obj->getSearch());
+        }
+
         $this->deleteProspect($em, $obj);
 
         return $dataService->delete($obj);
@@ -210,11 +210,14 @@ class ProspectController extends AbstractController
         $em = $this->doctrine->getManager();
         $ids = json_decode($request->getContent());
 
-        $objs   = $em->getRepository(ImProspect::class)->findBy(['id' => $ids]);
+        $objs = $em->getRepository(ImProspect::class)->findBy(['id' => $ids]);
         $this->deleteProspect($em, $ids);
 
         foreach ($objs as $obj) {
             $em->remove($obj);
+            if($obj->getSearch()){
+                $em->remove($obj->getSearch());
+            }
         }
 
         $em->flush();
@@ -244,8 +247,8 @@ class ProspectController extends AbstractController
         $status = !$obj->getIsArchived();
 
         $obj->setIsArchived($status);
-        foreach($obj->getSearchs() as $search){
-            $search->setIsActive(!$status);
+        if($obj->getSearch()){
+            $obj->getSearch()->setIsActive(!$status);
         }
 
         $em->flush();

@@ -18,23 +18,31 @@ export class Suivi extends Component {
         super(props);
 
         this.state = {
+            context: props.context ? props.context : "global",
             elem: JSON.parse(props.elem),
             suivis: props.suivis ? JSON.parse(props.suivis) : [],
             negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
-            allVisits: props.visits ? JSON.parse(props.visits) : [],
             offers: props.offers ? JSON.parse(props.offers) : [],
             rapprochements: props.rapprochements ? JSON.parse(props.rapprochements) : [],
-            context: props.context ? props.context : "global",
+            allVisits: props.visits ? JSON.parse(props.visits) : [],
+            allProspects: [],
+            loadDataProspects: false
         }
 
         this.rapprochement = React.createRef();
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
+        this.handleUpdateProspects = this.handleUpdateProspects.bind(this);
+        this.handleUpdateSuivis = this.handleUpdateSuivis.bind(this);
         this.handleUpdateVisits = this.handleUpdateVisits.bind(this);
         this.handleUpdateOffers = this.handleUpdateOffers.bind(this);
     }
 
+    componentDidMount = () => { DataState.getProspects(this); }
+
     handleChangeContext = (context) => { this.setState({ context }) }
+
+    handleUpdateProspects = () => { DataState.getProspects(this); }
 
     handleUpdateSuivis = (nSuivis) => { this.setState({ suivis: nSuivis }) }
 
@@ -51,7 +59,7 @@ export class Suivi extends Component {
 
     render () {
         const { contextRapprochement } = this.props;
-        const { elem, context, suivis, negotiators, allVisits, offers, rapprochements } = this.state;
+        const { elem, context, suivis, negotiators, allVisits, offers, rapprochements, allProspects, loadDataProspects } = this.state;
 
         let content;
         switch (context){
@@ -62,6 +70,8 @@ export class Suivi extends Component {
                 content = <Rapprochements ref={this.rapprochement} elem={elem} data={suivis} rapprochements={rapprochements}
                                           societyId={elem.agency.society.id} agencyId={elem.agency.id}
                                           negotiators={negotiators} offers={offers} context={contextRapprochement}
+                                          allProspects={allProspects} loadDataProspects={loadDataProspects}
+                                          onUpdateProspects={this.handleUpdateProspects}
                                           onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
                 break;
             case "visites":
