@@ -58,11 +58,6 @@ export class OfferForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        Helper.toTop();
-        document.getElementById("pricePropal").focus()
-    }
-
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
 
     handleSubmit = (e) => {
