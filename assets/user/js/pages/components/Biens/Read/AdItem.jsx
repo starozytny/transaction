@@ -11,7 +11,7 @@ import { Features }     from "./Data/Features";
 import { Localisation } from "./Data/Localisation";
 import { Financial, FinancialVente } from "./Data/Financial";
 
-import { Global }       from "@userPages/components/Biens/Suivi/Global";
+import { Global }       from "@userPages/components/Biens/Suivi/Global/Global";
 
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
