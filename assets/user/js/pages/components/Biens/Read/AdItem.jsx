@@ -11,7 +11,8 @@ import { Features }     from "./Data/Features";
 import { Localisation } from "./Data/Localisation";
 import { Financial, FinancialVente } from "./Data/Financial";
 
-import { Global }       from "@userPages/components/Biens/Suivi/Global/Global";
+import { Global }      from "@userPages/components/Biens/Suivi/Global/Global";
+import { LastVisites } from "@userPages/components/Biens/Suivi/Visite/LastVisites";
 
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
@@ -92,7 +93,13 @@ export class AdItem extends Component {
                                 <Button element="a" onClick={Routing.generate('user_biens_suivi', {'slug': elem.slug})}>Voir le suivi détaillé</Button>
                             </div>
                         </div>
-                        <Global elem={elem} suivis={suivis} visits={allVisits} />
+                        <div className="suivi-section">
+                            <Global elem={elem} suivis={suivis} visits={allVisits} />
+                        </div>
+                        <div className="suivi-section">
+                            <div className="title">Les 20 prochaines visites</div>
+                            <LastVisites visits={allVisits} maxResults={20}/>
+                        </div>
                     </div>
                 </div>
             </div>

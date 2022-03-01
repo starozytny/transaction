@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-
-import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
-
 import Sort from "@commonComponents/functions/sort";
 
 import { HelpBubble }      from "@dashboardComponents/Tools/HelpBubble";
 import { VisitsMainInfos } from "@dashboardPages/components/Immo/Visits/VisitsItem";
 
-export class Global extends Component {
+export class LastVisites extends Component {
     constructor(props) {
         super();
 
@@ -26,7 +23,7 @@ export class Global extends Component {
     }
 
     render () {
-        const { elem, suivis, visits, maxResults = 99999 } = this.props;
+        const { visits, maxResults = 99999 } = this.props;
         const { visit } = this.state;
 
         visits.sort(Sort.compareAgEventStartAt)
@@ -47,34 +44,8 @@ export class Global extends Component {
 
         let contentHelpBubble = visit ? <VisitsMainInfos havePersons={true} inline={false} event={visit.agEvent} persons={visit.agEvent.persons}/> : null;
 
-        return <div className="suivi-global">
-            {elem && <div className="cards">
-                <a className="card" href={Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "rapprochements"})}>
-                    <div className="card-header">
-                        <div className="icon">
-                            <span className="icon-group" />
-                        </div>
-                        <div className="title">Rapprochements</div>
-                    </div>
-                    <div className="card-body">
-                        <div className="number">{suivis.length}</div>
-                    </div>
-                </a>
-
-                <a className="card" href={Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "visites"})}>
-                    <div className="card-header">
-                        <div className="icon">
-                            <span className="icon-calendar" />
-                        </div>
-                        <div className="title">Visites</div>
-                    </div>
-                    <div className="card-body">
-                        <div className="number">{totalVisits}</div>
-                    </div>
-                </a>
-            </div>}
-
-            <div className="global-visits">
+        return <div className="last-visits">
+            <div className="items">
                 {itemsVisits}
             </div>
 

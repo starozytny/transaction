@@ -11,6 +11,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 import DataState  from "@userPages/components/Biens/Form/data";
 import UpdateList from "@dashboardComponents/functions/updateList";
+import {LastVisites} from "@userPages/components/Biens/Suivi/Visite/LastVisites";
 
 export class Suivi extends Component {
     constructor(props) {
@@ -68,7 +69,13 @@ export class Suivi extends Component {
                 break;
             default:
                 content = <>
-                    <Global elem={elem} suivis={suivis} visits={allVisits} />
+                    <div className="suivi-section">
+                        <Global elem={elem} suivis={suivis} visits={allVisits} />
+                    </div>
+                    <div className="suivi-section">
+                        <div className="title">Les 20 prochaines visites</div>
+                        <LastVisites visits={allVisits} maxResults={20}/>
+                    </div>
                 </>
                 break;
         }

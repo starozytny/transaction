@@ -45,6 +45,19 @@
   }
 }
 
+.suivi-section{
+
+  &:not(:last-child){
+    margin-bottom: 24px;
+  }
+
+  .title{
+    @include fontSemibold();
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+}
+
 .card-ra{
   @include flex(row, center, flex-start);
   margin-bottom: 12px;
