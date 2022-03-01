@@ -50,9 +50,11 @@ class ContractController extends AbstractController
 
         $obj = $dataEntity->setDataContract($obj, $data, $bien);
 
-        $others = $em->getRepository(ImContract::class)->findBy(['bien' => $data->bien->id, 'status' => ImContract::STATUS_PROCESSING]);
-        foreach($others as $other){
-            $other->setStatus(ImContract::STATUS_END);
+        if($type !== "update"){
+            $others = $em->getRepository(ImContract::class)->findBy(['bien' => $data->bien->id, 'status' => ImContract::STATUS_PROCESSING]);
+            foreach($others as $other){
+                $other->setStatus(ImContract::STATUS_END);
+            }
         }
 
         $contractant = (new ImContractant())
@@ -112,7 +114,7 @@ class ContractController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponseSuccessful("ok");
+        return $apiResponse->apiJsonResponse($obj, ImContract::CONTRACT_READ);
     }
 
     /**

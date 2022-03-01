@@ -45,6 +45,7 @@ export class Suivi extends Component {
         this.handleUpdateSuivis = this.handleUpdateSuivis.bind(this);
         this.handleUpdateVisits = this.handleUpdateVisits.bind(this);
         this.handleUpdateOffers = this.handleUpdateOffers.bind(this);
+        this.handleUpdateContracts = this.handleUpdateContracts.bind(this);
         this.handleOpenAside = this.handleOpenAside.bind(this);
     }
 
@@ -70,6 +71,11 @@ export class Suivi extends Component {
         this.setState({ offers: nOffers })
     }
 
+    handleUpdateContracts = (contract, context) => {
+        let nContracts = UpdateList.update(context, this.state.contracts, contract);
+        this.setState({ contracts: nContracts })
+    }
+
     handleOpenAside = () => {
         this.aside.current.handleOpen("Bien vendu")
     }
@@ -81,7 +87,7 @@ export class Suivi extends Component {
         let content;
         switch (context){
             case "contracts":
-                content = <Contracts donnees={JSON.stringify(contracts)} bien={elem} />
+                content = <Contracts donnees={JSON.stringify(contracts)} bien={elem} onUpdateContracts={this.handleUpdateContracts} classes={""}/>
                 break;
             case "rapprochements":
                 content = <Rapprochements ref={this.rapprochement} {...this.state} data={suivis} context={contextRapprochement}

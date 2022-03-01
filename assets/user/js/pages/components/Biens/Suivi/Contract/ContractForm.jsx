@@ -70,7 +70,7 @@ class ContractForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { context, url } = this.props;
+        const { context, url, messageSuccess } = this.props;
         const { critere, sellAt, sellBy, sellWhy } = this.state;
 
         if(critere !== ""){
@@ -96,13 +96,14 @@ class ContractForm extends Component {
                 axios({ method: method, url: url, data: this.state })
                     .then(function (response) {
                         if(self.props.onUpdateList){
-                            self.props.onUpdateList(response.data)
+                            Formulaire.loader(false);
+                            self.props.onUpdateList(response.data);
+                            self.setState({ success: messageSuccess, errors: [] })
                         }else{
                             location.reload();
                         }
                     })
                     .catch(function (error) {
-                        Formulaire.loader(false);
                         Formulaire.displayErrors(self, error);
                     })
                 ;

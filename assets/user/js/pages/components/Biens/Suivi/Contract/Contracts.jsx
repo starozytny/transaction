@@ -29,6 +29,7 @@ export class Contracts extends Component {
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "contracts.pagination",
+            classes: props.classes !== null ? props.classes : "main-content",
         }
 
         this.layout = React.createRef();
@@ -46,7 +47,10 @@ export class Contracts extends Component {
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees, "read", "id", this.state.filters, Filter.filterStatus); }
 
-    handleUpdateList = (element, newContext=null) => { this.layout.current.handleUpdateList(element, newContext); }
+    handleUpdateList = (element, newContext=null) => {
+        this.layout.current.handleUpdateList(element, newContext);
+        this.props.onUpdateContracts(element, "update");
+    }
 
     handleGetFilters = (filters) => { this.layout.current.handleGetFilters(filters, Filter.filterStatus); }
 
@@ -79,7 +83,7 @@ export class Contracts extends Component {
     }
 
     handleContentUpdate = (changeContext, element) => {
-        return  <ContractFormulaire type="create" element={element} bien={this.props.bien}
+        return  <ContractFormulaire type="update" element={element} bien={this.props.bien}
                                     onChangeContext={changeContext} onUpdateList={this.handleUpdateList}/>;
     }
 
