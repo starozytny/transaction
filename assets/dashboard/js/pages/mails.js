@@ -10,9 +10,9 @@ import { MailFormulaire } from "@dashboardPages/components/Mails/MailForm";
 
 Routing.setRoutingData(routes);
 
-let el = document.getElementById("mails-sent");
+let el = document.getElementById("mails");
 if(el){
-    render(<Mails type="create" {...el.dataset} />, el)
+    render(<Mails {...el.dataset} />, el)
 }
 
 el = document.getElementById("send-mail");

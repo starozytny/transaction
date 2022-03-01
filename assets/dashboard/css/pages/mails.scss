@@ -16,3 +16,72 @@
     border-radius: 4px;
   }
 }
+
+.boite-mail{
+  @include flex(row, stretch, flex-start);
+  border-radius: 8px;
+  border: 1px solid var(--greyShadow);
+
+  overflow: auto;
+
+  .col-1, .col-2, .col-3{
+    padding: 12px;
+  }
+
+  .col-1{
+    background-color: var(--alpha);
+    border-radius: 8px 0 0 8px;
+    width: calc(22% - 24px);
+  }
+
+  .col-2{
+    background-color: var(--fond);
+    width: calc(28% - 24px);
+  }
+
+  .col-3{
+    background-color: var(--alpha);
+    border-radius: 0 8px 8px 0;
+    width: calc(50% - 24px);
+  }
+
+  .col-1{
+    .mail-add{
+      margin-bottom: 24px;
+
+      .btn{
+        width: 100%;
+      }
+    }
+
+    .mail-menu{
+      .item{
+        @include flex(row, center, space-between);
+        cursor: pointer;
+        @include fontSemibold();
+
+        .name{
+          @include flex(row, center, flex-start);
+
+          [class^="icon-"]{
+            display: inline-block;
+            margin-right: 8px;
+            color: var(--grey3);
+            font-weight: 600;
+          }
+        }
+
+        .total{
+          span{
+            background-color: var(--primaryShadow);
+            border-radius: 4px;
+            width: 36px; height: 36px;
+            padding: 4px 6px;
+            font-size: 12px;
+            color: var(--primary)
+          }
+        }
+      }
+    }
+  }
+}

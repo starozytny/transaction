@@ -158,16 +158,16 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/boite-mails/envoies", name="mails_sent")
+     * @Route("/boite-mails", name="mails")
      */
-    public function mailsSent(MailRepository $mailRepository, SerializerInterface $serializer): Response
+    public function mails(MailRepository $mailRepository, SerializerInterface $serializer): Response
     {
         $data = $mailRepository->findAll();
 
         $data = $serializer->serialize($data, 'json', ['groups' => Mail::MAIL_READ]);
 
-        return $this->render('admin/pages/mails/sent.html.twig', [
-            'donnees' => $data,
+        return $this->render('admin/pages/mails/index.html.twig', [
+            'sent' => $data,
         ]);
     }
 }
