@@ -232,7 +232,7 @@ export class Rapprochements extends Component {
                 contentAside = <AgendaFormulaire type="create" useAside={true} refAside={this.aside}
                                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
                                                  buyers={buyers} prospects={allProspects} bienId={elem.id} persons={persons}
-                                                 onUpdateList={this.props.onUpdateSuivis}
+                                                 onUpdateList={this.props.onUpdateVisits}
                                                  url_create={'api_visits_create'} key={i++}
                 />
                 break;

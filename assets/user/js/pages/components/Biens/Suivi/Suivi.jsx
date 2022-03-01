@@ -75,7 +75,7 @@ export class Suivi extends Component {
             case "rapprochements":
                 content = <Rapprochements ref={this.rapprochement} {...this.state} data={suivis} context={contextRapprochement}
                                           societyId={elem.agency.society.id} agencyId={elem.agency.id}
-                                          onUpdateProspects={this.handleUpdateProspects}
+                                          onUpdateProspects={this.handleUpdateProspects} onUpdateVisits={this.handleUpdateVisits}
                                           onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
                 break;
             case "visites":
