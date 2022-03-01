@@ -87,7 +87,7 @@ export class Suivi extends Component {
         let content;
         switch (context){
             case "contracts":
-                content = <Contracts donnees={JSON.stringify(contracts)} bien={elem} onUpdateContracts={this.handleUpdateContracts} classes={""}/>
+                content = <Contracts donnees={JSON.stringify(contracts)} bien={elem} onUpdateContracts={this.handleUpdateContracts} classes={"bien-contracts"}/>
                 break;
             case "rapprochements":
                 content = <Rapprochements ref={this.rapprochement} {...this.state} data={suivis} context={contextRapprochement}
