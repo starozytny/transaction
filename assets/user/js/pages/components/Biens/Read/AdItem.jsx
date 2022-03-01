@@ -14,7 +14,7 @@ import { Financial, FinancialVente } from "./Data/Financial";
 import { Global }      from "@userPages/components/Biens/Suivi/Global/Global";
 import { LastVisites } from "@userPages/components/Biens/Suivi/Visite/LastVisites";
 
-import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
+import {Button, ButtonIcon, ButtonIconDropdown} from "@dashboardComponents/Tools/Button";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
@@ -69,6 +69,11 @@ export class AdItem extends Component {
                 break;
         }
 
+        let items = [
+            {data: <a target="_blank" href={Routing.generate("user_printer_bien_display", {'slug': elem.slug, "ori": "portrait"})}>Imprimer la fiche portrait</a>},
+            {data: <a target="_blank" href={Routing.generate("user_printer_bien_display", {'slug': elem.slug, "ori": "landscape"})}>Imprimer la fiche paysage</a>},
+        ]
+
         return <div className="main-content">
             <div className="details-container">
                 <div className="details-content-container">
@@ -76,7 +81,7 @@ export class AdItem extends Component {
                     <div className="details-general">
                         <AdBadges elem={elem} />
                         <div className="details-ad-actions">
-                            <ButtonIcon element="a" target="_blank" icon="print">Imprimer</ButtonIcon>
+                            <ButtonIconDropdown icon="print" items={items}>Imprimer</ButtonIconDropdown>
                             <ButtonIcon element="a" icon="follow" onClick={Routing.generate('user_biens_suivi', {'slug': elem.slug})}>Suivi</ButtonIcon>
                         </div>
                     </div>
