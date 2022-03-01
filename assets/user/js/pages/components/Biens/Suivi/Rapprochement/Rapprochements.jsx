@@ -13,6 +13,7 @@ import { Button }        from "@dashboardComponents/Tools/Button";
 import { LoaderElement } from "@dashboardComponents/Layout/Loader";
 
 import Sort          from "@commonComponents/functions/sort";
+import DataState     from "@userPages/components/Biens/Form/data";
 import Formulaire    from "@dashboardComponents/functions/Formulaire";
 
 import { ProspectFormulaire }       from "@dashboardPages/components/Immo/Prospects/ProspectForm";
@@ -21,8 +22,7 @@ import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offe
 import { OfferFinalFormulaire }     from "@userPages/components/Biens/Suivi/Offer/OfferFinalForm";
 import { RapprochementsItem }       from "@userPages/components/Biens/Suivi/Rapprochement/RapprochementsItem";
 import { ContractFormulaire }       from "@userPages/components/Biens/Suivi/Contract/ContractForm";
-import {AgendaFormulaire} from "@userPages/components/Agenda/AgendaForm";
-import DataState from "@userPages/components/Biens/Form/data";
+import { AgendaFormulaire }         from "@userPages/components/Agenda/AgendaForm";
 
 const URL_DELETE_OFFER = "api_offers_delete";
 const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
@@ -52,6 +52,7 @@ export class Rapprochements extends Component {
             rapprochements: props.rapprochements,
             element: null,
             offer: null,
+            persons: {}
         }
 
         this.aside = React.createRef();
@@ -68,9 +69,12 @@ export class Rapprochements extends Component {
 
     handleChangeContext = (context, element, offer = null) => {
         let nElement = element ? element : this.state.element;
+        let nPersons = {};
 
         switch (context){
             case "create-visit":
+                nPersons = {users: [], managers: [], negotiators: [], owners: [], tenants: [], buyers: [],
+                    prospects: [{ value: element.id, label: element.fullname, email: element.email }]}
                 this.aside.current.handleOpen("Programmer une visite pour " + element.fullname);
                 break;
             case "final-offer":
@@ -101,7 +105,7 @@ export class Rapprochements extends Component {
                 break;
         }
 
-        this.setState({ context: context, element: nElement, offer: offer })
+        this.setState({ context: context, element: nElement, offer: offer, persons: nPersons })
     }
 
     handleUpdateData = (allProspects) => { this.setState({ allProspects }) }
@@ -153,7 +157,7 @@ export class Rapprochements extends Component {
     render () {
         const { elem, societyId, agencyId, offers, onUpdateOffers,
             users, managers, negotiators, owners, tenants, buyers } = this.props;
-        const { loadDataProspects, context, subContext, data, allProspects, element, offer, rapprochements } = this.state;
+        const { loadDataProspects, context, subContext, data, allProspects, element, offer, rapprochements, persons } = this.state;
 
         let nData = [];
 
@@ -215,19 +219,21 @@ export class Rapprochements extends Component {
         })
 
         let nNegotiators = [];
-        negotiators.map(ne => {
-            ne.agency = { id: agencyId }
-            nNegotiators.push(ne)
-        })
+        if(negotiators){
+            negotiators.map(ne => {
+                ne.agency = { id: agencyId }
+                nNegotiators.push(ne)
+            })
+        }
 
         let contentAside;
         switch (context) {
             case "create-visit":
                 contentAside = <AgendaFormulaire type="create" useAside={true}
                                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 buyers={buyers} prospects={allProspects} bienId={elem.id}
+                                                 buyers={buyers} prospects={allProspects} bienId={elem.id} persons={persons}
                                                  onUpdateList={this.handleUpdateList}
-                                                 url_create={'api_visits_create'}
+                                                 url_create={'api_visits_create'} key={i++}
                 />
                 break;
             case "final-offer":

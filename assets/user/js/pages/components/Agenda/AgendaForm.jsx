@@ -28,7 +28,7 @@ const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelete, custom, element, refAside, useAside,
                                       users, managers, negotiators, owners, tenants, prospects, buyers, bienId ="",
-                                      url_create=null, url_update=null, params_update={} })
+                                      url_create=null, url_update=null, params_update={}, persons = {} })
 {
     let title = "Ajouter une visite";
     let url = Routing.generate(url_create ? url_create : URL_CREATE_ELEMENT);
@@ -54,7 +54,7 @@ export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelet
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
         visibilities={element ? Formulaire.setValueEmptyIfNull(element.visibilities, [0]) : [0]}
-        persons={element ? Formulaire.setValueEmptyIfNull(element.persons, []) : []}
+        persons={element ? Formulaire.setValueEmptyIfNull(element.persons, persons) : persons}
         bien={element ? (element.bien ? element.bien : bienId) : bienId}
         onUpdateList={onUpdateList}
         onDelete={onDelete}
@@ -95,8 +95,8 @@ export class Form extends Component {
             negotiators: getPersonsData(props.persons ? props.persons.negotiators : []),
             owners: getPersonsData(props.persons ? props.persons.owners : []),
             tenants: getPersonsData(props.persons ? props.persons.tenants : []),
-            prospects: getPersonsData(props.prospects ? props.persons.prospects : []),
-            buyers: getPersonsData(props.buyers ? props.persons.buyers : []),
+            prospects: getPersonsData(props.persons ? props.persons.prospects : []),
+            buyers: getPersonsData(props.persons ? props.persons.buyers : []),
             bien: props.bien,
             errors: [],
             success: false
