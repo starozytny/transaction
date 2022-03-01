@@ -68,7 +68,7 @@ export class ProspectsItem extends Component {
 
                         <div className="col-5 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                            <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>
+                            {(!isSelect || (isSelect && !active)) && <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>}
                             <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "prospect")}>Autres</ButtonIconDropdown>
                         </div>
                     </div>
