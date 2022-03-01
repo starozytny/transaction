@@ -156,7 +156,7 @@ export class Rapprochements extends Component {
 
     render () {
         const { elem, societyId, agencyId, offers, onUpdateOffers,
-            users, managers, negotiators, owners, tenants, buyers } = this.props;
+            users, managers, negotiators, owners, tenants, buyers, historiesVisits } = this.props;
         const { loadDataProspects, context, subContext, data, allProspects, element, offer, rapprochements, persons } = this.state;
 
         let nData = [];
@@ -164,6 +164,25 @@ export class Rapprochements extends Component {
         let items = [];
         let prospects = [], prospectsUsed = [];
         data.forEach(el => {
+
+            let noDuplicateHistories = [];
+            el.prospect.nbVisits = 0;
+
+            historiesVisits.forEach(hi => {
+                if(!noDuplicateHistories.includes(hi.visiteId)){
+                    noDuplicateHistories.push(hi.visiteId)
+
+                    if(hi.status !== 4){
+                        hi.prospects.forEach(pr => {
+                            if(pr.value === el.prospect.id){
+                                el.prospect.nbVisits = el.prospect.nbVisits + 1;
+                            }
+                        })
+                    }
+                }
+            })
+
+
             nData.push({ lastname: el.prospect.lastname, suivi: el, rapprochement: null })
             prospects.push(el.prospect);
             prospectsUsed.push(el.prospect.id);

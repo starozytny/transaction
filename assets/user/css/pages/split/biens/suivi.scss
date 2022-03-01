@@ -203,7 +203,7 @@
         width: 100%;
 
         .col-1{
-          width: calc(100% - (40% - 12px) - 100px);
+          width: calc(100% - (40% - 12px) - 120px);
           margin-right: 12px;
         }
 
@@ -213,7 +213,7 @@
         }
 
         .col-3{
-          width: 100px;
+          width: 120px;
           justify-content: space-between;
         }
       }
@@ -250,7 +250,7 @@
 
       .infos{
         .col-1{
-          width: calc(100% - (45% - 12px) - 100px);
+          width: calc(100% - (45% - 12px) - 120px);
         }
 
         .col-2{

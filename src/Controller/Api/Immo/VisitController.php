@@ -62,8 +62,8 @@ class VisitController extends AbstractController
     /**
      * @throws Exception
      */
-    public function submitForm($type, ImVisit $obj, AgEvent $event, Request $request, ApiResponse $apiResponse,
-                               ValidatorService $validator, DataImmo $dataEntity, DataEvent $dataEvent, SerializerInterface $serializer): JsonResponse
+    public function submitForm($type, ImVisit $obj, AgEvent $event, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
+                               DataImmo $dataEntity, DataEvent $dataEvent, SerializerInterface $serializer, HistoryService $historyService): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
@@ -95,19 +95,8 @@ class VisitController extends AbstractController
 
         $existe = $em->getRepository(HiVisite::class)->findOneBy(['bienId' => $bien->getId(), 'visiteId' => $obj->getId()], ['createdAt' => 'DESC']);
         if($existe && $existe->getStatus() != $event->getStatus() || !$existe){
-            $historyVisite = (new HiVisite())
-                ->setBienId($bien->getId())
-                ->setVisiteId($obj->getId())
-                ->setStatus($event->getStatus())
-                ->setFullDate($event->getFullDate())
-                ->setName($event->getName())
-                ->setLocation($event->getLocation())
-            ;
-
-            $em->persist($historyVisite);
+            $historyService->createVisit($event->getStatus(), $bien->getId(), $obj->getId(), $event, $data->prospects ?: []);
         }
-
-        $em->flush();
 
         $data = $serializer->serialize($obj, "json", ['groups' => ImVisit::VISIT_READ]);
 
@@ -135,13 +124,14 @@ class VisitController extends AbstractController
      * @param DataEvent $dataEvent
      * @param DataImmo $dataEntity
      * @param SerializerInterface $serializer
+     * @param HistoryService $historyService
      * @return JsonResponse
      * @throws Exception
      */
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator,
-                           DataEvent $dataEvent, DataImmo $dataEntity, SerializerInterface $serializer): JsonResponse
+                           DataEvent $dataEvent, DataImmo $dataEntity, SerializerInterface $serializer, HistoryService $historyService): JsonResponse
     {
-        return $this->submitForm("create", new ImVisit(), new AgEvent(), $request, $apiResponse, $validator, $dataEntity, $dataEvent, $serializer);
+        return $this->submitForm("create", new ImVisit(), new AgEvent(), $request, $apiResponse, $validator, $dataEntity, $dataEvent, $serializer, $historyService);
     }
 
     /**
@@ -163,13 +153,14 @@ class VisitController extends AbstractController
      * @param DataImmo $dataEntity
      * @param DataEvent $dataEvent
      * @param SerializerInterface $serializer
+     * @param HistoryService $historyService
      * @return JsonResponse
      * @throws Exception
      */
     public function update(ImVisit $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
-                           DataImmo $dataEntity, DataEvent $dataEvent, SerializerInterface $serializer): JsonResponse
+                           DataImmo $dataEntity, DataEvent $dataEvent, SerializerInterface $serializer, HistoryService $historyService): JsonResponse
     {
-        return $this->submitForm("update", $obj, $obj->getAgEvent(), $request, $apiResponse, $validator, $dataEntity, $dataEvent, $serializer);
+        return $this->submitForm("update", $obj, $obj->getAgEvent(), $request, $apiResponse, $validator, $dataEntity, $dataEvent, $serializer, $historyService);
     }
 
     /**

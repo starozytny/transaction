@@ -29,7 +29,7 @@ class HistoryService extends DataConstructor
         }
     }
 
-    public function createVisit($status, $bienId, $visitId, AgEvent $event)
+    public function createVisit($status, $bienId, $visitId, AgEvent $event, $prospects = [])
     {
         $history = (new HiVisite())
             ->setBienId($bienId)
@@ -38,6 +38,7 @@ class HistoryService extends DataConstructor
             ->setFullDate($event->getFullDate())
             ->setName($event->getName())
             ->setLocation($event->getLocation())
+            ->setProspects($prospects)
         ;
 
         $this->em->persist($history);

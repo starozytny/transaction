@@ -6,6 +6,7 @@ use App\Entity\Changelog;
 use App\Entity\Donnee\DoQuartier;
 use App\Entity\Donnee\DoSol;
 use App\Entity\Donnee\DoSousType;
+use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
@@ -217,9 +218,12 @@ class UserController extends AbstractController
             $visits         = $serializer->serialize($visits,       'json', ['groups' => ImVisit::VISIT_READ]);
             $offers         = $serializer->serialize($offers,       'json', ['groups' => ImOffer::OFFER_READ]);
 
+            $historiesVisits = [];
             $rapprochements = [];
             if($type === "suivi"){
                 $rapprochements = $searchService->getRapprochementBySearchs([$obj]);
+                $historiesVisits = $em->getRepository(HiVisite::class)->findBy(['bienId' => $obj->getId()], ['createdAt' => 'DESC']);
+                $historiesVisits = $serializer->serialize($historiesVisits, 'json', ['groups' => HiVisite::HISTORY_VISITE]);
             }
             $rapprochements = json_encode($rapprochements);
         }
@@ -236,7 +240,8 @@ class UserController extends AbstractController
                 'offers' => $offers,
                 'rapprochements' => $rapprochements,
                 'context' => $context,
-                'ctRa' => $contextRapp ?: "tous"
+                'ctRa' => $contextRapp ?: "tous",
+                'historiesVisits' => $historiesVisits,
         ]);
     }
 

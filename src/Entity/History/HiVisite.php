@@ -63,6 +63,12 @@ class HiVisite extends DataEntity
      */
     private $location;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     * @Groups({"history:visite"})
+     */
+    private $prospects = [];
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -174,5 +180,17 @@ class HiVisite extends DataEntity
     public function getStatusString(): string
     {
         return $this->getStatusStringEvent($this->status);
+    }
+
+    public function getProspects(): ?array
+    {
+        return $this->prospects;
+    }
+
+    public function setProspects(?array $prospects): self
+    {
+        $this->prospects = $prospects;
+
+        return $this;
     }
 }

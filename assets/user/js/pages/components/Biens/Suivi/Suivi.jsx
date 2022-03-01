@@ -28,6 +28,7 @@ export class Suivi extends Component {
             offers: props.offers ? JSON.parse(props.offers) : [],
             rapprochements: props.rapprochements ? JSON.parse(props.rapprochements) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
+            historiesVisits: props.historiesVisits ? JSON.parse(props.historiesVisits) : [],
             allProspects: [],
             loadDataProspects: false
         }
