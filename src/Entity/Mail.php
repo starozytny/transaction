@@ -23,9 +23,9 @@ class Mail extends DataEntity
     private $expeditor;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="json")
      */
-    private $destinators;
+    private $destinators = [];
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -64,18 +64,6 @@ class Mail extends DataEntity
         return $this;
     }
 
-    public function getDestinators(): ?string
-    {
-        return $this->destinators;
-    }
-
-    public function setDestinators(string $destinators): self
-    {
-        $this->destinators = $destinators;
-
-        return $this;
-    }
-
     public function getSubject(): ?string
     {
         return $this->subject;
@@ -108,6 +96,18 @@ class Mail extends DataEntity
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getDestinators(): ?array
+    {
+        return $this->destinators;
+    }
+
+    public function setDestinators(array $destinators): self
+    {
+        $this->destinators = $destinators;
 
         return $this;
     }
