@@ -4,7 +4,7 @@
 
 {% block main_content %}
     <div class="main-content">
-        <div id="mails" data-users="{{ users }}" data-dest="{{ dest | json_encode }}">
+        <div id="send-mail" data-users="{{ users }}" data-dest="{{ dest | json_encode }}">
             {% include "dashboard/layout/components/spinner.html.twig" %}
         </div>
         <div class="previsualisation">
