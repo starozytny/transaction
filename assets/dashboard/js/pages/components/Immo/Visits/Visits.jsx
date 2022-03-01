@@ -58,14 +58,14 @@ export class Visits extends Component {
 
         return <AgendaFormulaire type="create" onChangeContext={changeContext} useAside={false}
                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                 prospects={prospects} biens={biens} bienId={parseInt(this.props.bienId)}
+                                 prospects={prospects} bienId={parseInt(this.props.bienId)}
                                  onUpdateList={this.handleUpdateList}
                                  url_create={'api_visits_create'}
         />
     }
 
     handleContentUpdate = (changeContext, element) => {
-        const { users, managers, negotiators, owners, tenants, prospects, biens } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
 
         let params = {'id': element.id};
         let elem = AgendaData.createEventStructure(element.agEvent, element);
@@ -73,7 +73,7 @@ export class Visits extends Component {
 
         return <AgendaFormulaire type="update" element={element} onChangeContext={changeContext} useAside={false}
                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                 prospects={prospects} biens={biens} bienId={parseInt(this.props.bienId)}
+                                 prospects={prospects} bienId={parseInt(this.props.bienId)}
                                  onUpdateList={this.handleUpdateList} url_update={'api_visits_update'} params_update={params}/>
     }
 

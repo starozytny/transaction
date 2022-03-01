@@ -27,7 +27,7 @@ const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelete, custom, element, refAside, useAside,
-                                      users, managers, negotiators, owners, tenants, prospects, buyers, biens, bienId ="",
+                                      users, managers, negotiators, owners, tenants, prospects, buyers, bienId ="",
                                       url_create=null, url_update=null, params_update={} })
 {
     let title = "Ajouter une visite";
@@ -67,7 +67,6 @@ export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelet
         tenants={tenants}
         prospects={prospects}
         buyers={buyers}
-        biens={biens}
 
         refAside={refAside}
         useAside={useAside}

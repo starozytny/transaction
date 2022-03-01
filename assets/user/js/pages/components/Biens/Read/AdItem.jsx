@@ -14,7 +14,7 @@ import { Financial, FinancialVente } from "./Data/Financial";
 import { Global }      from "@userPages/components/Biens/Suivi/Global/Global";
 import { LastVisites } from "@userPages/components/Biens/Suivi/Visite/LastVisites";
 
-import {Button, ButtonIcon, ButtonIconDropdown} from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
@@ -27,7 +27,6 @@ export class AdItem extends Component {
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
             suivis: props.suivis ? JSON.parse(props.suivis) : [],
-            negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
             context: "infos",
             contextSuivi: "global"

@@ -266,7 +266,7 @@ export class Agenda extends Component {
 
     render () {
         const { context, errors, loadPageError, loadData, data, initialView, element,
-            users, managers, negotiators, owners, tenants, prospects, buyers, biens,
+            users, managers, negotiators, owners, tenants, prospects, buyers,
             filters, selActive, user, manager, negotiator, owner, tenant, buyer, prospect } = this.state;
 
         let contentAside;
@@ -274,14 +274,14 @@ export class Agenda extends Component {
             case "create":
                 contentAside = <AgendaFormulaire type="create" custom={element} refAside={this.aside}
                                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 prospects={prospects} buyers={buyers} biens={biens}
+                                                 prospects={prospects} buyers={buyers}
                                                  onUpdateList={this.handleUpdateList}
                                                  />
                 break;
             case "update":
                 contentAside = <AgendaFormulaire type="update" element={element} refAside={this.aside}
                                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 prospects={prospects} buyers={buyers} biens={biens}
+                                                 prospects={prospects} buyers={buyers}
                                                  onUpdateList={this.handleUpdateList} onDelete={() => this.handleDelete(element)} />
                 break;
             default:

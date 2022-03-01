@@ -15,8 +15,7 @@ function getData(self, url) {
             let tenants = JSON.parse(data.tenants)
             let prospects = JSON.parse(data.prospects)
             let buyers = JSON.parse(data.buyers)
-            let biens = JSON.parse(data.biens)
-            self.setState({ users, managers, negotiators, owners, tenants, prospects, biens, buyers })
+            self.setState({ users, managers, negotiators, owners, tenants, prospects, buyers })
         })
         .catch(function (error) {
             Formulaire.displayErrors(self, error)

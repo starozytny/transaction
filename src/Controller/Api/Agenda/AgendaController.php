@@ -58,7 +58,6 @@ class AgendaController extends AbstractController
         $tenants        = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgency()]);
         $prospects      = $em->getRepository(ImProspect::class)->findBy(['agency' => $user->getAgency()]);
         $buyers         = $em->getRepository(ImBuyer::class)->findBy(['agency' => $user->getAgency()]);
-        $biens          = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
 
         $users = []; $managers = [];
         foreach($allUsers as $user){
@@ -80,7 +79,6 @@ class AgendaController extends AbstractController
         $tenants        = $serializer->serialize($tenants, 'json', ['groups' => User::AGENDA_READ]);
         $prospects      = $serializer->serialize($prospects, 'json', ['groups' => User::AGENDA_READ]);
         $buyers         = $serializer->serialize($buyers, 'json', ['groups' => User::AGENDA_READ]);
-        $biens          = $serializer->serialize($biens, 'json', ['groups' => User::AGENDA_READ]);
 
         return $apiResponse->apiJsonResponse([
             "users" => $users,
@@ -90,7 +88,6 @@ class AgendaController extends AbstractController
             "tenants" => $tenants,
             "prospects" => $prospects,
             "buyers" => $buyers,
-            "biens" => $biens,
         ]);
     }
 }

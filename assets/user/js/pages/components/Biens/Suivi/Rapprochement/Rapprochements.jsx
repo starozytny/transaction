@@ -21,6 +21,7 @@ import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offe
 import { OfferFinalFormulaire }     from "@userPages/components/Biens/Suivi/Offer/OfferFinalForm";
 import { RapprochementsItem }       from "@userPages/components/Biens/Suivi/Rapprochement/RapprochementsItem";
 import { ContractFormulaire }       from "@userPages/components/Biens/Suivi/Contract/ContractForm";
+import {AgendaFormulaire} from "@userPages/components/Agenda/AgendaForm";
 
 const URL_DELETE_OFFER = "api_offers_delete";
 const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
@@ -67,6 +68,9 @@ export class Rapprochements extends Component {
         let nElement = element ? element : this.state.element;
 
         switch (context){
+            case "create-visit":
+                this.aside.current.handleOpen("Programmer une visite pour " + element.fullname);
+                break;
             case "final-offer":
                 this.aside.current.handleOpen("Finaliser l'offre de " + element.fullname);
                 break;
@@ -143,7 +147,8 @@ export class Rapprochements extends Component {
     }
 
     render () {
-        const { elem, societyId, agencyId, negotiators, offers, onUpdateOffers } = this.props;
+        const { elem, societyId, agencyId, offers, onUpdateOffers,
+            users, managers, negotiators, owners, tenants, buyers } = this.props;
         const { loadDataProspects, context, subContext, data, allProspects, element, offer, rapprochements } = this.state;
 
         let nData = [];
@@ -207,30 +212,38 @@ export class Rapprochements extends Component {
 
         let contentAside;
         switch (context) {
+            case "create-visit":
+                contentAside = <AgendaFormulaire type="create" useAside={true}
+                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
+                                                 buyers={buyers} prospects={allProspects} bienId={elem.id}
+                                                 onUpdateList={this.handleUpdateList}
+                                                 url_create={'api_visits_create'}
+                />
+                break;
             case "final-offer":
                 contentAside = <ContractFormulaire type="create" bien={elem} prospect={element}
                                                    onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
-                break
+                break;
             case "accept-offer":
                 contentAside = <OfferFinalFormulaire type="update" element={offer}
                                                     onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
-                break
+                break;
             case "update-offer":
                 contentAside = <OfferFormulaire type="update" bien={elem} prospect={element} element={offer}
                                                 onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
-                break
+                break;
             case "create-offer":
                 contentAside = <OfferFormulaire type="create" bien={elem} prospect={element}
                                                 onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
-                break
+                break;
             case "update":
                 contentAside = <ProspectFormulaire type="update" isFromRead={true} isClient={true} element={element} bienId={elem.id} negotiators={negotiators}
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
-                break
+                break;
             case "create":
                 contentAside = <ProspectFormulaire type="create" isFromRead={true} isClient={true} bienId={elem.id} negotiators={negotiators}
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
-                break
+                break;
             case "select":
                 contentAside = <Prospects isSelect={true} isClient={true}
                                           donnees={JSON.stringify(allProspects)} prospects={prospects} classes={" "}

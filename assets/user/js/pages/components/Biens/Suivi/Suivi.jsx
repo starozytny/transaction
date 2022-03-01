@@ -8,11 +8,14 @@ import { LastVisites }    from "@userPages/components/Biens/Suivi/Visite/LastVis
 import { Visits }         from "@dashboardPages/components/Immo/Visits/Visits";
 import { AdBadges, AdMainInfos } from "@userPages/components/Biens/Read/AdItem";
 
-import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
+import { ButtonIcon }    from "@dashboardComponents/Tools/Button";
+import { LoaderElement } from "@dashboardComponents/Layout/Loader";
 
 import DataState  from "@userPages/components/Biens/Form/data";
 import UpdateList from "@dashboardComponents/functions/updateList";
-import {LoaderElement} from "@dashboardComponents/Layout/Loader";
+import AgendaData from "@userPages/components/Agenda/agendaData";
+
+const URL_GET_DATA = 'api_agenda_data_persons';
 
 export class Suivi extends Component {
     constructor(props) {
@@ -22,7 +25,6 @@ export class Suivi extends Component {
             context: props.context ? props.context : "global",
             elem: JSON.parse(props.elem),
             suivis: props.suivis ? JSON.parse(props.suivis) : [],
-            negotiators: props.negotiators ? JSON.parse(props.negotiators) : [],
             offers: props.offers ? JSON.parse(props.offers) : [],
             rapprochements: props.rapprochements ? JSON.parse(props.rapprochements) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
@@ -39,7 +41,10 @@ export class Suivi extends Component {
         this.handleUpdateOffers = this.handleUpdateOffers.bind(this);
     }
 
-    componentDidMount = () => { DataState.getProspects(this); }
+    componentDidMount = () => {
+        DataState.getProspects(this);
+        AgendaData.getData(this, URL_GET_DATA);
+    }
 
     handleChangeContext = (context) => { this.setState({ context }) }
 
@@ -60,7 +65,7 @@ export class Suivi extends Component {
 
     render () {
         const { contextRapprochement } = this.props;
-        const { elem, context, suivis, negotiators, allVisits, offers, rapprochements, allProspects, loadDataProspects } = this.state;
+        const { elem, context, suivis, allVisits, loadDataProspects} = this.state;
 
         let content;
         switch (context){
@@ -68,10 +73,8 @@ export class Suivi extends Component {
                 content = <div>Offres</div>
                 break;
             case "rapprochements":
-                content = <Rapprochements ref={this.rapprochement} elem={elem} data={suivis} rapprochements={rapprochements}
+                content = <Rapprochements ref={this.rapprochement} {...this.state} data={suivis} context={contextRapprochement}
                                           societyId={elem.agency.society.id} agencyId={elem.agency.id}
-                                          negotiators={negotiators} offers={offers} context={contextRapprochement}
-                                          allProspects={allProspects} loadDataProspects={loadDataProspects}
                                           onUpdateProspects={this.handleUpdateProspects}
                                           onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
                 break;
@@ -90,8 +93,6 @@ export class Suivi extends Component {
                 </>
                 break;
         }
-
-        console.log(loadDataProspects)
 
         return <div className="main-content">
             <div className="details-container">
