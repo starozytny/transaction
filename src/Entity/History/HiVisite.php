@@ -173,8 +173,6 @@ class HiVisite extends DataEntity
      */
     public function getStatusString(): string
     {
-        $status = ["Inactif", "Actif", "Annulé", "Fini"];
-
-        return $status[$this->status];
+        return $this->getStatusStringEvent($this->status);
     }
 }

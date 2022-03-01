@@ -151,4 +151,11 @@ class DataEntity
 
         return $data[$value];
     }
+
+    public function getStatusStringEvent($value): string
+    {
+        $data = ["Inactif", "Actif", "Annulé", "Fini", "Supprimé"];
+
+        return $data[$value];
+    }
 }

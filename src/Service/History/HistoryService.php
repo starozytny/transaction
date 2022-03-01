@@ -2,7 +2,9 @@
 
 namespace App\Service\History;
 
+use App\Entity\Agenda\AgEvent;
 use App\Entity\History\HiPrice;
+use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImBien;
 use App\Service\Data\DataConstructor;
 
@@ -25,5 +27,20 @@ class HistoryService extends DataConstructor
             $this->em->persist($history);
             $this->em->flush();
         }
+    }
+
+    public function createVisit($status, $bienId, $visitId, AgEvent $event)
+    {
+        $history = (new HiVisite())
+            ->setBienId($bienId)
+            ->setVisiteId($visitId)
+            ->setStatus($status)
+            ->setFullDate($event->getFullDate())
+            ->setName($event->getName())
+            ->setLocation($event->getLocation())
+        ;
+
+        $this->em->persist($history);
+        $this->em->flush();
     }
 }

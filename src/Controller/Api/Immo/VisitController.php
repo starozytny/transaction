@@ -12,6 +12,7 @@ use App\Service\ApiResponse;
 use App\Service\Data\Agenda\DataEvent;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
+use App\Service\History\HistoryService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
@@ -90,6 +91,7 @@ class VisitController extends AbstractController
 
         $em->persist($event);
         $em->persist($obj);
+        $em->flush();
 
         $existe = $em->getRepository(HiVisite::class)->findOneBy(['bienId' => $bien->getId(), 'visiteId' => $obj->getId()], ['createdAt' => 'DESC']);
         if($existe && $existe->getStatus() != $event->getStatus() || !$existe){
@@ -184,10 +186,17 @@ class VisitController extends AbstractController
      *
      * @param ImVisit $obj
      * @param DataService $dataService
+     * @param HistoryService $historyService
      * @return JsonResponse
      */
-    public function delete(ImVisit $obj, DataService $dataService): JsonResponse
+    public function delete(ImVisit $obj, DataService $dataService, HistoryService $historyService): JsonResponse
     {
+        $em = $this->doctrine->getManager();
+
+        $event = $obj->getAgEvent();
+        $historyService->createVisit(AgEvent::STATUS_DELETE, $obj->getBien()->getId(), $obj->getId(), $event);
+        $em->remove($event);
+
         return $dataService->delete($obj);
     }
 }

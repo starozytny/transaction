@@ -19,6 +19,7 @@ class AgEvent extends DataEntity
     const STATUS_ACTIVE = 1;
     const STATUS_CANCEL = 2;
     const STATUS_OVER = 3;
+    const STATUS_DELETE = 4;
 
     const VISIBILITY_RELATED = 0;
     const VISIBILITY_ONLY_ME = 1;
@@ -324,9 +325,7 @@ class AgEvent extends DataEntity
      */
     public function getStatusString(): string
     {
-        $status = ["Inactif", "Actif", "Annulé", "Fini"];
-
-        return $status[$this->status];
+        return $this->getStatusStringEvent($this->status);
     }
 
     public function getVisibilities(): array

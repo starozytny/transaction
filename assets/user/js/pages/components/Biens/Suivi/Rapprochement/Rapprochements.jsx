@@ -229,10 +229,10 @@ export class Rapprochements extends Component {
         let contentAside;
         switch (context) {
             case "create-visit":
-                contentAside = <AgendaFormulaire type="create" useAside={true}
+                contentAside = <AgendaFormulaire type="create" useAside={true} refAside={this.aside}
                                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
                                                  buyers={buyers} prospects={allProspects} bienId={elem.id} persons={persons}
-                                                 onUpdateList={this.handleUpdateList}
+                                                 onUpdateList={this.props.onUpdateSuivis}
                                                  url_create={'api_visits_create'} key={i++}
                 />
                 break;
