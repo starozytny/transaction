@@ -79,7 +79,8 @@ export class Suivi extends Component {
                                           onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
                 break;
             case "visites":
-                content = <Visits bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits} isSuiviPage={true} classes={""}/>
+                content = <Visits {...this.state} bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits}
+                                  isSuiviPage={true} loadDataAgenda={false} classes={""}/>
                 break;
             default:
                 content = <>

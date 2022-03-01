@@ -64,5 +64,5 @@ if(el){
 
 el = document.getElementById("list-visits");
 if(el){
-    render(<Visits {...el.dataset} />, el)
+    render(<Visits {...el.dataset} loadDataAgenda={true} />, el)
 }

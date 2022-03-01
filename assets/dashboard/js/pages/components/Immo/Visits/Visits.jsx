@@ -21,7 +21,14 @@ export class Visits extends Component {
             msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "visits.pagination",
             isSuiviPage: props.isSuiviPage ? props.isSuiviPage : false,
-            classes: props.classes !== null ? props.classes : "main-content"
+            classes: props.classes !== null ? props.classes : "main-content",
+            users: props.users ? props.users : [],
+            managers: props.managers ? props.managers : [],
+            negotiators: props.negotiators ? props.negotiators : [],
+            owners: props.owners ? props.owners : [],
+            tenants: props.tenants ? props.tenants : [],
+            prospects: props.prospects ? props.prospects : [],
+            buyers: props.buyers ? props.buyers : [],
         }
 
         this.layout = React.createRef();
@@ -34,7 +41,7 @@ export class Visits extends Component {
         this.handleContentList = this.handleContentList.bind(this);
     }
 
-    componentDidMount = () => { AgendaData.getData(this, URL_GET_DATA); }
+    componentDidMount = () => { this.props.loadDataAgenda ? AgendaData.getData(this, URL_GET_DATA) : null }
 
     handleGetData = (self) => { self.handleSetDataPagination(this.props.donnees); }
 
