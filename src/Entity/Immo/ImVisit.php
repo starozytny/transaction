@@ -22,7 +22,7 @@ class ImVisit
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=AgEvent::class, inversedBy="imVisit", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=AgEvent::class, fetch="EAGER", inversedBy="imVisit", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"visit:read"})
      */
