@@ -115,11 +115,6 @@ export class ProspectForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        Helper.toTop();
-        document.getElementById("lastname").focus()
-    }
-
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
 
     handleChangeSelect = (name, e) => {

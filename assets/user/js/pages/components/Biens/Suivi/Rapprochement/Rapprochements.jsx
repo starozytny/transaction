@@ -12,7 +12,6 @@ import { Alert }         from "@dashboardComponents/Tools/Alert";
 import { Button }        from "@dashboardComponents/Tools/Button";
 import { LoaderElement } from "@dashboardComponents/Layout/Loader";
 
-import DataState     from "@userPages/components/Biens/Form/data";
 import Sort          from "@commonComponents/functions/sort";
 import Formulaire    from "@dashboardComponents/functions/Formulaire";
 
