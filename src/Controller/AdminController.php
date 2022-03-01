@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Changelog;
 use App\Entity\Contact;
+use App\Entity\Mail;
 use App\Entity\Notification;
 use App\Entity\Settings;
 use App\Entity\User;
+use App\Repository\MailRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Http\Discovery\Exception\NotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -158,10 +160,14 @@ class AdminController extends AbstractController
     /**
      * @Route("/boite-mails/envoies", name="mails_sends")
      */
-    public function mailsSends(Request $request, SerializerInterface $serializer): Response
+    public function mailsSends(MailRepository $mailRepository, SerializerInterface $serializer): Response
     {
+        $data = $mailRepository->findAll();
+
+        $data = $serializer->serialize($data, 'json', ['groups' => Mail::MAIL_READ]);
+
         return $this->render('admin/pages/mails/sends.html.twig', [
-            'donnees' => "[]",
+            'donnees' => $data,
         ]);
     }
 }

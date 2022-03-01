@@ -4,36 +4,44 @@ namespace App\Entity;
 
 use App\Repository\MailRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=MailRepository::class)
  */
 class Mail extends DataEntity
 {
+    const MAIL_READ = ["mail:read"];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"mail:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"mail:read"})
      */
     private $expeditor;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"mail:read"})
      */
     private $destinators = [];
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"mail:read"})
      */
     private $subject;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"mail:read"})
      */
     private $message;
 
@@ -128,5 +136,14 @@ class Mail extends DataEntity
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"mail:read"})
+     */
+    public function createdAtString(): ?string
+    {
+        return $this->getFullDateString($this->createdAt, 'llll');
     }
 }
