@@ -1,21 +1,24 @@
 import React, { Component } from "react";
 
 import { Button } from "@dashboardComponents/Tools/Button";
+import {Alert} from "@dashboardComponents/Tools/Alert";
 
 export class Mails extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            element: null,
             sent: props.sent ? JSON.parse(props.sent) : []
         }
     }
 
     render () {
+        const { sent, element } = this.state;
 
         let menu = [
             { icon: "email", label: "Envoyés", total: 52 }
-        ]
+        ];
 
         return <div className="main-content">
             <div className="boite-mail">
@@ -43,15 +46,28 @@ export class Mails extends Component {
                 <div className="col-2">
                     <div className="mail-mails">
                         <div className="items">
-                            <div className="item">
-                                Message
-                            </div>
+                            {sent.map(elem => {
+                                return <div className="item" key={elem.id}>
+                                    <div className="expeditor">
+                                        <div className="avatar">
+                                            <span>{elem.expeditor.substring(0,1).toUpperCase()}</span>
+                                        </div>
+                                        <div className="content">
+                                            <div className="name">{elem.expeditor}</div>
+                                            <div className="subject">{elem.subject}</div>
+                                        </div>
+                                    </div>
+                                    <div className="createdAt">
+                                        <div>10:30</div>
+                                    </div>
+                                </div>
+                            })}
                         </div>
                     </div>
                 </div>
                 <div className="col-3">
                     <div className="mail-content">
-                        <p>Content</p>
+                        {element ? "element" : <Alert type="reverse">Sélectionner un mail</Alert>}
                     </div>
                 </div>
             </div>
