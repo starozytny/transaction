@@ -10,7 +10,6 @@ import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 
 import Validateur              from "@commonComponents/functions/validateur";
-import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
 const URL_CREATE_ELEMENT     = "api_contracts_create";
@@ -18,7 +17,7 @@ const URL_UPDATE_GROUP       = "api_contracts_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function ContractFormulaire ({ type, onChangeContext, onUpdateList, element, bien, prospect })
+export function ContractFormulaire ({ type, element, bien, prospect })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez finalisé l'offre !"
@@ -32,12 +31,10 @@ export function ContractFormulaire ({ type, onChangeContext, onUpdateList, eleme
         context={type}
         url={url}
         bien={bien}
-        prospect={prospect}
+        prospect={prospect ? prospect : null}
         sellAt={element ? Formulaire.setDateOrEmptyIfNull(element.sellAtJavascript) : new Date()}
         sellBy={element ? Formulaire.setValueEmptyIfNull(element.sellBy, 1) : 1}
         sellWhy={element ? Formulaire.setValueEmptyIfNull(element.sellWhy, 1) : 1}
-        onUpdateList={onUpdateList}
-        onChangeContext={onChangeContext}
         messageSuccess={msg}
     />
 
@@ -64,11 +61,6 @@ class ContractForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        Helper.toTop();
-        document.getElementById("sellBy").focus()
-    }
-
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
 
     handleChangeDate = (name, e) => { this.setState({ [name]: e }) }
@@ -76,7 +68,7 @@ class ContractForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { context, url, messageSuccess } = this.props;
+        const { context, url } = this.props;
         const { critere, sellAt, sellBy, sellWhy } = this.state;
 
         if(critere !== ""){
@@ -104,10 +96,8 @@ class ContractForm extends Component {
                         location.reload();
                     })
                     .catch(function (error) {
-                        Formulaire.displayErrors(self, error);
-                    })
-                    .then(() => {
                         Formulaire.loader(false);
+                        Formulaire.displayErrors(self, error);
                     })
                 ;
             }

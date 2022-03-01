@@ -55,53 +55,55 @@ class ContractController extends AbstractController
             $other->setStatus(ImContract::STATUS_END);
         }
 
-        $prospect = $em->getRepository(ImProspect::class)->find($data->prospect->id);
-
-        $dataPerson = [
-            "agency" => $bien->getAgency()->getId(),
-            "lastname" => $prospect->getLastname(),
-            "firstname" => $prospect->getFirstname(),
-            "civility" => $prospect->getCivility(),
-            "email" => $prospect->getEmail(),
-            "phone1" => $prospect->getPhone1(),
-            "phone2" => $prospect->getPhone2(),
-            "phone3" => $prospect->getPhone3(),
-            "address" => $prospect->getAddress(),
-            "complement" => $prospect->getComplement(),
-            "zipcode" => $prospect->getZipcode(),
-            "city" => $prospect->getCity(),
-            "birthday" => $prospect->getBirthdayJavascript(),
-            "type" => $bien->getCodeTypeAd() == ImBien::AD_PDT_INVEST ? ImBuyer::TYPE_INVEST : ImBuyer::TYPE_BUYER,
-            "country" => "France",
-            "negotiator" => null
-        ];
-
-        $dataPerson = json_decode(json_encode($dataPerson));
-
         $contractant = (new ImContractant())
             ->setContract($obj)
             ->setOwner($bien->getOwner())
         ;
 
-        if($bien->getCodeTypeAd() == ImBien::AD_LOCATION || $bien->getCodeTypeAd() == ImBien::AD_LOCATION_VAC){
-            $tenant = $dataEntity->setDataTenant(new ImTenant(), $dataPerson);
-            $em->persist($tenant);
+        if($data->prospect){
+            $prospect = $em->getRepository(ImProspect::class)->find($data->prospect->id);
 
-            $contractant->setTenant($tenant);
-        }else{
-            $buyer = $dataEntity->setDataBuyer(new ImBuyer(), $dataPerson);
-            $em->persist($buyer);
+            $dataPerson = [
+                "agency" => $bien->getAgency()->getId(),
+                "lastname" => $prospect->getLastname(),
+                "firstname" => $prospect->getFirstname(),
+                "civility" => $prospect->getCivility(),
+                "email" => $prospect->getEmail(),
+                "phone1" => $prospect->getPhone1(),
+                "phone2" => $prospect->getPhone2(),
+                "phone3" => $prospect->getPhone3(),
+                "address" => $prospect->getAddress(),
+                "complement" => $prospect->getComplement(),
+                "zipcode" => $prospect->getZipcode(),
+                "city" => $prospect->getCity(),
+                "birthday" => $prospect->getBirthdayJavascript(),
+                "type" => $bien->getCodeTypeAd() == ImBien::AD_PDT_INVEST ? ImBuyer::TYPE_INVEST : ImBuyer::TYPE_BUYER,
+                "country" => "France",
+                "negotiator" => null
+            ];
 
-            $contractant->setBuyer($buyer);
+            $dataPerson = json_decode(json_encode($dataPerson));
+
+            if($bien->getCodeTypeAd() == ImBien::AD_LOCATION || $bien->getCodeTypeAd() == ImBien::AD_LOCATION_VAC){
+                $tenant = $dataEntity->setDataTenant(new ImTenant(), $dataPerson);
+                $em->persist($tenant);
+
+                $contractant->setTenant($tenant);
+            }else{
+                $buyer = $dataEntity->setDataBuyer(new ImBuyer(), $dataPerson);
+                $em->persist($buyer);
+
+                $contractant->setBuyer($buyer);
+            }
+
+            if($suivi = $this->getSuivi($bien, $prospect)){
+                $suivi->setStatus(ImSuivi::STATUS_END);
+            }
         }
 
         $noErrors = $validator->validate($obj);
         if ($noErrors != true) {
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
-        }
-
-        if($suivi = $this->getSuivi($bien, $prospect)){
-            $suivi->setStatus(ImSuivi::STATUS_END);
         }
 
         $bien->setStatus(ImBien::STATUS_INACTIF);

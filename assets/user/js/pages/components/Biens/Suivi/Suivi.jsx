@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 
 import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Rapprochements } from "@userPages/components/Biens/Suivi/Rapprochement/Rapprochements";
-import { Global }         from "@userPages/components/Biens/Suivi/Global/Global";
-import { LastVisites }    from "@userPages/components/Biens/Suivi/Visite/LastVisites";
-import { Visits }         from "@dashboardPages/components/Immo/Visits/Visits";
-import { AdBadges, AdMainInfos } from "@userPages/components/Biens/Read/AdItem";
-
-import { ButtonIcon }    from "@dashboardComponents/Tools/Button";
+import { Aside } from "@dashboardComponents/Tools/Aside";
 import { LoaderElement } from "@dashboardComponents/Layout/Loader";
+import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import DataState  from "@userPages/components/Biens/Form/data";
 import UpdateList from "@dashboardComponents/functions/updateList";
 import AgendaData from "@userPages/components/Agenda/agendaData";
+
+import { Global }             from "@userPages/components/Biens/Suivi/Global/Global";
+import { Visits }             from "@dashboardPages/components/Immo/Visits/Visits";
+import { LastVisites }        from "@userPages/components/Biens/Suivi/Visite/LastVisites";
+import { Rapprochements }     from "@userPages/components/Biens/Suivi/Rapprochement/Rapprochements";
+import { ContractFormulaire } from "@userPages/components/Biens/Suivi/Contract/ContractForm";
+import { AdBadges, AdMainInfos } from "@userPages/components/Biens/Read/AdItem";
 
 const URL_GET_DATA = 'api_agenda_data_persons';
 
@@ -34,12 +36,14 @@ export class Suivi extends Component {
         }
 
         this.rapprochement = React.createRef();
+        this.aside = React.createRef();
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
         this.handleUpdateProspects = this.handleUpdateProspects.bind(this);
         this.handleUpdateSuivis = this.handleUpdateSuivis.bind(this);
         this.handleUpdateVisits = this.handleUpdateVisits.bind(this);
         this.handleUpdateOffers = this.handleUpdateOffers.bind(this);
+        this.handleOpenAside = this.handleOpenAside.bind(this);
     }
 
     componentDidMount = () => {
@@ -62,6 +66,10 @@ export class Suivi extends Component {
         let nOffers = UpdateList.update(context, offers, offer);
 
         this.setState({ offers: nOffers })
+    }
+
+    handleOpenAside = () => {
+        this.aside.current.handleOpen("Bien vendu")
     }
 
     render () {
@@ -96,6 +104,8 @@ export class Suivi extends Component {
                 break;
         }
 
+        let contentAside = <ContractFormulaire type="create" bien={elem} />;
+
         return <div className="main-content">
             {!loadDataProspects ? <LoaderElement /> : <>
                 <div className="details-container">
@@ -112,6 +122,10 @@ export class Suivi extends Component {
                                         <ButtonIcon element="a" icon="vision" onClick={Routing.generate('user_biens_read', {'slug': elem.slug})}>Détails</ButtonIcon>
                                     </div>
                                 </div>
+                                {elem.status !== 0 && <div className="details-general">
+                                    <div />
+                                    <Button type="default" onClick={this.handleOpenAside}>Bien vendu</Button>
+                                </div>}
                             </div>
                         </div>
                     </div>
@@ -124,6 +138,8 @@ export class Suivi extends Component {
                         {content}
                     </div>
                 </div>
+
+                <Aside ref={this.aside} content={contentAside}/>
             </>}
         </div>
     }

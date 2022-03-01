@@ -256,8 +256,7 @@ export class Rapprochements extends Component {
                 />
                 break;
             case "final-offer":
-                contentAside = <ContractFormulaire type="create" bien={elem} prospect={element}
-                                                   onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
+                contentAside = <ContractFormulaire type="create" bien={elem} prospect={element}/>;
                 break;
             case "accept-offer":
                 contentAside = <OfferFinalFormulaire type="update" element={offer}
