@@ -4,6 +4,7 @@ import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Rapprochements } from "@userPages/components/Biens/Suivi/Rapprochement/Rapprochements";
 import { Global }         from "@userPages/components/Biens/Suivi/Global/Global";
+import { LastVisites }    from "@userPages/components/Biens/Suivi/Visite/LastVisites";
 import { Visits }         from "@dashboardPages/components/Immo/Visits/Visits";
 import { AdBadges, AdMainInfos } from "@userPages/components/Biens/Read/AdItem";
 
@@ -11,7 +12,6 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 import DataState  from "@userPages/components/Biens/Form/data";
 import UpdateList from "@dashboardComponents/functions/updateList";
-import {LastVisites} from "@userPages/components/Biens/Suivi/Visite/LastVisites";
 
 export class Suivi extends Component {
     constructor(props) {
