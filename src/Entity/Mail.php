@@ -42,6 +42,12 @@ class Mail extends DataEntity
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="mails")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -108,6 +114,18 @@ class Mail extends DataEntity
     public function setDestinators(array $destinators): self
     {
         $this->destinators = $destinators;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

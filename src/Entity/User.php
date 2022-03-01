@@ -119,6 +119,11 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $notifications;
 
     /**
+     * @ORM\OneToMany(targetEntity=Mail::class, mappedBy="user")
+     */
+    private $mails;
+
+    /**
      * @throws Exception
      */
     public function __construct()
@@ -126,6 +131,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
         $this->createdAt = $this->initNewDate();
         $this->token = $this->initToken();
         $this->notifications = new ArrayCollection();
+        $this->mails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -445,5 +451,35 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     public function getAvatarFile(): string
     {
         return $this->getFileOrDefault($this->avatar, self::FOLDER_AVATARS, "https://robohash.org/" . $this->username . "?size=64x64");
+    }
+
+    /**
+     * @return Collection|Mail[]
+     */
+    public function getMails(): Collection
+    {
+        return $this->mails;
+    }
+
+    public function addMail(Mail $mail): self
+    {
+        if (!$this->mails->contains($mail)) {
+            $this->mails[] = $mail;
+            $mail->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMail(Mail $mail): self
+    {
+        if ($this->mails->removeElement($mail)) {
+            // set the owning side to null (unless already changed)
+            if ($mail->getUser() === $this) {
+                $mail->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
