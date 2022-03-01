@@ -12,6 +12,7 @@ import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 
 import DataState  from "@userPages/components/Biens/Form/data";
 import UpdateList from "@dashboardComponents/functions/updateList";
+import {LoaderElement} from "@dashboardComponents/Layout/Loader";
 
 export class Suivi extends Component {
     constructor(props) {
@@ -90,6 +91,8 @@ export class Suivi extends Component {
                 break;
         }
 
+        console.log(loadDataProspects)
+
         return <div className="main-content">
             <div className="details-container">
                 <div className="details-content-container suivi-container">
@@ -114,7 +117,7 @@ export class Suivi extends Component {
             </div>
             <div className="item-content-2">
                 <div>
-                    {content}
+                    {!loadDataProspects ? <LoaderElement /> : content}
                 </div>
             </div>
         </div>
