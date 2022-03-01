@@ -259,4 +259,24 @@ class ImContract extends DataEntity
     {
         return $this->setDateJavascript($this->sellAt);
     }
+
+    /**
+     * @return string|null
+     * @Groups({"contract:read"})
+     */
+    public function getSellAtString(): ?string
+    {
+        return $this->getFullDateString($this->sellAt, 'LLLL');
+    }
+
+    /**
+     * @return string
+     * @Groups({"contract:read"})
+     */
+    public function getStatusString(): string
+    {
+        $values = ["Terminé", "En cours", "Annulé"];
+
+        return $values[$this->status];
+    }
 }

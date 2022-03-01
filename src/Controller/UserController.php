@@ -9,6 +9,7 @@ use App\Entity\Donnee\DoSousType;
 use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImContract;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOffer;
 use App\Entity\Immo\ImOwner;
@@ -210,13 +211,15 @@ class UserController extends AbstractController
 
         if($type !== "update"){
             $context = $request->query->get("ct");
-            $visits = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
-            $suivis = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
-            $offers = $em->getRepository(ImOffer::class)->findBy(['bien' => $obj]);
+            $visits    = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
+            $suivis    = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
+            $offers    = $em->getRepository(ImOffer::class)->findBy(['bien' => $obj]);
+            $contracts = $em->getRepository(ImContract::class)->findBy(['bien' => $obj]);
 
             $suivis         = $serializer->serialize($suivis,       'json', ['groups' => ImSuivi::SUIVI_READ]);
             $visits         = $serializer->serialize($visits,       'json', ['groups' => ImVisit::VISIT_READ]);
             $offers         = $serializer->serialize($offers,       'json', ['groups' => ImOffer::OFFER_READ]);
+            $contracts      = $serializer->serialize($contracts,    'json', ['groups' => ImContract::CONTRACT_READ]);
 
             $historiesVisits = [];
             $rapprochements = [];
@@ -242,6 +245,7 @@ class UserController extends AbstractController
                 'context' => $context,
                 'ctRa' => $contextRapp ?: "tous",
                 'historiesVisits' => $historiesVisits,
+                'contracts' => $contracts,
         ]);
     }
 

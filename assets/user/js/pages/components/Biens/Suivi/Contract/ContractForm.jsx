@@ -8,6 +8,7 @@ import { Input, Select }       from "@dashboardComponents/Tools/Fields";
 import { DatePick }            from "@dashboardComponents/Tools/DatePicker";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
+import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
@@ -17,7 +18,7 @@ const URL_UPDATE_GROUP       = "api_contracts_update";
 const TXT_CREATE_BUTTON_FORM = "Enregistrer";
 const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
-export function ContractFormulaire ({ type, element, bien, prospect })
+export function ContractFormulaire ({ type, onChangeContext, onUpdateList, element, bien, prospect })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Vous avez finalisé l'offre !"
@@ -35,10 +36,11 @@ export function ContractFormulaire ({ type, element, bien, prospect })
         sellAt={element ? Formulaire.setDateOrEmptyIfNull(element.sellAtJavascript) : new Date()}
         sellBy={element ? Formulaire.setValueEmptyIfNull(element.sellBy, 1) : 1}
         sellWhy={element ? Formulaire.setValueEmptyIfNull(element.sellWhy, 1) : 1}
+        onUpdateList={onUpdateList}
         messageSuccess={msg}
     />
 
-    return <div className="form">{form}</div>
+    return onChangeContext ? <FormLayout onChangeContext={onChangeContext} form={form}>Modifier le contrat</FormLayout> : <div className="form">{form}</div>
 }
 
 class ContractForm extends Component {
@@ -93,7 +95,11 @@ class ContractForm extends Component {
 
                 axios({ method: method, url: url, data: this.state })
                     .then(function (response) {
-                        location.reload();
+                        if(self.props.onUpdateList){
+                            self.props.onUpdateList(response.data)
+                        }else{
+                            location.reload();
+                        }
                     })
                     .catch(function (error) {
                         Formulaire.loader(false);

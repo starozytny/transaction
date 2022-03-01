@@ -12,6 +12,7 @@ import AgendaData from "@userPages/components/Agenda/agendaData";
 
 import { Global }             from "@userPages/components/Biens/Suivi/Global/Global";
 import { Visits }             from "@dashboardPages/components/Immo/Visits/Visits";
+import { Contracts }          from "@userPages/components/Biens/Suivi/Contract/Contracts";
 import { LastVisites }        from "@userPages/components/Biens/Suivi/Visite/LastVisites";
 import { Rapprochements }     from "@userPages/components/Biens/Suivi/Rapprochement/Rapprochements";
 import { ContractFormulaire } from "@userPages/components/Biens/Suivi/Contract/ContractForm";
@@ -28,6 +29,7 @@ export class Suivi extends Component {
             elem: JSON.parse(props.elem),
             suivis: props.suivis ? JSON.parse(props.suivis) : [],
             offers: props.offers ? JSON.parse(props.offers) : [],
+            contracts: props.contracts ? JSON.parse(props.contracts) : [],
             rapprochements: props.rapprochements ? JSON.parse(props.rapprochements) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
             historiesVisits: props.historiesVisits ? JSON.parse(props.historiesVisits) : [],
@@ -74,12 +76,12 @@ export class Suivi extends Component {
 
     render () {
         const { contextRapprochement } = this.props;
-        const { elem, context, suivis, allVisits, loadDataProspects } = this.state;
+        const { elem, context, suivis, contracts, allVisits, loadDataProspects } = this.state;
 
         let content;
         switch (context){
-            case "offres":
-                content = <div>Offres</div>
+            case "contracts":
+                content = <Contracts donnees={JSON.stringify(contracts)} bien={elem} />
                 break;
             case "rapprochements":
                 content = <Rapprochements ref={this.rapprochement} {...this.state} data={suivis} context={contextRapprochement}
@@ -151,7 +153,7 @@ function Navigation({ onChangeContext, context, menu = null }){
         {context: "global",            label: "Global"},
         {context: "visites",           label: "Visites"},
         {context: "rapprochements",    label: "Rapprochements"},
-        // {context: "offres",            label: "Offres"},
+        {context: "contracts",         label: "Contrats"},
     ]
 
     return (
