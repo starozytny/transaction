@@ -45,6 +45,10 @@ export class Mails extends Component {
                 </div>
                 <div className="col-2">
                     <div className="mail-mails">
+                        <div className="title">
+                            <span className="icon-email" />
+                            <span>Envoyés</span>
+                        </div>
                         <div className="items">
                             {sent.map(elem => {
                                 return <div className="item" key={elem.id}>

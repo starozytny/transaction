@@ -25,26 +25,26 @@
   overflow: auto;
 
   .col-1, .col-3{
-    padding: 12px;
+    padding: 24px;
   }
 
   .col-1{
     position: relative;
     background-color: var(--alpha);
     border-radius: 8px 0 0 8px;
-    width: calc(22% - 24px);
+    width: calc(22% - 48px);
     box-shadow: 4px 0 12px var(--greyShadow);
   }
 
   .col-2{
     background-color: var(--alpha);
-    width: calc(28% - 24px);
+    width: calc(32% - 48px);
   }
 
   .col-3{
     background-color: var(--alpha);
     border-radius: 0 8px 8px 0;
-    width: calc(50% - 24px);
+    width: calc(100% - 22% - 32%);
     box-shadow: -4px 0 12px var(--greyShadow);
   }
 
@@ -87,11 +87,27 @@
   }
 
   .mail-mails{
+
+    .title{
+      @include flex(row, center, flex-start);
+      padding: 24px;
+      border-bottom: 1px solid var(--greyShadow);
+      @include fontSemibold();
+      text-transform: uppercase;
+
+      [class^="icon-"]{
+        display: inline-block;
+        margin-right: 8px;
+        color: var(--grey3);
+        font-weight: 600;
+      }
+    }
+
     .item{
       @include flex(row, flex-start, space-between);
-      height: 60px;
+      height: 42px;
       cursor: pointer;
-      padding: 12px;
+      padding: 12px 24px;
       transition: all 0.2s ease-in-out;
 
       &:hover{
