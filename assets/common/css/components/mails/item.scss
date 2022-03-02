@@ -12,6 +12,12 @@
     .item-header{
       @include flex(row, flex-start, flex-start);
       margin-top: 12px;
+      overflow: auto;
+      @include scrollbar();
+
+      &::-webkit-scrollbar{
+        height: 3px;
+      }
 
       .avatar{
         width: 56px; height: 56px;

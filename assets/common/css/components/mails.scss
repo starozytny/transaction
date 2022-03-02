@@ -76,30 +76,30 @@
 @media (min-width:1280px) {
   .boite-mail {
     flex-direction: row;
-  }
 
-  & > .col-1, & > .col-3{
-    padding: 24px;
-  }
+    & > .col-1, & > .col-3{
+      padding: 24px;
+    }
 
-  & > .col-1{
-    width: calc(22% - 48px);
-    box-shadow: 4px 0 12px var(--greyShadow);
-  }
+    & > .col-1{
+      width: calc(22% - 48px);
+      box-shadow: 4px 0 12px var(--greyShadow);
+    }
 
-  & > .col-2{
-    width: calc(32% - 48px);
-    border-top: none;
-    border-bottom: none;
-  }
+    & > .col-2{
+      width: calc(32% - 48px);
+      border-top: none;
+      border-bottom: none;
+    }
 
-  & > .col-2-expand{
-    width: calc(100% - 22%);
-  }
+    & > .col-2-expand{
+      width: calc(100% - 22%);
+    }
 
-  & > .col-3{
-    width: calc(100% - 22% - 32%);
-    box-shadow: -4px 0 12px var(--greyShadow);
+    & > .col-3{
+      width: calc(100% - 22% - 32%);
+      box-shadow: -4px 0 12px var(--greyShadow);
+    }
   }
 }
 
