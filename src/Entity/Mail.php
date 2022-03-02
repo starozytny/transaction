@@ -31,6 +31,12 @@ class Mail extends DataEntity
      * @ORM\Column(type="integer")
      * @Groups({"mail:read"})
      */
+    private $statusOrigin = self::STATUS_SENT;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"mail:read"})
+     */
     private $status = self::STATUS_SENT;
 
     /**
@@ -167,6 +173,18 @@ class Mail extends DataEntity
     public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getStatusOrigin(): ?int
+    {
+        return $this->statusOrigin;
+    }
+
+    public function setStatusOrigin(int $statusOrigin): self
+    {
+        $this->statusOrigin = $statusOrigin;
 
         return $this;
     }

@@ -61,6 +61,7 @@ class FakeMailsCreateCommand extends Command
 
             if($fake->numberBetween(0, 1) == 1){
                 $new->setStatus(Mail::STATUS_TRASH);
+                $new->setStatusOrigin(Mail::STATUS_TRASH);
             }
 
             $this->em->persist($new);
