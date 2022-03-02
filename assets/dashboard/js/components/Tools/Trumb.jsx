@@ -18,7 +18,7 @@ import { ClassiqueStructure }               from "@dashboardComponents/Tools/Fie
 export function Trumb (props){
     const { identifiant, valeur, onChange, errors, url, reference, children } = props;
 
-    let content = <Trumbowyg id={'react-trumbowyg ' + identifiant}
+    let content = <Trumbowyg id={identifiant}
                              buttons={
                                  [
                                      ['viewHTML'],
