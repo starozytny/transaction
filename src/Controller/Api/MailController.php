@@ -159,8 +159,6 @@ class MailController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        dump($data->emails);
-
         $destinataires = [];
         foreach($data->emails as $email){
             $destinataires[] = $email->value;
