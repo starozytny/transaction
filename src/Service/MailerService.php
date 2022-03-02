@@ -108,7 +108,7 @@ class MailerService
 
         /** @var UploadedFile $file */
         foreach($files as $file){
-            $email->attach($file);
+            $email->attachFromPath($file);
         }
 
         try {

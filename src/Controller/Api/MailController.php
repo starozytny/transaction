@@ -165,8 +165,8 @@ class MailController extends AbstractController
         for($i = 0; $i <= 5 ; $i++){
             $file = $request->files->get('file' . $i);
             if($file){
-                $fileUploader->upload($file, "emails", false);
-                $files[] = $file;
+                $f = $fileUploader->upload($file, "emails", false);
+                $files[] = $fileUploader->getPrivateDirectory() . "emails/" .$f;
             }
         }
 
