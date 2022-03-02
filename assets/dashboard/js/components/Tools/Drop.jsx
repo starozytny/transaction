@@ -74,7 +74,7 @@ export class Drop extends Component {
                 onChangeStatus={this.handleChangeStatus}
                 accept={accept}
                 maxFiles={maxFiles}
-                maxSize={maxSize}
+                maxSizeBytes={maxSize}
                 multiple={maxFiles > 1}
                 canCancel={false}
                 inputContent={(files, extra) => (extra.reject ? labelError : label)}
