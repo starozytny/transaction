@@ -16,6 +16,12 @@
       }
     }
 
+    .items{
+      overflow: auto;
+      @include scrollbar();
+      max-height: 100vh;
+    }
+
     .item{
       @include flex(row, flex-start, space-between);
       height: 42px;
