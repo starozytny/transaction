@@ -1,0 +1,46 @@
+.boite-mail{
+  .mail-item{
+    .actions{
+      @include flex(row, center, space-between);
+
+      .createdAt{
+        font-size: 15px;
+        color: var(--grey3);
+      }
+    }
+
+    .item-header{
+      @include flex(row, flex-start, flex-start);
+      margin-top: 12px;
+
+      .avatar{
+        width: 56px; height: 56px;
+
+        span{
+          font-size: 20px;
+        }
+      }
+
+      .content{
+        width: calc(100% - 56px - 12px);
+        margin-left: 12px;
+
+        .createdAt{
+          margin-bottom: 8px;
+          margin-top: 2px;
+        }
+      }
+    }
+
+    .item-body{
+      .subject{
+        @include fontSemibold();
+        font-size: 20px;
+        border-top: 1px solid var(--greyShadow);
+        border-bottom: 1px solid var(--greyShadow);
+        margin: 24px 0;
+        padding: 12px 0;
+      }
+    }
+  }
+}
