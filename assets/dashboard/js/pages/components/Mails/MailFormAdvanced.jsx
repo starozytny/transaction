@@ -87,26 +87,35 @@ export class Form extends Component {
     }
 
     handlePreview = (e) => {
+        const { theme, message } = this.state;
+
         e.preventDefault();
 
-        Formulaire.loader(true);
-        let self = this;
+        let preview = document.getElementById("preview");
 
-        let formData = new FormData();
-        formData.append("data", JSON.stringify(this.state));
+        if(parseInt(theme) === 0 ){
+            preview.innerHTML = "<div>" +
+                message.html +
+                "</div>"
+        }else{
+            Formulaire.loader(true);
+            let self = this;
 
-        axios({ method: "POST", url: Routing.generate(URL_PREVIEW_ELEMENT), data: formData, headers: {'Content-Type': 'multipart/form-data'} })
-            .then(function (response) {
-                let preview = document.getElementById("preview");
-                preview.innerHTML = response.data
-            })
-            .catch(function (error) {
-                Formulaire.displayErrors(self, error);
-            })
-            .then(() => {
-                Formulaire.loader(false);
-            })
-        ;
+            let formData = new FormData();
+            formData.append("data", JSON.stringify(this.state));
+
+            axios({ method: "POST", url: Routing.generate(URL_PREVIEW_ELEMENT), data: formData, headers: {'Content-Type': 'multipart/form-data'} })
+                .then(function (response) {
+                    preview.innerHTML = response.data
+                })
+                .catch(function (error) {
+                    Formulaire.displayErrors(self, error);
+                })
+                .then(() => {
+                    Formulaire.loader(false);
+                })
+            ;
+        }
     }
 
     handleSubmit = (e) => {
@@ -187,7 +196,7 @@ export class Form extends Component {
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
-                <div className="line">
+                <div className="line line-theme">
                     <Radiobox items={themeItems} identifiant="theme" valeur={theme} errors={errors} onChange={this.handleChange}>Thème</Radiobox>
                 </div>
 
@@ -198,7 +207,7 @@ export class Form extends Component {
                     </div>
                 </div>}
 
-                <div className="line line-to">
+                <div className="line line-dest line-to">
                     <SelectizeMultiple ref={this.selectMultipleTo} items={selectItems} identifiant="to" valeur={to}
                                        errors={errors}
                                        onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("to", e, this.selectMultipleTo)}
@@ -209,7 +218,7 @@ export class Form extends Component {
                     </SelectizeMultiple>
                 </div>
 
-                {showCc && <div className="line">
+                {showCc && <div className="line line-dest">
                     <SelectizeMultiple ref={this.selectMultipleCc} items={selectItems} identifiant="cc" valeur={cc}
                                        errors={errors}
                                        onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("cc", e, this.selectMultipleCc)}
@@ -220,7 +229,7 @@ export class Form extends Component {
                     </SelectizeMultiple>
                 </div>}
 
-                {showBcc && <div className="line">
+                {showBcc && <div className="line line-dest">
                     <SelectizeMultiple ref={this.selectMultipleBcc} items={selectItems} identifiant="bcc" valeur={bcc}
                                        errors={errors}
                                        onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("bcc", e, this.selectMultipleBcc)}
@@ -231,14 +240,14 @@ export class Form extends Component {
                     </SelectizeMultiple>
                 </div>}
 
-                {from && <div className="line">
+                {from && <div className="line line-dest">
                     <div className="form-group">
                         <label>From</label>
                         <div>{from}</div>
                     </div>
                 </div>}
 
-                <div className="line">
+                <div className="line line-subject">
                     <Input identifiant="subject" valeur={subject} errors={errors} onChange={this.handleChange}>Objet</Input>
                 </div>
 
