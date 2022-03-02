@@ -11,6 +11,7 @@ import { Trumb }               from "@dashboardComponents/Tools/Trumb";
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
+import {Drop} from "@dashboardComponents/Tools/Drop";
 
 const URL_CREATE_ELEMENT     = "api_mails_create_advanced";
 const URL_PREVIEW_ELEMENT    = "api_mails_preview";
@@ -55,7 +56,7 @@ export class Form extends Component {
             showBcc: false,
         }
 
-        this.selectMultiple = React.createRef();
+        this.inputFiles = React.createRef();
         this.selectMultipleTo = React.createRef();
         this.selectMultipleCc = React.createRef();
         this.selectMultipleBcc = React.createRef();
@@ -258,6 +259,11 @@ export class Form extends Component {
 
                 <div className="line">
                     <Trumb identifiant="message" valeur={message.value} errors={errors} onChange={this.handleChangeTrumb}>Message</Trumb>
+                </div>
+
+                <div className="line">
+                    <Drop ref={this.inputFiles} identifiant="files" errors={errors} accept={"*"} maxFiles={5}
+                          label="Téléverser des fichiers (max 5)" labelError="Erreur avec vos/un fichiers.">Documents</Drop>
                 </div>
 
                 <div className="line">
