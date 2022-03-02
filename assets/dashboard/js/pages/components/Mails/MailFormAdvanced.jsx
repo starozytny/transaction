@@ -263,7 +263,7 @@ export class Form extends Component {
 
                 <div className="line">
                     <Drop ref={this.inputFiles} identifiant="files" errors={errors} accept={"*"} maxFiles={5}
-                          label="Téléverser des fichiers (max 5)" labelError="Erreur avec vos/un fichiers.">Documents</Drop>
+                          label="Téléverser des fichiers (max 5) (poids max 5Mb)" labelError="Erreur avec un/vos fichiers.">Documents</Drop>
                 </div>
 
                 <div className="line">
