@@ -191,6 +191,12 @@ class MailController extends AbstractController
             ]]);
         }
 
+        foreach($files as $file){
+            if(file_exists($file)){
+                unlink($file);
+            }
+        }
+
         return $apiResponse->apiJsonResponseSuccessful("Message envoyé. La page va se rafraichir automatiquement dans 3 secondes.");
     }
 
