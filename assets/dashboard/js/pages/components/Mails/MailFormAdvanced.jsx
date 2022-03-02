@@ -16,7 +16,7 @@ const URL_CREATE_ELEMENT     = "api_mails_create_advanced";
 const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
-export function MailFormulaire ({ type, users })
+export function MailFormulaire ({ type, users, to, cc, bcc })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Le message a été envoyé !"
@@ -25,6 +25,9 @@ export function MailFormulaire ({ type, users })
         context={type}
         url={url}
         users={users ? users : []}
+        to={to ? to : []}
+        cc={cc ? cc : []}
+        bcc={bcc ? bcc : []}
         messageSuccess={msg}
     />
 
@@ -36,15 +39,22 @@ export class Form extends Component {
         super(props);
 
         this.state = {
-            emails: [],
+            to: props.to,
+            cc: props.cc,
+            bcc: props.bcc,
             subject: "",
             title: "",
             message: {value: "", html: ""},
             errors: [],
-            success: false
+            success: false,
+            showCc: false,
+            showBcc: false,
         }
 
         this.selectMultiple = React.createRef();
+        this.selectMultipleTo = React.createRef();
+        this.selectMultipleCc = React.createRef();
+        this.selectMultipleBcc = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeTrumb = this.handleChangeTrumb.bind(this);
@@ -61,15 +71,15 @@ export class Form extends Component {
         this.setState({[name]: {value: [name].value, html: text}})
     }
 
-    handleChangeSelectMultipleAdd = (name, valeurs) => {
+    handleChangeSelectMultipleAdd = (name, valeurs, select) => {
         this.setState({ [name]: valeurs })
-        this.selectMultiple.current.handleUpdateValeurs(valeurs);
+        select.current.handleUpdateValeurs(valeurs);
     }
 
-    handleChangeSelectMultipleDel = (name, valeur) => {
-        let valeurs = this.state.emails.filter(v => v.value !== valeur.value);
+    handleChangeSelectMultipleDel = (name, valeur, select) => {
+        let valeurs = this.state[name].filter(v => v.value !== valeur.value);
         this.setState({ [name]: valeurs });
-        this.selectMultiple.current.handleUpdateValeurs(valeurs);
+        select.current.handleUpdateValeurs(valeurs);
     }
 
     handlePreview = (e) => {
@@ -98,15 +108,12 @@ export class Form extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(e)
-
         const { url, messageSuccess } = this.props;
-        const { emails, subject, title, message } = this.state;
+        const { to, cc, bcc, subject, title, message } = this.state;
 
         this.setState({ errors: [], success: false })
 
         let paramsToValidate = [
-            {type: "array", id: 'emails', value: emails},
             {type: "text",  id: 'subject',  value: subject},
             {type: "text",  id: 'title',    value: title},
             {type: "text",  id: 'message',  value: message}
@@ -114,6 +121,14 @@ export class Form extends Component {
 
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
+
+        if(to.length === 0 && cc.length === 0 && bcc.length === 0){
+            validate.code = false;
+            validate.errors.push({
+                name: "to", message: "Au moins 1 destinataire doit être renseigné dans TO ou CC ou CCI."
+            })
+        }
+
         if(!validate.code){
             Formulaire.showErrors(this, validate);
         }else{
@@ -126,13 +141,16 @@ export class Form extends Component {
             axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                 .then(function (response) {
                     Helper.toTop();
-                    self.setState({ success: messageSuccess, errors: [] });
-                    self.setState( {
-                        emails: [],
+                    self.setState({
+                        success: messageSuccess,
+                        errors: [],
+                        to: [],
+                        cc: [],
+                        bcc: [],
                         subject: '',
                         title: '',
-                        message: {value: "", html: ""},
-                    })
+                        message: {value: "", html: ""}
+                    });
                 })
                 .catch(function (error) {
                     Formulaire.displayErrors(self, error);
@@ -146,7 +164,7 @@ export class Form extends Component {
 
     render () {
         const { users } = this.props;
-        const { errors, success, emails, subject, title, message } = this.state;
+        const { errors, success, to, cc, bcc, showCc, showBcc, subject, title, message } = this.state;
 
         let selectItems = [];
         if(users && users.length !== 0){
@@ -163,17 +181,44 @@ export class Form extends Component {
                 {success !== false && <Alert type="info">{success}</Alert>}
 
                 <div className="line">
-                    <SelectizeMultiple ref={this.selectMultiple} items={selectItems} identifiant="emails" valeur={emails}
-                                       placeholder={"Sélectionner un/des emails"}
+                    <SelectizeMultiple ref={this.selectMultipleTo} items={selectItems} identifiant="to" valeur={to}
                                        errors={errors}
-                                       onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("emails", e)}
-                                       onChangeDel={(e) => this.handleChangeSelectMultipleDel("emails", e)}
+                                       onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("to", e, this.selectMultipleTo)}
+                                       onChangeDel={(e) => this.handleChangeSelectMultipleDel("to", e, this.selectMultipleTo)}
                                        createType={"email"}
                     >
-                        Destinataires
+                        To
                     </SelectizeMultiple>
-
                 </div>
+
+                {showCc && <div className="line">
+                    <SelectizeMultiple ref={this.selectMultipleCc} items={selectItems} identifiant="cc" valeur={cc}
+                                       errors={errors}
+                                       onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("cc", e, this.selectMultipleCc)}
+                                       onChangeDel={(e) => this.handleChangeSelectMultipleDel("cc", e, this.selectMultipleCc)}
+                                       createType={"email"}
+                    >
+                        Cc
+                    </SelectizeMultiple>
+                </div>}
+
+                {showBcc && <div className="line">
+                    <SelectizeMultiple ref={this.selectMultipleBcc} items={selectItems} identifiant="bcc" valeur={bcc}
+                                       errors={errors}
+                                       onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("bcc", e, this.selectMultipleBcc)}
+                                       onChangeDel={(e) => this.handleChangeSelectMultipleDel("bcc", e, this.selectMultipleBcc)}
+                                       createType={"email"}
+                    >
+                        Cci
+                    </SelectizeMultiple>
+                </div>}
+
+                {(!showCc || !showBcc) && <div className="line line-dest-options">
+                    <div className="form-group">
+                        {!showCc && <div onClick={() => this.setState({ showCc: true })}>Cc</div>}
+                        {!showBcc &&  <div onClick={() => this.setState({ showBcc: true })}>Cci</div>}
+                    </div>
+                </div>}
 
                 <div className="line">
                     <Input identifiant="subject" valeur={subject} errors={errors} onChange={this.handleChange}>Objet</Input>

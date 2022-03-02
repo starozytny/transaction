@@ -1,0 +1,20 @@
+.line-dest-options{
+  .form-group{
+    @include flex(row, flex-start, flex-end);
+
+    & > div{
+      color: var(--primary);
+      cursor: pointer;
+      opacity: 0.8;
+      transition: all 0.2s ease-in-out;
+
+      &:hover{
+        opacity: 1;
+      }
+
+      &:not(:last-child){
+        margin-right: 8px;
+      }
+    }
+  }
+}
