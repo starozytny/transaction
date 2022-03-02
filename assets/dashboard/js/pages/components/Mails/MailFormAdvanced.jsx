@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import axios                   from "axios";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { Input, SelectizeMultiple } from "@dashboardComponents/Tools/Fields";
+import {Input, Radiobox, SelectizeMultiple} from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { Trumb }               from "@dashboardComponents/Tools/Trumb";
@@ -16,7 +16,7 @@ const URL_CREATE_ELEMENT     = "api_mails_create_advanced";
 const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
-export function MailFormulaire ({ type, users, to, cc, bcc })
+export function MailFormulaire ({ type, users, from, to, cc, bcc, theme })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Le message a été envoyé !"
@@ -25,9 +25,11 @@ export function MailFormulaire ({ type, users, to, cc, bcc })
         context={type}
         url={url}
         users={users ? users : []}
+        from={from ? from : null}
         to={to ? to : []}
         cc={cc ? cc : []}
         bcc={bcc ? bcc : []}
+        theme={theme ? theme : 0}
         messageSuccess={msg}
     />
 
@@ -39,9 +41,11 @@ export class Form extends Component {
         super(props);
 
         this.state = {
+            from: props.from,
             to: props.to,
             cc: props.cc,
             bcc: props.bcc,
+            theme: props.theme,
             subject: "",
             title: "",
             message: {value: "", html: ""},
@@ -109,15 +113,21 @@ export class Form extends Component {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
-        const { to, cc, bcc, subject, title, message } = this.state;
+        const { to, cc, bcc, subject, title, message, theme } = this.state;
 
         this.setState({ errors: [], success: false })
 
         let paramsToValidate = [
             {type: "text",  id: 'subject',  value: subject},
-            {type: "text",  id: 'title',    value: title},
-            {type: "text",  id: 'message',  value: message}
+            {type: "text",  id: 'message',  value: message},
+            {type: "text",  id: 'theme',    value: theme}
         ];
+
+        if(parseInt(theme) === 1){
+            paramsToValidate = [...paramsToValidate,
+                ...[{type: "text", id: 'title', value: title}]
+            ];
+        }
 
         // validate global
         let validate = Validateur.validateur(paramsToValidate)
@@ -156,7 +166,7 @@ export class Form extends Component {
 
     render () {
         const { users } = this.props;
-        const { errors, success, to, cc, bcc, showCc, showBcc, subject, title, message } = this.state;
+        const { errors, success, from, to, cc, bcc, showCc, showBcc, subject, title, message, theme } = this.state;
 
         let selectItems = [];
         if(users && users.length !== 0){
@@ -167,12 +177,28 @@ export class Form extends Component {
             })
         }
 
+        let themeItems = [
+            { value: 0, label: "Aucun thème", id: "th-none" },
+            { value: 1, label: "Classique", id: "th-classique" }
+        ]
+
         return <>
             <form >
 
                 {success !== false && <Alert type="info">{success}</Alert>}
 
                 <div className="line">
+                    <Radiobox items={themeItems} identifiant="theme" valeur={theme} errors={errors} onChange={this.handleChange}>Thème</Radiobox>
+                </div>
+
+                {(!showCc || !showBcc) && <div className="line-dest-options">
+                    <div className="actions">
+                        {!showCc && <div onClick={() => this.setState({ showCc: true })}>Cc</div>}
+                        {!showBcc &&  <div onClick={() => this.setState({ showBcc: true })}>Cci</div>}
+                    </div>
+                </div>}
+
+                <div className="line line-to">
                     <SelectizeMultiple ref={this.selectMultipleTo} items={selectItems} identifiant="to" valeur={to}
                                        errors={errors}
                                        onChangeAdd={(e) => this.handleChangeSelectMultipleAdd("to", e, this.selectMultipleTo)}
@@ -205,10 +231,10 @@ export class Form extends Component {
                     </SelectizeMultiple>
                 </div>}
 
-                {(!showCc || !showBcc) && <div className="line line-dest-options">
+                {from && <div className="line">
                     <div className="form-group">
-                        {!showCc && <div onClick={() => this.setState({ showCc: true })}>Cc</div>}
-                        {!showBcc &&  <div onClick={() => this.setState({ showBcc: true })}>Cci</div>}
+                        <label>From</label>
+                        <div>{from}</div>
                     </div>
                 </div>}
 
@@ -216,10 +242,10 @@ export class Form extends Component {
                     <Input identifiant="subject" valeur={subject} errors={errors} onChange={this.handleChange}>Objet</Input>
                 </div>
 
-                <div className="line line-2">
+                {parseInt(theme) === 1 && <div className="line">
                     <Input identifiant="title" valeur={title} errors={errors} onChange={this.handleChange}>Titre du message</Input>
                     <div className="form-group" />
-                </div>
+                </div>}
 
                 <div className="line">
                     <Trumb identifiant="message" valeur={message.value} errors={errors} onChange={this.handleChangeTrumb}>Message</Trumb>

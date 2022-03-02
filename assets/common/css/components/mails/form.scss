@@ -1,5 +1,12 @@
 .line-dest-options{
-  .form-group{
+  margin-top: -20px;
+  transform: translateY(48px);
+
+  & + .line-to{
+    width: calc(100% - 40px - 24px);
+  }
+
+  .actions{
     @include flex(row, flex-start, flex-end);
 
     & > div{

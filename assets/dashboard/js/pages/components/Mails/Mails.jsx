@@ -245,7 +245,7 @@ export class Mails extends Component {
                             </div>
                         </div>
 
-                        <MailFormulaire type="create" users={users} />
+                        <MailFormulaire type="create" from="chanbora.chhun@outlook.fr" users={users} />
 
                         <div className="mail-list">
                             <div className="title">
