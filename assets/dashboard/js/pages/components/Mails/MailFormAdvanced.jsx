@@ -273,7 +273,7 @@ export class Form extends Component {
                           label="Téléverser des fichiers (max 5) (poids max 5Mb)" labelError="Erreur avec un/vos fichiers.">Documents</Drop>
                 </div>
 
-                <div className="line">
+                <div className="line line-btn-mails">
                     <div className="form-button">
                         <Button isSubmit={false} outline={true} type="default" onClick={this.handlePreview}>Prévisualisation</Button>
                         <Button isSubmit={false} onClick={this.handleSubmit}>{TXT_CREATE_BUTTON_FORM}</Button>
