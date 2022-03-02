@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Changelog;
 use App\Entity\User;
+use App\Service\MailerService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,5 +59,17 @@ class UserController extends AbstractController
         $data = $this->getUser();
         $data = $serializer->serialize($data, 'json', ['groups' => User::ADMIN_READ]);
         return $this->render('user/pages/profil/update.html.twig',  ['donnees' => $data]);
+    }
+
+    /**
+     * @Route("/boite-mails", name="mails")
+     */
+    public function mails(MailerService $mailerService): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $mailerService->getAllMailsData($user);
+
+        return $this->render('user/pages/mails/index.html.twig', $data);
     }
 }

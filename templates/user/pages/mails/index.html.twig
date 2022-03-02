@@ -1,0 +1,12 @@
+{% extends 'user/pages/mails/template.html.twig' %}
+
+{% set page_title %}Boite d'envoies{% endset %}
+
+{% block main_content %}
+    <div id="mails"
+         data-sent="{{ sent }}"
+         data-trash="{{ trash }}"
+    >
+        {% include "dashboard/layout/components/spinner.html.twig" %}
+    </div>
+{% endblock %}
