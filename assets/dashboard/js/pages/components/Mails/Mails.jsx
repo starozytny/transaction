@@ -135,7 +135,7 @@ export class Mails extends Component {
                     if(!isMultiple){
                         updateStatus(this, "DELETE", URL_DELETE_ELEMENT, element, "delete", "Message supprimé définitivement.")
                     }else{
-                        updateStatus(this, "DELETE", URL_DELETE_GROUP, selects)
+                        updateStatusGroup(this, "DELETE", URL_DELETE_GROUP, selects)
                     }
                 }
             })

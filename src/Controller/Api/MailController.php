@@ -182,7 +182,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="delete", options={"expose"=true}, methods={"DELETE"})
+     * @Route("/delete/{id}", name="delete", options={"expose"=true}, methods={"DELETE"})
      *
      * @OA\Response(
      *     response=200,
@@ -267,20 +267,11 @@ class MailController extends AbstractController
      * @OA\Tag(name="Mails")
      *
      * @param Request $request
-     * @param ApiResponse $apiResponse
+     * @param DataService $dataService
      * @return JsonResponse
      */
-    public function deleteGroup(Request $request, ApiResponse $apiResponse): JsonResponse
+    public function deleteGroup(Request $request, DataService $dataService): JsonResponse
     {
-        $em = $this->doctrine->getManager();
-        $data = json_decode($request->getContent());
-
-        $objs = $em->getRepository(Mail::class)->findBy(['id' => $data]);
-        foreach($objs as $obj){
-            $obj->remove($obj);
-        }
-        $em->flush();
-
-        return $apiResponse->apiJsonResponseSuccessful("Ok");
+        return $dataService->deleteSelected(Mail::class, json_decode($request->getContent()));
     }
 }
