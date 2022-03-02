@@ -88,4 +88,28 @@ class MailerService
             return 'Le message n\'a pas pu être délivré. Veuillez contacter le support.';
         }
     }
+
+    public function sendMailAdvanced($to, $cc, $bcc, $subject, $text, $html, $params, $from=null)
+    {
+        $from = ($from == null) ? $this->settingsService->getEmailExpediteurGlobal() : $from;
+
+        $email = (new TemplatedEmail())
+            ->from($from)
+            ->subject($subject)
+            ->text($text)
+            ->htmlTemplate($html)
+            ->context($params)
+        ;
+
+        if(count($to) > 0){  $email->to(...$to); }
+        if(count($cc) > 0){  $email->cc(...$cc); }
+        if(count($bcc) > 0){ $email->bcc(...$bcc); }
+
+        try {
+            $this->mailer->send($email);
+            return true;
+        } catch (TransportExceptionInterface $e) {
+            return 'Le message n\'a pas pu être délivré. Veuillez contacter le support.';
+        }
+    }
 }

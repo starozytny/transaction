@@ -159,17 +159,18 @@ class MailController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $destinataires = [];
-        foreach($data->emails as $email){
-            $destinataires[] = $email->value;
-        }
+        $from = $data->from ?? null;
+        $to = $this->getEmails($data->to);
+        $cc = $this->getEmails($data->cc);
+        $bcc = $this->getEmails($data->bcc);
 
-        if($mailerService->sendMailCCGroup(
-                $destinataires,
+        if($mailerService->sendMailAdvanced(
+                $to, $cc, $bcc,
                 "[" . $settingsService->getWebsiteName() ."] " . trim($data->subject),
-                trim($data->title),
+                trim($data->subject),
                 'app/email/template/random.html.twig',
-                ['title' => trim($data->title), 'message' => trim($data->message->html), 'settings' => $settingsService->getSettings()]
+                ['title' => trim($data->title), 'message' => trim($data->message->html), 'settings' => $settingsService->getSettings()],
+                $from
             ) != true)
         {
             return $apiResponse->apiJsonResponseValidationFailed([[
@@ -179,6 +180,16 @@ class MailController extends AbstractController
         }
 
         return $apiResponse->apiJsonResponseSuccessful("Message envoyé.");
+    }
+
+    private function getEmails($data): array
+    {
+        $emails = [];
+        foreach($data as $email){
+            $emails[] = $email->value;
+        }
+
+        return $emails;
     }
 
     /**
