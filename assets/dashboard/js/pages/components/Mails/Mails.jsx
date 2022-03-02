@@ -36,10 +36,12 @@ export class Mails extends Component {
         super(props);
 
         this.state = {
-            context: "trash",
-            element: props.trash ? JSON.parse(props.trash)[0] : null,
+            context: "sent",
+            element: props.sent ? JSON.parse(props.sent)[0] : null,
             sent: props.sent ? JSON.parse(props.sent) : [],
             trash: props.trash ? JSON.parse(props.trash) : [],
+            selection: false,
+            selects: []
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -48,6 +50,9 @@ export class Mails extends Component {
         this.handleTrash = this.handleTrash.bind(this);
         this.handleRestore = this.handleRestore.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+
+        this.handleSelection = this.handleSelection.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
     }
 
     handleChangeContext = (context) => {
@@ -103,8 +108,23 @@ export class Mails extends Component {
         ;
     }
 
+    handleSelection = () => { this.setState({ selection: !this.state.selection, selects: [], element: null }) }
+
+    handleSelect = (element) => {
+        const { selects } = this.state;
+
+        let nSelects = selects;
+        if(selects.includes(element)){
+            nSelects = selects.filter(el => el.id !== element.id);
+        }else{
+            nSelects.push(element)
+        }
+
+        this.setState({ selects: nSelects })
+    }
+
     render () {
-        const { context, sent, trash, element } = this.state;
+        const { context, sent, trash, element, selection, selects } = this.state;
 
         let menu = [
             { context: 'sent',  icon: "email-tracking", label: "Envoyés",   total: sent.length, data: sent },
@@ -149,10 +169,15 @@ export class Mails extends Component {
                             <span className={"icon-" + menuActive.icon} />
                             <span>{menuActive.label}</span>
                         </div>
+                        <div className="actions">
+                            <div onClick={this.handleSelection}>
+                                <span>{selection ? "Annuler la sélection" : "Sélectionner des messages"}</span>
+                            </div>
+                        </div>
                         <div className="items">
                             {data.length !== 0  ? data.map(elem => {
-                                return <ItemsMail  key={elem.id} elem={elem} element={element}
-                                                  onSelectMail={this.handleSelectMail} />
+                                return <ItemsMail key={elem.id} elem={elem} element={element} selection={selection} selects={selects}
+                                                  onSelectMail={this.handleSelectMail} onSelect={this.handleSelect} />
                             }) : <div className="item"><Alert withIcon={false}>Aucun résultat.</Alert></div>}
                         </div>
                     </div>
@@ -163,7 +188,9 @@ export class Mails extends Component {
                                              onTrash={this.handleTrash}
                                              onRestore={this.handleRestore}
                                              onDelete={this.handleDelete}
-                            /> : data.length !== 0 ? <Alert type="info">Sélectionner un mail</Alert> : null}
+                            /> : data.length !== 0 ? (selection ? <div>
+                            <ButtonIcon icon="trash" text="Supprimer les messages sélectionnés"/>
+                        </div> : <Alert type="info">Sélectionner un mail</Alert>) : null}
                     </div>
                 </div>
             </div>
@@ -171,11 +198,23 @@ export class Mails extends Component {
     }
 }
 
-function ItemsMail ({ elem, element, onSelectMail }) {
-    return <div className={"item " + (element && element.id === elem.id)} key={elem.id} onClick={() => onSelectMail(elem)}>
+function ItemsMail ({ elem, element, selection, selects, onSelectMail, onSelect }) {
+
+    let selectActive = false;
+    selects.forEach(select => {
+        if(select.id === elem.id){
+            selectActive = true;
+        }
+    })
+
+    return <div className={"item" + (selection ? " selection " : " ") + (element && element.id === elem.id)} key={elem.id}
+                onClick={selection ? () =>onSelect(elem) : () => onSelectMail(elem)}>
         <div className="expeditor">
             <div className="avatar">
                 <span>{elem.status !== 3 ? elem.expeditor.substring(0,1).toUpperCase() : <span className="icon-trash" />}</span>
+            </div>
+            <div className={"avatar selector " + selectActive}>
+                <span className="icon-check-1"/>
             </div>
             <div className="content">
                 <div className="name">{elem.expeditor}</div>
