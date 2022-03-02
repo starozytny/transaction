@@ -10,17 +10,20 @@ import Formulaire from "@dashboardComponents/functions/Formulaire";
 
 import { Alert }  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
+import Swal from "sweetalert2";
+import SwalOptions from "@commonComponents/functions/swalOptions";
 
 const SORTER = Sort.compareCreatedAtInverse;
 
-const URL_TRASH_ELEMENT = "api_mails_trash";
+const URL_TRASH_ELEMENT   = "api_mails_trash";
 const URL_RESTORE_ELEMENT = "api_mails_restore";
+const URL_DELETE_ELEMENT  = "api_mails_delete";
 
-function updateStatus (self, url, element, context, messageSuccess) {
-    axios({ method: "PUT", url: Routing.generate(url, {'id': element.id}), data: {} })
+function updateStatus (self, method, url, element, context, messageSuccess) {
+    axios({ method: method, url: Routing.generate(url, {'id': element.id}), data: {} })
         .then(function (response) {
             toastr.info(messageSuccess);
-            self.handleUpdateList(response.data, context);
+            self.handleUpdateList(context !== "delete" ? response.data : element, context);
         })
         .catch(function (error) {
             Formulaire.displayErrors(self, error);
@@ -44,6 +47,7 @@ export class Mails extends Component {
         this.handleSelectMail = this.handleSelectMail.bind(this);
         this.handleTrash = this.handleTrash.bind(this);
         this.handleRestore = this.handleRestore.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleChangeContext = (context) => {
@@ -57,6 +61,9 @@ export class Mails extends Component {
         let nTrash = trash;
 
         switch (context){
+            case "delete":
+                nTrash = trash.filter(el => el.id !== element.id);
+                break;
             case "restore":
                 if(element.statusOrigin === 2){
                     nSent.push(element);
@@ -79,11 +86,21 @@ export class Mails extends Component {
     handleSelectMail = (element) => { this.setState({ element }) }
 
     handleTrash = (element) => {
-        updateStatus(this, URL_TRASH_ELEMENT, element, "trash", "Message mis à la corbeille.")
+        updateStatus(this, "PUT", URL_TRASH_ELEMENT, element, "trash", "Message mis à la corbeille.")
     }
 
     handleRestore = (element) => {
-        updateStatus(this, URL_RESTORE_ELEMENT, element, "restore", "Message restauré.")
+        updateStatus(this, "PUT", URL_RESTORE_ELEMENT, element, "restore", "Message restauré.")
+    }
+
+    handleDelete = (element) => {
+        Swal.fire(SwalOptions.options("Etes-vous sur de vouloir supprimer ce mail ?", "Suppression définitive."))
+            .then((result) => {
+                if (result.isConfirmed) {
+                    updateStatus(this, "DELETE", URL_DELETE_ELEMENT, element, "delete", "Message supprimé définitivement.")
+                }
+            })
+        ;
     }
 
     render () {
@@ -145,6 +162,7 @@ export class Mails extends Component {
                         {element ? <ItemMail elem={element}
                                              onTrash={this.handleTrash}
                                              onRestore={this.handleRestore}
+                                             onDelete={this.handleDelete}
                             /> : data.length !== 0 ? <Alert type="info">Sélectionner un mail</Alert> : null}
                     </div>
                 </div>
@@ -170,7 +188,7 @@ function ItemsMail ({ elem, element, onSelectMail }) {
     </div>
 }
 
-function ItemMail ({ elem, onTrash, onRestore }) {
+function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
     return <div className="item">
 
         <div className="actions">
@@ -178,7 +196,9 @@ function ItemMail ({ elem, onTrash, onRestore }) {
                 <div className="createdAt">{elem.createdAtString}</div>
             </div>
             <div className="col-2">
-                <ButtonIcon icon="trash" onClick={() => onTrash(elem)}>{elem.status !== 3 ? "Corbeille" : "Supprimer"}</ButtonIcon>
+                {elem.status !== 3 ? <ButtonIcon icon="trash" onClick={() => onTrash(elem)}>Corbeille</ButtonIcon>
+                    : <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
+
                 {elem.status === 3 && <ButtonIcon icon="refresh1" onClick={() => onRestore(elem)}>Restaurer</ButtonIcon>}
             </div>
         </div>

@@ -180,4 +180,23 @@ class MailController extends AbstractController
 
         return $apiResponse->apiJsonResponse($obj, Mail::MAIL_READ);
     }
+
+    /**
+     * @Route("/{id}", name="delete", options={"expose"=true}, methods={"DELETE"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message",
+     * )
+     *
+     * @OA\Tag(name="Mails")
+     *
+     * @param Mail $obj
+     * @param DataService $dataService
+     * @return JsonResponse
+     */
+    public function delete(Mail $obj, DataService $dataService): JsonResponse
+    {
+        return $dataService->delete($obj);
+    }
 }
