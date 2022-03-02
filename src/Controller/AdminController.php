@@ -161,12 +161,19 @@ class AdminController extends AbstractController
     /**
      * @Route("/boite-mails", name="mails")
      */
-    public function mails(MailerService $mailerService): Response
+    public function mails(MailerService $mailerService, SerializerInterface $serializer): Response
     {
+        $em = $this->doctrine->getManager();
+
         /** @var User $user */
         $user = $this->getUser();
         $data = $mailerService->getAllMailsData($user);
+        $users = $em->getRepository(User::class)->findAll();
 
-        return $this->render('admin/pages/mails/index.html.twig', $data);
+        $users = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('admin/pages/mails/index.html.twig', array_merge($data, [
+            'users' => $users
+        ]));
     }
 }

@@ -56,6 +56,7 @@ export class Mails extends Component {
         this.state = {
             context: "create",
             element: props.sent ? JSON.parse(props.sent)[0] : null,
+            users: props.users ? JSON.parse(props.users) : [],
             sent: props.sent ? JSON.parse(props.sent) : [],
             trash: props.trash ? JSON.parse(props.trash) : [],
             selection: false,
@@ -160,7 +161,7 @@ export class Mails extends Component {
     }
 
     render () {
-        const { context, sent, trash, element, selection, selects } = this.state;
+        const { context, users, sent, trash, element, selection, selects } = this.state;
 
         let menu = [
             { context: 'sent',  icon: "email-tracking", label: "Envoyés",   total: sent.length,  data: sent },
@@ -244,7 +245,7 @@ export class Mails extends Component {
                             </div>
                         </div>
 
-                        <MailFormulaire type="create" />
+                        <MailFormulaire type="create" users={users} />
 
                         <div className="mail-list">
                             <div className="title">

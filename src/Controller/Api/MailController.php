@@ -134,6 +134,56 @@ class MailController extends AbstractController
     }
 
     /**
+     * Create a message contact
+     *
+     * @Route("/create-advanced", name="create_advanced", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message",
+     * )
+     *
+     * @OA\Tag(name="Mails")
+     *
+     * @param Request $request
+     * @param ApiResponse $apiResponse
+     * @param MailerService $mailerService
+     * @param SettingsService $settingsService
+     * @return JsonResponse
+     */
+    public function createAdvanced(Request $request, ApiResponse $apiResponse, MailerService $mailerService, SettingsService $settingsService): JsonResponse
+    {
+        $data = json_decode($request->get('data'));
+
+        if ($data == null) {
+            return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
+        }
+
+        dump($data->emails);
+
+        $destinataires = [];
+        foreach($data->emails as $email){
+            $destinataires[] = $email->value;
+        }
+
+        if($mailerService->sendMailCCGroup(
+                $destinataires,
+                "[" . $settingsService->getWebsiteName() ."] " . trim($data->subject),
+                trim($data->title),
+                'app/email/template/random.html.twig',
+                ['title' => trim($data->title), 'message' => trim($data->message->html), 'settings' => $settingsService->getSettings()]
+            ) != true)
+        {
+            return $apiResponse->apiJsonResponseValidationFailed([[
+                'name' => 'message',
+                'message' => "Le message n\'a pas pu être délivré. Veuillez contacter le support."
+            ]]);
+        }
+
+        return $apiResponse->apiJsonResponseSuccessful("Message envoyé.");
+    }
+
+    /**
      * @Route("/trash/{id}", name="trash", options={"expose"=true}, methods={"PUT"})
      *
      * @OA\Response(

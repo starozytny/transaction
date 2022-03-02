@@ -100,7 +100,7 @@ export class Form extends Component {
     }
 
     handleChangeSelectMultipleDel = (name, valeur) => {
-        let valeurs = this.state.users.filter(v => v.value !== valeur.value);
+        let valeurs = this.state.emails.filter(v => v.value !== valeur.value);
         this.setState({ [name]: valeurs });
         this.selectMultiple.current.handleUpdateValeurs(valeurs);
     }

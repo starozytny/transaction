@@ -151,7 +151,7 @@ export class SelectizeMultiple extends Component {
     handleUpdateValeurs = (valeurs) => { this.setState({ valeurs }) }
 
     render () {
-        const { identifiant, onChangeAdd, onChangeDel, children, placeholder, createType = null } = this.props;
+        const { identifiant, onChangeAdd, onChangeDel, children, placeholder, createType = null, renderOptionCustom = null } = this.props;
         const { items, valeurs } = this.state;
 
         let content = <>
@@ -186,6 +186,15 @@ export class SelectizeMultiple extends Component {
                                  return correct ? {label: search.trim(), value: search.trim()} : null;
                              }else{
                                  return null;
+                             }
+                         }}
+                         renderOption = {function(item){
+                             if(renderOptionCustom){
+                                 return renderOptionCustom(item);
+                             }else{
+                                 return <div className="simple-option">
+                                     <span>{item.label}</span>
+                                 </div>
                              }
                          }}
             />
