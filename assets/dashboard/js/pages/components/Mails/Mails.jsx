@@ -5,20 +5,36 @@ import toastr from "toastr";
 import parse  from "html-react-parser";
 import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
+import Sort       from "@commonComponents/functions/sort";
 import Formulaire from "@dashboardComponents/functions/Formulaire";
 
 import { Alert }  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
+const SORTER = Sort.compareCreatedAtInverse;
+
 const URL_TRASH_ELEMENT = "api_mails_trash";
+const URL_RESTORE_ELEMENT = "api_mails_restore";
+
+function updateStatus (self, url, element, context, messageSuccess) {
+    axios({ method: "PUT", url: Routing.generate(url, {'id': element.id}), data: {} })
+        .then(function (response) {
+            toastr.info(messageSuccess);
+            self.handleUpdateList(response.data, context);
+        })
+        .catch(function (error) {
+            Formulaire.displayErrors(self, error);
+        })
+    ;
+}
 
 export class Mails extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            context: "sent",
-            element: props.sent ? JSON.parse(props.sent)[0] : null,
+            context: "trash",
+            element: props.trash ? JSON.parse(props.trash)[0] : null,
             sent: props.sent ? JSON.parse(props.sent) : [],
             trash: props.trash ? JSON.parse(props.trash) : [],
         }
@@ -27,6 +43,7 @@ export class Mails extends Component {
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleSelectMail = this.handleSelectMail.bind(this);
         this.handleTrash = this.handleTrash.bind(this);
+        this.handleRestore = this.handleRestore.bind(this);
     }
 
     handleChangeContext = (context) => {
@@ -40,6 +57,12 @@ export class Mails extends Component {
         let nTrash = trash;
 
         switch (context){
+            case "restore":
+                if(element.statusOrigin === 2){
+                    nSent.push(element);
+                }
+                nTrash = trash.filter(el => el.id !== element.id);
+                break;
             case "trash":
                 nSent = sent.filter(el => el.id !== element.id);
                 nTrash.push(element);
@@ -48,25 +71,19 @@ export class Mails extends Component {
                 break;
         }
 
+        nSent.sort(SORTER)
+        nTrash.sort(SORTER)
         this.setState({ sent: nSent, trash: nTrash })
     }
 
     handleSelectMail = (element) => { this.setState({ element }) }
 
     handleTrash = (element) => {
-        const { context } = this.state;
+        updateStatus(this, URL_TRASH_ELEMENT, element, "trash", "Message mis à la corbeille.")
+    }
 
-        const self = this;
-        axios({ method: "PUT", url: Routing.generate(URL_TRASH_ELEMENT, {'id': element.id}), data: {} })
-            .then(function (response) {
-                toastr.info("Message mis à la corbeille.");
-                console.log(response.data)
-                self.handleUpdateList(response.data, "trash");
-            })
-            .catch(function (error) {
-                Formulaire.displayErrors(self, error);
-            })
-        ;
+    handleRestore = (element) => {
+        updateStatus(this, URL_RESTORE_ELEMENT, element, "restore", "Message restauré.")
     }
 
     render () {
@@ -125,8 +142,10 @@ export class Mails extends Component {
                 </div>
                 <div className="col-3">
                     <div className="mail-item">
-                        {element ? <ItemMail elem={element} onTrash={this.handleTrash} />
-                            : data.length !== 0 ? <Alert type="info">Sélectionner un mail</Alert> : null}
+                        {element ? <ItemMail elem={element}
+                                             onTrash={this.handleTrash}
+                                             onRestore={this.handleRestore}
+                            /> : data.length !== 0 ? <Alert type="info">Sélectionner un mail</Alert> : null}
                     </div>
                 </div>
             </div>
@@ -151,7 +170,7 @@ function ItemsMail ({ elem, element, onSelectMail }) {
     </div>
 }
 
-function ItemMail ({ elem, onTrash }) {
+function ItemMail ({ elem, onTrash, onRestore }) {
     return <div className="item">
 
         <div className="actions">
@@ -160,6 +179,7 @@ function ItemMail ({ elem, onTrash }) {
             </div>
             <div className="col-2">
                 <ButtonIcon icon="trash" onClick={() => onTrash(elem)}>{elem.status !== 3 ? "Corbeille" : "Supprimer"}</ButtonIcon>
+                {elem.status === 3 && <ButtonIcon icon="refresh1" onClick={() => onRestore(elem)}>Restaurer</ButtonIcon>}
             </div>
         </div>
 

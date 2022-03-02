@@ -81,7 +81,7 @@ class MailController extends AbstractController
      *     description="Returns a message",
      * )
      *
-     * @OA\Tag(name="Contact")
+     * @OA\Tag(name="Mails")
      *
      * @param Request $request
      * @param ApiResponse $apiResponse
@@ -134,14 +134,14 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="trash", options={"expose"=true}, methods={"PUT"})
+     * @Route("/trash/{id}", name="trash", options={"expose"=true}, methods={"PUT"})
      *
      * @OA\Response(
      *     response=200,
      *     description="Returns a message",
      * )
      *
-     * @OA\Tag(name="Contact")
+     * @OA\Tag(name="Mails")
      *
      * @param Mail $obj
      * @param ApiResponse $apiResponse
@@ -152,7 +152,30 @@ class MailController extends AbstractController
         $em = $this->doctrine->getManager();
 
         $obj->setStatus(Mail::STATUS_TRASH);
+        $em->flush();
 
+        return $apiResponse->apiJsonResponse($obj, Mail::MAIL_READ);
+    }
+
+    /**
+     * @Route("/restore/{id}", name="restore", options={"expose"=true}, methods={"PUT"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message",
+     * )
+     *
+     * @OA\Tag(name="Mails")
+     *
+     * @param Mail $obj
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function restore(Mail $obj, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        $obj->setStatus($obj->getStatusOrigin());
         $em->flush();
 
         return $apiResponse->apiJsonResponse($obj, Mail::MAIL_READ);
