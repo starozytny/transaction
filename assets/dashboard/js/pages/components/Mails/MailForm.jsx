@@ -24,8 +24,8 @@ export function MailFormulaire ({ type, users, dest })
     let form = <Form
         context={type}
         url={url}
-        users={users}
-        dest={JSON.parse(dest)}
+        users={users ? users : []}
+        dest={dest ? JSON.parse(dest) : null}
         messageSuccess={msg}
     />
 
@@ -198,7 +198,7 @@ export class Form extends Component {
         ]
 
         let selectUsers = [];
-        if(users){
+        if(users && users.length !== 0){
             JSON.parse(users).forEach(el => {
                 if(el.getHighRoleCode !== 1){
                     selectUsers.push({ value: el.email, label: el.username, identifiant: 'us-' + el.id })

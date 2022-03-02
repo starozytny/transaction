@@ -40,6 +40,12 @@
     width: calc(32% - 48px);
   }
 
+  & > .col-2-expand{
+    background-color: var(--alpha);
+    border-radius: 0 8px 8px 0;
+    width: calc(100% - 22%);
+  }
+
   & > .col-3{
     background-color: var(--alpha);
     border-radius: 0 8px 8px 0;

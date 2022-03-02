@@ -12,6 +12,7 @@ import { Alert }  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 import Swal from "sweetalert2";
 import SwalOptions from "@commonComponents/functions/swalOptions";
+import {MailFormulaire} from "@dashboardPages/components/Mails/MailForm";
 
 const SORTER = Sort.compareCreatedAtInverse;
 
@@ -52,7 +53,7 @@ export class Mails extends Component {
         super(props);
 
         this.state = {
-            context: "sent",
+            context: "create",
             element: props.sent ? JSON.parse(props.sent)[0] : null,
             sent: props.sent ? JSON.parse(props.sent) : [],
             trash: props.trash ? JSON.parse(props.trash) : [],
@@ -191,37 +192,38 @@ export class Mails extends Component {
             <div className="boite-mail">
                 <div className="col-1">
                     <div className="mail-add">
-                        <Button icon="email-edit">Nouveau message</Button>
+                        <Button icon="email-edit" onClick={() => this.handleChangeContext("create")}>Nouveau message</Button>
                     </div>
                     <div className="mail-menu">
                         <div className="items">{menuItems}</div>
                     </div>
                 </div>
-                <div className="col-2">
-                    <div className="mail-list">
-                        <div className="title">
-                            <span className={"icon-" + menuActive.icon} />
-                            <span>{menuActive.label}</span>
-                        </div>
-                        <div className="actions">
-                            <div onClick={this.handleSelection}>
-                                <span>{selection ? "Annuler la sélection" : "Sélectionner des messages"}</span>
+                {context !== "create" ? <>
+                    <div className="col-2">
+                        <div className="mail-list">
+                            <div className="title">
+                                <span className={"icon-" + menuActive.icon} />
+                                <span>{menuActive.label}</span>
+                            </div>
+                            <div className="actions">
+                                <div onClick={this.handleSelection}>
+                                    <span>{selection ? "Annuler la sélection" : "Sélectionner des messages"}</span>
+                                </div>
+                            </div>
+                            <div className="items">
+                                {data.length !== 0  ? data.map(elem => {
+                                    return <ItemsMail key={elem.id} elem={elem} element={element} selection={selection} selects={selects}
+                                                      onSelectMail={this.handleSelectMail} onSelect={this.handleSelect} />
+                                }) : <div className="item"><Alert withIcon={false}>Aucun résultat.</Alert></div>}
                             </div>
                         </div>
-                        <div className="items">
-                            {data.length !== 0  ? data.map(elem => {
-                                return <ItemsMail key={elem.id} elem={elem} element={element} selection={selection} selects={selects}
-                                                  onSelectMail={this.handleSelectMail} onSelect={this.handleSelect} />
-                            }) : <div className="item"><Alert withIcon={false}>Aucun résultat.</Alert></div>}
-                        </div>
                     </div>
-                </div>
-                <div className="col-3">
-                    <div className="mail-item">
-                        {element ? <ItemMail elem={element}
-                                             onTrash={this.handleTrash}
-                                             onRestore={this.handleRestore}
-                                             onDelete={this.handleDelete}
+                    <div className="col-3">
+                        <div className="mail-item">
+                            {element ? <ItemMail elem={element}
+                                                 onTrash={this.handleTrash}
+                                                 onRestore={this.handleRestore}
+                                                 onDelete={this.handleDelete}
                             /> : data.length !== 0 ? (selection ? <div>
                                 {context === 'trash' ? <>
                                     <ButtonIcon icon="refresh1" text="Restaurer les messages sélectionnés" onClick={() => this.handleRestore(null, true)}/>
@@ -230,8 +232,21 @@ export class Mails extends Component {
                                     <ButtonIcon icon="trash" text="Mettre à la corbeille les messages sélectionnés" onClick={() => this.handleTrash(null, true)}/>
                                 </>}
                             </div> : <Alert type="info">Sélectionner un mail</Alert>) : null}
+                        </div>
                     </div>
-                </div>
+                </> : <>
+                    <div className="col-2-expand">
+                        <div className="mail-list">
+                            <div className="title">
+                                <span className="icon-email-edit" />
+                                <span>Nouveau message</span>
+                            </div>
+                        </div>
+
+                        <MailFormulaire type="create" />
+                    </div>
+                </>}
+
             </div>
         </div>
     }
