@@ -8,6 +8,7 @@ use App\Entity\Mail;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -89,7 +90,7 @@ class MailerService
         }
     }
 
-    public function sendMailAdvanced($to, $cc, $bcc, $subject, $text, $html, $params, $from=null)
+    public function sendMailAdvanced($to, $cc, $bcc, $subject, $text, $html, $params, $files = [], $from=null)
     {
         $from = ($from == null) ? $this->settingsService->getEmailExpediteurGlobal() : $from;
 
@@ -104,6 +105,11 @@ class MailerService
         if(count($to) > 0){  $email->to(...$to); }
         if(count($cc) > 0){  $email->cc(...$cc); }
         if(count($bcc) > 0){ $email->bcc(...$bcc); }
+
+        /** @var UploadedFile $file */
+        foreach($files as $file){
+            $email->attach($file);
+        }
 
         try {
             $this->mailer->send($email);

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
 import axios                   from "axios";
+import toastr                  from "toastr";
 import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import {Input, Radiobox, SelectizeMultiple} from "@dashboardComponents/Tools/Fields";
+import { Input, Radiobox, SelectizeMultiple } from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { Trumb }               from "@dashboardComponents/Tools/Trumb";
@@ -158,12 +159,18 @@ export class Form extends Component {
             let formData = new FormData();
             formData.append("data", JSON.stringify(this.state));
 
+            let files = this.inputFiles.current.drop.current.files;
+            files.forEach((f, index) => {
+                formData.append("file" + index, f.file)
+            })
+
             axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                 .then(function (response) {
                     Helper.toTop();
-                    self.setState({ success: messageSuccess, errors: [] });
+                    self.setState({ success: response.data.message, errors: [] });
+                    toastr.info("La page va se rafraichir automatiquement dans 3 secondes.");
                     setTimeout(function (){
-                        toastr.info("La page va se rafraichir automatiquement dans 3 secondes.")
+                        location.reload();
                     }, 3000)
                 })
                 .catch(function (error) {

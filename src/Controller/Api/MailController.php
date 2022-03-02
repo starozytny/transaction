@@ -9,6 +9,7 @@ use App\Repository\ContactRepository;
 use App\Repository\UserRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataService;
+use App\Service\FileUploader;
 use App\Service\MailerService;
 use App\Service\NotificationService;
 use App\Service\SanitizeData;
@@ -151,12 +152,22 @@ class MailController extends AbstractController
      * @param SettingsService $settingsService
      * @return JsonResponse
      */
-    public function createAdvanced(Request $request, ApiResponse $apiResponse, MailerService $mailerService, SettingsService $settingsService): JsonResponse
+    public function createAdvanced(Request $request, ApiResponse $apiResponse, MailerService $mailerService,
+                                   SettingsService $settingsService, FileUploader $fileUploader): JsonResponse
     {
         $data = json_decode($request->get('data'));
 
         if ($data == null) {
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
+        }
+
+        $files = [];
+        for($i = 0; $i <= 5 ; $i++){
+            $file = $request->files->get('file' . $i);
+            if($file){
+                $fileUploader->upload($file, "emails", false);
+                $files[] = $file;
+            }
         }
 
         $from = $data->from ?? null;
@@ -170,6 +181,7 @@ class MailController extends AbstractController
                 trim($data->subject),
                 'app/email/template/random.html.twig',
                 ['title' => trim($data->title), 'message' => trim($data->message->html), 'settings' => $settingsService->getSettings()],
+                $files,
                 $from
             ) != true)
         {
