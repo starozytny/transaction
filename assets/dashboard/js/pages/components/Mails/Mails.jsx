@@ -18,6 +18,9 @@ const SORTER = Sort.compareCreatedAtInverse;
 const URL_TRASH_ELEMENT   = "api_mails_trash";
 const URL_RESTORE_ELEMENT = "api_mails_restore";
 const URL_DELETE_ELEMENT  = "api_mails_delete";
+const URL_TRASH_GROUP   = "api_mails_trash_group";
+const URL_RESTORE_GROUP = "api_mails_restore_group";
+const URL_DELETE_GROUP  = "api_mails_delete_group";
 
 function updateStatus (self, method, url, element, context, messageSuccess) {
     axios({ method: method, url: Routing.generate(url, {'id': element.id}), data: {} })
@@ -26,6 +29,19 @@ function updateStatus (self, method, url, element, context, messageSuccess) {
             self.handleUpdateList(context !== "delete" ? response.data : element, context);
         })
         .catch(function (error) {
+            Formulaire.displayErrors(self, error);
+        })
+    ;
+}
+
+function updateStatusGroup (self, method, url, selects) {
+    Formulaire.loader(true);
+    axios({ method: method, url: Routing.generate(url), data: selects })
+        .then(function (response) {
+            location.reload();
+        })
+        .catch(function (error) {
+            Formulaire.loader(false);
             Formulaire.displayErrors(self, error);
         })
     ;
@@ -56,7 +72,7 @@ export class Mails extends Component {
     }
 
     handleChangeContext = (context) => {
-        this.setState({ context: context, element: null })
+        this.setState({ context: context, element: null, selects: [], selection: false })
     }
 
     handleUpdateList = (element, context) => {
@@ -90,19 +106,37 @@ export class Mails extends Component {
 
     handleSelectMail = (element) => { this.setState({ element }) }
 
-    handleTrash = (element) => {
-        updateStatus(this, "PUT", URL_TRASH_ELEMENT, element, "trash", "Message mis à la corbeille.")
+    handleTrash = (element, isMultiple = false) => {
+        const { selects } = this.state;
+
+        if(!isMultiple){
+            updateStatus(this, "PUT", URL_TRASH_ELEMENT, element, "trash", "Message mis à la corbeille.")
+        }else{
+            updateStatusGroup(this, "PUT", URL_TRASH_GROUP, selects)
+        }
     }
 
-    handleRestore = (element) => {
-        updateStatus(this, "PUT", URL_RESTORE_ELEMENT, element, "restore", "Message restauré.")
+    handleRestore = (element,  isMultiple = false) => {
+        const { selects } = this.state;
+
+        if(!isMultiple){
+            updateStatus(this, "PUT", URL_RESTORE_ELEMENT, element, "restore", "Message restauré.")
+        }else{
+            updateStatusGroup(this, "PUT", URL_RESTORE_GROUP, selects)
+        }
     }
 
-    handleDelete = (element) => {
-        Swal.fire(SwalOptions.options("Etes-vous sur de vouloir supprimer ce mail ?", "Suppression définitive."))
+    handleDelete = (element,  isMultiple = false) => {
+        const { selects } = this.state;
+
+        Swal.fire(SwalOptions.options("Etes-vous sur de vouloir supprimer " + (!isMultiple ? "ce message" : "ces messages") + " ?", "Suppression définitive."))
             .then((result) => {
                 if (result.isConfirmed) {
-                    updateStatus(this, "DELETE", URL_DELETE_ELEMENT, element, "delete", "Message supprimé définitivement.")
+                    if(!isMultiple){
+                        updateStatus(this, "DELETE", URL_DELETE_ELEMENT, element, "delete", "Message supprimé définitivement.")
+                    }else{
+                        updateStatus(this, "DELETE", URL_DELETE_GROUP, selects)
+                    }
                 }
             })
         ;
@@ -115,9 +149,9 @@ export class Mails extends Component {
 
         let nSelects = selects;
         if(selects.includes(element)){
-            nSelects = selects.filter(el => el.id !== element.id);
+            nSelects = selects.filter(el => el !== element.id);
         }else{
-            nSelects.push(element)
+            nSelects.push(element.id)
         }
 
         this.setState({ selects: nSelects })
@@ -127,7 +161,7 @@ export class Mails extends Component {
         const { context, sent, trash, element, selection, selects } = this.state;
 
         let menu = [
-            { context: 'sent',  icon: "email-tracking", label: "Envoyés",   total: sent.length, data: sent },
+            { context: 'sent',  icon: "email-tracking", label: "Envoyés",   total: sent.length,  data: sent },
             { context: 'trash', icon: "trash",          label: "Corbeille", total: trash.length, data: trash },
         ];
 
@@ -189,8 +223,13 @@ export class Mails extends Component {
                                              onRestore={this.handleRestore}
                                              onDelete={this.handleDelete}
                             /> : data.length !== 0 ? (selection ? <div>
-                            <ButtonIcon icon="trash" text="Supprimer les messages sélectionnés"/>
-                        </div> : <Alert type="info">Sélectionner un mail</Alert>) : null}
+                                {context === 'trash' ? <>
+                                    <ButtonIcon icon="refresh1" text="Restaurer les messages sélectionnés" onClick={() => this.handleRestore(null, true)}/>
+                                    <ButtonIcon icon="trash" text="Supprimer les messages sélectionnés" onClick={() => this.handleDelete(null, true)}/>
+                                </> : <>
+                                    <ButtonIcon icon="trash" text="Mettre à la corbeille les messages sélectionnés" onClick={() => this.handleTrash(null, true)}/>
+                                </>}
+                            </div> : <Alert type="info">Sélectionner un mail</Alert>) : null}
                     </div>
                 </div>
             </div>
@@ -202,7 +241,7 @@ function ItemsMail ({ elem, element, selection, selects, onSelectMail, onSelect 
 
     let selectActive = false;
     selects.forEach(select => {
-        if(select.id === elem.id){
+        if(select === elem.id){
             selectActive = true;
         }
     })

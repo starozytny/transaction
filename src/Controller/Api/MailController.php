@@ -199,4 +199,88 @@ class MailController extends AbstractController
     {
         return $dataService->delete($obj);
     }
+
+    /**
+     * @Route("/trash-group", name="trash_group", options={"expose"=true}, methods={"PUT"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message",
+     * )
+     *
+     * @OA\Tag(name="Mails")
+     *
+     * @param Request $request
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function trashGroup(Request $request, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $data = json_decode($request->getContent());
+
+        $objs = $em->getRepository(Mail::class)->findBy(['id' => $data]);
+        foreach($objs as $obj){
+            $obj->setStatus(Mail::STATUS_TRASH);
+        }
+        $em->flush();
+
+        return $apiResponse->apiJsonResponseSuccessful("Ok");
+    }
+
+    /**
+     * @Route("/restore-group", name="restore_group", options={"expose"=true}, methods={"PUT"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message",
+     * )
+     *
+     * @OA\Tag(name="Mails")
+     *
+     * @param Request $request
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function restoreGroup(Request $request, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $data = json_decode($request->getContent());
+
+        $objs = $em->getRepository(Mail::class)->findBy(['id' => $data]);
+        foreach($objs as $obj){
+            $obj->setStatus($obj->getStatusOrigin());
+        }
+        $em->flush();
+
+        return $apiResponse->apiJsonResponseSuccessful("Ok");
+    }
+
+    /**
+     * @Route("/delete-group", name="delete_group", options={"expose"=true}, methods={"DELETE"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message",
+     * )
+     *
+     * @OA\Tag(name="Mails")
+     *
+     * @param Request $request
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function deleteGroup(Request $request, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $data = json_decode($request->getContent());
+
+        $objs = $em->getRepository(Mail::class)->findBy(['id' => $data]);
+        foreach($objs as $obj){
+            $obj->remove($obj);
+        }
+        $em->flush();
+
+        return $apiResponse->apiJsonResponseSuccessful("Ok");
+    }
 }
