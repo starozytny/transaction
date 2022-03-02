@@ -2,19 +2,13 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Contact;
 use App\Entity\Mail;
-use App\Entity\User;
-use App\Repository\ContactRepository;
 use App\Repository\UserRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataService;
 use App\Service\FileUploader;
 use App\Service\MailerService;
-use App\Service\NotificationService;
-use App\Service\SanitizeData;
 use App\Service\SettingsService;
-use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -150,6 +144,7 @@ class MailController extends AbstractController
      * @param ApiResponse $apiResponse
      * @param MailerService $mailerService
      * @param SettingsService $settingsService
+     * @param FileUploader $fileUploader
      * @return JsonResponse
      */
     public function createAdvanced(Request $request, ApiResponse $apiResponse, MailerService $mailerService,
