@@ -54,7 +54,7 @@ export class Mails extends Component {
         super(props);
 
         this.state = {
-            context: "create",
+            context: "sent",
             element: props.sent ? JSON.parse(props.sent)[0] : null,
             users: props.users ? JSON.parse(props.users) : [],
             sent: props.sent ? JSON.parse(props.sent) : [],
@@ -107,7 +107,11 @@ export class Mails extends Component {
         this.setState({ sent: nSent, trash: nTrash })
     }
 
-    handleSelectMail = (element) => { this.setState({ element }) }
+    handleSelectMail = (element) => {
+        this.setState({ element })
+        let top = document.getElementById("read").offsetTop; //Getting Y of target element
+        window.scrollTo(0, top);
+    }
 
     handleTrash = (element, isMultiple = false) => {
         const { selects } = this.state;
@@ -220,7 +224,7 @@ export class Mails extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col-3">
+                    <div className="col-3" id="read">
                         <div className="mail-item">
                             {element ? <ItemMail elem={element}
                                                  onTrash={this.handleTrash}

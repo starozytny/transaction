@@ -259,6 +259,11 @@ export class Form extends Component {
                     <Input identifiant="subject" valeur={subject} errors={errors} onChange={this.handleChange}>Objet</Input>
                 </div>
 
+                <div className="line">
+                    <Drop ref={this.inputFiles} identifiant="files" errors={errors} accept={"*"} maxFiles={5}
+                          label="Téléverser des fichiers (max 5) (poids max 5Mb)" labelError="Erreur avec un/vos fichiers.">Documents</Drop>
+                </div>
+
                 {parseInt(theme) === 1 && <div className="line">
                     <Input identifiant="title" valeur={title} errors={errors} onChange={this.handleChange}>Titre du message</Input>
                     <div className="form-group" />
@@ -266,11 +271,6 @@ export class Form extends Component {
 
                 <div className="line">
                     <Trumb identifiant="message" valeur={message.value} errors={errors} onChange={this.handleChangeTrumb}>Message</Trumb>
-                </div>
-
-                <div className="line">
-                    <Drop ref={this.inputFiles} identifiant="files" errors={errors} accept={"*"} maxFiles={5}
-                          label="Téléverser des fichiers (max 5) (poids max 5Mb)" labelError="Erreur avec un/vos fichiers.">Documents</Drop>
                 </div>
 
                 <div className="line line-btn-mails">

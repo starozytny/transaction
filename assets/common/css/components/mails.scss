@@ -16,41 +16,42 @@
 }
 
 .boite-mail{
-  @include flex(row, stretch, flex-start);
+  @include flex(column, stretch, flex-start);
   border-radius: 8px;
   border: 1px solid var(--greyShadow);
   min-height: 100vh;
 
-  overflow: auto;
-
   & > .col-1, & > .col-3{
-    padding: 24px;
+    padding: 12px;
+  }
+
+  & > .col-1,
+  & > .col-2-expand,
+  & > .col-3{
+    width: calc(100% - 24px);
   }
 
   & > .col-1{
     position: relative;
     background-color: var(--alpha);
     border-radius: 8px 0 0 8px;
-    width: calc(22% - 48px);
-    box-shadow: 4px 0 12px var(--greyShadow);
   }
 
   & > .col-2{
     background-color: var(--alpha);
-    width: calc(32% - 48px);
+    border-top: 1px solid var(--grey);
+    border-bottom: 1px solid var(--grey);
+    width: 100%;
   }
 
   & > .col-2-expand{
     background-color: var(--alpha);
     border-radius: 0 8px 8px 0;
-    width: calc(100% - 22%);
   }
 
   & > .col-3{
     background-color: var(--alpha);
     border-radius: 0 8px 8px 0;
-    width: calc(100% - 22% - 32%);
-    box-shadow: -4px 0 12px var(--greyShadow);
   }
 
   .avatar{
@@ -63,6 +64,42 @@
       display: inline-block;
       color: var(--primary)
     }
+  }
+}
+
+//                      __   _ ____  ___   ___    __
+//                     | _| / |___ \( _ ) / _ \  |_ |
+//    _____ _____ _____| |  | | __) / _ \| | | |  | |_____ _____ _____
+//   |_____|_____|_____| |  | |/ __/ (_) | |_| |  | |_____|_____|_____|
+//                     | |  |_|_____\___/ \___/   | |
+//                     |__|                      |__|
+@media (min-width:1280px) {
+  .boite-mail {
+    flex-direction: row;
+  }
+
+  & > .col-1, & > .col-3{
+    padding: 24px;
+  }
+
+  & > .col-1{
+    width: calc(22% - 48px);
+    box-shadow: 4px 0 12px var(--greyShadow);
+  }
+
+  & > .col-2{
+    width: calc(32% - 48px);
+    border-top: none;
+    border-bottom: none;
+  }
+
+  & > .col-2-expand{
+    width: calc(100% - 22%);
+  }
+
+  & > .col-3{
+    width: calc(100% - 22% - 32%);
+    box-shadow: -4px 0 12px var(--greyShadow);
   }
 }
 
