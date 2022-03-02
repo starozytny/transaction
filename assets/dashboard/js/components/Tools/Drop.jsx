@@ -62,7 +62,7 @@ export class Drop extends Component {
     }
 
     render () {
-        const { previewFile, children, accept, maxFiles, maxSize=655360, labelError, label, labelFiles="Ajouter" } = this.props;
+        const { previewFile, children, accept, maxFiles, maxSize=5330000, labelError, label, labelFiles="Ajouter" } = this.props;
 
         let content = <div className="form-files">
             {previewFile && <div className="preview-form-oldFile">
