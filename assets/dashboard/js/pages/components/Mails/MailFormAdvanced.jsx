@@ -141,22 +141,14 @@ export class Form extends Component {
             axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                 .then(function (response) {
                     Helper.toTop();
-                    self.setState({
-                        success: messageSuccess,
-                        errors: [],
-                        to: [],
-                        cc: [],
-                        bcc: [],
-                        subject: '',
-                        title: '',
-                        message: {value: "", html: ""}
-                    });
+                    self.setState({ success: messageSuccess, errors: [] });
+                    setTimeout(function (){
+                        toastr.info("La page va se rafraichir automatiquement dans 3 secondes.")
+                    }, 3000)
                 })
                 .catch(function (error) {
-                    Formulaire.displayErrors(self, error);
-                })
-                .then(() => {
                     Formulaire.loader(false);
+                    Formulaire.displayErrors(self, error);
                 })
             ;
         }

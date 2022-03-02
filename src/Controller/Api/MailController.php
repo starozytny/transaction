@@ -179,7 +179,7 @@ class MailController extends AbstractController
             ]]);
         }
 
-        return $apiResponse->apiJsonResponseSuccessful("Message envoyé.");
+        return $apiResponse->apiJsonResponseSuccessful("Message envoyé. La page va se rafraichir automatiquement dans 3 secondes.");
     }
 
     private function getEmails($data): array
