@@ -42,6 +42,17 @@
   .form-group{
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
+
+    .react-selectize.default.root-node{
+      width: calc(100% - 48px - 24px);
+    }
+  }
+
+  .form-group-error{
+    .error{
+      margin-left: 56px;
+    }
   }
 
   label{
