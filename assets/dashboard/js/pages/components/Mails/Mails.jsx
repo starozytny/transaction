@@ -1,9 +1,16 @@
 import React, { Component } from "react";
 
-import parse from "html-react-parser";
+import axios  from "axios";
+import toastr from "toastr";
+import parse  from "html-react-parser";
+import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
+import Formulaire from "@dashboardComponents/functions/Formulaire";
 
 import { Alert }  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
+
+const URL_TRASH_ELEMENT = "api_mails_trash";
 
 export class Mails extends Component {
     constructor(props) {
@@ -17,21 +24,57 @@ export class Mails extends Component {
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
+        this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleSelectMail = this.handleSelectMail.bind(this);
+        this.handleTrash = this.handleTrash.bind(this);
     }
 
     handleChangeContext = (context) => {
         this.setState({ context: context, element: null })
     }
 
+    handleUpdateList = (element, context) => {
+        const { sent, trash } = this.state;
+
+        let nSent = sent;
+        let nTrash = trash;
+
+        switch (context){
+            case "trash":
+                nSent = sent.filter(el => el.id !== element.id);
+                nTrash.push(element);
+                break;
+            default:
+                break;
+        }
+
+        this.setState({ sent: nSent, trash: nTrash })
+    }
+
     handleSelectMail = (element) => { this.setState({ element }) }
+
+    handleTrash = (element) => {
+        const { context } = this.state;
+
+        const self = this;
+        axios({ method: "PUT", url: Routing.generate(URL_TRASH_ELEMENT, {'id': element.id}), data: {} })
+            .then(function (response) {
+                toastr.info("Message mis à la corbeille.");
+                console.log(response.data)
+                self.handleUpdateList(response.data, "trash");
+            })
+            .catch(function (error) {
+                Formulaire.displayErrors(self, error);
+            })
+        ;
+    }
 
     render () {
         const { context, sent, trash, element } = this.state;
 
         let menu = [
-            { context: 'sent',  icon: "email-tracking", label: "Envoyés",   total: 52, data: sent },
-            { context: 'trash', icon: "trash",          label: "Corbeille", total: 20, data: trash },
+            { context: 'sent',  icon: "email-tracking", label: "Envoyés",   total: sent.length, data: sent },
+            { context: 'trash', icon: "trash",          label: "Corbeille", total: trash.length, data: trash },
         ];
 
         let data = [];
@@ -74,14 +117,16 @@ export class Mails extends Component {
                         </div>
                         <div className="items">
                             {data.length !== 0  ? data.map(elem => {
-                                return <ItemsMail elem={elem} element={element} onSelectMail={this.handleSelectMail} key={elem.id} />
+                                return <ItemsMail  key={elem.id} elem={elem} element={element}
+                                                  onSelectMail={this.handleSelectMail} />
                             }) : <div className="item"><Alert withIcon={false}>Aucun résultat.</Alert></div>}
                         </div>
                     </div>
                 </div>
                 <div className="col-3">
                     <div className="mail-item">
-                        {element ? <ItemMail elem={element} /> : data.length !== 0 ? <Alert type="info">Sélectionner un mail</Alert> : null}
+                        {element ? <ItemMail elem={element} onTrash={this.handleTrash} />
+                            : data.length !== 0 ? <Alert type="info">Sélectionner un mail</Alert> : null}
                     </div>
                 </div>
             </div>
@@ -106,7 +151,7 @@ function ItemsMail ({ elem, element, onSelectMail }) {
     </div>
 }
 
-function ItemMail ({ elem }) {
+function ItemMail ({ elem, onTrash }) {
     return <div className="item">
 
         <div className="actions">
@@ -114,7 +159,7 @@ function ItemMail ({ elem }) {
                 <div className="createdAt">{elem.createdAtString}</div>
             </div>
             <div className="col-2">
-                <ButtonIcon icon="trash">Supprimer</ButtonIcon>
+                <ButtonIcon icon="trash" onClick={() => onTrash(elem)}>{elem.status !== 3 ? "Corbeille" : "Supprimer"}</ButtonIcon>
             </div>
         </div>
 

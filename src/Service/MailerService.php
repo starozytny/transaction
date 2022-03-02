@@ -42,7 +42,7 @@ class MailerService
 
     public function getMailsDataSerialize(User $user, $status): string
     {
-        $data = $this->em->getRepository(Mail::class)->findBy(['user' => $user, 'status' => $status]);
+        $data = $this->em->getRepository(Mail::class)->findBy(['user' => $user, 'status' => $status], ['createdAt' => 'DESC']);
 
         return $this->serializer->serialize($data, 'json', ['groups' => Mail::MAIL_READ]);
     }
