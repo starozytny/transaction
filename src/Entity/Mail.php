@@ -13,6 +13,12 @@ class Mail extends DataEntity
 {
     const MAIL_READ = ["mail:read"];
 
+    const STATUS_INBOX = 0;
+    const STATUS_DRAFT = 1;
+    const STATUS_SENT = 2;
+    const STATUS_TRASH = 3;
+    const STATUS_ARCHIVED = 4;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -20,6 +26,12 @@ class Mail extends DataEntity
      * @Groups({"mail:read"})
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"mail:read"})
+     */
+    private $status = self::STATUS_SENT;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -145,5 +157,17 @@ class Mail extends DataEntity
     public function getCreatedAtString(): ?string
     {
         return $this->getFullDateString($this->createdAt, 'llll');
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
     }
 }

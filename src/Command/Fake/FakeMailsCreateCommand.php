@@ -59,6 +59,10 @@ class FakeMailsCreateCommand extends Command
             $user = $users[$fake->numberBetween(0, count($users) - 1)];
             $new->setUser($user);
 
+            if($fake->numberBetween(0, 1) == 1){
+                $new->setStatus(Mail::STATUS_TRASH);
+            }
+
             $this->em->persist($new);
         }
         $io->text('MAILS : Mails fake créés' );
