@@ -9,6 +9,7 @@ use App\Entity\Notification;
 use App\Entity\Settings;
 use App\Entity\User;
 use App\Repository\MailRepository;
+use App\Service\MailerService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Http\Discovery\Exception\NotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -160,14 +161,12 @@ class AdminController extends AbstractController
     /**
      * @Route("/boite-mails", name="mails")
      */
-    public function mails(MailRepository $mailRepository, SerializerInterface $serializer): Response
+    public function mails(MailerService $mailerService): Response
     {
-        $data = $mailRepository->findAll();
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $mailerService->getAllMailsData($user);
 
-        $data = $serializer->serialize($data, 'json', ['groups' => Mail::MAIL_READ]);
-
-        return $this->render('admin/pages/mails/index.html.twig', [
-            'sent' => $data,
-        ]);
+        return $this->render('admin/pages/mails/index.html.twig', $data);
     }
 }

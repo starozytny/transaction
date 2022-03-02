@@ -4,20 +4,47 @@
 namespace App\Service;
 
 
+use App\Entity\Mail;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class MailerService
 {
     private $mailer;
     private $settingsService;
+    private $em;
+    private $serializer;
 
-    public function __construct(MailerInterface $mailer, SettingsService $settingsService)
+    public function __construct(MailerInterface $mailer, SettingsService $settingsService,
+                                EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         $this->mailer = $mailer;
         $this->settingsService = $settingsService;
+        $this->em = $entityManager;
+        $this->serializer = $serializer;
+    }
+
+    public function getAllMailsData(User $user): array
+    {
+        $sent  = $this->getMailsDataSerialize($user, Mail::STATUS_SENT);
+        $trash = $this->getMailsDataSerialize($user, Mail::STATUS_TRASH);
+
+        return [
+            "sent" => $sent,
+            "trash" => $trash
+        ];
+    }
+
+    public function getMailsDataSerialize(User $user, $status): string
+    {
+        $data = $this->em->getRepository(Mail::class)->findBy(['user' => $user, 'status' => $status]);
+
+        return $this->serializer->serialize($data, 'json', ['groups' => Mail::MAIL_READ]);
     }
 
     public function sendMail($to, $subject, $text, $html, $params, $from=null)

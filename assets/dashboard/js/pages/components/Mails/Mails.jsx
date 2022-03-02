@@ -12,7 +12,8 @@ export class Mails extends Component {
         this.state = {
             context: "sent",
             element: props.sent ? JSON.parse(props.sent)[0] : null,
-            sent: props.sent ? JSON.parse(props.sent) : []
+            sent: props.sent ? JSON.parse(props.sent) : [],
+            trash: props.trash ? JSON.parse(props.trash) : [],
         }
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
@@ -26,11 +27,11 @@ export class Mails extends Component {
     handleSelectMail = (element) => { this.setState({ element }) }
 
     render () {
-        const { context, sent, element } = this.state;
+        const { context, sent, trash, element } = this.state;
 
         let menu = [
             { context: 'sent',  icon: "email-tracking", label: "Envoyés",   total: 52, data: sent },
-            { context: 'trash', icon: "trash",          label: "Corbeille", total: 20, data: [] },
+            { context: 'trash', icon: "trash",          label: "Corbeille", total: 20, data: trash },
         ];
 
         let data = [];
@@ -92,7 +93,7 @@ function ItemsMail ({ elem, element, onSelectMail }) {
     return <div className={"item " + (element && element.id === elem.id)} key={elem.id} onClick={() => onSelectMail(elem)}>
         <div className="expeditor">
             <div className="avatar">
-                <span>{elem.expeditor.substring(0,1).toUpperCase()}</span>
+                <span>{elem.status !== 3 ? elem.expeditor.substring(0,1).toUpperCase() : <span className="icon-trash" />}</span>
             </div>
             <div className="content">
                 <div className="name">{elem.expeditor}</div>
