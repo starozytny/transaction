@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Contact;
+use App\Entity\Mail;
 use App\Entity\User;
 use App\Repository\ContactRepository;
 use App\Repository\UserRepository;
@@ -27,6 +28,13 @@ use OpenApi\Annotations as OA;
  */
 class MailController extends AbstractController
 {
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
      * Admin - Preview mail
      *
@@ -123,5 +131,30 @@ class MailController extends AbstractController
         }
 
         return $apiResponse->apiJsonResponseSuccessful("Message envoyé.");
+    }
+
+    /**
+     * @Route("/{id}", name="trash", options={"expose"=true}, methods={"PUT"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message",
+     * )
+     *
+     * @OA\Tag(name="Contact")
+     *
+     * @param Mail $obj
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function trash(Mail $obj, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        $obj->setStatus(Mail::STATUS_TRASH);
+
+        $em->flush();
+
+        return $apiResponse->apiJsonResponse($obj, Mail::MAIL_READ);
     }
 }
