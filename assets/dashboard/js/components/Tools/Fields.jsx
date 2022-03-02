@@ -151,7 +151,7 @@ export class SelectizeMultiple extends Component {
     handleUpdateValeurs = (valeurs) => { this.setState({ valeurs }) }
 
     render () {
-        const { identifiant, onChangeAdd, onChangeDel, children, placeholder } = this.props;
+        const { identifiant, onChangeAdd, onChangeDel, children, placeholder, createType = null } = this.props;
         const { items, valeurs } = this.state;
 
         let content = <>
@@ -161,6 +161,32 @@ export class SelectizeMultiple extends Component {
                                  <span className="icon-cancel"/>
                                  <span>{item.label}</span>
                              </div>
+                         }}
+                         createFromSearch={function (options, values, search) {
+                             if(createType !== null){
+                                 let labels = values.map(function(value){
+                                     return value.label;
+                                 })
+                                 if (search.trim().length === 0 || labels.indexOf(search.trim()) !== -1){
+                                     return null;
+                                 }
+
+                                 let correct = false;
+                                 switch (createType){
+                                     case "email":
+                                         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(search.trim())){
+                                             correct = true;
+                                         }
+                                         break;
+                                     default:
+                                         correct = true;
+                                         break;
+                                 }
+
+                                 return correct ? {label: search.trim(), value: search.trim()} : null;
+                             }else{
+                                 return null;
+                             }
                          }}
             />
             <input type="hidden" name={identifiant} value={valeurs}/>
