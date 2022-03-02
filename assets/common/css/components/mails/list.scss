@@ -20,6 +20,10 @@
       overflow: auto;
       @include scrollbar();
       max-height: 100vh;
+
+      &::-webkit-scrollbar{
+        width: 3px;
+      }
     }
 
     .item{
