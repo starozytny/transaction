@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 
-import axios  from "axios";
-import toastr from "toastr";
-import parse  from "html-react-parser";
+import axios    from "axios";
+import toastr   from "toastr";
+import parse    from "html-react-parser";
+import Swal     from "sweetalert2";
+import SwalOptions from "@commonComponents/functions/swalOptions";
 import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import Sort       from "@commonComponents/functions/sort";
@@ -10,9 +12,8 @@ import Formulaire from "@dashboardComponents/functions/Formulaire";
 
 import { Alert }  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
-import Swal from "sweetalert2";
-import SwalOptions from "@commonComponents/functions/swalOptions";
-import {MailFormulaire} from "@dashboardPages/components/Mails/MailForm";
+
+import { MailFormulaire } from "@dashboardPages/components/Mails/MailFormAdvanced";
 
 const SORTER = Sort.compareCreatedAtInverse;
 
@@ -244,6 +245,15 @@ export class Mails extends Component {
                         </div>
 
                         <MailFormulaire type="create" />
+
+                        <div className="mail-list">
+                            <div className="title">
+                                <span className="icon-vision" />
+                                <span>Prévisualisation</span>
+                            </div>
+                        </div>
+
+                        <div id="preview" />
                     </div>
                 </>}
 
