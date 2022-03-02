@@ -1,14 +1,13 @@
 .boite-mail{
-  .mail-menu{
-    .mail-add{
-      margin-bottom: 24px;
+  .mail-add{
+    margin-bottom: 24px;
 
-      .btn{
-        width: 100%;
-      }
+    .btn{
+      width: 100%;
     }
+  }
 
-
+  .mail-menu{
     .item{
       @include flex(row, center, space-between);
       cursor: pointer;

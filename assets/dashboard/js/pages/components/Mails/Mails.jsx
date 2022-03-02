@@ -19,7 +19,9 @@ export class Mails extends Component {
         this.handleSelectMail = this.handleSelectMail.bind(this);
     }
 
-    handleChangeContext = (context) => this.setState({ context })
+    handleChangeContext = (context) => {
+        this.setState({ context: context, element: null })
+    }
 
     handleSelectMail = (element) => { this.setState({ element }) }
 
