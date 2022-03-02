@@ -243,7 +243,7 @@ export class Form extends Component {
                 </div>
 
                 <div className="line line-2">
-                    <Input identifiant="title" valeur={title} errors={errors} onChange={this.handleChange}>Titre du contenu</Input>
+                    <Input identifiant="title" valeur={title} errors={errors} onChange={this.handleChange}>Titre du message</Input>
                     <div className="form-group" />
                 </div>
 
