@@ -52,8 +52,8 @@ export class Form extends Component {
             message: {value: "", html: ""},
             errors: [],
             success: false,
-            showCc: false,
-            showBcc: false,
+            showCc: !!props.cc.length,
+            showBcc: !!props.bcc.length,
         }
 
         this.inputFiles = React.createRef();
