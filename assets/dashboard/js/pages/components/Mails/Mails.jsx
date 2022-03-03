@@ -54,7 +54,7 @@ export class Mails extends Component {
         super(props);
 
         this.state = {
-            context: "sent",
+            context: "create",
             element: props.sent ? JSON.parse(props.sent)[0] : null,
             users: props.users ? JSON.parse(props.users) : [],
             sent: props.sent ? JSON.parse(props.sent) : [],

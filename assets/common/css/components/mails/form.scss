@@ -72,5 +72,13 @@
 .line-btn-mails{
   .form-button{
     justify-content: space-between;
+
+    & > div:first-child{
+      @include flex(row, flex-start, flex-start);
+
+      & > *:not(:last-child){
+        margin-right: 12px;
+      }
+    }
   }
 }

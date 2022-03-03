@@ -16,6 +16,7 @@ import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
 const URL_CREATE_ELEMENT     = "api_mails_create";
 const URL_PREVIEW_ELEMENT    = "api_mails_preview";
+const URL_DRAFT_ELEMENT      = "api_mails_draft";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
 export function MailFormulaire ({ type = "create", users, from, to, cc, bcc, theme, refAside = null })
@@ -54,6 +55,8 @@ export class Form extends Component {
             success: false,
             showCc: !!props.cc.length,
             showBcc: !!props.bcc.length,
+            isDraft: false,
+            id: null,
         }
 
         this.inputFiles = React.createRef();
@@ -64,6 +67,7 @@ export class Form extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeTrumb = this.handleChangeTrumb.bind(this);
         this.handlePreview = this.handlePreview.bind(this);
+        this.handleDraft = this.handleDraft.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -113,6 +117,44 @@ export class Form extends Component {
                     Formulaire.displayErrors(self, error);
                 })
                 .then(() => {
+                    Formulaire.loader(false);
+                })
+            ;
+        }
+    }
+
+    handleDraft = (e) => {
+        e.preventDefault();
+
+        const { subject } = this.state;
+
+        this.setState({ errors: [], success: false })
+
+        let paramsToValidate = [
+            {type: "text",  id: 'subject',  value: subject},
+        ];
+        // validate global
+        let validate = Validateur.validateur(paramsToValidate)
+        if(!validate.code){
+            Formulaire.showErrors(this, validate);
+        }else{
+            let formData = new FormData();
+            formData.append("data", JSON.stringify(this.state));
+
+            Formulaire.loader(true);
+            let self = this;
+            axios({ method: "POST", url: Routing.generate(URL_DRAFT_ELEMENT), data: formData, headers: {'Content-Type': 'multipart/form-data'} })
+                .then(function (response) {
+                    toastr.info("Brouillon enregistré.");
+                    self.setState({
+                        isDraft: true,
+                        id: response.data.id
+                    })
+                })
+                .catch(function (error) {
+                    Formulaire.displayErrors(self, error);
+                })
+                .then(function() {
                     Formulaire.loader(false);
                 })
             ;
@@ -291,7 +333,10 @@ export class Form extends Component {
 
                 <div className="line line-btn-mails">
                     <div className="form-button">
-                        <Button isSubmit={false} outline={true} type="default" onClick={this.handlePreview}>Prévisualisation</Button>
+                        <div>
+                            <Button isSubmit={false} outline={true} type="default" onClick={this.handlePreview}>Prévisualisation</Button>
+                            <Button isSubmit={false} type="warning" onClick={this.handleDraft}>Brouillon</Button>
+                        </div>
                         <Button isSubmit={false} onClick={this.handleSubmit}>{TXT_CREATE_BUTTON_FORM}</Button>
                     </div>
                 </div>

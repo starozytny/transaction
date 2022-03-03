@@ -69,6 +69,27 @@ class MailController extends AbstractController
         return new Response($html);
     }
 
+    public function createMail($data, DataMail $dataEntity, SettingsService $settingsService): Mail
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $from = $data->from ?? $settingsService->getEmailExpediteurGlobal();
+
+        $obj = new Mail();
+        if($data->isDraft){
+            $obj = $em->getRepository(Mail::class)->find($data->id);
+            if(!$obj){ $obj = new Mail(); }
+        }
+
+        $obj = $dataEntity->setData($obj, $data, $from);
+        $obj->setUser($user);
+
+        return $obj;
+    }
+
     /**
      * Create a message contact
      *
@@ -94,9 +115,6 @@ class MailController extends AbstractController
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->get('data'));
-
-        /** @var User $user */
-        $user = $this->getUser();
 
         if ($data == null) {
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
@@ -140,9 +158,44 @@ class MailController extends AbstractController
             ]]);
         }
 
-        $obj = $dataEntity->setData(new Mail(), $data, $from);
-        $obj->setUser($user);
+        $obj = $this->createMail($data, $dataEntity, $settingsService);
+        $obj->setStatus(Mail::STATUS_SENT);
         $obj->setFiles($filesName);
+
+        $em->persist($obj);
+        $em->flush();
+
+        return $apiResponse->apiJsonResponseSuccessful("Message envoyé. La page va se rafraichir automatiquement dans 3 secondes.");
+    }
+
+    /**
+     * @Route("/draft", name="draft", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message",
+     * )
+     *
+     * @OA\Tag(name="Mails")
+     *
+     * @param Request $request
+     * @param ApiResponse $apiResponse
+     * @param SettingsService $settingsService
+     * @param DataMail $dataEntity
+     * @return JsonResponse
+     */
+    public function draft(Request $request, ApiResponse $apiResponse, SettingsService $settingsService, DataMail $dataEntity): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+        $data = json_decode($request->get('data'));
+
+        if ($data == null) {
+            return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
+        }
+
+        $obj = $this->createMail($data, $dataEntity, $settingsService);
+        $obj->setStatusOrigin(Mail::STATUS_SENT);
+        $obj->setStatus(Mail::STATUS_DRAFT);
 
         $em->persist($obj);
         $em->flush();
