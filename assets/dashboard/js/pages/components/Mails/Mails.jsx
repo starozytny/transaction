@@ -60,8 +60,8 @@ export class Mails extends Component {
         super(props);
 
         this.state = {
-            context: "draft",
-            element: props.draft ? JSON.parse(props.draft)[0] : null,
+            context: "sent",
+            element: props.sent ? JSON.parse(props.sent)[0] : null,
             users: props.users ? JSON.parse(props.users) : [],
             sent: props.sent ? JSON.parse(props.sent) : [],
             trash: props.trash ? JSON.parse(props.trash) : [],
