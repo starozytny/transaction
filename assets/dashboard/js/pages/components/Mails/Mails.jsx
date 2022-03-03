@@ -317,7 +317,7 @@ function ItemsMail ({ elem, element, selection, selects, onSelectMail, onSelect 
     return <div className={"item" + (selection ? " selection " : " ") + (element && element.id === elem.id)} key={elem.id}
                 onClick={selection ? () =>onSelect(elem) : () => onSelectMail(elem)}>
         <div className="expeditor">
-            <div className="avatar">
+            <div className={"avatar avatar-" + + elem.statusOrigin }>
                 <span>{avatar}</span>
             </div>
             <div className={"avatar selector " + selectActive}>

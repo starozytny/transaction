@@ -60,9 +60,26 @@
     width: 32px; height: 32px;
     background-color: var(--primaryShadow2);
 
+    $status:
+            "0" var(--grey3) var(--greyShadow),
+            "1" var(--warning) var(--warningShadow2),
+            "2" var(--primary) var(--primaryShadow2),
+            "3" var(--danger) var(--dangerShadow2),
+            "4" var(--success) var(--successShadow2),
+  ;
+
+    @each $number, $color, $bg in $status {
+      &.avatar-#{$number}{
+        background-color: $bg;
+
+        span {
+          color: $color;
+        }
+      }
+    }
+
     span{
       display: inline-block;
-      color: var(--primary);
 
       [class^="icon-"]{
         transform: translateY(2px);
