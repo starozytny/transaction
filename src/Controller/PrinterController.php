@@ -117,7 +117,7 @@ class PrinterController extends AbstractController
         $obj        = $serializer->serialize($obj,       'json', ['groups' => User::ADMIN_READ]);
         $biens      = $serializer->serialize($biens,     'json', ['groups' => User::USER_READ]);
 
-        return $this->render('user/pages/impressions/rapport_owner.html.twig', array_merge([
+        return $this->render('user/pages/impressions/rapport_negotiator.html.twig', array_merge([
             'donnees' => $obj,
             'biens' => $biens,
         ], $data));

@@ -1,14 +1,5 @@
-{% extends 'user/pages/impressions/template.html.twig' %}
+{% extends 'user/pages/impressions/rapport.html.twig' %}
 
-{% set page_title %}Rapport bien{% endset %}
+{% set page_title %}Rapport Bien{% endset %}
 
-{% block main_content %}
-    <div id="rapport-bien"
-         data-donnees="{{ donnees }}"
-         data-publishes="{{ publishes }}"
-         data-visites="{{ visites }}"
-         data-prices="{{ prices }}"
-    >
-        {% include "dashboard/layout/components/spinner.html.twig" %}
-    </div>
-{% endblock %}
+{% set identifiant %}rapport-bien{% endset %}
