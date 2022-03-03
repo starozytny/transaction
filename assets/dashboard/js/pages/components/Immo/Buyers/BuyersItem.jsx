@@ -7,8 +7,15 @@ import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Butto
 import { UtContact, UtMainInfos }         from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
+import { MailAside }        from "@dashboardPages/components/Mails/MailAside";
 
 export class BuyersItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.mail = React.createRef();
+    }
+
     render () {
         const { isClient, elem, buyers, onDelete, onSelectors, onChangeContext } = this.props;
 
@@ -43,11 +50,13 @@ export class BuyersItem extends Component {
                         <div className="col-4 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
-                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "buyer")}>Autres</ButtonIconDropdown>
+                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "buyer", this.mail)}>Autres</ButtonIconDropdown>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <MailAside ref={this.mail} to={[elem.email]} />
         </div>
     }
 }

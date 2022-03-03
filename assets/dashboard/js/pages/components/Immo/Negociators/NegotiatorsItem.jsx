@@ -6,8 +6,15 @@ import Actions from "@userComponents/functions/actions";
 
 import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
+import { MailAside }    from "@dashboardPages/components/Mails/MailAside";
 
 export class NegotiatorsItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.mail = React.createRef();
+    }
+
     render () {
         const { agencyId, isClient, isUser, biens, elem, onDelete, onChangeContext, onSelectors } = this.props
 
@@ -54,11 +61,13 @@ export class NegotiatorsItem extends Component {
                                 </>}
                             </>}
 
-                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "negotiator")}>Autres</ButtonIconDropdown>
+                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "negotiator", this.mail)}>Autres</ButtonIconDropdown>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <MailAside ref={this.mail} to={[elem.email]} />
         </div>
     }
 }

@@ -8,8 +8,15 @@ import { UtPhones }  from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 import { SearchMainInfos1 } from "@dashboardPages/components/Immo/Searchs/SearchsItem";
+import { MailAside }        from "@dashboardPages/components/Mails/MailAside";
 
 export class ProspectsItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.mail = React.createRef();
+    }
+
     render () {
         const { isSelect, isClient, elem, prospects, onDelete, onDeleteSearch, onSelectors, onChangeContext, onSelectProspect, onSwitchArchived } = this.props;
 
@@ -69,7 +76,7 @@ export class ProspectsItem extends Component {
                         <div className="col-5 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             {(!isSelect || (isSelect && !active)) && <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>}
-                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "prospect")}>Autres</ButtonIconDropdown>
+                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "prospect", this.mail)}>Autres</ButtonIconDropdown>
                         </div>
                     </div>
                 </div>
@@ -77,6 +84,8 @@ export class ProspectsItem extends Component {
                     <div className="sub">Observation : {elem.commentary}</div>
                 </div>}
             </div>
+
+            <MailAside ref={this.mail} to={[elem.email]} />
         </div>
     }
 }

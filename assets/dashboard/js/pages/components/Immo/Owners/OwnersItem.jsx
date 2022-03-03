@@ -9,8 +9,15 @@ import { Selector }  from "@dashboardComponents/Layout/Selector";
 import { UtContact } from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
+import { MailAside }        from "@dashboardPages/components/Mails/MailAside";
 
 export class OwnersItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.mail = React.createRef();
+    }
+
     render () {
         const { isReadBien=false, isClient, isFormBien, owner, biens, elem,
             onDelete, onSelectors, onChangeContext, onSelectOwner } = this.props;
@@ -24,7 +31,7 @@ export class OwnersItem extends Component {
             })
         }
 
-        let actions = Actions.getDefaultAction(isClient, elem, "owner");
+        let actions = Actions.getDefaultAction(isClient, elem, "owner", this.mail);
         actions = actions.concat([
             {data: <a target="_blank" href={Routing.generate('user_printer_owner_rapport', {'id': elem.id})}>Imprimer rapport</a>},
         ])
@@ -65,6 +72,8 @@ export class OwnersItem extends Component {
                     </div>
                 </div>
             </div>
+
+            <MailAside ref={this.mail} to={[elem.email]} />
         </div>
     }
 }
