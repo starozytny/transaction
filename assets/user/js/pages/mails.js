@@ -17,6 +17,9 @@ if(el){
 
 el = document.getElementById("send-mail");
 if(el){
-    render(<MailFormulaire type="create" {...el.dataset} />, el)
+    let users = el.dataset.users;
+    let to    = el.dataset.dest;
+
+    render(<MailFormulaire users={JSON.parse(users)} to={to !== "" ? [{ value: to, label: to }] : []} />, el)
 }
 

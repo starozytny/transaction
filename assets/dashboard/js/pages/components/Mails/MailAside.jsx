@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Aside } from "@dashboardComponents/Tools/Aside";
-import { MailFormulaire } from "@dashboardPages/components/Mails/MailFormAdvanced";
+import { MailFormulaire } from "@dashboardPages/components/Mails/MailForm";
 import { ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 export class MailAsideButton extends Component {

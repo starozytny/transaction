@@ -173,25 +173,25 @@ class MailController extends AbstractController
         $html = $data->theme == 0 ? "random_classique" : "random";
         $params = $data->theme == 1 ? ['title' => trim($data->title)] : [];
 
-//        if($mailerService->sendMailAdvanced(
-//                $to, $cc, $bcc,
-//                "[" . $settingsService->getWebsiteName() ."] " . trim($data->subject),
-//                trim($data->subject),
-//                'app/email/template/' . $html . '.html.twig',
-//                array_merge($params,  [
-//                    'subject' => trim($data->subject),
-//                    'message' => trim($data->message->html),
-//                    'settings' => $settingsService->getSettings()
-//                ]),
-//                $files,
-//                $from
-//            ) != true)
-//        {
-//            return $apiResponse->apiJsonResponseValidationFailed([[
-//                'name' => 'message',
-//                'message' => "Le message n\'a pas pu être délivré. Veuillez contacter le support."
-//            ]]);
-//        }
+        if($mailerService->sendMailAdvanced(
+                $to, $cc, $bcc,
+                "[" . $settingsService->getWebsiteName() ."] " . trim($data->subject),
+                trim($data->subject),
+                'app/email/template/' . $html . '.html.twig',
+                array_merge($params,  [
+                    'subject' => trim($data->subject),
+                    'message' => trim($data->message->html),
+                    'settings' => $settingsService->getSettings()
+                ]),
+                $files,
+                $from
+            ) != true)
+        {
+            return $apiResponse->apiJsonResponseValidationFailed([[
+                'name' => 'message',
+                'message' => "Le message n\'a pas pu être délivré. Veuillez contacter le support."
+            ]]);
+        }
 
         foreach($files as $file){
             if(file_exists($file)){

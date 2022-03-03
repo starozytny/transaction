@@ -13,7 +13,7 @@ import Formulaire from "@dashboardComponents/functions/Formulaire";
 import { Alert }  from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
-import { MailFormulaire } from "@dashboardPages/components/Mails/MailFormAdvanced";
+import { MailFormulaire } from "@dashboardPages/components/Mails/MailForm";
 
 const SORTER = Sort.compareCreatedAtInverse;
 
