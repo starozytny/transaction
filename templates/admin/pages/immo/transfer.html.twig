@@ -4,7 +4,11 @@
 {% set submenuActive = "Transfert" %}
 
 {% block main_content %}
-    <div id="transfer" data-donnees="{{ donnees }}">
+    <div id="transfer"
+         data-donnees="{{ donnees }}"
+         data-negotiators="{{ negotiators }}"
+         data-users="{{ users }}"
+    >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

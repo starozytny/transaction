@@ -343,9 +343,13 @@ class AdminController extends AbstractController
     public function transfer(SerializerInterface $serializer): Response
     {
         $objs = $this->getAllData(ImAgency::class, $serializer);
+        $negotiators = $this->getAllData(ImNegotiator::class, $serializer);
+        $users = $this->getAllData(User::class, $serializer);
 
         return $this->render('admin/pages/immo/transfer.html.twig', [
             'donnees' => $objs,
+            'negotiators' => $negotiators,
+            'users' => $users,
         ]);
     }
 }

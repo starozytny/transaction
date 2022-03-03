@@ -14,10 +14,10 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_owners_create";
+const URL_CREATE_ELEMENT     = "api_immo_transfer_start";
 const TXT_CREATE_BUTTON_FORM = "Transférer";
 
-export function TransferFormulaire ({ donnees })
+export function TransferFormulaire ({ donnees, negotiators, users })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
     let msg = "Félicitations ! Le transfert s'est bien déroulé !"
@@ -26,11 +26,13 @@ export function TransferFormulaire ({ donnees })
         context={"create"}
         url={url}
         agencies={JSON.parse(donnees)}
+        negotiators={JSON.parse(negotiators)}
+        users={JSON.parse(users)}
         messageSuccess={msg}
     />
 
     return <div className="form">
-        <h2>Transfert</h2>
+        <h2>Transfert des biens d'une agence vers une autre</h2>
         {form}
     </div>
 
@@ -43,6 +45,8 @@ class Form extends Component {
         this.state = {
             from: "",
             to: "",
+            negotiator: "",
+            user: "",
             errors: [],
             success: false,
             critere: ""
@@ -58,7 +62,7 @@ class Form extends Component {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
-        const { critere, from, to } = this.state;
+        const { critere, from, to, negotiator, user } = this.state;
 
         if(critere !== ""){
             toastr.error("Veuillez rafraichir la page.");
@@ -68,6 +72,8 @@ class Form extends Component {
             let paramsToValidate = [
                 {type: "text",       id: 'from', value: from},
                 {type: "text",       id: 'to',   value: to},
+                {type: "text",       id: 'negotiator',   value: negotiator},
+                {type: "text",       id: 'user',   value: user},
             ];
 
             // validate global
@@ -85,7 +91,8 @@ class Form extends Component {
                                 .then(function (response) {
                                     Helper.toTop();
 
-                                    self.setState({ success: messageSuccess, errors: [], from: "", to: "" });
+                                    self.setState({ success: messageSuccess, errors: [] });
+                                    toastr.info(messageSuccess);
                                 })
                                 .catch(function (error) {
                                     Formulaire.displayErrors(self, error);
@@ -102,13 +109,22 @@ class Form extends Component {
     }
 
     render () {
-        const { context, agencies } = this.props;
-        const { critere, errors, success, from, to } = this.state;
+        const { agencies, negotiators, users } = this.props;
+        const { critere, errors, success, from, to, negotiator, user } = this.state;
 
-        let selectAgencies = [];
+        let selectAgencies = [], selectNegotiators = [], selectUsers = [];
         agencies.forEach(agency => {
             selectAgencies.push({ value: agency.id, label: agency.name, id: "ag-" + agency.id })
         })
+
+        negotiators.forEach(ne => {
+            selectNegotiators.push({ value: ne.id, label: ne.fullname, id: "ne-" + ne.id })
+        })
+
+        users.forEach(user => {
+            selectUsers.push({ value: user.id, label: user.fullname, id: "us-" + user.id })
+        })
+
 
         return <>
             <form onSubmit={this.handleSubmit}>
@@ -140,6 +156,20 @@ class Form extends Component {
                             </SelectReactSelectize>
                         </div>
 
+                        {to && <>
+                            <div className="line">
+                                <SelectReactSelectize items={selectNegotiators} identifiant="negotiator" valeur={negotiator} errors={errors}
+                                                      onChange={(e) => this.handleChangeSelect('negotiator', e)}>
+                                    Négociateurs
+                                </SelectReactSelectize>
+                            </div>
+                            <div className="line">
+                                <SelectReactSelectize items={selectUsers} identifiant="user" valeur={user} errors={errors}
+                                                      onChange={(e) => this.handleChangeSelect('user', e)}>
+                                    Utilisateurs
+                                </SelectReactSelectize>
+                            </div>
+                        </>}
                     </div>
                 </div>
 
