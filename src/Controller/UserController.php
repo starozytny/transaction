@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Changelog;
+use App\Entity\Mail;
 use App\Entity\User;
 use App\Service\MailerService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -71,5 +73,13 @@ class UserController extends AbstractController
         $data = $mailerService->getAllMailsData($user);
 
         return $this->render('user/pages/mails/index.html.twig', $data);
+    }
+
+    /**
+     * @Route("/boite-mails/document/{filename}", options={"expose"=true}, name="mails_attachement")
+     */
+    public function mailsAttachement($filename): BinaryFileResponse
+    {
+        return new BinaryFileResponse($this->getParameter('private_directory') . Mail::FOLDER_FILES . "/" . $filename);
     }
 }

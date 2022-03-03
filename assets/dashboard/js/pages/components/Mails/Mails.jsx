@@ -335,15 +335,17 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
             <div className="message">{parse(elem.message)}</div>
             <div className="files">
                 {elem.files.map((file, index) => {
-                    return <div className="file" key={index}>
-                        <div className="icon">
+                    return <a className="file" key={index}
+                              download={file} target="_blank"
+                              href={Routing.generate('user_mails_attachement', {'filename': file})}
+                    >
+                        <span className="icon">
                             <span className="icon-file" />
-                        </div>
-                        <div className="infos">
-                            <div className="name">Pièce jointe {index + 1}</div>
-                        </div>
-
-                    </div>
+                        </span>
+                        <span className="infos">
+                            <span className="name">Pièce jointe {index + 1}</span>
+                        </span>
+                    </a>
                 })}
             </div>
         </div>

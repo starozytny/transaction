@@ -4,7 +4,6 @@ namespace App\Controller\Api;
 
 use App\Entity\Mail;
 use App\Entity\User;
-use App\Repository\UserRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataMail;
 use App\Service\Data\DataService;
@@ -14,6 +13,7 @@ use App\Service\SettingsService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -119,25 +119,25 @@ class MailController extends AbstractController
         $html = $data->theme == 0 ? "random_classique" : "random";
         $params = $data->theme == 1 ? ['title' => trim($data->title)] : [];
 
-//        if($mailerService->sendMailAdvanced(
-//                $from,
-//                $to, $cc, $bcc,
-//                "[" . $settingsService->getWebsiteName() ."] " . trim($data->subject),
-//                trim($data->subject),
-//                'app/email/template/' . $html . '.html.twig',
-//                array_merge($params,  [
-//                    'subject' => trim($data->subject),
-//                    'message' => trim($data->message->html),
-//                    'settings' => $settingsService->getSettings()
-//                ]),
-//                $files
-//            ) != true)
-//        {
-//            return $apiResponse->apiJsonResponseValidationFailed([[
-//                'name' => 'message',
-//                'message' => "Le message n\'a pas pu être délivré. Veuillez contacter le support."
-//            ]]);
-//        }
+        if($mailerService->sendMailAdvanced(
+                $from,
+                $to, $cc, $bcc,
+                "[" . $settingsService->getWebsiteName() ."] " . trim($data->subject),
+                trim($data->subject),
+                'app/email/template/' . $html . '.html.twig',
+                array_merge($params,  [
+                    'subject' => trim($data->subject),
+                    'message' => trim($data->message->html),
+                    'settings' => $settingsService->getSettings()
+                ]),
+                $files
+            ) != true)
+        {
+            return $apiResponse->apiJsonResponseValidationFailed([[
+                'name' => 'message',
+                'message' => "Le message n\'a pas pu être délivré. Veuillez contacter le support."
+            ]]);
+        }
 
         $obj = $dataEntity->setData(new Mail(), $data, $from);
         $obj->setUser($user);
