@@ -167,13 +167,13 @@ class Form extends Component {
                             <div className="line">
                                 <SelectReactSelectize items={selectNegotiators} identifiant="negotiator" valeur={negotiator} errors={errors}
                                                       onChange={(e) => this.handleChangeSelect('negotiator', e)}>
-                                    Négociateurs
+                                    Négociateur
                                 </SelectReactSelectize>
                             </div>
                             <div className="line">
                                 <SelectReactSelectize items={selectUsers} identifiant="user" valeur={user} errors={errors}
                                                       onChange={(e) => this.handleChangeSelect('user', e)}>
-                                    Utilisateurs
+                                    Utilisateur
                                 </SelectReactSelectize>
                             </div>
                         </>}

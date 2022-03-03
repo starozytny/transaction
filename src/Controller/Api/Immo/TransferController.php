@@ -3,6 +3,8 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImNegotiator;
+use App\Entity\User;
 use App\Service\ApiResponse;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -50,9 +52,15 @@ class TransferController extends AbstractController
 
         $from = $em->getRepository(ImAgency::class)->find($data->from);
         $to   = $em->getRepository(ImAgency::class)->find($data->to);
+        $negotiator   = $em->getRepository(ImNegotiator::class)->find($data->negotiator);
+        $user         = $em->getRepository(User::class)->find($data->user);
 
-        if(!$from || !$to){
-            return $apiResponse->apiJsonResponseBadRequest("Les agences renseignées sont incorrectes.");
+        if(!$from || !$to || !$negotiator || !$user){
+            return $apiResponse->apiJsonResponseBadRequest("Les champs renseignées sont incorrectes.");
+        }
+
+        foreach($from->getBiens() as $bien){
+
         }
 
         dump(count($from->getBiens()));
