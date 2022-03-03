@@ -37,10 +37,12 @@ class MailerService
     {
         $sent  = $this->getMailsDataSerialize($user, Mail::STATUS_SENT);
         $trash = $this->getMailsDataSerialize($user, Mail::STATUS_TRASH);
+        $draft = $this->getMailsDataSerialize($user, Mail::STATUS_DRAFT);
 
         return [
             "sent" => $sent,
-            "trash" => $trash
+            "trash" => $trash,
+            "draft" => $draft,
         ];
     }
 

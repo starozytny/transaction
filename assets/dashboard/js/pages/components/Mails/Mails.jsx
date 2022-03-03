@@ -54,11 +54,12 @@ export class Mails extends Component {
         super(props);
 
         this.state = {
-            context: "create",
-            element: props.sent ? JSON.parse(props.sent)[0] : null,
+            context: "draft",
+            element: props.draft ? JSON.parse(props.draft)[0] : null,
             users: props.users ? JSON.parse(props.users) : [],
             sent: props.sent ? JSON.parse(props.sent) : [],
             trash: props.trash ? JSON.parse(props.trash) : [],
+            draft: props.draft ? JSON.parse(props.draft) : [],
             selection: false,
             selects: []
         }
@@ -165,10 +166,11 @@ export class Mails extends Component {
     }
 
     render () {
-        const { context, users, sent, trash, element, selection, selects } = this.state;
+        const { context, users, sent, trash, draft, element, selection, selects } = this.state;
 
         let menu = [
             { context: 'sent',  icon: "email-tracking", label: "Envoyés",   total: sent.length,  data: sent },
+            { context: 'draft', icon: "trash",          label: "Brouillon", total: draft.length, data: draft },
             { context: 'trash', icon: "trash",          label: "Corbeille", total: trash.length, data: trash },
         ];
 
@@ -332,7 +334,7 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
                 <div className="badge badge-default">Thème utilisé : {elem.themeString}</div>
             </div>
             <div className="subject">{elem.subject}</div>
-            <div className="message">{parse(elem.message)}</div>
+            <div className="message">{elem.message ? parse(elem.message) : ""}</div>
             <div className="files">
                 {elem.files.map((file, index) => {
                     return <a className="file" key={index}
