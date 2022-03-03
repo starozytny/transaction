@@ -11,6 +11,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Mail extends DataEntity
 {
+    const FOLDER_FILES = "emails";
+
     const MAIL_READ = ["mail:read"];
 
     const STATUS_INBOX = 0;

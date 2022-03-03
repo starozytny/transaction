@@ -98,8 +98,8 @@ class MailController extends AbstractController
         for($i = 0; $i <= 5 ; $i++){
             $file = $request->files->get('file' . $i);
             if($file){
-                $f = $fileUploader->upload($file, "emails", false);
-                $files[] = $fileUploader->getPrivateDirectory() . "emails/" .$f;
+                $f = $fileUploader->upload($file, Mail::FOLDER_FILES, false);
+                $files[] = $fileUploader->getPrivateDirectory() . Mail::FOLDER_FILES ."/" .$f;
             }
         }
 
@@ -129,12 +129,6 @@ class MailController extends AbstractController
                 'name' => 'message',
                 'message' => "Le message n\'a pas pu être délivré. Veuillez contacter le support."
             ]]);
-        }
-
-        foreach($files as $file){
-            if(file_exists($file)){
-                unlink($file);
-            }
         }
 
         return $apiResponse->apiJsonResponseSuccessful("Message envoyé. La page va se rafraichir automatiquement dans 3 secondes.");
