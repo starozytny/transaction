@@ -18,6 +18,7 @@ const URL_CREATE_ELEMENT     = "api_mails_create";
 const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const URL_DRAFT_ELEMENT      = "api_mails_draft";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
+let i = 0;
 
 export function MailFormulaire ({ type = "create", users, element, from, to, cc, bcc, theme, refAside = null, onUpdateList })
 {
@@ -81,10 +82,10 @@ export class Form extends Component {
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
 
     handleChangeTrumb = (e) => {
-        let name = e.currentTarget.id;
+        const { message } = this.state;
         let text = e.currentTarget.innerHTML;
 
-        this.setState({[name]: {value: [name].value, html: text}})
+        this.setState({message: {value: message.value, html: text}})
     }
 
     handleChangeSelectMultipleAdd = (name, valeurs, select) => {
@@ -344,7 +345,7 @@ export class Form extends Component {
                 </div>}
 
                 <div className="line">
-                    <Trumb identifiant="message" valeur={message.value} errors={errors} onChange={this.handleChangeTrumb}>Message</Trumb>
+                    <Trumb identifiant={"message-" + (i++)} valeur={message.value} errors={errors} onChange={this.handleChangeTrumb}>Message</Trumb>
                 </div>
 
                 <div className="line line-btn-mails">
