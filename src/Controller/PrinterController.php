@@ -6,6 +6,7 @@ use App\Entity\History\HiPrice;
 use App\Entity\History\HiPublish;
 use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
@@ -93,6 +94,24 @@ class PrinterController extends AbstractController
     {
         $em = $this->doctrine->getManager();
         $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
+        $data  = $this->getDataHistoryBien($em, $serializer, $biens);
+
+        $obj        = $serializer->serialize($obj,       'json', ['groups' => User::ADMIN_READ]);
+        $biens      = $serializer->serialize($biens,     'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/impressions/rapport_owner.html.twig', array_merge([
+            'donnees' => $obj,
+            'biens' => $biens,
+        ], $data));
+    }
+
+    /**
+     * @Route("/rapport/negociateur/{id}", options={"expose"=true}, name="negotiator_rapport")
+     */
+    public function rapportNegotiator(ImNegotiator $obj, SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+        $biens = $em->getRepository(ImBien::class)->findBy(['negotiator' => $obj, 'status' => ImBien::STATUS_ACTIF]);
         $data  = $this->getDataHistoryBien($em, $serializer, $biens);
 
         $obj        = $serializer->serialize($obj,       'json', ['groups' => User::ADMIN_READ]);

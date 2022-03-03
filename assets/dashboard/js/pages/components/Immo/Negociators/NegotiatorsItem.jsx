@@ -25,6 +25,11 @@ export class NegotiatorsItem extends Component {
             }
         })
 
+        let actions = Actions.getDefaultAction(isClient, elem, "negotiator", this.mail);
+        actions = actions.concat([
+            {data: <a target="_blank" href={Routing.generate('user_printer_negotiator_rapport', {'id': elem.id})}>Imprimer rapport</a>},
+        ])
+
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
 
@@ -61,7 +66,7 @@ export class NegotiatorsItem extends Component {
                                 </>}
                             </>}
 
-                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "negotiator", this.mail)}>Autres</ButtonIconDropdown>
+                            <ButtonIconDropdown icon="dropdown" items={actions}>Autres</ButtonIconDropdown>
                         </div>
                     </div>
                 </div>
