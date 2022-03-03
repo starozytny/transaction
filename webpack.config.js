@@ -77,6 +77,8 @@ Encore
     .addEntry('dashboard_notifications', './assets/dashboard/js/pages/notifications.js')
     .addEntry('dashboard_changelog', './assets/dashboard/js/pages/changelog.js')
     .addEntry('dashboard_mails', './assets/dashboard/js/pages/mails.js')
+    .addEntry('dashboard_changelog', './assets/dashboard/js/pages/changelog.js')
+    .addEntry('dashboard_mails', './assets/dashboard/js/pages/mails.js')
     .addEntry('dashboard_society', './assets/dashboard/js/pages/society.js')
     .addEntry('dashboard_immo', './assets/dashboard/js/pages/immo.js')
 
@@ -85,6 +87,7 @@ Encore
     .addEntry('user_styleguide', './assets/user/js/pages/styleguide.js')
     .addEntry('user_biens', './assets/user/js/pages/biens.js')
     .addEntry('user_profil', './assets/user/js/pages/profil.js')
+    .addEntry('user_mails', './assets/user/js/pages/mails.js')
     .addEntry('user_owner', './assets/user/js/pages/owner.js')
     .addEntry('user_negotiator', './assets/user/js/pages/negotiator.js')
     .addEntry('user_tenant', './assets/user/js/pages/tenant.js')

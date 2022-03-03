@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Changelog;
+use App\Entity\Mail;
 use App\Entity\Donnee\DoQuartier;
 use App\Entity\Donnee\DoSol;
 use App\Entity\Donnee\DoSousType;
@@ -22,10 +23,7 @@ use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImSupport;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
-use App\Repository\Immo\ImAgencyRepository;
-use App\Repository\Immo\ImNegotiatorRepository;
-use App\Repository\Immo\ImSettingsRepository;
-use App\Repository\Immo\ImSuiviRepository;
+use App\Service\MailerService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImBuyerRepository;
@@ -38,7 +36,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Repository\Agenda\AgEventRepository;
 use App\Service\Agenda\EventService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -321,6 +319,26 @@ class UserController extends AbstractController
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/profil/update.html.twig',  ['elem' => $obj, 'donnees' => $data, 'negotiators' => $negotiators]);
+    }
+
+    /**
+     * @Route("/boite-mails", name="mails")
+     */
+    public function mails(MailerService $mailerService): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $mailerService->getAllMailsData($user);
+
+        return $this->render('user/pages/mails/index.html.twig', $data);
+    }
+
+    /**
+     * @Route("/boite-mails/document/{filename}", options={"expose"=true}, name="mails_attachement")
+     */
+    public function mailsAttachement($filename): BinaryFileResponse
+    {
+        return new BinaryFileResponse($this->getParameter('private_directory') . Mail::FOLDER_FILES . "/" . $filename);
     }
 
     /**

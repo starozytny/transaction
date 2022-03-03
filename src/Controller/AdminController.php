@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Changelog;
 use App\Entity\Contact;
+use App\Entity\Mail;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImBuyer;
@@ -17,6 +18,8 @@ use App\Entity\Notification;
 use App\Entity\Settings;
 use App\Entity\Society;
 use App\Entity\User;
+use App\Repository\MailRepository;
+use App\Service\MailerService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,7 +39,7 @@ class AdminController extends AbstractController
     {
         $this->doctrine = $doctrine;
     }
-    
+
     private function getAllData($classe, SerializerInterface $serializer, $groups = User::ADMIN_READ): string
     {
         $em = $this->doctrine->getManager();
@@ -169,7 +172,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/boite-reception/envoyer", options={"expose"=true}, name="mails_send")
+     * @Route("/boite-mails/envoyer", options={"expose"=true}, name="mails_send")
      */
     public function mailsSend(Request $request, SerializerInterface $serializer): Response
     {
@@ -194,6 +197,26 @@ class AdminController extends AbstractController
             'donnees' => $objs,
             'users' => $users
         ]);
+    }
+
+    /**
+     * @Route("/boite-mails", name="mails")
+     */
+
+    public function mails(MailerService $mailerService, SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $mailerService->getAllMailsData($user);
+        $users = $em->getRepository(User::class)->findAll();
+
+        $users = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
+
+        return $this->render('admin/pages/mails/index.html.twig', array_merge($data, [
+            'users' => $users
+        ]));
     }
 
     /**
