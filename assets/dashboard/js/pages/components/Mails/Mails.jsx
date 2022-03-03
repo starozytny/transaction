@@ -60,8 +60,8 @@ export class Mails extends Component {
         super(props);
 
         this.state = {
-            context: "draft",
-            element: props.draft ? JSON.parse(props.draft)[0] : null,
+            context: "sent",
+            element: props.sent ? JSON.parse(props.sent)[0] : null,
             users: props.users ? JSON.parse(props.users) : [],
             sent: props.sent ? JSON.parse(props.sent) : [],
             trash: props.trash ? JSON.parse(props.trash) : [],
@@ -94,11 +94,16 @@ export class Mails extends Component {
 
         switch (context){
             case "draft":
-                let tmp = [];
+                let tmp = [], find = false;
                 nDraft.forEach(el => {
-                    if(el.id === element.id) el = element;
+                    if(el.id === element.id) {
+                        el = element;
+                        find = true;
+                    }
                     tmp.push(el);
                 })
+
+                if(!find) { tmp.push(element) }
                 nDraft = tmp;
                 break;
             case "delete":

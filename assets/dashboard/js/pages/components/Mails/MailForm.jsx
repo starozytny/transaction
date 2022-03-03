@@ -329,8 +329,14 @@ export class Form extends Component {
                 </div>
 
                 <div className="line">
+                    <div className="form-group">
+                        <Alert type="reverse">En brouillon, les documents ne sont pas pris en compte.</Alert>
+                    </div>
+                </div>
+
+                <div className="line">
                     <Drop ref={this.inputFiles} identifiant="files" errors={errors} accept={"*"} maxFiles={5}
-                          label="Téléverser des fichiers (max 5) (poids max 5Mb)" labelError="Erreur avec un/vos fichiers.">Documents</Drop>
+                          label="Téléverser des documents (max 5) (poids max 5Mb)" labelError="Erreur avec un/vos documents.">Documents</Drop>
                 </div>
 
                 {parseInt(theme) === 1 && <div className="line">
