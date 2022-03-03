@@ -130,7 +130,7 @@ export function SelectReactSelectize(props) {
         <SimpleSelect defaultValue={defaultValeur} disabled={disabled} placeholder={placeholder} onValueChange={onChange}>
             {choices}
         </SimpleSelect>
-        <input type="hidden" name={identifiant} value={valeur}/>
+        <input type="hidden" name={identifiant} value={valeur} onChange={null}/>
     </>
 
     return (<ClassiqueStructure {...props} content={content} label={children} />)

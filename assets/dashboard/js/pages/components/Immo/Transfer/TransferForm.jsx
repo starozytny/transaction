@@ -52,10 +52,12 @@ class Form extends Component {
             critere: ""
         }
 
+        this.handleChange = this.handleChange.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    handleChange = (e) => { this.setState({ [e.currentTarget.name]: e.currentTarget.value }) }
     handleChangeSelect = (name, e) => { this.setState({ [name]: e !== undefined ? e.value : "" }) }
 
     handleSubmit = (e) => {
@@ -117,14 +119,19 @@ class Form extends Component {
             selectAgencies.push({ value: agency.id, label: agency.name, id: "ag-" + agency.id })
         })
 
-        negotiators.forEach(ne => {
-            selectNegotiators.push({ value: ne.id, label: ne.fullname, id: "ne-" + ne.id })
-        })
+        if(to !== ""){
+            negotiators.forEach(ne => {
+                if(ne.agency.id === to){
+                    selectNegotiators.push({ value: ne.id, label: ne.fullname, id: "ne-" + ne.id })
+                }
+            })
 
-        users.forEach(user => {
-            selectUsers.push({ value: user.id, label: user.fullname, id: "us-" + user.id })
-        })
-
+            users.forEach(user => {
+                if(user.agency.id === to){
+                    selectUsers.push({ value: user.id, label: user.fullname, id: "us-" + user.id })
+                }
+            })
+        }
 
         return <>
             <form onSubmit={this.handleSubmit}>
@@ -156,7 +163,7 @@ class Form extends Component {
                             </SelectReactSelectize>
                         </div>
 
-                        {to && <>
+                        {to !== "" && <>
                             <div className="line">
                                 <SelectReactSelectize items={selectNegotiators} identifiant="negotiator" valeur={negotiator} errors={errors}
                                                       onChange={(e) => this.handleChangeSelect('negotiator', e)}>
