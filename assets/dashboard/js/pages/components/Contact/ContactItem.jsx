@@ -2,22 +2,9 @@ import React, { Component } from 'react';
 
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
-import { Aside } from "@dashboardComponents/Tools/Aside";
-import { MailFormulaire } from "@dashboardPages/components/Mails/MailFormAdvanced";
+import { MailAsideButton } from "@dashboardPages/components/Mails/MailAside";
 
 export class ContactItem extends Component {
-    constructor(props) {
-        super(props);
-
-        this.aside = React.createRef();
-
-        this.handleOpenAside = this.handleOpenAside.bind(this);
-    }
-
-    handleOpenAside = (title = "") => {
-        this.aside.current.handleOpen(title);
-    }
-
     render () {
         const { elem, onChangeContext, onDelete, onSelectors } = this.props
 
@@ -38,15 +25,12 @@ export class ContactItem extends Component {
                             <div className="sub">{elem.createdAtAgo}</div>
                         </div>
                         <div className="col-3 actions">
-                            <ButtonIcon icon="chat-2" onClick={() => this.handleOpenAside("Répondre à " + elem.name)}>Répondre</ButtonIcon>
+                            <MailAsideButton txtBtn="Répondre" title={"Répondre à " + elem.name} to={[elem.email]} />
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-            <Aside ref={this.aside} content={<MailFormulaire refAside={this.aside} to={[{value: elem.email, label: elem.email}]} />} />
         </div>
     }
 }
