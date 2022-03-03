@@ -18,7 +18,7 @@ const URL_CREATE_ELEMENT     = "api_mails_create_advanced";
 const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
-export function MailFormulaire ({ type = "create", users, from, to, cc, bcc, theme })
+export function MailFormulaire ({ type = "create", users, from, to, cc, bcc, theme, refAside = null })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
 
@@ -31,6 +31,7 @@ export function MailFormulaire ({ type = "create", users, from, to, cc, bcc, the
         cc={cc ? cc : []}
         bcc={bcc ? bcc : []}
         theme={theme ? theme : 0}
+        refAside={refAside}
     />
 
     return <div className="form">{form}</div>
@@ -121,7 +122,7 @@ export class Form extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { url, messageSuccess } = this.props;
+        const { url, refAside } = this.props;
         const { to, cc, bcc, subject, title, message, theme } = this.state;
 
         this.setState({ errors: [], success: false })
@@ -164,12 +165,29 @@ export class Form extends Component {
 
             axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                 .then(function (response) {
+
+                    let message = !refAside ? response.data.message : "Message envoyé.";
+
                     Helper.toTop();
-                    self.setState({ success: response.data.message, errors: [] });
-                    toastr.info("La page va se rafraichir automatiquement dans 3 secondes.");
-                    setTimeout(function (){
-                        location.reload();
-                    }, 3000)
+                    toastr.info(message);
+
+                    if(!refAside) {
+                        self.setState({ success: message, errors: [] });
+                        setTimeout(function (){
+                            location.reload();
+                        }, 3000)
+                    }else{
+                        self.setState({
+                            success: "Message envoyé.",
+                            errors: [],
+                            subject: "",
+                            title: "",
+                            message: {value: "", html: ""}
+                        });
+                        Formulaire.loader(false);
+                        refAside.current.handleClose();
+                    }
+
                 })
                 .catch(function (error) {
                     Formulaire.loader(false);

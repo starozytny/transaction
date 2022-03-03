@@ -46,7 +46,7 @@ export class ContactItem extends Component {
             </div>
 
 
-            <Aside ref={this.aside} content={<MailFormulaire to={[{value: elem.email, label: elem.email}]} />} />
+            <Aside ref={this.aside} content={<MailFormulaire refAside={this.aside} to={[{value: elem.email, label: elem.email}]} />} />
         </div>
     }
 }
