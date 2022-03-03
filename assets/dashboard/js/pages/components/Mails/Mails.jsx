@@ -24,11 +24,17 @@ const URL_TRASH_GROUP   = "api_mails_trash_group";
 const URL_RESTORE_GROUP = "api_mails_restore_group";
 const URL_DELETE_GROUP  = "api_mails_delete_group";
 
+const STATUS_INBOX = 0;
+const STATUS_DRAFT = 1;
+const STATUS_SENT = 2;
+const STATUS_TRASH = 3;
+const STATUS_ARCHIVED = 4;
+
 function updateStatus (self, method, url, element, context, messageSuccess) {
     axios({ method: method, url: Routing.generate(url, {'id': element.id}), data: {} })
         .then(function (response) {
             toastr.info(messageSuccess);
-            self.handleUpdateList(context !== "delete" ? response.data : element, context);
+            self.handleUpdateList(context !== "delete" ? response.data : element, context, element.status);
         })
         .catch(function (error) {
             Formulaire.displayErrors(self, error);
@@ -79,10 +85,11 @@ export class Mails extends Component {
         this.setState({ context: context, element: null, selects: [], selection: false })
     }
 
-    handleUpdateList = (element, context) => {
-        const { sent, trash } = this.state;
+    handleUpdateList = (element, context, status = null) => {
+        const { sent, trash, draft } = this.state;
 
         let nSent = sent;
+        let nDraft = draft;
         let nTrash = trash;
 
         switch (context){
@@ -96,7 +103,11 @@ export class Mails extends Component {
                 nTrash = trash.filter(el => el.id !== element.id);
                 break;
             case "trash":
-                nSent = sent.filter(el => el.id !== element.id);
+                if(status === STATUS_SENT){
+                    nSent = sent.filter(el => el.id !== element.id);
+                }else{
+                    nDraft = draft.filter(el => el.id !== element.id);
+                }
                 nTrash.push(element);
                 break;
             default:
@@ -105,7 +116,8 @@ export class Mails extends Component {
 
         nSent.sort(SORTER)
         nTrash.sort(SORTER)
-        this.setState({ sent: nSent, trash: nTrash })
+        nDraft.sort(SORTER)
+        this.setState({ sent: nSent, trash: nTrash, draft: nDraft })
     }
 
     handleSelectMail = (element) => {
@@ -278,11 +290,23 @@ function ItemsMail ({ elem, element, selection, selects, onSelectMail, onSelect 
         }
     })
 
+    let avatar = elem.expeditor.substring(0,1).toUpperCase();
+    switch (elem.status){
+        case STATUS_DRAFT:
+            avatar = <span className="icon-pencil" />
+            break;
+        case STATUS_TRASH:
+            avatar = <span className="icon-trash" />
+            break;
+        default:
+            break;
+    }
+
     return <div className={"item" + (selection ? " selection " : " ") + (element && element.id === elem.id)} key={elem.id}
                 onClick={selection ? () =>onSelect(elem) : () => onSelectMail(elem)}>
         <div className="expeditor">
             <div className="avatar">
-                <span>{elem.status !== 3 ? elem.expeditor.substring(0,1).toUpperCase() : <span className="icon-trash" />}</span>
+                <span>{avatar}</span>
             </div>
             <div className={"avatar selector " + selectActive}>
                 <span className="icon-check-1"/>
@@ -306,10 +330,10 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
                 <div className="createdAt">{elem.createdAtString}</div>
             </div>
             <div className="col-2">
-                {elem.status !== 3 ? <ButtonIcon icon="trash" onClick={() => onTrash(elem)}>Corbeille</ButtonIcon>
+                {elem.status !== STATUS_TRASH ? <ButtonIcon icon="trash" onClick={() => onTrash(elem)}>Corbeille</ButtonIcon>
                     : <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
 
-                {elem.status === 3 && <ButtonIcon icon="refresh1" onClick={() => onRestore(elem)}>Restaurer</ButtonIcon>}
+                {elem.status === STATUS_TRASH && <ButtonIcon icon="refresh1" onClick={() => onRestore(elem)}>Restaurer</ButtonIcon>}
             </div>
         </div>
 
