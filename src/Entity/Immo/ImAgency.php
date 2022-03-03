@@ -182,6 +182,7 @@ class ImAgency extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"user:read"})
      */
     private $code;
 

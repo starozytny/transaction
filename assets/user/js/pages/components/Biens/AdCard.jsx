@@ -175,7 +175,7 @@ export class AdCard extends Component {
                             </div>
                         </a>
                         <div className="col-3">
-                            <div className="references">{el.agency.name}</div>
+                            <div className="references">{el.agency.code}</div>
                             <a className="references" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
                                 <div>{el.reference}</div>
                                 <div>GERANCE01</div>
