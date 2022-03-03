@@ -14,7 +14,7 @@ import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
-const URL_CREATE_ELEMENT     = "api_mails_create_advanced";
+const URL_CREATE_ELEMENT     = "api_mails_create";
 const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
