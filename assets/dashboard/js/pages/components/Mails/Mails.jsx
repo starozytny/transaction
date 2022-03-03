@@ -291,7 +291,7 @@ function ItemsMail ({ elem, element, selection, selects, onSelectMail, onSelect 
             </div>
         </div>
         <div className="createdAt">
-            <div>10:30</div>
+            <div>{elem.createdAtStringShort}</div>
         </div>
     </div>
 }

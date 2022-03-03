@@ -82,6 +82,7 @@ class Mail extends DataEntity
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"mail:read"})
      */
     private $createdAt;
 
@@ -220,6 +221,28 @@ class Mail extends DataEntity
     public function getCreatedAtString(): ?string
     {
         return $this->getFullDateString($this->createdAt, 'llll');
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"mail:read"})
+     */
+    public function getCreatedAtStringShort(): ?string
+    {
+        $now = new \DateTime();
+        $cre = $this->createdAt;
+        if($cre->format("Y") == $now->format("Y")
+            && $cre->format("m") == $now->format("m")
+            && $cre->format("d") == $now->format("d")
+        ){
+            return $this->getFullDateString($this->createdAt, 'LT');
+        }else{
+            if($cre->format("Y") != $now->format("Y")){
+                return $this->createdAt->format("Y");
+            }else{
+                return $this->createdAt->format("d/m");
+            }
+        }
     }
 
     public function getStatus(): ?int
