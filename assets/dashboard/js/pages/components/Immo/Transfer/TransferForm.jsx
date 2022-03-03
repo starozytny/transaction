@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
-import axios                   from "axios";
-import toastr                  from "toastr";
-import Routing                 from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+import axios         from "axios";
+import toastr        from "toastr";
+import Swal          from "sweetalert2";
+import SwalOptions   from "@commonComponents/functions/swalOptions";
+import Routing       from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
@@ -73,19 +75,26 @@ class Form extends Component {
             if(!validate.code){
                 Formulaire.showErrors(this, validate);
             }else{
-                Formulaire.loader(true);
                 let self = this;
-                axios({ method: "POST", url: url, data: this.state })
-                    .then(function (response) {
-                        Helper.toTop();
+                Swal.fire(SwalOptions.options("Confirmer le transfer", ""))
+                    .then((result) => {
+                        if (result.isConfirmed) {
 
-                        self.setState({ success: messageSuccess, errors: [], from: "", to: "" });
-                    })
-                    .catch(function (error) {
-                        Formulaire.displayErrors(self, error);
-                    })
-                    .then(() => {
-                        Formulaire.loader(false);
+                            Formulaire.loader(true);
+                            axios({ method: "POST", url: url, data: this.state })
+                                .then(function (response) {
+                                    Helper.toTop();
+
+                                    self.setState({ success: messageSuccess, errors: [], from: "", to: "" });
+                                })
+                                .catch(function (error) {
+                                    Formulaire.displayErrors(self, error);
+                                })
+                                .then(() => {
+                                    Formulaire.loader(false);
+                                })
+                            ;
+                        }
                     })
                 ;
             }
