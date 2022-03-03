@@ -170,12 +170,19 @@ class MailController extends AbstractController
         $cc = $this->getEmails($data->cc);
         $bcc = $this->getEmails($data->bcc);
 
+        $html = $data->theme == 0 ? "random_classique" : "random";
+        $params = $data->theme == 1 ? ['title' => trim($data->title)] : [];
+
         if($mailerService->sendMailAdvanced(
                 $to, $cc, $bcc,
                 "[" . $settingsService->getWebsiteName() ."] " . trim($data->subject),
                 trim($data->subject),
-                'app/email/template/random.html.twig',
-                ['title' => trim($data->title), 'message' => trim($data->message->html), 'settings' => $settingsService->getSettings()],
+                'app/email/template/' . $html . '.html.twig',
+                array_merge($params,  [
+                    'subject' => trim($data->subject),
+                    'message' => trim($data->message->html),
+                    'settings' => $settingsService->getSettings()
+                ]),
                 $files,
                 $from
             ) != true)
