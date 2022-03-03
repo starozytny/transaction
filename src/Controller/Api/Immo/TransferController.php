@@ -3,9 +3,13 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImAgency;
+use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImNegotiator;
+use App\Entity\Immo\ImPhoto;
 use App\Entity\User;
 use App\Service\ApiResponse;
+use App\Service\FileUploader;
+use App\Service\Immo\ImmoService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,9 +43,11 @@ class TransferController extends AbstractController
      *
      * @param Request $request
      * @param ApiResponse $apiResponse
+     * @param ImmoService $immoService
+     * @param FileUploader $fileUploader
      * @return JsonResponse
      */
-    public function start(Request $request, ApiResponse $apiResponse): JsonResponse
+    public function start(Request $request, ApiResponse $apiResponse, ImmoService $immoService, FileUploader $fileUploader): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
@@ -59,14 +65,48 @@ class TransferController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest("Les champs renseignées sont incorrectes.");
         }
 
-        foreach($from->getBiens() as $bien){
+        $biens  = $em->getRepository(ImBien::class)->findBy(['agency' => $from]);
+        $photos = $em->getRepository(ImPhoto::class)->findBy(['bien' => $biens]);
 
+        foreach($biens as $bien){
+
+            $oriOwner = $bien->getOwner() ?: null;
+            $owner = null;
+            if($oriOwner){
+                $owner = clone $oriOwner;
+                $owner = ($owner)
+                    ->setSociety($to->getSociety())
+                    ->setAgency($to)
+                    ->setNegotiator($owner->getNegotiator() ? $negotiator : null)
+                ;
+
+                $em->persist($owner);
+            }
+
+            foreach($photos as $photo){
+                $fileUploader->moveFile($photo->getPhotoFile(), $photo->getFile(), $to->getDirname());
+
+                $photo->setAgency($to);
+            }
+
+            $to->setCounter($to->getCounter() + 1);
+
+            $bien = ($bien)
+                ->setAgency($to)
+                ->setReference($immoService->getReference($to, $bien->getCodeTypeAd()))
+                ->setNegotiator($negotiator)
+                ->setUser($user)
+                ->setOwner($owner)
+            ;
+
+            $em->persist($bien);
         }
 
-        dump(count($from->getBiens()));
-        dump(count($to->getBiens()));
+        $counterMandat = $to->getCounterMandat() > $from->getCounterMandat() ? $to->getCounterMandat() : $from->getCounterMandat();
 
+        $to->setCounterMandat($counterMandat + 1);
 
+        $em->flush();
         return $apiResponse->apiJsonResponseSuccessful("ok");
     }
 }

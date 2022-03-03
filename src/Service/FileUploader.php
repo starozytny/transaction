@@ -71,6 +71,13 @@ class FileUploader
         return null;
     }
 
+    public function moveFile($file, $newFile, $newFolder, $isPublic = true)
+    {
+        if($file){
+            rename($this->getDirectory($isPublic) . $file, $this->getDirectory($isPublic) . $newFolder . "/" . $newFile);
+        }
+    }
+
     private function getDirectory($isPublic)
     {
         $path = $this->privateDirectory;
