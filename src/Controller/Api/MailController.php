@@ -201,7 +201,7 @@ class MailController extends AbstractController
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponseSuccessful("Message envoyé. La page va se rafraichir automatiquement dans 3 secondes.");
+        return $apiResponse->apiJsonResponse($obj, Mail::MAIL_READ);
     }
 
     private function getEmails($data): array

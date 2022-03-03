@@ -93,6 +93,14 @@ export class Mails extends Component {
         let nTrash = trash;
 
         switch (context){
+            case "draft":
+                let tmp = [];
+                nDraft.forEach(el => {
+                    if(el.id === element.id) el = element;
+                    tmp.push(el);
+                })
+                nDraft = tmp;
+                break;
             case "delete":
                 nTrash = trash.filter(el => el.id !== element.id);
                 break;
@@ -276,7 +284,7 @@ export class Mails extends Component {
                             </div>
                         </div>
 
-                        <MailFormulaire users={users} element={element} />
+                        <MailFormulaire users={users} element={element} onUpdateList={this.handleUpdateList} />
 
                         <div className="mail-list">
                             <div className="title">

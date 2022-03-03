@@ -19,7 +19,7 @@ const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const URL_DRAFT_ELEMENT      = "api_mails_draft";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
-export function MailFormulaire ({ type = "create", users, element, from, to, cc, bcc, theme, refAside = null })
+export function MailFormulaire ({ type = "create", users, element, from, to, cc, bcc, theme, refAside = null, onUpdateList })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
 
@@ -38,6 +38,8 @@ export function MailFormulaire ({ type = "create", users, element, from, to, cc,
         isDraft={!!element}
         id={element ? Formulaire.setValueEmptyIfNull(element.id, null) : null}
         refAside={refAside}
+
+        onUpdateList={onUpdateList}
     />
 
     return <div className="form">{form}</div>
@@ -55,7 +57,7 @@ export class Form extends Component {
             theme: props.theme,
             subject: props.subject,
             title: props.title,
-            message: {value: "", html: ""},
+            message: { value: props.message, html: props.message },
             errors: [],
             success: false,
             showCc: !!props.cc.length,
@@ -155,6 +157,9 @@ export class Form extends Component {
                         isDraft: true,
                         id: response.data.id
                     })
+                    if(self.props.onUpdateList){
+                        self.props.onUpdateList(response.data, "draft")
+                    }
                 })
                 .catch(function (error) {
                     Formulaire.displayErrors(self, error);
