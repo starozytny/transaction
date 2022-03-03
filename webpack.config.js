@@ -77,8 +77,6 @@ Encore
     .addEntry('dashboard_notifications', './assets/dashboard/js/pages/notifications.js')
     .addEntry('dashboard_changelog', './assets/dashboard/js/pages/changelog.js')
     .addEntry('dashboard_mails', './assets/dashboard/js/pages/mails.js')
-    .addEntry('dashboard_changelog', './assets/dashboard/js/pages/changelog.js')
-    .addEntry('dashboard_mails', './assets/dashboard/js/pages/mails.js')
     .addEntry('dashboard_society', './assets/dashboard/js/pages/society.js')
     .addEntry('dashboard_immo', './assets/dashboard/js/pages/immo.js')
 
