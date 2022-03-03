@@ -303,12 +303,12 @@ function ItemsMail ({ elem, element, selection, selects, onSelectMail, onSelect 
     })
 
     let avatar = elem.expeditor.substring(0,1).toUpperCase();
-    switch (elem.status){
+    switch (elem.statusOrigin){
         case STATUS_DRAFT:
             avatar = <span className="icon-pencil" />
             break;
-        case STATUS_TRASH:
-            avatar = <span className="icon-trash" />
+        case STATUS_SENT:
+            avatar = <span className="icon-email-tracking" />
             break;
         default:
             break;
