@@ -317,7 +317,10 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
                 <span>{elem.expeditor.substring(0,1).toUpperCase()}</span>
             </div>
             <div className="content">
-                <div className="name">From : {elem.expeditor}</div>
+                <div className="name">
+                    <div><span>From</span> <span>:</span></div>
+                    <div className="items"><span>{elem.expeditor}</span></div>
+                </div>
                 <div className="createdAt">{elem.createdAtString}</div>
                 <Destinators prefix="To" data={elem.destinators} />
                 {elem.cc.length !== 0 ? <Destinators prefix="Cc" data={elem.cc} /> : null}
@@ -335,7 +338,12 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
 
 
 function Destinators ({ prefix, data }) {
-    return <div className="destinators">{prefix} : {data.map((dest, index) => {
-        return <span key={index}>{dest.value}</span>
-    })}</div>
+    return <div className="destinators">
+        <div><span>{prefix}</span> <span>:</span></div>
+        <div className="items">
+            {data.map((dest, index) => {
+                return <span key={index}>{dest.value}</span>
+            })}
+        </div>
+    </div>
 }

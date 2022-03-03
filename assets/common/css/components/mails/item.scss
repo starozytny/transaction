@@ -32,8 +32,57 @@
         margin-left: 12px;
 
         .createdAt{
-          margin-bottom: 8px;
+          margin-bottom: 12px;
           margin-top: 2px;
+        }
+
+        .destinators, .name{
+          @include flex(row, flex-start, flex-start);
+
+          & > div:first-child{
+            @include flex(row, flex-start, space-between);
+            width: 44px;
+            color: var(--grey3);
+          }
+
+          & > div:last-child{
+            width: calc(100% - 44px - 4px);
+            margin-left: 4px;
+          }
+
+          .items{
+            span{
+              display: inline-block;
+            }
+
+            span:not(:last-child){
+              margin-right: 4px;
+            }
+          }
+        }
+
+        .name{
+          .items{
+            span{
+              @include fontSemibold();
+            }
+          }
+        }
+
+        .destinators{
+          &:not(&.name){
+            margin-bottom: 8px;
+          }
+
+          .items{
+            span{
+              background-color: var(--primaryShadow2);
+              border-radius: 4px;
+              padding: 2px 4px;
+              font-size: 15px;
+              margin-bottom: 4px;
+            }
+          }
         }
       }
     }
