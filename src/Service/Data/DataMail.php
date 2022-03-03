@@ -11,9 +11,8 @@ class DataMail extends DataConstructor
         return ($obj)
             ->setSubject($this->sanitizeData->trimData($data->subject))
             ->setDestinators($this->setTab($data->to))
-//            ->setTo($this->setTab($data->to))
-//            ->setCc($this->setTab($data->cc))
-//           ->setBcc($this->setTab($data->bcc))
+            ->setCc($this->setTab($data->cc))
+           ->setBcc($this->setTab($data->bcc))
             ->setExpeditor($this->sanitizeData->trimData($from))
             ->setMessage($this->sanitizeData->trimData($data->message->html))
         ;

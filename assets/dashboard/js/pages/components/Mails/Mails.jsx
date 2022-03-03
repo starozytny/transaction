@@ -319,9 +319,9 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
             <div className="content">
                 <div className="name">From : {elem.expeditor}</div>
                 <div className="createdAt">{elem.createdAtString}</div>
-                <div className="destinators">To : {elem.destinators.map((dest, index) => {
-                    return <span key={index}>{dest.value}</span>
-                })}</div>
+                <Destinators prefix="To" data={elem.destinators} />
+                {elem.cc.length !== 0 ? <Destinators prefix="Cc" data={elem.cc} /> : null}
+                {elem.bcc.length !== 0 ? <Destinators prefix="Cci" data={elem.bcc} /> : null}
             </div>
         </div>
 
@@ -331,4 +331,11 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
         </div>
 
     </div>
+}
+
+
+function Destinators ({ prefix, data }) {
+    return <div className="destinators">{prefix} : {data.map((dest, index) => {
+        return <span key={index}>{dest.value}</span>
+    })}</div>
 }

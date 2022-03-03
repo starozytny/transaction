@@ -54,6 +54,18 @@ class Mail extends DataEntity
     private $destinators = [];
 
     /**
+     * @ORM\Column(type="json")
+     * @Groups({"mail:read"})
+     */
+    private $cc = [];
+
+    /**
+     * @ORM\Column(type="json")
+     * @Groups({"mail:read"})
+     */
+    private $bcc = [];
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"mail:read"})
      */
@@ -142,6 +154,30 @@ class Mail extends DataEntity
     public function setDestinators(array $destinators): self
     {
         $this->destinators = $destinators;
+
+        return $this;
+    }
+
+    public function getCc(): ?array
+    {
+        return $this->cc;
+    }
+
+    public function setCc(array $cc): self
+    {
+        $this->cc = $cc;
+
+        return $this;
+    }
+
+    public function getBcc(): ?array
+    {
+        return $this->bcc;
+    }
+
+    public function setBcc(array $bcc): self
+    {
+        $this->bcc = $bcc;
 
         return $this;
     }
