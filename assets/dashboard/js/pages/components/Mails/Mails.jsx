@@ -94,11 +94,16 @@ export class Mails extends Component {
 
         switch (context){
             case "draft":
-                let tmp = [];
+                let tmp = [], find = false;
                 nDraft.forEach(el => {
-                    if(el.id === element.id) el = element;
+                    if(el.id === element.id) {
+                        el = element;
+                        find = true;
+                    }
                     tmp.push(el);
                 })
+
+                if(!find) { tmp.push(element) }
                 nDraft = tmp;
                 break;
             case "delete":
