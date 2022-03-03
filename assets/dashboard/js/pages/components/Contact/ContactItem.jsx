@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 
-import Routing          from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
-
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
+import { Aside } from "@dashboardComponents/Tools/Aside";
+import { MailFormulaire } from "@dashboardPages/components/Mails/MailFormAdvanced";
 
 export class ContactItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.aside = React.createRef();
+
+        this.handleOpenAside = this.handleOpenAside.bind(this);
+    }
+
+    handleOpenAside = (title = "") => {
+        this.aside.current.handleOpen(title);
+    }
+
     render () {
         const { elem, onChangeContext, onDelete, onSelectors } = this.props
 
@@ -26,12 +38,15 @@ export class ContactItem extends Component {
                             <div className="sub">{elem.createdAtAgo}</div>
                         </div>
                         <div className="col-3 actions">
-                            <ButtonIcon icon="chat-2" onClick={Routing.generate('admin_mails_send', {'dest': [elem.email]})} element="a">Répondre</ButtonIcon>
+                            <ButtonIcon icon="chat-2" onClick={() => this.handleOpenAside("Répondre à " + elem.name)}>Répondre</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+            <Aside ref={this.aside} content={<MailFormulaire to={[{value: elem.email, label: elem.email}]} />} />
         </div>
     }
 }

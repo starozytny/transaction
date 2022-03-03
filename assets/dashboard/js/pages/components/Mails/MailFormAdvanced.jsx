@@ -8,20 +8,19 @@ import { Input, Radiobox, SelectizeMultiple } from "@dashboardComponents/Tools/F
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 import { Trumb }               from "@dashboardComponents/Tools/Trumb";
+import { Drop }                from "@dashboardComponents/Tools/Drop";
 
 import Validateur              from "@commonComponents/functions/validateur";
 import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
-import {Drop} from "@dashboardComponents/Tools/Drop";
 
 const URL_CREATE_ELEMENT     = "api_mails_create_advanced";
 const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
-export function MailFormulaire ({ type, users, from, to, cc, bcc, theme })
+export function MailFormulaire ({ type = "create", users, from, to, cc, bcc, theme })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
-    let msg = "Le message a été envoyé !"
 
     let form = <Form
         context={type}
@@ -32,7 +31,6 @@ export function MailFormulaire ({ type, users, from, to, cc, bcc, theme })
         cc={cc ? cc : []}
         bcc={bcc ? bcc : []}
         theme={theme ? theme : 0}
-        messageSuccess={msg}
     />
 
     return <div className="form">{form}</div>
