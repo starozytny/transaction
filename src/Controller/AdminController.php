@@ -336,4 +336,16 @@ class AdminController extends AbstractController
             'negotiators' => $negotiators,
         ]);
     }
+
+    /**
+     * @Route("/immobilier/transfert", name="transfer_index")
+     */
+    public function transfer(SerializerInterface $serializer): Response
+    {
+        $objs = $this->getAllData(ImAgency::class, $serializer);
+
+        return $this->render('admin/pages/immo/transfer.html.twig', [
+            'donnees' => $objs,
+        ]);
+    }
 }
