@@ -45,8 +45,9 @@ class FakeMailsCreateCommand extends Command
 
             $data = [
                 'subject' => $fake->name,
-                'expeditor' => $fake->email,
-                'destinators' => [$fake->email, $fake->email],
+                'to' => [["value" => $fake->email, "label" => $fake->email], ["value" => $fake->email, "label" => $fake->email]],
+                'cc' => [["value" => $fake->email, "label" => $fake->email]],
+                'bcc' => [["value" => $fake->email, "label" => $fake->email], ["value" => $fake->email, "label" => $fake->email], ["value" => $fake->email, "label" => $fake->email]],
                 'message' => [
                     'html' => "<p>" . $fake->sentence ." <b>Test</b> " . $fake->streetName .". </p>"
                 ]
@@ -54,7 +55,7 @@ class FakeMailsCreateCommand extends Command
 
             $data = json_decode(json_encode($data));
 
-            $new = $this->dataEntity->setData(new Mail(), $data);
+            $new = $this->dataEntity->setData(new Mail(), $data, $fake->email);
 
             $user = $users[$fake->numberBetween(0, count($users) - 1)];
             $new->setUser($user);

@@ -297,6 +297,7 @@ function ItemsMail ({ elem, element, selection, selects, onSelectMail, onSelect 
 }
 
 function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
+    console.log(elem)
     return <div className="item">
 
         <div className="actions">
@@ -319,7 +320,7 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
                 <div className="name">From : {elem.expeditor}</div>
                 <div className="createdAt">{elem.createdAtString}</div>
                 <div className="destinators">To : {elem.destinators.map((dest, index) => {
-                    return <span key={index}>{dest}</span>
+                    return <span key={index}>{dest.value}</span>
                 })}</div>
             </div>
         </div>
