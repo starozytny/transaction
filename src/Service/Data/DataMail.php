@@ -12,9 +12,11 @@ class DataMail extends DataConstructor
             ->setSubject($this->sanitizeData->trimData($data->subject))
             ->setDestinators($this->setTab($data->to))
             ->setCc($this->setTab($data->cc))
-           ->setBcc($this->setTab($data->bcc))
+            ->setBcc($this->setTab($data->bcc))
             ->setExpeditor($this->sanitizeData->trimData($from))
             ->setMessage($this->sanitizeData->trimData($data->message->html))
+            ->setTheme($this->sanitizeData->setToZeroIfEmpty($data->theme))
+            ->setTitle($this->sanitizeData->trimData($data->title ?? null))
         ;
     }
 

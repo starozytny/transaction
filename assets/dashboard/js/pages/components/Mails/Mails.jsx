@@ -297,7 +297,6 @@ function ItemsMail ({ elem, element, selection, selects, onSelectMail, onSelect 
 }
 
 function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
-    console.log(elem)
     return <div className="item">
 
         <div className="actions">
@@ -329,6 +328,9 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
         </div>
 
         <div className="item-body">
+            <div className="badges">
+                <div className="badge badge-default">Thème utilisé : {elem.themeString}</div>
+            </div>
             <div className="subject">{elem.subject}</div>
             <div className="message">{parse(elem.message)}</div>
         </div>

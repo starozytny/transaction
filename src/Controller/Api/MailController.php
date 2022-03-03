@@ -101,12 +101,13 @@ class MailController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $files = [];
+        $files = []; $filesName = [];
         for($i = 0; $i <= 5 ; $i++){
             $file = $request->files->get('file' . $i);
             if($file){
                 $f = $fileUploader->upload($file, Mail::FOLDER_FILES, false);
                 $files[] = $fileUploader->getPrivateDirectory() . Mail::FOLDER_FILES ."/" .$f;
+                $filesName[] = $f;
             }
         }
 
@@ -140,6 +141,7 @@ class MailController extends AbstractController
 
         $obj = $dataEntity->setData(new Mail(), $data, $from);
         $obj->setUser($user);
+        $obj->setFiles($filesName);
 
         $em->persist($obj);
         $em->flush();

@@ -50,7 +50,8 @@ class FakeMailsCreateCommand extends Command
                 'bcc' => [["value" => $fake->email, "label" => $fake->email], ["value" => $fake->email, "label" => $fake->email], ["value" => $fake->email, "label" => $fake->email]],
                 'message' => [
                     'html' => "<p>" . $fake->sentence ." <b>Test</b> " . $fake->streetName .". </p>"
-                ]
+                ],
+                'theme' => $fake->numberBetween(0, 1)
             ];
 
             $data = json_decode(json_encode($data));

@@ -21,6 +21,9 @@ class Mail extends DataEntity
     const STATUS_TRASH = 3;
     const STATUS_ARCHIVED = 4;
 
+    const THEME_NONE = 0;
+    const THEME_NUM1 = 1;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -87,6 +90,21 @@ class Mail extends DataEntity
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $theme = self::THEME_NONE;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $files = [];
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $title;
 
     public function __construct()
     {
@@ -225,5 +243,61 @@ class Mail extends DataEntity
         $this->statusOrigin = $statusOrigin;
 
         return $this;
+    }
+
+    public function getTheme(): ?int
+    {
+        return $this->theme;
+    }
+
+    public function setTheme(int $theme): self
+    {
+        $this->theme = $theme;
+
+        return $this;
+    }
+
+    public function getFiles(): ?array
+    {
+        return $this->files;
+    }
+
+    public function setFiles(array $files): self
+    {
+        $this->files = $files;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     * @Groups({"mail:read"})
+     */
+    public function getFolder(): string
+    {
+        return self::FOLDER_FILES;
+    }
+
+    /**
+     * @return string
+     * @Groups({"mail:read"})
+     */
+    public function getThemeString(): string
+    {
+        $values = ["aucun", "classique"];
+
+        return $values[$this->theme];
     }
 }
