@@ -19,7 +19,7 @@ const URL_PREVIEW_ELEMENT    = "api_mails_preview";
 const URL_DRAFT_ELEMENT      = "api_mails_draft";
 const TXT_CREATE_BUTTON_FORM = "Envoyer";
 
-export function MailFormulaire ({ type = "create", users, from, to, cc, bcc, theme, refAside = null })
+export function MailFormulaire ({ type = "create", users, element, from, to, cc, bcc, theme, refAside = null })
 {
     let url = Routing.generate(URL_CREATE_ELEMENT);
 
@@ -27,11 +27,16 @@ export function MailFormulaire ({ type = "create", users, from, to, cc, bcc, the
         context={type}
         url={url}
         users={users ? users : []}
-        from={from ? from : null}
-        to={to ? to : []}
-        cc={cc ? cc : []}
-        bcc={bcc ? bcc : []}
-        theme={theme ? theme : 0}
+        from={from ? from : (element ? Formulaire.setValueEmptyIfNull(element.expeditor, null) : null)}
+        to={to ? to : (element ? Formulaire.setValueEmptyIfNull(element.destinators, []) : [])}
+        cc={cc ? cc : (element ? Formulaire.setValueEmptyIfNull(element.cc, []) : [])}
+        bcc={bcc ? bcc : (element ? Formulaire.setValueEmptyIfNull(element.bcc, []) : [])}
+        theme={theme ? theme : (element ? Formulaire.setValueEmptyIfNull(element.theme, 0) : 0)}
+        subject={element ? Formulaire.setValueEmptyIfNull(element.subject, "") : ""}
+        title={element ? Formulaire.setValueEmptyIfNull(element.title, "") : ""}
+        message={element ? Formulaire.setValueEmptyIfNull(element.message, "") : ""}
+        isDraft={!!element}
+        id={element ? Formulaire.setValueEmptyIfNull(element.id, null) : null}
         refAside={refAside}
     />
 
@@ -48,15 +53,15 @@ export class Form extends Component {
             cc: props.cc,
             bcc: props.bcc,
             theme: props.theme,
-            subject: "",
-            title: "",
+            subject: props.subject,
+            title: props.title,
             message: {value: "", html: ""},
             errors: [],
             success: false,
             showCc: !!props.cc.length,
             showBcc: !!props.bcc.length,
-            isDraft: false,
-            id: null,
+            isDraft: props.isDraft,
+            id: props.id,
         }
 
         this.inputFiles = React.createRef();

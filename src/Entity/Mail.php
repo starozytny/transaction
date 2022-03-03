@@ -33,6 +33,13 @@ class Mail extends DataEntity
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="mails")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+
+    /**
      * @ORM\Column(type="integer")
      * @Groups({"mail:read"})
      */
@@ -49,6 +56,24 @@ class Mail extends DataEntity
      * @Groups({"mail:read"})
      */
     private $expeditor;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Groups({"mail:read"})
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"mail:read"})
+     */
+    private $theme = self::THEME_NONE;
+
+    /**
+     * @ORM\Column(type="json")
+     * @Groups({"mail:read"})
+     */
+    private $files = [];
 
     /**
      * @ORM\Column(type="json")
@@ -75,38 +100,16 @@ class Mail extends DataEntity
     private $subject;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"mail:read"})
+     */
+    private $title;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      * @Groups({"mail:read"})
      */
     private $message;
-
-    /**
-     * @ORM\Column(type="datetime")
-     * @Groups({"mail:read"})
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="mails")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $theme = self::THEME_NONE;
-
-    /**
-     * @ORM\Column(type="json")
-     * @Groups({"mail:read"})
-     */
-    private $files = [];
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $title;
 
     public function __construct()
     {

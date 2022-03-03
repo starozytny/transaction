@@ -81,8 +81,8 @@ export class Mails extends Component {
         this.handleSelect = this.handleSelect.bind(this);
     }
 
-    handleChangeContext = (context) => {
-        this.setState({ context: context, element: null, selects: [], selection: false })
+    handleChangeContext = (context, element = null) => {
+        this.setState({ context: context, element: element, handleDelete: [], selection: false })
     }
 
     handleUpdateList = (element, context, status = null) => {
@@ -256,6 +256,7 @@ export class Mails extends Component {
                                                  onTrash={this.handleTrash}
                                                  onRestore={this.handleRestore}
                                                  onDelete={this.handleDelete}
+                                                 onChangeContext={this.handleChangeContext}
                             /> : data.length !== 0 ? (selection ? <div>
                                 {context === 'trash' ? <>
                                     <ButtonIcon icon="refresh1" text="Restaurer les messages sélectionnés" onClick={() => this.handleRestore(null, true)}/>
@@ -275,7 +276,7 @@ export class Mails extends Component {
                             </div>
                         </div>
 
-                        <MailFormulaire users={users} />
+                        <MailFormulaire users={users} element={element} />
 
                         <div className="mail-list">
                             <div className="title">
@@ -317,7 +318,7 @@ function ItemsMail ({ elem, element, selection, selects, onSelectMail, onSelect 
     return <div className={"item" + (selection ? " selection " : " ") + (element && element.id === elem.id)} key={elem.id}
                 onClick={selection ? () =>onSelect(elem) : () => onSelectMail(elem)}>
         <div className="expeditor">
-            <div className={"avatar avatar-" + + elem.statusOrigin }>
+            <div className={"avatar avatar-" + elem.statusOrigin }>
                 <span>{avatar}</span>
             </div>
             <div className={"avatar selector " + selectActive}>
@@ -334,7 +335,7 @@ function ItemsMail ({ elem, element, selection, selects, onSelectMail, onSelect 
     </div>
 }
 
-function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
+function ItemMail ({ elem, onTrash, onRestore, onDelete, onChangeContext }) {
     return <div className="item">
 
         <div className="actions">
@@ -346,6 +347,7 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
                     : <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
 
                 {elem.status === STATUS_TRASH && <ButtonIcon icon="refresh1" onClick={() => onRestore(elem)}>Restaurer</ButtonIcon>}
+                {elem.status === STATUS_DRAFT && <ButtonIcon icon="pencil" onClick={() => onChangeContext("create", elem)}>Continuer</ButtonIcon>}
             </div>
         </div>
 
