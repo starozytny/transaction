@@ -10,9 +10,10 @@ import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
 
-import Validateur              from "@commonComponents/functions/validateur";
-import Helper                  from "@commonComponents/functions/helper";
-import Formulaire              from "@dashboardComponents/functions/Formulaire";
+import Validateur  from "@commonComponents/functions/validateur";
+import Helper      from "@commonComponents/functions/helper";
+import Formulaire  from "@dashboardComponents/functions/Formulaire";
+import Sort        from "@commonComponents/functions/sort";
 
 const URL_CREATE_ELEMENT     = "api_immo_transfer_start";
 const TXT_CREATE_BUTTON_FORM = "Transférer";
@@ -115,11 +116,14 @@ class Form extends Component {
         const { critere, errors, success, from, to, negotiator, user } = this.state;
 
         let selectAgencies = [], selectNegotiators = [], selectUsers = [];
+        agencies.sort(Sort.compareName)
         agencies.forEach(agency => {
             selectAgencies.push({ value: agency.id, label: agency.name, id: "ag-" + agency.id })
         })
 
         if(to !== ""){
+            negotiators.sort(Sort.compareLastname)
+            users.sort(Sort.compareLastname)
             negotiators.forEach(ne => {
                 if(ne.agency.id === to){
                     selectNegotiators.push({ value: ne.id, label: ne.fullname, id: "ne-" + ne.id })
