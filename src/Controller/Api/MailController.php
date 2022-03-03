@@ -11,6 +11,7 @@ use App\Service\FileUploader;
 use App\Service\MailerService;
 use App\Service\SettingsService;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use SebastianBergmann\CodeCoverage\Node\File;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -219,10 +220,12 @@ class MailController extends AbstractController
      *
      * @param Mail $obj
      * @param DataService $dataService
+     * @param MailerService $mailerService
      * @return JsonResponse
      */
-    public function delete(Mail $obj, DataService $dataService): JsonResponse
+    public function delete(Mail $obj, DataService $dataService, MailerService $mailerService): JsonResponse
     {
+        $mailerService->unlinkFiles($obj);
         return $dataService->delete($obj);
     }
 
@@ -293,11 +296,24 @@ class MailController extends AbstractController
      * @OA\Tag(name="Mails")
      *
      * @param Request $request
-     * @param DataService $dataService
+     * @param ApiResponse $apiResponse
+     * @param MailerService $mailerService
      * @return JsonResponse
      */
-    public function deleteGroup(Request $request, DataService $dataService): JsonResponse
+    public function deleteGroup(Request $request, ApiResponse $apiResponse, MailerService $mailerService): JsonResponse
     {
-        return $dataService->deleteSelected(Mail::class, json_decode($request->getContent()));
+        $em = $this->doctrine->getManager();
+        $objs = $em->getRepository(Mail::FOLDER_FILES)->findBy(['id' => json_decode($request->getContent())]);
+
+        if ($objs) {
+            /** @var Mail $obj */
+            foreach ($objs as $obj) {
+                $mailerService->unlinkFiles($obj);
+                $em->remove($obj);
+            }
+        }
+
+        $em->flush();
+        return $apiResponse->apiJsonResponseSuccessful("Supression de la sélection réussie !");
     }
 }

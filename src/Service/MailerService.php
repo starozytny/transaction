@@ -20,14 +20,17 @@ class MailerService
     private $settingsService;
     private $em;
     private $serializer;
+    private $fileUploader;
 
     public function __construct(MailerInterface $mailer, SettingsService $settingsService,
-                                EntityManagerInterface $entityManager, SerializerInterface $serializer)
+                                EntityManagerInterface $entityManager, SerializerInterface $serializer,
+                                FileUploader $fileUploader)
     {
         $this->mailer = $mailer;
         $this->settingsService = $settingsService;
         $this->em = $entityManager;
         $this->serializer = $serializer;
+        $this->fileUploader = $fileUploader;
     }
 
     public function getAllMailsData(User $user): array
@@ -46,6 +49,16 @@ class MailerService
         $data = $this->em->getRepository(Mail::class)->findBy(['user' => $user, 'status' => $status], ['createdAt' => 'DESC']);
 
         return $this->serializer->serialize($data, 'json', ['groups' => Mail::MAIL_READ]);
+    }
+
+    public function unlinkFiles(Mail $obj)
+    {
+        foreach($obj->getFiles() as $filename){
+            $file = $this->fileUploader->getPrivateDirectory() . Mail::FOLDER_FILES . '/' . $filename;
+            if(file_exists($file)){
+                unlink($file);
+            }
+        }
     }
 
     public function sendMail($to, $subject, $text, $html, $params, $from=null)
