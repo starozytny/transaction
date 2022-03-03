@@ -62,7 +62,11 @@
 
     span{
       display: inline-block;
-      color: var(--primary)
+      color: var(--primary);
+
+      [class^="icon-"]{
+        transform: translateY(2px);
+      }
     }
   }
 }
