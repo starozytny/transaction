@@ -170,7 +170,7 @@ export class Mails extends Component {
 
         let menu = [
             { context: 'sent',  icon: "email-tracking", label: "Envoyés",   total: sent.length,  data: sent },
-            { context: 'draft', icon: "trash",          label: "Brouillon", total: draft.length, data: draft },
+            { context: 'draft', icon: "pencil",         label: "Brouillon", total: draft.length, data: draft },
             { context: 'trash', icon: "trash",          label: "Corbeille", total: trash.length, data: trash },
         ];
 

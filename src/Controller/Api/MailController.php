@@ -159,6 +159,7 @@ class MailController extends AbstractController
         }
 
         $obj = $this->createMail($data, $dataEntity, $settingsService);
+        $obj->setStatusOrigin(Mail::STATUS_SENT);
         $obj->setStatus(Mail::STATUS_SENT);
         $obj->setFiles($filesName);
 
@@ -194,7 +195,7 @@ class MailController extends AbstractController
         }
 
         $obj = $this->createMail($data, $dataEntity, $settingsService);
-        $obj->setStatusOrigin(Mail::STATUS_SENT);
+        $obj->setStatusOrigin(Mail::STATUS_DRAFT);
         $obj->setStatus(Mail::STATUS_DRAFT);
 
         $em->persist($obj);
