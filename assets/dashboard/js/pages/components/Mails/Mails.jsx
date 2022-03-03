@@ -97,16 +97,28 @@ export class Mails extends Component {
                 nTrash = trash.filter(el => el.id !== element.id);
                 break;
             case "restore":
-                if(element.statusOrigin === 2){
-                    nSent.push(element);
+                switch (element.statusOrigin){
+                    case STATUS_SENT:
+                        nSent.push(element);
+                        break;
+                    case STATUS_DRAFT:
+                        nDraft.push(element);
+                        break;
+                    default:
+                        break;
                 }
                 nTrash = trash.filter(el => el.id !== element.id);
                 break;
             case "trash":
-                if(status === STATUS_SENT){
-                    nSent = sent.filter(el => el.id !== element.id);
-                }else{
-                    nDraft = draft.filter(el => el.id !== element.id);
+                switch (status){
+                    case STATUS_SENT:
+                        nSent = sent.filter(el => el.id !== element.id);
+                        break;
+                    case STATUS_DRAFT:
+                        nDraft = draft.filter(el => el.id !== element.id);
+                        break;
+                    default:
+                        break;
                 }
                 nTrash.push(element);
                 break;
