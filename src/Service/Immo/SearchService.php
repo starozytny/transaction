@@ -2,7 +2,9 @@
 
 namespace App\Service\Immo;
 
+use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSearch;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -19,21 +21,25 @@ class SearchService
     /**
      * @param ImBien[] $biens
      */
-    public function getRapprochementBySearchs(array $biens): array
+    public function getRapprochementBySearchs(array $biens, ImAgency $agency): array
     {
-        $searchs = $this->em->getRepository(ImSearch::class)->findBy(['isActive' => true]);
+        $prospects = $this->em->getRepository(ImProspect::class)->findBy(['agency' => $agency]);
 
         //Rapprochement
         $rapprochements = [];
         foreach($biens as $obj){
-            foreach($searchs as $search){
-                $find = $this->rapprochement($search, [$obj]);
+            foreach($prospects as $prospect){
+                $search = $prospect->getSearch();
 
-                if(count($find) > 0){
-                    $rapprochements[] = [
-                        'bien' => $obj->getId(),
-                        'prospect' => $search->getProspect()->getId()
-                    ];
+                if($search && $search->getIsActive()){
+                    $find = $this->rapprochement($search, [$obj]);
+
+                    if(count($find) > 0){
+                        $rapprochements[] = [
+                            'bien' => $obj->getId(),
+                            'prospect' => $search->getProspect()->getId()
+                        ];
+                    }
                 }
             }
         }
@@ -98,7 +104,7 @@ class SearchService
 
         return $nData;
     }
-    
+
     /**
      * @param $filter
      * @param ImBien[] $data

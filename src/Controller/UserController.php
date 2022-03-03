@@ -140,7 +140,7 @@ class UserController extends AbstractController
             $objs = $repository->findBy(['agency' => $agencies, 'status' => (int) $status]);
         }
 
-        $rapprochements = $searchService->getRapprochementBySearchs($objs);
+        $rapprochements = $searchService->getRapprochementBySearchs($objs, $user->getAgency());
         $suivis  = $suiviRepository->findByStatusProcessAndBiens($objs);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
@@ -227,7 +227,7 @@ class UserController extends AbstractController
             $historiesVisits = [];
             $rapprochements = [];
             if($type === "suivi"){
-                $rapprochements = $searchService->getRapprochementBySearchs([$obj]);
+                $rapprochements = $searchService->getRapprochementBySearchs([$obj], $obj->getAgency());
                 $historiesVisits = $em->getRepository(HiVisite::class)->findBy(['bienId' => $obj->getId()], ['createdAt' => 'DESC']);
                 $historiesVisits = $serializer->serialize($historiesVisits, 'json', ['groups' => HiVisite::HISTORY_VISITE]);
             }
