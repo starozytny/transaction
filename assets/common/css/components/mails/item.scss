@@ -101,6 +101,73 @@
         text-align: right;
         margin-bottom: 12px;
       }
+
+      .message{
+        min-height: 10vh;
+      }
+
+      .files{
+        @include flex(row, flex-start, flex-start);
+        flex-wrap: wrap;
+        border-top: 1px solid var(--greyShadow);
+        padding-top: 24px;
+
+        & > .file{
+          @include flex(row, stretch, flex-start);
+          width: calc(100% - 24px);
+          border: 1px solid var(--grey);
+          border-radius: 4px;
+          padding: 12px;
+          color: var(--grey3);
+          box-shadow: 0 4px 12px var(--greyShadow);
+          cursor: pointer;
+
+          .icon{
+            transition: all 0.2s ease-in-out;
+          }
+
+          &:hover{
+            .icon{
+              transform: scale(1.05);
+            }
+          }
+
+          &:not(:last-child){
+            margin-bottom: 8px;
+          }
+
+          .name{
+            color: var(--txt);
+            margin-left: 8px;
+            font-size: 15px;
+            @include fontSemibold();
+          }
+        }
+      }
+    }
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .boite-mail {
+    .mail-item {
+      .item-body{
+        .files{
+          width: calc(100% + 12px);
+
+          & > .file{
+            width: calc(33% - 24px - 12px);
+            margin-bottom: 8px;
+            margin-right: 12px;
+          }
+        }
+      }
     }
   }
 }

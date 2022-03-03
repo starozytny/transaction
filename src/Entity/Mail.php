@@ -98,6 +98,7 @@ class Mail extends DataEntity
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"mail:read"})
      */
     private $files = [];
 

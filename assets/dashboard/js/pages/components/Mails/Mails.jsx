@@ -333,6 +333,19 @@ function ItemMail ({ elem, onTrash, onRestore, onDelete }) {
             </div>
             <div className="subject">{elem.subject}</div>
             <div className="message">{parse(elem.message)}</div>
+            <div className="files">
+                {elem.files.map((file, index) => {
+                    return <div className="file" key={index}>
+                        <div className="icon">
+                            <span className="icon-file" />
+                        </div>
+                        <div className="infos">
+                            <div className="name">Pièce jointe {index + 1}</div>
+                        </div>
+
+                    </div>
+                })}
+            </div>
         </div>
 
     </div>
