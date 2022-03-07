@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Changelog;
+use App\Entity\Immo\ImProspect;
 use App\Entity\Mail;
 use App\Entity\Donnee\DoQuartier;
 use App\Entity\Donnee\DoSol;
@@ -447,6 +448,57 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/prospects-{type}", options={"expose"=true}, name="prospects")
+     */
+    public function prospects(Request $request, $type, ImProspectRepository $repository, SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        $getArchived = (bool)$request->query->get('ar');
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $objs = $repository->findBy(['agency' => $user->getAgency(), 'isArchived' => $getArchived]);
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+
+        $data = [];
+        foreach($objs as $obj){
+            switch ($type){
+                case "locataires":
+                    if($obj->getType() != ImProspect::TYPE_VENTE && $obj->getType() != ImProspect::TYPE_INVEST){
+                        $data[] = $obj;
+                    }
+                    break;
+                case "acquereurs":
+                    if($obj->getType() != ImProspect::TYPE_LOCATION){
+                        $data[] = $obj;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $objs = $serializer->serialize($data, 'json', ['groups' => User::ADMIN_READ]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+
+        $route = "user/pages/prospects/" . ($getArchived ? "archived" : "index") . ".html.twig";
+        $params = [
+            'type' => $type,
+            'data' => $objs,
+            'user' => $user,
+            'negotiators' => $negotiators
+        ];
+
+        $search = $request->query->get('search');
+        if($search){
+            return $this->render($route, array_merge($params, ['search' => $search]));
+        }
+
+        return $this->render($route, $params);
+    }
+
+    /**
      * Return render and route for tenant, prospects, buyers...
      *
      * @param Request $request
@@ -490,14 +542,6 @@ class UserController extends AbstractController
     public function tenants(Request $request, ImTenantRepository $repository, SerializerInterface $serializer): Response
     {
         return $this->getDataPersons($request, $serializer, $repository, "tenants");
-    }
-
-    /**
-     * @Route("/prospects", options={"expose"=true}, name="prospects")
-     */
-    public function prospects(Request $request, ImProspectRepository $repository, SerializerInterface $serializer): Response
-    {
-        return $this->getDataPersons($request, $serializer, $repository, "prospects");
     }
 
     /**

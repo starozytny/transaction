@@ -1,8 +1,8 @@
 {% extends 'user/layout/layout.html.twig' %}
 
 {% set submenu = [
-    { 'label': "Liste des prospects", 'path': path('user_prospects') },
-    { 'label': "Archivés", 'path': path('user_prospects', {'ar': 'archive'}) },
+    { 'label': "Liste des prospects", 'path': path('user_prospects', {'type': type}) },
+    { 'label': "Archivés", 'path': path('user_prospects', {'type': type, 'ar': 'archive'}) },
 ] %}
 
 {% block stylesheets %}
