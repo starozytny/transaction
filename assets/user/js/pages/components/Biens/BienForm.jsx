@@ -317,11 +317,11 @@ export class BienForm extends Component {
     }
 
     handleSelectOwner = (owner) => {
-        this.owner.current.handleUpdateSelectOwner(owner.id);
+        let nOwners = this.owner.current.handleUpdateSelectOwner(owner);
         this.aside1.current.handleClose();
 
         DataState.getOwners(this);
-        this.setState({ owner: owner.id });
+        this.setState({ owners: nOwners });
     }
 
     handleSelectRooms = (room, isUpdate=false) => {
@@ -470,7 +470,7 @@ export class BienForm extends Component {
 
     render () {
         const { negotiators, quartiers, sols, sousTypes, societyId, agencyId, settings, allSupports } = this.props;
-        const { step, contentHelpBubble, codeTypeAd, owner, allOwners } = this.state;
+        const { step, contentHelpBubble, codeTypeAd, owners, allOwners } = this.state;
 
         let steps = [
             {id: 1,  label: "Informations globales"},
@@ -502,7 +502,7 @@ export class BienForm extends Component {
 
         let contentAside1 = <Owners ref={this.owner} donnees={JSON.stringify(allOwners)} negotiators={JSON.stringify(negotiators)}
                                     societyId={societyId} agencyId={agencyId} isClient={true}
-                                    owner={owner} isFormBien={true} onSelectOwner={this.handleSelectOwner}/>
+                                    owners={owners} isFormBien={true} onSelectOwner={this.handleSelectOwner}/>
 
         return <div className="page-default">
             <div className="page-col-1">
@@ -558,7 +558,7 @@ export class BienForm extends Component {
 
                         <Step8 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
-                               refAside1={this.aside1} onOpenAside={this.handleOpenAside}
+                               refAside1={this.aside1} onOpenAside={this.handleOpenAside} onSelectOwner={this.handleSelectOwner}
                                allOwners={allOwners} />
 
                         <Step9 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}

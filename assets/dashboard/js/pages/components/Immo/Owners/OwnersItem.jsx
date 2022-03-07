@@ -19,7 +19,7 @@ export class OwnersItem extends Component {
     }
 
     render () {
-        const { isReadBien=false, isClient, isFormBien, owner, biens, elem,
+        const { isReadBien=false, isClient, isFormBien, owners, biens, elem,
             onDelete, onSelectors, onChangeContext, onSelectOwner } = this.props;
 
         let totalBiens = 0;
@@ -31,16 +31,24 @@ export class OwnersItem extends Component {
             })
         }
 
-
         let actions = Actions.getDefaultAction(isClient, elem, "owner", this.mail);
         actions = actions.concat([
             {data: <a target="_blank" href={Routing.generate('user_printer_owner_rapport', {'id': elem.id})}>Imprimer rapport</a>},
         ])
 
+        let active = false;
+        if(isFormBien && owners){
+            owners.forEach(owner => {
+                if(owner.id === elem.id){
+                    active = true;
+                }
+            })
+        }
+
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
             {isFormBien && <div className="selector" onClick={onSelectOwner ? () => onSelectOwner(elem) : null}>
-                <label className={"item-selector " + (owner === elem.id)}/>
+                <label className={"item-selector " + (active)}/>
             </div>}
 
             <div className="item-content">

@@ -44,7 +44,7 @@ export class Owners extends Component {
             biens: props.biens ? JSON.parse(props.biens) : [],
             isClient: props.isClient ? props.isClient : false,
             isFormBien: props.isFormBien ? props.isFormBien : false,
-            owner: props.owner ? (props.owner !== "" ? parseInt(props.owner) : "") : "",
+            owners: props.owners ? props.owners : [],
             classes: props.isFormBien ? "" : "main-content",
             filters: [[], []]
         }
@@ -74,7 +74,20 @@ export class Owners extends Component {
 
     handleSearch = (search) => { this.layout.current.handleSearch(search, "owner", true, Filter.filterOwners); }
 
-    handleUpdateSelectOwner = (owner) => { this.setState({ owner }) }
+    handleUpdateSelectOwner = (owner) => {
+        const { owners } = this.state;
+
+        let nOwners = owners;
+        if(owners.includes(owner)){
+            nOwners = nOwners.filter(el => el.id !== owner.id);
+        }else{
+            nOwners.push(owner);
+        }
+
+        this.setState({ owners: nOwners });
+
+        return nOwners;
+    }
 
     handlePerPage = (perPage) => { TopToolbar.onPerPage(this, perPage, SORTER) }
 
@@ -105,7 +118,7 @@ export class Owners extends Component {
                            //data
                            isClient={this.state.isClient}
                            isFormBien={this.state.isFormBien}
-                           owner={this.state.owner}
+                           owners={this.state.owners}
                            onSelectOwner={this.props.onSelectOwner ? this.props.onSelectOwner : null}
                            biens={this.state.biens}
                            dataImmuable={this.layout.current.state.dataImmuable}

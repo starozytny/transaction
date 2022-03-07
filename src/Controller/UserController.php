@@ -167,13 +167,21 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
-        $allOwners   = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
-        $settings    = $em->getRepository(ImSettings::class)->findOneBy(['agency' => $user->getAgency()]);
-        $allSupports = $em->getRepository(ImSupport::class)->findBy(['agency' => $user->getAgency()]);
-        $publishes   = $em->getRepository(ImPublish::class)->findBy(['bien' => $obj]);
+        $negotiators  = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+        $allOwners    = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
+        $settings     = $em->getRepository(ImSettings::class)->findOneBy(['agency' => $user->getAgency()]);
+        $allSupports  = $em->getRepository(ImSupport::class)->findBy(['agency' => $user->getAgency()]);
+        $publishes    = $em->getRepository(ImPublish::class)->findBy(['bien' => $obj]);
+        $contracts    = $em->getRepository(ImContract::class)->findBy(['bien' => $obj, 'status' => ImContract::STATUS_PROCESSING]);
+        $contractants = $em->getRepository(ImContractant::class)->findBy(['contract' => $contracts]);
+
+        $owners = [];
+        foreach($contractants as $contractant){
+            $owners[] = $contractant->getOwner();
+        }
 
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+        $owners      = $serializer->serialize($owners, 'json', ['groups' => User::ADMIN_READ]);
         $allOwners   = $serializer->serialize($allOwners, 'json', ['groups' => User::ADMIN_READ]);
         $settings    = $serializer->serialize($settings,'json', ['groups' => User::USER_READ]);
         $allSupports = $serializer->serialize($allSupports,'json', ['groups' => User::USER_READ]);
@@ -188,6 +196,7 @@ class UserController extends AbstractController
             'rooms' => $rooms,
             'photos' => $photos,
             'negotiators' => $negotiators,
+            'owners' => $owners,
             'allOwners' => $allOwners,
             'settings' => $settings,
             'user' => $user,
