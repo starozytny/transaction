@@ -76,7 +76,7 @@ export class ProspectsItem extends Component {
                         <div className="col-5 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             {(!isSelect || (isSelect && !active)) && <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>}
-                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "prospect", this.mail)}>Autres</ButtonIconDropdown>
+                            {!isSelect && <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "prospect", this.mail)}>Autres</ButtonIconDropdown>}
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@ export class ProspectsItem extends Component {
                 </div>}
             </div>
 
-            <MailAside ref={this.mail} to={[elem.email]} />
+            {!isSelect && <MailAside ref={this.mail} to={[elem.email]} />}
         </div>
     }
 }
