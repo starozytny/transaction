@@ -10,6 +10,7 @@ import Rapprochement from "@userComponents/functions/rapprochement";
 import { SearchInfos }              from "@dashboardPages/components/Immo/Prospects/ProspectsItem";
 import { NegotiatorBubble }         from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 import { ContentNegotiatorBubble }  from "@userPages/components/Biens/AdCard";
+import {MailAsideButton} from "@dashboardPages/components/Mails/MailAside";
 
 const STATUS_PROPAL = 0;
 const STATUS_ACCEPT = 1;
@@ -112,6 +113,7 @@ export class RapprochementsItem extends Component {
                         <div className="footer-actions">
                             <div className="actions">
                                 <ButtonIcon icon="map" text="Programmer une visite" onClick={() => onChangeContext("create-visit", prospect)} />
+                                <MailAsideButton txtBtn="Envoyer un mail" title={"Envoyer un mail à " + prospect.fullname} to={[prospect.email]} />
                             </div>
                         </div>
 
