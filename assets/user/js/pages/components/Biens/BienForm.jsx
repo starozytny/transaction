@@ -127,10 +127,13 @@ export class BienForm extends Component {
     }
 
     handleChangeDate = (name, e) => {
-        const { nbMonthMandat } = this.state;
+        const { settings, nbMonthMandat, codeTypeAd } = this.state;
 
         let value = e !== null ? e : "";
-        if(name === "startAt"){ Changer.setEndMandat(this, value, nbMonthMandat) }
+        if(name === "startAt"){
+            let nbMonth = parseInt(codeTypeAd) === 1 ? settings.mandatMonthLocation : settings.mandatMonthVente;
+            Changer.setEndMandat(this, value, nbMonthMandat === "init" ? nbMonth : nbMonthMandat)
+        }
 
         this.setState({ [name]: value })
     }

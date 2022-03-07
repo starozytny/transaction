@@ -183,7 +183,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         contentFull={element ? setValueEmptyIfNull(advert, advert.contentFull) : ""}
 
         codeTypeMandat={element ? setValueEmptyIfNull(mandat, mandat.codeTypeMandat) : 0}
-        nbMonthMandat={element ? "" : "init"}
+        nbMonthMandat={element ? "" : settings.mandatMonthVente}
         startAt={element ? (setValueEmptyIfNull(mandat, mandat.startAtJavascript) !== "" ? new Date(mandat.startAtJavascript) : "" ) : ""}
         endAt={element ? (setValueEmptyIfNull(mandat, mandat.endAtJavascript) !== "" ? new Date(mandat.endAtJavascript) : "" ) : ""}
         priceEstimate={element ? setValueEmptyIfNull(mandat, mandat.priceEstimate) : ""}
