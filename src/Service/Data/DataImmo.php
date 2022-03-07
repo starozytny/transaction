@@ -11,6 +11,7 @@ use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImConfidential;
 use App\Entity\Immo\ImContract;
+use App\Entity\Immo\ImContractant;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
@@ -89,6 +90,46 @@ class DataImmo extends DataConstructor
         $isDraft = (int) $data->isDraft;
         if($isDraft){
             $obj->setStatus(ImBien::STATUS_DRAFT);
+        }
+
+        if(isset($data->owners) && $data->owners){
+            $ownerIds = [];  $alreadySet = [];
+            foreach($data->owners as $owner){
+                $ownerIds[] = $owner->id;
+            }
+            $owners = $this->em->getRepository(ImOwner::class)->findBy(['id' => $ownerIds]);
+
+            $contract = null;
+            if($obj->getId()){
+                $contract = $this->em->getRepository(ImContract::class)->findOneBy(['bien' => $obj, 'status' => ImContract::STATUS_PROCESSING]);
+                $contractants = $this->em->getRepository(ImContractant::class)->findBy(['contract' => $contract]);
+
+                foreach($contractants as $contractant){
+                    $ownerId = $contractant->getOwner()->getId();
+                    if(in_array($ownerId, $ownerIds)){
+                        $alreadySet[] = $ownerId;
+                    }
+                }
+            }
+
+            if(!$contract){
+                $contract = (new ImContract())
+                    ->setBien($obj)
+                ;
+
+                $this->em->persist($contract);
+            }
+
+            foreach($owners as $owner){
+                if(!in_array($owner->getId(), $alreadySet)){
+                    $contractant = (new ImContractant())
+                        ->setContract($contract)
+                        ->setOwner($owner)
+                    ;
+
+                    $this->em->persist($contractant);
+                }
+            }
         }
 
         foreach($rooms as $room){
