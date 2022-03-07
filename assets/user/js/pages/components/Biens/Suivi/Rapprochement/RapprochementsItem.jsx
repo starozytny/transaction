@@ -108,15 +108,11 @@ export class RapprochementsItem extends Component {
                                     <ButtonIcon icon="flag" text="Finaliser l'offre" onClick={() => onChangeContext("final-offer", prospect, offer)} />
                                 </>}
                             </div>
-                        </div>
-
-                        <div className="footer-actions">
                             <div className="actions">
-                                <ButtonIcon icon="map" text="Programmer une visite" onClick={() => onChangeContext("create-visit", prospect)} />
+                                <ButtonIcon icon="map" onClick={() => onChangeContext("create-visit", prospect)} >Programmer une visite</ButtonIcon>
                                 <MailAsideButton txtBtn="Envoyer un mail" title={"Envoyer un mail à " + prospect.fullname} to={[prospect.email]} />
                             </div>
                         </div>
-
                     </> : <>
                         <div className="footer-actions">
                             <div className="actions">
