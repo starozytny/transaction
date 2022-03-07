@@ -59,10 +59,9 @@ function filterFunction(dataImmuable, filters){
     let filtersAd = filters[0];
     let filtersBien = filters[1];
     let filtersMandat = filters[2];
-    let filterOwner = filters[3];
-    let filterNego = filters[4];
-    let filterUser = filters[5];
-    let filterAgency = filters[6];
+    let filterNego = filters[3];
+    let filterUser = filters[4];
+    let filterAgency = filters[5];
 
     if(filters.length === 0) {
         newData = dataImmuable
@@ -77,19 +76,16 @@ function filterFunction(dataImmuable, filters){
             newData2 = setNewTab("array", filtersMandat, el, el.codeTypeMandat, newData2);
         })
         newData2.forEach(el => {
-            newData3 = setNewTab("select", filterOwner, el, el.owner, newData3, "owner")
+            newData3 = setNewTab("select", filterNego, el, el.negotiator, newData3, "nego")
         })
         newData3.forEach(el => {
-            newData4 = setNewTab("select", filterNego, el, el.negotiator, newData4, "nego")
+            newData4 = setNewTab("select", filterUser, el, el.user, newData4, "user")
         })
         newData4.forEach(el => {
-            newData5 = setNewTab("select", filterUser, el, el.user, newData5, "user")
-        })
-        newData5.forEach(el => {
-            newData6 = setNewTab("array", filterAgency, el, el.agency.id, newData6)
+            newData5 = setNewTab("array", filterAgency, el, el.agency.id, newData5)
         })
 
-        newData = newData6
+        newData = newData5;
     }
 
     return newData;
@@ -116,7 +112,6 @@ export class Biens extends Component {
                 [],
                 [],
                 [], //type mandat
-                props.filterOwner ? parseInt(props.filterOwner) : "", //owner
                 props.filterNego ? parseInt(props.filterNego) : "", //negotiator
                 props.filterUser ? props.filterUser : "", //utilisateur
                 props.agencyId ? [parseInt(props.agencyId)] : [], //agency

@@ -25,11 +25,10 @@ export class BiensList extends Component {
         const { agencyId, dataFilters, pageStatus, dataImmuable, data, onDelete, filters, onGetFilters, rapprochements, onUpdateList,
             sorters, onSorter, currentPage, perPage, onPerPage, taille, onPaginationClick, suivis } = this.props;
 
-        let items = [], owners = [], negotiators = [], users = [], agencies = [];
-        let noDuplicateOwners = [], noDuplicateNegotiators = [], noDuplicateUsers = [], noDuplicateAgencies = [];
+        let items = [], negotiators = [], users = [], agencies = [];
+        let noDuplicateNegotiators = [], noDuplicateUsers = [], noDuplicateAgencies = [];
 
         dataImmuable.forEach(el => {
-            owners      = getItemsSelect(owners, noDuplicateOwners, el.owner, "owner");
             negotiators = getItemsSelect(negotiators, noDuplicateNegotiators, el.negotiator, "nego");
             users       = getItemsSelect(users, noDuplicateUsers, el.user, "user", "username");
             agencies    = getItemsSelect(agencies, noDuplicateAgencies, el.agency, "agency", "id", "name");
@@ -49,7 +48,7 @@ export class BiensList extends Component {
                         </div>
                         <div className="content-col-1">
                             <Filter data={dataFilters} onGetFilters={onGetFilters} filters={filters}
-                                    owners={owners} negotiators={negotiators} users={users} agencies={agencies} />
+                                    negotiators={negotiators} users={users} agencies={agencies} />
                         </div>
                     </div>
                 </div>

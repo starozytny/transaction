@@ -128,7 +128,6 @@ class UserController extends AbstractController
                           ImAgencyRepository $agencyRepository, SerializerInterface $serializer, SearchService $searchService): Response
     {
         $status = $request->query->get('st');
-        $filterOwner = $request->query->get('fo');
         $filterNego = $request->query->get('fn');
         $filterUser = $request->query->get('fu');
 
@@ -152,7 +151,6 @@ class UserController extends AbstractController
             'user' => $user,
             'data' => $objs,
             'st' => $status,
-            'filterOwner' => $filterOwner,
             'filterNego' => $filterNego,
             'filterUser' => $filterUser,
             'rapprochements' => json_encode($rapprochements),
