@@ -93,7 +93,6 @@ export class RapprochementsItem extends Component {
 
                         <div className="footer-actions">
                             <div className="actions">
-                                <ButtonIcon icon="map" text="Programmer une visite" onClick={() => onChangeContext("create-visit", prospect)} />
                                 {!offer && <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />}
                                 {(offer && offer.status === STATUS_PROPAL) && <>
                                     <ButtonIcon icon="check" text="Accepter" onClick={() => onChangeContext("accept-offer", prospect, offer)} />
@@ -109,6 +108,13 @@ export class RapprochementsItem extends Component {
                                 </>}
                             </div>
                         </div>
+
+                        <div className="footer-actions">
+                            <div className="actions">
+                                <ButtonIcon icon="map" text="Programmer une visite" onClick={() => onChangeContext("create-visit", prospect)} />
+                            </div>
+                        </div>
+
                     </> : <>
                         <div className="footer-actions">
                             <div className="actions">
