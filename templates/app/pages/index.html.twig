@@ -4,21 +4,36 @@
 
 {% block main_content %}
 <div class="homepage">
-    <div class="app-header">
-        <div class="title-page">
-            <h1>Facilitez votre gestion en transaction immobilière.</h1>
-            <p class="subtitle">
-                Notre logiciel immobilier vous offre une interface ergonomique et simple à
-                utiliser pour améliorer votre gestion immobilière.
-            </p>
-            <div class="actions">
-                <a class="btn btn-color0" href="{{ path('app_contact') }}">Prenons contact</a>
+    <div class="homepage-header">
+        <div class="app-header">
+            <div class="title-page">
+                <h1>Facilitez votre gestion en transaction immobilière.</h1>
+                <p class="subtitle">
+                    Notre logiciel immobilier vous offre une interface ergonomique et simple à
+                    utiliser pour améliorer votre gestion immobilière.
+                </p>
+                <div class="actions">
+                    <a class="btn btn-color0" href="{{ path('app_contact') }}">Prenons contact</a>
+                </div>
+            </div>
+            <div class="images">
+                <img src="{{ asset('build/app/images/image-1.jpg') }}" alt="Illustration logiciel transaction">
+                <img src="{{ asset('build/app/images/image-2.jpg') }}" alt="Illustration logiciel transaction">
+                <img src="{{ asset('build/app/images/image-3.jpg') }}" alt="Illustration logiciel transaction">
             </div>
         </div>
-        <div class="images">
-            <img src="{{ asset('build/app/images/image-1.jpg') }}" alt="Illustration logiciel transaction">
-            <img src="{{ asset('build/app/images/image-2.jpg') }}" alt="Illustration logiciel transaction">
-            <img src="{{ asset('build/app/images/image-3.jpg') }}" alt="Illustration logiciel transaction">
+        <div class="deco">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="1920" height="1080" preserveAspectRatio="none" viewBox="0 0 1920 1080">
+                <g fill="none" class="blob-1">
+                    <path d="M365.091,275.667C402.391,272.836,429.478,242.922,446.211,209.466C461.033,179.832,461.431,145.268,444.582,116.738C428.02,88.694,397.582,74.356,365.091,72.109C327.271,69.493,285.649,73.151,263.964,104.246C239.546,139.261,237.724,186.878,259.414,223.645C280.796,259.89,323.13,278.852,365.091,275.667" fill="rgba(255, 203, 105, 0.4)" class="triangle-float3"></path>
+                </g>
+                <g fill="none">
+                    <path d="M1365.717,378.246C1454.661,380.824,1535.184,326.387,1578.365,248.586C1620.302,173.025,1615.521,81.375,1571.883,6.783C1528.694,-67.041,1451.205,-112.258,1365.717,-114.902C1275.109,-117.704,1179.698,-86.231,1136.211,-6.692C1093.987,70.536,1128.327,161.247,1173.401,236.847C1217.073,310.096,1280.473,375.775,1365.717,378.246" fill="rgba(241, 220, 167, 0.4)" class="triangle-float2"></path>
+                    <path d="M1008.518,824.464C1110.749,826.119,1222.506,798.554,1269.919,707.968C1315.243,621.374,1259.439,525.02,1209.098,441.243C1160.918,361.062,1102.037,275.056,1008.518,272.948C912.491,270.784,839.773,348.713,791.64,431.834C743.372,515.188,714.805,615.422,761.377,699.735C809.198,786.309,909.628,822.863,1008.518,824.464" fill="rgba(232, 172, 101, 0.4)" class="triangle-float1"></path>
+                    <path d="M301.475,79.209C330.944,76.944,355.14,59.649,371.365,34.944C389.82,6.843,407.314,-27.699,390.989,-57.088C374.39,-86.969,335.584,-93.115,301.475,-90.875C271.563,-88.91,246.775,-71.538,230.246,-46.531C211.334,-17.918,193.214,17.494,210.119,47.337C227.157,77.414,267.01,81.858,301.475,79.209" fill="rgba(217, 174, 148, 0.4)" class="triangle-float3"></path>
+                    <path d="M1813.882,558.519C1880.481,558.745,1939.76,519.473,1973.337,461.958C2007.214,403.929,2012.212,332.958,1979.986,273.996C1946.426,212.595,1883.759,166.533,1813.882,170.217C1748.595,173.659,1706.737,232.571,1675.576,290.045C1646.3,344.041,1628.159,406.281,1656.288,460.883C1686.62,519.762,1747.649,558.295,1813.882,558.519" fill="rgba(208, 140, 96, 0.4)" class="triangle-float1"></path>
+                </g>
+            </svg>
         </div>
     </div>
 </div>
