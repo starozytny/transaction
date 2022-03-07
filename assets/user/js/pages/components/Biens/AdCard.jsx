@@ -146,11 +146,7 @@ export class AdCard extends Component {
                     <div className="infos">
                         <div className="col-1">
                             <div className="badges">
-                                <div className={"badge-bien badge badge-" + el.status}
-                                     onClick={((el.status === 1 || el.status === 0) && !isPublishePage && !isOwnerPage && !isProspectPage) ?
-                                         () => this.handleChangeStatus(el, el.status === 1 ? 0 : 1) : null}>
-                                    {el.statusString}
-                                </div>
+                                <div className="badge-bien badge">{el.typeAdString}</div>
                                 <div className="badge-bien badge">{el.typeBienString}</div>
                             </div>
                             <a className="identifier" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
@@ -166,7 +162,11 @@ export class AdCard extends Component {
                         </div>
                         <a className="col-2" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
                             <div className="badges">
-                                <div className="badge-bien badge">{el.typeAdString}</div>
+                                <div className={"badge-bien badge badge-" + el.status}
+                                     onClick={((el.status === 1 || el.status === 0) && !isPublishePage && !isOwnerPage && !isProspectPage) ?
+                                         () => this.handleChangeStatus(el, el.status === 1 ? 0 : 1) : null}>
+                                    {el.statusString}
+                                </div>
                                 <div className="badge-bien badge">Mandat {el.mandat.typeMandatString}</div>
                             </div>
                             <div className="identifier">
