@@ -77,7 +77,7 @@ export class RapprochementsItem extends Component {
                                 </figure>
                                 <div className="tooltip">Rapprochement</div>
                             </div>
-                            <div className="sub">{prospect.nbVisits} visite{prospect.nbVisits > 1 ? "s" : ""} au total</div>
+                            {elem && <div className="sub">{prospect.nbVisits} visite{prospect.nbVisits > 1 ? "s" : ""} au total</div>}
                         </div>
                     </div>
                 </div>
