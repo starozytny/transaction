@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Changelog;
+use App\Entity\Immo\ImContractant;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Mail;
 use App\Entity\Donnee\DoQuartier;
@@ -425,8 +426,13 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $objs = $repository->findBy(['agency' => $user->getAgency()]);
-        $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $objs]);
+        $contractants = $em->getRepository(ImContractant::class)->findBy(['owner' => $objs]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+
+        $biens = [];
+        foreach($contractants as $contractant) {
+            $biens[] = $contractant->getId();
+        }
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
