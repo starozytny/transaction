@@ -61,7 +61,7 @@ export class OwnersItem extends Component {
                         </div>
                         {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
                             {(biens.length !== 0 && totalBiens !== 0) &&
-                                <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'fo': elem.id})}>
+                                <ButtonIcon icon="layer" onClick={() => onChangeContext("read", elem)}>
                                     Biens
                                 </ButtonIcon>}
                             {!elem.isGerance && <>
