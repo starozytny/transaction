@@ -403,7 +403,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $agencies = $em->getRepository(ImAgency::class)->findBy(['society' => $user->getSociety()]);
         $objs = $repository->findBy(['agency' => $agencies]);
-        $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $objs, 'status' => ImBien::STATUS_ACTIF]);
+        $biens = $em->getRepository(ImBien::class)->findBy(['negotiator' => $objs, 'status' => ImBien::STATUS_ACTIF]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $biens = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
