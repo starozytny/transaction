@@ -183,6 +183,12 @@ export class Rapprochements extends Component {
                 }
             })
 
+            if(el.status === STATUS_SUIVI_TO_PROCESS || el.status === STATUS_SUIVI_PROCESSING){
+                nbProcessing++;
+            }else{
+                nbEnding++;
+            }
+
             nData.push({ lastname: el.prospect.lastname, suivi: el, rapprochement: null })
             prospects.push(el.prospect);
             prospectsUsed.push(el.prospect.id);
