@@ -67,13 +67,13 @@ export class OwnersItem extends Component {
                                 <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
                             </>}
-                            <ButtonIconDropdown icon="dropdown" items={actions}>Autres</ButtonIconDropdown>
+                            {!isFormBien && <ButtonIconDropdown icon="dropdown" items={actions}>Autres</ButtonIconDropdown>}
                         </div>}
                     </div>
                 </div>
             </div>
 
-            <MailAside ref={this.mail} to={[elem.email]} />
+            {!isFormBien && <MailAside ref={this.mail} to={[elem.email]} />}
         </div>
     }
 }
