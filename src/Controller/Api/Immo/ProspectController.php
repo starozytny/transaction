@@ -56,7 +56,7 @@ class ProspectController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $objs = $repository->findBy(['agency' => $user->getAgency()]);
+        $objs = $repository->findBy(['agency' => $user->getAgency(), 'isArchived' => false]);
 
         return $apiResponse->apiJsonResponse($objs, User::ADMIN_READ);
     }

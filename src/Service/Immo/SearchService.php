@@ -23,7 +23,7 @@ class SearchService
      */
     public function getRapprochementBySearchs(array $biens, ImAgency $agency): array
     {
-        $prospects = $this->em->getRepository(ImProspect::class)->findBy(['agency' => $agency]);
+        $prospects = $this->em->getRepository(ImProspect::class)->findBy(['agency' => $agency, 'isArchived' => false]);
 
         //Rapprochement
         $rapprochements = [];

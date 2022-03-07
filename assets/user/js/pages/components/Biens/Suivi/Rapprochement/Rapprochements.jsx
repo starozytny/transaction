@@ -192,7 +192,9 @@ export class Rapprochements extends Component {
             rapprochements.forEach(el => {
                 if(!prospectsUsed.includes(el.prospect)){
                     let prospect = getProspect(allProspects, el.prospect);
-                    nData.push({ lastname: prospect.lastname, suivi: null, rapprochement: prospect })
+                    if(prospect){
+                        nData.push({ lastname: prospect.lastname, suivi: null, rapprochement: prospect })
+                    }
                 }
             })
         }
