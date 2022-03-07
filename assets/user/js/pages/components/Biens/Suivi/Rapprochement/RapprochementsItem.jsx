@@ -94,7 +94,6 @@ export class RapprochementsItem extends Component {
 
                         <div className="footer-actions">
                             <div className="actions">
-                                {!offer && <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />}
                                 {(offer && offer.status === STATUS_PROPAL) && <>
                                     <ButtonIcon icon="check" text="Accepter" onClick={() => onChangeContext("accept-offer", prospect, offer)} />
                                     <ButtonIcon icon="cancel" text="Refuser" onClick={() => onSwitchStatusOffer(offer, STATUS_REFUSE)} />
@@ -109,6 +108,7 @@ export class RapprochementsItem extends Component {
                                 </>}
                             </div>
                             <div className="actions">
+                                {!offer && <ButtonIcon icon="receipt-edit" onClick={() => onChangeContext("create-offer", prospect)}>Faire une offre</ButtonIcon>}
                                 <ButtonIcon icon="map" onClick={() => onChangeContext("create-visit", prospect)} >Programmer une visite</ButtonIcon>
                                 <MailAsideButton txtBtn="Envoyer un mail" title={"Envoyer un mail à " + prospect.fullname} to={[prospect.email]} />
                             </div>
