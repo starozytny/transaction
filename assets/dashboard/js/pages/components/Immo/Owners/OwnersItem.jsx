@@ -25,11 +25,12 @@ export class OwnersItem extends Component {
         let totalBiens = 0;
         if(biens) {
             biens.forEach(bien => {
-                if (bien.owner && bien.owner.id === elem.id) {
+                if (bien.ownerId === elem.id) {
                     totalBiens++;
                 }
             })
         }
+
 
         let actions = Actions.getDefaultAction(isClient, elem, "owner", this.mail);
         actions = actions.concat([
