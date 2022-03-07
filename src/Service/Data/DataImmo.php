@@ -86,14 +86,6 @@ class DataImmo extends DataConstructor
             ]];
         }
 
-        $owner = null;
-        if(isset($data->owner) && $data->owner){
-            $owner = $this->em->getRepository(ImOwner::class)->findOneBy(['id' => $data->owner]);
-            if(!$owner){
-                return ['message' => 'Un problème est survenue au niveau du propriétaire.'];
-            }
-        }
-
         $isDraft = (int) $data->isDraft;
         if($isDraft){
             $obj->setStatus(ImBien::STATUS_DRAFT);
@@ -120,7 +112,6 @@ class DataImmo extends DataConstructor
             ->setDiag($diag)
             ->setLocalisation($localisation)
             ->setFinancial($financial)
-            ->setOwner($owner)
             ->setConfidential($confidential)
             ->setAdvert($advert)
             ->setMandat($mandat)
@@ -491,20 +482,6 @@ class DataImmo extends DataConstructor
         $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
         $code = mb_strtoupper(substr($lastname, 0, 1) . substr($firstname, 0, 1)) . time();
 
-        $isCoIndivisaire = $this->setToNullInteger($data->isCoIndivisaire);
-
-        if($isCoIndivisaire){
-            $obj = ($obj)
-                ->setCoLastname(mb_strtoupper($this->sanitizeData->sanitizeString($data->coLastname)))
-                ->setCoFirstname(ucfirst($this->sanitizeData->sanitizeString($data->coFirstname)))
-                ->setCoEmail($this->sanitizeData->trimData($data->coEmail))
-                ->setCoPhone($this->sanitizeData->trimData($data->coPhone))
-                ->setCoAddress($this->sanitizeData->trimData($data->coAddress))
-                ->setCoZipcode($this->sanitizeData->trimData($data->zipcode))
-                ->setCoCity($this->sanitizeData->trimData($data->city))
-            ;
-        }
-
         return ($obj)
             ->setSociety($society)
             ->setAgency($agency)
@@ -523,7 +500,6 @@ class DataImmo extends DataConstructor
             ->setCity($this->sanitizeData->trimData($data->city))
             ->setCountry($this->sanitizeData->trimData($data->country))
             ->setCategory($this->setToNullInteger($data->category))
-            ->setIsCoIndivisaire($isCoIndivisaire)
         ;
     }
 

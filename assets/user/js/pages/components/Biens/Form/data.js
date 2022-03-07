@@ -114,7 +114,7 @@ function getDataState (props) {
         photos: props.photos,
         photo: null,
 
-        owner: props.owner,
+        owners: props.owners,
         allOwners: props.allOwners,
 
         inform: props.inform,

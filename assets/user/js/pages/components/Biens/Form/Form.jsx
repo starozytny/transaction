@@ -25,7 +25,7 @@ function setValueEmptyIfNull (parentValue, value) {
     return ""
 }
 
-export function BienFormulaire ({ type, element, rooms, photos, negotiators, allOwners, quartiers, sols, sousTypes,
+export function BienFormulaire ({ type, element, rooms, photos, negotiators, allOwners, owners, quartiers, sols, sousTypes,
                                     societyId, agencyId, negotiatorId, settings, allSupports, publishes })
 {
     let title = "Ajouter un bien";
@@ -168,7 +168,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
 
         photos={photos ? photos : []}
 
-        owner={element ? (element.owner ? element.owner.id : "") : ""}
+        owners={owners ? owners : []}
 
         inform={element ? setValueEmptyIfNull(confidential, confidential.inform) : 0}
         lastname={element ? setValueEmptyIfNull(confidential, confidential.lastname) : ""}
@@ -197,7 +197,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         mandatCity={element ? setValueEmptyIfNull(mandat, mandat.city) : ""}
         mandatCommentary={element ? setValueEmptyIfNull(mandat, mandat.commentary) : ""}
 
-        rooms={element ? rooms : []}
+        rooms={rooms ? rooms : []}
 
         supports={supports}
 

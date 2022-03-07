@@ -3,8 +3,6 @@
 namespace App\Entity\Immo;
 
 use App\Entity\DataEntity;
-use App\Entity\History\HiPublish;
-use App\Entity\History\HiVisite;
 use App\Entity\User;
 use App\Repository\Immo\ImBienRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -203,12 +201,6 @@ class ImBien extends DataEntity
      * @Groups({"user:read", "suivi:read"})
      */
     private $financial;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=ImOwner::class, fetch="EAGER", inversedBy="biens")
-     * @Groups({"user:read"})
-     */
-    private $owner;
 
     /**
      * @ORM\OneToMany(targetEntity=ImPhoto::class, mappedBy="bien")
@@ -602,18 +594,6 @@ class ImBien extends DataEntity
     public function setFinancial(ImFinancial $financial): self
     {
         $this->financial = $financial;
-
-        return $this;
-    }
-
-    public function getOwner(): ?ImOwner
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?ImOwner $owner): self
-    {
-        $this->owner = $owner;
 
         return $this;
     }

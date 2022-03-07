@@ -56,15 +56,6 @@ export function OwnerFormulaire ({ type, onChangeContext, onUpdateList, element,
         country={element ? Formulaire.setValueEmptyIfNull(element.country, "France") : "France"}
         category={element ? Formulaire.setValueEmptyIfNull(element.category, "") : ""}
 
-        isCoIndivisaire={element ? (element.isCoIndivisaire ? 1 : 0) : 0}
-        coLastname={element ? Formulaire.setValueEmptyIfNull(element.coLastname) : ""}
-        coFirstname={element ? Formulaire.setValueEmptyIfNull(element.coFirstname) : ""}
-        coPhone={element ? Formulaire.setValueEmptyIfNull(element.coPhone) : ""}
-        coEmail={element ? Formulaire.setValueEmptyIfNull(element.coEmail) : ""}
-        coAddress={element ? Formulaire.setValueEmptyIfNull(element.coAddress) : ""}
-        coZipcode={element ? Formulaire.setValueEmptyIfNull(element.coZipcode) : ""}
-        coCity={element ? Formulaire.setValueEmptyIfNull(element.coCity) : ""}
-
         onUpdateList={onUpdateList}
         onChangeContext={onChangeContext}
         messageSuccess={msg}
@@ -100,15 +91,6 @@ export class OwnerForm extends Component {
             country: props.country,
             category: props.category,
 
-            isCoIndivisaire: props.isCoIndivisaire,
-            coLastname: props.lastname,
-            coFirstname: props.firstname,
-            coPhone: props.phone1,
-            coEmail: props.email,
-            coAddress: props.address,
-            coZipcode: props.zipcode,
-            coCity: props.city,
-
             errors: [],
             success: false,
             critere: ""
@@ -117,11 +99,6 @@ export class OwnerForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        Helper.toTop();
-        document.getElementById("lastname").focus()
     }
 
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
@@ -186,14 +163,6 @@ export class OwnerForm extends Component {
                                 city: "",
                                 country: "",
                                 category: "",
-                                isCoIndivisaire: 0,
-                                coLastname: "",
-                                coFirstname: "",
-                                coPhone: "",
-                                coEmail: "",
-                                coAddress: "",
-                                coZipcode: "",
-                                coCity: "",
                             })
                         }
                     })
@@ -210,13 +179,7 @@ export class OwnerForm extends Component {
 
     render () {
         const { context } = this.props;
-        const { critere, errors, success, society, agency, negotiator, lastname, firstname, civility, category,
-            isCoIndivisaire, coLastname, coFirstname, coPhone, coEmail, coAddress, coZipcode, coCity } = this.state;
-
-        let coindivisaireItems = [
-            {value: 1, label: "Oui", identifiant: "oui"},
-            {value: 0, label: "Non", identifiant: "no"},
-        ]
+        const { critere, errors, success, society, agency, negotiator, lastname, firstname, civility, category } = this.state;
 
         let civilityItems = [
             {value: 0, label: "Mr",         identifiant: "mr"},
@@ -280,40 +243,6 @@ export class OwnerForm extends Component {
                 <div className="line line-critere">
                     <Input identifiant="critere" valeur={critere} errors={errors} onChange={this.handleChange}>Critère</Input>
                 </div>
-
-                <div className="line-separator">
-                    <div className="title">Co-indivisaire</div>
-                </div>
-
-                <div className="line">
-                    <Radiobox items={coindivisaireItems} identifiant="isCoIndivisaire" valeur={isCoIndivisaire} errors={errors} onChange={this.handleChange}>
-                        Co-indivisaire ?
-                    </Radiobox>
-                </div>
-
-                {parseInt(isCoIndivisaire) === 1 && <>
-                    <div className="line line-2">
-                        <div className="form-group">
-                            <div className="line line-2">
-                                <Input valeur={coLastname} identifiant="coLastname" errors={errors} onChange={this.handleChange}>Nom</Input>
-                                <Input valeur={coFirstname} identifiant="coFirstname" errors={errors} onChange={this.handleChange}>Prénom</Input>
-                            </div>
-
-                            <div className="line line-2">
-                                <Input valeur={coPhone} identifiant="coPhone" errors={errors} onChange={this.handleChange}>Téléphone</Input>
-                                <Input valeur={coEmail} identifiant="coEmail" errors={errors} onChange={this.handleChange} type="email" >Adresse e-mail</Input>
-                            </div>
-
-                            <div className="line line-3">
-                                <Input valeur={coAddress} identifiant="coAddress" errors={errors} onChange={this.handleChange}>Adresse</Input>
-                                <Input valeur={coZipcode} identifiant="coZipcode" errors={errors} onChange={this.handleChange}>Code postal</Input>
-                                <Input valeur={coCity} identifiant="coCity" errors={errors} onChange={this.handleChange}>Ville</Input>
-                            </div>
-                        </div>
-                        <div className="form-group" />
-                    </div>
-
-                </>}
 
                 <div className="line line-buttons">
                     <div className="form-button">

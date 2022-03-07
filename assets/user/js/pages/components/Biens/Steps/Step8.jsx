@@ -12,16 +12,9 @@ import { ReadCard } from "@userComponents/Layout/Read";
 const CURRENT_STEP = 8;
 
 export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate, onOpenAside,
-                          allOwners, owner, inform, lastname, phone1, email, visiteAt, keysNumber, keysWhere })
+                          allOwners, owners, inform, lastname, phone1, email, visiteAt, keysNumber, keysWhere })
 {
-    let itemOwner = null;
-    if(owner){
-        allOwners.forEach(ow => {
-            if(ow.id === owner){
-                itemOwner = ow;
-            }
-        })
-    }
+    console.log(owners)
 
     let informItems = helper.getItems("informs")
 
@@ -38,7 +31,7 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <div className="form-group" />
             </div>
 
-            {itemOwner && <ReadCard elem={itemOwner} displayActions={false} />}
+            {/*{itemOwner && <ReadCard elem={itemOwner} displayActions={false} />}*/}
         </div>
 
         <div className="line special-line">
