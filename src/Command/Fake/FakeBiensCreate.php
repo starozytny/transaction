@@ -8,6 +8,8 @@ use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImConfidential;
+use App\Entity\Immo\ImContract;
+use App\Entity\Immo\ImContractant;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
@@ -78,6 +80,8 @@ class FakeBiensCreate extends Command
 
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
+            ImContractant::class,
+            ImContract::class,
             ImPhoto::class,
             ImPublish::class,
             ImOffer::class,
@@ -257,6 +261,20 @@ class FakeBiensCreate extends Command
             $owner = null;
             if(count($choicesOwners) > 0){
                 $owner = $choicesOwners[$fake->numberBetween(0,count($choicesOwners) - 1)];
+
+                $contract = (new ImContract())
+                    ->setNegotiator($negotiator)
+                    ->setBien($obj)
+                ;
+
+                $this->em->persist($contract);
+
+                $contractant = (new ImContractant())
+                    ->setContract($contract)
+                    ->setOwner($owner)
+                ;
+
+                $this->em->persist($contractant);
             }
 
             $obj = ($obj)
@@ -264,7 +282,6 @@ class FakeBiensCreate extends Command
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(4))) . $i)
                 ->setAgency($user->getAgency())
-                ->setOwner($owner)
             ;
 
             if($isArchived == 0){

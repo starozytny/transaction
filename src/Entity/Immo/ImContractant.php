@@ -18,23 +18,23 @@ class ImContractant
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImContract::class, inversedBy="contractants")
+     * @ORM\ManyToOne(targetEntity=ImContract::class, fetch="EAGER", inversedBy="contractants")
      * @ORM\JoinColumn(nullable=false)
      */
     private $contract;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImOwner::class, inversedBy="contractants")
+     * @ORM\ManyToOne(targetEntity=ImOwner::class, fetch="EAGER", inversedBy="contractants")
      */
     private $owner;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBuyer::class, inversedBy="contractants")
+     * @ORM\ManyToOne(targetEntity=ImBuyer::class, fetch="EAGER", inversedBy="contractants")
      */
     private $buyer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImTenant::class, inversedBy="contractants")
+     * @ORM\ManyToOne(targetEntity=ImTenant::class, fetch="EAGER", inversedBy="contractants")
      */
     private $tenant;
 

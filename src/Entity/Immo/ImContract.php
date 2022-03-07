@@ -47,7 +47,7 @@ class ImContract extends DataEntity
     private $status = self::STATUS_PROCESSING;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @Groups({"contract:read"})
      */
     private $sellAt;
@@ -65,13 +65,13 @@ class ImContract extends DataEntity
     private $sellWhy =self::WHY_SELL;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBien::class, inversedBy="contracts")
+     * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="contracts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $bien;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="contracts")
+     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="contracts")
      */
     private $negotiator;
 
@@ -131,7 +131,7 @@ class ImContract extends DataEntity
         return $this->sellAt;
     }
 
-    public function setSellAt(\DateTimeInterface $sellAt): self
+    public function setSellAt(?\DateTimeInterface $sellAt): self
     {
         $this->sellAt = $sellAt;
 

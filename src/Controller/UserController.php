@@ -431,7 +431,7 @@ class UserController extends AbstractController
 
         $biens = [];
         foreach($contractants as $contractant) {
-            $biens[] = $contractant->getId();
+            $biens[] = $contractant->getContract()->getBien();
         }
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
