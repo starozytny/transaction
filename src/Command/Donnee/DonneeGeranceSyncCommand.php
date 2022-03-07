@@ -2,10 +2,25 @@
 
 namespace App\Command\Donnee;
 
-use App\Entity\Donnee\DoQuartier;
-use App\Service\Data\Donnee\DataDonnee;
-use App\Service\DatabaseService;
+use App\Entity\Immo\ImAdvantage;
+use App\Entity\Immo\ImAdvert;
+use App\Entity\Immo\ImArea;
+use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImConfidential;
+use App\Entity\Immo\ImDiag;
+use App\Entity\Immo\ImFeature;
+use App\Entity\Immo\ImFinancial;
+use App\Entity\Immo\ImLocalisation;
+use App\Entity\Immo\ImMandat;
+use App\Entity\Immo\ImNegotiator;
+use App\Entity\Immo\ImNumber;
+use App\Entity\User;
+use App\Service\Data\DataImmo;
+use App\Service\Immo\ImmoService;
+use App\Service\SanitizeData;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,105 +33,213 @@ class DonneeGeranceSyncCommand extends Command
     protected static $defaultDescription = 'Sync data gérance';
     private $em;
     private $privateDirectory;
-    private $dataDonnee;
-    private $databaseService;
+    private $dataImmo;
+    private $immoService;
+    private $sanitizeData;
 
-    public function __construct(EntityManagerInterface $entityManager, $privateDirectory,
-                                DataDonnee $dataDonnee, DatabaseService $databaseService)
+    public function __construct(EntityManagerInterface $entityManager, $privateDirectory, DataImmo $dataImmo,
+                                ImmoService $immoService, SanitizeData $sanitizeData)
     {
         parent::__construct();
 
         $this->em = $entityManager;
         $this->privateDirectory = $privateDirectory;
-        $this->dataDonnee = $dataDonnee;
-        $this->databaseService = $databaseService;
+        $this->dataImmo = $dataImmo;
+        $this->immoService = $immoService;
+        $this->sanitizeData = $sanitizeData;
     }
 
-
+    /**
+     * @throws Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-//        $io->title('Reset des tables');
-//        $this->databaseService->resetTable($io, [DoQuartier::class]);
+        $io->title('Synchronisation de la gérance');
 
-        $objs = $this->em->getRepository(DoQuartier::class)->findBy(['isNative' => true]);
-        if(count($objs) > 1){
-            $io->text("Quartier déjà initialisé.");
-            return Command::FAILURE;
-        }
-
-        $importFile = $this->getPrivateDirectory() . "import/quartiers-marseille.geojson";
+        $importFile = $this->getPrivateDirectory() . "import/gerance/TRANSAC.csv";
         if(!file_exists($importFile)){
             $io->text("Fichier introuvable.");
             return Command::FAILURE;
         }
 
-        $content = file_get_contents($importFile);
-        $content = json_decode($content);
+        $reader = new Csv();
+        $spreadsheet = $reader->load($importFile);
 
-        $io->title('Création des quartiers');
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
 
-        $progressBar = new ProgressBar($output, count($content->features));
+        $progressBar = new ProgressBar($output, count($sheetData));
         $progressBar->start();
-        foreach($content->features as $item){
 
-            $zipcode = $this->setRightZipcode($item->properties->DEPCO);
-            $city    = $this->setRightCity($item->properties->NOM_CO);
 
-            $data = [
-                "name" => $item->properties->NOM_QUA,
-                "zipcode" => $zipcode,
-                "city" => $city,
-                "polygon" => []
-            ];
+        $user = $this->em->getRepository(User::class)->findOneBy(['username' => "shanbo"]);
+        $negotiator = $this->em->getRepository(ImNegotiator::class)->findOneBy(['agency' => $user->getAgency()]);
 
-            $data = json_decode(json_encode($data));
+        $first = true;
+        foreach($sheetData as $item){
+            if($first){
+                $first = false;
+            }else{
+                dump($item[5]);
 
-            $obj = $this->dataDonnee->setDataQuartier(new DoQuartier(), $data);
-            $obj->setIsNative(true);
+                // TODO MAIN NEGOTIATOR
 
-            $this->em->persist($obj);
-            $progressBar->advance();
+//                $data = [
+//                    "codeTypeAd" => ImBien::AD_LOCATION,
+//                    "codeTypeBien" => ImBien::BIEN_APPARTEMENT,
+//                    "libelle" => "Appartement",
+//                    "negotiator" => $negotiator->getId(),
+//                    "areaTotal" => $item[6],
+//                    "areaHabitable" => $item[6],
+//                    "areaLand" => null,
+//                    "areaGarden" => null,
+//                    "areaTerrace" => null,
+//                    "areaCave" => null,
+//                    "areaBathroom" => null,
+//                    "areaLiving" => null,
+//                    "areaDining" => null,
+//                    "piece" => (string) $fake->randomDigit(),
+//                    "room" => (string) $fake->randomDigit(),
+//                    "bathroom" => (string) $fake->randomDigit(),
+//                    "wc" => (string) $fake->randomDigit(),
+//                    "balcony" => (string) $fake->randomDigit(),
+//                    "parking" => (string) $fake->randomDigit(),
+//                    "box" => (string) $fake->randomDigit(),
+//                    "dispoAt" => null,
+//                    "buildAt" => $fake->numberBetween(1600, 2021),
+//                    "busy" => $item[14] != "Pas de locataire" ? 1 : 0,
+//                    "isMeuble" => $answers[$fake->numberBetween(0,2)],
+//                    "isNew" => $answers[$fake->numberBetween(0,2)],
+//                    "floor" => $item[10],
+//                    "nbFloor" => $item[39],
+//                    "codeHeater0" => $fake->numberBetween(0, 1),
+//                    "codeHeater" => $fake->numberBetween(0, 15),
+//                    "codeKitchen" => $fake->numberBetween(0, 8),
+//                    "isWcSeparate" => $answers[$fake->numberBetween(0,2)],
+//                    "codeWater" =>  $fake->numberBetween(0, 1),
+//                    "exposition" => (string) $fake->numberBetween(0, 5),
+//                    "hasGarden" => $answers[$fake->numberBetween(0,2)],
+//                    "hasTerrace" => $answers[$fake->numberBetween(0,2)],
+//                    "hasPool" => $answers[$fake->numberBetween(0,2)],
+//                    "hasCave" => $answers[$fake->numberBetween(0,2)],
+//                    "hasDigicode" => $answers[$fake->numberBetween(0,2)],
+//                    "hasInterphone" => $answers[$fake->numberBetween(0,2)],
+//                    "hasGuardian" => $answers[$fake->numberBetween(0,2)],
+//                    "hasAlarme" => $answers[$fake->numberBetween(0,2)],
+//                    "hasLift" => $answers[$fake->numberBetween(0,2)],
+//                    "hasClim" => $answers[$fake->numberBetween(0,2)],
+//                    "hasCalme" => $answers[$fake->numberBetween(0,2)],
+//                    "hasInternet" => $answers[$fake->numberBetween(0,2)],
+//                    "hasHandi" => $answers[$fake->numberBetween(0,2)],
+//                    "hasFibre" => $answers[$fake->numberBetween(0,2)],
+//                    "situation" => $fake->name,
+//                    "sousType" => $fake->numberBetween(0, 10),
+//                    "sol" => $fake->numberBetween(0, 4),
+//                    "beforeJuly" => 1,
+//                    "isVirgin" => 0,
+//                    "isSend" => 0,
+//                    "createdAtDpe" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
+//                    "referenceDpe" => $fake->numberBetween(1600, 2021),
+//                    "dpeLetter" => (string) $fake->numberBetween(0, 6),
+//                    "gesLetter" => (string) $fake->numberBetween(0, 6),
+//                    "dpeValue" => (string) $fake->numberBetween(0, 350),
+//                    "gesValue" => (string) $fake->numberBetween(0, 350),
+//                    "minAnnual" => (string) $fake->numberBetween(0, 10000),
+//                    "maxAnnual" => (string) $fake->numberBetween(0, 10000),
+//                    "address" => $this->sanitizeData->trimData($item[1] . " " . $item[2]),
+//                    "hideAddress" => 1,
+//                    "zipcode" => $this->sanitizeData->trimData($item[3]),
+//                    "city" => $this->sanitizeData->trimData($item[4]),
+//                    "country" => $fake->country,
+//                    "departement" => $fake->citySuffix,
+//                    "quartier" => $fake->streetName,
+//                    "lat" => (string) $fake->latitude,
+//                    "lon" => (string) $fake->longitude,
+//                    "hideMap" => $fake->numberBetween(0, 1),
+//                    "price" => $item[17],
+//                    "provisionCharges" => $item[18],
+//                    "caution" => (string) $fake->randomFloat(2),
+//                    "honoraireTtc" => (string) $fake->randomFloat(2),
+//                    "edl" => (string) $fake->randomFloat(2),
+//                    "typeCharges" => $fake->numberBetween(0, 2),
+//                    "totalGeneral" => (string) $fake->randomFloat(2),
+//                    "typeBail" => $fake->numberBetween(0, 3),
+//                    "durationBail" => null,
+//                    "chargesMensuelles" => (string) $fake->randomFloat(2),
+//                    "notaire" => (string) $fake->randomFloat(2),
+//                    "foncier" => (string) $fake->randomFloat(2),
+//                    "taxeHabitation" => (string) $fake->randomFloat(2),
+//                    "honoraireChargeDe" => $fake->numberBetween(0,2),
+//                    "honorairePourcentage" => (string) $fake->randomFloat(2),
+//                    "priceHorsAcquereur" => (string) $fake->randomFloat(2),
+//                    "isCopro" => $fake->numberBetween(0,1),
+//                    "nbLot" => $fake->numberBetween(0, 500),
+//                    "chargesLot" => (string) $fake->randomFloat(2),
+//                    "isSyndicProcedure" => $fake->numberBetween(0,1),
+//                    "detailsProcedure" => $fake->sentence,
+//                    "inform" => $fake->numberBetween(0, 3),
+//                    "lastname" => $fake->lastName,
+//                    "phone1" => $fake->e164PhoneNumber,
+//                    "email" => $fake->email,
+//                    "visiteAt" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
+//                    "keysNumber" => $fake->randomNumber(1),
+//                    "keysWhere" => $fake->streetName,
+//                    "typeAdvert" => $fake->numberBetween(0, 2),
+//                    "contentSimple" => $fake->text,
+//                    "contentFull" => $fake->sentence(255),
+//                    "isDraft" => $isArchived ? false : $isDraft,
+//                    "codeTypeMandat" => (string) $fake->numberBetween(0, 3),
+//                    "startAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
+//                    "endAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
+//                    "priceEstimate" => $fake->randomFloat(2),
+//                    "fee" => $fake->randomFloat(1),
+//                    "mandatRaison" => $fake->streetName,
+//                    "mandatLastname" => $fake->lastName,
+//                    "mandatFirstname" => $fake->firstName,
+//                    "mandatPhone" => $fake->e164PhoneNumber,
+//                    "mandatAddress" => $fake->streetName,
+//                    "mandatZipcode" => $fake->postcode,
+//                    "mandatCity" => $fake->city,
+//                    "mandatCommentary" => $fake->sentence,
+//                ];
+//
+//                $data = json_decode(json_encode($data));
+//
+//                $advert         = $this->dataImmo->setDataAdvert(new ImAdvert(), $data);
+//                $confidential   = $this->dataImmo->setDataConfidential(new ImConfidential(), $data);
+//                $financial      = $this->dataImmo->setDataFinancial(new ImFinancial(), $data);
+//                $localisation   = $this->dataImmo->setDataLocalisation(new ImLocalisation(), $data);
+//                $diag           = $this->dataImmo->setDataDiag(new ImDiag(), $data);
+//                $advantage      = $this->dataImmo->setDataAdvantage(new ImAdvantage(), $data);
+//                $feature        = $this->dataImmo->setDataFeature(new ImFeature(), $data);
+//                $number         = $this->dataImmo->setDataNumber(new ImNumber(), $data);
+//                $area           = $this->dataImmo->setDataArea(new ImArea(), $data);
+//                $mandat         = $this->dataImmo->setDataMandat($this->immoService, new ImMandat(), $data, $user->getAgency());
+//
+//                $obj = $this->dataImmo->setDataBien($this->immoService, $user->getAgency(), new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
+//                    $localisation, $financial, $confidential, $advert, $mandat, []);
+//
+//                $obj = ($obj)
+//                    ->setUser($user)
+//                    ->setCreatedBy($user->getShortFullName())
+//                    ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(4))) . $i)
+//                    ->setAgency($user->getAgency())
+//                    ->setOwner($owner)
+//                    ->setIsGerance(true)
+//                    ->setReferenceGerance($item[0])
+//                ;
+
+                $progressBar->advance();
+            }
         }
 
         $progressBar->finish();
-        $this->em->flush();
+//        $this->em->flush();
 
         $io->newLine();
         $io->comment('--- [FIN DE LA COMMANDE] ---');
         return Command::SUCCESS;
-    }
-
-    private function setRightZipcode($zipcode): string
-    {
-        $values = ["13201", "13202", "13203", "13204", "13205", "13206", "13207", "13208", "13209", "13210", "13211", "13212", "13213", "13214", "13215", "13216"];
-        $reals  = ["13001", "13002", "13003", "13004", "13005", "13006", "13007", "13008", "13009", "13010", "13011", "13012", "13013", "13014", "13015", "13016"];
-
-        if(in_array($zipcode, $values)){
-            $position = array_search($zipcode, $values);
-            return $reals[$position];
-        }
-
-        return $zipcode;
-    }
-
-    private function setRightCity($city): string
-    {
-        $values = [];
-        $reals = [];
-
-        for($i = 1 ; $i <= 16 ; $i++){
-            $values[] = "Marseille " . $i . ($i === 1 ? "er" : "e") . " Arrondissemen";
-            $reals[] = "MARSEILLE " . ($i <= 9 ? "0" : "") . $i;
-        }
-
-        if(in_array($city, $values)){
-            $position = array_search($city, $values);
-            return $reals[$position];
-        }
-
-        return $city;
     }
 
     public function getPrivateDirectory()

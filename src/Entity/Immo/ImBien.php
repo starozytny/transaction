@@ -123,6 +123,17 @@ class ImBien extends DataEntity
      */
     private $isArchived = false;
 
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isGerance = false;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $referenceGerance;
+
     /**
      * @ORM\OneToOne(targetEntity=ImArea::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
@@ -947,6 +958,30 @@ class ImBien extends DataEntity
                 $contract->setBien(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsGerance(): ?bool
+    {
+        return $this->isGerance;
+    }
+
+    public function setIsGerance(bool $isGerance): self
+    {
+        $this->isGerance = $isGerance;
+
+        return $this;
+    }
+
+    public function getReferenceGerance(): ?string
+    {
+        return $this->referenceGerance;
+    }
+
+    public function setReferenceGerance(?string $referenceGerance): self
+    {
+        $this->referenceGerance = $referenceGerance;
 
         return $this;
     }
