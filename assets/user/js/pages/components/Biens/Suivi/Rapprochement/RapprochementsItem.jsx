@@ -108,9 +108,9 @@ export class RapprochementsItem extends Component {
                                 </>}
                             </div>
                             <div className="actions">
-                                {!offer && <ButtonIcon icon="receipt-edit" onClick={() => onChangeContext("create-offer", prospect)}>Faire une offre</ButtonIcon>}
-                                <ButtonIcon icon="map" onClick={() => onChangeContext("create-visit", prospect)} >Programmer une visite</ButtonIcon>
-                                <MailAsideButton txtBtn="Envoyer un mail" title={"Envoyer un mail à " + prospect.fullname} to={[prospect.email]} />
+                                {!offer && <ButtonIcon icon="receipt-edit" tooltipWidth={80} onClick={() => onChangeContext("create-offer", prospect)}>Faire une offre</ButtonIcon>}
+                                <ButtonIcon icon="map" tooltipWidth={120} onClick={() => onChangeContext("create-visit", prospect)} >Programmer une visite</ButtonIcon>
+                                <MailAsideButton txtBtn="Envoyer un mail" tooltipWidth={90} title={"Envoyer un mail à " + prospect.fullname} to={[prospect.email]} />
                             </div>
                         </div>
                     </> : <>

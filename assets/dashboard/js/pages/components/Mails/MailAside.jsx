@@ -12,10 +12,10 @@ export class MailAsideButton extends Component {
     }
 
     render () {
-        const { isBtnIcon = true, txtBtn = "Envoyer un mail", title, icon = "chat-2", to = [], cc = [], bcc = [] } = this.props;
+        const { isBtnIcon = true, tooltipWidth=null, txtBtn = "Envoyer un mail", title, icon = "chat-2", to = [], cc = [], bcc = [] } = this.props;
 
         return <>
-            {isBtnIcon ? <ButtonIcon icon={icon} onClick={() => this.mail.current.handleOpenAside(title)}>{txtBtn}</ButtonIcon>
+            {isBtnIcon ? <ButtonIcon icon={icon} tooltipWidth={tooltipWidth} onClick={() => this.mail.current.handleOpenAside(title)}>{txtBtn}</ButtonIcon>
                 : <div onClick={() => this.mail.current.handleOpenAside(title)}>{txtBtn}</div>}
             <MailAside ref={this.mail} to={to} cc={cc} bcc={bcc}  />
         </>
