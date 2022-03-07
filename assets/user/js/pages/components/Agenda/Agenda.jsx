@@ -42,11 +42,8 @@ function filterFunction(dataImmuable, filters, search = null) {
                 let push = false;
                 let person = false;
                 switch (filter){
-                    case 6:
-                        person = "prospects";
-                        break;
                     case 5:
-                        person = "buyers";
+                        person = "prospects";
                         break;
                     case 4:
                         person = "tenants";
@@ -120,7 +117,6 @@ export class Agenda extends Component {
             negotiator: setSelectorDefault("negotiator", props.type, props.search),
             owner: setSelectorDefault("owner", props.type, props.search),
             tenant: setSelectorDefault("tenant", props.type, props.search),
-            buyer: setSelectorDefault("buyer", props.type, props.search),
             prospect: setSelectorDefault("prospect", props.type, props.search),
         }
 
@@ -206,14 +202,14 @@ export class Agenda extends Component {
 
     // init event
     handleEventDidMount = (e) => {
-        const { users, managers, negotiators, owners, tenants, prospects, buyers } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
 
-        addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects, buyers);
+        addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects);
     }
 
     // move event
     handleEventDrop = (e) => {
-        const { users, managers, negotiators, owners, tenants, prospects, buyers } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
 
         const self = this;
         Swal.fire(SwalOptions.options("Déplacer le rendez-vous", ""
@@ -230,7 +226,7 @@ export class Agenda extends Component {
                         }})
                         .then(function (response) {
                             toastr.info("Données mises à jour");
-                            addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects, buyers);
+                            addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects);
                         })
                         .catch(function (error) {
                             toastr.error("Une erreur est survenue.");
@@ -266,22 +262,20 @@ export class Agenda extends Component {
 
     render () {
         const { context, errors, loadPageError, loadData, data, initialView, element,
-            users, managers, negotiators, owners, tenants, prospects, buyers,
-            filters, selActive, user, manager, negotiator, owner, tenant, buyer, prospect } = this.state;
+            users, managers, negotiators, owners, tenants, prospects,
+            filters, selActive, user, manager, negotiator, owner, tenant, prospect } = this.state;
 
         let contentAside;
         switch (context){
             case "create":
                 contentAside = <AgendaFormulaire type="create" custom={element} refAside={this.aside}
-                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 prospects={prospects} buyers={buyers}
+                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants} prospects={prospects}
                                                  onUpdateList={this.handleUpdateList}
                                                  />
                 break;
             case "update":
                 contentAside = <AgendaFormulaire type="update" element={element} refAside={this.aside}
-                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 prospects={prospects} buyers={buyers}
+                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants} prospects={prospects}
                                                  onUpdateList={this.handleUpdateList} onDelete={() => this.handleDelete(element)} />
                 break;
             default:
@@ -311,7 +305,6 @@ export class Agenda extends Component {
         let selectNegotiators   = AgendaData.getSelecteurData(negotiators, 'sp-ne');
         let selectOwners        = AgendaData.getSelecteurData(owners, 'sp-ow');
         let selectTenants       = AgendaData.getSelecteurData(tenants, 'sp-te');
-        let selectBuyers        = AgendaData.getSelecteurData(buyers, 'sp-by');
         let selectProspects     = AgendaData.getSelecteurData(prospects, 'sp-pr');
 
         return <>
@@ -343,7 +336,11 @@ export class Agenda extends Component {
                                 Négociateur
                             </SelectReactSelectize>
                         </div>
-                        <div className="line line-4">
+                        <div className="line line-3">
+                            <SelectReactSelectize items={selectProspects} identifiant="prospect" disabled={selActive !== "" && selActive !== "prospect"}
+                                                  valeur={prospect} errors={errors} onChange={(e) => this.handleChangeSelect('prospect', e)}>
+                                Prospect
+                            </SelectReactSelectize>
                             <SelectReactSelectize items={selectOwners} identifiant="owner" disabled={selActive !== "" && selActive !== "owner"}
                                                   valeur={owner} errors={errors} onChange={(e) => this.handleChangeSelect('owner', e)}>
                                 Propriétaire
@@ -351,14 +348,6 @@ export class Agenda extends Component {
                             <SelectReactSelectize items={selectTenants} identifiant="tenant" disabled={selActive !== "" && selActive !== "tenant"}
                                                   valeur={tenant} errors={errors} onChange={(e) => this.handleChangeSelect('tenant', e)}>
                                 Locataire
-                            </SelectReactSelectize>
-                            <SelectReactSelectize items={selectBuyers} identifiant="buyer" disabled={selActive !== "" && selActive !== "buyer"}
-                                                  valeur={buyer} errors={errors} onChange={(e) => this.handleChangeSelect('buyer', e)}>
-                                Acquéreur
-                            </SelectReactSelectize>
-                            <SelectReactSelectize items={selectProspects} identifiant="prospect" disabled={selActive !== "" && selActive !== "prospect"}
-                                                  valeur={prospect} errors={errors} onChange={(e) => this.handleChangeSelect('prospect', e)}>
-                                Prospect
                             </SelectReactSelectize>
                         </div>
                     </div>
@@ -392,7 +381,7 @@ export class Agenda extends Component {
     }
 }
 
-function addEventElement (bloc, event, users, managers, negotiators, owners, tenants, prospects, buyers) {
+function addEventElement (bloc, event, users, managers, negotiators, owners, tenants, prospects) {
     bloc.innerHTML = "";
 
     let props = event.extendedProps;
@@ -423,7 +412,6 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
     let data3 = getDataPerson(persons.owners, owners);
     let data4 = getDataPerson(persons.tenants, tenants);
     let data5 = getDataPerson(persons.prospects, prospects);
-    let data6 = getDataPerson(persons.buyers, buyers);
 
     let items0 = getPersonAvatar(data0);
     let items1 = getPersonAvatar(data1);
