@@ -176,10 +176,6 @@ export class AdCard extends Component {
                         </a>
                         <div className="col-3">
                             <div className="references">{el.agency.code}</div>
-                            <a className="references" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
-                                <div>{el.reference}</div>
-                                <div>GERANCE01</div>
-                            </a>
                             <NegociatorBubble elem={el.negotiator} onOpen={this.handleOpenHelp} />
                         </div>
                     </div>
