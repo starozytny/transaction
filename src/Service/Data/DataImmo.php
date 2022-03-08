@@ -287,6 +287,14 @@ class DataImmo extends DataConstructor
             ;
         }
 
+        if((int) $data->codeTypeBien == ImBien::BIEN_PARKING_BOX){
+            $obj = ($obj)
+                ->setNbVehicles($this->setToNullInteger($data->nbVehicles))
+                ->setIsImmeubleParking($this->setToUnknownEmpty($data->isImmeubleParking))
+                ->setIsParkingIsolate($this->setToUnknownEmpty($data->isParkingIsolate))
+            ;
+        }
+
         return ($obj)
             ->setDispoAt($this->createDate($data->dispoAt))
         ;

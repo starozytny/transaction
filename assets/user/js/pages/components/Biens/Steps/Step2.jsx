@@ -18,7 +18,8 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                           areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving,
                           piece, room, bathroom, wc, balcony, parking, box,
                           dispoAt, busy, buildAt, isMeuble, isNew, floor, nbFloor,
-                          codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0 })
+                          codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0,
+                          nbVehicles, isImmeubleParking, isParkingIsolate })
 {
     let expositionItems = helper.getItems("expositions");
     let chauffage0Items = helper.getItems("chauffages-0");
@@ -111,7 +112,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
 
             {codeTypeBienInt !== BIEN_TERRAIN && <>
                 <div className="line line-2">
-                    <Input type="number" min={1200} identifiant="buildAt" valeur={buildAt} errors={errors} onChange={onChange}>
+                    <Input type="number" min={1600} identifiant="buildAt" valeur={buildAt} errors={errors} onChange={onChange}>
                         <span>Année de construction</span>
                     </Input>
                     <Radiobox items={helper.getItems("answers", 1)} identifiant="isNew" valeur={isNew} errors={errors} onChange={onChange}>
@@ -178,6 +179,25 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <div className="line line-infinite">
                     <Radiobox items={expositionItems} identifiant="exposition" valeur={exposition} errors={errors} onChange={onChange}>
                         Exposition
+                    </Radiobox>
+                </div>
+            </div>
+        </>}
+
+        {codeTypeBienInt === BIEN_PARKING_BOX && <>
+            <div className="line special-line">
+                <div className="line line-2">
+                    <Input type="number" min={0} identifiant="nbVehicles" valeur={nbVehicles} errors={errors} onChange={onChange}>
+                        <span>Nombre de véhicules</span>
+                    </Input>
+                    <div className="form-group"/>
+                </div>
+                <div className="line line-2">
+                    <Radiobox items={helper.getItems("answers", "p-ip")} identifiant="isImmeubleParking" valeur={isImmeubleParking} errors={errors} onChange={onChange}>
+                        Immeuble de parkings ?
+                    </Radiobox>
+                    <Radiobox items={helper.getItems("answers", '"p-pi')} identifiant="isParkingIsolate" valeur={isParkingIsolate} errors={errors} onChange={onChange}>
+                        Parking isolé ?
                     </Radiobox>
                 </div>
             </div>

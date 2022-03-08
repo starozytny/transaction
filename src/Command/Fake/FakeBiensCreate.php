@@ -157,6 +157,9 @@ class FakeBiensCreate extends Command
                 "isWcSeparate" => $answers[$fake->numberBetween(0,2)],
                 "codeWater" =>  $fake->numberBetween(0, 1),
                 "exposition" => (string) $fake->numberBetween(0, 5),
+                "nbVehicles" => (string) $fake->numberBetween(0, 10),
+                "isImmeubleParking" => (string) $fake->numberBetween(0, 2),
+                "isParkingIsolate" => (string) $fake->numberBetween(0, 2),
 
                 "hasGarden" => $answers[$fake->numberBetween(0,2)],
                 "hasTerrace" => $answers[$fake->numberBetween(0,2)],

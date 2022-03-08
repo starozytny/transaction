@@ -47,6 +47,10 @@ function getDataState (props) {
         codeWater: props.codeWater,
         exposition: props.exposition,
 
+        nbVehicles: props.nbVehicles,
+        isImmeubleParking: props.isImmeubleParking,
+        isParkingIsolate: props.isParkingIsolate,
+
         hasGarden: props.hasGarden,
         hasTerrace: props.hasTerrace,
         hasPool: props.hasPool,

@@ -99,16 +99,19 @@ class ImFeature extends DataEntity
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
      */
     private $nbVehicles;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $isImmeubleParking = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $isParkingIsolate = ImBien::ANSWER_UNKNOWN;
 
