@@ -227,7 +227,7 @@ class FakeBiensCreate extends Command
 
                 "priceMurs" => (string) $fake->randomFloat(2),
 
-                "inform" => $fake->numberBetween(0, 3),
+                "inform" => $fake->numberBetween(0, 2),
                 "lastname" => $fake->lastName,
                 "phone1" => $fake->e164PhoneNumber,
                 "email" => $fake->email,
