@@ -194,7 +194,7 @@ export class Step4 extends Component {
                     <Button type="default" outline={true} onClick={() => onOpenAside("room")}>Ajouter une pièce</Button>
                     <Aside ref={refAside} content={contentAside}>Pièce</Aside>
                 </div>
-            </> : <Alert type="reverse">Rien à renseigner dans cette <b><u>partie {CURRENT_STEP}</u></b> pour un parking/box.</Alert>}
+            </> : <Alert type="reverse">Rien à renseigner dans cette <b><u>partie {CURRENT_STEP}</u></b>.</Alert>}
 
             <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
         </div>

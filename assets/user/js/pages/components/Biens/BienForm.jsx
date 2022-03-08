@@ -516,7 +516,7 @@ export class BienForm extends Component {
 
     render () {
         const { negotiators, quartiers, sols, sousTypes, societyId, agencyId, settings, allSupports } = this.props;
-        const { step, contentHelpBubble, codeTypeAd, owners, allOwners, codeTypeBien } = this.state;
+        const { step, contentHelpBubble, codeTypeAd, owners, allOwners } = this.state;
 
         let steps = [
             {id: 1,  label: "Informations globales"},

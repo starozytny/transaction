@@ -15,8 +15,8 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                           hasGarden, hasTerrace, hasPool, hasCave, hasDigicode, hasInterphone, hasGuardian,
                           hasAlarme, hasLift, hasClim, hasCalme, hasInternet,
                           hasHandi, hasFibre, situation, sousType, sol,
-                          beforeJuly, isVirgin, isSend, createdAtDpe, referenceDpe, dpeLetter, 
-                          gesLetter, dpeValue, gesValue, minAnnual, maxAnnual }) 
+                          beforeJuly, isVirgin, isSend, createdAtDpe, referenceDpe, dpeLetter,
+                          gesLetter, dpeValue, gesValue, minAnnual, maxAnnual })
 {
     let solItems = helper.getItemsFromDB(sols, sol, 'sol');
     let soustypeItems = helper.getItemsFromDB(sousTypes, sousType, 'sous-types');
@@ -165,7 +165,7 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     </Input>
                 </div>
             </div>
-        </> : <Alert type="reverse">Rien à renseigner dans cette <b><u>partie {CURRENT_STEP}</u></b> pour un parking/box.</Alert>}
+        </> : <Alert type="reverse">Rien à renseigner dans cette <b><u>partie {CURRENT_STEP}</u></b>.</Alert>}
 
         <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
     </div>
