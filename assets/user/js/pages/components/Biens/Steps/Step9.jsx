@@ -203,7 +203,7 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </div>
             <div className="line line-2">
                 <div className="form-group">
-                    <Button type="default" onClick={() => onGenerateContent("simple")}>Générer un texte simple par défaut</Button>
+                    <Button type="default" outline={true} onClick={() => onGenerateContent("simple")}>Générer un texte simple par défaut</Button>
                 </div>
                 <div className="form-group">
                     Nombre de caractères : {contentSimple ? contentSimple.length : 0}/250
@@ -216,7 +216,7 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </div>
             <div className="line line-2">
                 <div className="form-group">
-                    <Button type="default" onClick={() => onGenerateContent("complexe")}>Générer un texte complexe par défaut</Button>
+                    <Button type="default" outline={true} onClick={() => onGenerateContent("complexe")}>Générer un texte complexe par défaut</Button>
                 </div>
                 <div className="form-group">
                     Nombre de caractères : {contentFull ? contentFull.length : 0}/4000

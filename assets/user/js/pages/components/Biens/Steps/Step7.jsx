@@ -130,7 +130,7 @@ export function PhotosItem({ isFromRead=false, photos, onSwitchTrashFile, onOpen
                         </div>
                     </div>
                 </div>)
-            }) : <Alert>Aucune photo renseignée.</Alert>}
+            }) : <Alert type="reverse">Aucune photo renseignée.</Alert>}
         </div>
     </div>
 }

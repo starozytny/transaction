@@ -24,7 +24,7 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             <div className="line line-3">
                 <div className="form-group" />
                 <div className="form-group">
-                    <Button type="default" onClick={() => onOpenAside("owner-select")}>Sélectionner ou ajouter un propriétaire</Button>
+                    <Button type="default" outline={true} onClick={() => onOpenAside("owner-select")}>Sélectionner ou ajouter un propriétaire</Button>
                 </div>
                 <div className="form-group" />
             </div>
