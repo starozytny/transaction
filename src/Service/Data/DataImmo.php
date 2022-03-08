@@ -380,11 +380,21 @@ class DataImmo extends DataConstructor
                 ->setFoncier($this->setToNullFloat($data->foncier))
                 ->setTaxeHabitation($this->setToNullFloat($data->taxeHabitation))
                 ->setIsCopro($data->isCopro)
-                ->setNbLot($this->setToNullFloat($data->nbLot))
-                ->setChargesLot($this->setToNullFloat($data->chargesLot))
                 ->setIsSyndicProcedure($data->isSyndicProcedure)
-                ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
             ;
+
+            if($data->isCopro){
+                $obj = ($obj)
+                    ->setNbLot($this->setToNullFloat($data->nbLot))
+                    ->setChargesLot($this->setToNullFloat($data->chargesLot))
+                ;
+            }
+
+            if($data->isSyndicProcedure){
+                $obj = ($obj)
+                    ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
+                ;
+            }
         }
 
         return ($obj)
@@ -399,11 +409,17 @@ class DataImmo extends DataConstructor
      */
     public function setDataConfidential(ImConfidential $obj, $data): ImConfidential
     {
+        $inform = $this->setToZeroEmpty($data->inform);
+        if($inform == 3){
+            $obj = ($obj)
+                ->setLastname($this->sanitizeData->sanitizeString($data->lastname))
+                ->setPhone1($this->sanitizeData->trimData($data->phone1))
+                ->setEmail($this->sanitizeData->trimData($data->email))
+            ;
+        }
+
         return ($obj)
-            ->setInform($this->setToZeroEmpty($data->inform))
-            ->setLastname($this->sanitizeData->sanitizeString($data->lastname))
-            ->setPhone1($this->sanitizeData->trimData($data->phone1))
-            ->setEmail($this->sanitizeData->trimData($data->email))
+            ->setInform($inform)
             ->setVisiteAt($this->createDate($data->visiteAt))
             ->setKeysNumber($this->setToNullInteger($data->keysNumber))
             ->setKeysWhere($this->sanitizeData->trimData($data->keysWhere))
