@@ -67,7 +67,7 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     <span>Honoraires (avec état des lieux) TTC *</span>
                 </Input>
                 <Input type="cleave" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChangeCleave}>
-                    <span>Honoraires état des lieux *</span>
+                    <span>Honoraires état des lieux</span>
                 </Input>
             </div>
         </div>

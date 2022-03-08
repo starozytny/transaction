@@ -391,7 +391,7 @@ export class BienForm extends Component {
 
     handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
-            areaHabitable, piece, priceEstimate, price, address, zipcode, city, country, contentSimple, contentFull,
+            areaHabitable, piece, priceEstimate, price, honoraireTtc, address, zipcode, city, country, contentSimple, contentFull,
             repartitionCa, natureBailCommercial } = this.state;
 
         this.setState({ errors: [] })
@@ -411,11 +411,16 @@ export class BienForm extends Component {
                     ]
                     break;
                 case 7:
+                    paramsToValidate = [
+                        {type: "text",  id: 'price',         value: price},
+                        {type: "text",  id: 'honoraireTtc',  value: honoraireTtc},
+                    ];
+
                     if(parseInt(codeTypeAd) === AD_FOND_COMMERCE){
-                        paramsToValidate = [
+                        paramsToValidate = [...paramsToValidate, ...[
                             {type: "length",    id: 'repartitionCa',         value: repartitionCa,          min:0, max: 100},
                             {type: "length",    id: 'natureBailCommercial',  value: natureBailCommercial,   min:0, max: 50},
-                        ];
+                        ]];
                     }
                     break;
                 case 6:
@@ -465,7 +470,9 @@ export class BienForm extends Component {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
-        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator, photos } = this.state;
+        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
+            areaHabitable, piece, address, zipcode, city, country, contentSimple, contentFull,
+            repartitionCa, natureBailCommercial } = this.state;
 
         this.setState({ errors: [] })
 
@@ -475,10 +482,26 @@ export class BienForm extends Component {
         let paramsToValidate = [
             {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
             {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
-            {type: "text",      id: 'libelle',        value: libelle},
             {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
             {type: "text",      id: 'negotiator',     value: negotiator},
-            {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
+
+            {type: "text",      id: 'areaHabitable',  value: areaHabitable},
+            {type: "text",      id: 'piece',          value: piece},
+
+            {type: "text",  id: 'price',         value: price},
+            {type: "text",  id: 'honoraireTtc',  value: honoraireTtc},
+
+            {type: "text",      id: 'address',        value: address},
+            {type: "text",      id: 'zipcode',        value: zipcode},
+            {type: "text",      id: 'city',           value: city},
+            {type: "text",      id: 'country',        value: country},
+
+            {type: "text",      id: 'libelle',        value: libelle},
+            {type: "text",      id: 'contentSimple',  value: contentSimple},
+            {type: "text",      id: 'contentFull',    value: contentFull},
+            {type: "length",    id: 'libelle',        value: libelle,       min:0, max: 64},
+            {type: "length",    id: 'contentSimple',  value: contentSimple, min:0, max: 250},
+            {type: "length",    id: 'contentFull',    value: contentFull,   min:0, max: 4000},
         ];
 
         // validate global
