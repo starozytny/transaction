@@ -8,26 +8,20 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/functions/helper";
 
-const BIEN_APPARTEMENT      = 0;
-const BIEN_MAISON           = 1;
-const BIEN_PARKING_BOX      = 2;
-const BIEN_TERRAIN          = 3;
-const BIEN_BOUTIQUE         = 4;
-const BIEN_BUREAU           = 5;
-const BIEN_CHATEAU          = 6;
-const BIEN_IMMEUBLE         = 7;
-const BIEN_TERRAIN_MAISON   = 8;
-const BIEN_BATIMENT         = 9;
-const BIEN_LOCAL            = 10;
-const BIEN_LOFT             = 11;
-const BIEN_HOTEL            = 12;
-const BIEN_AUTRES           = 13;
+const AD_VENTE              = 0;
+const AD_LOCATION           = 1;
+const AD_VIAGER             = 2;
+const AD_PDT_INVEST         = 3;
+const AD_CESSION_BAIL       = 4;
+const AD_LOCATION_VAC       = 5;
+const AD_VENTE_PRESTIGE     = 6;
+const AD_FOND_COMMERCE      = 7;
 
 const CURRENT_STEP = 2;
 
 export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate,
-                          codeTypeAd, codeTypeBien,
-                          areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving,
+                          caseTypeBien, codeTypeAd, codeTypeBien,
+                          areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving,
                           piece, room, bathroom, wc, balcony, parking, box,
                           dispoAt, busy, buildAt, isMeuble, isNew, floor, nbFloor,
                           codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0 })
@@ -50,7 +44,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </Alert>
         </div>
 
-        {(codeTypeBienInt !== 2 && codeTypeBienInt !== 3) && <div className="line special-line">
+        {caseTypeBien === 1 && <div className="line special-line">
             <div className="form-group">
                 <label>Nombre de ...</label>
             </div>
@@ -85,9 +79,9 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </div>
             <div className="line line-infinite">
                 <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={onChange}>
-                    <span>{codeTypeBienInt === BIEN_PARKING_BOX ? "Total" : "Habitable"}</span>
+                    <span>{caseTypeBien === 1 ? "Habitable" : "Total"}</span>
                 </Input>
-                {codeTypeBienInt !== BIEN_PARKING_BOX && <>
+                {caseTypeBien === 1 && <>
                     <Input type="number" step="any" min={0} identifiant="areaLand" valeur={areaLand} errors={errors} onChange={onChange}>
                         <span>Terrain</span>
                     </Input>
@@ -115,7 +109,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <label>Caractéristiques</label>
             </div>
 
-            {(parseInt(codeTypeAd) === 1 && parseInt(codeTypeBien) !== 2 && parseInt(codeTypeBien) !== 3) && <div className="line">
+            {(parseInt(codeTypeAd) === 1 && caseTypeBien === 1) && <div className="line">
                 <Radiobox items={helper.getItems("answers", 0)} identifiant="isMeuble" valeur={isMeuble} errors={errors} onChange={onChange}>
                     Meublé ?
                 </Radiobox>
@@ -135,57 +129,58 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                           onChange={(e) => onChangeDate("dispoAt", e)}>
                     Date disponible
                 </DatePick>
-                <Radiobox items={occupationItems} identifiant="busy" valeur={busy} errors={errors} onChange={onChange}>
+                {caseTypeBien === 1 ? <Radiobox items={occupationItems} identifiant="busy" valeur={busy} errors={errors} onChange={onChange}>
                     Occupation
-                </Radiobox>
+                </Radiobox> : <div className="form-group" />}
             </div>
         </div>
-        <div className="line special-line">
-            <div className="line line-2">
-                <Input type="number" min={0} identifiant="floor" valeur={floor} errors={errors} onChange={onChange}>
-                    <span>Etage</span>
-                </Input>
-                <Input type="number" min={floor ? parseInt(floor) : 0} identifiant="nbFloor" valeur={nbFloor} errors={errors} onChange={onChange}>
-                    <span>Nombre d'étages</span>
-                </Input>
+        {caseTypeBien === 1 && <>
+            <div className="line special-line">
+                <div className="line line-2">
+                    <Input type="number" min={0} identifiant="floor" valeur={floor} errors={errors} onChange={onChange}>
+                        <span>Etage</span>
+                    </Input>
+                    <Input type="number" min={floor ? parseInt(floor) : 0} identifiant="nbFloor" valeur={nbFloor} errors={errors} onChange={onChange}>
+                        <span>Nombre d'étages</span>
+                    </Input>
+                </div>
             </div>
-        </div>
-        {codeTypeBienInt !== 2 && <div className="line special-line">
-            <div className="line line-2">
-                <SelectReactSelectize items={chauffage0Items} identifiant="codeHeater0" valeur={codeHeater0} errors={errors}
-                                      onChange={(e) => onChangeSelect('codeHeater0', e)}>
-                    Type de chauffage (1/2)
-                </SelectReactSelectize>
-                <SelectReactSelectize items={chauffage1Items} identifiant="codeHeater" valeur={codeHeater} errors={errors}
-                                      onChange={(e) => onChangeSelect('codeHeater', e)}>
-                    Type de chauffage (2/2)
-                </SelectReactSelectize>
+            <div className="line special-line">
+                <div className="line line-2">
+                    <SelectReactSelectize items={chauffage0Items} identifiant="codeHeater0" valeur={codeHeater0} errors={errors}
+                                          onChange={(e) => onChangeSelect('codeHeater0', e)}>
+                        Type de chauffage (1/2)
+                    </SelectReactSelectize>
+                    <SelectReactSelectize items={chauffage1Items} identifiant="codeHeater" valeur={codeHeater} errors={errors}
+                                          onChange={(e) => onChangeSelect('codeHeater', e)}>
+                        Type de chauffage (2/2)
+                    </SelectReactSelectize>
+                </div>
+                <div className="line line-2">
+                    <SelectReactSelectize items={cuisineItems} identifiant="codeKitchen" valeur={codeKitchen} errors={errors}
+                                          onChange={(e) => onChangeSelect('codeKitchen', e)}>
+                        Type de cuisine
+                    </SelectReactSelectize>
+                    <SelectReactSelectize items={waterItems} identifiant="codeWater" valeur={codeWater} errors={errors}
+                                          onChange={(e) => onChangeSelect('codeWater', e)}>
+                        Type d'eau chaude
+                    </SelectReactSelectize>
+                </div>
             </div>
-            <div className="line line-2">
-                <SelectReactSelectize items={cuisineItems} identifiant="codeKitchen" valeur={codeKitchen} errors={errors}
-                                      onChange={(e) => onChangeSelect('codeKitchen', e)}>
-                    Type de cuisine
-                </SelectReactSelectize>
-                <SelectReactSelectize items={waterItems} identifiant="codeWater" valeur={codeWater} errors={errors}
-                                      onChange={(e) => onChangeSelect('codeWater', e)}>
-                    Type d'eau chaude
-                </SelectReactSelectize>
+            <div className="line special-line">
+                <div className="line line-2">
+                    <Radiobox items={helper.getItems("answers", 2)} identifiant="isWcSeparate" valeur={isWcSeparate} errors={errors} onChange={onChange}>
+                        WC séparé ?
+                    </Radiobox>
+                    <div className="form-group" />
+                </div>
+                <div className="line line-infinite">
+                    <Radiobox items={expositionItems} identifiant="exposition" valeur={exposition} errors={errors} onChange={onChange}>
+                        Exposition
+                    </Radiobox>
+                </div>
             </div>
-        </div>}
-
-        {codeTypeBienInt !== 2 && <div className="line special-line">
-            <div className="line line-2">
-                <Radiobox items={helper.getItems("answers", 2)} identifiant="isWcSeparate" valeur={isWcSeparate} errors={errors} onChange={onChange}>
-                    WC séparé ?
-                </Radiobox>
-                <div className="form-group" />
-            </div>
-            <div className="line line-infinite">
-                <Radiobox items={expositionItems} identifiant="exposition" valeur={exposition} errors={errors} onChange={onChange}>
-                    Exposition
-                </Radiobox>
-            </div>
-        </div>}
+        </>}
 
         <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
     </div>

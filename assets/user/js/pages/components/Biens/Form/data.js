@@ -8,6 +8,8 @@ function getDataState (props) {
         context: props.context,
         step: 1,
 
+        caseTypeBien: 1,
+
         codeTypeAd: props.codeTypeAd,
         codeTypeBien: props.codeTypeBien,
         libelle: props.libelle,

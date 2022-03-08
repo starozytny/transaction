@@ -31,6 +31,21 @@ import { Step10 }       from "@userPages/components/Biens/Steps/Step10";
 
 import { Owners}        from "@dashboardPages/components/Immo/Owners/Owners";
 
+const BIEN_APPARTEMENT      = 0;
+const BIEN_MAISON           = 1;
+const BIEN_PARKING_BOX      = 2;
+const BIEN_TERRAIN          = 3;
+const BIEN_BOUTIQUE         = 4;
+const BIEN_BUREAU           = 5;
+const BIEN_CHATEAU          = 6;
+const BIEN_IMMEUBLE         = 7;
+const BIEN_TERRAIN_MAISON   = 8;
+const BIEN_BATIMENT         = 9;
+const BIEN_LOCAL            = 10;
+const BIEN_LOFT             = 11;
+const BIEN_HOTEL            = 12;
+const BIEN_AUTRES           = 13;
+
 let arrayZipcodeSave = [];
 let arrayOwnersSave = [];
 let initRank = null;
@@ -107,6 +122,21 @@ export class BienForm extends Component {
 
         if(name === "supports"){
             value = Formulaire.updateValueCheckbox(e, supports, parseInt(value));
+        }
+
+        if(name === "codeTypeBien"){
+            let codeTypeBienInt = helper.getIntValue(value);
+            let caseTypeBien = 1;
+            switch (codeTypeBienInt){
+                case BIEN_PARKING_BOX:
+                case BIEN_TERRAIN:
+                    caseTypeBien = 2;
+                    break;
+                default:
+                    break;
+            }
+
+            this.setState({ caseTypeBien: caseTypeBien })
         }
 
         this.setState({[name]: value });
@@ -486,7 +516,7 @@ export class BienForm extends Component {
 
     render () {
         const { negotiators, quartiers, sols, sousTypes, societyId, agencyId, settings, allSupports } = this.props;
-        const { step, contentHelpBubble, codeTypeAd, owners, allOwners } = this.state;
+        const { step, contentHelpBubble, codeTypeAd, owners, allOwners, codeTypeBien } = this.state;
 
         let steps = [
             {id: 1,  label: "Informations globales"},
