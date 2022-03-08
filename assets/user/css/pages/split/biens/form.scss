@@ -16,6 +16,10 @@
       }
     }
   }
+
+  .special-line:not(.line-buttons) {
+    border-bottom: 1px solid var(--grey);
+  }
 }
 
 .line-infos{
