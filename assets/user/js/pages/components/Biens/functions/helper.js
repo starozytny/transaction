@@ -180,7 +180,11 @@ function getItems (type, prefix) {
                 { value: 6, label: 'Château',           identifiant: 'chateau' },
                 { value: 7, label: 'Immeuble',          identifiant: 'immeuble' },
                 { value: 8, label: 'Terrain + Maison',  identifiant: 'terrain-maison' },
-                { value: 9, label: 'Inconnu',           identifiant: 'inconnu' },
+                { value: 9, label: 'Bâtiment',          identifiant: 'batiment' },
+                { value: 10, label: 'Local',            identifiant: 'local' },
+                { value: 11, label: 'Loft/Atelier/Surface', identifiant: 'loft' },
+                { value: 12, label: 'Hôtel particulier',    identifiant: 'hotel' },
+                { value: 13, label: 'Autres',               identifiant: 'inconnu' },
             ];
         default:
             return [
