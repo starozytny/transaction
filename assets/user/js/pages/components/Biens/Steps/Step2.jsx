@@ -28,7 +28,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
-            <Alert>
+            <Alert type="reverse">
                 (*) Champs obligatoires. <br/><br/>
                 Une fiche bien remplie permet un meilleur référencement de l'agence
                 auprès des moteurs de recherche tel que Google. Donc, plus de visiteurs qui verront cette annonce.

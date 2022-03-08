@@ -6,7 +6,7 @@ const Formulaire = require("@dashboardComponents/functions/Formulaire");
 function getDataState (props) {
     return {
         context: props.context,
-        step: 1,
+        step: 3,
 
         codeTypeAd: props.codeTypeAd,
         codeTypeBien: props.codeTypeBien,

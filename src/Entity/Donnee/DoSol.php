@@ -73,7 +73,7 @@ class DoSol extends DataEntity
 
     public function getName(): ?string
     {
-        return $this->name;
+        return $this->name ? ucfirst(mb_strtolower($this->name)) : null;
     }
 
     public function setName(string $name): self
