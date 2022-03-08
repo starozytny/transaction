@@ -378,6 +378,7 @@ class DataImmo extends DataConstructor
                 ->setEdl($this->setToNullFloat($data->edl))
                 ->setTypeBail($this->setToZeroEmpty($data->typeBail))
                 ->setDurationBail($this->setToNullFloat($data->durationBail))
+                ->setComplementLoyer($this->setToNullFloat($data->complementLoyer))
             ;
 
             if($codeTypeAd == ImBien::AD_CESSION_BAIL){
@@ -408,6 +409,10 @@ class DataImmo extends DataConstructor
                 $obj = ($obj)
                     ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
                 ;
+            }
+
+            if($codeTypeAd == ImBien::AD_VIAGER){
+                $obj->setRente($this->setToNullFloat($data->rente));
             }
         }
 
