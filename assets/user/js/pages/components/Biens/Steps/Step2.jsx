@@ -8,6 +8,21 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/functions/helper";
 
+const BIEN_APPARTEMENT      = 0;
+const BIEN_MAISON           = 1;
+const BIEN_PARKING_BOX      = 2;
+const BIEN_TERRAIN          = 3;
+const BIEN_BOUTIQUE         = 4;
+const BIEN_BUREAU           = 5;
+const BIEN_CHATEAU          = 6;
+const BIEN_IMMEUBLE         = 7;
+const BIEN_TERRAIN_MAISON   = 8;
+const BIEN_BATIMENT         = 9;
+const BIEN_LOCAL            = 10;
+const BIEN_LOFT             = 11;
+const BIEN_HOTEL            = 12;
+const BIEN_AUTRES           = 13;
+
 const CURRENT_STEP = 2;
 
 export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate,
@@ -69,14 +84,10 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <label>Surfaces (m²)</label>
             </div>
             <div className="line line-infinite">
-                <Input type="number" step="any" min={0} identifiant="areaTotal" valeur={areaTotal} errors={errors} onChange={onChange}>
-                    <span>Total</span>
+                <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={onChange}>
+                    <span>{codeTypeBienInt === BIEN_PARKING_BOX ? "Total" : "Habitable"}</span>
                 </Input>
-
-                {codeTypeBienInt !== 2 && <>
-                    <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={onChange}>
-                        <span>Habitable</span>
-                    </Input>
+                {codeTypeBienInt !== BIEN_PARKING_BOX && <>
                     <Input type="number" step="any" min={0} identifiant="areaLand" valeur={areaLand} errors={errors} onChange={onChange}>
                         <span>Terrain</span>
                     </Input>
