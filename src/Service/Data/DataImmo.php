@@ -181,11 +181,12 @@ class DataImmo extends DataConstructor
             $obj->setFee($this->setToNullFloat($data->fee));
         }
 
-        if($codeTypeMandat == ImMandat::TYPE_NONE){
-            $numero = 0;
-        }else{
-            $agency->setCounterMandat($agency->getCounterMandat() + 1);
-            $numero = $immoService->getNumeroMandat($agency);
+        $numero = $obj->getNumero() != null && $obj->getNumero() != 0 ? $obj->getNumero() : 0;
+        if($codeTypeMandat != ImMandat::TYPE_NONE){
+            if($obj->getNumero() == null || $obj->getNumero() == 0){
+                $agency->setCounterMandat($agency->getCounterMandat() + 1);
+                $numero = $immoService->getNumeroMandat($agency);
+            }
 
             $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->mandatLastname));
             $firstname = ucfirst($this->sanitizeData->sanitizeString($data->mandatFirstname));

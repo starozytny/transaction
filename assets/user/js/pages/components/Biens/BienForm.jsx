@@ -469,9 +469,7 @@ export class BienForm extends Component {
                     toastr.info(isDraft ? "Brouillon enregistré ! " : messageSuccess);
 
                     if(isDraft){
-                        setTimeout(function (){
-                            location.reload();
-                        }, 2000)
+                        location.href = Routing.generate('user_biens_update', {'slug': response.data.slug})
                     }else{
                         location.href = Routing.generate('user_biens', {'st': 1})
                     }
