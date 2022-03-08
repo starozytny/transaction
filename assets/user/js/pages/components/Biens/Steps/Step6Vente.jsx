@@ -51,7 +51,6 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeCl
                 <div className="form-group" />
             </div>}
         </div>
-
         <div className="line special-line">
             <div className="line line-2">
                 <Input type="cleave" step="any" identifiant="chargesMensuelles" valeur={chargesMensuelles} errors={errors} onChange={onChangeCleave}>
@@ -61,6 +60,9 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeCl
                     <span>Frais notaire</span>
                 </Input>
             </div>
+        </div>
+
+        <div className="line special-line">
             <div className="line line-2">
                 <Input type="cleave" step="any" identifiant="foncier" valeur={foncier} errors={errors} onChange={onChangeCleave}>
                     <span>Impôt foncier</span>
