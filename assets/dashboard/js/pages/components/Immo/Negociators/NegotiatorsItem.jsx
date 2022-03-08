@@ -16,7 +16,7 @@ export class NegotiatorsItem extends Component {
     }
 
     render () {
-        const { agencyId, isClient, isUser, biens, elem, onDelete, onChangeContext, onSelectors } = this.props
+        const { agencyId, isClient, isUser, biens, elem, onDelete, onChangeContext, onSelectors } = this.props;
 
         let totalBien = 0;
         biens.forEach(bien => {
@@ -61,7 +61,7 @@ export class NegotiatorsItem extends Component {
 
                             {agencyId === elem.agency.id && <>
                                 <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                                {!isUser && <>
+                                {!isUser && !elem.isDefault && <>
                                     <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                                 </>}
                             </>}

@@ -256,7 +256,7 @@ class AdminUsersCreateCommand extends Command
                 $new = $this->dataImmo->setDataAgency(new ImAgency(), $data);
 
                 $negotiator = (new ImNegotiator())
-                    ->setAgency($agency)
+                    ->setAgency($new)
                     ->setIsDefault(true)
                     ->setLastname($name)
                     ->setFirstname("Négociateur")

@@ -127,6 +127,7 @@ class ImNegotiator
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"admin:read"})
      */
     private $isDefault = false;
 
