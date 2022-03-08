@@ -191,9 +191,9 @@ function getItems (type, prefix) {
                 { value: 2, label: "Viager",                         identifiant: "viager" },
                 { value: 3, label: "Produit d'investissement",       identifiant: "pdt-invest" },
                 { value: 4, label: "Cession bail",                   identifiant: "cession-bail" },
-                { value: 5, label: "Location vacances",              identifiant: "location-vac" },
-                { value: 6, label: "Vente prestige",                 identifiant: "vente-prestige" },
-                { value: 7, label: "Fond de commerce",               identifiant: "fond-commerce" },
+                // { value: 5, label: "Location vacances",              identifiant: "location-vac" },
+                { value: 6, label: "Vente de prestige",                 identifiant: "vente-prestige" },
+                { value: 7, label: "Vente fond de commerce",               identifiant: "fond-commerce" },
             ]
     }
 }

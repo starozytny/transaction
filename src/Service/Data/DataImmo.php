@@ -422,6 +422,16 @@ class DataImmo extends DataConstructor
             if($codeTypeAd == ImBien::AD_VIAGER){
                 $obj->setRente($this->setToNullFloat($data->rente));
             }
+
+            if($codeTypeAd == ImBien::AD_FOND_COMMERCE){
+                $obj = ($obj)
+                    ->setRepartitionCa($this->sanitizeData->trimData($data->repartitionCa))
+                    ->setNatureBailCommercial($this->sanitizeData->trimData($data->natureBailCommercial))
+                    ->setResultatN0($this->setToNullInteger($data->resultatN0))
+                    ->setResultatN1($this->setToNullInteger($data->resultatN1))
+                    ->setResultatN2($this->setToNullInteger($data->resultatN2))
+                ;
+            }
         }
 
         return ($obj)

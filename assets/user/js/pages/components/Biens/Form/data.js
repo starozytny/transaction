@@ -123,6 +123,11 @@ function getDataState (props) {
 
         priceMurs: props.priceMurs,
         rente: props.complementLoyer,
+        repartitionCa: props.repartitionCa,
+        resultatN2: props.resultatN2,
+        resultatN1: props.resultatN1,
+        resultatN0: props.resultatN0,
+        natureBailCommercial: props.natureBailCommercial,
 
         photos: props.photos,
         photo: null,

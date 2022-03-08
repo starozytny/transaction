@@ -171,6 +171,36 @@ class ImFinancial
      */
     private $rente;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $repartitionCa;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $resultatN2;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $resultatN1;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $resultatN0;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $natureBailCommercial;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -492,6 +522,66 @@ class ImFinancial
     public function setRente(?float $rente): self
     {
         $this->rente = $rente;
+
+        return $this;
+    }
+
+    public function getRepartitionCa(): ?string
+    {
+        return $this->repartitionCa;
+    }
+
+    public function setRepartitionCa(?string $repartitionCa): self
+    {
+        $this->repartitionCa = $repartitionCa;
+
+        return $this;
+    }
+
+    public function getResultatN2(): ?int
+    {
+        return $this->resultatN2;
+    }
+
+    public function setResultatN2(?int $resultatN2): self
+    {
+        $this->resultatN2 = $resultatN2;
+
+        return $this;
+    }
+
+    public function getResultatN1(): ?int
+    {
+        return $this->resultatN1;
+    }
+
+    public function setResultatN1(?int $resultatN1): self
+    {
+        $this->resultatN1 = $resultatN1;
+
+        return $this;
+    }
+
+    public function getResultatN0(): ?int
+    {
+        return $this->resultatN0;
+    }
+
+    public function setResultatN0(?int $resultatN0): self
+    {
+        $this->resultatN0 = $resultatN0;
+
+        return $this;
+    }
+
+    public function getNatureBailCommercial(): ?string
+    {
+        return $this->natureBailCommercial;
+    }
+
+    public function setNatureBailCommercial(?string $natureBailCommercial): self
+    {
+        $this->natureBailCommercial = $natureBailCommercial;
 
         return $this;
     }

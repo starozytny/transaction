@@ -391,7 +391,8 @@ export class BienForm extends Component {
 
     handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
-            areaHabitable, piece, priceEstimate, price, address, zipcode, city, country, contentSimple, contentFull } = this.state;
+            areaHabitable, piece, priceEstimate, price, address, zipcode, city, country, contentSimple, contentFull,
+            repartitionCa, natureBailCommercial } = this.state;
 
         this.setState({ errors: [] })
 
@@ -408,6 +409,14 @@ export class BienForm extends Component {
                         {type: "length",    id: 'contentSimple',  value: contentSimple, min:0, max: 250},
                         {type: "length",    id: 'contentFull',    value: contentFull,   min:0, max: 4000},
                     ]
+                    break;
+                case 7:
+                    if(parseInt(codeTypeAd) === AD_FOND_COMMERCE){
+                        paramsToValidate = [
+                            {type: "length",    id: 'repartitionCa',         value: repartitionCa,          min:0, max: 100},
+                            {type: "length",    id: 'natureBailCommercial',  value: natureBailCommercial,   min:0, max: 50},
+                        ];
+                    }
                     break;
                 case 6:
                     paramsToValidate = [

@@ -9,6 +9,7 @@ import helper from "@userPages/components/Biens/functions/helper";
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
 const AD_VIAGER= 2;
+const AD_FOND_COMMERCE= 7;
 
 const CURRENT_STEP = 6
 
@@ -16,7 +17,8 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeCl
                         codeTypeAd,
                         price, chargesMensuelles, notaire, foncier, taxeHabitation, honoraireChargeDe,
                         honorairePourcentage, honoraireTtc, totalGeneral, priceHorsAcquereur,
-                        isCopro, nbLot, chargesLot, isSyndicProcedure, detailsProcedure, rente })
+                        isCopro, nbLot, chargesLot, isSyndicProcedure, detailsProcedure, rente,
+                        repartitionCa, resultatN2, resultatN1, resultatN0, natureBailCommercial })
 {
     let honoraireItems = helper.getItems("honoraires");
 
@@ -117,6 +119,29 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeCl
                 </TextArea> : <div className="form-group" />}
             </div>
         </div>
+
+        {codeTypeAdInt === AD_FOND_COMMERCE && <div className="line special-line">
+            <div className="line line-2">
+                <Input identifiant="repartitionCa" valeur={repartitionCa} errors={errors} onChange={onChange} placeholder="ex: 70% bar / 30% restaurant">
+                    <span>Répartition du chiffre d'affaire</span>
+                </Input>
+                <Input identifiant="natureBailCommercial" valeur={natureBailCommercial} errors={errors} onChange={onChange} placeholder="ex: Tous commerces sauf restauration">
+                    <span>Nature du bail commercial</span>
+                </Input>
+            </div>
+
+            <div className="line line-3">
+                <Input type="cleave" identifiant="resultatN0" valeur={resultatN0} errors={errors} onChange={onChangeCleave}>
+                    <span>Résultat Année en cours</span>
+                </Input>
+                <Input type="cleave" identifiant="resultatN1" valeur={resultatN1} errors={errors} onChange={onChangeCleave}>
+                    <span>Résultat Année N-1</span>
+                </Input>
+                <Input type="cleave" identifiant="resultatN2" valeur={resultatN2} errors={errors} onChange={onChangeCleave}>
+                    <span>Résultat Année N-2</span>
+                </Input>
+            </div>
+        </div>}
 
         <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
     </div>

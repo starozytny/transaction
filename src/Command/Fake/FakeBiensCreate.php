@@ -213,6 +213,7 @@ class FakeBiensCreate extends Command
                 "totalGeneral" => (string) $fake->randomFloat(2),
                 "typeBail" => $fake->numberBetween(0, 3),
                 "durationBail" => (string) $fake->numberBetween(0,5),
+                "complementLoyer" => (string) $fake->randomFloat(2),
 
                 "chargesMensuelles" => (string) $fake->randomFloat(2),
                 "notaire" => (string) $fake->randomFloat(2),
@@ -228,6 +229,12 @@ class FakeBiensCreate extends Command
                 "detailsProcedure" => $fake->sentence,
 
                 "priceMurs" => (string) $fake->randomFloat(2),
+                "rente" => (string) $fake->randomFloat(2),
+                "repartitionCa" => "70% bar / 30% restaurant",
+                "resultatN2" => (string) $fake->randomNumber(5),
+                "resultatN1" => (string) $fake->randomNumber(5),
+                "resultatN0" => (string) $fake->randomNumber(5),
+                "natureBailCommercial" => "Tous commerces sauf restauration",
 
                 "inform" => $fake->numberBetween(0, 2),
                 "lastname" => $fake->lastName,
