@@ -2,6 +2,20 @@
 
 .form-bien{
   padding: 12px;
+  border-radius: 12px;
+  background-color: var(--fondContent);
+
+  .radiobox-item{
+    label{
+      background-color: var(--alpha);
+    }
+
+    &.checked{
+      label{
+        background-color: var(--color0);
+      }
+    }
+  }
 }
 
 .line-infos{
