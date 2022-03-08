@@ -113,6 +113,8 @@ function getDataState (props) {
         isSyndicProcedure: props.isSyndicProcedure,
         detailsProcedure: props.detailsProcedure,
 
+        priceMurs: props.priceMurs,
+
         photos: props.photos,
         photo: null,
 

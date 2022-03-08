@@ -401,8 +401,6 @@ class DataImmo extends DataConstructor
                     ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
                 ;
             }
-
-            if
         }
 
         return ($obj)

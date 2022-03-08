@@ -155,6 +155,7 @@ class ImFinancial
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
      */
     private $priceMurs;
 

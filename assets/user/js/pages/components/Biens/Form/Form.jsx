@@ -166,6 +166,8 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         isSyndicProcedure={element ? setValueBoolean(financial, financial.isSyndicProcedure) : 0}
         detailsProcedure={element ? setValueEmptyIfNull(financial, financial.detailsProcedure) : ""}
 
+        priceMurs={element ? setValueEmptyIfNull(financial, financial.priceMurs) : ""}
+
         photos={photos ? photos : []}
 
         owners={owners ? owners : []}

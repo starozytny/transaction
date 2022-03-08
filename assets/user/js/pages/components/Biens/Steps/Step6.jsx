@@ -7,13 +7,19 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/functions/helper";
 
+const AD_CESSION_BAIL = 4;
+
 const CURRENT_STEP = 6;
 
 export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeCleave,
-                          price, provisionCharges, caution, honoraireTtc, edl, typeCharges, typeBail, durationBail })
+                          codeTypeAd,
+                          price, provisionCharges, caution, honoraireTtc, edl, typeCharges, typeBail, durationBail,
+                          priceMurs })
 {
     let chargesItems = helper.getItems("charges")
     let bailsItems = helper.getItems("bails")
+
+    let codeTypeAdInt = parseInt(codeTypeAd);
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
@@ -25,9 +31,13 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </div>
             <div className="line line-2">
                 <Input type="cleave" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChangeCleave}>
-                    <span>Loyer *</span>
+                    <span>{codeTypeAdInt !== AD_CESSION_BAIL ? "Loyer" : "Prix de cession"} *</span>
                 </Input>
-                <div className="form-group" />
+                {codeTypeAdInt !== AD_CESSION_BAIL ? <div className="form-group" /> : <>
+                    <Input type="cleave" step="any" identifiant="priceMurs" valeur={priceMurs} errors={errors} onChange={onChangeCleave}>
+                        <span>Loyer / mois murs</span>
+                    </Input>
+                </>}
             </div>
             <div className="line line-2">
                 <Input type="cleave" step="any" identifiant="provisionCharges" valeur={provisionCharges} errors={errors} onChange={onChangeCleave}>

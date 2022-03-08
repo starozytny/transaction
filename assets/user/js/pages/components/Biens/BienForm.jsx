@@ -31,6 +31,15 @@ import { Step10 }       from "@userPages/components/Biens/Steps/Step10";
 
 import { Owners}        from "@dashboardPages/components/Immo/Owners/Owners";
 
+const AD_VENTE              = 0;
+const AD_LOCATION           = 1;
+const AD_VIAGER             = 2;
+const AD_PDT_INVEST         = 3;
+const AD_CESSION_BAIL       = 4;
+const AD_LOCATION_VAC       = 5;
+const AD_VENTE_PRESTIGE     = 6;
+const AD_FOND_COMMERCE      = 7;
+
 const BIEN_APPARTEMENT      = 0;
 const BIEN_MAISON           = 1;
 const BIEN_PARKING_BOX      = 2;
@@ -550,6 +559,8 @@ export class BienForm extends Component {
                                     societyId={societyId} agencyId={agencyId} isClient={true}
                                     owners={owners} isFormBien={true} onSelectOwner={this.handleSelectOwner}/>
 
+        let codeTypeAdInt = parseInt(codeTypeAd);
+
         return <div className="page-default">
             <div className="page-col-1">
                 <div className="body-col-1">
@@ -591,9 +602,11 @@ export class BienForm extends Component {
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeZipcode={this.handleChangeZipcode}
                                onChangeGeo={this.handleChangeGeo} quartiers={quartiers} />
 
-                        {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
-                                                             onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
-                                                             onChangeCleave={this.handleChangeCleave}/>
+                        {(codeTypeAdInt === AD_LOCATION || codeTypeAdInt === AD_LOCATION_VAC || codeTypeAdInt === AD_CESSION_BAIL) ? <>
+                                <Step6 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                                       onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
+                                       onChangeCleave={this.handleChangeCleave}/>
+                            </>
                             : <Step6Vente {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                           onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
                                           onChangeCleave={this.handleChangeCleave}/>}
