@@ -9,8 +9,8 @@ import helper from "@userPages/components/Biens/functions/helper";
 
 const CURRENT_STEP = 6;
 
-export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
-                          price, provisionCharges, caution, honoraireTtc, edl, typeCharges, totalGeneral, typeBail, durationBail })
+export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeCleave,
+                          price, provisionCharges, caution, honoraireTtc, edl, typeCharges, typeBail, durationBail })
 {
     let chargesItems = helper.getItems("charges")
     let bailsItems = helper.getItems("bails")
@@ -24,13 +24,13 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <label>Financier</label>
             </div>
             <div className="line line-2">
-                <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChangeCleave}>
                     <span>Loyer *</span>
                 </Input>
                 <div className="form-group" />
             </div>
             <div className="line line-2">
-                <Input type="number" step="any" identifiant="provisionCharges" valeur={provisionCharges} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="provisionCharges" valeur={provisionCharges} errors={errors} onChange={onChangeCleave}>
                     <span>Provision pour charges</span>
                 </Input>
                 <SelectReactSelectize items={chargesItems} identifiant="typeCharges" valeur={typeCharges} errors={errors}
@@ -42,16 +42,16 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
 
         <div className="line special-line">
             <div className="line line-2">
-                <Input type="number" step="any" identifiant="caution" valeur={caution} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="caution" valeur={caution} errors={errors} onChange={onChangeCleave}>
                     <span>Caution</span>
                 </Input>
                 <div className="form-group" />
             </div>
             <div className="line line-2">
-                <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChangeCleave}>
                     <span>Honoraires (avec état des lieux) TTC *</span>
                 </Input>
-                <Input type="number" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChangeCleave}>
                     <span>Honoraires état des lieux *</span>
                 </Input>
             </div>

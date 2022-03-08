@@ -66,7 +66,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         context={type}
         url={url}
 
-        codeTypeAd={element ? element.codeTypeAd : 0}
+        codeTypeAd={element ? element.codeTypeAd : 1}
         codeTypeBien={element ? element.codeTypeBien : 0}
         libelle={element ? element.libelle : "Brouillon"}
         negotiator={element ? element.negotiator.id : ""}
