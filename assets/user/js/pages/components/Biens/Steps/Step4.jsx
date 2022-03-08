@@ -191,7 +191,7 @@ export class Step4 extends Component {
                     </div>
                     <RoomItem rooms={rooms} solItems={solItems} onUpdate={this.handleUpdate} onSelectRooms={onSelectRooms} />
 
-                    <Button type="default" onClick={() => onOpenAside("room")}>Ajouter une pièce</Button>
+                    <Button type="default" outline={true} onClick={() => onOpenAside("room")}>Ajouter une pièce</Button>
                     <Aside ref={refAside} content={contentAside}>Pièce</Aside>
                 </div>
             </> : <Alert type="reverse">Rien à renseigner dans cette <b><u>partie {CURRENT_STEP}</u></b> pour un parking/box.</Alert>}
@@ -260,7 +260,7 @@ export function RoomItem ({ isFromRead=false, rooms, solItems, onUpdate, onSelec
                         </div>
                     </div>
                 </div>)
-            }) : <Alert>Aucune pièce renseignée.</Alert>}
+            }) : <Alert type="reverse">Aucune pièce renseignée.</Alert>}
         </div>
     </div>
 }

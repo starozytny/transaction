@@ -57,7 +57,7 @@ export class Step5 extends Component {
 
         return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
             <div className="line-infos">
-                <Alert>(*) Champs obligatoires.</Alert>
+                <Alert type="reverse">(*) Champs obligatoires.</Alert>
             </div>
 
             <div className="line special-line">
