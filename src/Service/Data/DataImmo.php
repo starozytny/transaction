@@ -369,7 +369,7 @@ class DataImmo extends DataConstructor
                 ->setEdl($this->setToNullFloat($data->edl))
                 ->setTypeBail($this->setToZeroEmpty($data->typeBail))
                 ->setDurationBail($this->setToNullFloat($data->durationBail))
-                ;
+            ;
         }else{
             $obj = ($obj)
                 ->setHonoraireChargeDe($this->setToNullInteger($data->honoraireChargeDe))
