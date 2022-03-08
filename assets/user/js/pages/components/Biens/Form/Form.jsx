@@ -156,6 +156,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         totalGeneral={element ? setValueEmptyIfNull(financial, financial.totalGeneral) : ""}
         typeBail={element ? setValueEmptyIfNull(financial, financial.typeBail) : ""}
         durationBail={element ? setValueEmptyIfNull(financial, financial.durationBail) : ""}
+        complementLoyer={element ? setValueEmptyIfNull(financial, financial.complementLoyer) : ""}
 
         chargesMensuelles={element ? setValueEmptyIfNull(financial, financial.chargesMensuelles) : ""}
         notaire={element ? setValueEmptyIfNull(financial, financial.notaire) : ""}
@@ -171,6 +172,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         detailsProcedure={element ? setValueEmptyIfNull(financial, financial.detailsProcedure) : ""}
 
         priceMurs={element ? setValueEmptyIfNull(financial, financial.priceMurs) : ""}
+        rente={element ? setValueEmptyIfNull(financial, financial.rente) : ""}
 
         photos={photos ? photos : []}
 

@@ -103,6 +103,7 @@ function getDataState (props) {
         totalGeneral: props.totalGeneral,
         typeBail: props.typeBail,
         durationBail: props.durationBail,
+        complementLoyer: props.complementLoyer,
 
         chargesMensuelles: props.chargesMensuelles,
         notaire: props.notaire,
@@ -118,6 +119,7 @@ function getDataState (props) {
         detailsProcedure: props.detailsProcedure,
 
         priceMurs: props.priceMurs,
+        rente: props.complementLoyer,
 
         photos: props.photos,
         photo: null,

@@ -58,6 +58,12 @@ class ImFinancial
     private $edl;
 
     /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $complementLoyer;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
@@ -158,6 +164,12 @@ class ImFinancial
      * @Groups({"user:read"})
      */
     private $priceMurs;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $rente;
 
     public function getId(): ?int
     {
@@ -456,6 +468,30 @@ class ImFinancial
     public function setPriceMurs(?float $priceMurs): self
     {
         $this->priceMurs = $priceMurs;
+
+        return $this;
+    }
+
+    public function getComplementLoyer(): ?float
+    {
+        return $this->complementLoyer;
+    }
+
+    public function setComplementLoyer(?float $complementLoyer): self
+    {
+        $this->complementLoyer = $complementLoyer;
+
+        return $this;
+    }
+
+    public function getRente(): ?float
+    {
+        return $this->rente;
+    }
+
+    public function setRente(?float $rente): self
+    {
+        $this->rente = $rente;
 
         return $this;
     }

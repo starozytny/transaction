@@ -8,14 +8,19 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 import helper from "@userPages/components/Biens/functions/helper";
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
+const AD_VIAGER= 2;
+
 const CURRENT_STEP = 6
 
 export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeCleave, onChangeSelect,
+                        codeTypeAd,
                         price, chargesMensuelles, notaire, foncier, taxeHabitation, honoraireChargeDe,
                         honorairePourcentage, honoraireTtc, totalGeneral, priceHorsAcquereur,
-                        isCopro, nbLot, chargesLot, isSyndicProcedure, detailsProcedure })
+                        isCopro, nbLot, chargesLot, isSyndicProcedure, detailsProcedure, rente })
 {
     let honoraireItems = helper.getItems("honoraires");
+
+    let codeTypeAdInt = parseInt(codeTypeAd);
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
@@ -27,7 +32,7 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeCl
             </div>
             <div className="line line-2">
                 <Input type="cleave" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChangeCleave}>
-                    <span>Prix *</span>
+                    <span>{codeTypeAdInt !== AD_VIAGER ? "Prix" : "Bouquet"} *</span>
                 </Input>
                 <SelectReactSelectize items={honoraireItems} identifiant="honoraireChargeDe" valeur={honoraireChargeDe} errors={errors}
                                       onChange={(e) => onChangeSelect('honoraireChargeDe', e)}>
@@ -47,6 +52,12 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeCl
             {(honoraireChargeDe !== 1) && <div className="line line-2">
                 <Input type="cleave" step="any" identifiant="priceHorsAcquereur" valeur={priceHorsAcquereur} errors={errors} onChange={onChangeCleave}>
                     <span>Prix hors honoraire acquéreur</span>
+                </Input>
+                <div className="form-group" />
+            </div>}
+            {codeTypeAdInt === AD_VIAGER && <div className="line line-2">
+                <Input type="cleave" step="any" identifiant="rente" valeur={rente} errors={errors} onChange={onChangeCleave}>
+                    <span>Rente mensuelle</span>
                 </Input>
                 <div className="form-group" />
             </div>}
