@@ -11,6 +11,8 @@ import helper from "@userPages/components/Biens/functions/helper";
 const BIEN_PARKING_BOX = 2;
 const BIEN_TERRAIN = 3;
 
+const AD_VIAGER = 2;
+
 const CURRENT_STEP = 2;
 
 export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate,
@@ -19,7 +21,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                           piece, room, bathroom, wc, balcony, parking, box,
                           dispoAt, busy, buildAt, isMeuble, isNew, floor, nbFloor,
                           codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0,
-                          nbVehicles, isImmeubleParking, isParkingIsolate })
+                          nbVehicles, isImmeubleParking, isParkingIsolate, age1, age2 })
 {
     let expositionItems = helper.getItems("expositions");
     let chauffage0Items = helper.getItems("chauffages-0");
@@ -29,6 +31,7 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
     let occupationItems = helper.getItems("occupations");
 
     let codeTypeBienInt = helper.getIntValue(codeTypeBien);
+    let codeTypeAdInt = helper.getIntValue(codeTypeAd);
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         <div className="line-infos">
@@ -133,6 +136,14 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
         </div>
         {caseTypeBien === 1 && <>
             <div className="line special-line">
+                {codeTypeAdInt === AD_VIAGER && <div className="line line-2">
+                    <Input type="number" min={18} identifiant="age1" valeur={age1} errors={errors} onChange={onChange}>
+                        <span>Age personne 1</span>
+                    </Input>
+                    <Input type="number" min={18} identifiant="age2" valeur={age2} errors={errors} onChange={onChange}>
+                        <span>Age personne 2</span>
+                    </Input>
+                </div>}
                 <div className="line line-2">
                     <Input type="number" min={0} identifiant="floor" valeur={floor} errors={errors} onChange={onChange}>
                         <span>Etage</span>

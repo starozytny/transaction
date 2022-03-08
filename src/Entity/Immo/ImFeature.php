@@ -115,6 +115,18 @@ class ImFeature extends DataEntity
      */
     private $isParkingIsolate = ImBien::ANSWER_UNKNOWN;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $age1;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $age2;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -348,6 +360,30 @@ class ImFeature extends DataEntity
     public function setIsParkingIsolate(int $isParkingIsolate): self
     {
         $this->isParkingIsolate = $isParkingIsolate;
+
+        return $this;
+    }
+
+    public function getAge1(): ?int
+    {
+        return $this->age1;
+    }
+
+    public function setAge1(?int $age1): self
+    {
+        $this->age1 = $age1;
+
+        return $this;
+    }
+
+    public function getAge2(): ?int
+    {
+        return $this->age2;
+    }
+
+    public function setAge2(?int $age2): self
+    {
+        $this->age2 = $age2;
 
         return $this;
     }

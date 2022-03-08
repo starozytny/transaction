@@ -106,6 +106,9 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         isImmeubleParking={element ? setValueEmptyIfNull(feature, feature.isImmeubleParking) : 99}
         isParkingIsolate={element ? setValueEmptyIfNull(feature, feature.isParkingIsolate) : 99}
 
+        age1={element ? setValueEmptyIfNull(feature, feature.age1) : ""}
+        age2={element ? setValueEmptyIfNull(feature, feature.age2) : ""}
+
         hasGarden={element ? setValueEmptyIfNull(advantage, advantage.hasGarden) : 99}
         hasTerrace={element ? setValueEmptyIfNull(advantage, advantage.hasTerrace) : 99}
         hasPool={element ? setValueEmptyIfNull(advantage, advantage.hasPool) : 99}

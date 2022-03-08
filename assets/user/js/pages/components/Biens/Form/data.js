@@ -51,6 +51,9 @@ function getDataState (props) {
         isImmeubleParking: props.isImmeubleParking,
         isParkingIsolate: props.isParkingIsolate,
 
+        age1: props.age1,
+        age2: props.age2,
+
         hasGarden: props.hasGarden,
         hasTerrace: props.hasTerrace,
         hasPool: props.hasPool,

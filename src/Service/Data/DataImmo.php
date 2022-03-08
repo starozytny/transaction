@@ -259,7 +259,10 @@ class DataImmo extends DataConstructor
      */
     public function setDataFeature(ImFeature $obj, $data): ImFeature
     {
-        if((int) $data->codeTypeAd == ImBien::AD_LOCATION){
+        $codeTypeBien = (int) $data->codeTypeBien;
+        $codeTypeAd = (int) $data->codeTypeAd;
+
+        if($codeTypeAd == ImBien::AD_LOCATION){
             $obj->setIsMeuble($this->setToUnknownEmpty($data->isMeuble));
         }
 
@@ -276,23 +279,28 @@ class DataImmo extends DataConstructor
             ;
         }
 
-        if((int) $data->codeTypeBien != ImBien::BIEN_PARKING_BOX){
+        if($codeTypeBien != ImBien::BIEN_PARKING_BOX){
             $obj->setExposition($this->setToNullInteger($data->exposition));
         }
 
-        if((int) $data->codeTypeBien != ImBien::BIEN_TERRAIN){
+        if($codeTypeBien != ImBien::BIEN_TERRAIN){
             $obj = ($obj)
                 ->setBuildAt($this->setToNullInteger($data->buildAt))
                 ->setIsNew($this->setToUnknownEmpty($data->isNew))
             ;
         }
 
-        if((int) $data->codeTypeBien == ImBien::BIEN_PARKING_BOX){
+        if($codeTypeBien == ImBien::BIEN_PARKING_BOX){
             $obj = ($obj)
                 ->setNbVehicles($this->setToNullInteger($data->nbVehicles))
                 ->setIsImmeubleParking($this->setToUnknownEmpty($data->isImmeubleParking))
                 ->setIsParkingIsolate($this->setToUnknownEmpty($data->isParkingIsolate))
             ;
+        }
+
+        if($codeTypeAd == ImBien::AD_VIAGER){
+            $obj->setAge1($this->setToNullInteger($data->age1));
+            $obj->setAge2($this->setToNullInteger($data->age2));
         }
 
         return ($obj)

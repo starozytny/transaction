@@ -160,6 +160,8 @@ class FakeBiensCreate extends Command
                 "nbVehicles" => (string) $fake->numberBetween(0, 10),
                 "isImmeubleParking" => (string) $fake->numberBetween(0, 2),
                 "isParkingIsolate" => (string) $fake->numberBetween(0, 2),
+                "age1" => (string) $fake->numberBetween(50, 100),
+                "age2" => (string) $fake->numberBetween(50, 100),
 
                 "hasGarden" => $answers[$fake->numberBetween(0,2)],
                 "hasTerrace" => $answers[$fake->numberBetween(0,2)],
