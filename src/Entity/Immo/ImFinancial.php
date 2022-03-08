@@ -73,7 +73,7 @@ class ImFinancial
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
-    private $typeBail = 0;
+    private $typeBail;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -112,10 +112,10 @@ class ImFinancial
     private $notaire;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
-    private $honoraireChargeDe = self::VENTE_CHARGES_ACQUEREUR;
+    private $honoraireChargeDe;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -414,11 +414,11 @@ class ImFinancial
      * @return string
      * @Groups({"user:read"})
      */
-    public function getHonoraireChargeDeString(): string
+    public function getHonoraireChargeDeString(): ?string
     {
         $charges = ["Acquéreur", "Vendeur", "Acquéreur et vendeur"];
 
-        return $charges[$this->honoraireChargeDe];
+        return  $this->honoraireChargeDe ? $charges[$this->honoraireChargeDe] : null;
     }
 
     /**
@@ -435,10 +435,10 @@ class ImFinancial
      * @return string
      * @Groups({"user:read"})
      */
-    public function getTypeBailString(): string
+    public function getTypeBailString(): ?string
     {
-        $charges = ["", "Habitation", "Commercial", "Meublé", "Professionnel", "Garage"];
+        $charges = ["Habitation", "Commercial", "Meublé", "Professionnel", "Garage"];
 
-        return $charges[$this->typeBail];
+        return $this->typeBail ? $charges[$this->typeBail] : null;
     }
 }
