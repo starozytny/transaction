@@ -74,7 +74,7 @@ export class BienForm extends Component {
 
     handleChange = (e) => {
         const { settings, codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, startAt, nbMonthMandat, supports } = this.state;
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, startAt, nbMonthMandat, supports, honoraireChargeDe } = this.state;
 
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
@@ -91,7 +91,7 @@ export class BienForm extends Component {
         Automate.consequenceValueToRooms(this, name, value, rooms, "box",        2, elStep);
 
         Automate.calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail);
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe);
 
         if(name === "newQuartier"){
             value = (e.currentTarget.checked) ? [parseInt(value)] : [] // parseInt because work with int this time
@@ -110,6 +110,21 @@ export class BienForm extends Component {
         }
 
         this.setState({[name]: value });
+    }
+
+    handleChangeCleave = (e) => {
+        const { codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe } = this.state;
+
+        let name = e.currentTarget.name;
+        let value = e.currentTarget.rawValue;
+
+        value = Formulaire.setToFloat(value);
+
+        Automate.calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe);
+
+        this.setState({ [name]: value })
     }
 
     handleChangeSelect = (name, e) => {
@@ -549,9 +564,11 @@ export class BienForm extends Component {
                                onChangeGeo={this.handleChangeGeo} quartiers={quartiers} />
 
                         {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
-                                                             onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} />
+                                                             onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
+                                                             onChangeCleave={this.handleChangeCleave}/>
                             : <Step6Vente {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
-                                          onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} />}
+                                          onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
+                                          onChangeCleave={this.handleChangeCleave}/>}
 
                         <Step7 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChangeFile={this.handleChangeFile} onSwitchTrashFile={this.handleSwitchTrashFile}

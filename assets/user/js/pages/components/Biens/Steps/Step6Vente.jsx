@@ -10,7 +10,7 @@ import Sanitaze from "@commonComponents/functions/sanitaze";
 
 const CURRENT_STEP = 6
 
-export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSelect,
+export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeCleave, onChangeSelect,
                         price, chargesMensuelles, notaire, foncier, taxeHabitation, honoraireChargeDe,
                         honorairePourcentage, honoraireTtc, totalGeneral, priceHorsAcquereur,
                         isCopro, nbLot, chargesLot, isSyndicProcedure, detailsProcedure })
@@ -26,7 +26,7 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSe
                 <label>Financier</label>
             </div>
             <div className="line line-2">
-                <Input type="number" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChangeCleave}>
                     <span>Prix *</span>
                 </Input>
                 <SelectReactSelectize items={honoraireItems} identifiant="honoraireChargeDe" valeur={honoraireChargeDe} errors={errors}
@@ -34,37 +34,38 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSe
                     Honoraires à la charge *
                 </SelectReactSelectize>
             </div>
-            {(honoraireChargeDe !== 1) && <div className="line line-2">
-                <Input type="number" step="any" identifiant="priceHorsAcquereur" valeur={priceHorsAcquereur} errors={errors} onChange={onChange}>
-                    <span>Prix hors honoraire acquéreur</span>
-                </Input>
-                <div className="form-group" />
-            </div>}
 
             <div className="line line-2">
                 <Input type="number" step="any" identifiant="honorairePourcentage" valeur={honorairePourcentage} errors={errors} onChange={onChange} placeholder="%">
                     <span>Pourcentage des honoraires (%) *</span>
                 </Input>
-                <Input type="number" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChangeCleave}>
                     <span>Honoraires TTC *</span>
                 </Input>
             </div>
+
+            {(honoraireChargeDe !== 1) && <div className="line line-2">
+                <Input type="cleave" step="any" identifiant="priceHorsAcquereur" valeur={priceHorsAcquereur} errors={errors} onChange={onChangeCleave}>
+                    <span>Prix hors honoraire acquéreur</span>
+                </Input>
+                <div className="form-group" />
+            </div>}
         </div>
 
         <div className="line special-line">
             <div className="line line-2">
-                <Input type="number" step="any" identifiant="chargesMensuelles" valeur={chargesMensuelles} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="chargesMensuelles" valeur={chargesMensuelles} errors={errors} onChange={onChangeCleave}>
                     <span>Charges mensuelles</span>
                 </Input>
-                <Input type="number" step="any" identifiant="notaire" valeur={notaire} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="notaire" valeur={notaire} errors={errors} onChange={onChangeCleave}>
                     <span>Frais notaire</span>
                 </Input>
             </div>
             <div className="line line-2">
-                <Input type="number" step="any" identifiant="foncier" valeur={foncier} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="foncier" valeur={foncier} errors={errors} onChange={onChangeCleave}>
                     <span>Impôt foncier</span>
                 </Input>
-                <Input type="number" step="any" identifiant="taxeHabitation" valeur={taxeHabitation} errors={errors} onChange={onChange}>
+                <Input type="cleave" step="any" identifiant="taxeHabitation" valeur={taxeHabitation} errors={errors} onChange={onChangeCleave}>
                     <span>Taxe habitation</span>
                 </Input>
             </div>
@@ -86,7 +87,7 @@ export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeSe
                     <Input type="number" step="any" identifiant="nbLot" valeur={nbLot} errors={errors} onChange={onChange}>
                         <span>Nombre de lots</span>
                     </Input>
-                    <Input type="number" step="any" identifiant="chargesLot" valeur={chargesLot} errors={errors} onChange={onChange}>
+                    <Input type="cleave" step="any" identifiant="chargesLot" valeur={chargesLot} errors={errors} onChange={onChangeCleave}>
                         <span>Montant annuel des charges du lot</span>
                     </Input>
                 </> : <>
