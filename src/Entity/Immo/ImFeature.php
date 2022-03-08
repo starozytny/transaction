@@ -97,6 +97,21 @@ class ImFeature extends DataEntity
      */
     private $busy = ImBien::BUSY_NONE;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbVehicles;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $isImmeubleParking = ImBien::ANSWER_UNKNOWN;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $isParkingIsolate = ImBien::ANSWER_UNKNOWN;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -296,5 +311,41 @@ class ImFeature extends DataEntity
         $values = ["Nord", "Est", "Sud", "Ouest", "Nord-est", "Nord-ouest", "Sud-est", "Sud-ouest"];
 
         return $this->exposition == 99 ? "?" : $values[$this->exposition];
+    }
+
+    public function getNbVehicles(): ?int
+    {
+        return $this->nbVehicles;
+    }
+
+    public function setNbVehicles(?int $nbVehicles): self
+    {
+        $this->nbVehicles = $nbVehicles;
+
+        return $this;
+    }
+
+    public function getIsImmeubleParking(): ?int
+    {
+        return $this->isImmeubleParking;
+    }
+
+    public function setIsImmeubleParking(int $isImmeubleParking): self
+    {
+        $this->isImmeubleParking = $isImmeubleParking;
+
+        return $this;
+    }
+
+    public function getIsParkingIsolate(): ?int
+    {
+        return $this->isParkingIsolate;
+    }
+
+    public function setIsParkingIsolate(int $isParkingIsolate): self
+    {
+        $this->isParkingIsolate = $isParkingIsolate;
+
+        return $this;
     }
 }
