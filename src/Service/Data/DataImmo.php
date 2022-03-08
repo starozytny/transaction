@@ -273,13 +273,21 @@ class DataImmo extends DataConstructor
                 ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
                 ->setCodeWater($this->setToNullInteger($data->codeWater))
                 ->setIsWcSeparate($this->setToUnknownEmpty($data->isWcSeparate))
-                ->setExposition($this->setToNullInteger($data->exposition))
+            ;
+        }
+
+        if((int) $data->codeTypeBien != ImBien::BIEN_PARKING_BOX){
+            $obj->setExposition($this->setToNullInteger($data->exposition));
+        }
+
+        if((int) $data->codeTypeBien != ImBien::BIEN_TERRAIN){
+            $obj = ($obj)
+                ->setBuildAt($this->setToNullInteger($data->buildAt))
+                ->setIsNew($this->setToUnknownEmpty($data->isNew))
             ;
         }
 
         return ($obj)
-            ->setBuildAt($this->setToNullInteger($data->buildAt))
-            ->setIsNew($this->setToUnknownEmpty($data->isNew))
             ->setDispoAt($this->createDate($data->dispoAt))
         ;
     }
@@ -316,19 +324,23 @@ class DataImmo extends DataConstructor
      */
     public function setDataDiag(ImDiag $obj, $data): ImDiag
     {
-        return ($obj)
-            ->setBeforeJuly($this->setToUnknownEmpty($data->beforeJuly))
-            ->setIsVirgin($this->setToUnknownEmpty($data->isVirgin))
-            ->setIsSend($this->setToUnknownEmpty($data->isSend))
-            ->setCreatedAtDpe($this->createDate($data->createdAtDpe))
-            ->setReferenceDpe($this->setToNullInteger($data->referenceDpe))
-            ->setDpeLetter($this->setToNullInteger($data->dpeLetter))
-            ->setGesLetter($this->setToNullInteger($data->gesLetter))
-            ->setDpeValue($this->setToNullFloat($data->dpeValue))
-            ->setGesValue($this->setToNullFloat($data->gesValue))
-            ->setMinAnnual($this->setToNullFloat($data->minAnnual))
-            ->setMaxAnnual($this->setToNullFloat($data->maxAnnual))
-        ;
+        if((int) $data->codeTypeBien !== ImBien::BIEN_TERRAIN){
+            $obj = ($obj)
+                ->setBeforeJuly($this->setToUnknownEmpty($data->beforeJuly))
+                ->setIsVirgin($this->setToUnknownEmpty($data->isVirgin))
+                ->setIsSend($this->setToUnknownEmpty($data->isSend))
+                ->setCreatedAtDpe($this->createDate($data->createdAtDpe))
+                ->setReferenceDpe($this->setToNullInteger($data->referenceDpe))
+                ->setDpeLetter($this->setToNullInteger($data->dpeLetter))
+                ->setGesLetter($this->setToNullInteger($data->gesLetter))
+                ->setDpeValue($this->setToNullFloat($data->dpeValue))
+                ->setGesValue($this->setToNullFloat($data->gesValue))
+                ->setMinAnnual($this->setToNullFloat($data->minAnnual))
+                ->setMaxAnnual($this->setToNullFloat($data->maxAnnual))
+            ;
+        }
+
+        return $obj;
     }
 
     public function setDataLocalisation(ImLocalisation $obj, $data): ImLocalisation

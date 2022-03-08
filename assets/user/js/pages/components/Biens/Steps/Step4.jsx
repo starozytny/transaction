@@ -8,9 +8,9 @@ import { Aside }                from "@dashboardComponents/Tools/Aside";
 import { Alert }                from "@dashboardComponents/Tools/Alert";
 import { FormActions }          from "@userPages/components/Biens/Form/Form";
 
+import Sort        from "@commonComponents/functions/sort";
 import helper      from "@userPages/components/Biens/functions/helper";
 import Validateur  from "@commonComponents/functions/validateur";
-import Sort        from "@commonComponents/functions/sort";
 import Formulaire  from "@dashboardComponents/functions/Formulaire";
 
 const SORTER = Sort.compareName;
