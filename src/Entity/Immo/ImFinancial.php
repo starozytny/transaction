@@ -319,7 +319,7 @@ class ImFinancial
         return $this->honoraireChargeDe;
     }
 
-    public function setHonoraireChargeDe(int $honoraireChargeDe): self
+    public function setHonoraireChargeDe(?int $honoraireChargeDe): self
     {
         $this->honoraireChargeDe = $honoraireChargeDe;
 
