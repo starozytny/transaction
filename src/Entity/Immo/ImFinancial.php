@@ -422,14 +422,13 @@ class ImFinancial
     }
 
     /**
-     * @return string
      * @Groups({"user:read"})
      */
-    public function getTypeChargesString(): string
+    public function getTypeChargesString(): ?string
     {
         $charges = ["Forfaitaires mensuelles", "Prévisionnelles mensuelles avec régularisation annuelle", "Remboursement annuel par le locataire"];
 
-        return $charges[$this->typeCharges];
+        return $this->typeCharges ? $charges[$this->typeCharges] : null;
     }
 
     /**
