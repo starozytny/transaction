@@ -186,7 +186,7 @@ class BienController extends AbstractController
             }
         }
 
-        $rooms = $dataEntity->setDataRooms($data, $type == "create" ? [] : $obj->getRooms());
+        $rooms = (int) $data->caseTypeBien == 1 ? $dataEntity->setDataRooms($data, $type == "create" ? [] : $obj->getRooms()) : [];
 
         $obj = $dataEntity->setDataBien($immoService, $agency, $obj, $data, $area, $number, $feature, $advantage, $diag,
             $localisation, $financial, $confidential, $advert, $mandat, $rooms);

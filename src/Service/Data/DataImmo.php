@@ -216,16 +216,20 @@ class DataImmo extends DataConstructor
      */
     public function setDataArea(ImArea $obj, $data): ImArea
     {
-        // Création de l'objet
+        if((int) $data->caseTypeBien == 1){
+            $obj = ($obj)
+                ->setLand($this->setToNullFloat($data->areaLand))
+                ->setGarden($this->setToNullFloat($data->areaGarden))
+                ->setTerrace($this->setToNullFloat($data->areaTerrace))
+                ->setCave($this->setToNullFloat($data->areaCave))
+                ->setBathroom($this->setToNullFloat($data->areaBathroom))
+                ->setLiving($this->setToNullFloat($data->areaLiving))
+            ;
+        }
+
         return ($obj)
             ->setTotal((float) $data->areaTotal)
             ->setHabitable($this->setToNullFloat($data->areaHabitable))
-            ->setLand($this->setToNullFloat($data->areaLand))
-            ->setGarden($this->setToNullFloat($data->areaGarden))
-            ->setTerrace($this->setToNullFloat($data->areaTerrace))
-            ->setCave($this->setToNullFloat($data->areaCave))
-            ->setBathroom($this->setToNullFloat($data->areaBathroom))
-            ->setLiving($this->setToNullFloat($data->areaLiving))
         ;
     }
 
@@ -234,15 +238,19 @@ class DataImmo extends DataConstructor
      */
     public function setDataNumber(ImNumber $obj, $data): ImNumber
     {
-        // Création de l'objet
+        if((int) $data->caseTypeBien == 1){
+            $obj = ($obj)
+                ->setRoom($this->setToNullInteger($data->room))
+                ->setBathroom($this->setToNullInteger($data->bathroom))
+                ->setWc($this->setToNullInteger($data->wc))
+                ->setBalcony($this->setToNullInteger($data->balcony))
+                ->setParking($this->setToNullInteger($data->parking))
+                ->setBox($this->setToNullInteger($data->box))
+            ;
+        }
+
         return ($obj)
             ->setPiece((int) $data->piece)
-            ->setRoom($this->setToNullInteger($data->room))
-            ->setBathroom($this->setToNullInteger($data->bathroom))
-            ->setWc($this->setToNullInteger($data->wc))
-            ->setBalcony($this->setToNullInteger($data->balcony))
-            ->setParking($this->setToNullInteger($data->parking))
-            ->setBox($this->setToNullInteger($data->box))
         ;
     }
 
@@ -255,43 +263,52 @@ class DataImmo extends DataConstructor
             $obj->setIsMeuble($this->setToUnknownEmpty($data->isMeuble));
         }
 
+        if((int) $data->caseTypeBien == 1){
+            $obj = ($obj)
+                ->setBusy($this->setToZeroEmpty($data->busy))
+                ->setFloor($this->setToNullInteger($data->floor))
+                ->setNbFloor($this->setToNullInteger($data->nbFloor))
+                ->setCodeHeater($this->setToNullInteger($data->codeHeater))
+                ->setCodeHeater0($this->setToNullInteger($data->codeHeater0))
+                ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
+                ->setCodeWater($this->setToNullInteger($data->codeWater))
+                ->setIsWcSeparate($this->setToUnknownEmpty($data->isWcSeparate))
+                ->setExposition($this->setToNullInteger($data->exposition))
+            ;
+        }
+
         return ($obj)
+            ->setBuildAt($this->setToNullInteger($data->buildAt))
             ->setIsNew($this->setToUnknownEmpty($data->isNew))
             ->setDispoAt($this->createDate($data->dispoAt))
-            ->setBusy($this->setToZeroEmpty($data->busy))
-            ->setBuildAt($this->setToNullInteger($data->buildAt))
-            ->setFloor($this->setToNullInteger($data->floor))
-            ->setNbFloor($this->setToNullInteger($data->nbFloor))
-            ->setCodeHeater($this->setToNullInteger($data->codeHeater))
-            ->setCodeHeater0($this->setToNullInteger($data->codeHeater0))
-            ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
-            ->setCodeWater($this->setToNullInteger($data->codeWater))
-            ->setIsWcSeparate($this->setToUnknownEmpty($data->isWcSeparate))
-            ->setExposition($this->setToNullInteger($data->exposition))
         ;
     }
 
     public function setDataAdvantage(ImAdvantage $obj, $data): ImAdvantage
     {
-        return ($obj)
-            ->setHasGarden($this->setToUnknownEmpty($data->hasGarden))
-            ->setHasTerrace($this->setToUnknownEmpty($data->hasTerrace))
-            ->setHasPool($this->setToUnknownEmpty($data->hasPool))
-            ->setHasCave($this->setToUnknownEmpty($data->hasCave))
-            ->setHasDigicode($this->setToUnknownEmpty($data->hasDigicode))
-            ->setHasInterphone($this->setToUnknownEmpty($data->hasInterphone))
-            ->setHasGuardian($this->setToUnknownEmpty($data->hasGuardian))
-            ->setHasAlarme($this->setToUnknownEmpty($data->hasAlarme))
-            ->setHasLift($this->setToUnknownEmpty($data->hasLift))
-            ->setHasClim($this->setToUnknownEmpty($data->hasClim))
-            ->setHasCalme($this->setToUnknownEmpty($data->hasCalme))
-            ->setHasInternet($this->setToUnknownEmpty($data->hasInternet))
-            ->setHasHandi($this->setToUnknownEmpty($data->hasHandi))
-            ->setHasFibre($this->setToUnknownEmpty($data->hasFibre))
-            ->setSituation($this->sanitizeData->trimData($data->situation))
-            ->setSousType($this->sanitizeData->trimData($data->sousType))
-            ->setSol($this->sanitizeData->trimData($data->sol))
-        ;
+        if((int) $data->caseTypeBien == 1){
+            $obj = ($obj)
+                ->setHasGarden($this->setToUnknownEmpty($data->hasGarden))
+                ->setHasTerrace($this->setToUnknownEmpty($data->hasTerrace))
+                ->setHasPool($this->setToUnknownEmpty($data->hasPool))
+                ->setHasCave($this->setToUnknownEmpty($data->hasCave))
+                ->setHasDigicode($this->setToUnknownEmpty($data->hasDigicode))
+                ->setHasInterphone($this->setToUnknownEmpty($data->hasInterphone))
+                ->setHasGuardian($this->setToUnknownEmpty($data->hasGuardian))
+                ->setHasAlarme($this->setToUnknownEmpty($data->hasAlarme))
+                ->setHasLift($this->setToUnknownEmpty($data->hasLift))
+                ->setHasClim($this->setToUnknownEmpty($data->hasClim))
+                ->setHasCalme($this->setToUnknownEmpty($data->hasCalme))
+                ->setHasInternet($this->setToUnknownEmpty($data->hasInternet))
+                ->setHasHandi($this->setToUnknownEmpty($data->hasHandi))
+                ->setHasFibre($this->setToUnknownEmpty($data->hasFibre))
+                ->setSituation($this->sanitizeData->trimData($data->situation))
+                ->setSousType($this->sanitizeData->trimData($data->sousType))
+                ->setSol($this->sanitizeData->trimData($data->sol))
+            ;
+        }
+
+        return $obj;
     }
 
     /**
