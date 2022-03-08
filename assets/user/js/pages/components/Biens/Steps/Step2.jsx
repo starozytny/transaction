@@ -12,7 +12,7 @@ const CURRENT_STEP = 2;
 
 export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeDate,
                           codeTypeAd, codeTypeBien,
-                          areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving,
+                          areaTotal, areaHabitable, areaLand, areaGarden, areaTerrace, areaCave, areaBathroom, areaLiving,
                           piece, room, bathroom, wc, balcony, parking, box,
                           dispoAt, busy, buildAt, isMeuble, isNew, floor, nbFloor,
                           codeHeater, codeKitchen, isWcSeparate, codeWater, exposition, codeHeater0 })
@@ -69,10 +69,14 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 <label>Surfaces (m²)</label>
             </div>
             <div className="line line-infinite">
-                <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={onChange}>
-                    <span>Habitable</span>
+                <Input type="number" step="any" min={0} identifiant="areaTotal" valeur={areaTotal} errors={errors} onChange={onChange}>
+                    <span>Total</span>
                 </Input>
+
                 {codeTypeBienInt !== 2 && <>
+                    <Input type="number" step="any" min={0} identifiant="areaHabitable" valeur={areaHabitable} errors={errors} onChange={onChange}>
+                        <span>Habitable</span>
+                    </Input>
                     <Input type="number" step="any" min={0} identifiant="areaLand" valeur={areaLand} errors={errors} onChange={onChange}>
                         <span>Terrain</span>
                     </Input>
