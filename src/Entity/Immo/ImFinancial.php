@@ -153,6 +153,11 @@ class ImFinancial
      */
     private $detailsProcedure;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $priceMurs;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -440,5 +445,17 @@ class ImFinancial
         $charges = ["Habitation", "Commercial", "Meublé", "Professionnel", "Garage"];
 
         return $this->typeBail ? $charges[$this->typeBail] : null;
+    }
+
+    public function getPriceMurs(): ?float
+    {
+        return $this->priceMurs;
+    }
+
+    public function setPriceMurs(?float $priceMurs): self
+    {
+        $this->priceMurs = $priceMurs;
+
+        return $this;
     }
 }

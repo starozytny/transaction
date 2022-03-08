@@ -361,7 +361,8 @@ class DataImmo extends DataConstructor
 
     public function setDataFinancial(ImFinancial $obj, $data): ImFinancial
     {
-        if((int) $data->codeTypeAd == ImBien::AD_LOCATION){
+        $codeTypeAd = (int) $data->codeTypeAd;
+        if($codeTypeAd == ImBien::AD_LOCATION || $codeTypeAd == ImBien::AD_LOCATION_VAC || $codeTypeAd == ImBien::AD_CESSION_BAIL ){
             $obj = ($obj)
                 ->setProvisionCharges($this->setToNullFloat($data->provisionCharges))
                 ->setTypeCharges($this->setToNullInteger($data->typeCharges))
@@ -370,6 +371,11 @@ class DataImmo extends DataConstructor
                 ->setTypeBail($this->setToZeroEmpty($data->typeBail))
                 ->setDurationBail($this->setToNullFloat($data->durationBail))
             ;
+
+            if($codeTypeAd == ImBien::AD_CESSION_BAIL){
+                $obj->setPriceMurs($this->setToNullFloat($data->priceMurs));
+            }
+
         }else{
             $obj = ($obj)
                 ->setHonoraireChargeDe($this->setToNullInteger($data->honoraireChargeDe))
@@ -395,6 +401,8 @@ class DataImmo extends DataConstructor
                     ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
                 ;
             }
+
+            if
         }
 
         return ($obj)
