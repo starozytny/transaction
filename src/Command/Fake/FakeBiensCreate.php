@@ -125,6 +125,7 @@ class FakeBiensCreate extends Command
                 "codeTypeBien" => (string) $codeTypeBien,
                 "libelle" => $fake->name,
                 "negotiator" => $negotiator->getId(),
+
                 "areaTotal" => (string) $fake->randomFloat(2),
                 "areaHabitable" => (string) $fake->randomFloat(2),
                 "areaLand" => (string) $fake->randomFloat(2),
@@ -134,6 +135,7 @@ class FakeBiensCreate extends Command
                 "areaBathroom" => (string) $fake->randomFloat(2),
                 "areaLiving" => (string) $fake->randomFloat(2),
                 "areaDining" => (string) $fake->randomFloat(2),
+
                 "piece" => (string) $fake->randomDigit(),
                 "room" => (string) $fake->randomDigit(),
                 "bathroom" => (string) $fake->randomDigit(),
@@ -141,6 +143,7 @@ class FakeBiensCreate extends Command
                 "balcony" => (string) $fake->randomDigit(),
                 "parking" => (string) $fake->randomDigit(),
                 "box" => (string) $fake->randomDigit(),
+
                 "dispoAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "buildAt" => $fake->numberBetween(1600, 2021),
                 "busy" => $fake->numberBetween(0, 2),
@@ -154,6 +157,7 @@ class FakeBiensCreate extends Command
                 "isWcSeparate" => $answers[$fake->numberBetween(0,2)],
                 "codeWater" =>  $fake->numberBetween(0, 1),
                 "exposition" => (string) $fake->numberBetween(0, 5),
+
                 "hasGarden" => $answers[$fake->numberBetween(0,2)],
                 "hasTerrace" => $answers[$fake->numberBetween(0,2)],
                 "hasPool" => $answers[$fake->numberBetween(0,2)],
@@ -171,6 +175,7 @@ class FakeBiensCreate extends Command
                 "situation" => $fake->name,
                 "sousType" => $fake->numberBetween(0, 10),
                 "sol" => $fake->numberBetween(0, 4),
+
                 "beforeJuly" => 1,
                 "isVirgin" => 0,
                 "isSend" => 0,
@@ -182,6 +187,7 @@ class FakeBiensCreate extends Command
                 "gesValue" => (string) $fake->numberBetween(0, 350),
                 "minAnnual" => (string) $fake->numberBetween(0, 10000),
                 "maxAnnual" => (string) $fake->numberBetween(0, 10000),
+
                 "address" => $fake->streetName,
                 "hideAddress" => $fake->numberBetween(0, 1),
                 "zipcode" => $fake->postcode,
@@ -192,6 +198,7 @@ class FakeBiensCreate extends Command
                 "lat" => (string) $fake->latitude,
                 "lon" => (string) $fake->longitude,
                 "hideMap" => $fake->numberBetween(0, 1),
+
                 "price" => (string) $fake->randomFloat(2),
                 "provisionCharges" => (string) $fake->randomFloat(2),
                 "caution" => (string) $fake->randomFloat(2),
@@ -201,6 +208,7 @@ class FakeBiensCreate extends Command
                 "totalGeneral" => (string) $fake->randomFloat(2),
                 "typeBail" => $fake->numberBetween(0, 3),
                 "durationBail" => (string) $fake->numberBetween(0,5),
+
                 "chargesMensuelles" => (string) $fake->randomFloat(2),
                 "notaire" => (string) $fake->randomFloat(2),
                 "foncier" => (string) $fake->randomFloat(2),
@@ -213,6 +221,9 @@ class FakeBiensCreate extends Command
                 "chargesLot" => (string) $fake->randomFloat(2),
                 "isSyndicProcedure" => $fake->numberBetween(0,1),
                 "detailsProcedure" => $fake->sentence,
+
+                "priceMurs" => (string) $fake->randomFloat(2),
+
                 "inform" => $fake->numberBetween(0, 3),
                 "lastname" => $fake->lastName,
                 "phone1" => $fake->e164PhoneNumber,
@@ -220,10 +231,13 @@ class FakeBiensCreate extends Command
                 "visiteAt" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
                 "keysNumber" => $fake->randomNumber(1),
                 "keysWhere" => $fake->streetName,
+
                 "typeAdvert" => $fake->numberBetween(0, 2),
                 "contentSimple" => $fake->text,
                 "contentFull" => $fake->sentence(255),
+
                 "isDraft" => $isArchived ? false : $isDraft,
+
                 "codeTypeMandat" => (string) $fake->numberBetween(0, 3),
                 "startAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "endAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
