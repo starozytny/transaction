@@ -24,19 +24,19 @@ class ImDiag extends DataEntity
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $beforeJuly;
+    private $beforeJuly = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $isVirgin;
+    private $isVirgin = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $isSend;
+    private $isSend = ImBien::ANSWER_UNKNOWN;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)

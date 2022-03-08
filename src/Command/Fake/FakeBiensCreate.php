@@ -117,9 +117,12 @@ class FakeBiensCreate extends Command
             $isDraft = $fake->numberBetween(0, 1);
             $isArchived = $fake->numberBetween(0, 1);
 
+            $codeTypeBien = $fake->numberBetween(0, 13);
+
             $data = [
+                "caseTypeBien" => $codeTypeBien == ImBien::BIEN_PARKING_BOX || $codeTypeBien == ImBien::BIEN_TERRAIN ? 2 : 1,
                 "codeTypeAd" => (string) $fake->numberBetween(0, 7),
-                "codeTypeBien" => (string) $fake->numberBetween(0, 13),
+                "codeTypeBien" => (string) $codeTypeBien,
                 "libelle" => $fake->name,
                 "negotiator" => $negotiator->getId(),
                 "areaTotal" => (string) $fake->randomFloat(2),
