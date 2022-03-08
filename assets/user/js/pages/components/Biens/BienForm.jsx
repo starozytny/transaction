@@ -30,6 +30,7 @@ import { Step9 }        from "@userPages/components/Biens/Steps/Step9";
 import { Step10 }       from "@userPages/components/Biens/Steps/Step10";
 
 import { Owners}        from "@dashboardPages/components/Immo/Owners/Owners";
+import { PageInfos2 }   from "@userComponents/Layout/Page";
 
 const AD_VENTE              = 0;
 const AD_LOCATION           = 1;
@@ -472,7 +473,7 @@ export class BienForm extends Component {
         const { url, messageSuccess } = this.props;
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
             areaHabitable, piece, address, zipcode, city, country, contentSimple, contentFull,
-            repartitionCa, natureBailCommercial } = this.state;
+            price, honoraireTtc } = this.state;
 
         this.setState({ errors: [] })
 
@@ -488,8 +489,8 @@ export class BienForm extends Component {
             {type: "text",      id: 'areaHabitable',  value: areaHabitable},
             {type: "text",      id: 'piece',          value: piece},
 
-            {type: "text",  id: 'price',         value: price},
-            {type: "text",  id: 'honoraireTtc',  value: honoraireTtc},
+            {type: "text",      id: 'price',          value: price},
+            {type: "text",      id: 'honoraireTtc',   value: honoraireTtc},
 
             {type: "text",      id: 'address',        value: address},
             {type: "text",      id: 'zipcode',        value: zipcode},
@@ -557,7 +558,9 @@ export class BienForm extends Component {
 
     render () {
         const { negotiators, quartiers, sols, sousTypes, societyId, agencyId, settings, allSupports } = this.props;
-        const { step, contentHelpBubble, codeTypeAd, owners, allOwners } = this.state;
+        const { step, contentHelpBubble, owners, allOwners,
+            codeTypeAd, codeTypeBien, codeTypeMandat, negotiator, areaHabitable, piece, price,
+            honoraireTtc, address, zipcode, city, country, libelle, contentSimple, contentFull } = this.state;
 
         let steps = [
             {id: 1,  label: "Informations globales"},
@@ -591,6 +594,17 @@ export class BienForm extends Component {
                                     societyId={societyId} agencyId={agencyId} isClient={true}
                                     owners={owners} isFormBien={true} onSelectOwner={this.handleSelectOwner}/>
 
+        let inputsRequired = [codeTypeAd, codeTypeBien, codeTypeMandat, negotiator, areaHabitable, piece, price,
+            honoraireTtc, address, zipcode, city, country, libelle, contentSimple, contentFull];
+        let totalFilled = 0;
+        inputsRequired.forEach(inp => {
+            if(inp !== "" && inp !== null){
+                totalFilled++;
+            }
+        })
+
+        let percentage = Helper.countProgress(totalFilled, 15)
+
         let codeTypeAdInt = parseInt(codeTypeAd);
 
         return <div className="page-default">
@@ -601,6 +615,21 @@ export class BienForm extends Component {
                     </div>
                     <div className="content-col-1 steps">
                         {stepsItems}
+                    </div>
+                    <div className="body-col-1 percentage-infos">
+                        <PageInfos2 noImage={true}>
+                            <div className="percentage-required">
+                                <figure className={"chart-two chart-two-"+ percentage +" animate"}>
+                                    <svg role="img" xmlns="http://www.w3.org/2000/svg">
+                                        <title>Pourcentage rapprochement</title>
+                                        <circle className="circle-background"/>
+                                        <circle className="circle-foreground"/>
+                                    </svg>
+                                    <figcaption>{percentage} %</figcaption>
+                                </figure>
+                                <div className="percentage-required-txt">Taux de remplissage des champs obligatoires.</div>
+                            </div>
+                        </PageInfos2>
                     </div>
                 </div>
             </div>

@@ -11,11 +11,11 @@ export function PageInfos ({ image, children }) {
     </div>
 }
 
-export function PageInfos2 ({ image, children, actions }) {
+export function PageInfos2 ({ noImage = false, image, children, actions }) {
     return <div className="content-col-1 page-infos-2-content">
-        <div className="page-infos-2-image">
+        {!noImage && <div className="page-infos-2-image">
             <img src={image ? image : "/build/user/images/add-prospect.png"} alt="illustration"/>
-        </div>
+        </div>}
         <div className="page-infos-2-text">
             {children}
         </div>

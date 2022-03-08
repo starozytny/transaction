@@ -9,6 +9,7 @@ function getDataState (props) {
         step: 6,
 
         caseTypeBien: 1,
+        percentageFilled: 0,
 
         codeTypeAd: props.codeTypeAd,
         codeTypeBien: props.codeTypeBien,

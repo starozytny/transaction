@@ -22,6 +22,37 @@
   }
 }
 
+.percentage-infos{
+  .page-infos-2-text{
+    margin-top: 0;
+  }
+}
+
+.percentage-required{
+  @include flex(row, center, flex-start);
+
+  .percentage-required-txt{
+    width: calc(100% - 64px - 12px);
+    margin-left: 12px;
+  }
+
+  .percentage-required-txt, figcaption{
+    color: var(--grey3);
+  }
+
+  .chart-two.animate {
+    svg .circle-foreground {
+      animation-duration: 1s;
+    }
+
+    &.animate {
+      figcaption:after {
+        animation-duration: 1s;
+      }
+    }
+  }
+}
+
 .line-infos{
   margin-bottom: 24px;
 }
@@ -276,11 +307,5 @@ textarea{
 @media (min-width:1280px) {
   .form-bien{
     padding: 24px;
-  }
-
-  .page-default{
-    .steps{
-      padding-bottom: 120px;
-    }
   }
 }
