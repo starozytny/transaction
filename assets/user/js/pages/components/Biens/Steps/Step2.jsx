@@ -8,14 +8,8 @@ import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/functions/helper";
 
-const AD_VENTE              = 0;
-const AD_LOCATION           = 1;
-const AD_VIAGER             = 2;
-const AD_PDT_INVEST         = 3;
-const AD_CESSION_BAIL       = 4;
-const AD_LOCATION_VAC       = 5;
-const AD_VENTE_PRESTIGE     = 6;
-const AD_FOND_COMMERCE      = 7;
+const BIEN_PARKING_BOX = 2;
+const BIEN_TERRAIN = 3;
 
 const CURRENT_STEP = 2;
 
@@ -115,14 +109,16 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                 </Radiobox>
             </div>}
 
-            <div className="line line-2">
-                <Input type="number" min={1200} identifiant="buildAt" valeur={buildAt} errors={errors} onChange={onChange}>
-                    <span>Année de construction</span>
-                </Input>
-                <Radiobox items={helper.getItems("answers", 1)} identifiant="isNew" valeur={isNew} errors={errors} onChange={onChange}>
-                    Refait à neuf ?
-                </Radiobox>
-            </div>
+            {codeTypeBienInt !== BIEN_TERRAIN && <>
+                <div className="line line-2">
+                    <Input type="number" min={1200} identifiant="buildAt" valeur={buildAt} errors={errors} onChange={onChange}>
+                        <span>Année de construction</span>
+                    </Input>
+                    <Radiobox items={helper.getItems("answers", 1)} identifiant="isNew" valeur={isNew} errors={errors} onChange={onChange}>
+                        Refait à neuf ?
+                    </Radiobox>
+                </div>
+            </>}
 
             <div className="line line-2">
                 <DatePick identifiant="dispoAt" valeur={dispoAt} errors={errors}
@@ -167,13 +163,18 @@ export function Step2({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     </SelectReactSelectize>
                 </div>
             </div>
+        </>}
+        {codeTypeBienInt !== BIEN_PARKING_BOX && <>
             <div className="line special-line">
-                <div className="line line-2">
-                    <Radiobox items={helper.getItems("answers", 2)} identifiant="isWcSeparate" valeur={isWcSeparate} errors={errors} onChange={onChange}>
-                        WC séparé ?
-                    </Radiobox>
-                    <div className="form-group" />
-                </div>
+                {codeTypeBienInt !== BIEN_TERRAIN && <>
+                    <div className="line line-2">
+                        <Radiobox items={helper.getItems("answers", 2)} identifiant="isWcSeparate" valeur={isWcSeparate} errors={errors} onChange={onChange}>
+                            WC séparé ?
+                        </Radiobox>
+                        <div className="form-group" />
+                    </div>
+                </>}
+
                 <div className="line line-infinite">
                     <Radiobox items={expositionItems} identifiant="exposition" valeur={exposition} errors={errors} onChange={onChange}>
                         Exposition

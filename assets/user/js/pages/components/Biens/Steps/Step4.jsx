@@ -110,7 +110,7 @@ export class Step4 extends Component {
     }
 
     render () {
-        const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, sols, rooms, codeTypeBien } = this.props;
+        const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, sols, rooms, caseTypeBien } = this.props;
 
         const { errors, typeRoom, uid, name, area, sol,
             hasBalcony, hasTerrace, hasGarden, areaBalcony, areaTerrace, areaGarden } = this.state;
@@ -119,7 +119,6 @@ export class Step4 extends Component {
         let solItems = helper.getItemsFromDB(sols, sol, 'sol');
 
         let typeInt = helper.getIntValue(typeRoom);
-        let codeTypeBienInt = helper.getIntValue(codeTypeBien);
 
         let contentAside = <div key={uid}>
             <div className="line line-2">
@@ -184,7 +183,7 @@ export class Step4 extends Component {
         rooms.sort(SORTER)
 
         return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
-            {codeTypeBienInt !== 2 ? <>
+            {caseTypeBien !== 2 ? <>
                 <div className="line special-line">
                     <div className="form-group">
                         <label>Les pièces</label>
