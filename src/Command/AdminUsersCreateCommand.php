@@ -8,8 +8,10 @@ use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSettings;
+use App\Entity\Immo\ImStat;
 use App\Entity\Immo\ImSupport;
 use App\Entity\Immo\ImTenant;
+use App\Entity\Mail;
 use App\Entity\Notification;
 use App\Entity\Society;
 use App\Entity\User;
@@ -64,6 +66,8 @@ class AdminUsersCreateCommand extends Command
 
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
+            ImStat::class,
+            Mail::class,
             Notification::class,
             ImTenant::class,
             ImSupport::class,

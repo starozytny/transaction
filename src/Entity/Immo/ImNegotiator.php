@@ -125,6 +125,11 @@ class ImNegotiator
      */
     private $contracts;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isDefault = false;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
@@ -477,6 +482,18 @@ class ImNegotiator
                 $contract->setNegotiator(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsDefault(): ?bool
+    {
+        return $this->isDefault;
+    }
+
+    public function setIsDefault(bool $isDefault): self
+    {
+        $this->isDefault = $isDefault;
 
         return $this;
     }
