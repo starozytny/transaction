@@ -12,10 +12,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class ImConfidential extends DataEntity
 {
-    const INFORM_NONE = 0;
-    const INFORM_OWNER = 1;
-    const INFORM_TENANT = 2;
-    const INFORM_OTHER = 3;
+    const INFORM_AGENCY = 0;
+    const INFORM_NEGOTIATOR = 1;
+    const INFORM_OTHER = 2;
 
     /**
      * @ORM\Id
@@ -29,7 +28,7 @@ class ImConfidential extends DataEntity
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    private $inform = self::INFORM_NONE;
+    private $inform = self::INFORM_AGENCY;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -182,9 +181,6 @@ class ImConfidential extends DataEntity
 
         $txtVisits = $this->visiteAt ? "Visites à partir du " . $this->getFullDateString($this->visiteAt) . "." : "";
 
-        $txtContact = $this->lastname . ($this->lastname ? ", " : "") . $this->phone1 . ($this->phone1 ? ", " : "") . $this->email;
-        $txtContact = $txtContact ?  "Personne à prévenir : " . $txtContact : "";
-
-        return $txtKeys . ($txtKeys ? "<br />" . $txtVisits : "") . ($txtVisits ? "<br />" . $txtContact : "");
+        return $txtKeys . ($txtKeys ? "<br />" . $txtVisits : "");
     }
 }

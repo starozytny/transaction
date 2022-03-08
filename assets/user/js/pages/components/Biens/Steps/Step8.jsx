@@ -42,30 +42,6 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
 
         <div className="line special-line">
             <div className="form-group">
-                <label>Contact</label>
-            </div>
-            <div className="line line-3">
-                <div className="form-group" />
-                <SelectReactSelectize items={informItems} identifiant="inform" valeur={inform} errors={errors}
-                                      onChange={(e) => onChangeSelect('inform', e)}>
-                    Qui prévenir ?
-                </SelectReactSelectize>
-                <div className="form-group" />
-            </div>
-            {inform === 3 && <div className="line line-3">
-                <Input identifiant="lastname" valeur={lastname} errors={errors} onChange={onChange}>
-                    <span>Nom</span>
-                </Input>
-                <Input identifiant="phone1" valeur={phone1} errors={errors} onChange={onChange} type="number">
-                    <span>Téléphone</span>
-                </Input>
-                <Input identifiant="email" valeur={email} errors={errors} onChange={onChange} type="email">
-                    <span>Email</span>
-                </Input>
-            </div>}
-        </div>
-        <div className="line special-line">
-            <div className="form-group">
                 <label>Confidentiel</label>
             </div>
             <div className="line line-3">
@@ -80,6 +56,31 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     Où trouver les clés
                 </Input>
             </div>
+        </div>
+
+        <div className="line special-line">
+            <div className="form-group">
+                <label>Contact à afficher sur l'annonce</label>
+            </div>
+            <div className="line line-3">
+                <div className="form-group" />
+                <SelectReactSelectize items={informItems} identifiant="inform" valeur={inform} errors={errors}
+                                      onChange={(e) => onChangeSelect('inform', e)}>
+                    Qui contacter ?
+                </SelectReactSelectize>
+                <div className="form-group" />
+            </div>
+            {inform === 3 && <div className="line line-3">
+                <Input identifiant="lastname" valeur={lastname} errors={errors} onChange={onChange}>
+                    <span>Nom</span>
+                </Input>
+                <Input identifiant="phone1" valeur={phone1} errors={errors} onChange={onChange} type="number">
+                    <span>Téléphone</span>
+                </Input>
+                <Input identifiant="email" valeur={email} errors={errors} onChange={onChange} type="email">
+                    <span>Email</span>
+                </Input>
+            </div>}
         </div>
 
         <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />

@@ -4,6 +4,7 @@ namespace App\Service\Immo;
 
 use App\Entity\Immo\ImAdvert;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImConfidential;
 use App\Entity\Immo\ImMandat;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImPublish;
@@ -90,6 +91,8 @@ class PublishService
 
         $codeHeater     = $feature->getCodeHeater() + $feature->getCodeHeater0();
         $codeExposition = $feature->getExposition();
+
+        $inform = $confidential->getInform();
 
         $data = [
             // ---------------------------------------------------------------------------------
@@ -205,9 +208,9 @@ class PublishService
             isset($photos[8]) ? $photos[8]->getLegend() : "",
             "", //photo panoramique
             "", //url visite virtuelle
-            $negotiator->getPhone() ?: $negotiator->getPhone2(),
-            $negotiator->getLastname(),
-            $negotiator->getEmail(),
+            $inform == ImConfidential::INFORM_OTHER ? $confidential->getPhone1()    : ($inform == ImConfidential::INFORM_NEGOTIATOR ? ($negotiator->getPhone() ?: $negotiator->getPhone2()) : ""),
+            $inform == ImConfidential::INFORM_OTHER ? $confidential->getLastname()  : ($inform == ImConfidential::INFORM_NEGOTIATOR ? $negotiator->getLastname() : ""),
+            $inform == ImConfidential::INFORM_OTHER ? $confidential->getEmail()     : ($inform == ImConfidential::INFORM_NEGOTIATOR ? $negotiator->getEmail() : ""),
             $localisation->getZipcode(),
             // ---------------------------------------------------------------------------------
             // -------------------------------- PAGE 4 -----------------------------------------
@@ -226,7 +229,7 @@ class PublishService
             $mandat->getPhone(),
             $mandat->getCommentary(),
             $confidential->getCommentary(),
-            $negotiator->getCode(),
+            $negotiator->getId(),
             "",
             "",
             "",
