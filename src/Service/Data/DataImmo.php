@@ -252,7 +252,7 @@ class DataImmo extends DataConstructor
     public function setDataFeature(ImFeature $obj, $data): ImFeature
     {
         if((int) $data->codeTypeAd == ImBien::AD_LOCATION){
-            $obj->setIsMeuble($this->setToUnknownEmpty($data->isMeuble)),
+            $obj->setIsMeuble($this->setToUnknownEmpty($data->isMeuble));
         }
 
         return ($obj)
