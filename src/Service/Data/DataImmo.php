@@ -251,8 +251,11 @@ class DataImmo extends DataConstructor
      */
     public function setDataFeature(ImFeature $obj, $data): ImFeature
     {
+        if((int) $data->codeTypeAd == ImBien::AD_LOCATION){
+            $obj->setIsMeuble($this->setToUnknownEmpty($data->isMeuble)),
+        }
+
         return ($obj)
-            ->setIsMeuble($this->setToUnknownEmpty($data->isMeuble))
             ->setIsNew($this->setToUnknownEmpty($data->isNew))
             ->setDispoAt($this->createDate($data->dispoAt))
             ->setBusy($this->setToZeroEmpty($data->busy))
@@ -329,28 +332,36 @@ class DataImmo extends DataConstructor
 
     public function setDataFinancial(ImFinancial $obj, $data): ImFinancial
     {
+        if((int) $data->codeTypeAd == ImBien::AD_LOCATION){
+            $obj = ($obj)
+                ->setProvisionCharges($this->setToNullFloat($data->provisionCharges))
+                ->setTypeCharges($this->setToNullInteger($data->typeCharges))
+                ->setCaution($this->setToNullFloat($data->caution))
+                ->setEdl($this->setToNullFloat($data->edl))
+                ->setTypeBail($this->setToZeroEmpty($data->typeBail))
+                ->setDurationBail($this->setToNullFloat($data->durationBail))
+                ;
+        }else{
+            $obj = ($obj)
+                ->setHonoraireChargeDe($this->setToNullInteger($data->honoraireChargeDe))
+                ->setHonorairePourcentage($this->setToNullFloat($data->honorairePourcentage))
+                ->setPriceHorsAcquereur($this->setToNullFloat($data->priceHorsAcquereur))
+                ->setChargesMensuelles($this->setToNullFloat($data->chargesMensuelles))
+                ->setNotaire($this->setToNullFloat($data->notaire))
+                ->setFoncier($this->setToNullFloat($data->foncier))
+                ->setTaxeHabitation($this->setToNullFloat($data->taxeHabitation))
+                ->setIsCopro($data->isCopro)
+                ->setNbLot($this->setToNullFloat($data->nbLot))
+                ->setChargesLot($this->setToNullFloat($data->chargesLot))
+                ->setIsSyndicProcedure($data->isSyndicProcedure)
+                ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
+            ;
+        }
+
         return ($obj)
             ->setPrice((float) $data->price)
-            ->setProvisionCharges($this->setToNullFloat($data->provisionCharges))
-            ->setCaution($this->setToNullFloat($data->caution))
-            ->setHonoraireTtc($this->setToNullFloat($data->honoraireTtc))
-            ->setEdl($this->setToNullFloat($data->edl))
-            ->setTypeCharges($this->setToNullInteger($data->typeCharges))
             ->setTotalGeneral($this->setToNullFloat($data->totalGeneral))
-            ->setTypeBail($this->setToZeroEmpty($data->typeBail))
-            ->setDurationBail($this->setToNullFloat($data->durationBail))
-            ->setChargesMensuelles($this->setToNullFloat($data->chargesMensuelles))
-            ->setNotaire($this->setToNullFloat($data->notaire))
-            ->setFoncier($this->setToNullFloat($data->foncier))
-            ->setTaxeHabitation($this->setToNullFloat($data->taxeHabitation))
-            ->setHonoraireChargeDe($this->setToNullInteger($data->honoraireChargeDe))
-            ->setHonorairePourcentage($this->setToNullFloat($data->honorairePourcentage))
-            ->setPriceHorsAcquereur($this->setToNullFloat($data->priceHorsAcquereur))
-            ->setIsCopro($data->isCopro)
-            ->setNbLot($this->setToNullFloat($data->nbLot))
-            ->setChargesLot($this->setToNullFloat($data->chargesLot))
-            ->setIsSyndicProcedure($data->isSyndicProcedure)
-            ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
+            ->setHonoraireTtc($this->setToNullFloat($data->honoraireTtc))
         ;
     }
 
