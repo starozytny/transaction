@@ -3,13 +3,8 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImBuyer;
-use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSearch;
-use App\Entity\Immo\ImSuivi;
 use App\Entity\User;
-use App\Repository\Immo\ImBuyerRepository;
-use App\Repository\Immo\ImProspectRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
@@ -17,13 +12,11 @@ use App\Service\Immo\SearchService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/searchs", name="api_searchs_")

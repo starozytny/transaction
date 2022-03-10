@@ -3,9 +3,9 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImContract;
 use App\Entity\Immo\ImContractant;
+use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
@@ -37,7 +37,7 @@ class ContractController extends AbstractController
      * @throws Exception
      */
     public function submitForm($type, ImContract $obj, Request $request, ApiResponse $apiResponse,
-                               ValidatorService $validator, DataImmo $dataEntity, SerializerInterface $serializer): JsonResponse
+                               ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
@@ -59,7 +59,6 @@ class ContractController extends AbstractController
 
         $contractant = (new ImContractant())
             ->setContract($obj)
-            ->setOwner($bien->getOwner())
         ;
 
         if($data->prospect){
@@ -79,7 +78,6 @@ class ContractController extends AbstractController
                 "zipcode" => $prospect->getZipcode(),
                 "city" => $prospect->getCity(),
                 "birthday" => $prospect->getBirthdayJavascript(),
-                "type" => $bien->getCodeTypeAd() == ImBien::AD_PDT_INVEST ? ImBuyer::TYPE_INVEST : ImBuyer::TYPE_BUYER,
                 "country" => "France",
                 "negotiator" => null
             ];
@@ -92,10 +90,10 @@ class ContractController extends AbstractController
 
                 $contractant->setTenant($tenant);
             }else{
-                $buyer = $dataEntity->setDataBuyer(new ImBuyer(), $dataPerson);
-                $em->persist($buyer);
+                $owner = $dataEntity->setDataOwner(new ImOwner(), $dataPerson);
+                $em->persist($owner);
 
-                $contractant->setBuyer($buyer);
+                $contractant->setOwner($owner);
             }
 
             if($suivi = $this->getSuivi($bien, $prospect)){
@@ -133,16 +131,15 @@ class ContractController extends AbstractController
      * @OA\Tag(name="Contracts")
      *
      * @param Request $request
-     * @param SerializerInterface $serializer
      * @param ValidatorService $validator
      * @param ApiResponse $apiResponse
      * @param DataImmo $dataEntity
      * @return JsonResponse
      * @throws Exception
      */
-    public function create(Request $request, SerializerInterface $serializer, ValidatorService $validator, ApiResponse $apiResponse, DataImmo $dataEntity): JsonResponse
+    public function create(Request $request, ValidatorService $validator, ApiResponse $apiResponse, DataImmo $dataEntity): JsonResponse
     {
-        return $this->submitForm("create", new ImContract(), $request, $apiResponse, $validator, $dataEntity, $serializer);
+        return $this->submitForm("create", new ImContract(), $request, $apiResponse, $validator, $dataEntity);
     }
 
     /**
@@ -164,7 +161,6 @@ class ContractController extends AbstractController
      * @OA\Tag(name="Contracts")
      *
      * @param Request $request
-     * @param SerializerInterface $serializer
      * @param ValidatorService $validator
      * @param ApiResponse $apiResponse
      * @param ImContract $obj
@@ -172,10 +168,10 @@ class ContractController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(Request $request, SerializerInterface $serializer, ValidatorService $validator,  ApiResponse $apiResponse,
+    public function update(Request $request, ValidatorService $validator,  ApiResponse $apiResponse,
                            ImContract $obj, DataImmo $dataEntity): JsonResponse
     {
-        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $serializer);
+        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
 
     private function getSuivi($bien, $prospect)

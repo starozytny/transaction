@@ -90,7 +90,6 @@ Encore
     .addEntry('user_negotiator', './assets/user/js/pages/negotiator.js')
     .addEntry('user_tenant', './assets/user/js/pages/tenant.js')
     .addEntry('user_prospect', './assets/user/js/pages/prospect.js')
-    .addEntry('user_buyer', './assets/user/js/pages/buyer.js')
     .addEntry('user_agenda', './assets/user/js/pages/agenda.js')
     .addEntry('user_visite', './assets/user/js/pages/visite.js')
     .addEntry('user_setting', './assets/user/js/pages/setting.js')

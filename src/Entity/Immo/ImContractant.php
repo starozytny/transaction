@@ -29,11 +29,6 @@ class ImContractant
     private $owner;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBuyer::class, fetch="EAGER", inversedBy="contractants")
-     */
-    private $buyer;
-
-    /**
      * @ORM\ManyToOne(targetEntity=ImTenant::class, fetch="EAGER", inversedBy="contractants")
      */
     private $tenant;
@@ -55,14 +50,14 @@ class ImContractant
         return $this;
     }
 
-    public function getBuyer(): ?ImBuyer
+    public function getOwner(): ?ImOwner
     {
-        return $this->buyer;
+        return $this->owner;
     }
 
-    public function setBuyer(?ImBuyer $buyer): self
+    public function setOwner(?ImOwner $owner): self
     {
-        $this->buyer = $buyer;
+        $this->owner = $owner;
 
         return $this;
     }
@@ -75,18 +70,6 @@ class ImContractant
     public function setTenant(?ImTenant $tenant): self
     {
         $this->tenant = $tenant;
-
-        return $this;
-    }
-
-    public function getOwner(): ?ImOwner
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?ImOwner $owner): self
-    {
-        $this->owner = $owner;
 
         return $this;
     }

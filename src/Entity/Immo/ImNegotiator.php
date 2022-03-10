@@ -116,11 +116,6 @@ class ImNegotiator
     private $prospects;
 
     /**
-     * @ORM\OneToMany(targetEntity=ImBuyer::class, mappedBy="negotiator")
-     */
-    private $buyers;
-
-    /**
      * @ORM\OneToMany(targetEntity=ImContract::class, mappedBy="negotiator")
      */
     private $contracts;
@@ -137,7 +132,6 @@ class ImNegotiator
         $this->owners = new ArrayCollection();
         $this->tenants = new ArrayCollection();
         $this->prospects = new ArrayCollection();
-        $this->buyers = new ArrayCollection();
         $this->contracts = new ArrayCollection();
     }
 
@@ -421,36 +415,6 @@ class ImNegotiator
             // set the owning side to null (unless already changed)
             if ($prospect->getNegotiator() === $this) {
                 $prospect->setNegotiator(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ImBuyer[]
-     */
-    public function getBuyers(): Collection
-    {
-        return $this->buyers;
-    }
-
-    public function addBuyer(ImBuyer $buyer): self
-    {
-        if (!$this->buyers->contains($buyer)) {
-            $this->buyers[] = $buyer;
-            $buyer->setNegotiator($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBuyer(ImBuyer $buyer): self
-    {
-        if ($this->buyers->removeElement($buyer)) {
-            // set the owning side to null (unless already changed)
-            if ($buyer->getNegotiator() === $this) {
-                $buyer->setNegotiator(null);
             }
         }
 

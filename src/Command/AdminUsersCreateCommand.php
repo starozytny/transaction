@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
@@ -71,7 +70,6 @@ class AdminUsersCreateCommand extends Command
             Notification::class,
             ImTenant::class,
             ImSupport::class,
-            ImBuyer::class,
             ImOwner::class,
             ImProspect::class,
             ImNegotiator::class,
