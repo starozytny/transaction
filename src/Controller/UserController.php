@@ -25,13 +25,10 @@ use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImSupport;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
-use App\Repository\Immo\ImAgencyRepository;
 use App\Repository\Immo\ImNegotiatorRepository;
 use App\Repository\Immo\ImSettingsRepository;
-use App\Repository\Immo\ImSuiviRepository;
 use App\Service\MailerService;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use App\Repository\Immo\ImBienRepository;
 use App\Repository\Immo\ImBuyerRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
@@ -124,28 +121,29 @@ class UserController extends AbstractController
     /**
      * @Route("/biens", options={"expose"=true}, name="biens")
      */
-    public function biens(Request $request, ImBienRepository $repository, ImSuiviRepository $suiviRepository,
-                          ImAgencyRepository $agencyRepository, SerializerInterface $serializer, SearchService $searchService): Response
+    public function biens(Request $request, SerializerInterface $serializer, SearchService $searchService): Response
     {
+        $em = $this->doctrine->getManager();
+
         $status = $request->query->get('st');
         $filterNego = $request->query->get('fn');
         $filterUser = $request->query->get('fu');
 
         /** @var User $user */
         $user = $this->getUser();
-        $agencies = $agencyRepository->findBy(['society' => $user->getSociety()]);
+        $agencies = $em->getRepository(ImAgency::class)->findBy(['society' => $user->getSociety()]);
 
         if($status == null){
-            $objs = $repository->findBy(['agency' => $agencies]);
+            $objs = $em->getRepository(ImBien::class)->findBy(['agency' => $agencies]);
         }else{
-            $objs = $repository->findBy(['agency' => $agencies, 'status' => (int) $status]);
+            $objs = $em->getRepository(ImBien::class)->findBy(['agency' => $agencies, 'status' => (int) $status]);
         }
 
         $rapprochements = $searchService->getRapprochementBySearchs($objs, $user->getAgency());
-        $suivis  = $suiviRepository->findByStatusProcessAndBiens($objs);
+        $suivis         = $em->getRepository(ImSuivi::class)->findByStatusProcessAndBiens($objs);
 
-        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
-        $suivis  = $serializer->serialize($suivis, 'json', ['groups' => ImSuivi::SUIVI_READ]);
+        $objs           = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+        $suivis         = $serializer->serialize($suivis, 'json', ['groups' => ImSuivi::SUIVI_READ]);
 
         return $this->render('user/pages/biens/index.html.twig', [
             'user' => $user,
