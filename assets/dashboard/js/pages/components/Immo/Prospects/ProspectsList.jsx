@@ -68,7 +68,7 @@ export class ProspectsList extends Component {
                                      currentPage={currentPage} perPage={perPage} onPerPage={onPerPage} taille={taille} onClick={onPaginationClick}/>
 
                 <div className="items-table">
-                    <div className="items items-default">
+                    <div className="items items-default items-prospects">
                         <div className="item item-header">
                             {(!isClient || isSelect) && <div className="item-header-selector" />}
                             <div className="item-content">

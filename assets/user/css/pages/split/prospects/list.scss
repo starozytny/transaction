@@ -1,0 +1,13 @@
+@import "../../../vars/vars";
+
+.items-prospects{
+  .infos-col-5{
+    .col-1{
+      width: calc(100% - 40% - 84px - 144px);
+    }
+    .col-4{
+      width: calc(130px - 12px);
+      margin-right: 12px;
+    }
+  }
+}

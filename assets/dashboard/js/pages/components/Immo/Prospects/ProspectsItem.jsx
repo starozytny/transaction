@@ -60,7 +60,7 @@ export class ProspectsItem extends Component {
                         </div>
 
                         <div className="col-3">
-                            {elem.search ? <SearchInfos elem={elem.search} isRa={true} /> : null}
+                            {elem.search ? <SearchInfos elem={elem.search} isRa={true} /> : <ButtonSearchCrud icon="add-square" onClick={() => onChangeContext('customOne', elem)}>Ajouter une recherche</ButtonSearchCrud>}
                         </div>
 
                         <div className="col-4">
@@ -70,7 +70,7 @@ export class ProspectsItem extends Component {
                                     <ButtonSearchCrud icon="pencil" onClick={() => onChangeContext('customTwo', elem)}>Modifier</ButtonSearchCrud>
                                     <ButtonSearchCrud icon="trash" onClick={() => onDeleteSearch(elem)}>Supprimer</ButtonSearchCrud>
                                 </div>
-                            </> : <ButtonSearchCrud icon="add-square" onClick={() => onChangeContext('customOne', elem)}>Ajouter une recherche</ButtonSearchCrud>}
+                            </> : null}
                         </div>
 
                         <div className="col-5 actions">

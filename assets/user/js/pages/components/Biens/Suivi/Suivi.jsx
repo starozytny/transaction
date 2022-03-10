@@ -104,10 +104,10 @@ export class Suivi extends Component {
                     <div className="suivi-section">
                         <Global elem={elem} suivis={suivis} visits={allVisits} />
                     </div>
-                    <div className="suivi-section">
+                    {allVisits.length !== 0 && <div className="suivi-section">
                         <div className="title">Les 20 prochaines visites</div>
                         <LastVisites visits={allVisits} maxResults={20}/>
-                    </div>
+                    </div>}
                 </>
                 break;
         }
