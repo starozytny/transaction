@@ -65,17 +65,24 @@ class DataImmo extends DataConstructor
         $libelle        = $data->libelle;
         $negotiator     = $data->negotiator;
 
+        $isDraft = (int) $data->isDraft;
+        if($isDraft){
+            $obj->setStatus(ImBien::STATUS_DRAFT);
+        }
+
         // validation des données
-        $paramsToValidate = [
-            ['type' => 'text',   'name' => 'codeTypeAd',      'value' => $codeTypeAd],
-            ['type' => 'text',   'name' => 'codeTypeBien',    'value' => $codeTypeBien],
-            ['type' => 'text',   'name' => 'libelle',         'value' => $libelle],
-            ['type' => 'text',   'name' => 'negotiator',      'value' => $negotiator],
-            ['type' => 'length', 'name' => 'libelle',         'value' => $libelle, 'min' => 0, 'max' => 64]
-        ];
-        $noErrors = $this->validator->validateCustom($paramsToValidate);
-        if ($noErrors !== true) {
-            return $noErrors;
+        if(!$isDraft){
+            $paramsToValidate = [
+                ['type' => 'text',   'name' => 'codeTypeAd',      'value' => $codeTypeAd],
+                ['type' => 'text',   'name' => 'codeTypeBien',    'value' => $codeTypeBien],
+                ['type' => 'text',   'name' => 'libelle',         'value' => $libelle],
+                ['type' => 'text',   'name' => 'negotiator',      'value' => $negotiator],
+                ['type' => 'length', 'name' => 'libelle',         'value' => $libelle, 'min' => 0, 'max' => 64]
+            ];
+            $noErrors = $this->validator->validateCustom($paramsToValidate);
+            if ($noErrors !== true) {
+                return $noErrors;
+            }
         }
 
         $negotiator = $this->em->getRepository(ImNegotiator::class)->findOneBy(['id' => $negotiator]);
@@ -84,11 +91,6 @@ class DataImmo extends DataConstructor
                 'name' => "negotiator",
                 'message' => "Ce négociateur n'existe pas. Si le problème persiste, veuillez contacter le support technique."
             ]];
-        }
-
-        $isDraft = (int) $data->isDraft;
-        if($isDraft){
-            $obj->setStatus(ImBien::STATUS_DRAFT);
         }
 
         if(isset($data->owners) && $data->owners){

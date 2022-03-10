@@ -509,7 +509,7 @@ export class BienForm extends Component {
         let validate = Validateur.validateur(paramsToValidate);
 
         Helper.toTop();
-        if(!validate.code){
+        if(!validate.code && !isDraft){
             Formulaire.showErrors(this, validate);
         }else{
             let self = this;

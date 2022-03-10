@@ -27,7 +27,7 @@ class ImOwner extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "contractant-owner:read"})
      */
     private $id;
 
@@ -57,25 +57,25 @@ class ImOwner extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "contractant-owner:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "owner:read", "contractant-owner:read"})
      */
     private $phone1;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "owner:read", "contractant-owner:read"})
      */
     private $phone2;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "owner:read", "contractant-owner:read"})
      */
     private $phone3;
 
@@ -152,9 +152,15 @@ class ImOwner extends DataEntity
      */
     private $contractants;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImSeller::class, mappedBy="owner")
+     */
+    private $sellers;
+
     public function __construct()
     {
         $this->contractants = new ArrayCollection();
+        $this->sellers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -377,7 +383,7 @@ class ImOwner extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "contractant-owner:read"})
      */
     public function getFullnameCivility(): string
     {
@@ -450,6 +456,36 @@ class ImOwner extends DataEntity
             // set the owning side to null (unless already changed)
             if ($contractant->getOwner() === $this) {
                 $contractant->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImSeller[]
+     */
+    public function getSellers(): Collection
+    {
+        return $this->sellers;
+    }
+
+    public function addSeller(ImSeller $seller): self
+    {
+        if (!$this->sellers->contains($seller)) {
+            $this->sellers[] = $seller;
+            $seller->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeller(ImSeller $seller): self
+    {
+        if ($this->sellers->removeElement($seller)) {
+            // set the owning side to null (unless already changed)
+            if ($seller->getOwner() === $this) {
+                $seller->setOwner(null);
             }
         }
 

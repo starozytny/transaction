@@ -4,12 +4,14 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImContractantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImContractantRepository::class)
  */
 class ImContractant
 {
+    const CONTRACTANT_OWNER_READ = ["contractant-owner:read"];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -20,11 +22,13 @@ class ImContractant
     /**
      * @ORM\ManyToOne(targetEntity=ImContract::class, fetch="EAGER", inversedBy="contractants")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"contractant-owner:read"})
      */
     private $contract;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImOwner::class, fetch="EAGER", inversedBy="contractants")
+     * @Groups({"contractant-owner:read"})
      */
     private $owner;
 

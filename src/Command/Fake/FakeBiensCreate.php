@@ -22,6 +22,7 @@ use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImPublish;
 use App\Entity\Immo\ImRoom;
+use App\Entity\Immo\ImSeller;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
@@ -80,6 +81,7 @@ class FakeBiensCreate extends Command
 
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
+            ImSeller::class,
             ImContractant::class,
             ImContract::class,
             ImPhoto::class,

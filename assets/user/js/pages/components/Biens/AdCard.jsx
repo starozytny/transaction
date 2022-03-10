@@ -20,6 +20,7 @@ export class AdCard extends Component {
         super();
 
         this.helpBubble = React.createRef();
+        this.helpBubbleOwner = React.createRef();
         this.mail = React.createRef();
 
         this.handleOpenHelp = this.handleOpenHelp.bind(this);
@@ -28,6 +29,10 @@ export class AdCard extends Component {
 
     handleOpenHelp = () => {
         this.helpBubble.current.handleOpen();
+    }
+
+    handleOpenOwner = () => {
+        this.helpBubbleOwner.current.handleOpen();
     }
 
     handleChangeStatus = (elem, status) => {
@@ -67,7 +72,7 @@ export class AdCard extends Component {
 
     render () {
         const { agencyId, isPublishePage=false, isOwnerPage=false, isProspectPage=false, rapprochements, follows, el, onDelete,
-            onLinkToProspect, publishes, toPublishes, onSelectPublish, suivis } = this.props;
+            onLinkToProspect, publishes, toPublishes, onSelectPublish, suivis, contractants } = this.props;
 
         let items = [
             {data: <a target="_blank" href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})}>Liste des visites</a>},
@@ -99,6 +104,15 @@ export class AdCard extends Component {
                 if(el.id === su.bien.id){
                     nbSuivis++;
                     inSuivis.push(su.prospect.id)
+                }
+            })
+        }
+
+        let owners = [];
+        if(contractants){
+            contractants.forEach(co => {
+                if(el.id === co.contract.bien.id){
+                    owners.push(co.owner)
                 }
             })
         }
@@ -160,7 +174,7 @@ export class AdCard extends Component {
                                 </div>
                             </a>
                         </div>
-                        <a className="col-2" href={Routing.generate('user_biens_suivi', {'slug': el.slug})}>
+                        <div className="col-2">
                             <div className="badges">
                                 <div className={"badge-bien badge badge-" + el.status}
                                      onClick={((el.status === 1 || el.status === 0) && !isPublishePage && !isOwnerPage && !isProspectPage) ?
@@ -172,8 +186,11 @@ export class AdCard extends Component {
                             <div className="identifier">
                                 <div className="price">{Sanitaze.toFormatCurrency(el.financial.price)} {el.codeTypeAd === 1 ? "cc/mois" : ""}</div>
                                 <div className="carac">{el.area.habitable}m² - {el.number.piece} pièce{el.number.piece > 1 ? "s" : ""}</div>
+                                {owners.length !== 0 && <ButtonIcon icon={(owners.length > 1 ? "user" : "group")}
+                                                                    text={"propriétaire" + (owners.length > 1 ? "s" : "")}
+                                                                    onClick={this.handleOpenOwner} />}
                             </div>
-                        </a>
+                        </div>
                         <div className="col-3">
                             <div className="references">{el.agency.code}</div>
                             <NegociatorBubble elem={el.negotiator} onOpen={this.handleOpenHelp} />
@@ -190,14 +207,14 @@ export class AdCard extends Component {
                         </div> : <div className="createdAt" />}
 
                         <div className={"actions" + (isProspectPage && followed ? " followed" : "")}>
-                            {(rapprochements && nbRapprochements > 0) && <ButtonIcon element="a" icon="group" tooltipWidth={160} text={""+nbRapprochements}
-                                                                                     onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "possibilities"})}
-                                >
+                            {(rapprochements && nbRapprochements > 0) &&
+                                <ButtonIcon element="a" icon="group" tooltipWidth={160} text={""+nbRapprochements}
+                                            onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "possibilities"})}>
                                 {nbRapprochements} rapprochement{nbRapprochements > 1 ? "s" : ""} possible{nbRapprochements > 1 ? "s" : ""}
                             </ButtonIcon>}
-                            {(suivis && nbSuivis > 0) && <ButtonIcon element="a" icon="group" tooltipWidth={150} text={""+nbSuivis}
-                                                                     onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "processing"})}
-                            >
+                            {(suivis && nbSuivis > 0) &&
+                                <ButtonIcon element="a" icon="group" tooltipWidth={150} text={""+nbSuivis}
+                                            onClick={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements", "ctra": "processing"})}>
                                 {nbSuivis} rapprochement{nbSuivis > 1 ? "s" : ""} en cours
                             </ButtonIcon>}
 
@@ -220,6 +237,7 @@ export class AdCard extends Component {
             </div>
 
             <HelpBubble ref={this.helpBubble} content={<ContentNegotiatorBubble elem={el.negotiator} />}>Négociateur</HelpBubble>
+            {owners.length !== 0 && <HelpBubble ref={this.helpBubbleOwner} content={<ContentOwnerBubble data={owners} />}>Propriétaire{owners.length > 1 ? "s" : ""}</HelpBubble>}
             <MailAside ref={this.mail} to={el.owner ? [el.owner.email] : []} />
         </div>
     }
@@ -243,5 +261,20 @@ export function ContentNegotiatorBubble ({ elem }) {
         <div>{elem.phone}</div>
         <div>{elem.phone2}</div>
         <div>{elem.email}</div>
+    </div>
+}
+
+function ContentOwnerBubble ({ data }) {
+    return <div>
+        {data.map(elem => {
+            return <div key={elem.id}>
+                <div>{elem.fullnameCivility}</div>
+                <p><br/></p>
+                <div>{elem.phone1}</div>
+                <div>{elem.phone2}</div>
+                <div>{elem.phone3}</div>
+                <div>{elem.email}</div>
+            </div>
+        })}
     </div>
 }

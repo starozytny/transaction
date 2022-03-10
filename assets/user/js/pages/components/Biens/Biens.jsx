@@ -145,7 +145,7 @@ export class Biens extends Component {
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
-        const { rapprochements, suivis } = this.props;
+        const { rapprochements, suivis, contractants } = this.props;
         const { perPage, currentPage, agencyId } = this.state;
 
         return <BiensList onChangeContext={changeContext}
@@ -170,6 +170,7 @@ export class Biens extends Component {
                           dataFilters={data}
                           rapprochements={rapprochements ? JSON.parse(rapprochements) : []}
                           suivis={suivis ? JSON.parse(suivis) : []}
+                          contractants={contractants ? JSON.parse(contractants) : []}
                           dataImmuable={this.layout.current.state.dataImmuable}
                           data={currentData} />
     }

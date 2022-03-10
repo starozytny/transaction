@@ -67,6 +67,7 @@ class ImContract extends DataEntity
     /**
      * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="contracts")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"contractant-owner:read"})
      */
     private $bien;
 
@@ -91,10 +92,16 @@ class ImContract extends DataEntity
      */
     private $contractants;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImSeller::class, mappedBy="contract")
+     */
+    private $sellers;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
         $this->contractants = new ArrayCollection();
+        $this->sellers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -278,5 +285,35 @@ class ImContract extends DataEntity
         $values = ["Terminé", "En cours", "Annulé"];
 
         return $values[$this->status];
+    }
+
+    /**
+     * @return Collection|ImSeller[]
+     */
+    public function getSellers(): Collection
+    {
+        return $this->sellers;
+    }
+
+    public function addSeller(ImSeller $seller): self
+    {
+        if (!$this->sellers->contains($seller)) {
+            $this->sellers[] = $seller;
+            $seller->setContract($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeller(ImSeller $seller): self
+    {
+        if ($this->sellers->removeElement($seller)) {
+            // set the owning side to null (unless already changed)
+            if ($seller->getContract() === $this) {
+                $seller->setContract(null);
+            }
+        }
+
+        return $this;
     }
 }

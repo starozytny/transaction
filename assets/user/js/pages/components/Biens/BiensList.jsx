@@ -23,7 +23,7 @@ function getItemsSelect (data, noDuplication, el, pref, typeValue = "id", typeLa
 export class BiensList extends Component {
     render () {
         const { agencyId, dataFilters, pageStatus, dataImmuable, data, onDelete, filters, onGetFilters, rapprochements, onUpdateList,
-            sorters, onSorter, currentPage, perPage, onPerPage, taille, onPaginationClick, suivis } = this.props;
+            sorters, onSorter, currentPage, perPage, onPerPage, taille, onPaginationClick, suivis, contractants } = this.props;
 
         let items = [], negotiators = [], users = [], agencies = [];
         let noDuplicateNegotiators = [], noDuplicateUsers = [], noDuplicateAgencies = [];
@@ -35,7 +35,7 @@ export class BiensList extends Component {
         })
 
         data.forEach(el => {
-            items.push(<AdCard el={el} agencyId={agencyId} rapprochements={rapprochements} suivis={suivis}
+            items.push(<AdCard el={el} agencyId={agencyId} rapprochements={rapprochements} suivis={suivis} contractants={contractants}
                                onDelete={onDelete} onUpdateList={onUpdateList} key={el.id}/>)
         })
 

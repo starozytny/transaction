@@ -29,7 +29,6 @@ use App\Repository\Immo\ImNegotiatorRepository;
 use App\Repository\Immo\ImSettingsRepository;
 use App\Service\MailerService;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use App\Repository\Immo\ImBuyerRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
 use App\Repository\Immo\ImTenantRepository;
@@ -141,9 +140,12 @@ class UserController extends AbstractController
 
         $rapprochements = $searchService->getRapprochementBySearchs($objs, $user->getAgency());
         $suivis         = $em->getRepository(ImSuivi::class)->findByStatusProcessAndBiens($objs);
+        $contrats       = $em->getRepository(ImContract::class)->findBy(['bien' => $objs]);
+        $contractants   = $em->getRepository(ImContractant::class)->findBy(['contract' => $contrats]);
 
         $objs           = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
         $suivis         = $serializer->serialize($suivis, 'json', ['groups' => ImSuivi::SUIVI_READ]);
+        $contractants   = $serializer->serialize($contractants, 'json', ['groups' => ImContractant::CONTRACTANT_OWNER_READ]);
 
         return $this->render('user/pages/biens/index.html.twig', [
             'user' => $user,
@@ -153,6 +155,7 @@ class UserController extends AbstractController
             'filterUser' => $filterUser,
             'rapprochements' => json_encode($rapprochements),
             'suivis' => $suivis,
+            'contractants' => $contractants,
         ]);
     }
 
@@ -505,15 +508,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * Return render and route for tenant, prospects, buyers...
-     *
-     * @param Request $request
-     * @param SerializerInterface $serializer
-     * @param $repository
-     * @param $routeName
-     * @return Response
+     * @Route("/locataires", name="tenants")
      */
-    private function getDataPersons(Request $request, SerializerInterface $serializer, $repository, $routeName): Response
+    public function tenants(Request $request, ImTenantRepository $repository, SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
 
@@ -527,7 +524,7 @@ class UserController extends AbstractController
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
-        $route = "user/pages/" . $routeName . "/" . ($getArchived ? "archived" : "index") . ".html.twig";
+        $route = "user/pages/tenants/" . ($getArchived ? "archived" : "index") . ".html.twig";
         $params = [
             'data' => $objs,
             'user' => $user,
@@ -540,22 +537,6 @@ class UserController extends AbstractController
         }
 
         return $this->render($route, $params);
-    }
-
-    /**
-     * @Route("/locataires", name="tenants")
-     */
-    public function tenants(Request $request, ImTenantRepository $repository, SerializerInterface $serializer): Response
-    {
-        return $this->getDataPersons($request, $serializer, $repository, "tenants");
-    }
-
-    /**
-     * @Route("/acquereurs", name="buyers")
-     */
-    public function buyers(Request $request, ImBuyerRepository $repository, SerializerInterface $serializer): Response
-    {
-        return $this->getDataPersons($request, $serializer, $repository, "buyers");
     }
 
     /**
