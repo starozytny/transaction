@@ -261,7 +261,7 @@ export function AdMainInfos ({ elem }) {
         {elem.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
         <div className="details-pretitle">{elem.agency.name}</div>
         <div className="details-title">
-            <a href={Routing.generate('user_biens_read', {'slug': elem.slug})}>
+            <a href={Routing.generate('user_biens_suivi', {'slug': elem.slug})}>
                 {elem.libelle}
             </a>
         </div>

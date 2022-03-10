@@ -139,7 +139,7 @@ export class AdCard extends Component {
                 <div className="card-body">
                     {el.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
 
-                    <a className="image" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
+                    <a className="image" href={Routing.generate('user_biens_suivi', {'slug': el.slug})}>
                         <img src={el.mainPhotoFile} alt="illustration"/>
                     </a>
 
@@ -149,7 +149,7 @@ export class AdCard extends Component {
                                 <div className="badge-bien badge">{el.typeAdString}</div>
                                 <div className="badge-bien badge">{el.typeBienString}</div>
                             </div>
-                            <a className="identifier" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
+                            <a className="identifier" href={Routing.generate('user_biens_suivi', {'slug': el.slug})}>
                                 <div className="title">
                                     <span>{el.libelle}</span>
                                     {el.isPublished && <span className="online" />}
@@ -160,7 +160,7 @@ export class AdCard extends Component {
                                 </div>
                             </a>
                         </div>
-                        <a className="col-2" href={Routing.generate('user_biens_read', {'slug': el.slug})}>
+                        <a className="col-2" href={Routing.generate('user_biens_suivi', {'slug': el.slug})}>
                             <div className="badges">
                                 <div className={"badge-bien badge badge-" + el.status}
                                      onClick={((el.status === 1 || el.status === 0) && !isPublishePage && !isOwnerPage && !isProspectPage) ?
