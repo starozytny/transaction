@@ -14,6 +14,16 @@
 }
 
 .card-ad, .card-ra{
+  .negociateurs-owners{
+    @include flex(row, flex-start, flex-start);
+
+    & > .negociateur{
+      &:not(:last-child){
+        margin-right: 8px;
+      }
+    }
+  }
+
   .negociateur{
     position: relative;
     cursor: pointer;
@@ -31,10 +41,15 @@
   }
 
   .avatar{
+    @include flex(row, center, center);
     width: 32px; height: 32px;
     border-radius: 100px;
     background-color: var(--grey);
     box-shadow: 0 4px 12px var(--greyShadow);
     overflow: hidden;
+
+    [class^="icon-"]{
+      color: var(--grey4)
+    }
   }
 }

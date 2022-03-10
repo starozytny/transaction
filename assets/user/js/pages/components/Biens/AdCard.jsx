@@ -186,14 +186,17 @@ export class AdCard extends Component {
                             <div className="identifier">
                                 <div className="price">{Sanitaze.toFormatCurrency(el.financial.price)} {el.codeTypeAd === 1 ? "cc/mois" : ""}</div>
                                 <div className="carac">{el.area.habitable}m² - {el.number.piece} pièce{el.number.piece > 1 ? "s" : ""}</div>
-                                {owners.length !== 0 && <ButtonIcon icon={(owners.length > 1 ? "user" : "group")}
-                                                                    text={"propriétaire" + (owners.length > 1 ? "s" : "")}
-                                                                    onClick={this.handleOpenOwner} />}
                             </div>
                         </div>
                         <div className="col-3">
                             <div className="references">{el.agency.code}</div>
-                            <NegociatorBubble elem={el.negotiator} onOpen={this.handleOpenHelp} />
+                            <div className="negociateurs-owners">
+                                {owners.length !== 0 && <div className="negociateur" onClick={this.handleOpenOwner}>
+                                    <div className="avatar"><span className={"icon-" + (owners.length > 1 ? "group" : "user")} /></div>
+                                    <div className="tooltip">Propriétaire{owners.length > 1 ? "s" : ""}</div>
+                                </div>}
+                                <NegociatorBubble elem={el.negotiator} onOpen={this.handleOpenHelp} />
+                            </div>
                         </div>
                     </div>
                 </div>
