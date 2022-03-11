@@ -12,6 +12,14 @@
 @import "./split/visite/visite";
 @import "./split/prospects/list";
 
+#list-biens{
+  .suivi-aside-content{
+    .item-content-2{
+      min-height: 70vh;
+    }
+  }
+}
+
 .global-visits{
   margin-top: 24px;
 }

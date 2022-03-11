@@ -12,12 +12,13 @@ export class MailAsideButton extends Component {
     }
 
     render () {
-        const { isBtnIcon = true, tooltipWidth=null, txtBtn = "Envoyer un mail", title, icon = "chat-2", to = [], cc = [], bcc = [] } = this.props;
+        const { isDoubleAside=false, isBtnIcon = true, tooltipWidth=null, txtBtn = "Envoyer un mail",
+            title, icon = "chat-2", to = [], cc = [], bcc = [] } = this.props;
 
         return <>
             {isBtnIcon ? <ButtonIcon icon={icon} tooltipWidth={tooltipWidth} onClick={() => this.mail.current.handleOpenAside(title)}>{txtBtn}</ButtonIcon>
                 : <div onClick={() => this.mail.current.handleOpenAside(title)}>{txtBtn}</div>}
-            <MailAside ref={this.mail} to={to} cc={cc} bcc={bcc}  />
+            <MailAside ref={this.mail} to={to} cc={cc} bcc={bcc} isDoubleAside={isDoubleAside} />
         </>
     }
 }
@@ -36,10 +37,10 @@ export class MailAside extends Component {
     }
 
     render () {
-        const { to = [], cc = [], bcc = [] } = this.props;
+        const { isDoubleAside, to = [], cc = [], bcc = [] } = this.props;
 
         return <>
-            <Aside ref={this.aside} content={<MailFormulaire refAside={this.aside}
+            <Aside ref={this.aside} isDoubleAside={isDoubleAside} content={<MailFormulaire refAside={this.aside}
                                                              to={getData(to)}
                                                              cc={getData(cc)}
                                                              bcc={getData(bcc)} />} />

@@ -132,7 +132,7 @@ export class Suivi extends Component {
                     break;
                 case "visites":
                     content = <Visits {...this.state} bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits}
-                                      isSuiviPage={true} loadDataAgenda={false} classes={""}/>
+                                      isSuiviPage={true} loadDataAgenda={false} isDoubleAside={!!isFromListBien} classes={""}/>
                     break;
                 case "address":
                     content = <Localisation elem={elem} />
@@ -196,7 +196,7 @@ export class Suivi extends Component {
                 {context: "photos",      label: "Photos"},
             ]
 
-            return <div className={isFromListBien ? "" : "main-content"}>
+            return <div className={isFromListBien ? "suivi-aside-content" : "main-content"}>
                 {!loadDataProspects ? <LoaderElement /> : <>
                     <div className="details-container">
                         <div className="details-content-container suivi-container">
@@ -231,7 +231,7 @@ export class Suivi extends Component {
                         </div>
                     </div>
 
-                    <Aside ref={this.aside} content={contentAside}/>
+                    <Aside ref={this.aside} isDoubleAside={!!isFromListBien} content={contentAside}/>
                 </>}
             </div>
         }else{

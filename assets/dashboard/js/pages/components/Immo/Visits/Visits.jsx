@@ -27,6 +27,7 @@ export class Visits extends Component {
             msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "visits.pagination",
             isSuiviPage: props.isSuiviPage ? props.isSuiviPage : false,
+            isDoubleAside: props.isDoubleAside ? props.isDoubleAside : false,
             classes: props.classes !== null ? props.classes : "main-content",
 
             users: props.users ? props.users : [],
@@ -87,6 +88,7 @@ export class Visits extends Component {
         return <VisitsList onChangeContext={changeContext}
                            onDelete={this.handleDelete}
                            isSuiviPage={this.state.isSuiviPage}
+                           isDoubleAside={this.state.isDoubleAside}
                            data={currentData} />
     }
 

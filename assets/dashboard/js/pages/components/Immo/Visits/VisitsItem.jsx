@@ -8,7 +8,7 @@ import { MailAsideButton } from "@dashboardPages/components/Mails/MailAside";
 
 export class VisitsItem extends Component {
     render () {
-        const { elem, onDelete, onChangeContext } = this.props;
+        const { isDoubleAside=false, elem, onDelete, onChangeContext } = this.props;
 
         let event = elem.agEvent;
         let persons = event.persons;
@@ -41,7 +41,7 @@ export class VisitsItem extends Component {
                         <div className="col-4 actions">
                             {haveProspect && <ButtonIcon icon="file" type="default" element="a" target="_blank" tooltipWidth={70}
                                     onClick={Routing.generate('api_visits_document_bon', {'from': 'visite', 'id': elem.id})}>Bon de visite</ButtonIcon>}
-                            {emails.length > 0 && <MailAsideButton txtBtn="Contacter" title="Envoyer un mail" to={emails} />}
+                            {emails.length > 0 && <MailAsideButton txtBtn="Contacter" title="Envoyer un mail" to={emails} isDoubleAside={isDoubleAside} />}
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>
