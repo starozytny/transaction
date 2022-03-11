@@ -225,9 +225,35 @@ function getVisits (self, elem) {
         })
 }
 
+function getDataBien (self, elem) {
+    axios.get(Routing.generate('api_suivis_bien', {'slug': elem.slug}), {})
+        .then(function (response) {
+            let data = response.data;
+            console.log(data)
+            self.setState({
+                elem: JSON.parse(data.elem),
+                rooms: JSON.parse(data.rooms),
+                photos: JSON.parse(data.photos),
+                suivis: JSON.parse(data.suivis),
+                offers: JSON.parse(data.offers),
+                contracts: JSON.parse(data.contracts),
+                rapprochements: JSON.parse(data.rapprochements),
+                allVisits: JSON.parse(data.visits),
+                historiesVisits: JSON.parse(data.historiesVisits),
+            })
+        })
+        .catch(function (error) {
+            Formulaire.displayErrors(self, error);
+        })
+        .then(() => {
+            Formulaire.loader(false);
+        })
+}
+
 module.exports = {
     getDataState,
     getOwners,
     getProspects,
-    getVisits
+    getVisits,
+    getDataBien
 }

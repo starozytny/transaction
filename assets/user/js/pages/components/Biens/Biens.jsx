@@ -2,14 +2,14 @@ import React, { Component } from "react";
 
 import Sort          from "@commonComponents/functions/sort";
 import TopToolbar    from "@commonComponents/functions/topToolbar";
+import DataState     from "@userPages/components/Biens/Form/data";
+import AgendaData    from "@userPages/components/Agenda/agendaData";
 
 import { Layout }    from "@dashboardComponents/Layout/Page";
+import { Aside }     from "@dashboardComponents/Tools/Aside";
 
 import { BiensList } from "./BiensList";
-import {Aside} from "@dashboardComponents/Tools/Aside";
-import {Suivi} from "@userPages/components/Biens/Suivi/Suivi";
-import DataState from "@userPages/components/Biens/Form/data";
-import AgendaData from "@userPages/components/Agenda/agendaData";
+import { Suivi }     from "@userPages/components/Biens/Suivi/Suivi";
 
 const URL_GET_DATA          = 'api_agenda_data_persons';
 const URL_DELETE_ELEMENT    = 'api_biens_delete';
@@ -161,6 +161,7 @@ export class Biens extends Component {
 
     handleOpenSuivi = (element) => {
         this.suivi.current.handleLoadData(element);
+        this.suivi.current.handleChangePage("suivi", "global");
         this.aside.current.handleOpen("Suivi du bien");
     }
 

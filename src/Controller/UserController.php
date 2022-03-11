@@ -209,59 +209,6 @@ class UserController extends AbstractController
         ]);
     }
 
-    private function bienData($type, Request $request, SerializerInterface $serializer, $slug, SearchService $searchService = null): Response
-    {
-        $em = $this->doctrine->getManager();
-        $contextRapp = $request->query->get('ctra');
-
-        $obj     = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
-        $photos  = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
-        $rooms   = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
-
-        $element = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
-        $photos  = $serializer->serialize($photos,  'json', ['groups' => User::USER_READ]);
-        $rooms   = $serializer->serialize($rooms,   'json', ['groups' => User::USER_READ]);
-
-        if($type !== "update"){
-            $context = $request->query->get("ct");
-            $visits    = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
-            $suivis    = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
-            $offers    = $em->getRepository(ImOffer::class)->findBy(['bien' => $obj]);
-            $contracts = $em->getRepository(ImContract::class)->findBy(['bien' => $obj]);
-
-            $suivis         = $serializer->serialize($suivis,       'json', ['groups' => ImSuivi::SUIVI_READ]);
-            $visits         = $serializer->serialize($visits,       'json', ['groups' => ImVisit::VISIT_READ]);
-            $offers         = $serializer->serialize($offers,       'json', ['groups' => ImOffer::OFFER_READ]);
-            $contracts      = $serializer->serialize($contracts,    'json', ['groups' => ImContract::CONTRACT_READ]);
-
-            $historiesVisits = [];
-            $rapprochements = [];
-            if($type === "suivi"){
-                $rapprochements = $searchService->getRapprochementBySearchs([$obj], $obj->getAgency());
-                $historiesVisits = $em->getRepository(HiVisite::class)->findBy(['bienId' => $obj->getId()], ['createdAt' => 'DESC']);
-                $historiesVisits = $serializer->serialize($historiesVisits, 'json', ['groups' => HiVisite::HISTORY_VISITE]);
-            }
-            $rapprochements = json_encode($rapprochements);
-        }
-
-        return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',
-            $obj, $element, $rooms, $photos)
-            : $this->render("user/pages/biens/suivi.html.twig", [
-                'elem' => $obj,
-                'data' => $element,
-                'rooms' => $rooms,
-                'photos' => $photos,
-                'suivis' => $suivis,
-                'visits' => $visits,
-                'offers' => $offers,
-                'rapprochements' => $rapprochements,
-                'context' => $context,
-                'ctRa' => $contextRapp ?: "tous",
-                'historiesVisits' => $historiesVisits,
-                'contracts' => $contracts,
-        ]);
-    }
-
     /**
      * @Route("/biens/bien/ajouter", options={"expose"=true}, name="biens_create")
      */
@@ -275,7 +222,17 @@ class UserController extends AbstractController
      */
     public function updateBien(Request $request, $slug, SerializerInterface $serializer): Response
     {
-        return $this->bienData("update", $request, $serializer, $slug);
+        $em = $this->doctrine->getManager();
+
+        $obj     = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
+        $photos  = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
+        $rooms   = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
+
+        $element = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
+        $photos  = $serializer->serialize($photos,  'json', ['groups' => User::USER_READ]);
+        $rooms   = $serializer->serialize($rooms,   'json', ['groups' => User::USER_READ]);
+
+        return $this->formBien($serializer, 'user/pages/biens/update.html.twig', $obj, $element, $rooms, $photos);
     }
 
     /**
@@ -283,7 +240,45 @@ class UserController extends AbstractController
      */
     public function suiviBien(Request $request, $slug, SerializerInterface $serializer, SearchService $searchService): Response
     {
-        return $this->bienData("suivi", $request, $serializer, $slug, $searchService);
+        $em = $this->doctrine->getManager();
+        $context     = $request->query->get("ct");
+        $contextRapp = $request->query->get('ctra');
+
+        $obj       = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
+        $photos    = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
+        $rooms     = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
+        $visits    = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
+        $suivis    = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
+        $offers    = $em->getRepository(ImOffer::class)->findBy(['bien' => $obj]);
+        $contracts = $em->getRepository(ImContract::class)->findBy(['bien' => $obj]);
+
+        $element   = $serializer->serialize($obj,       'json', ['groups' => User::USER_READ]);
+        $photos    = $serializer->serialize($photos,    'json', ['groups' => User::USER_READ]);
+        $rooms     = $serializer->serialize($rooms,     'json', ['groups' => User::USER_READ]);
+        $suivis    = $serializer->serialize($suivis,    'json', ['groups' => ImSuivi::SUIVI_READ]);
+        $visits    = $serializer->serialize($visits,    'json', ['groups' => ImVisit::VISIT_READ]);
+        $offers    = $serializer->serialize($offers,    'json', ['groups' => ImOffer::OFFER_READ]);
+        $contracts = $serializer->serialize($contracts, 'json', ['groups' => ImContract::CONTRACT_READ]);
+
+        $historiesVisits = $em->getRepository(HiVisite::class)->findBy(['bienId' => $obj->getId()], ['createdAt' => 'DESC']);
+        $historiesVisits = $serializer->serialize($historiesVisits, 'json', ['groups' => HiVisite::HISTORY_VISITE]);
+        $rapprochements  = $searchService->getRapprochementBySearchs([$obj], $obj->getAgency());
+        $rapprochements  = json_encode($rapprochements);
+
+        return $this->render("user/pages/biens/suivi.html.twig", [
+            'context' => $context,
+            'ctRa' => $contextRapp ?: "tous",
+            'elem' => $obj,
+            'data' => $element,
+            'rooms' => $rooms,
+            'photos' => $photos,
+            'suivis' => $suivis,
+            'visits' => $visits,
+            'offers' => $offers,
+            'contracts' => $contracts,
+            'rapprochements' => $rapprochements,
+            'historiesVisits' => $historiesVisits,
+        ]);
     }
 
     /**

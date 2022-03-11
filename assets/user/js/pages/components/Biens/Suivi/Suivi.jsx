@@ -35,6 +35,7 @@ export class Suivi extends Component {
         this.state = {
             page: "suivi",
             context: props.context ? props.context : "global",
+
             elem: props.elem ? JSON.parse(props.elem) : null,
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
@@ -44,6 +45,7 @@ export class Suivi extends Component {
             rapprochements: props.rapprochements ? JSON.parse(props.rapprochements) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
             historiesVisits: props.historiesVisits ? JSON.parse(props.historiesVisits) : [],
+
             allProspects: props.allProspects ? props.allProspects : [],
             loadDataProspects: props.loadDataProspects ? props.loadDataProspects : false,
             isFromListBien: props.isFromListBien ? props.isFromListBien : false,
@@ -81,7 +83,7 @@ export class Suivi extends Component {
     }
 
     handleLoadData = (elem) => {
-        this.setState({ elem })
+        DataState.getDataBien(this, elem);
     }
 
     handleChangePage = (page, context) => { this.setState({ page, context }) }

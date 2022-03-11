@@ -20,7 +20,7 @@ export class Global extends Component {
         return <div className="suivi-global">
             <div className="cards">
                 <a className="card"
-                   href={!isFromListBien ? Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "rapprochements"}) : "javascript:;"}
+                   href={!isFromListBien ? Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "rapprochements"}) : "#"}
                    onClick={isFromListBien ? () => onChangeContext("rapprochements") : null}
                 >
                     <div className="card-header">
@@ -35,7 +35,7 @@ export class Global extends Component {
                 </a>
 
                 <a className="card"
-                   href={!isFromListBien ? Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "visites"}) : "javascript:;"}
+                   href={!isFromListBien ? Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "visites"}) : "#"}
                    onClick={isFromListBien ? () => onChangeContext("visites") : null}
                 >
                     <div className="card-header">
