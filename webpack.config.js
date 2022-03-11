@@ -91,7 +91,6 @@ Encore
     .addEntry('user_tenant', './assets/user/js/pages/tenant.js')
     .addEntry('user_prospect', './assets/user/js/pages/prospect.js')
     .addEntry('user_agenda', './assets/user/js/pages/agenda.js')
-    .addEntry('user_visite', './assets/user/js/pages/visite.js')
     .addEntry('user_setting', './assets/user/js/pages/setting.js')
     .addEntry('user_publication', './assets/user/js/pages/publication.js')
     .addEntry('user_printer', './assets/user/js/pages/printer.js')

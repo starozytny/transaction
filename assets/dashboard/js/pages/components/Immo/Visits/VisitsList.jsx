@@ -3,34 +3,27 @@ import React, { Component } from 'react';
 import Routing        from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Alert }      from "@dashboardComponents/Tools/Alert";
-import {Button, ButtonIcon} from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import { VisitsItem } from "./VisitsItem";
 
 export class VisitsList extends Component {
     render () {
-        const { isSuiviPage=true, data, onChangeContext } = this.props;
+        const { isSuiviPage=false, data, onChangeContext } = this.props;
 
         return <>
             <div>
-                {!isSuiviPage && <>
-                    <div className="toolbar toolbar-suivi">
-                        <div className="item">
-                            <ButtonBonVisite >Bon de visite générique</ButtonBonVisite>
-                        </div>
+                <div className="toolbar toolbar-suivi">
+                    {isSuiviPage && <div className="item create">
+                        <Button onClick={() => onChangeContext("create")}>Ajouter une visite</Button>
+                    </div>}
+                    <div className="item create">
+                        <ButtonBonVisite >Bon de visite générique</ButtonBonVisite>
                     </div>
-                </>}
-
-                {isSuiviPage && <>
-                    <div className="toolbar toolbar-suivi">
-                        <div className="item create">
-                            <Button onClick={() => onChangeContext("create")}>Ajouter une visite</Button>
-                        </div>
-                        <div className="item create">
-                            <ButtonBonVisite >Bon de visite générique</ButtonBonVisite>
-                        </div>
-                    </div>
-                </>}
+                    {/*<div className="item create">*/}
+                    {/*    <Button outline={true} type={"default"}>Créer un bon de visite</Button>*/}
+                    {/*</div>*/}
+                </div>
 
                 <div className="items-table">
                     <div className="items items-default">
