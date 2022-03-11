@@ -14,6 +14,12 @@
   }
 }
 
+.toolbar-suivi{
+  .item:not(:last-child){
+    margin-bottom: 8px;
+  }
+}
+
 .suivi-global{
 
   .card{
@@ -201,6 +207,13 @@
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
+  .toolbar-suivi{
+    .item:not(:last-child){
+      margin-bottom: 0;
+      margin-right: 8px;
+    }
+  }
+
   .suivi-container{
     .aside{
       width: 60%;

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Routing        from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { Alert }      from "@dashboardComponents/Tools/Alert";
 import { Button }     from "@dashboardComponents/Tools/Button";
 
@@ -11,12 +13,19 @@ export class VisitsList extends Component {
 
         return <>
             <div>
-                {isSuiviPage && <div className="toolbar">
-                    <div className="item create">
-                        <Button onClick={() => onChangeContext("create")}>Ajouter une visite</Button>
+                {isSuiviPage && <>
+                    <div className="toolbar toolbar-suivi">
+                        <div className="item create">
+                            <Button onClick={() => onChangeContext("create")}>Ajouter une visite</Button>
+                        </div>
+                        <div className="item create">
+                            <Button icon="file" type="default" element="a" target="_blank" onClick={Routing.generate('api_visits_document_bon', {'id': 'generique'})}>Bon de visite</Button>
+                        </div>
+                        <div className="item create">
+                            <Button icon="file" type="default" element="a" target="_blank" onClick={Routing.generate('api_visits_document_bon', {'id': 'generique'})}>Bon de visite délégué</Button>
+                        </div>
                     </div>
-                </div>}
-
+                </>}
 
                 <div className="items-table">
                     <div className="items items-default">

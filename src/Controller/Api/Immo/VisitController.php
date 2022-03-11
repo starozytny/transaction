@@ -12,10 +12,12 @@ use App\Service\ApiResponse;
 use App\Service\Data\Agenda\DataEvent;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
+use App\Service\FileCreator;
 use App\Service\History\HistoryService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
+use Mpdf\MpdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -189,5 +191,42 @@ class VisitController extends AbstractController
         $em->remove($event);
 
         return $dataService->delete($obj);
+    }
+
+    /**
+     * Bon de visite
+     *
+     * @Route("/document/{id}", name="document_bon", options={"expose"=true}, methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message"
+     * )
+     *
+     * @OA\Tag(name="Visits")
+     *
+     * @param $id
+     * @param ApiResponse $apiResponse
+     * @param FileCreator $fileCreator
+     * @return JsonResponse
+     * @throws MpdfException
+     */
+    public function documentBon($id, ApiResponse $apiResponse, FileCreator $fileCreator): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $agency = $user->getAgency();
+
+        $obj = $em->getRepository(ImVisit::class)->find($id);
+
+        if($id == "generique" || !$obj){
+            $fileCreator->createPDF("Bon de visite", "bon-visite", "user/pdf/visits/bon.html.twig", []);
+        }else{
+            $fileCreator->createPDF("Bon de visite", "bon-visite", "user/pdf/visits/bon.html.twig", []);
+        }
+
+        return $apiResponse->apiJsonResponseSuccessful("ok");
     }
 }
