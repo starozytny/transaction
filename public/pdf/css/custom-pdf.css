@@ -150,3 +150,22 @@ b{
     margin-left:24px;
     text-align: left;
 }
+
+.square{
+    width: 12px;
+    border: 1px solid grey;
+    padding-right: 10px;
+}
+
+.square-label{
+    float: left;
+    width: calc(100% - 24px - 22px);
+    margin-left:24px;
+    text-align: left;
+    padding-left: 8px;
+}
+
+
+table, td, th {
+    border-spacing: 30px;
+}

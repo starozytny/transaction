@@ -20,7 +20,7 @@
 
 <div>
     <div class="doc-section doc-section-col-2">
-        <div class="doc-section-title">Acquéreur</div>
+        <div class="doc-section-title">Acquéreur potentiel</div>
         <div class="doc-section-content">
             <div class="input">
                 <p>M. / Mme. (NOM, Prénom) : {% for i in 0..122 %}.{% endfor %}</p>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="doc-section doc-section-col-2">
-        <div class="doc-section-title">Je sousigné(e),</div>
+        <div class="doc-section-title">Je soussigné(e),</div>
         <div class="doc-section-content">
             <p style="text-align: justify;">
                 agissant tant en qualité d'acquéreur potentiel,
@@ -51,11 +51,34 @@
             <p>
                 Les prix de vente donnés comprennent les honoraires de l’agence qui sont prévus à la charge
             </p>
-            <ul>
-                <li>du vendeur</li>
-                <li>de l'acquéreur</li>
-                <li>du vendeur et d l'acquéreur</li>
-            </ul>
+            <table style="margin: 4px 0 24px 0;">
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td class="square">&nbsp;</td>
+                                <td class="square-label">du vendeur.</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table style="margin-left: 24px;">
+                            <tr>
+                                <td class="square">&nbsp;</td>
+                                <td class="square-label"><div style="padding-top: 12px;">de l'acquéreur.</div></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table style="margin-left: 24px;">
+                            <tr>
+                                <td class="square">&nbsp;</td>
+                                <td class="square-label">du vendeur et d l'acquéreur.</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
             <p>
                 Je m'engage à :
             </p>
@@ -67,7 +90,7 @@
                 <li>
                     informer à toute personne en dehors de ********, que ces mêmes biens m'ont déjà été présentés.
                 </li>
-                <li>ne pas traiter ou négocier l'achat de ces biens sans l'intervention de ***********</li>
+                <li>ne pas traiter ou négocier l'achat de ces biens sans l'intervention de ***********.</li>
             </ul>
             <p>
                 Je reconnais :
@@ -78,8 +101,8 @@
                     je m'engage à faire réparation du préjudice que constituerait son éviction par un dédommagement égal
                     au montant de la rémunération que ladite agence aurait perçue si j'avais acquis le bien à travers *******.</li>
             </ul>
-            <p>
-                Fait en 3 exemplaires originaux remis à chacune des parties, à ................................., le ....................
+            <p style="margin-top: 24px;">
+                Fait en 3 exemplaires originaux remis à chacune des parties, à {% for i in 0..33 %}.{% endfor %}, le {% for i in 0..25 %}.{% endfor %}
             </p>
         </div>
     </div>
