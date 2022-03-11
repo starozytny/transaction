@@ -161,12 +161,21 @@ b{
     padding-right: 10px;
 }
 
+.square.active{
+    background: black;
+}
+
 .square-label{
     float: left;
     width: calc(100% - 24px - 22px);
     margin-left:24px;
     text-align: left;
     padding-left: 8px;
+    text-decoration: line-through;
+}
+
+.square-label.active{
+    text-decoration: initial;
 }
 
 

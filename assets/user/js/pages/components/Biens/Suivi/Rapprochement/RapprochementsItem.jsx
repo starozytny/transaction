@@ -113,7 +113,7 @@ export class RapprochementsItem extends Component {
                             <div className="actions">
                                 <ButtonIcon icon="map" tooltipWidth={120} onClick={() => onChangeContext("create-visit", prospect)} >Programmer une visite</ButtonIcon>
                                 <ButtonIcon icon="file" type="default" element="a" target="_blank" tooltipWidth={70}
-                                        onClick={Routing.generate('api_visits_document_bon', {'from': 'prospect', 'id': prospect.id})}>Bon de visite</ButtonIcon>
+                                        onClick={Routing.generate('api_visits_document_bon', {'from': 'suivi', 'id': elem.id})}>Bon de visite</ButtonIcon>
                                 <MailAsideButton txtBtn="Envoyer un mail" tooltipWidth={90} title={"Envoyer un mail à " + prospect.fullname} to={[prospect.email]} />
                             </div>
                         </div>

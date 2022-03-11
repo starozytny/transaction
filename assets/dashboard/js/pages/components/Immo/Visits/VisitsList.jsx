@@ -20,7 +20,11 @@ export class VisitsList extends Component {
                         </div>
                         <div className="item create">
                             <Button icon="file" type="default" element="a" target="_blank"
-                                    onClick={Routing.generate('api_visits_document_bon', {'from': 'visite', 'id': 'generique'})}>Bon de visite</Button>
+                                    onClick={Routing.generate('api_visits_document_bon', {'from': 'visite', 'id': 'generique'})}>Bon de visite générique</Button>
+                        </div>
+                        <div className="item create">
+                            <Button icon="file" type="default" element="a" target="_blank"
+                                    onClick={Routing.generate('api_visits_document_bon', {'from': 'visite', 'id': 'generique'})}>Créer un bon de visite</Button>
                         </div>
                     </div>
                 </>}

@@ -5,7 +5,7 @@ namespace App\Controller\Api\Immo;
 use App\Entity\Agenda\AgEvent;
 use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImProspect;
+use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Repository\Immo\ImVisitRepository;
@@ -221,7 +221,7 @@ class VisitController extends AbstractController
         $user = $this->getUser();
         $agency = $user->getAgency();
 
-        $obj = $em->getRepository($from == "prospect" ? ImProspect::class : ImVisit::class)->find($id);
+        $obj = $em->getRepository($from == "suivi" ? ImSuivi::class : ImVisit::class)->find($id);
 
         $img = file_get_contents(($agency->getLogo() ? $this->getParameter('public_directory') : "") . $agency->getLogoFile());
         $base64 = base64_encode($img);
@@ -232,7 +232,8 @@ class VisitController extends AbstractController
             $params = array_merge($params, []);
         }else{
             $params = array_merge($params, [
-                'prospect' => $obj
+                'prospect' => $obj->getProspect(),
+                'biens' => [$obj->getBien()]
             ]);
         }
 

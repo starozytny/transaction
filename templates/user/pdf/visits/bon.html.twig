@@ -62,47 +62,66 @@
                 reconnais m’être présenté(e) ce jour à l’agence {{ agencyName }} et avoir demandé et reçu les renseignements,
                 adresses et conditions de vente des biens ci-dessous désignés, figurant dans le mandat de vente.
             </p>
-            <div class="input">
-                <p>Bien #1 <span class="txt-grey3">(N° Mandat, type d'offre, type de bien, prix et addresse)</span> : {% for i in 0..331 %}.{% endfor %}</p>
-            </div>
-            <div class="input">
-                <p>Bien #2 : {% for i in 0..331 %}.{% endfor %}</p>
-            </div>
-            <div class="input">
-                <p>Bien #3 : {% for i in 0..331 %}.{% endfor %}</p>
-            </div>
-            <div class="input">
-                <p>Bien #4 : {% for i in 0..331 %}.{% endfor %}</p>
-            </div>
+            {% if biens is not defined %}
+                <div class="input">
+                    <p>Bien #1 <span class="txt-grey3">(N° Mandat, type d'offre, type de bien, prix et adresse)</span> : {% for i in 0..331 %}.{% endfor %}</p>
+                </div>
+                <div class="input">
+                    <p>Bien #2 : {% for i in 0..331 %}.{% endfor %}</p>
+                </div>
+                <div class="input">
+                    <p>Bien #3 : {% for i in 0..331 %}.{% endfor %}</p>
+                </div>
+                <div class="input">
+                    <p>Bien #4 : {% for i in 0..331 %}.{% endfor %}</p>
+                </div>
+            {% else %}
+                {% for bien in biens %}
+                    <div class="input">
+                        <p>
+                            Bien #{{ loop.index }}
+                            <span class="txt-grey3">{{ loop.index == 1 ? "(N° Mandat, type d'offre, type de bien, prix et adresse)" : "" }}</span> :
+                            <br>
+                            <b>
+                                {{ bien.mandat.numero != 0 ? "N°" ~ bien.mandat.numero ~ ", " : "N°0, " }}
+                                {{ bien.typeAdString | lower }}, {{ bien.typeBienString | lower }},
+                                {{ bien.financial.price | price }} € {{ (bien.codeTypeBien == 1 or bien.codeTypeBien == 4) ? "cc/mois" : "" }}
+                            </b>
+                            <br>
+                            <b>
+                                {{ bien.localisation.fullAddress }}
+                            </b>
+                        </p>
+                    </div>
+                {% endfor %}
+            {% endif %}
             <p>
                 Les prix de vente donnés comprennent les honoraires de l’agence qui sont prévus à la charge
             </p>
+
+            {% set squareActive = 99 %}
+            {% if biens is defined and biens | length == 1 %}
+                {% set squareActive = biens[0].financial.honoraireChargeDe != null ? biens[0].financial.honoraireChargeDe : 99 %}
+            {% endif %}
+
+            {% set honoraireChargeDeTab = [
+                {value: 0, label: "du vendeur"},
+                {value: 1, label: "de l'acquéreur"},
+                {value: 2, label: "du vendeur et d l'acquéreur"}
+            ] %}
+
             <table style="margin: 4px 0 24px 0;">
                 <tr>
-                    <td>
-                        <table>
-                            <tr>
-                                <td class="square">&nbsp;</td>
-                                <td class="square-label">du vendeur.</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table style="margin-left: 24px;">
-                            <tr>
-                                <td class="square">&nbsp;</td>
-                                <td class="square-label"><div style="padding-top: 12px;">de l'acquéreur.</div></td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table style="margin-left: 24px;">
-                            <tr>
-                                <td class="square">&nbsp;</td>
-                                <td class="square-label">du vendeur et d l'acquéreur.</td>
-                            </tr>
-                        </table>
-                    </td>
+                    {% for item in honoraireChargeDeTab %}
+                        <td>
+                            <table style="{{ loop.index0 != 0 ? "margin-left: 24px;" : "" }}">
+                                <tr>
+                                    <td class="square {{ squareActive == item.value ? "active" : "" }}">&nbsp;</td>
+                                    <td class="square-label  {{ squareActive == item.value ? "active" : "" }}">{{ item.label }}.</td>
+                                </tr>
+                            </table>
+                        </td>
+                    {% endfor %}
                 </tr>
             </table>
             <p>
