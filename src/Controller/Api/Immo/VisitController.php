@@ -221,8 +221,17 @@ class VisitController extends AbstractController
 
         $obj = $em->getRepository(ImVisit::class)->find($id);
 
+
+        $img = file_get_contents($agency->getLogoFile());
+        $base64 = base64_encode($img);
+
+        dump($base64);
+
         if($id == "generique" || !$obj){
-            $fileCreator->createPDF("Bon de visite", "bon-visite", "user/pdf/visits/bon.html.twig", []);
+            $fileCreator->createPDF("Bon de visite", "bon-visite", "user/pdf/visits/bon.html.twig", [
+                'agency' => $agency,
+                'logo' => $base64
+            ]);
         }else{
             $fileCreator->createPDF("Bon de visite", "bon-visite", "user/pdf/visits/bon.html.twig", []);
         }
