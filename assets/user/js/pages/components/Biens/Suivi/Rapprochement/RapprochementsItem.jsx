@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import Routing        from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
+
 import { HelpBubble } from "@dashboardComponents/Tools/HelpBubble";
 import { ButtonIcon } from "@dashboardComponents/Tools/Button";
 
@@ -7,10 +9,10 @@ import Helper        from "@commonComponents/functions/helper";
 import Sanitaze      from "@commonComponents/functions/sanitaze";
 import Rapprochement from "@userComponents/functions/rapprochement";
 
+import { MailAsideButton }          from "@dashboardPages/components/Mails/MailAside";
 import { SearchInfos }              from "@dashboardPages/components/Immo/Prospects/ProspectsItem";
 import { NegotiatorBubble }         from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 import { ContentNegotiatorBubble }  from "@userPages/components/Biens/AdCard";
-import {MailAsideButton} from "@dashboardPages/components/Mails/MailAside";
 
 const STATUS_PROPAL = 0;
 const STATUS_ACCEPT = 1;
@@ -110,6 +112,8 @@ export class RapprochementsItem extends Component {
                             </div>
                             <div className="actions">
                                 <ButtonIcon icon="map" tooltipWidth={120} onClick={() => onChangeContext("create-visit", prospect)} >Programmer une visite</ButtonIcon>
+                                <ButtonIcon icon="file" type="default" element="a" target="_blank" tooltipWidth={70}
+                                        onClick={Routing.generate('api_visits_document_bon', {'from': 'prospect', 'id': prospect.id})}>Bon de visite</ButtonIcon>
                                 <MailAsideButton txtBtn="Envoyer un mail" tooltipWidth={90} title={"Envoyer un mail à " + prospect.fullname} to={[prospect.email]} />
                             </div>
                         </div>

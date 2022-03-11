@@ -5,6 +5,7 @@ namespace App\Controller\Api\Immo;
 use App\Entity\Agenda\AgEvent;
 use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Repository\Immo\ImVisitRepository;
@@ -196,7 +197,7 @@ class VisitController extends AbstractController
     /**
      * Bon de visite
      *
-     * @Route("/document/{id}", name="document_bon", options={"expose"=true}, methods={"GET"})
+     * @Route("/document/{from}/{id}", name="document_bon", options={"expose"=true}, methods={"GET"})
      *
      * @OA\Response(
      *     response=200,
@@ -205,13 +206,14 @@ class VisitController extends AbstractController
      *
      * @OA\Tag(name="Visits")
      *
+     * @param $from
      * @param $id
      * @param ApiResponse $apiResponse
      * @param FileCreator $fileCreator
      * @return JsonResponse
      * @throws MpdfException
      */
-    public function documentBon($id, ApiResponse $apiResponse, FileCreator $fileCreator): JsonResponse
+    public function documentBon($from, $id, ApiResponse $apiResponse, FileCreator $fileCreator): JsonResponse
     {
         $em = $this->doctrine->getManager();
 
@@ -219,19 +221,22 @@ class VisitController extends AbstractController
         $user = $this->getUser();
         $agency = $user->getAgency();
 
-        $obj = $em->getRepository(ImVisit::class)->find($id);
+        $obj = $em->getRepository($from == "prospect" ? ImProspect::class : ImVisit::class)->find($id);
 
         $img = file_get_contents(($agency->getLogo() ? $this->getParameter('public_directory') : "") . $agency->getLogoFile());
         $base64 = base64_encode($img);
 
+        $params = ['agency' => $agency, 'logo' => $base64];
+
         if($id == "generique" || !$obj){
-            $fileCreator->createPDF("Bon de visite", "bon-visite", "user/pdf/visits/bon.html.twig", [
-                'agency' => $agency,
-                'logo' => $base64
-            ]);
+            $params = array_merge($params, []);
         }else{
-            $fileCreator->createPDF("Bon de visite", "bon-visite", "user/pdf/visits/bon.html.twig", []);
+            $params = array_merge($params, [
+                'prospect' => $obj
+            ]);
         }
+
+        $fileCreator->createPDF("Bon de visite", "bon-visite", "user/pdf/visits/bon.html.twig", $params);
 
         return $apiResponse->apiJsonResponseSuccessful("ok");
     }

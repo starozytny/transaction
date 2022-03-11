@@ -19,7 +19,8 @@ export class VisitsList extends Component {
                             <Button onClick={() => onChangeContext("create")}>Ajouter une visite</Button>
                         </div>
                         <div className="item create">
-                            <Button icon="file" type="default" element="a" target="_blank" onClick={Routing.generate('api_visits_document_bon', {'id': 'generique'})}>Bon de visite</Button>
+                            <Button icon="file" type="default" element="a" target="_blank"
+                                    onClick={Routing.generate('api_visits_document_bon', {'from': 'visite', 'id': 'generique'})}>Bon de visite</Button>
                         </div>
                     </div>
                 </>}

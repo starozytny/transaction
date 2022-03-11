@@ -25,13 +25,31 @@
         <div class="doc-section-title">Acquéreur potentiel</div>
         <div class="doc-section-content">
             <div class="input">
-                <p>M. / Mme. (NOM, Prénom) : {% for i in 0..122 %}.{% endfor %}</p>
+                <p>M. / Mme. (NOM, Prénom) :
+                    {% if prospect is defined %}
+                        <b>{{ prospect.fullname }}</b>
+                    {% else %}
+                        {% for i in 0..122 %}.{% endfor %}
+                    {% endif %}
+                </p>
             </div>
             <div class="input">
-                <p>Adresse : {% for i in 0..150 %}.{% endfor %}</p>
+                <p>Adresse :
+                    {% if prospect is defined %}
+                        <b>{{ prospect.address }}</b>
+                    {% else %}
+                        {% for i in 0..150 %}.{% endfor %}
+                    {% endif %}
+                </p>
             </div>
             <div class="input">
-                <p>Code postal et ville : {% for i in 0..132 %}.{% endfor %}</p>
+                <p>Code postal et ville :
+                    {% if prospect is defined %}
+                        <b>{{ prospect.zipcode }} {{ prospect.city }}</b>
+                    {% else %}
+                        {% for i in 0..132 %}.{% endfor %}
+                    {% endif %}
+                </p>
             </div>
         </div>
     </div>
