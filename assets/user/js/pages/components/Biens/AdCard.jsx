@@ -153,7 +153,10 @@ export class AdCard extends Component {
                 <div className="card-body">
                     {el.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
 
-                    <a className="image" href={Routing.generate('user_biens_suivi', {'slug': el.slug})}>
+                    <a className="image"
+                       href={!onOpenSuivi ? Routing.generate('user_biens_suivi', {'slug': el.slug}) : "#"}
+                       onClick={onOpenSuivi ? () => onOpenSuivi(el) : null}
+                    >
                         <img src={el.mainPhotoFile} alt="illustration"/>
                     </a>
 
@@ -163,7 +166,10 @@ export class AdCard extends Component {
                                 <div className="badge-bien badge">{el.typeAdString}</div>
                                 <div className="badge-bien badge">{el.typeBienString}</div>
                             </div>
-                            <a className="identifier" href={Routing.generate('user_biens_suivi', {'slug': el.slug})}>
+                            <a className="identifier"
+                               href={!onOpenSuivi ? Routing.generate('user_biens_suivi', {'slug': el.slug}) : "#"}
+                               onClick={onOpenSuivi ? () => onOpenSuivi(el) : null}
+                            >
                                 <div className="title">
                                     <span>{el.libelle}</span>
                                     {el.isPublished && <span className="online" />}
@@ -225,8 +231,7 @@ export class AdCard extends Component {
                                 {followed ? "Lié" : "Lier"} au prospect
                             </ButtonIcon>}
 
-                            <ButtonIcon icon="follow" onClick={() => onOpenSuivi(el)}>Suivi</ButtonIcon>
-                            {/*<ButtonIcon icon="follow" element="a" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>*/}
+                            <ButtonIcon icon="follow" element="a" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>
 
                             {agencyId === el.agency.id && <>
                                 <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>
