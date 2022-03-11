@@ -28,6 +28,7 @@ export class Visits extends Component {
             sessionName: "visits.pagination",
             isSuiviPage: props.isSuiviPage ? props.isSuiviPage : false,
             classes: props.classes !== null ? props.classes : "main-content",
+
             users: props.users ? props.users : [],
             managers: props.managers ? props.managers : [],
             negotiators: props.negotiators ? props.negotiators : [],

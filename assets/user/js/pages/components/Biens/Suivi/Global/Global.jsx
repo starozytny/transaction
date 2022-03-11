@@ -6,7 +6,7 @@ import Sort from "@commonComponents/functions/sort";
 
 export class Global extends Component {
     render () {
-        const { elem, suivis, visits } = this.props;
+        const { elem, suivis, visits, onChangeContext, isFromListBien = false } = this.props;
 
         visits.sort(Sort.compareAgEventStartAt)
 
@@ -19,7 +19,10 @@ export class Global extends Component {
 
         return <div className="suivi-global">
             <div className="cards">
-                <a className="card" href={Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "rapprochements"})}>
+                <a className="card"
+                   href={!isFromListBien ? Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "rapprochements"}) : "javascript:;"}
+                   onClick={isFromListBien ? () => onChangeContext("rapprochements") : null}
+                >
                     <div className="card-header">
                         <div className="icon">
                             <span className="icon-group" />
@@ -31,7 +34,10 @@ export class Global extends Component {
                     </div>
                 </a>
 
-                <a className="card" href={Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "visites"})}>
+                <a className="card"
+                   href={!isFromListBien ? Routing.generate('user_biens_suivi', {'slug': elem.slug, "ct": "visites"}) : "javascript:;"}
+                   onClick={isFromListBien ? () => onChangeContext("visites") : null}
+                >
                     <div className="card-header">
                         <div className="icon">
                             <span className="icon-calendar" />

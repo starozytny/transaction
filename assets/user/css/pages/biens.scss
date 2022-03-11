@@ -55,6 +55,29 @@
   .page-default .tab-col-2 + a{
     width: 278px;
   }
+
+  #list-biens{
+    .toolbar-prospect{
+      .filter-search{
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+  }
+}
+
+//                      __   _  ___ ____  _  _     __
+//                     | _| / |/ _ \___ \| || |   |_ |
+//    _____ _____ _____| |  | | | | |__) | || |_   | |_____ _____ _____
+//   |_____|_____|_____| |  | | |_| / __/|__   _|  | |_____|_____|_____|
+//                     | |  |_|\___/_____|  |_|    | |
+//                     |__|                       |__|
+@media (min-width: 1024px) {
+  #list-biens{
+    .aside{
+      width: 90%;
+    }
+  }
 }
 
 //                      __   _ ____  ___   ___    __
@@ -64,6 +87,12 @@
 //                     | |  |_|_____\___/ \___/   | |
 //                     |__|                      |__|
 @media (min-width:1280px) {
+  #list-biens{
+    .aside{
+      width: 80%;
+    }
+  }
+
   .list-biens{
     .card-ad{
       margin-bottom: 24px;

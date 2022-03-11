@@ -155,7 +155,7 @@ export class Rapprochements extends Component {
     }
 
     render () {
-        const { elem, societyId, agencyId, offers, onUpdateOffers,
+        const { isFromListBien, elem, societyId, agencyId, offers, onUpdateOffers,
             users, managers, negotiators, owners, tenants, buyers, historiesVisits } = this.props;
         const { loadDataProspects, context, subContext, data, allProspects, element, offer, rapprochements, persons } = this.state;
 
@@ -308,7 +308,27 @@ export class Rapprochements extends Component {
             <Button outline={true} onClick={() => this.handleChangeContext('create')}>Ajouter</Button>
         </>
 
-        return (<div className="details-tab-infos">
+        let content = <>
+            <div className="title-col-2">
+                <div className="tab-col-2 rapprochement-submenu">
+                    {subMenu.map((sub, index) => {
+                        return <div className={"item" + (sub.value === subContext ? " active" : "")}
+                                    onClick={() => this.handleChangeSubContext(sub.value)}
+                                    key={index}>
+                            <span>{sub.label}</span>
+                            <span className="total">
+                                        <span>{sub.total}</span>
+                                    </span>
+                        </div>
+                    })}
+                </div>
+            </div>
+            <div>
+                {!loadDataProspects ? <LoaderElement /> : (items && items.length !== 0 ? items : <Alert>Aucun résultat</Alert>)}
+            </div>
+        </>
+
+        return <div className="details-tab-infos">
             <div className="page-default">
                 <div className="page-col-1">
                     <div className="body-col-1">
@@ -321,28 +341,12 @@ export class Rapprochements extends Component {
                     </div>
                 </div>
                 <div className="page-col-2">
-                    <div className="title-col-2">
-                        <div className="tab-col-2 rapprochement-submenu">
-                            {subMenu.map((sub, index) => {
-                                return <div className={"item" + (sub.value === subContext ? " active" : "")}
-                                            onClick={() => this.handleChangeSubContext(sub.value)}
-                                            key={index}>
-                                    <span>{sub.label}</span>
-                                    <span className="total">
-                                        <span>{sub.total}</span>
-                                    </span>
-                                </div>
-                            })}
-                        </div>
-                    </div>
-                    <div>
-                        {!loadDataProspects ? <LoaderElement /> : (items && items.length !== 0 ? items : <Alert>Aucun résultat</Alert>)}
-                    </div>
+                    {content}
                 </div>
             </div>
 
-            <Aside ref={this.aside} content={contentAside}/>
-        </div>)
+            <Aside ref={this.aside} isDoubleAside={!!isFromListBien} content={contentAside}/>
+        </div>
     }
 }
 

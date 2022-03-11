@@ -6,12 +6,18 @@ import TopToolbar    from "@commonComponents/functions/topToolbar";
 import { Layout }    from "@dashboardComponents/Layout/Page";
 
 import { BiensList } from "./BiensList";
+import {Aside} from "@dashboardComponents/Tools/Aside";
+import {Suivi} from "@userPages/components/Biens/Suivi/Suivi";
+import DataState from "@userPages/components/Biens/Form/data";
+import AgendaData from "@userPages/components/Agenda/agendaData";
 
+const URL_GET_DATA          = 'api_agenda_data_persons';
 const URL_DELETE_ELEMENT    = 'api_biens_delete';
 const URL_DELETE_GROUP      = 'api_contact_delete_group';
 const MSG_DELETE_ELEMENT    = 'Supprimer ce bien ?';
 const MSG_DELETE_GROUP      = 'Aucun message sélectionné.';
 let SORTER = Sort.compareCreatedAtInverse;
+let i = 0;
 
 let sorters = [
     { value: 0, label: 'Création',      identifiant: 'sorter-createdAt' },
@@ -119,6 +125,8 @@ export class Biens extends Component {
         }
 
         this.layout = React.createRef();
+        this.aside = React.createRef();
+        this.suivi = React.createRef();
 
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
@@ -127,7 +135,14 @@ export class Biens extends Component {
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
         this.handleSorter = this.handleSorter.bind(this);
 
+        this.handleOpenSuivi = this.handleOpenSuivi.bind(this);
+
         this.handleContentList = this.handleContentList.bind(this);
+    }
+
+    componentDidMount = () => {
+        DataState.getProspects(this);
+        AgendaData.getData(this, URL_GET_DATA);
     }
 
     handleGetData = (self) => {
@@ -143,6 +158,11 @@ export class Biens extends Component {
     handleChangeCurrentPage = (currentPage) => { this.setState({ currentPage }); }
 
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
+
+    handleOpenSuivi = (element) => {
+        this.suivi.current.handleLoadData(element);
+        this.aside.current.handleOpen("Suivi du bien");
+    }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
         const { rapprochements, suivis, contractants } = this.props;
@@ -171,6 +191,7 @@ export class Biens extends Component {
                           rapprochements={rapprochements ? JSON.parse(rapprochements) : []}
                           suivis={suivis ? JSON.parse(suivis) : []}
                           contractants={contractants ? JSON.parse(contractants) : []}
+                          onOpenSuivi={this.handleOpenSuivi}
                           dataImmuable={this.layout.current.state.dataImmuable}
                           data={currentData} />
     }
@@ -180,6 +201,7 @@ export class Biens extends Component {
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
                     onContentList={this.handleContentList}
                     onChangeCurrentPage={this.handleChangeCurrentPage} />
+            <Aside ref={this.aside} content={<Suivi ref={this.suivi} {...this.state} isFromListBien={true} key={i++}/>} />
         </div>
     }
 }

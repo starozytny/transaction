@@ -72,7 +72,7 @@ export class AdCard extends Component {
 
     render () {
         const { agencyId, isPublishePage=false, isOwnerPage=false, isProspectPage=false, rapprochements, follows, el, onDelete,
-            onLinkToProspect, publishes, toPublishes, onSelectPublish, suivis, contractants } = this.props;
+            onLinkToProspect, publishes, toPublishes, onSelectPublish, suivis, contractants, onOpenSuivi } = this.props;
 
         let items = [
             {data: <a target="_blank" href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})}>Liste des visites</a>},
@@ -225,7 +225,8 @@ export class AdCard extends Component {
                                 {followed ? "Lié" : "Lier"} au prospect
                             </ButtonIcon>}
 
-                            <ButtonIcon icon="follow" element="a" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>
+                            <ButtonIcon icon="follow" onClick={() => onOpenSuivi(el)}>Suivi</ButtonIcon>
+                            {/*<ButtonIcon icon="follow" element="a" onClick={Routing.generate('user_biens_suivi', {'slug': el.slug})}>Suivi</ButtonIcon>*/}
 
                             {agencyId === el.agency.id && <>
                                 <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': el.slug})}>Modifier</ButtonIcon>

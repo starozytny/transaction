@@ -54,7 +54,7 @@ export class ProspectsItem extends Component {
                                 <div className={"badge-prospect badge badge-" + elem.status}>{elem.statusString}</div>
                                 {elem.isArchived && <div className="badge badge-default">Archivé</div>}
                             </div>
-                            <div className="sub">Type de prospect : {elem.typeString}</div>
+                            <div className="sub">Type : {elem.typeString}</div>
                             {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
                             <NegotiatorBubble elem={elem.negotiator} txt={null}/>
                         </div>

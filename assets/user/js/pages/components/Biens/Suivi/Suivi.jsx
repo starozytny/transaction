@@ -35,7 +35,7 @@ export class Suivi extends Component {
         this.state = {
             page: "suivi",
             context: props.context ? props.context : "global",
-            elem: JSON.parse(props.elem),
+            elem: props.elem ? JSON.parse(props.elem) : null,
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
             photos: props.photos ? JSON.parse(props.photos) : [],
             suivis: props.suivis ? JSON.parse(props.suivis) : [],
@@ -44,8 +44,17 @@ export class Suivi extends Component {
             rapprochements: props.rapprochements ? JSON.parse(props.rapprochements) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
             historiesVisits: props.historiesVisits ? JSON.parse(props.historiesVisits) : [],
-            allProspects: [],
-            loadDataProspects: false,
+            allProspects: props.allProspects ? props.allProspects : [],
+            loadDataProspects: props.loadDataProspects ? props.loadDataProspects : false,
+            isFromListBien: props.isFromListBien ? props.isFromListBien : false,
+
+            users: props.users ? props.users : [],
+            managers: props.managers ? props.managers : [],
+            negotiators: props.negotiators ? props.negotiators : [],
+            owners: props.owners ? props.owners : [],
+            tenants: props.tenants ? props.tenants : [],
+            prospects: props.prospects ? props.prospects : [],
+            buyers: props.buyers ? props.buyers : [],
         }
 
         this.rapprochement = React.createRef();
@@ -59,11 +68,20 @@ export class Suivi extends Component {
         this.handleUpdateOffers = this.handleUpdateOffers.bind(this);
         this.handleUpdateContracts = this.handleUpdateContracts.bind(this);
         this.handleOpenAside = this.handleOpenAside.bind(this);
+        this.handleLoadData = this.handleLoadData.bind(this);
     }
 
     componentDidMount = () => {
-        DataState.getProspects(this);
-        AgendaData.getData(this, URL_GET_DATA);
+        const { isFromListBien } = this.state;
+
+        if(!isFromListBien){
+            DataState.getProspects(this);
+            AgendaData.getData(this, URL_GET_DATA);
+        }
+    }
+
+    handleLoadData = (elem) => {
+        this.setState({ elem })
     }
 
     handleChangePage = (page, context) => { this.setState({ page, context }) }
@@ -95,122 +113,126 @@ export class Suivi extends Component {
 
     render () {
         const { contextRapprochement } = this.props;
-        const { elem, page, context, suivis, contracts, allVisits, loadDataProspects, rooms, photos } = this.state;
+        const { isFromListBien, elem, page, context, suivis, contracts, allVisits, loadDataProspects, rooms, photos } = this.state;
 
-        let content;
-        switch (context){
-            case "contracts":
-                content = <Contracts donnees={JSON.stringify(contracts)} bien={elem} onUpdateContracts={this.handleUpdateContracts} classes={"bien-contracts"}/>
-                break;
-            case "rapprochements":
-                content = <Rapprochements ref={this.rapprochement} {...this.state} data={suivis} context={contextRapprochement}
-                                          societyId={elem.agency.society.id} agencyId={elem.agency.id}
-                                          onUpdateProspects={this.handleUpdateProspects} onUpdateVisits={this.handleUpdateVisits}
-                                          onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
-                break;
-            case "visites":
-                content = <Visits {...this.state} bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits}
-                                  isSuiviPage={true} loadDataAgenda={false} classes={""}/>
-                break;
-            case "address":
-                content = <Localisation elem={elem} />
-                break;
-            case "photos":
-                content = <Photos photos={photos} />
-                break;
-            case "rooms":
-                content = <Rooms rooms={rooms} />
-                break;
-            case "contact":
-                content = <Contact elem={elem} />
-                break;
-            case "financial":
-                content = elem.codeTypeAd === 1 ? <Financial elem={elem} /> : <FinancialVente elem={elem} />
-                break;
-            case "diag":
-                content = <Diag elem={elem} />
-                break;
-            case "features":
-                content = <Features elem={elem} />
-                break;
-            case "infos":
-                content = <Infos elem={elem} />
-                break;
-            default:
-                content = <>
-                    <div className="suivi-section">
-                        <Global elem={elem} suivis={suivis} visits={allVisits} />
-                    </div>
-                    {allVisits.length !== 0 && <div className="suivi-section">
-                        <div className="title">Les 20 prochaines visites</div>
-                        <LastVisites visits={allVisits} maxResults={20}/>
-                    </div>}
-                </>
-                break;
-        }
+        if(elem !== null){
+            let content;
+            switch (context){
+                case "contracts":
+                    content = <Contracts donnees={JSON.stringify(contracts)} bien={elem} onUpdateContracts={this.handleUpdateContracts} classes={"bien-contracts"}/>
+                    break;
+                case "rapprochements":
+                    content = <Rapprochements ref={this.rapprochement} {...this.state} data={suivis} context={contextRapprochement}
+                                              societyId={elem.agency.society.id} agencyId={elem.agency.id}
+                                              onUpdateProspects={this.handleUpdateProspects} onUpdateVisits={this.handleUpdateVisits}
+                                              onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
+                    break;
+                case "visites":
+                    content = <Visits {...this.state} bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits}
+                                      isSuiviPage={true} loadDataAgenda={false} classes={""}/>
+                    break;
+                case "address":
+                    content = <Localisation elem={elem} />
+                    break;
+                case "photos":
+                    content = <Photos photos={photos} />
+                    break;
+                case "rooms":
+                    content = <Rooms rooms={rooms} />
+                    break;
+                case "contact":
+                    content = <Contact elem={elem} />
+                    break;
+                case "financial":
+                    content = elem.codeTypeAd === 1 ? <Financial elem={elem} /> : <FinancialVente elem={elem} />
+                    break;
+                case "diag":
+                    content = <Diag elem={elem} />
+                    break;
+                case "features":
+                    content = <Features elem={elem} />
+                    break;
+                case "infos":
+                    content = <Infos elem={elem} />
+                    break;
+                default:
+                    content = <>
+                        <div className="suivi-section">
+                            <Global elem={elem} suivis={suivis} visits={allVisits} onChangeContext={this.handleChangeContext} isFromListBien={isFromListBien} />
+                        </div>
+                        {allVisits.length !== 0 && <div className="suivi-section">
+                            <div className="title">Les 20 prochaines visites</div>
+                            <LastVisites visits={allVisits} maxResults={20}/>
+                        </div>}
+                    </>
+                    break;
+            }
 
-        let contentAside = <ContractFormulaire type="create" bien={elem} />;
+            let contentAside = <ContractFormulaire type="create" bien={elem} />;
 
-        let actionsPrinter = [
-            {data: <a target="_blank" href={Routing.generate("user_printer_bien_display", {'slug': elem.slug, "ori": "portrait"})}>Imprimer la fiche portrait</a>},
-            {data: <a target="_blank" href={Routing.generate("user_printer_bien_display", {'slug': elem.slug, "ori": "landscape"})}>Imprimer la fiche paysage</a>},
-        ]
+            let actionsPrinter = [
+                {data: <a target="_blank" href={Routing.generate("user_printer_bien_display", {'slug': elem.slug, "ori": "portrait"})}>Imprimer la fiche portrait</a>},
+                {data: <a target="_blank" href={Routing.generate("user_printer_bien_display", {'slug': elem.slug, "ori": "landscape"})}>Imprimer la fiche paysage</a>},
+            ]
 
-        let menuSuivi = [
-            {context: "global",            label: "Global"},
-            {context: "visites",           label: "Visites"},
-            {context: "rapprochements",    label: "Rapprochements"},
-            {context: "contracts",         label: "Contrats"},
-        ]
+            let menuSuivi = [
+                {context: "global",            label: "Global"},
+                {context: "visites",           label: "Visites"},
+                {context: "rapprochements",    label: "Rapprochements"},
+                {context: "contracts",         label: "Contrats"},
+            ]
 
-        let menuDetails = [
-            {context: "infos",       label: "Infos"},
-            {context: "features",    label: "Détails"},
-            {context: "rooms",       label: "Pièces"},
-            {context: "address",     label: "Adresse"},
-            {context: "diag",        label: "Diagnostic"},
-            {context: "financial",   label: "Financier"},
-            {context: "contact",     label: "Contact"},
-            {context: "photos",      label: "Photos"},
-        ]
+            let menuDetails = [
+                {context: "infos",       label: "Infos"},
+                {context: "features",    label: "Détails"},
+                {context: "rooms",       label: "Pièces"},
+                {context: "address",     label: "Adresse"},
+                {context: "diag",        label: "Diagnostic"},
+                {context: "financial",   label: "Financier"},
+                {context: "contact",     label: "Contact"},
+                {context: "photos",      label: "Photos"},
+            ]
 
-        return <div className="main-content">
-            {!loadDataProspects ? <LoaderElement /> : <>
-                <div className="details-container">
-                    <div className="details-content-container suivi-container">
-                        <div className="details-card">
-                            <div className="details-image">
-                                <img src={elem.mainPhotoFile} alt="Illustration bien"/>
-                            </div>
-                            <div>
-                                <AdMainInfos elem={elem} />
-                                <div className="details-general">
-                                    <AdBadges elem={elem} />
-                                    <div className="details-ad-actions">
-                                        <ButtonIconDropdown icon="print" items={actionsPrinter}>Imprimer</ButtonIconDropdown>
-                                    </div>
+            return <div className={isFromListBien ? "" : "main-content"}>
+                {!loadDataProspects ? <LoaderElement /> : <>
+                    <div className="details-container">
+                        <div className="details-content-container suivi-container">
+                            <div className="details-card">
+                                <div className="details-image">
+                                    <img src={elem.mainPhotoFile} alt="Illustration bien"/>
                                 </div>
-                                {elem.status !== 0 && <div className="details-general">
-                                    <div />
-                                    <Button type="default" onClick={this.handleOpenAside}>Bien vendu</Button>
-                                </div>}
+                                <div>
+                                    <AdMainInfos elem={elem} />
+                                    <div className="details-general">
+                                        <AdBadges elem={elem} />
+                                        <div className="details-ad-actions">
+                                            <ButtonIconDropdown icon="print" items={actionsPrinter}>Imprimer</ButtonIconDropdown>
+                                        </div>
+                                    </div>
+                                    {elem.status !== 0 && <div className="details-general">
+                                        <div />
+                                        <Button type="default" onClick={this.handleOpenAside}>Bien vendu</Button>
+                                    </div>}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="item-nav-2">
-                    <PageNavigation context={page} onChangeContext={this.handleChangePage} />
-                    <Navigation context={context} onChangeContext={this.handleChangeContext} menu={page === "suivi" ? menuSuivi : menuDetails} />
-                </div>
-                <div className="item-content-2">
-                    <div>
-                        {content}
+                    <div className="item-nav-2">
+                        <PageNavigation context={page} onChangeContext={this.handleChangePage} />
+                        <Navigation context={context} onChangeContext={this.handleChangeContext} menu={page === "suivi" ? menuSuivi : menuDetails} />
                     </div>
-                </div>
+                    <div className="item-content-2">
+                        <div>
+                            {content}
+                        </div>
+                    </div>
 
-                <Aside ref={this.aside} content={contentAside}/>
-            </>}
-        </div>
+                    <Aside ref={this.aside} content={contentAside}/>
+                </>}
+            </div>
+        }else{
+            return <LoaderElement />
+        }
     }
 }
 
