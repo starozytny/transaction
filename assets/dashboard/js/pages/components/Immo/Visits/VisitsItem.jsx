@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
-import parse from "html-react-parser";
+import parse   from "html-react-parser";
+import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { ButtonIcon }      from "@dashboardComponents/Tools/Button";
+import { ButtonIcon } from "@dashboardComponents/Tools/Button";
 import { MailAsideButton } from "@dashboardPages/components/Mails/MailAside";
 
 export class VisitsItem extends Component {
@@ -21,6 +22,9 @@ export class VisitsItem extends Component {
             })
         })
 
+        let haveProspect = !!(persons.prospects && persons.prospects.length !== 0);
+
+
         return <div className="item">
             <div className="item-content">
                 <div className="item-body">
@@ -35,6 +39,8 @@ export class VisitsItem extends Component {
 
                         </div>
                         <div className="col-4 actions">
+                            {haveProspect && <ButtonIcon icon="file" type="default" element="a" target="_blank" tooltipWidth={70}
+                                    onClick={Routing.generate('api_visits_document_bon', {'from': 'visite', 'id': elem.id})}>Bon de visite</ButtonIcon>}
                             {emails.length > 0 && <MailAsideButton txtBtn="Contacter" title="Envoyer un mail" to={emails} />}
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>

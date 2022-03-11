@@ -25,26 +25,24 @@
         <div class="doc-section-title">Acquéreur potentiel</div>
         <div class="doc-section-content">
             <div class="input">
-                <p>M. / Mme. (NOM, Prénom) :
-                    {% if prospect is defined %}
+                <p style="margin-bottom: 6px;">M. / Mme. (NOM, Prénom) :
+                    {% if prospect is defined and prospect is not null %}
                         <b>{{ prospect.fullname }}</b>
+                    {% elseif prospects is defined and prospects is not null %}
+                        {% for pr in prospects %}<b>{{ loop.index0 != 0 ? ", " }}{{ pr.label }}</b>{% endfor %}
                     {% else %}
                         {% for i in 0..122 %}.{% endfor %}
                     {% endif %}
                 </p>
-            </div>
-            <div class="input">
-                <p>Adresse :
-                    {% if prospect is defined %}
+                <p style="margin-bottom: 6px;">Adresse :
+                    {% if prospect is defined  and prospect is not null%}
                         <b>{{ prospect.address }}</b>
                     {% else %}
                         {% for i in 0..150 %}.{% endfor %}
                     {% endif %}
                 </p>
-            </div>
-            <div class="input">
-                <p>Code postal et ville :
-                    {% if prospect is defined %}
+                <p style="margin-bottom: 0;">Code postal et ville :
+                    {% if prospect is defined and prospect is not null %}
                         <b>{{ prospect.zipcode }} {{ prospect.city }}</b>
                     {% else %}
                         {% for i in 0..132 %}.{% endfor %}
@@ -62,39 +60,41 @@
                 reconnais m’être présenté(e) ce jour à l’agence {{ agencyName }} et avoir demandé et reçu les renseignements,
                 adresses et conditions de vente des biens ci-dessous désignés, figurant dans le mandat de vente.
             </p>
-            {% if biens is not defined %}
-                <div class="input">
-                    <p>Bien #1 <span class="txt-grey3">(N° Mandat, type d'offre, type de bien, prix et adresse)</span> : {% for i in 0..331 %}.{% endfor %}</p>
-                </div>
-                <div class="input">
-                    <p>Bien #2 : {% for i in 0..331 %}.{% endfor %}</p>
-                </div>
-                <div class="input">
-                    <p>Bien #3 : {% for i in 0..331 %}.{% endfor %}</p>
-                </div>
-                <div class="input">
-                    <p>Bien #4 : {% for i in 0..331 %}.{% endfor %}</p>
-                </div>
-            {% else %}
-                {% for bien in biens %}
+            <div style="margin: 12px 0">
+                {% if biens is not defined %}
                     <div class="input">
-                        <p>
-                            Bien #{{ loop.index }}
-                            <span class="txt-grey3">{{ loop.index == 1 ? "(N° Mandat, type d'offre, type de bien, prix et adresse)" : "" }}</span> :
-                            <br>
-                            <b>
-                                {{ bien.mandat.numero != 0 ? "N°" ~ bien.mandat.numero ~ ", " : "N°0, " }}
-                                {{ bien.typeAdString | lower }}, {{ bien.typeBienString | lower }},
-                                {{ bien.financial.price | price }} € {{ (bien.codeTypeBien == 1 or bien.codeTypeBien == 4) ? "cc/mois" : "" }}
-                            </b>
-                            <br>
-                            <b>
-                                {{ bien.localisation.fullAddress }}
-                            </b>
-                        </p>
+                        <p>Bien #1 <span class="txt-grey3">(N° Mandat, type d'offre, type de bien, prix et adresse)</span> : {% for i in 0..331 %}.{% endfor %}</p>
                     </div>
-                {% endfor %}
-            {% endif %}
+                    <div class="input">
+                        <p>Bien #2 : {% for i in 0..331 %}.{% endfor %}</p>
+                    </div>
+                    <div class="input">
+                        <p>Bien #3 : {% for i in 0..331 %}.{% endfor %}</p>
+                    </div>
+                    <div class="input">
+                        <p>Bien #4 : {% for i in 0..331 %}.{% endfor %}</p>
+                    </div>
+                {% else %}
+                    {% for bien in biens %}
+                        <div class="input">
+                            <p>
+                                Bien #{{ loop.index }}
+                                <span class="txt-grey3">{{ loop.index == 1 ? "(N° Mandat, type d'offre, type de bien, prix et adresse)" : "" }}</span> :
+                                <br>
+                                <b>
+                                    {{ bien.mandat.numero != 0 ? "N°" ~ bien.mandat.numero ~ ", " : "N°0, " }}
+                                    {{ bien.typeAdString | lower }}, {{ bien.typeBienString | lower }},
+                                    {{ bien.financial.price | price }} € {{ (bien.codeTypeBien == 1 or bien.codeTypeBien == 4) ? "cc/mois" : "" }}
+                                </b>
+                                <br>
+                                <b>
+                                    {{ bien.localisation.fullAddress }}
+                                </b>
+                            </p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
             <p>
                 Les prix de vente donnés comprennent les honoraires de l’agence qui sont prévus à la charge
             </p>

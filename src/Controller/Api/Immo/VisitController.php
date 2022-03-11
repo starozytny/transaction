@@ -223,6 +223,11 @@ class VisitController extends AbstractController
 
         $obj = $em->getRepository($from == "suivi" ? ImSuivi::class : ImVisit::class)->find($id);
 
+        $prospects = [];
+        if($from == "visite"){
+            $prospects = $obj->getAgEvent()->getPersons()['prospects'];
+        }
+
         $img = file_get_contents(($agency->getLogo() ? $this->getParameter('public_directory') : "") . $agency->getLogoFile());
         $base64 = base64_encode($img);
 
@@ -232,7 +237,8 @@ class VisitController extends AbstractController
             $params = array_merge($params, []);
         }else{
             $params = array_merge($params, [
-                'prospect' => $obj->getProspect(),
+                'prospect' => $from == "suivi" ? $obj->getProspect() : null,
+                'prospects' => $from == "visite" ? $prospects : null,
                 'biens' => [$obj->getBien()]
             ]);
         }
