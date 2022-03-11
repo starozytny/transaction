@@ -23,7 +23,7 @@ export class LastVisites extends Component {
     }
 
     render () {
-        const { visits, maxResults = 99999 } = this.props;
+        const { isFromListBien=false, visits, maxResults = 99999 } = this.props;
         const { visit } = this.state;
 
         visits.sort(Sort.compareAgEventStartAt)
@@ -35,8 +35,8 @@ export class LastVisites extends Component {
                 totalVisits++;
 
                 if(totalVisits < maxResults){
-                    itemsVisits.push(<div className="visite" onClick={() => this.handleOpenHelp(visit)} key={visit.id}>
-                        <VisitsMainInfos havePersons={false} haveBubble={true} event={visit.agEvent} persons={visit.agEvent.persons}/>
+                    itemsVisits.push(<div className="visite" onClick={!isFromListBien ? () => this.handleOpenHelp(visit) : null} key={visit.id}>
+                        <VisitsMainInfos havePersons={!!isFromListBien} haveBubble={!isFromListBien} event={visit.agEvent} persons={visit.agEvent.persons}/>
                     </div>)
                 }
             }

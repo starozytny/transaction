@@ -165,7 +165,7 @@ export class Suivi extends Component {
                         </div>
                         {allVisits.length !== 0 && <div className="suivi-section">
                             <div className="title">Les 20 prochaines visites</div>
-                            <LastVisites visits={allVisits} maxResults={20}/>
+                            <LastVisites visits={allVisits} isFromListBien={isFromListBien} maxResults={20}/>
                         </div>}
                     </>
                     break;
