@@ -23,7 +23,6 @@ class DataEvent extends DataConstructor
         $persons["owners"]          = $data->owners ?: [];
         $persons["tenants"]         = $data->tenants ?: [];
         $persons["prospects"]       = $data->prospects ?: [];
-        $persons["buyers"]          = $data->buyers ?: [];
 
         return ($obj)
             ->setName($this->sanitizeData->sanitizeString($data->name))

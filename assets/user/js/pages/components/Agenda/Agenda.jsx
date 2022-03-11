@@ -287,8 +287,8 @@ export class Agenda extends Component {
             events.push(AgendaData.createEventStructure(elem, elem.imVisit))
         })
 
-        let filtersLabel = ["Utilisateurs", "Managers", "Négociateurs", "Propriétaires", "Locataires", "Acquéreurs", "Prospects"];
-        let filtersId    = ["ff-user", "ff-mana", "ff-nego", "ff-ow", "ff-ten", "ff-ac", "ff-pr"];
+        let filtersLabel = ["Utilisateurs", "Managers", "Négociateurs", "Propriétaires", "Locataires", "Prospects"];
+        let filtersId    = ["ff-user", "ff-mana", "ff-nego", "ff-ow", "ff-ten", "ff-pr"];
 
         let itemsFilter = [
             { value: 0, id: filtersId[0], label: filtersLabel[0] },
@@ -297,7 +297,6 @@ export class Agenda extends Component {
             { value: 3, id: filtersId[3], label: filtersLabel[3] },
             { value: 4, id: filtersId[4], label: filtersLabel[4] },
             { value: 5, id: filtersId[5], label: filtersLabel[5] },
-            { value: 6, id: filtersId[6], label: filtersLabel[6] },
         ];
 
         let selectUsers         = AgendaData.getSelecteurData(users, 'sp-user');
@@ -419,7 +418,6 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
     let items3 = getPersonTotal(data3, "Propriétaire");
     let items4 = getPersonTotal(data4, "Locataire");
     let items5 = getPersonTotal(data5, "Prospect");
-    let items6 = getPersonTotal(data6, "Acquéreur");
 
     bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
         items0.join("") +
@@ -443,11 +441,6 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
     if(data5.length > 0){
         bloc.insertAdjacentHTML('beforeend', '<div class="sub sub-persons">'
             + '<span class="ag-round">' + data5.length + '</span>' + items5 +
-        '</div>')
-    }
-    if(data6.length > 0){
-        bloc.insertAdjacentHTML('beforeend', '<div class="sub sub-persons">'
-            + '<span class="ag-round">' + data6.length + '</span>' + items6 +
         '</div>')
     }
 
