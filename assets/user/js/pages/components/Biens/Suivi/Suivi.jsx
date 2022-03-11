@@ -4,7 +4,7 @@ import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Aside } from "@dashboardComponents/Tools/Aside";
 import { LoaderElement } from "@dashboardComponents/Layout/Loader";
-import {Button, ButtonIcon, ButtonIconDropdown} from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
 import Sanitaze   from "@commonComponents/functions/sanitaze";
 import DataState  from "@userPages/components/Biens/Form/data";
@@ -25,6 +25,7 @@ import { Contact }            from "@userPages/components/Biens/Read/Data/Contac
 import { Diag }               from "@userPages/components/Biens/Read/Data/Diag";
 import { Features }           from "@userPages/components/Biens/Read/Data/Features";
 import { Infos }              from "@userPages/components/Biens/Read/Data/Infos";
+import { ButtonBonVisite }    from "@dashboardPages/components/Immo/Visits/VisitsList";
 
 const URL_GET_DATA = 'api_agenda_data_persons';
 
@@ -209,8 +210,7 @@ export class Suivi extends Component {
                                         <AdBadges elem={elem} />
                                         <div className="details-ad-actions">
                                             <ButtonIconDropdown icon="print" items={actionsPrinter}>Imprimer</ButtonIconDropdown>
-                                            <ButtonIcon icon="file" type="default" element="a" target="_blank" tooltipWidth={130}
-                                                    onClick={Routing.generate('api_visits_document_bon', {'from': 'visite', 'id': 'generique'})}>Bon de visite générique</ButtonIcon>
+                                            <ButtonBonVisite type="icon" tooltipWidth={130}>Bon de visite générique</ButtonBonVisite>
                                         </div>
                                     </div>
                                     {elem.status !== 0 && <div className="details-general">

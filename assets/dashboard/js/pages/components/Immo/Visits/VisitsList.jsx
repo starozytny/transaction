@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Routing        from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Alert }      from "@dashboardComponents/Tools/Alert";
-import { Button }     from "@dashboardComponents/Tools/Button";
+import {Button, ButtonIcon} from "@dashboardComponents/Tools/Button";
 
 import { VisitsItem } from "./VisitsItem";
 
@@ -13,14 +13,21 @@ export class VisitsList extends Component {
 
         return <>
             <div>
+                {!isSuiviPage && <>
+                    <div className="toolbar toolbar-suivi">
+                        <div className="item">
+                            <ButtonBonVisite >Bon de visite générique</ButtonBonVisite>
+                        </div>
+                    </div>
+                </>}
+
                 {isSuiviPage && <>
                     <div className="toolbar toolbar-suivi">
                         <div className="item create">
                             <Button onClick={() => onChangeContext("create")}>Ajouter une visite</Button>
                         </div>
                         <div className="item create">
-                            <Button icon="file" type="default" element="a" target="_blank"
-                                    onClick={Routing.generate('api_visits_document_bon', {'from': 'visite', 'id': 'generique'})}>Bon de visite générique</Button>
+                            <ButtonBonVisite >Bon de visite générique</ButtonBonVisite>
                         </div>
                     </div>
                 </>}
@@ -47,4 +54,24 @@ export class VisitsList extends Component {
             </div>
         </>
     }
+}
+
+export function ButtonBonVisite ({ type="button", from="visite", id="generique", tooltipWidth, children }) {
+
+    let url = Routing.generate('api_visits_document_bon', {'from': from, 'id': id})
+
+    let btn = <Button icon="file" type="default" element="a" target="_blank" tooltipWidth={tooltipWidth}
+                      onClick={url}>{children}</Button>
+
+    switch (type){
+        case "icon":
+            btn = <ButtonIcon icon="file" type="default" element="a" target="_blank" tooltipWidth={tooltipWidth}
+                              onClick={url}>{children}</ButtonIcon>
+            break;
+        default:
+            break;
+    }
+
+    return btn
+
 }
