@@ -276,14 +276,16 @@ export function ContentNegotiatorBubble ({ elem }) {
 function ContentOwnerBubble ({ data }) {
     return <div>
         {data.map(elem => {
-            return <div key={elem.id}>
-                <div>{elem.fullnameCivility}</div>
-                <p><br/></p>
-                <div>{elem.phone1}</div>
-                <div>{elem.phone2}</div>
-                <div>{elem.phone3}</div>
-                <div>{elem.email}</div>
-            </div>
+            if(elem){
+                return <div key={elem.id}>
+                    <div>{elem.fullnameCivility}</div>
+                    <p><br/></p>
+                    <div>{elem.phone1}</div>
+                    <div>{elem.phone2}</div>
+                    <div>{elem.phone3}</div>
+                    <div>{elem.email}</div>
+                </div>
+            }
         })}
     </div>
 }

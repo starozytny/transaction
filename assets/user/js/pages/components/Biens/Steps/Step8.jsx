@@ -31,11 +31,13 @@ export function Step8({ step, errors, onNext, onDraft, onChange, onChangeSelect,
 
             <div className="owners">
                 {owners.map((owner, index) => {
-                    let actions = <div className="actions">
-                        <ButtonIcon icon="cancel" onClick={() => onSelectOwner(owner)} text="Enlever" />
-                    </div>
+                    if(owner !== null){
+                        let actions = <div className="actions">
+                            <ButtonIcon icon="cancel" onClick={() => onSelectOwner(owner)} text="Enlever" />
+                        </div>
 
-                    return <ReadCard elem={owner} displayActions={false} actions={actions} key={index} />
+                        return <ReadCard elem={owner} displayActions={false} actions={actions} key={index} />
+                    }
                 })}
             </div>
         </div>

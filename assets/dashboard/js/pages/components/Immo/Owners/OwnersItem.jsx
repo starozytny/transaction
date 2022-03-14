@@ -39,7 +39,7 @@ export class OwnersItem extends Component {
         let active = false;
         if(isFormBien && owners){
             owners.forEach(owner => {
-                if(owner.id === elem.id){
+                if(owner && owner.id === elem.id){
                     active = true;
                 }
             })
