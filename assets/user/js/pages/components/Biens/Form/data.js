@@ -229,7 +229,6 @@ function getDataBien (self, elem) {
     axios.get(Routing.generate('api_suivis_bien', {'slug': elem.slug}), {})
         .then(function (response) {
             let data = response.data;
-            console.log(data)
             self.setState({
                 elem: JSON.parse(data.elem),
                 rooms: JSON.parse(data.rooms),
