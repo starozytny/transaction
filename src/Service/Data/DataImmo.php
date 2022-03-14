@@ -96,7 +96,9 @@ class DataImmo extends DataConstructor
         if(isset($data->owners) && $data->owners){
             $ownerIds = [];  $alreadySet = [];
             foreach($data->owners as $owner){
-                $ownerIds[] = $owner->id;
+                if($owner){
+                    $ownerIds[] = $owner->id;
+                }
             }
             $owners = $this->em->getRepository(ImOwner::class)->findBy(['id' => $ownerIds]);
 
@@ -106,9 +108,11 @@ class DataImmo extends DataConstructor
                 $contractants = $this->em->getRepository(ImContractant::class)->findBy(['contract' => $contract]);
 
                 foreach($contractants as $contractant){
-                    $ownerId = $contractant->getOwner()->getId();
-                    if(in_array($ownerId, $ownerIds)){
-                        $alreadySet[] = $ownerId;
+                    if($contractant->getOwner()){
+                        $ownerId = $contractant->getOwner()->getId();
+                        if(in_array($ownerId, $ownerIds)){
+                            $alreadySet[] = $ownerId;
+                        }
                     }
                 }
             }

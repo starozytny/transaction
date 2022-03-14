@@ -4,7 +4,7 @@ import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { Aside } from "@dashboardComponents/Tools/Aside";
 import { LoaderElement } from "@dashboardComponents/Layout/Loader";
-import { Button, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
 import Sanitaze   from "@commonComponents/functions/sanitaze";
 import DataState  from "@userPages/components/Biens/Form/data";
@@ -213,6 +213,7 @@ export class Suivi extends Component {
                                         <div className="details-ad-actions">
                                             <ButtonIconDropdown icon="print" items={actionsPrinter}>Imprimer</ButtonIconDropdown>
                                             <ButtonBonVisite type="icon" tooltipWidth={130}>Bon de visite générique</ButtonBonVisite>
+                                            <ButtonIcon icon="pencil" element="a" onClick={Routing.generate('user_biens_update', {'slug': elem.slug})}>Modifier</ButtonIcon>
                                         </div>
                                     </div>
                                     {elem.status !== 0 && <div className="details-general">
