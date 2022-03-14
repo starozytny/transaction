@@ -153,6 +153,14 @@ class DataEntity
         return $data[$value];
     }
 
+    public function getCodeTypeBienSeLoger($value): string
+    {
+        $data = ["Appartement", "maison", "parking/Box", "terrain", "boutique", "bureaux", "château", "immeuble", "maison avec terrain",
+            "bâtiment", "local", "loft/atelier/surface", "hôtel particulier", "inconnu"];
+
+        return $data[$value];
+    }
+
     public function getStatusStringEvent($value): string
     {
         $data = ["Inactif", "Actif", "Annulé", "Fini", "Supprimé"];

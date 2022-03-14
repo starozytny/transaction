@@ -79,7 +79,7 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $changelogs     = $em->getRepository(Changelog::class)->findBy(['isPublished' => true], ['createdAt' => 'DESC'], 5);
-        $biensAgency    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'isArchived' => false, 'isDraft' => false]);
+        $biensAgency    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF, 'isArchived' => false, 'isDraft' => false]);
         $biensVisits    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
         $biensUser      = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'isArchived' => false, 'isDraft' => false]);
         $biensDraft     = $em->getRepository(ImBien::class)->findBy(['user' => $user,  'isArchived' => false, 'isDraft' => true]);

@@ -360,9 +360,7 @@ class ImBien extends DataEntity
 
     public function getTypeBienSeloger(): string
     {
-        $data = ["Appartement", "maison", "parking/Box", "terrain", "boutique", "bureaux", "château", "immeuble", "maison/villa", "inconnu"];
-
-        return $data[$this->codeTypeBien];
+        return $this->getCodeTypeBienSeLoger($this->codeTypeBien);
     }
 
     /**
