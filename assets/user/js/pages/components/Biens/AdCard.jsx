@@ -112,7 +112,9 @@ export class AdCard extends Component {
         if(contractants){
             contractants.forEach(co => {
                 if(el.id === co.contract.bien.id){
-                    owners.push(co.owner)
+                    if(co.owner){
+                        owners.push(co.owner)
+                    }
                 }
             })
         }

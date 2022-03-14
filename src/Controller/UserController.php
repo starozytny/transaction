@@ -140,7 +140,7 @@ class UserController extends AbstractController
 
         $rapprochements = $searchService->getRapprochementBySearchs($objs, $user->getAgency());
         $suivis         = $em->getRepository(ImSuivi::class)->findByStatusProcessAndBiens($objs);
-        $contrats       = $em->getRepository(ImContract::class)->findBy(['bien' => $objs]);
+        $contrats       = $em->getRepository(ImContract::class)->findBy(['bien' => $objs, 'status' => ImContract::STATUS_PROCESSING]);
         $contractants   = $em->getRepository(ImContractant::class)->findBy(['contract' => $contrats]);
 
         $objs           = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
