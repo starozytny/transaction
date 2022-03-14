@@ -137,7 +137,7 @@ class ContractForm extends Component {
                 {success !== false && <Alert type="info">{success}</Alert>}
 
                 <div className="line line-2">
-                    <DatePick identifiant="sellAt" valeur={sellAt} errors={errors} onChange={(e) => this.handleChangeDate('sallAt', e)}>Date de sortie</DatePick>
+                    <DatePick identifiant="sellAt" valeur={sellAt} errors={errors} onChange={(e) => this.handleChangeDate('sellAt', e)}>Date de sortie</DatePick>
                     <div className="form-group" />
                 </div>
 

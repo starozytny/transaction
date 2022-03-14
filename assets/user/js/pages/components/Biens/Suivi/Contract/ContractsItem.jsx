@@ -24,8 +24,8 @@ export class ContractsItem extends Component {
                         </div>
                         <div className="col-4 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                            {elem.status !== 2 && <ButtonIcon icon="cancel" onClick={() => onSwitchStatus(elem, 2)}>Annuler</ButtonIcon>}
-                            {elem.status !== 0 && <ButtonIcon icon="flag" onClick={() => onSwitchStatus(elem, 0)}>Terminer</ButtonIcon>}
+                            {elem.status !== 2 && <ButtonIcon icon="cancel" onClick={() => onSwitchStatus(elem, 2)}>Contrat annulé</ButtonIcon>}
+                            {elem.status !== 0 && <ButtonIcon icon="flag" onClick={() => onSwitchStatus(elem, 0)}>Contrat terminé</ButtonIcon>}
                         </div>
                     </div>
                 </div>
