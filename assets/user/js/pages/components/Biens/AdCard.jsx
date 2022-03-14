@@ -151,7 +151,7 @@ export class AdCard extends Component {
 
             <div className="card-main">
                 <div className="card-body">
-                    {el.isDraft && <div className="isDraft"><div>Brouillon</div></div>}
+                    {el.isDraft && <div className="isDraft"><div>Brouillon de {el.createdBy}</div></div>}
 
                     <a className="image"
                        href={!onOpenSuivi ? Routing.generate('user_biens_suivi', {'slug': el.slug}) : "#"}
