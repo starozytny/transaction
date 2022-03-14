@@ -15,7 +15,8 @@ class ImSuivi
 
     const STATUS_TO_PROCESS = 0;
     const STATUS_PROCESSING = 1;
-    const STATUS_END = 2;
+    const STATUS_PROCESSED = 2;
+    const STATUS_END = 3;
 
     /**
      * @ORM\Id
@@ -109,7 +110,7 @@ class ImSuivi
      */
     public function getStatusString(): string
     {
-        $values = ["A traiter", "En cours", "Traité"];
+        $values = ["A traiter", "En cours", "Traité", "Terminé"];
 
         return $values[$this->status];
     }
