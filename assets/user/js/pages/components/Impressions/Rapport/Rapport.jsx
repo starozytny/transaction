@@ -5,6 +5,8 @@ import parse from "html-react-parser";
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
 import { Alert } from "@dashboardComponents/Tools/Alert";
+import {Selector} from "@dashboardComponents/Layout/Selector";
+import {ButtonIcon} from "@dashboardComponents/Tools/Button";
 
 export function Header ({ title="Rapport", subtitle }) {
     return <>
@@ -47,7 +49,8 @@ export function Card ({ el }) {
     </div>
 }
 
-export function HistoriesBien ({ el, publishes, visites, prices }) {
+export function HistoriesBien ({ el, elements, publishes, visites, prices }) {
+    let historyElements  = getHistories('elements', elements, el);
     let historyPrices    = getHistories('prices', prices, el);
     let historyVisites   = getHistories('visites', visites, el);
     let historyPublishes = getHistories('publishes', publishes, el);
@@ -77,6 +80,14 @@ export function HistoriesBien ({ el, publishes, visites, prices }) {
                 </div>
             </div>
         </div>
+        <div className="sub-content">
+            <div className="title">Modifications</div>
+            <div className="content">
+                <div className="items">
+                    {historyElements.length !== 0 ? historyElements : <Alert>Aucune modification enregistrée.</Alert>}
+                </div>
+            </div>
+        </div>
     </>
 }
 
@@ -86,6 +97,9 @@ function getHistories (type, data, el) {
         if(elem.bienId === el.id){
             let content = null;
             switch (type){
+                case "elements":
+                    content = <Modification elem={elem} key={elem.id} />
+                    break;
                 case "prices":
                     content = <Price elem={elem} el={el} key={elem.id} />
                     break;
@@ -141,6 +155,36 @@ export function Price ({ elem, el }) {
         </div>
         <div className="infos">
             <span>{Sanitaze.toFormatCurrency(elem.price)} {el.codeTypeAd === 1 ? "cc/mois" : ""}</span>
+        </div>
+    </div>
+}
+
+
+export function Modification ({ elem }) {
+    return <div className="history">
+        <div className="time">
+            <span>{elem.createdAtString}</span>
+        </div>
+        <div className="infos">
+            <div>Modifié par : {elem.userFullname}</div>
+            <div className="rapport-table">
+                <div className="rapport-table-header">
+                    <div className="rapport-table-item">
+                        <div className="col-1">Type</div>
+                        <div className="col-2">Ancienne valeur</div>
+                        <div className="col-3">Nouvelle valeur</div>
+                    </div>
+                </div>
+                <div className="rapport-table-body">
+                    {elem.modifications.map((item, index) => {
+                        return <div className="rapport-table-item" key={index}>
+                            <div className="col-1">{item.type}</div>
+                            <div className="col-2">{item.old}</div>
+                            <div className="col-3">{item.new}</div>
+                        </div>
+                    })}
+                </div>
+            </div>
         </div>
     </div>
 }

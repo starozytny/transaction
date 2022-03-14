@@ -1,0 +1,47 @@
+@import "../../../vars/vars";
+
+.rapport-table{
+  width: calc(100% - 2px);
+  border: 1px solid var(--grey);
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.rapport-table-header,
+.rapport-table-body{
+  .rapport-table-item{
+    @include flex(row, flex-start, flex-start);
+    padding: 12px;
+
+    .col-1{
+      width: 20%;
+    }
+
+    .col-2{
+      width: calc(40% - 24px);
+      margin-left: 24px;
+    }
+
+    .col-3{
+      width: calc(40% - 24px);
+      margin-left: 24px;
+    }
+  }
+}
+
+
+.rapport-table-header{
+  .rapport-table-item{
+    background-color: var(--greyShadow);
+    border-radius: 8px 8px 0 0;
+    text-transform: uppercase;
+    @include fontSemibold();
+    font-size: 15px;
+    color: var(--grey3);
+
+  }
+}
+
+.rapport-table-body{
+  border-radius: 0 0 8px 8px;
+}

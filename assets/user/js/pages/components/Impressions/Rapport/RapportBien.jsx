@@ -9,6 +9,7 @@ export class RapportBien extends Component{
 
         this.state = {
             elem: props.donnees ? JSON.parse(props.donnees) : null,
+            elements: props.elements ? JSON.parse(props.elements) : [],
             publishes: props.publishes ? JSON.parse(props.publishes) : [],
             visites: props.visites ? JSON.parse(props.visites) : [],
             prices: props.prices ? JSON.parse(props.prices) : [],
@@ -16,7 +17,7 @@ export class RapportBien extends Component{
     }
 
     render () {
-        const { elem, publishes, visites, prices } = this.state;
+        const { elem, elements, publishes, visites, prices } = this.state;
 
         let content = <div className="print-owner">
             <Header subtitle={elem.libelle} />
@@ -26,7 +27,7 @@ export class RapportBien extends Component{
                     <div className="content">
                         <Card el={elem} />
                     </div>
-                    <HistoriesBien el={elem} publishes={publishes} visites={visites} prices={prices} />
+                    <HistoriesBien el={elem} elements={elements} publishes={publishes} visites={visites} prices={prices} />
                 </div>
             </div>
         </div>

@@ -3,6 +3,7 @@
 {% block main_content %}
     <div id="{{ identifiant }}"
          data-donnees="{{ donnees }}"
+         data-elements="{{ elements is defined ? elements : null }}"
          data-biens="{{ biens is defined ? biens : null }}"
          data-publishes="{{ publishes }}"
          data-visites="{{ visites }}"

@@ -4,6 +4,7 @@
 
 @import "./split/printer/bien";
 @import "./split/printer/owner";
+@import "./split/printer/rapport";
 
 body{
   background-color: var(--alpha);
@@ -32,7 +33,7 @@ body{
 }
 
 .file-content{
-  .item{
+  & > .item{
 
     &:not(:last-child){
       margin-bottom: 48px;

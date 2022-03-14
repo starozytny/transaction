@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\History\HiBien;
 use App\Entity\History\HiPrice;
 use App\Entity\History\HiPublish;
 use App\Entity\History\HiVisite;
@@ -31,9 +32,9 @@ class PrinterController extends AbstractController
     }
 
     /**
-     * @Route("/affiche/bien/{slug}", options={"expose"=true}, name="bien_display")
+     * @Route("/vitrine/bien/{slug}", options={"expose"=true}, name="bien_display")
      */
-    public function bien(Request $request, ImBien $obj, ImPhotoRepository $photoRepository, SerializerInterface $serializer): Response
+    public function vitrineBien(Request $request, ImBien $obj, ImPhotoRepository $photoRepository, SerializerInterface $serializer): Response
     {
         $ori = $request->query->get('ori');
         $photos = $photoRepository->findBy(['bien' => $obj], ['rank' => 'ASC'], 4);
@@ -49,9 +50,9 @@ class PrinterController extends AbstractController
     }
 
     /**
-     * @Route("/affiche/biens", options={"expose"=true}, name="biens_display")
+     * @Route("/vitrine/biens", options={"expose"=true}, name="biens_display")
      */
-    public function biens(Request $request, ImBienRepository $bienRepository, ImPhotoRepository $photoRepository,
+    public function vitrineBiens(Request $request, ImBienRepository $bienRepository, ImPhotoRepository $photoRepository,
                           SerializerInterface $serializer): Response
     {
         $ori = $request->query->get('ori');
@@ -125,15 +126,18 @@ class PrinterController extends AbstractController
 
     private function getDataHistoryBien($em, $serializer, $biens): array
     {
+        $elements  = $em->getRepository(HiBien::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
         $publishes = $em->getRepository(HiPublish::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
         $visites   = $em->getRepository(HiVisite::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
         $prices    = $em->getRepository(HiPrice::class)->findBy(['bienId' => $biens], ['createdAt' => 'DESC']);
 
+        $elements   = $serializer->serialize($elements,  'json', ['groups' => HiBien::HISTORY_BIEN]);
         $publishes  = $serializer->serialize($publishes, 'json', ['groups' => HiPublish::HISTORY_PUBLISH]);
         $visites    = $serializer->serialize($visites,   'json', ['groups' => HiVisite::HISTORY_VISITE]);
         $prices     = $serializer->serialize($prices,    'json', ['groups' => HiPrice::HISTORY_PRICE]);
 
         return [
+            'elements' => $elements,
             'publishes' => $publishes,
             'visites' => $visites,
             'prices' => $prices
