@@ -77,9 +77,16 @@ export class Owners extends Component {
     handleUpdateSelectOwner = (owner) => {
         const { owners } = this.state;
 
+        let find = false;
+        owners.forEach(o => {
+            if(o.id === owner.id){
+                find = true;
+            }
+        })
+
         let nOwners = owners;
-        if(owners.includes(owner)){
-            nOwners = nOwners.filter(el => el.id !== owner.id);
+        if(find){
+            nOwners = owners.filter(el => el.id !== owner.id);
         }else{
             nOwners.push(owner);
         }
