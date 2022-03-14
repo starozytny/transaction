@@ -63,6 +63,34 @@ class PublishController extends AbstractController
         $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $data]);
 
         $biens = $em->getRepository(ImBien::class)->findBy(['isPublished' => true]);
+        $detailsAd = [
+            "Vente" => 0,
+            "Location" => 0,
+            "Viager" => 0,
+            "Produit d'investissement" => 0,
+            "Cession bail" => 0,
+            "Location vacances" => 0,
+            "Vente prestige" => 0,
+            "Fond de commerce" => 0
+        ];
+
+        $detailsBien = [
+            "Appartement" => 0,
+            "Maison" => 0,
+            "Parking/Box" => 0,
+            "Terrain" => 0,
+            "Boutique" => 0,
+            "Bureau" => 0,
+            "Château" => 0,
+            "Immeuble" => 0,
+            "Terrain + Maison" => 0,
+            "Bâtiment" => 0,
+            "Local" => 0,
+            "Loft/Atelier/Surface" => 0,
+            "Hôtel particulier" => 0,
+            "Autres" => 0,
+        ];
+
         foreach($biens as $bien){
             $bien->setIsPublished(false);
         }
@@ -73,6 +101,7 @@ class PublishController extends AbstractController
             ->setAgency($user->getAgency())
             ->setNbBiens(count($data))
             ->setPublishedAt($sanitizeData->todayDate())
+            ->setUserFullname($user->getFullname())
         ;
 
         $biens = $em->getRepository(ImBien::class)->findBy(['id' => $data]);
@@ -89,8 +118,17 @@ class PublishController extends AbstractController
                 ->setSupports($supports)
             ;
 
+            $detailsAd[$bien->getTypeAdString()] = $detailsAd[$bien->getTypeAdString()] + 1;
+            $detailsBien[$bien->getTypeBienString()] = $detailsBien[$bien->getTypeBienString()] + 1;
+
             $em->persist($historyPublish);
         }
+
+
+        $stat = ($stat)
+            ->setDetailsAd($detailsAd)
+            ->setDetailsBien($detailsBien)
+        ;
 
         $em->persist($stat);
         $em->flush();

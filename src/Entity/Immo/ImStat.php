@@ -44,6 +44,21 @@ class ImStat extends DataEntity
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $detailsAd = [];
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $detailsBien = [];
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $userFullname;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -109,5 +124,41 @@ class ImStat extends DataEntity
     public function getPublishedAtString(): ?string
     {
         return $this->getFullDateString($this->publishedAt, 'llll');
+    }
+
+    public function getDetailsAd(): ?array
+    {
+        return $this->detailsAd;
+    }
+
+    public function setDetailsAd(?array $detailsAd): self
+    {
+        $this->detailsAd = $detailsAd;
+
+        return $this;
+    }
+
+    public function getDetailsBien(): ?array
+    {
+        return $this->detailsBien;
+    }
+
+    public function setDetailsBien(?array $detailsBien): self
+    {
+        $this->detailsBien = $detailsBien;
+
+        return $this;
+    }
+
+    public function getUserFullname(): ?string
+    {
+        return $this->userFullname;
+    }
+
+    public function setUserFullname(string $userFullname): self
+    {
+        $this->userFullname = $userFullname;
+
+        return $this;
     }
 }
