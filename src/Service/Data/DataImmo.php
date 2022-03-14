@@ -55,7 +55,7 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataBien(ImmoService $immoService, ImAgency $agency, ImBien $obj, $data, ImArea $area,
+    public function setDataBien(ImAgency $agency, ImBien $obj, $data, ImArea $area,
                                 ImNumber $number, ImFeature $feature, ImAdvantage $advantage, ImDiag $diag,
                                 ImLocalisation $localisation, ImFinancial $financial, ImConfidential $confidential,
                                 ImAdvert $advert, ImMandat $mandat, array $rooms)
@@ -146,7 +146,6 @@ class DataImmo extends DataConstructor
             ->setCodeTypeBien((int) $codeTypeBien)
             ->setLibelle($this->sanitizeData->trimData($libelle))
             ->setNegotiator($negotiator)
-            ->setReference($immoService->getReference($agency, (int) $codeTypeAd))
             ->setArea($area)
             ->setNumber($number)
             ->setFeature($feature)
