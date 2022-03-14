@@ -29,7 +29,8 @@ const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
 
 const STATUS_SUIVI_TO_PROCESS = 0;
 const STATUS_SUIVI_PROCESSING = 1;
-const STATUS_SUIVI_ENDING = 2;
+const STATUS_SUIVI_PROCESSED = 2;
+const STATUS_SUIVI_ENDING = 3;
 
 const STATUS_PROPAL = 0;
 const STATUS_ACCEPT = 1;
@@ -212,7 +213,7 @@ export class Rapprochements extends Component {
 
             switch (subContext) {
                 case "ending":
-                    if(item.suivi && item.rapprochement === null && item.suivi.status === STATUS_SUIVI_ENDING){
+                    if(item.suivi && item.rapprochement === null && (item.suivi.status === STATUS_SUIVI_PROCESSED || item.suivi.status === STATUS_SUIVI_ENDING)){
                         canAdd = true;
                     }
                     break;
