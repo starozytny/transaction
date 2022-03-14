@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 
 import { ButtonIcon }   from "@dashboardComponents/Tools/Button";
+import { UtContact }    from "@dashboardComponents/Tools/Utilitaire";
 
 export class ContractsItem extends Component {
     render () {
-        const { elem, onChangeContext, onDelete, onSwitchStatus } = this.props
+        const { elem, onChangeContext, contractants, onSwitchStatus } = this.props
+
+        let owners = [];
+        contractants.forEach(co => {
+            if(co.contract.id === elem.id){
+                owners.push(co.owner)
+            }
+        })
 
         return <div className="item">
             <div className="item-content">
@@ -17,10 +25,19 @@ export class ContractsItem extends Component {
                             </div>
                         </div>
                         <div className="col-2">
-                            <div className="sub">{elem.sellByString}</div>
+                            <div className="sub">Par qui : {elem.sellByString}</div>
+                            <div className="sub">Pourquoi : {elem.sellWhyString}</div>
                         </div>
                         <div className="col-3">
-                            <div className="sub">{elem.sellWhyString}</div>
+                            {owners.map((owner, index) => {
+                                if(owner){
+                                    return <div className="sub" key={index}>
+                                        <div>{owner.fullnameCivility}</div>
+                                        <UtContact elem={owner} />
+                                    </div>
+                                }
+                            })}
+
                         </div>
                         <div className="col-4 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>

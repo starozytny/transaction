@@ -251,14 +251,16 @@ class UserController extends AbstractController
         $suivis    = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
         $offers    = $em->getRepository(ImOffer::class)->findBy(['bien' => $obj]);
         $contracts = $em->getRepository(ImContract::class)->findBy(['bien' => $obj]);
+        $contractants = $em->getRepository(ImContractant::class)->findBy(['contract' => $contracts]);
 
-        $element   = $serializer->serialize($obj,       'json', ['groups' => User::USER_READ]);
-        $photos    = $serializer->serialize($photos,    'json', ['groups' => User::USER_READ]);
-        $rooms     = $serializer->serialize($rooms,     'json', ['groups' => User::USER_READ]);
-        $suivis    = $serializer->serialize($suivis,    'json', ['groups' => ImSuivi::SUIVI_READ]);
-        $visits    = $serializer->serialize($visits,    'json', ['groups' => ImVisit::VISIT_READ]);
-        $offers    = $serializer->serialize($offers,    'json', ['groups' => ImOffer::OFFER_READ]);
-        $contracts = $serializer->serialize($contracts, 'json', ['groups' => ImContract::CONTRACT_READ]);
+        $element      = $serializer->serialize($obj,       'json', ['groups' => User::USER_READ]);
+        $photos       = $serializer->serialize($photos,    'json', ['groups' => User::USER_READ]);
+        $rooms        = $serializer->serialize($rooms,     'json', ['groups' => User::USER_READ]);
+        $suivis       = $serializer->serialize($suivis,    'json', ['groups' => ImSuivi::SUIVI_READ]);
+        $visits       = $serializer->serialize($visits,    'json', ['groups' => ImVisit::VISIT_READ]);
+        $offers       = $serializer->serialize($offers,    'json', ['groups' => ImOffer::OFFER_READ]);
+        $contracts    = $serializer->serialize($contracts, 'json', ['groups' => ImContract::CONTRACT_READ]);
+        $contractants = $serializer->serialize($contractants, 'json', ['groups' => ImContractant::CONTRACTANT_OWNER_READ]);
 
         $historiesVisits = $em->getRepository(HiVisite::class)->findBy(['bienId' => $obj->getId()], ['createdAt' => 'DESC']);
         $historiesVisits = $serializer->serialize($historiesVisits, 'json', ['groups' => HiVisite::HISTORY_VISITE]);
@@ -278,6 +280,7 @@ class UserController extends AbstractController
             'contracts' => $contracts,
             'rapprochements' => $rapprochements,
             'historiesVisits' => $historiesVisits,
+            'contractants' => $contractants,
         ]);
     }
 

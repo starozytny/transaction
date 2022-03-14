@@ -36,7 +36,7 @@ class ImContract extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"contract:read"})
+     * @Groups({"contract:read", "contractant-owner:read"})
      */
     private $id;
 

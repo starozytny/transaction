@@ -34,6 +34,7 @@ export class Contracts extends Component {
             pathDeleteElement: URL_DELETE_ELEMENT,
             msgDeleteElement: MSG_DELETE_ELEMENT,
             sessionName: "contracts.pagination",
+            contractants: props.contractants ? props.contractants : [],
             classes: props.classes !== null ? props.classes : "main-content",
         }
 
@@ -79,7 +80,7 @@ export class Contracts extends Component {
         }
 
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
-        const { perPage, currentPage } = this.state;
+        const { perPage, currentPage, contractants } = this.state;
 
         return <ContractsList onChangeContext={changeContext}
                            onDelete={this.layout.current.handleDelete}
@@ -98,6 +99,7 @@ export class Contracts extends Component {
                            onSorter={this.handleSorter}
             //data
                            onSwitchStatus={this.handleSwitchStatus}
+                           contractants={contractants}
                            data={currentData} />
     }
 

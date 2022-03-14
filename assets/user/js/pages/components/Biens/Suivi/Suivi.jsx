@@ -35,7 +35,7 @@ export class Suivi extends Component {
 
         this.state = {
             page: "suivi",
-            context: props.context ? props.context : "global",
+            context: props.context ? props.context : "contracts",
 
             elem: props.elem ? JSON.parse(props.elem) : null,
             rooms: props.rooms ? JSON.parse(props.rooms) : [],
@@ -43,6 +43,7 @@ export class Suivi extends Component {
             suivis: props.suivis ? JSON.parse(props.suivis) : [],
             offers: props.offers ? JSON.parse(props.offers) : [],
             contracts: props.contracts ? JSON.parse(props.contracts) : [],
+            contractants: props.contractants ? JSON.parse(props.contractants) : [],
             rapprochements: props.rapprochements ? JSON.parse(props.rapprochements) : [],
             allVisits: props.visits ? JSON.parse(props.visits) : [],
             historiesVisits: props.historiesVisits ? JSON.parse(props.historiesVisits) : [],
@@ -116,13 +117,14 @@ export class Suivi extends Component {
 
     render () {
         const { contextRapprochement } = this.props;
-        const { isFromListBien, elem, page, context, suivis, contracts, allVisits, loadDataProspects, rooms, photos } = this.state;
+        const { isFromListBien, elem, page, context, suivis, contracts, contractants, allVisits, loadDataProspects, rooms, photos } = this.state;
 
         if(elem !== null){
             let content;
             switch (context){
                 case "contracts":
-                    content = <Contracts donnees={JSON.stringify(contracts)} bien={elem} onUpdateContracts={this.handleUpdateContracts} classes={"bien-contracts"}/>
+                    content = <Contracts donnees={JSON.stringify(contracts)} contractants={contractants} bien={elem}
+                                         onUpdateContracts={this.handleUpdateContracts} classes={"bien-contracts"}/>
                     break;
                 case "rapprochements":
                     content = <Rapprochements ref={this.rapprochement} {...this.state} data={suivis} context={contextRapprochement}

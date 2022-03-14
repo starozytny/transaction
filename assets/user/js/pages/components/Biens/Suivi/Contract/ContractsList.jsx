@@ -51,8 +51,8 @@ export class ContractsList extends Component {
                                 <div className="item-body">
                                    <div className="infos infos-col-4">
                                         <div className="col-1">Date du contrat</div>
-                                        <div className="col-2">Par qui</div>
-                                        <div className="col-3">Pour quel motif</div>
+                                        <div className="col-2">Par qui / motif</div>
+                                        <div className="col-3">Propriétaire</div>
                                         <div className="col-4 actions">Actions</div>
                                     </div>
                                 </div>
