@@ -62,7 +62,7 @@ class ImContract extends DataEntity
      * @ORM\Column(type="integer")
      * @Groups({"contract:read"})
      */
-    private $sellWhy =self::WHY_SELL;
+    private $sellWhy =self::WHY_UNKNOWN;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="contracts")
