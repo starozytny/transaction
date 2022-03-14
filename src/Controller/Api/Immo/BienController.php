@@ -117,7 +117,6 @@ class BienController extends AbstractController
         $old = clone $obj;
         $old = $serializer->serialize($old, 'json', ['groups' => User::USER_READ]);
         $old = json_decode($old, true);
-        dump($old);
 
         /** @var User $user */
         $user = $this->getUser();

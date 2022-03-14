@@ -65,17 +65,16 @@ class HistoryService extends DataConstructor
                     || $key == "advantage" || $key == "diag" || $key == "localisation" || $key == "financial"
                     || $key == "confidential" || $key == "advert" || $key == "mandat"
                 ){
-
                     foreach ($value as $key2 => $value2){
-                        if($key == "number"){
-                            dump($key2, $value, $value2, $bien[$key][$key2]);
-                        }
-                        if($value2 != $bien[$key][$key2]){
-                            $differences[] = [
-                                "type" => $key . " - " . $key2,
-                                "old" => $value2,
-                                "new" => $bien[$key][$key2]
-                            ];
+
+                        if($key2 != "dispoAtString" && $key2 != "startAtString" && $key2 != "endAtString"){
+                            if($value2 != $bien[$key][$key2]){
+                                $differences[] = [
+                                    "type" => $key . " - " . $key2,
+                                    "old" => $value2,
+                                    "new" => $bien[$key][$key2]
+                                ];
+                            }
                         }
                     }
                 }else{
