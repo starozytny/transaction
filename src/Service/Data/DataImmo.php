@@ -94,7 +94,7 @@ class DataImmo extends DataConstructor
         }
 
         if(isset($data->owners) && $data->owners){
-            $ownerIds = [];  $alreadySet = [];
+            $ownerIds = [];
             foreach($data->owners as $owner){
                 if($owner){
                     $ownerIds[] = $owner->id;
@@ -108,12 +108,7 @@ class DataImmo extends DataConstructor
                 $contractants = $this->em->getRepository(ImContractant::class)->findBy(['contract' => $contract]);
 
                 foreach($contractants as $contractant){
-                    if($contractant->getOwner()){
-                        $ownerId = $contractant->getOwner()->getId();
-                        if(in_array($ownerId, $ownerIds)){
-                            $alreadySet[] = $ownerId;
-                        }
-                    }
+                    $this->em->remove($contractant);
                 }
             }
 
@@ -126,14 +121,12 @@ class DataImmo extends DataConstructor
             }
 
             foreach($owners as $owner){
-                if(!in_array($owner->getId(), $alreadySet)){
-                    $contractant = (new ImContractant())
-                        ->setContract($contract)
-                        ->setOwner($owner)
-                    ;
+                $contractant = (new ImContractant())
+                    ->setContract($contract)
+                    ->setOwner($owner)
+                ;
 
-                    $this->em->persist($contractant);
-                }
+                $this->em->persist($contractant);
             }
         }
 
