@@ -29,20 +29,21 @@ export class ContractsItem extends Component {
                             <div className="sub">Pourquoi : {elem.sellWhyString}</div>
                         </div>
                         <div className="col-3">
-                            {owners.map((owner, index) => {
-                                if(owner){
-                                    return <div className="sub" key={index}>
-                                        <div>{owner.fullnameCivility}</div>
-                                        <UtContact elem={owner} />
-                                    </div>
-                                }
-                            })}
-
+                            <div className="owners-list">
+                                {owners.map((owner, index) => {
+                                    if(owner){
+                                        return <div className="sub" key={index}>
+                                            <div>{owner.fullnameCivility}</div>
+                                            <UtContact elem={owner} />
+                                        </div>
+                                    }
+                                })}
+                            </div>
                         </div>
                         <div className="col-4 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                            {elem.status !== 2 && <ButtonIcon icon="cancel" onClick={() => onSwitchStatus(elem, 2)}>Contrat annulé</ButtonIcon>}
-                            {elem.status !== 0 && <ButtonIcon icon="flag" onClick={() => onSwitchStatus(elem, 0)}>Contrat terminé</ButtonIcon>}
+                            {elem.status !== 2 && <ButtonIcon icon="cancel" tooltipWidth={80} onClick={() => onSwitchStatus(elem, 2)}>Contrat annulé</ButtonIcon>}
+                            {elem.status !== 0 && <ButtonIcon icon="flag"   tooltipWidth={85} onClick={() => onSwitchStatus(elem, 0)}>Contrat terminé</ButtonIcon>}
                         </div>
                     </div>
                 </div>
