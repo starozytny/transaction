@@ -67,7 +67,14 @@ export class Contracts extends Component {
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
     handleSwitchStatus = (element, status) => {
-        Swal.fire(SwalOptions.options("Etes-vous sur de vouloir modifier le status de ce contrat ?", "Action irréversible"))
+        let text = "Action irréversible";
+        if(status === 2){
+            text = "Contrat annulé";
+        }else if(status === 0){
+            text = "Contract terminé."
+        }
+
+        Swal.fire(SwalOptions.options("Etes-vous sur de vouloir modifier le status de ce contrat ?", text))
             .then((result) => {
                 if (result.isConfirmed) {
                     this.layout.current.handleSwitchData(this, status,
