@@ -77,7 +77,7 @@ export class AdCard extends Component {
         let items = [
             {data: <a target="_blank" href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "visites"})}>Liste des visites</a>},
             {data: <a target="_blank" href={Routing.generate('user_biens_suivi', {'slug': el.slug, "ct": "rapprochements"})}>Liste des prospects</a>},
-            {data: <a onClick={() => this.mail.current.handleOpenAside("Envoyer un mail")}>Envoyer un mail</a>},
+            // {data: <a onClick={() => this.mail.current.handleOpenAside("Envoyer un mail")}>Envoyer un mail</a>},
             {data: <a target="_blank" href={Routing.generate("user_printer_bien_display", {'slug': el.slug, "ori": "portrait"})}>Imprimer la fiche portrait</a>},
             {data: <a target="_blank" href={Routing.generate("user_printer_bien_display", {'slug': el.slug, "ori": "landscape"})}>Imprimer la fiche paysage</a>},
             {data: <a target="_blank" href={Routing.generate("user_printer_bien_rapport", {'slug': el.slug})}>Imprimer le rapport</a>}
