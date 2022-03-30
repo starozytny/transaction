@@ -476,7 +476,7 @@ class ImFinancial
     {
         $charges = ["Acquéreur", "Vendeur", "Acquéreur et vendeur"];
 
-        return  $this->honoraireChargeDe ? $charges[$this->honoraireChargeDe] : null;
+        return  $this->honoraireChargeDe !== null ? $charges[$this->honoraireChargeDe] : null;
     }
 
     /**
@@ -486,7 +486,7 @@ class ImFinancial
     {
         $charges = ["Forfaitaires mensuelles", "Prévisionnelles mensuelles avec régularisation annuelle", "Remboursement annuel par le locataire"];
 
-        return $this->typeCharges ? $charges[$this->typeCharges] : null;
+        return $this->typeCharges !== null ? $charges[$this->typeCharges] : null;
     }
 
     /**
@@ -497,7 +497,7 @@ class ImFinancial
     {
         $charges = ["Habitation", "Commercial", "Meublé", "Professionnel", "Garage"];
 
-        return $this->typeBail ? $charges[$this->typeBail] : null;
+        return $this->typeBail !== null ? $charges[$this->typeBail] : null;
     }
 
     public function getPriceMurs(): ?float
