@@ -12,6 +12,8 @@
       }
     }
   }
+
+
 }
 
 .toolbar-suivi{
@@ -156,6 +158,8 @@
 
 .bien-contracts{
   .toolbar{
+    justify-content: flex-end;
+
     .filter-search{
       margin-left: 0;
 
