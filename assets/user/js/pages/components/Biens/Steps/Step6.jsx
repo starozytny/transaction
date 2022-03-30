@@ -15,7 +15,7 @@ const CURRENT_STEP = 6;
 export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeCleave,
                           codeTypeAd,
                           price, provisionCharges, caution, honoraireTtc, edl, complementLoyer, typeCharges, typeBail, durationBail,
-                          priceMurs })
+                          priceMurs, priceHt, pricePlafond })
 {
     let chargesItems = helper.getItems("charges")
     let bailsItems = helper.getItems("bails")
@@ -32,7 +32,7 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </div>
             <div className="line line-2">
                 <Input type="cleave" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChangeCleave}>
-                    <span>{codeTypeAdInt !== AD_CESSION_BAIL ? "Loyer" : "Prix de cession"} *</span>
+                    <span>{codeTypeAdInt !== AD_CESSION_BAIL ? "Loyer charges comprises" : "Prix de cession"} *</span>
                 </Input>
                 {codeTypeAdInt !== AD_CESSION_BAIL ? (codeTypeAdInt === AD_LOCATION ? <>
                     <Input type="cleave" step="any" identifiant="complementLoyer" valeur={complementLoyer} errors={errors} onChange={onChangeCleave}>
@@ -53,6 +53,15 @@ export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     Type de charges
                 </SelectReactSelectize>
             </div>
+
+            {codeTypeAdInt === AD_LOCATION && <div className="line line-2">
+                <Input type="cleave" step="any" identifiant="priceHt" valeur={priceHt} errors={errors} onChange={onChangeCleave}>
+                    <span>Loyer hors charges</span>
+                </Input>
+                <Input type="cleave" step="any" identifiant="pricePlafond" valeur={pricePlafond} errors={errors} onChange={onChangeCleave}>
+                    <span>Loyer de référence majoré</span>
+                </Input>
+            </div>}
         </div>
 
         <div className="line special-line">

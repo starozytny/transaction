@@ -207,6 +207,8 @@ class FakeBiensCreate extends Command
                 "hideMap" => $fake->numberBetween(0, 1),
 
                 "price" => (string) $fake->randomFloat(2),
+                "priceHt" => (string) $fake->randomFloat(2),
+                "pricePlafond" => (string) $fake->randomFloat(2),
                 "provisionCharges" => (string) $fake->randomFloat(2),
                 "caution" => (string) $fake->randomFloat(2),
                 "honoraireTtc" => (string) $fake->randomFloat(2),
@@ -280,7 +282,7 @@ class FakeBiensCreate extends Command
             $area           = $this->dataImmo->setDataArea(new ImArea(), $data);
             $mandat         = $this->dataImmo->setDataMandat($this->immoService, new ImMandat(), $data, $user->getAgency());
 
-            $obj = $this->dataImmo->setDataBien($this->immoService, $user->getAgency(), new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
+            $obj = $this->dataImmo->setDataBien($user->getAgency(), new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
                 $localisation, $financial, $confidential, $advert, $mandat, []);
 
             $choicesOwners = [];

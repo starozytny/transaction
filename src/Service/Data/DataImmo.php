@@ -384,6 +384,8 @@ class DataImmo extends DataConstructor
                 ->setTypeBail($this->setToZeroEmpty($data->typeBail))
                 ->setDurationBail($this->setToNullFloat($data->durationBail))
                 ->setComplementLoyer($this->setToNullFloat($data->complementLoyer))
+                ->setPriceHt($this->setToNullFloat($data->priceHt))
+                ->setPricePlafond($this->setToNullFloat($data->pricePlafond))
             ;
 
             if($codeTypeAd == ImBien::AD_CESSION_BAIL){

@@ -6,7 +6,7 @@ const Formulaire = require("@dashboardComponents/functions/Formulaire");
 function getDataState (props) {
     return {
         context: props.context,
-        step: 8,
+        step: 6,
 
         caseTypeBien: 1,
         percentageFilled: 0,
@@ -108,6 +108,8 @@ function getDataState (props) {
         typeBail: props.typeBail,
         durationBail: props.durationBail,
         complementLoyer: props.complementLoyer,
+        priceHt: props.priceHt,
+        pricePlafond: props.pricePlafond,
 
         chargesMensuelles: props.chargesMensuelles,
         notaire: props.notaire,

@@ -201,6 +201,16 @@ class ImFinancial
      */
     private $natureBailCommercial;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $priceHt;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $pricePlafond;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -582,6 +592,30 @@ class ImFinancial
     public function setNatureBailCommercial(?string $natureBailCommercial): self
     {
         $this->natureBailCommercial = $natureBailCommercial;
+
+        return $this;
+    }
+
+    public function getPriceHt(): ?float
+    {
+        return $this->priceHt;
+    }
+
+    public function setPriceHt(?float $priceHt): self
+    {
+        $this->priceHt = $priceHt;
+
+        return $this;
+    }
+
+    public function getPricePlafond(): ?float
+    {
+        return $this->pricePlafond;
+    }
+
+    public function setPricePlafond(?float $pricePlafond): self
+    {
+        $this->pricePlafond = $pricePlafond;
 
         return $this;
     }
