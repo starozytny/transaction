@@ -7,6 +7,8 @@ use App\Entity\History\HiPrice;
 use App\Entity\History\HiPublish;
 use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImContract;
+use App\Entity\Immo\ImContractant;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\User;
@@ -94,7 +96,18 @@ class PrinterController extends AbstractController
     public function rapportOwner(ImOwner $obj, SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
-        $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $obj, 'status' => ImBien::STATUS_ACTIF]);
+
+        $contractants = $em->getRepository(ImContractant::class)->findBy(['owner' => $obj]);
+        $biens = []; $noDuplication = [];
+        foreach ($contractants as $contractant){
+            $bien = $contractant->getContract()->getBien();
+            if($bien && $bien->getStatus() == ImBien::STATUS_ACTIF){
+                if(!in_array($bien->getId(), $noDuplication)){
+                    $noDuplication[] = $bien;
+                    $biens[] = $bien;
+                }
+            }
+        }
         $data  = $this->getDataHistoryBien($em, $serializer, $biens);
 
         $obj        = $serializer->serialize($obj,       'json', ['groups' => User::ADMIN_READ]);
