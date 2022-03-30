@@ -41,16 +41,15 @@ function changeStatus (self, url, elem, status)
                 axios({ method: "PUT", url: Routing.generate(url, {'id': elem.id, 'status': status}), data: {} })
                     .then(function (response) {
                         if(self.props.onUpdateList){
+                            Formulaire.loader(false);
                             self.props.onUpdateList(response.data, "update");
                         }else{
                             location.reload();
                         }
                     })
                     .catch(function (error) {
-                        Formulaire.displayErrors(this, error)
-                    })
-                    .then(function () {
                         Formulaire.loader(false);
+                        Formulaire.displayErrors(this, error)
                     })
                 ;
             }
