@@ -6,6 +6,7 @@ import { Alert }      from "@dashboardComponents/Tools/Alert";
 import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 
 import { VisitsItem } from "./VisitsItem";
+import { PageInfos }  from "@userComponents/Layout/Page";
 
 export class VisitsList extends Component {
     render () {
@@ -13,6 +14,16 @@ export class VisitsList extends Component {
 
         return <>
             <div>
+                {!isSuiviPage && <PageInfos>
+                    <p>
+                        Ci-dessous la liste complète des visites du plus récent au plus ancien. <br/>
+                        Lorsqu'un prospect est affecté à une visite, il est possible de récupérer son bon de visite pré-rempli plutôt que le bon de visite générique.
+                        <br/><br/>
+                        Pour <b>AJOUTER</b> une visite, il faut se diriger dans la page <b>SUIVI</b> du bien concerné, puis la rubrique <b>VISITES</b>. <br/>
+                        Ainsi, la visite sera lié au bien automatiquement et vous disposerez d'un suivi des visites pour ledit bien.
+                    </p>
+                </PageInfos>}
+
                 <div className="toolbar toolbar-suivi">
                     {isSuiviPage && <div className="item create">
                         <Button onClick={() => onChangeContext("create")}>Ajouter une visite</Button>
