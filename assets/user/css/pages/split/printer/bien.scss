@@ -49,36 +49,42 @@
     margin-top: 8px;
   }
 
-  .details-tab-infos-main{
-    + .details-tab-infos-main{
-      margin-top: 12px;
-    }
+  .diags-inline{
+    @include flex(row, flex-start, flex-start);
+    margin-top: 8px;
   }
 
   .diag-title{
     margin-bottom: 4px;
+    min-height: 73px;
   }
 
   .diagnostic-details{
+    .diag-ges,
     .diag-dpe{
-      .dpe{
-        &.dpe_is-active2{
+      .dpe,
+      .ges{
+        padding: 2px 4px;
+
+        &.dpe_is-active2,
+        &.ges_is-active2{
           & + .number{
             min-width: 40px;
             padding: 6px 8px 4px 8px;
             font-size: 18px;
+            right: -86px;
           }
         }
       }
 
       $sizes: (
-              '1': 13%,
-              '2': 20%,
+              '1': 15%,
+              '2': 22%,
               '3': 28%,
-              '4': 36%,
-              '5': 44%,
-              '6': 52%,
-              '7': 62%,
+              '4': 32%,
+              '5': 37%,
+              '6': 43%,
+              '7': 50%,
       );
 
       @each $i, $size in $sizes {

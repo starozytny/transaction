@@ -107,7 +107,9 @@ export class DiagPrint extends Component{
 
         let content = <div>Le diagnostic de performance énergétique et d'indice d'émission de gaz à effet de serre n'ont pas été soumis pour le moment.</div>
         let dpeNotFound = <div>Le diagnostic de performance énergétique n'a pas été soumis pour le moment.</div>
+        let gesNotFound = <div>L'indice d'émission de gaz à effet de serre n'a pas été soumis pour le moment.</div>
         let dpeVierge = <div>Le diagnostic de performance énergétique est vierge.</div>
+        let gesVierge = <div>L'indice d'émission de gaz à effet de serre est vierge.</div>
 
         if(elem.diag){
             let diag = elem.diag;
@@ -128,13 +130,23 @@ export class DiagPrint extends Component{
 
             content = <>
                 <div className="details-tab-infos-main">{diagBeforeJuly}</div>
-                <div className="details-tab-infos-main">
-                    {diag.dpeLetterString ? <>
-                        {diag.dpeLetterString !== "NS" && diag.dpeLetterString !== "VI" ? <>
-                            <div className="diag-title">Diagnostic de performance énergétique en kWhEP/m².an</div>
-                            <DiagDetails isDpe={true} showUnit={false} elem={elem}/>
-                        </> : (diag.dpeLetterString !== "NS" && !diag.isVirgin) ? dpeNotFound : dpeVierge}
-                    </> : dpeNotFound}
+                <div className="diags-inline">
+                    <div className="details-tab-infos-main">
+                        {diag.dpeLetterString ? <>
+                            {diag.dpeLetterString !== "NS" && diag.dpeLetterString !== "VI" ? <>
+                                <div className="diag-title">Diagnostic de performance énergétique en kWhEP/m².an</div>
+                                <DiagDetails isDpe={true} showUnit={false} elem={elem}/>
+                            </> : (diag.dpeLetterString !== "NS" && !diag.isVirgin) ? dpeNotFound : dpeVierge}
+                        </> : dpeNotFound}
+                    </div>
+                    <div className="details-tab-infos-main">
+                        {diag.gesLetterString ? <>
+                            {diag.gesLetterString !== "NS" && diag.gesLetterString !== "VI" ? <>
+                                <div className="diag-title">Indice d'émission de gaz à effet de serre en kgeqCO2/m².an</div>
+                                <DiagDetails isDpe={false} showUnit={false} elem={elem}/>
+                            </> : (diag.gesLetterString !== "NS" && !diag.isVirgin) ? gesNotFound : gesVierge}
+                        </> : gesNotFound}
+                    </div>
                 </div>
             </>
         }
