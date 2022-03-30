@@ -86,9 +86,9 @@ class UserController extends AbstractController
         $stats          = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['createdAt' => 'DESC']);
         $visits         = $em->getRepository(ImVisit::class)->findBy(['bien' => $biensVisits]);
         $statsAds       = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['publishedAt' => 'ASC'], 7);
+        $biens          = $biensAgency;
 
         $lastPublish = null;
-
         foreach($stats as $stat){
             if($lastPublish == null && $stat->getPublishedAt()){
                 $lastPublish = $stat->getPublishedAtString();
@@ -96,7 +96,7 @@ class UserController extends AbstractController
             }
         }
 
-
+        $biens    = $serializer->serialize($visits, 'json', ['groups' => User::USER_READ]);
         $visits   = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
         $statsAds = $serializer->serialize($statsAds, 'json', ['groups' => ImStat::STAT_READ]);
 
@@ -108,7 +108,8 @@ class UserController extends AbstractController
             'visits' => $visits,
             'stats' => $stats,
             'lastPublish' => $lastPublish,
-            'statsAds' => $statsAds
+            'statsAds' => $statsAds,
+            'biens' => $biens
         ]);
     }
 

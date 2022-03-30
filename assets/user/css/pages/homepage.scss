@@ -4,17 +4,7 @@
 @import "./split/visite/visite";
 @import "../../../common/css/pages/changelog";
 
-.dash-card-1{
-  position: relative;
-  overflow: hidden;
-
-  .card-header, .card-body{
-    position: relative;
-    z-index: 10;
-  }
-}
-
-#chart-ads{
+#chart-ads-tiny{
   & > div{
     position: absolute;
     bottom: -68px;
@@ -41,9 +31,16 @@
 }
 
 .dash-card-1{
+  position: relative;
+  overflow: hidden;
   @include flex(column, flex-start, space-between);
   color: var(--txt);
   transition: all 0.2s ease-in-out;
+
+  .card-header, .card-body{
+    position: relative;
+    z-index: 10;
+  }
 
   &:hover{
     transform: scale(1.01);
@@ -174,7 +171,15 @@
     width: calc(25% - 48px - 18px);
   }
 
+  .dash-line-2{
+    @include flex(row, flex-start, flex-start);
+  }
+
   .dash-card-changelogs{
     width: calc(60% - 48px);
+  }
+
+  .dash-card-chart-ads{
+    width: 40%;
   }
 }

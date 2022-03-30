@@ -15,6 +15,11 @@ if(el) {
     render(<LastVisites visits={JSON.parse(el.dataset.visits)} maxResults={10} />, el)
 }
 
+const chartAdTiny = document.getElementById("chart-ads-tiny");
+if(chartAdTiny){
+    render(<ChartPublishedTiny donnees={chartAdTiny.dataset.donnees} />, chartAdTiny)
+}
+
 const chartAd = document.getElementById("chart-ads");
 if(chartAd){
     render(<ChartPublishedTiny donnees={chartAd.dataset.donnees} />, chartAd)

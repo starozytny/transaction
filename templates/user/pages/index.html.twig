@@ -40,7 +40,7 @@
                         <div class="number">{{ biensAgency }} {{ biensAgency > 1 ? "biens immobiliers" : "bien immobilier" }}</div>
                     </div>
 
-                    <div id="chart-ads" data-donnees="{{ statsAds }}">
+                    <div id="chart-ads-tiny" data-donnees="{{ statsAds }}">
                         {% include "dashboard/layout/components/spinner.html.twig" %}
                     </div>
                 </a>
@@ -91,6 +91,12 @@
                     <div id="visits" data-visits="{{ visits }}">
                         {% include "dashboard/layout/components/spinner.html.twig" %}
                     </div>
+                </div>
+            </div>
+
+            <div class="dash-card-1 dash-card-chart-ads">
+                <div id="chart-ads" data-donnees="{{ statsAds }}">
+                    {% include "dashboard/layout/components/spinner.html.twig" %}
                 </div>
             </div>
         </div>
