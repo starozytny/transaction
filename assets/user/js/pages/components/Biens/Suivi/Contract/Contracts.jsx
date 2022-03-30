@@ -107,6 +107,7 @@ export class Contracts extends Component {
             //data
                            onSwitchStatus={this.handleSwitchStatus}
                            contractants={contractants}
+                           onOpenSell={this.props.onOpenSell}
                            data={currentData} />
     }
 

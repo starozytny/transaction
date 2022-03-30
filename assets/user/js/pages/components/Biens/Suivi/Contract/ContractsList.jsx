@@ -5,6 +5,7 @@ import { TopSorterPagination }    from "@dashboardComponents/Layout/Pagination";
 import { Filter, FilterSelected } from "@dashboardComponents/Layout/Filter";
 
 import { ContractsItem }   from "@userPages/components/Biens/Suivi/Contract/ContractsItem";
+import {Button} from "@dashboardComponents/Tools/Button";
 
 export class ContractsList extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ export class ContractsList extends Component {
 
     render () {
         const { data, onGetFilters, filters, onPerPage,
-            onPaginationClick, currentPage, sorters, onSorter, perPage, taille } = this.props;
+            onPaginationClick, currentPage, sorters, onSorter, perPage, taille, onOpenSell } = this.props;
 
         let filtersLabel = ["Terminé", "En cours", "Annulé"];
         let filtersId    = ["f-end", "f-progressing", "f-canceled"];
@@ -35,6 +36,10 @@ export class ContractsList extends Component {
         return <>
             <div>
                 <div className="toolbar">
+                    {onOpenSell && <div className="item create">
+                        <Button onClick={onOpenSell}>Bien vendu</Button>
+                    </div>}
+
                     <div className="item filter-search">
                         <Filter ref={this.filter} items={itemsFilter} onGetFilters={onGetFilters} />
                         <FilterSelected filters={filters} items={itemsFilter} onChange={this.handleFilter}/>
