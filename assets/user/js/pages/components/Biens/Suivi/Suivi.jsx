@@ -26,8 +26,10 @@ import { Diag }               from "@userPages/components/Biens/Read/Data/Diag";
 import { Features }           from "@userPages/components/Biens/Read/Data/Features";
 import { Infos }              from "@userPages/components/Biens/Read/Data/Infos";
 import { ButtonBonVisite }    from "@dashboardPages/components/Immo/Visits/VisitsList";
+import Changer from "@userPages/components/Biens/functions/changer";
 
-const URL_GET_DATA = 'api_agenda_data_persons';
+const URL_GET_DATA = "api_agenda_data_persons";
+const URL_CHANGE_STATUS = "api_biens_status";
 
 export class Suivi extends Component {
     constructor(props) {
@@ -73,6 +75,7 @@ export class Suivi extends Component {
         this.handleUpdateContracts = this.handleUpdateContracts.bind(this);
         this.handleOpenAside = this.handleOpenAside.bind(this);
         this.handleLoadData = this.handleLoadData.bind(this);
+        this.handleChangeStatus = this.handleChangeStatus.bind(this);
     }
 
     componentDidMount = () => {
@@ -113,6 +116,10 @@ export class Suivi extends Component {
 
     handleOpenAside = () => {
         this.aside.current.handleOpen("Bien vendu")
+    }
+
+    handleChangeStatus = (elem, status) => {
+        Changer.changeStatus(this, URL_CHANGE_STATUS, elem, status)
     }
 
     render () {
@@ -210,7 +217,7 @@ export class Suivi extends Component {
                                 <div>
                                     <AdMainInfos elem={elem} />
                                     <div className="details-general">
-                                        <AdBadges elem={elem} />
+                                        <AdBadges elem={elem} onChange={this.handleChangeStatus}/>
                                         <div className="details-ad-actions">
                                             <ButtonIconDropdown icon="print" items={actionsPrinter}>Imprimer</ButtonIconDropdown>
                                             <ButtonBonVisite type="icon" tooltipWidth={130}>Bon de visite générique</ButtonBonVisite>
@@ -277,9 +284,26 @@ function PageNavigation({ onChangeContext, context, menu = null }){
     )
 }
 
-export function AdBadges ({ elem }) {
+export function AdBadges ({ elem, onChange }) {
+
+    let changeStatus = 0;
+    switch (elem.status){
+        case 0:
+            changeStatus = 1; break;
+        case 3:
+            changeStatus = 3; break;
+        case 2:
+        case 1:
+        default:
+            break;
+    }
+
     return <div className="badges">
-        <div className={"badge-bien badge badge-" + elem.status}>{elem.statusString}</div>
+        <div className={"badge-bien badge badge-" + elem.status}
+             onClick={() => onChange(elem, changeStatus)}>
+            {elem.statusString}
+        </div>
+
         <div className="badge-bien badge">{elem.typeAdString}</div>
         <div className="badge-bien badge">{elem.typeBienString}</div>
         <div className="badge-bien badge">Mandat {elem.mandat.typeMandatString.toLowerCase()}</div>

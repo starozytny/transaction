@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 
-import axios        from "axios";
-import Swal         from "sweetalert2";
 import parse        from "html-react-parser";
-import SwalOptions  from "@commonComponents/functions/swalOptions";
 import Routing      from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import { MailAside }        from "@dashboardPages/components/Mails/MailAside";
@@ -11,7 +8,7 @@ import { HelpBubble }       from "@dashboardComponents/Tools/HelpBubble";
 import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 
 import Sanitaze     from "@commonComponents/functions/sanitaze";
-import Formulaire   from "@dashboardComponents/functions/Formulaire";
+import Changer      from "@userPages/components/Biens/functions/changer";
 
 const URL_CHANGE_STATUS = 'api_biens_status';
 
@@ -36,38 +33,7 @@ export class AdCard extends Component {
     }
 
     handleChangeStatus = (elem, status) => {
-        let title = "";
-        switch (parseInt(status)){
-            case 1:
-                title = "Transférer ce bien en actif ?";
-                break;
-            case 0:
-                title = elem.status === 2 ? "Désarchiver ce bien ?" : "Transférer ce bien en inactif ?";
-                break;
-            default:
-                title = "Transférer ce bien aux archives ?";
-                break;
-        }
-
-        const self = this;
-        Swal.fire(SwalOptions.options(title, "" ))
-            .then((result) => {
-                if (result.isConfirmed) {
-                    Formulaire.loader(true);
-                    axios({ method: "PUT", url: Routing.generate(URL_CHANGE_STATUS, {'id': elem.id, 'status': status}), data: {} })
-                        .then(function (response) {
-                            self.props.onUpdateList(response.data, "update");
-                        })
-                        .catch(function (error) {
-                            Formulaire.displayErrors(this, error)
-                        })
-                        .then(function () {
-                            Formulaire.loader(false);
-                        })
-                    ;
-                }
-            })
-        ;
+        Changer.changeStatus(this, URL_CHANGE_STATUS, elem, status)
     }
 
     render () {
