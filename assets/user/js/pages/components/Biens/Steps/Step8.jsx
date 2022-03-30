@@ -1,9 +1,9 @@
 import React from "react";
 
 import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
-import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
-import {Button, ButtonIcon} from "@dashboardComponents/Tools/Button";
+import { Button, ButtonIcon } from "@dashboardComponents/Tools/Button";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
+import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
 
 import helper   from "@userPages/components/Biens/functions/helper";
 

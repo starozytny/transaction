@@ -160,6 +160,25 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/biens/carte", name="biens_map")
+     */
+    public function carte(Request $request, SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $objs = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF]);
+
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/biens/map.html.twig', [
+            'user' => $user,
+            'data' => $objs,
+        ]);
+    }
+
+    /**
      * Common return createBien and updateBien
      */
     private function formBien(SerializerInterface $serializer, $route, $obj = null, $element = null, $rooms = "[]", $photos="[]"): Response

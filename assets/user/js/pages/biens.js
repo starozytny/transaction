@@ -8,6 +8,7 @@ import { render } from "react-dom";
 
 import { Biens }          from "./components/Biens/Biens";
 import { BienFormulaire } from "./components/Biens/Form/Form";
+import { BiensMap }       from "@userPages/components/Biens/BiensMap";
 import { Visits }         from "@dashboardPages/components/Immo/Visits/Visits";
 import { Suivi }          from "@userPages/components/Biens/Suivi/Suivi";
 
@@ -16,6 +17,11 @@ Routing.setRoutingData(routes);
 let el = document.getElementById("list-biens");
 if(el){
     render(<Biens {...el.dataset} />, el)
+}
+
+el = document.getElementById("map-biens");
+if(el){
+    render(<BiensMap {...el.dataset} />, el)
 }
 
 el = document.getElementById("suivi-bien");
