@@ -48,7 +48,7 @@ function consequenceValueToRooms(self, name, value, rooms, compareName, codeType
 
 function calculateFinancial(self, name, value, codeTypeAd,
                             price, notaire, honoraireTtc, honorairePourcentage, provisionCharges, provisionOrdures,
-                            typeCalcul, tva, honoraireBail, honoraireChargeDe)
+                            typeCalcul, tva, honoraireBail, honoraireChargeDe, priceHt)
 {
     let nPrice      = name === "price" ? value : price;
     let nNotaire    = name === "notaire" ? value : notaire;
@@ -59,6 +59,7 @@ function calculateFinancial(self, name, value, codeTypeAd,
     let nTva        = name === "tva" ? value : tva;
     let nHonoBail   = name === "honoraireBail" ? value : honoraireBail;
     let nTypeCalcul = name === "typeCalcul" ? value : typeCalcul;
+    let nPriceHt    = name === "priceHt" ? value : priceHt;
 
     if(parseInt(codeTypeAd) !== 1){
         if(name === "price" || name === "honorairePourcentage"){
@@ -79,6 +80,11 @@ function calculateFinancial(self, name, value, codeTypeAd,
         let totalGeneral = getValueFloat(nPrice) + getValueFloat(nNotaire) + getValueFloat(nHonoTtc);
         self.setState({ totalGeneral: totalGeneral, priceHorsAcquereur: nPriceHoAcq })
     }else{
+        if(name === "price" || name === "provisionCharges"){
+            nPriceHt = getValueFloat(nPrice) - getValueFloat(nProvChar);
+            self.setState({ priceHt: nPriceHt })
+        }
+
         let totalTerme, totalGeneral;
         switch (nTypeCalcul){
             case 2:

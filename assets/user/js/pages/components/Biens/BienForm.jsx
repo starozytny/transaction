@@ -98,7 +98,7 @@ export class BienForm extends Component {
     componentDidMount = () => { Helper.getPostalCodes(this); }
 
     handleChange = (e) => {
-        const { settings, codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage,
+        const { settings, codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage, priceHt,
             provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, startAt, nbMonthMandat, supports, honoraireChargeDe } = this.state;
 
         let name = e.currentTarget.name;
@@ -116,7 +116,7 @@ export class BienForm extends Component {
         Automate.consequenceValueToRooms(this, name, value, rooms, "box",        2, elStep);
 
         Automate.calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe);
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe, priceHt);
 
         if(name === "newQuartier"){
             value = (e.currentTarget.checked) ? [parseInt(value)] : [] // parseInt because work with int this time
@@ -153,7 +153,7 @@ export class BienForm extends Component {
     }
 
     handleChangeCleave = (e) => {
-        const { codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+        const { codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage, priceHt,
             provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe } = this.state;
 
         let name = e.currentTarget.name;
@@ -162,20 +162,20 @@ export class BienForm extends Component {
         value = Formulaire.setToFloat(value);
 
         Automate.calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe);
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe, priceHt);
 
         this.setState({ [name]: value })
     }
 
     handleChangeSelect = (name, e) => {
-        const { codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+        const { codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage, priceHt,
             provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail } = this.state;
 
         let value = e !== undefined ? e.value : "";
 
         if(name === "typeCalcul"){
             Automate.calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
-                provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail);
+                provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, priceHt);
         }
 
         this.setState({ [name]: value })
