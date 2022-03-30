@@ -21,6 +21,7 @@
 }
 
 .welcome-back{
+
   .avatar{
     background: var(--fondContent);
   }
@@ -136,6 +137,10 @@
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
+  .welcome-back {
+    margin-bottom: 0;
+  }
+
   .dash-card-changelogs{
     width: calc(100% - 48px);
     margin-right: 0;

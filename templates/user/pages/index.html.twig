@@ -24,9 +24,9 @@
                     <p>Bon retour,</p>
                     <p class="username">{{ app.user.firstname | capitalize }}</p>
                 </div>
-                {% if app.user.highRoleCode != 0 %}
-                    <div class="badge badge-1">{{ app.user.highRole }}</div>
-                {% endif %}
+{#                {% if app.user.highRoleCode != 0 %}#}
+{#                    <div class="badge badge-1">{{ app.user.highRole }}</div>#}
+{#                {% endif %}#}
             </div>
             <div class="dash-line-1-col-2">
                 <a href="{{ path('user_biens', {'st': 1}) }}" class="dash-card-1">
