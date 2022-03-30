@@ -601,15 +601,19 @@ class DataImmo extends DataConstructor
      */
     public function setDataOwner(ImOwner $obj, $data): ImOwner
     {
-        $society = $this->em->getRepository(Society::class)->find($data->society);
-        if(!$society){
-            throw new Exception("Société introuvable.");
-        }
         $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
         if(!$agency){
             throw new Exception("Agence introuvable.");
         }
-        $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+
+        $society = $agency->getSociety();
+        if(!$society){
+            throw new Exception("Société introuvable.");
+        }
+
+        dump($data);
+
+        $negotiator = $data->negotiator ? $this->em->getRepository(ImNegotiator::class)->find($data->negotiator) : null;
 
         $civility = (int) $data->civility;
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));

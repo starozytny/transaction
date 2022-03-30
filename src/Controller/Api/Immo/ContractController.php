@@ -79,6 +79,7 @@ class ContractController extends AbstractController
                 "city" => $prospect->getCity(),
                 "birthday" => $prospect->getBirthdayJavascript(),
                 "country" => "France",
+                "category" => null,
                 "negotiator" => null
             ];
 
