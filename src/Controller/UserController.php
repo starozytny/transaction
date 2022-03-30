@@ -85,6 +85,7 @@ class UserController extends AbstractController
         $biensDraft     = $em->getRepository(ImBien::class)->findBy(['user' => $user,  'isArchived' => false, 'isDraft' => true]);
         $stats          = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['createdAt' => 'DESC']);
         $visits         = $em->getRepository(ImVisit::class)->findBy(['bien' => $biensVisits]);
+        $statsAds       = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['publishedAt' => 'ASC'], 7);
 
         $lastPublish = null;
 
@@ -96,7 +97,8 @@ class UserController extends AbstractController
         }
 
 
-        $visits = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
+        $visits   = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
+        $statsAds = $serializer->serialize($statsAds, 'json', ['groups' => ImStat::STAT_READ]);
 
         return $this->render('user/pages/index.html.twig', [
             'changelogs' => $changelogs,
@@ -105,7 +107,8 @@ class UserController extends AbstractController
             'biensDraft' => count($biensDraft),
             'visits' => $visits,
             'stats' => $stats,
-            'lastPublish' => $lastPublish
+            'lastPublish' => $lastPublish,
+            'statsAds' => $statsAds
         ]);
     }
 

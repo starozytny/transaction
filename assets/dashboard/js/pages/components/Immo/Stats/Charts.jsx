@@ -17,24 +17,16 @@ export class ChartAds extends Component {
 
         let data = JSON.parse(donnees);
 
-        let locationsData = [], ventesData = [], biensData = [], legends = [];
+        let biensData = [], legends = [];
         data.map(el => {
-            biensData.push(el.totBiens);
-            locationsData.push(el.totLocations);
-            ventesData.push(el.totVentes);
-            legends.push(el.createdAtString);
+            biensData.push(el.nbBiens);
+            legends.push(el.publishedAtString);
         })
 
         this.setState({
             series: [{
                 name: 'Biens',
                 data: biensData
-            }, {
-                name: 'Locations',
-                data: locationsData
-            }, {
-                name: 'Ventes',
-                data: ventesData
             }],
             options: {
                 colors: ['#109cf1', '#cbec18', '#e25146'],
