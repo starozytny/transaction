@@ -93,18 +93,26 @@ export class Visits extends Component {
     }
 
     handleContentCreate = (changeContext) => {
-        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
+        const { bien } = this.props;
+        const { users, managers, negotiators, owners, tenants, prospects, isSuiviPage } = this.state;
+
+        let bienId = bien ? parseInt(bien.id) : "";
+        let localisation = bien ? bien.localisation.fullAddress : "";
 
         return <AgendaFormulaire type="create" onChangeContext={changeContext} useAside={false}
                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                 prospects={prospects} bienId={parseInt(this.props.bienId)}
+                                 prospects={prospects} bienId={bienId} localisation={localisation}
                                  onUpdateList={this.handleUpdateList}
                                  url_create={'api_visits_create'}
+                                 isSuiviPage={isSuiviPage}
         />
     }
 
     handleContentUpdate = (changeContext, element) => {
+        const { bien } = this.props;
         const { users, managers, negotiators, owners, tenants, prospects } = this.state;
+
+        let bienId = bien ? parseInt(bien.id) : "";
 
         let params = {'id': element.id};
         let elem = AgendaData.createEventStructure(element.agEvent, element);
@@ -112,7 +120,7 @@ export class Visits extends Component {
 
         return <AgendaFormulaire type="update" element={element} onChangeContext={changeContext} useAside={false}
                                  users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                 prospects={prospects} bienId={parseInt(this.props.bienId)}
+                                 prospects={prospects} bienId={bienId}
                                  onUpdateList={this.handleUpdateList} url_update={'api_visits_update'} params_update={params}/>
     }
 

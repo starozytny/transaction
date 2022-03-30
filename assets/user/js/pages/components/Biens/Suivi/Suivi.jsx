@@ -133,7 +133,7 @@ export class Suivi extends Component {
                                               onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
                     break;
                 case "visites":
-                    content = <Visits {...this.state} bienId={elem.id} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits}
+                    content = <Visits {...this.state} bien={elem} donnees={JSON.stringify(allVisits)} onUpdateVisits={this.handleUpdateVisits}
                                       isSuiviPage={true} loadDataAgenda={false} isDoubleAside={!!isFromListBien} classes={""}/>
                     break;
                 case "address":

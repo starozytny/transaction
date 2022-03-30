@@ -28,7 +28,8 @@ const TXT_UPDATE_BUTTON_FORM = "Enregistrer les modifications";
 
 export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelete, custom, element, refAside, useAside,
                                       users, managers, negotiators, owners, tenants, prospects, bienId ="",
-                                      url_create=null, url_update=null, params_update={}, persons = {} })
+                                      url_create=null, url_update=null, params_update={}, persons = {},
+                                      isSuiviPage=false, localisation = "" })
 {
     let title = "Ajouter une visite";
     let url = Routing.generate(url_create ? url_create : URL_CREATE_ELEMENT);
@@ -46,11 +47,11 @@ export function AgendaFormulaire ({ type, onUpdateList, onChangeContext, onDelet
     let form = <Form
         context={type}
         url={url}
-        name={element ? Formulaire.setValueEmptyIfNull(element.name) : ""}
+        name={element ? Formulaire.setValueEmptyIfNull(element.name, (isSuiviPage ? "Visite " : "")) : (isSuiviPage ? "Visite " : "")}
         startAt={custom ? custom.date : startAt}
         endAt={element ? Formulaire.setDateOrEmptyIfNull(element.endAtJavascript, "") : ""}
         allDay={custom ? (custom.allDay === true ? [1] : [0]) : allDay}
-        location={element ? Formulaire.setValueEmptyIfNull(element.location) : ""}
+        location={element ? Formulaire.setValueEmptyIfNull(element.location, localisation) : localisation}
         comment={element ? Formulaire.setValueEmptyIfNull(element.comment) : ""}
         status={element ? Formulaire.setValueEmptyIfNull(element.status, 1) : 1}
         visibilities={element ? Formulaire.setValueEmptyIfNull(element.visibilities, [0]) : [0]}
