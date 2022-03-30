@@ -96,7 +96,7 @@ class UserController extends AbstractController
             }
         }
 
-        $biens    = $serializer->serialize($visits, 'json', ['groups' => User::USER_READ]);
+        $biens    = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
         $visits   = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
         $statsAds = $serializer->serialize($statsAds, 'json', ['groups' => ImStat::STAT_READ]);
 

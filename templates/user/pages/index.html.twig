@@ -95,7 +95,13 @@
             </div>
 
             <div class="dash-card-1 dash-card-chart-ads">
-                <div id="chart-ads" data-donnees="{{ statsAds }}">
+                <div class="card-header">
+                    <div class="icon">
+                        <span class="icon-colorfilter"></span>
+                    </div>
+                    <div class="title">Répartitions des annonces</div>
+                </div>
+                <div id="chart-ads" data-donnees="{{ biens }}">
                     {% include "dashboard/layout/components/spinner.html.twig" %}
                 </div>
             </div>

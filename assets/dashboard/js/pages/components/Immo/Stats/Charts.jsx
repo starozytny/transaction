@@ -66,6 +66,93 @@ export class ChartPublishedTiny extends Component {
     }
 }
 
+export class ChartAds extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            series: [],
+            options: {}
+        }
+    }
+
+    componentDidMount = () => {
+        const { donnees } = this.props;
+
+        let data = JSON.parse(donnees);
+
+        let locations = 0, ventes = 0, viager = 0, pdt = 0, cession = 0, prestige = 0, commerce = 0;
+        data.map(el => {
+            switch (el.codeTypeAd){
+                case 0:
+                    ventes++;
+                    break;
+                case 1:
+                    locations++;
+                    break;
+                case 2:
+                    viager++;
+                    break;
+                case 3:
+                    pdt++;
+                    break;
+                case 4:
+                    cession++;
+                    break;
+                case 6:
+                    prestige++;
+                    break;
+                case 7:
+                    commerce++;
+                    break;
+                default:
+                    break;
+            }
+        })
+
+        let legends = ["Locations", "Ventes", "Viager", "Produit d'investissement", "Cession bail", "Vente de prestige", "Fond de commerce"];
+        let series = [locations, ventes, viager, pdt, cession, prestige, commerce];
+
+        this.setState({
+            series: series,
+            options: {
+                labels: legends,
+                colors: [
+                    '#3B93A5',
+                    '#F7B844',
+                    '#ADD8C7',
+                    '#EC3C65',
+                    '#CDD7B6',
+                    '#C1F666',
+                    '#D43F97',
+                    '#1E5D8C',
+                    '#421243',
+                ],
+                grid: { show: false },
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth' },
+            },
+        })
+    }
+
+    render() {
+        const { options } = this.state;
+
+        return (
+            <>
+                {options && <Chart
+                    options={this.state.options}
+                    labels={this.state.labels}
+                    series={this.state.series}
+                    type="donut"
+                    width={400}
+                    height={200}
+                />}
+            </>
+        );
+    }
+}
+
 export class ChartBiens extends Component {
     constructor(props) {
         super(props);
