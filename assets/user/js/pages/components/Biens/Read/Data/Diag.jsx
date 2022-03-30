@@ -145,7 +145,7 @@ export class DiagPrint extends Component{
                                 <div className="diag-title">Indice d'émission de gaz à effet de serre en kgeqCO2/m².an</div>
                                 <DiagDetails isDpe={false} showUnit={false} elem={elem}/>
                             </> : (diag.gesLetterString !== "NS" && !diag.isVirgin) ? gesNotFound : gesVierge}
-                        </> : gesNotFound}
+                        </> : null}
                     </div>
                 </div>
             </>
