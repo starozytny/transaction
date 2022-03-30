@@ -4,6 +4,28 @@
 @import "./split/visite/visite";
 @import "../../../common/css/pages/changelog";
 
+.dash-card-1{
+  position: relative;
+  overflow: hidden;
+
+  .card-header, .card-body{
+    position: relative;
+    z-index: 10;
+  }
+}
+
+#chart-ads{
+  & > div{
+    position: absolute;
+    bottom: -68px;
+    left: -83px;
+    z-index: 0;
+    width: 111%;
+    transform: scale(0.5);
+    border-radius: 8px;
+  }
+}
+
 .badge-changelog.badge{
   color: var(--alpha);
 }

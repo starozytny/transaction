@@ -6,7 +6,7 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min';
 import React from "react";
 import { render } from "react-dom";
 import { LastVisites } from "@userPages/components/Biens/Suivi/Visite/LastVisites";
-import { ChartAds } from "@dashboardPages/components/Immo/Stats/Charts";
+import { ChartPublishedTiny } from "@dashboardPages/components/Immo/Stats/Charts";
 
 Routing.setRoutingData(routes);
 
@@ -17,5 +17,5 @@ if(el) {
 
 const chartAd = document.getElementById("chart-ads");
 if(chartAd){
-    render(<ChartAds donnees={chartAd.dataset.donnees} />, chartAd)
+    render(<ChartPublishedTiny donnees={chartAd.dataset.donnees} />, chartAd)
 }

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import Chart from "react-apexcharts";
 
-export class ChartAds extends Component {
+export class ChartPublishedTiny extends Component {
     constructor(props) {
         super(props);
 
@@ -17,10 +17,9 @@ export class ChartAds extends Component {
 
         let data = JSON.parse(donnees);
 
-        let biensData = [], legends = [];
+        let biensData = [];
         data.map(el => {
             biensData.push(el.nbBiens);
-            legends.push(el.publishedAtString);
         })
 
         this.setState({
@@ -29,22 +28,18 @@ export class ChartAds extends Component {
                 data: biensData
             }],
             options: {
-                colors: ['#109cf1', '#cbec18', '#e25146'],
+                colors: ['rgba(16, 156, 241, 0.2)'],
                 chart: {
                     height: 200,
                     type: 'area',
                     toolbar: { show: false },
                 },
+                grid: { show: false },
                 legend: { show: false },
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'smooth'
-                },
+                dataLabels: { enabled: false },
+                tooltip: { enabled: false },
+                stroke: { curve: 'smooth' },
                 xaxis: {
-                    type: 'datetime',
-                    categories: legends,
                     labels: { show: false }
                 },
                 yaxis: {
@@ -63,6 +58,7 @@ export class ChartAds extends Component {
                     options={this.state.options}
                     series={this.state.series}
                     type="area"
+                    width={550}
                     height={200}
                 />}
             </>
