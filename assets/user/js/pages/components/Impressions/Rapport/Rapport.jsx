@@ -5,8 +5,6 @@ import parse from "html-react-parser";
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
 import { Alert } from "@dashboardComponents/Tools/Alert";
-import {Selector} from "@dashboardComponents/Layout/Selector";
-import {ButtonIcon} from "@dashboardComponents/Tools/Button";
 
 export function Header ({ title="Rapport", subtitle }) {
     return <>
@@ -92,6 +90,7 @@ export function HistoriesBien ({ el, elements, publishes, visites, prices }) {
 }
 
 function getHistories (type, data, el) {
+    console.log(type, data, el)
     let histories = [];
     data.forEach(elem => {
         if(elem.bienId === el.id){

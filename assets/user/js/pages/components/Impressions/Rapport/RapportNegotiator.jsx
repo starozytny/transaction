@@ -5,7 +5,7 @@ import { Alert }    from "@dashboardComponents/Tools/Alert";
 import { Printer }  from "@userPages/components/Impressions/Printer";
 import { Card, Header, HistoriesBien } from "@userPages/components/Impressions/Rapport/Rapport";
 
-export class RapportOwner extends Component{
+export class RapportNegotiator extends Component{
     constructor(props) {
         super(props);
 

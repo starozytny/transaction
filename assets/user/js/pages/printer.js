@@ -5,9 +5,10 @@ import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min';
 
 import React from "react";
 import { render } from "react-dom";
-import { PrintBien } from "@userPages/components/Impressions/PrintBien";
-import { RapportOwner } from "@userPages/components/Impressions/Rapport/RapportOwner";
-import { RapportBien } from "@userPages/components/Impressions/Rapport/RapportBien";
+import { PrintBien }            from "@userPages/components/Impressions/PrintBien";
+import { RapportOwner }         from "@userPages/components/Impressions/Rapport/RapportOwner";
+import { RapportBien }          from "@userPages/components/Impressions/Rapport/RapportBien";
+import { RapportNegotiator }    from "@userPages/components/Impressions/Rapport/RapportNegotiator";
 
 Routing.setRoutingData(routes);
 
@@ -16,12 +17,17 @@ if(el){
     render(<PrintBien {...el.dataset} />, el)
 }
 
+el = document.getElementById("rapport-bien");
+if(el){
+    render(<RapportBien {...el.dataset} />, el)
+}
+
 el = document.getElementById("rapport-owner");
 if(el){
     render(<RapportOwner {...el.dataset} />, el)
 }
 
-el = document.getElementById("rapport-bien");
+el = document.getElementById("rapport-negotiator");
 if(el){
-    render(<RapportBien {...el.dataset} />, el)
+    render(<RapportNegotiator {...el.dataset} />, el)
 }
