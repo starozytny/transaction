@@ -89,7 +89,6 @@
     @include flex(row, flex-start, flex-end);
     flex-wrap: wrap;
     width: 100%;
-    min-height: 29px;
 
     & > .item{
       margin: 8px 8px 0 0;
