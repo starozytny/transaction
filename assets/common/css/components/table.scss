@@ -336,7 +336,7 @@
 
     & > .item:not(.item-header){
       .actions{
-        transform: translateX(6px);
+        margin-right: -6px;
       }
     }
 
