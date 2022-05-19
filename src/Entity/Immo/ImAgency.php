@@ -50,7 +50,7 @@ class ImAgency extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read"})
+     * @Groups({"user:read", "admin:read"})
      */
     private $website;
 
@@ -182,6 +182,7 @@ class ImAgency extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"user:read"})
      */
     private $code;
 
@@ -238,11 +239,6 @@ class ImAgency extends DataEntity
     private $photos;
 
     /**
-     * @ORM\OneToMany(targetEntity=ImBuyer::class, mappedBy="agency")
-     */
-    private $buyers;
-
-    /**
      * @ORM\OneToMany(targetEntity=DoQuartier::class, mappedBy="agency")
      */
     private $doQuartiers;
@@ -276,7 +272,6 @@ class ImAgency extends DataEntity
         $this->owners = new ArrayCollection();
         $this->prospects = new ArrayCollection();
         $this->photos = new ArrayCollection();
-        $this->buyers = new ArrayCollection();
         $this->doQuartiers = new ArrayCollection();
         $this->doSols = new ArrayCollection();
         $this->doSousTypes = new ArrayCollection();
@@ -753,7 +748,7 @@ class ImAgency extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read"})
+     * @Groups({"admin:read", "user:read"})
      */
     public function getLogoFile(): string
     {
@@ -784,36 +779,6 @@ class ImAgency extends DataEntity
             // set the owning side to null (unless already changed)
             if ($prospect->getAgency() === $this) {
                 $prospect->setAgency(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ImBuyer[]
-     */
-    public function getBuyers(): Collection
-    {
-        return $this->buyers;
-    }
-
-    public function addBuyer(ImBuyer $buyer): self
-    {
-        if (!$this->buyers->contains($buyer)) {
-            $this->buyers[] = $buyer;
-            $buyer->setAgency($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBuyer(ImBuyer $buyer): self
-    {
-        if ($this->buyers->removeElement($buyer)) {
-            // set the owning side to null (unless already changed)
-            if ($buyer->getAgency() === $this) {
-                $buyer->setAgency(null);
             }
         }
 

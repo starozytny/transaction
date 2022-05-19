@@ -8,8 +8,8 @@ import { render } from "react-dom";
 
 import { Biens }          from "./components/Biens/Biens";
 import { BienFormulaire } from "./components/Biens/Form/Form";
+import { BiensMap }       from "@userPages/components/Biens/BiensMap";
 import { Visits }         from "@dashboardPages/components/Immo/Visits/Visits";
-import { AdItem }         from "@userPages/components/Biens/Read/AdItem";
 import { Suivi }          from "@userPages/components/Biens/Suivi/Suivi";
 
 Routing.setRoutingData(routes);
@@ -19,9 +19,9 @@ if(el){
     render(<Biens {...el.dataset} />, el)
 }
 
-el = document.getElementById("read-bien");
+el = document.getElementById("map-biens");
 if(el){
-    render(<AdItem {...el.dataset} />, el)
+    render(<BiensMap {...el.dataset} />, el)
 }
 
 el = document.getElementById("suivi-bien");
@@ -42,6 +42,7 @@ if(el){
                            sousTypes={JSON.parse(el.dataset.sousTypes)}
                            allSupports={JSON.parse(el.dataset.allSupports)}
                            publishes={JSON.parse(el.dataset.publishes)}
+                           owners={JSON.parse(el.dataset.owners)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 
@@ -59,10 +60,11 @@ if(el){
                            sousTypes={JSON.parse(el.dataset.sousTypes)}
                            allSupports={JSON.parse(el.dataset.allSupports)}
                            publishes={JSON.parse(el.dataset.publishes)}
+                           owners={JSON.parse(el.dataset.owners)}
                            allOwners={JSON.parse(el.dataset.allOwners)} />, el)
 }
 
 el = document.getElementById("list-visits");
 if(el){
-    render(<Visits {...el.dataset} />, el)
+    render(<Visits {...el.dataset} loadDataAgenda={true} />, el)
 }

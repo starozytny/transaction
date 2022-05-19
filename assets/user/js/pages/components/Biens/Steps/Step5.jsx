@@ -57,7 +57,7 @@ export class Step5 extends Component {
 
         return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
             <div className="line-infos">
-                <Alert>(*) Champs obligatoires.</Alert>
+                <Alert type="reverse">(*) Champs obligatoires.</Alert>
             </div>
 
             <div className="line special-line">
@@ -109,7 +109,7 @@ export class Step5 extends Component {
                 </div>
                 <div className="line">
                     <div className="form-group">
-                        <Button type="default" icon="placeholder" onClick={onChangeGeo}>Obtenir les coordonnées GPS</Button>
+                        <Button type="default" outline={true} icon="placeholder" onClick={onChangeGeo}>Obtenir les coordonnées GPS</Button>
                     </div>
                 </div>
                 <div className="line line-3">
@@ -132,11 +132,13 @@ export class Step5 extends Component {
                 </div>
             </div>
 
-            <div className="line special-line">
-                <div id="mapid" />
+            {!this.state.init && <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />}
+
+            <div className="line line-buttons">
+                <div id="mapid"/>
             </div>
 
-            <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
+            {this.state.init && <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />}
         </div>
     }
 }

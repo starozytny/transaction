@@ -91,8 +91,8 @@ export class ContactForm extends Component {
             <div className="line">
                 <RgpdInfo utility="la gestion des demandes de contacts"/>
             </div>
-            <div className="line">
-                <Button isSubmit={true}>Envoyer le message</Button>
+            <div className="line line-buttons">
+                <Button isSubmit={true} type="color0">Envoyer</Button>
             </div>
         </form>
     }

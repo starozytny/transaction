@@ -1,3 +1,26 @@
+.badge-bien.badge{
+  border-radius: 4px;
+  background-color: var(--grey2);
+  @include fontSemibold();
+  font-size: 14px;
+  color: var(--alpha);
+  padding: 2px 10px;
+
+  $status:
+          "0" var(--danger) "pointer",
+          "1" var(--primary) "pointer",
+          "2" var(--warning) "initial",
+          "3" var(--grey3) "initial"
+;
+
+  @each $number, $bg, $cursor in $status {
+    &.badge-#{$number}{
+      background-color: $bg;
+      cursor: #{$cursor};
+    }
+  }
+}
+
 .card-ad{
   @include flex(row, center, flex-start);
 
@@ -12,6 +35,14 @@
     }
   }
 
+  &:hover{
+    .image{
+      img{
+        transform: scale(1.1);
+      }
+    }
+  }
+
   .image{
     display: block;
     width: 100%;
@@ -19,28 +50,9 @@
     overflow: hidden;
     object-fit: cover;
     border-radius: 4px 4px 0 0;
-  }
 
-  .status{
-    border-radius: 4px;
-    background-color: var(--grey2);
-    @include fontSemibold();
-    font-size: 14px;
-    color: var(--alpha);
-    padding: 2px 10px;
-
-    $status:
-            "0" var(--danger) "pointer",
-            "1" var(--primary) "pointer",
-            "2" var(--warning) "initial",
-            "3" var(--grey3) "initial"
-  ;
-
-    @each $number, $bg, $cursor in $status {
-      &.status-#{$number}{
-        background-color: $bg;
-        cursor: #{$cursor};
-      }
+    img{
+      transition: all 0.2s ease-in-out;
     }
   }
 
@@ -81,7 +93,7 @@
     .badges{
       @include flex(row, flex-start, flex-start);
 
-      & > .status:not(:last-child){
+      & > .badge:not(:last-child){
         margin-right: 4px;
       }
     }
@@ -115,7 +127,7 @@
     }
 
     .createdAt{
-      font-size: 12px;
+      font-size: 13px;
       color: var(--grey3);
       line-height: 1.38;
     }
@@ -247,7 +259,7 @@
 
     .card-footer{
       .createdAt{
-        font-size: 13px;
+        font-size: 15px;
       }
 
       .btn-icon [class^="icon-"]{

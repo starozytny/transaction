@@ -24,9 +24,9 @@
                     <p>Bon retour,</p>
                     <p class="username">{{ app.user.firstname | capitalize }}</p>
                 </div>
-                {% if app.user.highRoleCode != 0 %}
-                    <div class="badge badge-1">{{ app.user.highRole }}</div>
-                {% endif %}
+{#                {% if app.user.highRoleCode != 0 %}#}
+{#                    <div class="badge badge-1">{{ app.user.highRole }}</div>#}
+{#                {% endif %}#}
             </div>
             <div class="dash-line-1-col-2">
                 <a href="{{ path('user_biens', {'st': 1}) }}" class="dash-card-1">
@@ -38,6 +38,10 @@
                     </div>
                     <div class="card-body">
                         <div class="number">{{ biensAgency }} {{ biensAgency > 1 ? "biens immobiliers" : "bien immobilier" }}</div>
+                    </div>
+
+                    <div id="chart-ads-tiny" data-donnees="{{ statsAds }}">
+                        {% include "dashboard/layout/components/spinner.html.twig" %}
                     </div>
                 </a>
                 <a href="{{ path('user_biens', {'st': 1, 'fu': app.user.userIdentifier}) }}" class="dash-card-1">
@@ -81,12 +85,24 @@
                     <div class="icon">
                         <span class="icon-map"></span>
                     </div>
-                    <div class="title">Visites</div>
+                    <div class="title">Les 10 prochaines visites</div>
                 </div>
-                <div>
+                <div style="width: 100%;">
                     <div id="visits" data-visits="{{ visits }}">
                         {% include "dashboard/layout/components/spinner.html.twig" %}
                     </div>
+                </div>
+            </div>
+
+            <div class="dash-card-1 dash-card-chart-ads">
+                <div class="card-header">
+                    <div class="icon">
+                        <span class="icon-colorfilter"></span>
+                    </div>
+                    <div class="title">Répartitions des annonces</div>
+                </div>
+                <div id="chart-ads" data-donnees="{{ biens }}">
+                    {% include "dashboard/layout/components/spinner.html.twig" %}
                 </div>
             </div>
         </div>
@@ -121,6 +137,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="dash-line-2">
+
         </div>
     </div>
 {% endblock %}

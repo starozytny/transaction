@@ -53,9 +53,10 @@ class DataEntity
      *
      * @param $date
      * @param string $format
+     * @param bool $isAgenda
      * @return string|null
      */
-    public function getFullDateString($date, string $format = "ll"): ?string
+    public function getFullDateString($date, string $format = "ll", bool $isAgenda = false): ?string
     {
         if($date){
             $frenchFactory = new Factory([
@@ -63,9 +64,11 @@ class DataEntity
                 'timezone' => 'Europe/Paris'
             ]);
             $time = Carbon::instance($date);
-            $time->subHours(1);
+            if(!$isAgenda){
+                $time->subHours(1);
+            }
 
-            return $frenchFactory->make($time)->isoFormat($format);
+            return ucfirst($frenchFactory->make($time)->isoFormat($format));
         }
 
         return null;
@@ -144,7 +147,23 @@ class DataEntity
 
     public function getCodeTypeBienString($value): string
     {
-        $data = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison", "Inconnu"];
+        $data = ["Appartement", "Maison", "Parking/Box", "Terrain", "Boutique", "Bureau", "Château", "Immeuble", "Terrain + Maison",
+            "Bâtiment", "Local", "Loft/Atelier/Surface", "Hôtel particulier", "Autres"];
+
+        return $data[$value];
+    }
+
+    public function getCodeTypeBienSeLoger($value): string
+    {
+        $data = ["Appartement", "maison", "parking/Box", "terrain", "boutique", "bureaux", "château", "immeuble", "maison avec terrain",
+            "bâtiment", "local", "loft/atelier/surface", "hôtel particulier", "inconnu"];
+
+        return $data[$value];
+    }
+
+    public function getStatusStringEvent($value): string
+    {
+        $data = ["Inactif", "Actif", "Annulé", "Fini", "Supprimé"];
 
         return $data[$value];
     }

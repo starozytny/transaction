@@ -47,12 +47,7 @@ export class OfferFinalForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
-    componentDidMount() {
-        Helper.toTop();
-        document.getElementById("priceFinal").focus()
-    }
-
+    
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
 
     handleSubmit = (e) => {

@@ -8,9 +8,9 @@ import { Aside }                from "@dashboardComponents/Tools/Aside";
 import { Alert }                from "@dashboardComponents/Tools/Alert";
 import { FormActions }          from "@userPages/components/Biens/Form/Form";
 
+import Sort        from "@commonComponents/functions/sort";
 import helper      from "@userPages/components/Biens/functions/helper";
 import Validateur  from "@commonComponents/functions/validateur";
-import Sort        from "@commonComponents/functions/sort";
 import Formulaire  from "@dashboardComponents/functions/Formulaire";
 
 const SORTER = Sort.compareName;
@@ -110,7 +110,7 @@ export class Step4 extends Component {
     }
 
     render () {
-        const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, sols, rooms, codeTypeBien } = this.props;
+        const { step, onNext, onDraft, refAside, onOpenAside, onSelectRooms, sols, rooms, caseTypeBien } = this.props;
 
         const { errors, typeRoom, uid, name, area, sol,
             hasBalcony, hasTerrace, hasGarden, areaBalcony, areaTerrace, areaGarden } = this.state;
@@ -119,7 +119,6 @@ export class Step4 extends Component {
         let solItems = helper.getItemsFromDB(sols, sol, 'sol');
 
         let typeInt = helper.getIntValue(typeRoom);
-        let codeTypeBienInt = helper.getIntValue(codeTypeBien);
 
         let contentAside = <div key={uid}>
             <div className="line line-2">
@@ -184,17 +183,17 @@ export class Step4 extends Component {
         rooms.sort(SORTER)
 
         return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
-            {codeTypeBienInt !== 2 ? <>
+            {caseTypeBien !== 2 ? <>
                 <div className="line special-line">
                     <div className="form-group">
                         <label>Les pièces</label>
                     </div>
                     <RoomItem rooms={rooms} solItems={solItems} onUpdate={this.handleUpdate} onSelectRooms={onSelectRooms} />
 
-                    <Button type="default" onClick={() => onOpenAside("room")}>Ajouter une pièce</Button>
+                    <Button type="default" outline={true} onClick={() => onOpenAside("room")}>Ajouter une pièce</Button>
                     <Aside ref={refAside} content={contentAside}>Pièce</Aside>
                 </div>
-            </> : <Alert type="reverse">Rien à renseigner dans cette <b><u>partie {CURRENT_STEP}</u></b> pour un parking/box.</Alert>}
+            </> : <Alert type="reverse">Rien à renseigner dans cette <b><u>partie {CURRENT_STEP}</u></b>.</Alert>}
 
             <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
         </div>
@@ -260,7 +259,7 @@ export function RoomItem ({ isFromRead=false, rooms, solItems, onUpdate, onSelec
                         </div>
                     </div>
                 </div>)
-            }) : <Alert>Aucune pièce renseignée.</Alert>}
+            }) : <Alert type="reverse">Aucune pièce renseignée.</Alert>}
         </div>
     </div>
 }

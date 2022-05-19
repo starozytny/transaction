@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import {Button} from "@dashboardComponents/Tools/Button";
-import Sanitize from "@commonComponents/functions/sanitaze";
+
+import { Button } from "@dashboardComponents/Tools/Button";
 
 export class Diag extends Component{
     constructor(props) {
@@ -101,6 +101,62 @@ export class Diag extends Component{
     }
 }
 
+export class DiagPrint extends Component{
+    render () {
+        const { elem } = this.props;
+
+        let content = <div>Le diagnostic de performance énergétique et d'indice d'émission de gaz à effet de serre n'ont pas été soumis pour le moment.</div>
+        let dpeNotFound = <div>Le diagnostic de performance énergétique n'a pas été soumis pour le moment.</div>
+        let gesNotFound = <div>L'indice d'émission de gaz à effet de serre n'a pas été soumis pour le moment.</div>
+        let dpeVierge = <div>Le diagnostic de performance énergétique est vierge.</div>
+        let gesVierge = <div>L'indice d'émission de gaz à effet de serre est vierge.</div>
+
+        if(elem.diag){
+            let diag = elem.diag;
+
+            let diagBeforeJuly = "";
+            if(!diag.isVirgin && diag.dpeLetterString && diag.dpeLetterString !== "NS" && diag.dpeLetterString !== "VI")
+            {
+                if(diag.beforeJuly){
+                    diagBeforeJuly = "Diagnostic réalisé avant le 1er Juillet 2021"
+                }else{
+                    diagBeforeJuly = "Diagnostic réalisé après le 1er Juillet 2021"
+                }
+
+                if(diag.createdAtDpeString){
+                    diagBeforeJuly = <div className="label">Date de réalisation du DPE : {diag.createdAtDpeString}</div>
+                }
+            }
+
+            content = <>
+                <div className="details-tab-infos-main">{diagBeforeJuly}</div>
+                <div className="diags-inline">
+                    <div className="details-tab-infos-main">
+                        {diag.dpeLetterString ? <>
+                            {diag.dpeLetterString !== "NS" && diag.dpeLetterString !== "VI" ? <>
+                                <div className="diag-title">Diagnostic de performance énergétique en kWhEP/m².an</div>
+                                <DiagDetails isDpe={true} showUnit={false} elem={elem}/>
+                            </> : (diag.dpeLetterString !== "NS" && !diag.isVirgin) ? dpeNotFound : dpeVierge}
+                        </> : dpeNotFound}
+                    </div>
+                    <div className="details-tab-infos-main">
+                        {diag.gesLetterString ? <>
+                            {diag.gesLetterString !== "NS" && diag.gesLetterString !== "VI" ? <>
+                                <div className="diag-title">Indice d'émission de gaz à effet de serre en kgeqCO2/m².an</div>
+                                <DiagDetails isDpe={false} showUnit={false} elem={elem}/>
+                            </> : (diag.gesLetterString !== "NS" && !diag.isVirgin) ? gesNotFound : gesVierge}
+                        </> : null}
+                    </div>
+                </div>
+            </>
+        }
+
+        return (<div className="details-tab-infos">
+            {content}
+        </div>)
+    }
+}
+
 function DiagSimple({ isDpe, elem })
 {
     let letters = ["A", "B", "C", "D", "E", "F", "G"];
@@ -132,7 +188,7 @@ function DiagSimple({ isDpe, elem })
     )
 }
 
-function DiagDetails({ isDpe, elem })
+function DiagDetails({ isDpe, elem, showUnit = true })
 {
     let lettersDetails = [
         { le :"A", valDpe: "≤ 50", valGes: "≤ 5" },
@@ -160,7 +216,7 @@ function DiagDetails({ isDpe, elem })
                         <div className={classDiag + " " + classDiag + "-" + le.le.toLowerCase() + active}>
                             <div>{le.le}</div>
                         </div>
-                        <div className="number">{value ? value + " " + unity : "N.C"}</div>
+                        <div className="number">{value ? value + (showUnit ? " " + unity : "") : "N.C"}</div>
                     </div>
                 })}
             </div>

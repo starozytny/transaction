@@ -25,7 +25,7 @@ function setValueEmptyIfNull (parentValue, value) {
     return ""
 }
 
-export function BienFormulaire ({ type, element, rooms, photos, negotiators, allOwners, quartiers, sols, sousTypes,
+export function BienFormulaire ({ type, element, rooms, photos, negotiators, allOwners, owners, quartiers, sols, sousTypes,
                                     societyId, agencyId, negotiatorId, settings, allSupports, publishes })
 {
     let title = "Ajouter un bien";
@@ -66,7 +66,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         context={type}
         url={url}
 
-        codeTypeAd={element ? element.codeTypeAd : 0}
+        codeTypeAd={element ? element.codeTypeAd : 1}
         codeTypeBien={element ? element.codeTypeBien : 0}
         libelle={element ? element.libelle : "Brouillon"}
         negotiator={element ? element.negotiator.id : ""}
@@ -101,6 +101,13 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         isWcSeparate={element ? setValueEmptyIfNull(feature, feature.isWcSeparate) : 99}
         codeWater={element ? setValueEmptyIfNull(feature, feature.codeWater) : ""}
         exposition={element ? setValueEmptyIfNull(feature, feature.exposition) : 99}
+
+        nbVehicles={element ? setValueEmptyIfNull(feature, feature.nbVehicles) : ""}
+        isImmeubleParking={element ? setValueEmptyIfNull(feature, feature.isImmeubleParking) : 99}
+        isParkingIsolate={element ? setValueEmptyIfNull(feature, feature.isParkingIsolate) : 99}
+
+        age1={element ? setValueEmptyIfNull(feature, feature.age1) : ""}
+        age2={element ? setValueEmptyIfNull(feature, feature.age2) : ""}
 
         hasGarden={element ? setValueEmptyIfNull(advantage, advantage.hasGarden) : 99}
         hasTerrace={element ? setValueEmptyIfNull(advantage, advantage.hasTerrace) : 99}
@@ -143,20 +150,18 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         lon={element ? setValueEmptyIfNull(localisation, localisation.lon) : ""}
         hideMap={element ? setValueBoolean(localisation, localisation.hideMap) : 0}
 
-        typeCalcul={element ? setValueEmptyIfNull(financial, financial.typeCalcul) : 0}
         price={element ? setValueEmptyIfNull(financial, financial.price) : ""}
         provisionCharges={element ? setValueEmptyIfNull(financial, financial.provisionCharges) : ""}
-        provisionOrdures={element ? setValueEmptyIfNull(financial, financial.provisionOrdures) : ""}
-        tva={element ? setValueEmptyIfNull(financial, financial.tva) : ""}
-        totalTerme={element ? setValueEmptyIfNull(financial, financial.totalTerme) : ""}
         caution={element ? setValueEmptyIfNull(financial, financial.caution) : ""}
         honoraireTtc={element ? setValueEmptyIfNull(financial, financial.honoraireTtc) : ""}
-        honoraireBail={element ? setValueEmptyIfNull(financial, financial.honoraireBail) : ""}
         edl={element ? setValueEmptyIfNull(financial, financial.edl) : ""}
         typeCharges={element ? setValueEmptyIfNull(financial, financial.typeCharges) : 0}
         totalGeneral={element ? setValueEmptyIfNull(financial, financial.totalGeneral) : ""}
         typeBail={element ? setValueEmptyIfNull(financial, financial.typeBail) : ""}
         durationBail={element ? setValueEmptyIfNull(financial, financial.durationBail) : ""}
+        complementLoyer={element ? setValueEmptyIfNull(financial, financial.complementLoyer) : ""}
+        priceHt={element ? setValueEmptyIfNull(financial, financial.priceHt) : ""}
+        pricePlafond={element ? setValueEmptyIfNull(financial, financial.pricePlafond) : ""}
 
         chargesMensuelles={element ? setValueEmptyIfNull(financial, financial.chargesMensuelles) : ""}
         notaire={element ? setValueEmptyIfNull(financial, financial.notaire) : ""}
@@ -171,9 +176,17 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         isSyndicProcedure={element ? setValueBoolean(financial, financial.isSyndicProcedure) : 0}
         detailsProcedure={element ? setValueEmptyIfNull(financial, financial.detailsProcedure) : ""}
 
+        priceMurs={element ? setValueEmptyIfNull(financial, financial.priceMurs) : ""}
+        rente={element ? setValueEmptyIfNull(financial, financial.rente) : ""}
+        repartitionCa={element ? setValueEmptyIfNull(financial, financial.repartitionCa) : ""}
+        resultatN2={element ? setValueEmptyIfNull(financial, financial.resultatN2) : ""}
+        resultatN1={element ? setValueEmptyIfNull(financial, financial.resultatN1) : ""}
+        resultatN0={element ? setValueEmptyIfNull(financial, financial.resultatN0) : ""}
+        natureBailCommercial={element ? setValueEmptyIfNull(financial, financial.natureBailCommercial) : ""}
+
         photos={photos ? photos : []}
 
-        owner={element ? (element.owner ? element.owner.id : "") : ""}
+        owners={owners ? owners : []}
 
         inform={element ? setValueEmptyIfNull(confidential, confidential.inform) : 0}
         lastname={element ? setValueEmptyIfNull(confidential, confidential.lastname) : ""}
@@ -188,7 +201,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         contentFull={element ? setValueEmptyIfNull(advert, advert.contentFull) : ""}
 
         codeTypeMandat={element ? setValueEmptyIfNull(mandat, mandat.codeTypeMandat) : 0}
-        nbMonthMandat={element ? "" : "init"}
+        nbMonthMandat={element ? "" : settings.mandatMonthVente}
         startAt={element ? (setValueEmptyIfNull(mandat, mandat.startAtJavascript) !== "" ? new Date(mandat.startAtJavascript) : "" ) : ""}
         endAt={element ? (setValueEmptyIfNull(mandat, mandat.endAtJavascript) !== "" ? new Date(mandat.endAtJavascript) : "" ) : ""}
         priceEstimate={element ? setValueEmptyIfNull(mandat, mandat.priceEstimate) : ""}
@@ -202,7 +215,7 @@ export function BienFormulaire ({ type, element, rooms, photos, negotiators, all
         mandatCity={element ? setValueEmptyIfNull(mandat, mandat.city) : ""}
         mandatCommentary={element ? setValueEmptyIfNull(mandat, mandat.commentary) : ""}
 
-        rooms={element ? rooms : []}
+        rooms={rooms ? rooms : []}
 
         supports={supports}
 

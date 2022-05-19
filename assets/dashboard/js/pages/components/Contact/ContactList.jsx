@@ -38,7 +38,6 @@ export class ContactList extends Component {
                         </div>
                     </div>
                 </div>}
-
             </div>
         </>
     }

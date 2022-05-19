@@ -10,7 +10,7 @@ import { Negotiators }  from "@dashboardPages/components/Immo/Negociators/Negoti
 import { Owners }       from "@dashboardPages/components/Immo/Owners/Owners";
 import { Tenants }      from "@dashboardPages/components/Immo/Tenants/Tenants";
 import { Prospects }    from "@dashboardPages/components/Immo/Prospects/Prospects";
-import { Buyers }       from "@dashboardPages/components/Immo/Buyers/Buyers";
+import { TransferFormulaire } from "@dashboardPages/components/Immo/Transfer/TransferForm";
 
 Routing.setRoutingData(routes);
 
@@ -39,7 +39,7 @@ if(el){
     render(<Prospects {...el.dataset} />, el)
 }
 
-el = document.getElementById("buyers");
+el = document.getElementById("transfer");
 if(el){
-    render(<Buyers {...el.dataset} />, el)
+    render(<div className="main-content"><TransferFormulaire {...el.dataset} /></div>, el)
 }

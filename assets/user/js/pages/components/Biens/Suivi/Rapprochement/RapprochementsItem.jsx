@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+
 import { HelpBubble } from "@dashboardComponents/Tools/HelpBubble";
 import { ButtonIcon } from "@dashboardComponents/Tools/Button";
 
@@ -7,9 +8,11 @@ import Helper        from "@commonComponents/functions/helper";
 import Sanitaze      from "@commonComponents/functions/sanitaze";
 import Rapprochement from "@userComponents/functions/rapprochement";
 
+import { MailAsideButton }          from "@dashboardPages/components/Mails/MailAside";
 import { SearchInfos }              from "@dashboardPages/components/Immo/Prospects/ProspectsItem";
 import { NegotiatorBubble }         from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 import { ContentNegotiatorBubble }  from "@userPages/components/Biens/AdCard";
+import { ButtonBonVisite }          from "@dashboardPages/components/Immo/Visits/VisitsList";
 
 const STATUS_PROPAL = 0;
 const STATUS_ACCEPT = 1;
@@ -77,6 +80,7 @@ export class RapprochementsItem extends Component {
                                 </figure>
                                 <div className="tooltip">Rapprochement</div>
                             </div>
+                            {elem && <div className="sub">{prospect.nbVisits} visite{prospect.nbVisits > 1 ? "s" : ""} au total</div>}
                         </div>
                     </div>
                 </div>
@@ -92,19 +96,24 @@ export class RapprochementsItem extends Component {
 
                         <div className="footer-actions">
                             <div className="actions">
-                                {!offer && <ButtonIcon icon="receipt-edit" text="Faire une offre" onClick={() => onChangeContext("create-offer", prospect)} />}
+                                {!offer && <ButtonIcon icon="receipt-edit" onClick={() => onChangeContext("create-offer", prospect)} text="Faire une offre" />}
                                 {(offer && offer.status === STATUS_PROPAL) && <>
                                     <ButtonIcon icon="check" text="Accepter" onClick={() => onChangeContext("accept-offer", prospect, offer)} />
                                     <ButtonIcon icon="cancel" text="Refuser" onClick={() => onSwitchStatusOffer(offer, STATUS_REFUSE)} />
                                     <ButtonIcon icon="receipt-edit" text="Modifier" onClick={() => onChangeContext("update-offer", prospect, offer)} />
                                     <ButtonIcon icon="trash" text="Supprimer" onClick={() => onDeleteOffer(offer)}/>
                                 </>}
-                                {(offer && offer.status !== STATUS_PROPAL) && <>
+                                {(elem.status !== 3 && offer && offer.status !== STATUS_PROPAL) && <>
                                     <ButtonIcon icon="cancel" text="Rétablir l'offre" onClick={() => onSwitchStatusOffer(offer, STATUS_PROPAL)} />
                                 </>}
-                                {(offer && offer.status === STATUS_ACCEPT) && <>
+                                {(elem.status !== 3 && offer && offer.status === STATUS_ACCEPT) && <>
                                     <ButtonIcon icon="flag" text="Finaliser l'offre" onClick={() => onChangeContext("final-offer", prospect, offer)} />
                                 </>}
+                            </div>
+                            <div className="actions">
+                                <ButtonIcon icon="map" tooltipWidth={120} onClick={() => onChangeContext("create-visit", prospect)} >Programmer une visite</ButtonIcon>
+                                <ButtonBonVisite type="icon" tooltipWidth={70} from="suivi" id={elem.id}>Bon de visite</ButtonBonVisite>
+                                <MailAsideButton txtBtn="Envoyer un mail" tooltipWidth={90} title={"Envoyer un mail à " + prospect.fullname} to={[prospect.email]} />
                             </div>
                         </div>
                     </> : <>

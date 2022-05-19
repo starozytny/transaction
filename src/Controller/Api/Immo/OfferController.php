@@ -149,7 +149,7 @@ class OfferController extends AbstractController
 
         $suivi = $this->getSuivi($obj->getBien(), $obj->getProspect());
         if($suivi){
-            $suivi->setStatus(ImSuivi::STATUS_END);
+            $suivi->setStatus(ImSuivi::STATUS_PROCESSED);
         }
 
         $em->flush();
@@ -186,7 +186,7 @@ class OfferController extends AbstractController
         $suivi = $this->getSuivi($obj->getBien(), $obj->getProspect());
         if($suivi){
             if($status != ImOffer::STATUS_PROPAL){
-                $suivi->setStatus(ImSuivi::STATUS_END);
+                $suivi->setStatus(ImSuivi::STATUS_PROCESSED);
             }else{
                 $suivi->setStatus(ImSuivi::STATUS_PROCESSING);
             }

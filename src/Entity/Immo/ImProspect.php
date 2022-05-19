@@ -159,7 +159,7 @@ class ImProspect extends DataEntity
     private $suivis;
 
     /**
-     * @ORM\OneToOne(targetEntity=ImSearch::class, inversedBy="prospect", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=ImSearch::class, fetch="EAGER", inversedBy="prospect", cascade={"persist", "remove"})
      * @Groups({"admin:read", "suivi:read"})
      */
     private $search;

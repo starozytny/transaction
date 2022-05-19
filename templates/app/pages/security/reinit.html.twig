@@ -1,6 +1,6 @@
 {% extends 'app/pages/security/template.html.twig' %}
 
-{% block title %}Réinitialisation de mot de passe{% endblock %}
+{% block title %}Réinitialisation de mot de passe | Ultimmo Transaction {{ parent() }}{% endblock %}
 
 {% block main_content %}
     <div class="main-content">
@@ -16,6 +16,9 @@
         {% else %}
             <div id="reinit" data-token={{ token }}>
                 {% include "dashboard/layout/components/spinner.html.twig" %}
+            </div>
+            <div class="image">
+                <img src="{{ asset('build/app/images/image-5.jpg') }}" alt="formulaire connexion au logiciel de transaction">
             </div>
         {% endif %}
     </div>

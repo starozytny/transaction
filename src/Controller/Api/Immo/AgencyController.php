@@ -110,8 +110,6 @@ class AgencyController extends AbstractController
 
         $obj = $dataEntity->setDataAgency(new ImAgency(), $data);
 
-        $immoService->initiateSupport($obj);
-
         $file = $request->files->get('logo');
         if ($file) {
             $fileName = $fileUploader->upload($file, ImAgency::FOLDER_LOGO);
@@ -124,6 +122,8 @@ class AgencyController extends AbstractController
             $obj->setTarif($fileName);
         }
 
+        $immoService->initiateSupport($obj);
+
         $settings = $em->getRepository(ImSettings::class)->findOneBy(['agency' => $obj]);
         if(!$settings){
             $setting = (new ImSettings())
@@ -133,12 +133,23 @@ class AgencyController extends AbstractController
             $em->persist($setting);
         }
 
+        $negotiator = (new ImNegotiator())
+            ->setCode(mb_strtoupper(substr($obj->getName(), 0, 2)))
+            ->setFirstname("Négociateur")
+            ->setLastname($obj->getName())
+            ->setAgency($obj)
+        ;
+
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
         }
 
+        $em->persist($negotiator);
         $em->persist($obj);
+        $em->flush();
+
+        $settings->setNegotiatorDefault($negotiator->getId());
         $em->flush();
 
         return $apiResponse->apiJsonResponse($obj, User::ADMIN_READ);

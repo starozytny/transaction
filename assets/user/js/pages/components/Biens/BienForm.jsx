@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import axios    from "axios";
 import toastr   from "toastr";
+import Routing  from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
 import helper           from "@userPages/components/Biens/functions/helper";
 import Helper           from "@commonComponents/functions/helper";
@@ -29,6 +30,31 @@ import { Step9 }        from "@userPages/components/Biens/Steps/Step9";
 import { Step10 }       from "@userPages/components/Biens/Steps/Step10";
 
 import { Owners}        from "@dashboardPages/components/Immo/Owners/Owners";
+import { PageInfos2 }   from "@userComponents/Layout/Page";
+
+const AD_VENTE              = 0;
+const AD_LOCATION           = 1;
+const AD_VIAGER             = 2;
+const AD_PDT_INVEST         = 3;
+const AD_CESSION_BAIL       = 4;
+const AD_LOCATION_VAC       = 5;
+const AD_VENTE_PRESTIGE     = 6;
+const AD_FOND_COMMERCE      = 7;
+
+const BIEN_APPARTEMENT      = 0;
+const BIEN_MAISON           = 1;
+const BIEN_PARKING_BOX      = 2;
+const BIEN_TERRAIN          = 3;
+const BIEN_BOUTIQUE         = 4;
+const BIEN_BUREAU           = 5;
+const BIEN_CHATEAU          = 6;
+const BIEN_IMMEUBLE         = 7;
+const BIEN_TERRAIN_MAISON   = 8;
+const BIEN_BATIMENT         = 9;
+const BIEN_LOCAL            = 10;
+const BIEN_LOFT             = 11;
+const BIEN_HOTEL            = 12;
+const BIEN_AUTRES           = 13;
 
 let arrayZipcodeSave = [];
 let arrayOwnersSave = [];
@@ -72,8 +98,8 @@ export class BienForm extends Component {
     componentDidMount = () => { Helper.getPostalCodes(this); }
 
     handleChange = (e) => {
-        const { settings, codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, startAt, nbMonthMandat, supports } = this.state;
+        const { settings, codeTypeAd, rooms, price, notaire, honoraireTtc, honorairePourcentage, priceHt,
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, startAt, nbMonthMandat, supports, honoraireChargeDe } = this.state;
 
         let name = e.currentTarget.name;
         let value = e.currentTarget.value;
@@ -90,7 +116,7 @@ export class BienForm extends Component {
         Automate.consequenceValueToRooms(this, name, value, rooms, "box",        2, elStep);
 
         Automate.calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
-            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail);
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe, priceHt);
 
         if(name === "newQuartier"){
             value = (e.currentTarget.checked) ? [parseInt(value)] : [] // parseInt because work with int this time
@@ -108,28 +134,61 @@ export class BienForm extends Component {
             value = Formulaire.updateValueCheckbox(e, supports, parseInt(value));
         }
 
+        if(name === "codeTypeBien"){
+            let codeTypeBienInt = helper.getIntValue(value);
+            let caseTypeBien = 1;
+            switch (codeTypeBienInt){
+                case BIEN_PARKING_BOX:
+                case BIEN_TERRAIN:
+                    caseTypeBien = 2;
+                    break;
+                default:
+                    break;
+            }
+
+            this.setState({ caseTypeBien: caseTypeBien })
+        }
+
         this.setState({[name]: value });
     }
 
+    handleChangeCleave = (e) => {
+        const { codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage, priceHt,
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe } = this.state;
+
+        let name = e.currentTarget.name;
+        let value = e.currentTarget.rawValue;
+
+        value = Formulaire.setToFloat(value);
+
+        Automate.calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+            provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, honoraireChargeDe, priceHt);
+
+        this.setState({ [name]: value })
+    }
+
     handleChangeSelect = (name, e) => {
-        const { codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
+        const { codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage, priceHt,
             provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail } = this.state;
 
         let value = e !== undefined ? e.value : "";
 
         if(name === "typeCalcul"){
             Automate.calculateFinancial(this, name, value, codeTypeAd, price, notaire, honoraireTtc, honorairePourcentage,
-                provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail);
+                provisionCharges, provisionOrdures, typeCalcul, tva, honoraireBail, priceHt);
         }
 
         this.setState({ [name]: value })
     }
 
     handleChangeDate = (name, e) => {
-        const { nbMonthMandat } = this.state;
+        const { settings, nbMonthMandat, codeTypeAd } = this.state;
 
         let value = e !== null ? e : "";
-        if(name === "startAt"){ Changer.setEndMandat(this, value, nbMonthMandat) }
+        if(name === "startAt"){
+            let nbMonth = parseInt(codeTypeAd) === 1 ? settings.mandatMonthLocation : settings.mandatMonthVente;
+            Changer.setEndMandat(this, value, nbMonthMandat === "init" ? nbMonth : nbMonthMandat)
+        }
 
         this.setState({ [name]: value })
     }
@@ -316,11 +375,11 @@ export class BienForm extends Component {
     }
 
     handleSelectOwner = (owner) => {
-        this.owner.current.handleUpdateSelectOwner(owner.id);
+        let nOwners = this.owner.current.handleUpdateSelectOwner(owner);
         this.aside1.current.handleClose();
 
         DataState.getOwners(this);
-        this.setState({ owner: owner.id });
+        this.setState({ owners: nOwners });
     }
 
     handleSelectRooms = (room, isUpdate=false) => {
@@ -333,7 +392,8 @@ export class BienForm extends Component {
 
     handleNext = (stepClicked, stepInitial = null, fromMenu = false) => {
         const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
-            areaHabitable, piece, priceEstimate, price, address, zipcode, city, country, contentSimple, contentFull } = this.state;
+            areaHabitable, piece, priceEstimate, price, honoraireTtc, address, zipcode, city, country, contentSimple, contentFull,
+            repartitionCa, natureBailCommercial } = this.state;
 
         this.setState({ errors: [] })
 
@@ -350,6 +410,19 @@ export class BienForm extends Component {
                         {type: "length",    id: 'contentSimple',  value: contentSimple, min:0, max: 250},
                         {type: "length",    id: 'contentFull',    value: contentFull,   min:0, max: 4000},
                     ]
+                    break;
+                case 7:
+                    paramsToValidate = [
+                        {type: "text",  id: 'price',         value: price},
+                        {type: "text",  id: 'honoraireTtc',  value: honoraireTtc},
+                    ];
+
+                    if(parseInt(codeTypeAd) === AD_FOND_COMMERCE){
+                        paramsToValidate = [...paramsToValidate, ...[
+                            {type: "length",    id: 'repartitionCa',         value: repartitionCa,          min:0, max: 100},
+                            {type: "length",    id: 'natureBailCommercial',  value: natureBailCommercial,   min:0, max: 50},
+                        ]];
+                    }
                     break;
                 case 6:
                     paramsToValidate = [
@@ -398,7 +471,9 @@ export class BienForm extends Component {
         e.preventDefault();
 
         const { url, messageSuccess } = this.props;
-        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator, photos } = this.state;
+        const { codeTypeAd, codeTypeBien, libelle, codeTypeMandat, negotiator,
+            areaHabitable, piece, address, zipcode, city, country, contentSimple, contentFull,
+            price, honoraireTtc } = this.state;
 
         this.setState({ errors: [] })
 
@@ -408,17 +483,33 @@ export class BienForm extends Component {
         let paramsToValidate = [
             {type: "text",      id: 'codeTypeAd',     value: codeTypeAd},
             {type: "text",      id: 'codeTypeBien',   value: codeTypeBien},
-            {type: "text",      id: 'libelle',        value: libelle},
             {type: "text",      id: 'codeTypeMandat', value: codeTypeMandat},
             {type: "text",      id: 'negotiator',     value: negotiator},
-            {type: "length",    id: 'libelle',        value: libelle, min: 0, max: 64},
+
+            {type: "text",      id: 'areaHabitable',  value: areaHabitable},
+            {type: "text",      id: 'piece',          value: piece},
+
+            {type: "text",      id: 'price',          value: price},
+            {type: "text",      id: 'honoraireTtc',   value: honoraireTtc},
+
+            {type: "text",      id: 'address',        value: address},
+            {type: "text",      id: 'zipcode',        value: zipcode},
+            {type: "text",      id: 'city',           value: city},
+            {type: "text",      id: 'country',        value: country},
+
+            {type: "text",      id: 'libelle',        value: libelle},
+            {type: "text",      id: 'contentSimple',  value: contentSimple},
+            {type: "text",      id: 'contentFull',    value: contentFull},
+            {type: "length",    id: 'libelle',        value: libelle,       min:0, max: 64},
+            {type: "length",    id: 'contentSimple',  value: contentSimple, min:0, max: 250},
+            {type: "length",    id: 'contentFull',    value: contentFull,   min:0, max: 4000},
         ];
 
         // validate global
         let validate = Validateur.validateur(paramsToValidate);
 
         Helper.toTop();
-        if(!validate.code){
+        if(!validate.code && !isDraft){
             Formulaire.showErrors(this, validate);
         }else{
             let self = this;
@@ -447,10 +538,15 @@ export class BienForm extends Component {
 
             axios({ method: "POST", url: url, data: formData, headers: {'Content-Type': 'multipart/form-data'} })
                 .then(function (response) {
-                    toastr.info(messageSuccess);
-                    setTimeout(function (){
-                        location.reload();
-                    }, 2000)
+                    toastr.info(isDraft ? "Brouillon enregistré ! " : messageSuccess);
+
+                    if(isDraft){
+                        location.href = Routing.generate('user_biens_update', {'slug': response.data.slug})
+                    }else{
+                        location.href = Routing.generate('user_biens', {'st': 1})
+                    }
+
+
                 })
                 .catch(function (error) {
                     Formulaire.displayErrors(self, error);
@@ -462,7 +558,9 @@ export class BienForm extends Component {
 
     render () {
         const { negotiators, quartiers, sols, sousTypes, societyId, agencyId, settings, allSupports } = this.props;
-        const { step, contentHelpBubble, codeTypeAd, owner, allOwners } = this.state;
+        const { step, contentHelpBubble, owners, allOwners,
+            codeTypeAd, codeTypeBien, codeTypeMandat, negotiator, areaHabitable, piece, price,
+            honoraireTtc, address, zipcode, city, country, libelle, contentSimple, contentFull } = this.state;
 
         let steps = [
             {id: 1,  label: "Informations globales"},
@@ -494,7 +592,20 @@ export class BienForm extends Component {
 
         let contentAside1 = <Owners ref={this.owner} donnees={JSON.stringify(allOwners)} negotiators={JSON.stringify(negotiators)}
                                     societyId={societyId} agencyId={agencyId} isClient={true}
-                                    owner={owner} isFormBien={true} onSelectOwner={this.handleSelectOwner}/>
+                                    owners={owners} isFormBien={true} onSelectOwner={this.handleSelectOwner}/>
+
+        let inputsRequired = [codeTypeAd, codeTypeBien, codeTypeMandat, negotiator, areaHabitable, piece, price,
+            honoraireTtc, address, zipcode, city, country, libelle, contentSimple, contentFull];
+        let totalFilled = 0;
+        inputsRequired.forEach(inp => {
+            if(inp !== "" && inp !== null){
+                totalFilled++;
+            }
+        })
+
+        let percentage = Helper.countProgress(totalFilled, 15)
+
+        let codeTypeAdInt = parseInt(codeTypeAd);
 
         return <div className="page-default">
             <div className="page-col-1">
@@ -504,6 +615,21 @@ export class BienForm extends Component {
                     </div>
                     <div className="content-col-1 steps">
                         {stepsItems}
+                    </div>
+                    <div className="body-col-1 percentage-infos">
+                        <PageInfos2 noImage={true}>
+                            <div className="percentage-required">
+                                <figure className={"chart-two chart-two-"+ percentage +" animate"}>
+                                    <svg role="img" xmlns="http://www.w3.org/2000/svg">
+                                        <title>Pourcentage rapprochement</title>
+                                        <circle className="circle-background"/>
+                                        <circle className="circle-foreground"/>
+                                    </svg>
+                                    <figcaption>{percentage} %</figcaption>
+                                </figure>
+                                <div className="percentage-required-txt">Taux de remplissage des champs obligatoires.</div>
+                            </div>
+                        </PageInfos2>
                     </div>
                 </div>
             </div>
@@ -537,10 +663,14 @@ export class BienForm extends Component {
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeZipcode={this.handleChangeZipcode}
                                onChangeGeo={this.handleChangeGeo} quartiers={quartiers} />
 
-                        {parseInt(codeTypeAd) === 1 ? <Step6 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
-                                                             onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} />
+                        {(codeTypeAdInt === AD_LOCATION || codeTypeAdInt === AD_LOCATION_VAC || codeTypeAdInt === AD_CESSION_BAIL) ? <>
+                                <Step6 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                                       onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
+                                       onChangeCleave={this.handleChangeCleave}/>
+                            </>
                             : <Step6Vente {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
-                                          onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} />}
+                                          onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
+                                          onChangeCleave={this.handleChangeCleave}/>}
 
                         <Step7 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChangeFile={this.handleChangeFile} onSwitchTrashFile={this.handleSwitchTrashFile}
@@ -550,7 +680,7 @@ export class BienForm extends Component {
 
                         <Step8 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
-                               refAside1={this.aside1} onOpenAside={this.handleOpenAside}
+                               refAside1={this.aside1} onOpenAside={this.handleOpenAside} onSelectOwner={this.handleSelectOwner}
                                allOwners={allOwners} />
 
                         <Step9 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}

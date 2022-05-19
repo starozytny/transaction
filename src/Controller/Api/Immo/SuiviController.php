@@ -2,11 +2,19 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImContract;
+use App\Entity\Immo\ImOffer;
+use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImProspect;
+use App\Entity\Immo\ImRoom;
 use App\Entity\Immo\ImSuivi;
+use App\Entity\Immo\ImVisit;
+use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
+use App\Service\Immo\SearchService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,6 +33,61 @@ class SuiviController extends AbstractController
     public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+
+    /**
+     * Get data for bien page suivi-read
+     *
+     * @Route("/bien/{slug}", name="bien", options={"expose"=true}, methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns a message"
+     * )
+     *
+     * @OA\Tag(name="Suivis")
+     *
+     * @param ImBien $obj
+     * @param ApiResponse $apiResponse
+     * @param SerializerInterface $serializer
+     * @param SearchService $searchService
+     * @return JsonResponse
+     */
+    public function bien(ImBien $obj, ApiResponse $apiResponse, SerializerInterface $serializer, SearchService $searchService): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        $photos    = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
+        $rooms     = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
+        $visits    = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
+        $suivis    = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
+        $offers    = $em->getRepository(ImOffer::class)->findBy(['bien' => $obj]);
+        $contracts = $em->getRepository(ImContract::class)->findBy(['bien' => $obj]);
+
+        $element   = $serializer->serialize($obj,       'json', ['groups' => User::USER_READ]);
+        $photos    = $serializer->serialize($photos,    'json', ['groups' => User::USER_READ]);
+        $rooms     = $serializer->serialize($rooms,     'json', ['groups' => User::USER_READ]);
+        $suivis    = $serializer->serialize($suivis,    'json', ['groups' => ImSuivi::SUIVI_READ]);
+        $visits    = $serializer->serialize($visits,    'json', ['groups' => ImVisit::VISIT_READ]);
+        $offers    = $serializer->serialize($offers,    'json', ['groups' => ImOffer::OFFER_READ]);
+        $contracts = $serializer->serialize($contracts, 'json', ['groups' => ImContract::CONTRACT_READ]);
+
+        $historiesVisits = $em->getRepository(HiVisite::class)->findBy(['bienId' => $obj->getId()], ['createdAt' => 'DESC']);
+        $historiesVisits = $serializer->serialize($historiesVisits, 'json', ['groups' => HiVisite::HISTORY_VISITE]);
+        $rapprochements  = $searchService->getRapprochementBySearchs([$obj], $obj->getAgency());
+        $rapprochements  = json_encode($rapprochements);
+
+        return $apiResponse->apiJsonResponseCustom([
+            'elem' => $element,
+            'rooms' => $rooms,
+            'photos' => $photos,
+            'suivis' => $suivis,
+            'visits' => $visits,
+            'offers' => $offers,
+            'contracts' => $contracts,
+            'rapprochements' => $rapprochements,
+            'historiesVisits' => $historiesVisits,
+        ]);
     }
 
     /**

@@ -5,8 +5,10 @@
 @import "../../common/css/color";
 
 :root{
-    --color0: #a9aac9;
-    --color0Shadow: rgba(169, 170, 201, 0.4);
+    --color0: #094fa7;
+    --color0Shadow: rgba(9, 79, 167, 0.4);
+    --color0Shadow2: rgba(9, 79, 167, 0.1);
+    --color0Shadow3: rgba(9, 79, 167, 0.05);
 }
 
 @import "vars/fonts";
@@ -71,6 +73,57 @@ main{
 
 .matomo-iframe-display.remove{
     display: none;
+}
+
+.homepage-header{
+    position: relative;
+    overflow: hidden;
+    background: var(--alpha);
+
+    .deco{
+        position: absolute;
+        top: 0; left: 0;
+        z-index: 0;
+    }
+
+    .app-header{
+        position: relative;
+        z-index: 5;
+    }
+
+    .blob-1{
+        transform: translateY(28px);
+    }
+
+    @keyframes float1 {
+        0%{transform: translate(0, 0)}
+        50%{transform: translate(-10px, 0)}
+        100%{transform: translate(0, 0)}
+    }
+
+    .triangle-float1 {
+        animation: float1 5s infinite;
+    }
+
+    @keyframes float2 {
+        0%{transform: translate(0, 0)}
+        50%{transform: translate(-5px, -5px)}
+        100%{transform: translate(0, 0)}
+    }
+
+    .triangle-float2 {
+        animation: float2 4s infinite;
+    }
+
+    @keyframes float3 {
+        0%{transform: translate(0, 0)}
+        50%{transform: translate(0, -10px)}
+        100%{transform: translate(0, 0)}
+    }
+
+    .triangle-float3 {
+        animation: float3 6s infinite;
+    }
 }
 
 //                      __   _ ____  ___   ___    __

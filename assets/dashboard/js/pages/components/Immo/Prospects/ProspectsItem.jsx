@@ -8,8 +8,15 @@ import { UtPhones }  from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
 import { SearchMainInfos1 } from "@dashboardPages/components/Immo/Searchs/SearchsItem";
+import { MailAside }        from "@dashboardPages/components/Mails/MailAside";
 
 export class ProspectsItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.mail = React.createRef();
+    }
+
     render () {
         const { isSelect, isClient, elem, prospects, onDelete, onDeleteSearch, onSelectors, onChangeContext, onSelectProspect, onSwitchArchived } = this.props;
 
@@ -47,13 +54,13 @@ export class ProspectsItem extends Component {
                                 <div className={"badge-prospect badge badge-" + elem.status}>{elem.statusString}</div>
                                 {elem.isArchived && <div className="badge badge-default">Archivé</div>}
                             </div>
-                            <div className="sub">Type de prospect : {elem.typeString}</div>
+                            <div className="sub">Type : {elem.typeString}</div>
                             {elem.lastContactAtAgo && <div className="sub">Dernier contact : {elem.lastContactAtAgo}</div>}
                             <NegotiatorBubble elem={elem.negotiator} txt={null}/>
                         </div>
 
                         <div className="col-3">
-                            {elem.search ? <SearchInfos elem={elem.search} isRa={true} /> : null}
+                            {elem.search ? <SearchInfos elem={elem.search} isRa={true} /> : <ButtonSearchCrud icon="add-square" onClick={() => onChangeContext('customOne', elem)}>Ajouter une recherche</ButtonSearchCrud>}
                         </div>
 
                         <div className="col-4">
@@ -63,13 +70,13 @@ export class ProspectsItem extends Component {
                                     <ButtonSearchCrud icon="pencil" onClick={() => onChangeContext('customTwo', elem)}>Modifier</ButtonSearchCrud>
                                     <ButtonSearchCrud icon="trash" onClick={() => onDeleteSearch(elem)}>Supprimer</ButtonSearchCrud>
                                 </div>
-                            </> : <ButtonSearchCrud icon="add-square" onClick={() => onChangeContext('customOne', elem)}>Ajouter une recherche</ButtonSearchCrud>}
+                            </> : null}
                         </div>
 
                         <div className="col-5 actions">
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                            <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>
-                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "prospect")}>Autres</ButtonIconDropdown>
+                            {(!isSelect || (isSelect && !active)) && <ButtonIconDropdown icon="trash" items={actions}>Suppression</ButtonIconDropdown>}
+                            {!isSelect && <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "prospect", this.mail)}>Autres</ButtonIconDropdown>}
                         </div>
                     </div>
                 </div>
@@ -77,6 +84,8 @@ export class ProspectsItem extends Component {
                     <div className="sub">Observation : {elem.commentary}</div>
                 </div>}
             </div>
+
+            {!isSelect && <MailAside ref={this.mail} to={[elem.email]} />}
         </div>
     }
 }

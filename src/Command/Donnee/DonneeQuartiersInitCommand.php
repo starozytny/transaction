@@ -37,14 +37,14 @@ class DonneeQuartiersInitCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-//        $io->title('Reset des tables');
-//        $this->databaseService->resetTable($io, [DoQuartier::class]);
+        $io->title('Reset des tables');
+        $this->databaseService->resetTable($io, [DoQuartier::class]);
 
-        $objs = $this->em->getRepository(DoQuartier::class)->findBy(['isNative' => true]);
-        if(count($objs) > 1){
-            $io->text("Quartier déjà initialisé.");
-            return Command::FAILURE;
-        }
+//        $objs = $this->em->getRepository(DoQuartier::class)->findBy(['isNative' => true]);
+//        if(count($objs) > 1){
+//            $io->text("Quartier déjà initialisé.");
+//            return Command::FAILURE;
+//        }
 
         $importFile = $this->getPrivateDirectory() . "import/quartiers-marseille.geojson";
         if(!file_exists($importFile)){
@@ -59,24 +59,31 @@ class DonneeQuartiersInitCommand extends Command
 
         $progressBar = new ProgressBar($output, count($content->features));
         $progressBar->start();
+        $noDuplication = [];
         foreach($content->features as $item){
 
+            $name    = $item->properties->NOM_QUA;
             $zipcode = $this->setRightZipcode($item->properties->DEPCO);
             $city    = $this->setRightCity($item->properties->NOM_CO);
 
-            $data = [
-                "name" => $item->properties->NOM_QUA,
-                "zipcode" => $zipcode,
-                "city" => $city,
-                "polygon" => []
-            ];
+            if(!in_array($name, $noDuplication)){
+                $noDuplication[] = $name;
 
-            $data = json_decode(json_encode($data));
+                $data = [
+                    "name" => $name,
+                    "zipcode" => $zipcode,
+                    "city" => $city,
+                    "polygon" => []
+                ];
 
-            $obj = $this->dataDonnee->setDataQuartier(new DoQuartier(), $data);
-            $obj->setIsNative(true);
+                $data = json_decode(json_encode($data));
 
-            $this->em->persist($obj);
+                $obj = $this->dataDonnee->setDataQuartier(new DoQuartier(), $data);
+                $obj->setIsNative(true);
+
+                $this->em->persist($obj);
+            }
+
             $progressBar->advance();
         }
 

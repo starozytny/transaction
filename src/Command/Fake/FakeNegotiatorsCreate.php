@@ -4,7 +4,6 @@ namespace App\Command\Fake;
 
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
@@ -43,7 +42,7 @@ class FakeNegotiatorsCreate extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [ImBuyer::class, ImProspect::class, ImBien::class, ImTenant::class, ImOwner::class, ImNegotiator::class]);
+        $this->databaseService->resetTable($io, [ImProspect::class, ImBien::class, ImTenant::class, ImOwner::class, ImNegotiator::class]);
 
         $agencies = $this->em->getRepository(ImAgency::class)->findAll();
         $nbAgencies = count($agencies);

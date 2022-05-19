@@ -3,11 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Changelog;
+use App\Entity\Immo\ImContractant;
+use App\Entity\Immo\ImProspect;
+use App\Entity\Mail;
 use App\Entity\Donnee\DoQuartier;
 use App\Entity\Donnee\DoSol;
 use App\Entity\Donnee\DoSousType;
+use App\Entity\History\HiVisite;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImBien;
+use App\Entity\Immo\ImContract;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOffer;
 use App\Entity\Immo\ImOwner;
@@ -18,15 +23,12 @@ use App\Entity\Immo\ImSettings;
 use App\Entity\Immo\ImStat;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImSupport;
-use App\Entity\Immo\ImTenant;
 use App\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Repository\Immo\ImNegotiatorRepository;
 use App\Repository\Immo\ImSettingsRepository;
-use App\Repository\Immo\ImSuiviRepository;
+use App\Service\MailerService;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use App\Repository\Immo\ImBienRepository;
-use App\Repository\Immo\ImBuyerRepository;
 use App\Repository\Immo\ImOwnerRepository;
 use App\Repository\Immo\ImProspectRepository;
 use App\Repository\Immo\ImTenantRepository;
@@ -36,6 +38,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Repository\Agenda\AgEventRepository;
 use App\Service\Agenda\EventService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -76,14 +79,16 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $changelogs     = $em->getRepository(Changelog::class)->findBy(['isPublished' => true], ['createdAt' => 'DESC'], 5);
-        $biensAgency    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'isArchived' => false, 'isDraft' => false]);
-        $biensVisits    = $em->getRepository(ImBien::class)->findBy(['user' => $user]);
+        $biensAgency    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF, 'isArchived' => false, 'isDraft' => false]);
+        $biensVisits    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
         $biensUser      = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'isArchived' => false, 'isDraft' => false]);
         $biensDraft     = $em->getRepository(ImBien::class)->findBy(['user' => $user,  'isArchived' => false, 'isDraft' => true]);
         $stats          = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['createdAt' => 'DESC']);
+        $visits         = $em->getRepository(ImVisit::class)->findBy(['bien' => $biensVisits]);
+        $statsAds       = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['publishedAt' => 'ASC'], 7);
+        $biens          = $biensAgency;
 
         $lastPublish = null;
-
         foreach($stats as $stat){
             if($lastPublish == null && $stat->getPublishedAt()){
                 $lastPublish = $stat->getPublishedAtString();
@@ -91,9 +96,9 @@ class UserController extends AbstractController
             }
         }
 
-        $visits = $em->getRepository(ImVisit::class)->findBy(['bien' => $biensVisits]);
-
-        $visits = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
+        $biens    = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
+        $visits   = $serializer->serialize($visits, 'json', ['groups' => ImVisit::VISIT_READ]);
+        $statsAds = $serializer->serialize($statsAds, 'json', ['groups' => ImStat::STAT_READ]);
 
         return $this->render('user/pages/index.html.twig', [
             'changelogs' => $changelogs,
@@ -102,7 +107,9 @@ class UserController extends AbstractController
             'biensDraft' => count($biensDraft),
             'visits' => $visits,
             'stats' => $stats,
-            'lastPublish' => $lastPublish
+            'lastPublish' => $lastPublish,
+            'statsAds' => $statsAds,
+            'biens' => $biens
         ]);
     }
 
@@ -117,37 +124,61 @@ class UserController extends AbstractController
     /**
      * @Route("/biens", options={"expose"=true}, name="biens")
      */
-    public function biens(Request $request, ImBienRepository $repository, ImSuiviRepository $suiviRepository,
-                          SerializerInterface $serializer, SearchService $searchService): Response
+    public function biens(Request $request, SerializerInterface $serializer, SearchService $searchService): Response
     {
+        $em = $this->doctrine->getManager();
+
         $status = $request->query->get('st');
-        $filterOwner = $request->query->get('fo');
         $filterNego = $request->query->get('fn');
         $filterUser = $request->query->get('fu');
 
         /** @var User $user */
         $user = $this->getUser();
+        $agencies = $em->getRepository(ImAgency::class)->findBy(['society' => $user->getSociety()]);
 
         if($status == null){
-            $objs = $repository->findBy(['agency' => $user->getAgency()]);
+            $objs = $em->getRepository(ImBien::class)->findBy(['agency' => $agencies]);
         }else{
-            $objs = $repository->findBy(['agency' => $user->getAgency(), 'status' => (int) $status]);
+            $objs = $em->getRepository(ImBien::class)->findBy(['agency' => $agencies, 'status' => (int) $status]);
         }
 
-        $rapprochements = $searchService->getRapprochementBySearchs($objs);
-        $suivis  = $suiviRepository->findByStatusProcessAndBiens($objs);
+        $rapprochements = $searchService->getRapprochementBySearchs($objs, $user->getAgency());
+        $suivis         = $em->getRepository(ImSuivi::class)->findByStatusProcessAndBiens($objs);
+        $contrats       = $em->getRepository(ImContract::class)->findBy(['bien' => $objs, 'status' => ImContract::STATUS_PROCESSING]);
+        $contractants   = $em->getRepository(ImContractant::class)->findBy(['contract' => $contrats]);
 
-        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
-        $suivis  = $serializer->serialize($suivis, 'json', ['groups' => ImSuivi::SUIVI_READ]);
+        $objs           = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+        $suivis         = $serializer->serialize($suivis, 'json', ['groups' => ImSuivi::SUIVI_READ]);
+        $contractants   = $serializer->serialize($contractants, 'json', ['groups' => ImContractant::CONTRACTANT_OWNER_READ]);
 
         return $this->render('user/pages/biens/index.html.twig', [
+            'user' => $user,
             'data' => $objs,
-            'filterOwner' => $filterOwner,
+            'st' => $status,
             'filterNego' => $filterNego,
             'filterUser' => $filterUser,
-            'st' => $status,
             'rapprochements' => json_encode($rapprochements),
             'suivis' => $suivis,
+            'contractants' => $contractants,
+        ]);
+    }
+
+    /**
+     * @Route("/biens/carte", name="biens_map")
+     */
+    public function carte(Request $request, SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $objs = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF]);
+
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::USER_READ]);
+
+        return $this->render('user/pages/biens/map.html.twig', [
+            'user' => $user,
+            'data' => $objs,
         ]);
     }
 
@@ -160,13 +191,21 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
-        $allOwners   = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
-        $settings    = $em->getRepository(ImSettings::class)->findOneBy(['agency' => $user->getAgency()]);
-        $allSupports = $em->getRepository(ImSupport::class)->findBy(['agency' => $user->getAgency()]);
-        $publishes   = $em->getRepository(ImPublish::class)->findBy(['bien' => $obj]);
+        $negotiators  = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+        $allOwners    = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
+        $settings     = $em->getRepository(ImSettings::class)->findOneBy(['agency' => $user->getAgency()]);
+        $allSupports  = $em->getRepository(ImSupport::class)->findBy(['agency' => $user->getAgency()]);
+        $publishes    = $em->getRepository(ImPublish::class)->findBy(['bien' => $obj]);
+        $contracts    = $em->getRepository(ImContract::class)->findBy(['bien' => $obj, 'status' => ImContract::STATUS_PROCESSING]);
+        $contractants = $em->getRepository(ImContractant::class)->findBy(['contract' => $contracts]);
+
+        $owners = [];
+        foreach($contractants as $contractant){
+            $owners[] = $contractant->getOwner();
+        }
 
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+        $owners      = $serializer->serialize($owners, 'json', ['groups' => User::ADMIN_READ]);
         $allOwners   = $serializer->serialize($allOwners, 'json', ['groups' => User::ADMIN_READ]);
         $settings    = $serializer->serialize($settings,'json', ['groups' => User::USER_READ]);
         $allSupports = $serializer->serialize($allSupports,'json', ['groups' => User::USER_READ]);
@@ -181,6 +220,7 @@ class UserController extends AbstractController
             'rooms' => $rooms,
             'photos' => $photos,
             'negotiators' => $negotiators,
+            'owners' => $owners,
             'allOwners' => $allOwners,
             'settings' => $settings,
             'user' => $user,
@@ -189,55 +229,6 @@ class UserController extends AbstractController
             'sousTypes' => $sousTypes,
             'allSupports' => $allSupports,
             'publishes' => $publishes,
-        ]);
-    }
-
-    private function bienData($type, Request $request, SerializerInterface $serializer, $slug, SearchService $searchService = null): Response
-    {
-        $em = $this->doctrine->getManager();
-        $contextRapp = $request->query->get('ctra');
-
-        $obj     = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
-        $photos  = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
-        $rooms   = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
-
-        $element = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
-        $photos  = $serializer->serialize($photos,  'json', ['groups' => User::USER_READ]);
-        $rooms   = $serializer->serialize($rooms,   'json', ['groups' => User::USER_READ]);
-
-        if($type !== "update"){
-            $context = $request->query->get("ct");
-            $visits = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
-            $suivis = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
-            $offers = $em->getRepository(ImOffer::class)->findBy(['bien' => $obj]);
-            $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgency()]);
-
-            $suivis         = $serializer->serialize($suivis,       'json', ['groups' => ImSuivi::SUIVI_READ]);
-            $negotiators    = $serializer->serialize($negotiators,  'json', ['groups' => User::ADMIN_READ]);
-            $visits         = $serializer->serialize($visits,       'json', ['groups' => ImVisit::VISIT_READ]);
-            $offers         = $serializer->serialize($offers,       'json', ['groups' => ImOffer::OFFER_READ]);
-
-            $rapprochements = [];
-            if($type === "suivi"){
-                $rapprochements = $searchService->getRapprochementBySearchs([$obj]);
-            }
-            $rapprochements = json_encode($rapprochements);
-        }
-
-        return $type === "update" ? $this->formBien($serializer, 'user/pages/biens/update.html.twig',
-            $obj, $element, $rooms, $photos)
-            : $this->render($type === "read" ? "user/pages/biens/read.html.twig" : "user/pages/biens/suivi.html.twig", [
-                'elem' => $obj,
-                'data' => $element,
-                'rooms' => $rooms,
-                'photos' => $photos,
-                'suivis' => $suivis,
-                'negotiators' => $negotiators,
-                'visits' => $visits,
-                'offers' => $offers,
-                'rapprochements' => $rapprochements,
-                'context' => $context,
-                'ctRa' => $contextRapp ?: "tous"
         ]);
     }
 
@@ -254,15 +245,17 @@ class UserController extends AbstractController
      */
     public function updateBien(Request $request, $slug, SerializerInterface $serializer): Response
     {
-        return $this->bienData("update", $request, $serializer, $slug);
-    }
+        $em = $this->doctrine->getManager();
 
-    /**
-     * @Route("/biens/bien/details/{slug}",options={"expose"=true}, name="biens_read")
-     */
-    public function readBien(Request $request, $slug, SerializerInterface $serializer): Response
-    {
-        return $this->bienData("read", $request, $serializer, $slug);
+        $obj     = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
+        $photos  = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
+        $rooms   = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
+
+        $element = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
+        $photos  = $serializer->serialize($photos,  'json', ['groups' => User::USER_READ]);
+        $rooms   = $serializer->serialize($rooms,   'json', ['groups' => User::USER_READ]);
+
+        return $this->formBien($serializer, 'user/pages/biens/update.html.twig', $obj, $element, $rooms, $photos);
     }
 
     /**
@@ -270,7 +263,48 @@ class UserController extends AbstractController
      */
     public function suiviBien(Request $request, $slug, SerializerInterface $serializer, SearchService $searchService): Response
     {
-        return $this->bienData("suivi", $request, $serializer, $slug, $searchService);
+        $em = $this->doctrine->getManager();
+        $context     = $request->query->get("ct");
+        $contextRapp = $request->query->get('ctra');
+
+        $obj       = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
+        $photos    = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
+        $rooms     = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
+        $visits    = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
+        $suivis    = $em->getRepository(ImSuivi::class)->findBy(['bien' => $obj]);
+        $offers    = $em->getRepository(ImOffer::class)->findBy(['bien' => $obj]);
+        $contracts = $em->getRepository(ImContract::class)->findBy(['bien' => $obj]);
+        $contractants = $em->getRepository(ImContractant::class)->findBy(['contract' => $contracts]);
+
+        $element      = $serializer->serialize($obj,       'json', ['groups' => User::USER_READ]);
+        $photos       = $serializer->serialize($photos,    'json', ['groups' => User::USER_READ]);
+        $rooms        = $serializer->serialize($rooms,     'json', ['groups' => User::USER_READ]);
+        $suivis       = $serializer->serialize($suivis,    'json', ['groups' => ImSuivi::SUIVI_READ]);
+        $visits       = $serializer->serialize($visits,    'json', ['groups' => ImVisit::VISIT_READ]);
+        $offers       = $serializer->serialize($offers,    'json', ['groups' => ImOffer::OFFER_READ]);
+        $contracts    = $serializer->serialize($contracts, 'json', ['groups' => ImContract::CONTRACT_READ]);
+        $contractants = $serializer->serialize($contractants, 'json', ['groups' => ImContractant::CONTRACTANT_OWNER_READ]);
+
+        $historiesVisits = $em->getRepository(HiVisite::class)->findBy(['bienId' => $obj->getId()], ['createdAt' => 'DESC']);
+        $historiesVisits = $serializer->serialize($historiesVisits, 'json', ['groups' => HiVisite::HISTORY_VISITE]);
+        $rapprochements  = $searchService->getRapprochementBySearchs([$obj], $obj->getAgency());
+        $rapprochements  = json_encode($rapprochements);
+
+        return $this->render("user/pages/biens/suivi.html.twig", [
+            'context' => $context,
+            'ctRa' => $contextRapp ?: "tous",
+            'elem' => $obj,
+            'data' => $element,
+            'rooms' => $rooms,
+            'photos' => $photos,
+            'suivis' => $suivis,
+            'visits' => $visits,
+            'offers' => $offers,
+            'contracts' => $contracts,
+            'rapprochements' => $rapprochements,
+            'historiesVisits' => $historiesVisits,
+            'contractants' => $contractants,
+        ]);
     }
 
     /**
@@ -284,23 +318,17 @@ class UserController extends AbstractController
         /** @var User $obj */
         $obj = $this->getUser();
 
-        $users       = $em->getRepository(User::class)->findBy(['society' => $obj->getSociety()]);
+        $users       = $em->getRepository(User::class)->findBy(['agency' => $obj->getAgency()]);
         $agencies    = $em->getRepository(ImAgency::class)->findBy(['society' => $obj->getSociety()]);
-        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
-        $biens       = $em->getRepository(ImBien::class)->findBy(['agency' => $agencies]);
 
         $users       = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
         $agencies    = $serializer->serialize($agencies, 'json', ['groups' => User::ADMIN_READ]);
-        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
-        $biens       = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
 
         return $this->render('user/pages/profil/index.html.twig',  [
             'obj' => $obj,
             'users' => $users,
             'agencies' => $agencies,
-            'negotiators' => $negotiators,
-            'biens' => $biens,
-            'context' => $context ?: 'agencies'
+            'context' => $context ?: 'users'
         ]);
     }
 
@@ -319,6 +347,26 @@ class UserController extends AbstractController
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/profil/update.html.twig',  ['elem' => $obj, 'donnees' => $data, 'negotiators' => $negotiators]);
+    }
+
+    /**
+     * @Route("/boite-mails", name="mails")
+     */
+    public function mails(MailerService $mailerService): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $mailerService->getAllMailsData($user);
+
+        return $this->render('user/pages/mails/index.html.twig', $data);
+    }
+
+    /**
+     * @Route("/boite-mails/document/{filename}", options={"expose"=true}, name="mails_attachement")
+     */
+    public function mailsAttachement($filename): BinaryFileResponse
+    {
+        return new BinaryFileResponse($this->getParameter('private_directory') . Mail::FOLDER_FILES . "/" . $filename);
     }
 
     /**
@@ -364,10 +412,12 @@ class UserController extends AbstractController
         $route = 'user/pages/negotiators/index.html.twig';
 
         $em = $this->doctrine->getManager();
+
         /** @var User $user */
         $user = $this->getUser();
-        $objs = $repository->findBy(['agency' => $user->getAgency()]);
-        $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $objs]);
+        $agencies = $em->getRepository(ImAgency::class)->findBy(['society' => $user->getSociety()]);
+        $objs = $repository->findBy(['agency' => $agencies]);
+        $biens = $em->getRepository(ImBien::class)->findBy(['negotiator' => $objs, 'status' => ImBien::STATUS_ACTIF]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $biens = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
@@ -397,8 +447,16 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $objs = $repository->findBy(['agency' => $user->getAgency()]);
-        $biens = $em->getRepository(ImBien::class)->findBy(['owner' => $objs]);
+        $contractants = $em->getRepository(ImContractant::class)->findBy(['owner' => $objs]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+
+        $biens = [];
+        foreach($contractants as $contractant) {
+            $biens[] = [
+                'ownerId' => $contractant->getOwner()->getId(),
+                'bien' => $contractant->getContract()->getBien()
+            ];
+        }
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
@@ -420,15 +478,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * Return render and route for tenant, prospects, buyers...
-     *
-     * @param Request $request
-     * @param SerializerInterface $serializer
-     * @param $repository
-     * @param $routeName
-     * @return Response
+     * @Route("/prospects-{type}", options={"expose"=true}, name="prospects")
      */
-    private function getDataPersons(Request $request, SerializerInterface $serializer, $repository, $routeName): Response
+    public function prospects(Request $request, $type, ImProspectRepository $repository, SerializerInterface $serializer): Response
     {
         $em = $this->doctrine->getManager();
 
@@ -439,11 +491,30 @@ class UserController extends AbstractController
         $objs = $repository->findBy(['agency' => $user->getAgency(), 'isArchived' => $getArchived]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
 
-        $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
+        $data = [];
+        foreach($objs as $obj){
+            switch ($type){
+                case "locataires":
+                    if($obj->getType() != ImProspect::TYPE_VENTE && $obj->getType() != ImProspect::TYPE_INVEST){
+                        $data[] = $obj;
+                    }
+                    break;
+                case "acquereurs":
+                    if($obj->getType() != ImProspect::TYPE_LOCATION){
+                        $data[] = $obj;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $objs = $serializer->serialize($data, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
-        $route = "user/pages/" . $routeName . "/" . ($getArchived ? "archived" : "index") . ".html.twig";
+        $route = "user/pages/prospects/" . ($getArchived ? "archived" : "index") . ".html.twig";
         $params = [
+            'type' => $type,
             'data' => $objs,
             'user' => $user,
             'negotiators' => $negotiators
@@ -462,23 +533,31 @@ class UserController extends AbstractController
      */
     public function tenants(Request $request, ImTenantRepository $repository, SerializerInterface $serializer): Response
     {
-        return $this->getDataPersons($request, $serializer, $repository, "tenants");
-    }
+        $em = $this->doctrine->getManager();
 
-    /**
-     * @Route("/prospects", options={"expose"=true}, name="prospects")
-     */
-    public function prospects(Request $request, ImProspectRepository $repository, SerializerInterface $serializer): Response
-    {
-        return $this->getDataPersons($request, $serializer, $repository, "prospects");
-    }
+        $getArchived = (bool)$request->query->get('ar');
 
-    /**
-     * @Route("/acquereurs", name="buyers")
-     */
-    public function buyers(Request $request, ImBuyerRepository $repository, SerializerInterface $serializer): Response
-    {
-        return $this->getDataPersons($request, $serializer, $repository, "buyers");
+        /** @var User $user */
+        $user = $this->getUser();
+        $objs = $repository->findBy(['agency' => $user->getAgency(), 'isArchived' => $getArchived]);
+        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
+
+        $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
+        $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
+
+        $route = "user/pages/tenants/" . ($getArchived ? "archived" : "index") . ".html.twig";
+        $params = [
+            'data' => $objs,
+            'user' => $user,
+            'negotiators' => $negotiators
+        ];
+
+        $search = $request->query->get('search');
+        if($search){
+            return $this->render($route, array_merge($params, ['search' => $search]));
+        }
+
+        return $this->render($route, $params);
     }
 
     /**
@@ -610,7 +689,9 @@ class UserController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $data = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF, 'isDraft' => false, 'isArchived' => false]);
+        $data = $em->getRepository(ImBien::class)->findBy([
+            'agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF, 'isDraft' => false, 'isArchived' => false
+        ]);
         $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $data]);
 
         $data = $serializer->serialize($data, 'json', ['groups' => User::USER_READ]);
@@ -620,5 +701,31 @@ class UserController extends AbstractController
             'donnees' => $data,
             'publishes' => $publishes,
         ]);
+    }
+
+    /**
+     * @Route("/publication/historique", name="publications_histories")
+     */
+    public function publicationsHistories(SerializerInterface $serializer): Response
+    {
+        $em = $this->doctrine->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $stats = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['createdAt' => 'DESC']);
+
+        $stats = $serializer->serialize($stats, 'json', ['groups' => ImStat::STAT_READ]);
+
+        return $this->render('user/pages/publications/history.html.twig', [
+            'donnees' => $stats,
+        ]);
+    }
+
+    /**
+     * @Route("/outils/fiancement", name="utilities_financial")
+     */
+    public function utilitiesFinancial(): Response
+    {
+        return $this->render('user/pages/utilities/financial.html.twig');
     }
 }

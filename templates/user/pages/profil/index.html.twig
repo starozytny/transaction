@@ -29,12 +29,13 @@
             </div>
 
             <div class="col-2">
-                <div id="profil-content" data-id="{{ obj.id }}" data-agency-id="{{ obj.agency.id }}" data-society-id="{{ obj.society.id }}"
+                <div id="profil-content"
+                     data-id="{{ obj.id }}"
+                     data-agency-id="{{ obj.agency.id }}"
+                     data-society-id="{{ obj.society.id }}"
                      data-is-user="{{ app.user.highRoleCode == 0 ? true : false }}"
                      data-users="{{ users }}"
                      data-agencies="{{ agencies }}"
-                     data-negotiators="{{ negotiators }}"
-                     data-biens="{{ biens }}"
                      data-role="{{ app.user.highRoleSlug }}"
                      data-context="{{ context }}"
                 >

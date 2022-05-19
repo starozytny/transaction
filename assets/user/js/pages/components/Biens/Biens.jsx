@@ -2,16 +2,22 @@ import React, { Component } from "react";
 
 import Sort          from "@commonComponents/functions/sort";
 import TopToolbar    from "@commonComponents/functions/topToolbar";
+import DataState     from "@userPages/components/Biens/Form/data";
+import AgendaData    from "@userPages/components/Agenda/agendaData";
 
 import { Layout }    from "@dashboardComponents/Layout/Page";
+import { Aside }     from "@dashboardComponents/Tools/Aside";
 
 import { BiensList } from "./BiensList";
+import { Suivi }     from "@userPages/components/Biens/Suivi/Suivi";
 
+const URL_GET_DATA          = 'api_agenda_data_persons';
 const URL_DELETE_ELEMENT    = 'api_biens_delete';
 const URL_DELETE_GROUP      = 'api_contact_delete_group';
 const MSG_DELETE_ELEMENT    = 'Supprimer ce bien ?';
 const MSG_DELETE_GROUP      = 'Aucun message sélectionné.';
 let SORTER = Sort.compareCreatedAtInverse;
+let i = 0;
 
 let sorters = [
     { value: 0, label: 'Création',      identifiant: 'sorter-createdAt' },
@@ -54,14 +60,14 @@ function setNewTab(type, initTab, el, comparateur, newTable, subType="") {
 }
 
 function filterFunction(dataImmuable, filters){
-    let newData = [], newData1 = [], newData2 = [], newData3 = [], newData4 = [], newData5 = [];
+    let newData = [], newData1 = [], newData2 = [], newData3 = [], newData4 = [], newData5 = [], newData6 = [];
 
     let filtersAd = filters[0];
     let filtersBien = filters[1];
     let filtersMandat = filters[2];
-    let filterOwner = filters[3];
-    let filterNego = filters[4];
-    let filterUser = filters[5];
+    let filterNego = filters[3];
+    let filterUser = filters[4];
+    let filterAgency = filters[5];
 
     if(filters.length === 0) {
         newData = dataImmuable
@@ -76,16 +82,16 @@ function filterFunction(dataImmuable, filters){
             newData2 = setNewTab("array", filtersMandat, el, el.codeTypeMandat, newData2);
         })
         newData2.forEach(el => {
-            newData3 = setNewTab("select", filterOwner, el, el.owner, newData3, "owner")
+            newData3 = setNewTab("select", filterNego, el, el.negotiator, newData3, "nego")
         })
         newData3.forEach(el => {
-            newData4 = setNewTab("select", filterNego, el, el.negotiator, newData4, "nego")
+            newData4 = setNewTab("select", filterUser, el, el.user, newData4, "user")
         })
         newData4.forEach(el => {
-            newData5 = setNewTab("select", filterUser, el, el.user, newData5, "user")
+            newData5 = setNewTab("array", filterAgency, el, el.agency.id, newData5)
         })
 
-        newData = newData5
+        newData = newData5;
     }
 
     return newData;
@@ -105,19 +111,22 @@ export class Biens extends Component {
             msgDeleteGroup: MSG_DELETE_GROUP,
             sessionName: "biens.pagination",
             classes: "",
+            agencyId: props.agencyId ? parseInt(props.agencyId) : "",
             filters: [
                 // [0, 1], // type ad
                 // [0, 1, 2, 3], // type bien
                 [],
                 [],
                 [], //type mandat
-                props.filterOwner ? parseInt(props.filterOwner) : "", //owner
                 props.filterNego ? parseInt(props.filterNego) : "", //negotiator
                 props.filterUser ? props.filterUser : "", //utilisateur
+                props.agencyId ? [parseInt(props.agencyId)] : [], //agency
             ]
         }
 
         this.layout = React.createRef();
+        this.aside = React.createRef();
+        this.suivi = React.createRef();
 
         this.handleGetData = this.handleGetData.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
@@ -126,7 +135,14 @@ export class Biens extends Component {
         this.handleChangeCurrentPage = this.handleChangeCurrentPage.bind(this);
         this.handleSorter = this.handleSorter.bind(this);
 
+        this.handleOpenSuivi = this.handleOpenSuivi.bind(this);
+
         this.handleContentList = this.handleContentList.bind(this);
+    }
+
+    componentDidMount = () => {
+        DataState.getProspects(this);
+        AgendaData.getData(this, URL_GET_DATA);
     }
 
     handleGetData = (self) => {
@@ -143,9 +159,15 @@ export class Biens extends Component {
 
     handleSorter = (nb) => { SORTER = TopToolbar.onSorter(this, nb, sortersFunction, this.state.perPage) }
 
+    handleOpenSuivi = (element) => {
+        this.suivi.current.handleLoadData(element);
+        this.suivi.current.handleChangePage("suivi", "global");
+        this.aside.current.handleOpen("Suivi du bien");
+    }
+
     handleContentList = (currentData, changeContext, getFilters, filters, data) => {
-        const { rapprochements, suivis } = this.props;
-        const { perPage, currentPage } = this.state;
+        const { rapprochements, suivis, contractants } = this.props;
+        const { perPage, currentPage, agencyId } = this.state;
 
         return <BiensList onChangeContext={changeContext}
                           onDelete={this.layout.current.handleDelete}
@@ -163,11 +185,15 @@ export class Biens extends Component {
                           sorters={sorters}
                           onSorter={this.handleSorter}
                           //data
+                          agencyId={agencyId}
                           pageStatus={this.props.pageStatus !== "" ? parseInt(this.props.pageStatus) : false}
                           onUpdateList={this.handleUpdateList}
                           dataFilters={data}
                           rapprochements={rapprochements ? JSON.parse(rapprochements) : []}
                           suivis={suivis ? JSON.parse(suivis) : []}
+                          contractants={contractants ? JSON.parse(contractants) : []}
+                          onOpenSuivi={this.handleOpenSuivi}
+                          dataImmuable={this.layout.current.state.dataImmuable}
                           data={currentData} />
     }
 
@@ -176,6 +202,7 @@ export class Biens extends Component {
             <Layout ref={this.layout} {...this.state} onGetData={this.handleGetData}
                     onContentList={this.handleContentList}
                     onChangeCurrentPage={this.handleChangeCurrentPage} />
+            <Aside ref={this.aside} content={<Suivi ref={this.suivi} {...this.state} isFromListBien={true} key={i++}/>} />
         </div>
     }
 }

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import Cleave from 'cleave.js/react'
+
 import { MultiSelect, SimpleSelect } from 'react-selectize';
 
 /***************************************
@@ -7,7 +9,8 @@ import { MultiSelect, SimpleSelect } from 'react-selectize';
  ***************************************/
 export function Input (props) {
     const { type="text", identifiant, valeur, onChange, children, placeholder, min="", max="", step=1,
-        isMultiple=false, acceptFiles="" } = props;
+        isMultiple=false, acceptFiles="",
+        options={numeral: true, numeralDecimalScale: 10, numeralThousandsGroupStyle: 'thousand', delimiter: ' '} } = props;
 
     let content = <input type={type} name={identifiant} id={identifiant} placeholder={placeholder} value={valeur} onChange={onChange}/>
 
@@ -17,6 +20,10 @@ export function Input (props) {
 
     if(type === "file"){
         content = <input type={type} multiple={isMultiple} name={identifiant} id={identifiant} accept={acceptFiles} onChange={onChange}/>
+    }
+
+    if(type === "cleave"){
+        content = <Cleave placeholder={placeholder} name={identifiant} options={options} value={valeur} onChange={onChange}/>
     }
 
     return (<ClassiqueStructure {...props} content={content} label={children} />)
@@ -123,7 +130,7 @@ export function SelectReactSelectize(props) {
         <SimpleSelect defaultValue={defaultValeur} disabled={disabled} placeholder={placeholder} onValueChange={onChange}>
             {choices}
         </SimpleSelect>
-        <input type="hidden" name={identifiant} value={valeur}/>
+        <input type="hidden" name={identifiant} value={valeur} onChange={null}/>
     </>
 
     return (<ClassiqueStructure {...props} content={content} label={children} />)
@@ -144,7 +151,7 @@ export class SelectizeMultiple extends Component {
     handleUpdateValeurs = (valeurs) => { this.setState({ valeurs }) }
 
     render () {
-        const { identifiant, onChangeAdd, onChangeDel, children, placeholder } = this.props;
+        const { identifiant, onChangeAdd, onChangeDel, children, placeholder, createType = null, renderOptionCustom = null } = this.props;
         const { items, valeurs } = this.state;
 
         let content = <>
@@ -155,9 +162,44 @@ export class SelectizeMultiple extends Component {
                                  <span>{item.label}</span>
                              </div>
                          }}
-                />
-                <input type="hidden" name={identifiant} value={valeurs}/>
-            </>
+                         createFromSearch={function (options, values, search) {
+                             if(createType !== null){
+                                 let labels = values.map(function(value){
+                                     return value.label;
+                                 })
+                                 if (search.trim().length === 0 || labels.indexOf(search.trim()) !== -1){
+                                     return null;
+                                 }
+
+                                 let correct = false;
+                                 switch (createType){
+                                     case "email":
+                                         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(search.trim())){
+                                             correct = true;
+                                         }
+                                         break;
+                                     default:
+                                         correct = true;
+                                         break;
+                                 }
+
+                                 return correct ? {label: search.trim(), value: search.trim()} : null;
+                             }else{
+                                 return null;
+                             }
+                         }}
+                         renderOption = {function(item){
+                             if(renderOptionCustom){
+                                 return renderOptionCustom(item);
+                             }else{
+                                 return <div className="simple-option">
+                                     <span>{item.label}</span>
+                                 </div>
+                             }
+                         }}
+            />
+            <input type="hidden" name={identifiant} value={valeurs}/>
+        </>
 
         return <ClassiqueStructure {...this.props} content={content} label={children} />
     }

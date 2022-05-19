@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Entity\History\HiPublish;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImPublish;
@@ -58,13 +59,41 @@ class PublishController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
+        $photos = $em->getRepository(ImPhoto::class)->findBy(['bien' => $data], ['rank' => 'ASC']);
+        $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $data]);
+
         $biens = $em->getRepository(ImBien::class)->findBy(['isPublished' => true]);
+        $detailsAd = [
+            "Vente" => 0,
+            "Location" => 0,
+            "Viager" => 0,
+            "Produit d'investissement" => 0,
+            "Cession bail" => 0,
+            "Location vacances" => 0,
+            "Vente prestige" => 0,
+            "Fond de commerce" => 0
+        ];
+
+        $detailsBien = [
+            "Appartement" => 0,
+            "Maison" => 0,
+            "Parking/Box" => 0,
+            "Terrain" => 0,
+            "Boutique" => 0,
+            "Bureau" => 0,
+            "Château" => 0,
+            "Immeuble" => 0,
+            "Terrain + Maison" => 0,
+            "Bâtiment" => 0,
+            "Local" => 0,
+            "Loft/Atelier/Surface" => 0,
+            "Hôtel particulier" => 0,
+            "Autres" => 0,
+        ];
+
         foreach($biens as $bien){
             $bien->setIsPublished(false);
         }
-
-        $photos = $em->getRepository(ImPhoto::class)->findBy(['bien' => $data], ['rank' => 'ASC']);
-        $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $data]);
 
         $publishService->createFile($publishes, $photos);
 
@@ -72,6 +101,33 @@ class PublishController extends AbstractController
             ->setAgency($user->getAgency())
             ->setNbBiens(count($data))
             ->setPublishedAt($sanitizeData->todayDate())
+            ->setUserFullname($user->getFullname())
+        ;
+
+        $biens = $em->getRepository(ImBien::class)->findBy(['id' => $data]);
+        foreach($biens as $bien){
+            $supports = [];
+            foreach($publishes as $publish){
+                if($publish->getBien()->getId() == $bien->getId()){
+                    $supports[] = $publish->getSupport()->getName();
+                }
+            }
+
+            $historyPublish = (new HiPublish())
+                ->setBienId($bien->getId())
+                ->setSupports($supports)
+            ;
+
+            $detailsAd[$bien->getTypeAdString()] = $detailsAd[$bien->getTypeAdString()] + 1;
+            $detailsBien[$bien->getTypeBienString()] = $detailsBien[$bien->getTypeBienString()] + 1;
+
+            $em->persist($historyPublish);
+        }
+
+
+        $stat = ($stat)
+            ->setDetailsAd($detailsAd)
+            ->setDetailsBien($detailsBien)
         ;
 
         $em->persist($stat);

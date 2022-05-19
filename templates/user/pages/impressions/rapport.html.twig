@@ -1,0 +1,14 @@
+{% extends 'user/pages/impressions/template.html.twig' %}
+
+{% block main_content %}
+    <div id="{{ identifiant }}"
+         data-donnees="{{ donnees }}"
+         data-elements="{{ elements is defined ? elements : null }}"
+         data-biens="{{ biens is defined ? biens : null }}"
+         data-publishes="{{ publishes }}"
+         data-visites="{{ visites }}"
+         data-prices="{{ prices }}"
+    >
+        {% include "dashboard/layout/components/spinner.html.twig" %}
+    </div>
+{% endblock %}

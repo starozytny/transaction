@@ -1,0 +1,15 @@
+{% extends 'user/layout/layout.html.twig' %}
+
+{% set submenu = [
+    { 'label': "Financement", 'path': path('user_tenants') },
+] %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('user_utilities') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('user_utilities') }}
+{% endblock %}

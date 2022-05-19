@@ -13,8 +13,8 @@ export class OwnerRead extends Component {
         let itemsBien = [];
         if(biens) {
             biens.forEach(bien => {
-                if (bien.owner && bien.owner.id === elem.id) {
-                    itemsBien.push(bien);
+                if (bien.ownerId === elem.id) {
+                    itemsBien.push(bien.bien);
                     totalBiens++;
                 }
             })

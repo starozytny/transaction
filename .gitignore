@@ -34,3 +34,5 @@ winpty.exe.stackdump
 /public/avatars/*
 
 graph.svg
+
+yarn.lock

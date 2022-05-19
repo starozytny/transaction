@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import Chart from "react-apexcharts";
 
-export class ChartAds extends Component {
+export class ChartPublishedTiny extends Component {
     constructor(props) {
         super(props);
 
@@ -17,42 +17,29 @@ export class ChartAds extends Component {
 
         let data = JSON.parse(donnees);
 
-        let locationsData = [], ventesData = [], biensData = [], legends = [];
+        let biensData = [];
         data.map(el => {
-            biensData.push(el.totBiens);
-            locationsData.push(el.totLocations);
-            ventesData.push(el.totVentes);
-            legends.push(el.createdAtString);
+            biensData.push(el.nbBiens);
         })
 
         this.setState({
             series: [{
                 name: 'Biens',
                 data: biensData
-            }, {
-                name: 'Locations',
-                data: locationsData
-            }, {
-                name: 'Ventes',
-                data: ventesData
             }],
             options: {
-                colors: ['#109cf1', '#cbec18', '#e25146'],
+                colors: ['rgba(16, 156, 241, 0.2)'],
                 chart: {
                     height: 200,
                     type: 'area',
                     toolbar: { show: false },
                 },
+                grid: { show: false },
                 legend: { show: false },
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'smooth'
-                },
+                dataLabels: { enabled: false },
+                tooltip: { enabled: false },
+                stroke: { curve: 'smooth' },
                 xaxis: {
-                    type: 'datetime',
-                    categories: legends,
                     labels: { show: false }
                 },
                 yaxis: {
@@ -71,6 +58,94 @@ export class ChartAds extends Component {
                     options={this.state.options}
                     series={this.state.series}
                     type="area"
+                    width={550}
+                    height={200}
+                />}
+            </>
+        );
+    }
+}
+
+export class ChartAds extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            series: [],
+            options: {}
+        }
+    }
+
+    componentDidMount = () => {
+        const { donnees } = this.props;
+
+        let data = JSON.parse(donnees);
+
+        let locations = 0, ventes = 0, viager = 0, pdt = 0, cession = 0, prestige = 0, commerce = 0;
+        data.map(el => {
+            switch (el.codeTypeAd){
+                case 0:
+                    ventes++;
+                    break;
+                case 1:
+                    locations++;
+                    break;
+                case 2:
+                    viager++;
+                    break;
+                case 3:
+                    pdt++;
+                    break;
+                case 4:
+                    cession++;
+                    break;
+                case 6:
+                    prestige++;
+                    break;
+                case 7:
+                    commerce++;
+                    break;
+                default:
+                    break;
+            }
+        })
+
+        let legends = ["Locations", "Ventes", "Viager", "Produit d'investissement", "Cession bail", "Vente de prestige", "Fond de commerce"];
+        let series = [locations, ventes, viager, pdt, cession, prestige, commerce];
+
+        this.setState({
+            series: series,
+            options: {
+                labels: legends,
+                colors: [
+                    '#3B93A5',
+                    '#F7B844',
+                    '#ADD8C7',
+                    '#EC3C65',
+                    '#CDD7B6',
+                    '#C1F666',
+                    '#D43F97',
+                    '#1E5D8C',
+                    '#421243',
+                ],
+                grid: { show: false },
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth' },
+            },
+        })
+    }
+
+    render() {
+        const { options } = this.state;
+
+        return (
+            <>
+                {options && <Chart
+                    options={this.state.options}
+                    labels={this.state.labels}
+                    series={this.state.series}
+                    type="donut"
+                    width={400}
                     height={200}
                 />}
             </>

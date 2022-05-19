@@ -8,9 +8,9 @@ use App\Entity\Immo\ImAdvert;
 use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImConfidential;
 use App\Entity\Immo\ImContract;
+use App\Entity\Immo\ImContractant;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
@@ -55,7 +55,7 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataBien(ImmoService $immoService, ImAgency $agency, ImBien $obj, $data, ImArea $area,
+    public function setDataBien(ImAgency $agency, ImBien $obj, $data, ImArea $area,
                                 ImNumber $number, ImFeature $feature, ImAdvantage $advantage, ImDiag $diag,
                                 ImLocalisation $localisation, ImFinancial $financial, ImConfidential $confidential,
                                 ImAdvert $advert, ImMandat $mandat, array $rooms)
@@ -65,17 +65,24 @@ class DataImmo extends DataConstructor
         $libelle        = $data->libelle;
         $negotiator     = $data->negotiator;
 
+        $isDraft = (int) $data->isDraft;
+        if($isDraft){
+            $obj->setStatus(ImBien::STATUS_DRAFT);
+        }
+
         // validation des données
-        $paramsToValidate = [
-            ['type' => 'text',   'name' => 'codeTypeAd',      'value' => $codeTypeAd],
-            ['type' => 'text',   'name' => 'codeTypeBien',    'value' => $codeTypeBien],
-            ['type' => 'text',   'name' => 'libelle',         'value' => $libelle],
-            ['type' => 'text',   'name' => 'negotiator',      'value' => $negotiator],
-            ['type' => 'length', 'name' => 'libelle',         'value' => $libelle, 'min' => 0, 'max' => 64]
-        ];
-        $noErrors = $this->validator->validateCustom($paramsToValidate);
-        if ($noErrors !== true) {
-            return $noErrors;
+        if(!$isDraft){
+            $paramsToValidate = [
+                ['type' => 'text',   'name' => 'codeTypeAd',      'value' => $codeTypeAd],
+                ['type' => 'text',   'name' => 'codeTypeBien',    'value' => $codeTypeBien],
+                ['type' => 'text',   'name' => 'libelle',         'value' => $libelle],
+                ['type' => 'text',   'name' => 'negotiator',      'value' => $negotiator],
+                ['type' => 'length', 'name' => 'libelle',         'value' => $libelle, 'min' => 0, 'max' => 64]
+            ];
+            $noErrors = $this->validator->validateCustom($paramsToValidate);
+            if ($noErrors !== true) {
+                return $noErrors;
+            }
         }
 
         $negotiator = $this->em->getRepository(ImNegotiator::class)->findOneBy(['id' => $negotiator]);
@@ -86,17 +93,41 @@ class DataImmo extends DataConstructor
             ]];
         }
 
-        $owner = null;
-        if(isset($data->owner) && $data->owner){
-            $owner = $this->em->getRepository(ImOwner::class)->findOneBy(['id' => $data->owner]);
-            if(!$owner){
-                return ['message' => 'Un problème est survenue au niveau du propriétaire.'];
+        if(isset($data->owners) && $data->owners){
+            $ownerIds = [];
+            foreach($data->owners as $owner){
+                if($owner){
+                    $ownerIds[] = $owner->id;
+                }
             }
-        }
+            $owners = $this->em->getRepository(ImOwner::class)->findBy(['id' => $ownerIds]);
 
-        $isDraft = (int) $data->isDraft;
-        if($isDraft){
-            $obj->setStatus(ImBien::STATUS_DRAFT);
+            $contract = null;
+            if($obj->getId()){
+                $contract = $this->em->getRepository(ImContract::class)->findOneBy(['bien' => $obj, 'status' => ImContract::STATUS_PROCESSING]);
+                $contractants = $this->em->getRepository(ImContractant::class)->findBy(['contract' => $contract]);
+
+                foreach($contractants as $contractant){
+                    $this->em->remove($contractant);
+                }
+            }
+
+            if(!$contract){
+                $contract = (new ImContract())
+                    ->setBien($obj)
+                ;
+
+                $this->em->persist($contract);
+            }
+
+            foreach($owners as $owner){
+                $contractant = (new ImContractant())
+                    ->setContract($contract)
+                    ->setOwner($owner)
+                ;
+
+                $this->em->persist($contractant);
+            }
         }
 
         foreach($rooms as $room){
@@ -112,7 +143,6 @@ class DataImmo extends DataConstructor
             ->setCodeTypeBien((int) $codeTypeBien)
             ->setLibelle($this->sanitizeData->trimData($libelle))
             ->setNegotiator($negotiator)
-            ->setReference($immoService->getReference($agency, (int) $codeTypeAd))
             ->setArea($area)
             ->setNumber($number)
             ->setFeature($feature)
@@ -120,7 +150,6 @@ class DataImmo extends DataConstructor
             ->setDiag($diag)
             ->setLocalisation($localisation)
             ->setFinancial($financial)
-            ->setOwner($owner)
             ->setConfidential($confidential)
             ->setAdvert($advert)
             ->setMandat($mandat)
@@ -149,11 +178,12 @@ class DataImmo extends DataConstructor
             $obj->setFee($this->setToNullFloat($data->fee));
         }
 
-        if($codeTypeMandat == ImMandat::TYPE_NONE){
-            $numero = 0;
-        }else{
-            $agency->setCounterMandat($agency->getCounterMandat() + 1);
-            $numero = $immoService->getNumeroMandat($agency);
+        $numero = $obj->getNumero() != null && $obj->getNumero() != 0 ? $obj->getNumero() : 0;
+        if($codeTypeMandat != ImMandat::TYPE_NONE){
+            if($obj->getNumero() == null || $obj->getNumero() == 0){
+                $agency->setCounterMandat($agency->getCounterMandat() + 1);
+                $numero = $immoService->getNumeroMandat($agency);
+            }
 
             $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->mandatLastname));
             $firstname = ucfirst($this->sanitizeData->sanitizeString($data->mandatFirstname));
@@ -183,16 +213,20 @@ class DataImmo extends DataConstructor
      */
     public function setDataArea(ImArea $obj, $data): ImArea
     {
-        // Création de l'objet
+        if((int) $data->caseTypeBien == 1){
+            $obj = ($obj)
+                ->setLand($this->setToNullFloat($data->areaLand))
+                ->setGarden($this->setToNullFloat($data->areaGarden))
+                ->setTerrace($this->setToNullFloat($data->areaTerrace))
+                ->setCave($this->setToNullFloat($data->areaCave))
+                ->setBathroom($this->setToNullFloat($data->areaBathroom))
+                ->setLiving($this->setToNullFloat($data->areaLiving))
+            ;
+        }
+
         return ($obj)
             ->setTotal((float) $data->areaTotal)
             ->setHabitable($this->setToNullFloat($data->areaHabitable))
-            ->setLand($this->setToNullFloat($data->areaLand))
-            ->setGarden($this->setToNullFloat($data->areaGarden))
-            ->setTerrace($this->setToNullFloat($data->areaTerrace))
-            ->setCave($this->setToNullFloat($data->areaCave))
-            ->setBathroom($this->setToNullFloat($data->areaBathroom))
-            ->setLiving($this->setToNullFloat($data->areaLiving))
         ;
     }
 
@@ -201,15 +235,19 @@ class DataImmo extends DataConstructor
      */
     public function setDataNumber(ImNumber $obj, $data): ImNumber
     {
-        // Création de l'objet
+        if((int) $data->caseTypeBien == 1){
+            $obj = ($obj)
+                ->setRoom($this->setToNullInteger($data->room))
+                ->setBathroom($this->setToNullInteger($data->bathroom))
+                ->setWc($this->setToNullInteger($data->wc))
+                ->setBalcony($this->setToNullInteger($data->balcony))
+                ->setParking($this->setToNullInteger($data->parking))
+                ->setBox($this->setToNullInteger($data->box))
+            ;
+        }
+
         return ($obj)
             ->setPiece((int) $data->piece)
-            ->setRoom($this->setToNullInteger($data->room))
-            ->setBathroom($this->setToNullInteger($data->bathroom))
-            ->setWc($this->setToNullInteger($data->wc))
-            ->setBalcony($this->setToNullInteger($data->balcony))
-            ->setParking($this->setToNullInteger($data->parking))
-            ->setBox($this->setToNullInteger($data->box))
         ;
     }
 
@@ -218,44 +256,80 @@ class DataImmo extends DataConstructor
      */
     public function setDataFeature(ImFeature $obj, $data): ImFeature
     {
+        $codeTypeBien = (int) $data->codeTypeBien;
+        $codeTypeAd = (int) $data->codeTypeAd;
+
+        if($codeTypeAd == ImBien::AD_LOCATION){
+            $obj->setIsMeuble($this->setToUnknownEmpty($data->isMeuble));
+        }
+
+        if((int) $data->caseTypeBien == 1){
+            $obj = ($obj)
+                ->setBusy($this->setToZeroEmpty($data->busy))
+                ->setFloor($this->setToNullInteger($data->floor))
+                ->setNbFloor($this->setToNullInteger($data->nbFloor))
+                ->setCodeHeater($this->setToNullInteger($data->codeHeater))
+                ->setCodeHeater0($this->setToNullInteger($data->codeHeater0))
+                ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
+                ->setCodeWater($this->setToNullInteger($data->codeWater))
+                ->setIsWcSeparate($this->setToUnknownEmpty($data->isWcSeparate))
+            ;
+        }
+
+        if($codeTypeBien != ImBien::BIEN_PARKING_BOX){
+            $obj->setExposition($this->setToNullInteger($data->exposition));
+        }
+
+        if($codeTypeBien != ImBien::BIEN_TERRAIN){
+            $obj = ($obj)
+                ->setBuildAt($this->setToNullInteger($data->buildAt))
+                ->setIsNew($this->setToUnknownEmpty($data->isNew))
+            ;
+        }
+
+        if($codeTypeBien == ImBien::BIEN_PARKING_BOX){
+            $obj = ($obj)
+                ->setNbVehicles($this->setToNullInteger($data->nbVehicles))
+                ->setIsImmeubleParking($this->setToUnknownEmpty($data->isImmeubleParking))
+                ->setIsParkingIsolate($this->setToUnknownEmpty($data->isParkingIsolate))
+            ;
+        }
+
+        if($codeTypeAd == ImBien::AD_VIAGER){
+            $obj->setAge1($this->setToNullInteger($data->age1));
+            $obj->setAge2($this->setToNullInteger($data->age2));
+        }
+
         return ($obj)
-            ->setIsMeuble($this->setToUnknownEmpty($data->isMeuble))
-            ->setIsNew($this->setToUnknownEmpty($data->isNew))
             ->setDispoAt($this->createDate($data->dispoAt))
-            ->setBusy($this->setToZeroEmpty($data->busy))
-            ->setBuildAt($this->setToNullInteger($data->buildAt))
-            ->setFloor($this->setToNullInteger($data->floor))
-            ->setNbFloor($this->setToNullInteger($data->nbFloor))
-            ->setCodeHeater($this->setToNullInteger($data->codeHeater))
-            ->setCodeHeater0($this->setToNullInteger($data->codeHeater0))
-            ->setCodeKitchen($this->setToNullInteger($data->codeKitchen))
-            ->setCodeWater($this->setToNullInteger($data->codeWater))
-            ->setIsWcSeparate($this->setToUnknownEmpty($data->isWcSeparate))
-            ->setExposition($this->setToNullInteger($data->exposition))
         ;
     }
 
     public function setDataAdvantage(ImAdvantage $obj, $data): ImAdvantage
     {
-        return ($obj)
-            ->setHasGarden($this->setToUnknownEmpty($data->hasGarden))
-            ->setHasTerrace($this->setToUnknownEmpty($data->hasTerrace))
-            ->setHasPool($this->setToUnknownEmpty($data->hasPool))
-            ->setHasCave($this->setToUnknownEmpty($data->hasCave))
-            ->setHasDigicode($this->setToUnknownEmpty($data->hasDigicode))
-            ->setHasInterphone($this->setToUnknownEmpty($data->hasInterphone))
-            ->setHasGuardian($this->setToUnknownEmpty($data->hasGuardian))
-            ->setHasAlarme($this->setToUnknownEmpty($data->hasAlarme))
-            ->setHasLift($this->setToUnknownEmpty($data->hasLift))
-            ->setHasClim($this->setToUnknownEmpty($data->hasClim))
-            ->setHasCalme($this->setToUnknownEmpty($data->hasCalme))
-            ->setHasInternet($this->setToUnknownEmpty($data->hasInternet))
-            ->setHasHandi($this->setToUnknownEmpty($data->hasHandi))
-            ->setHasFibre($this->setToUnknownEmpty($data->hasFibre))
-            ->setSituation($this->sanitizeData->trimData($data->situation))
-            ->setSousType($this->sanitizeData->trimData($data->sousType))
-            ->setSol($this->sanitizeData->trimData($data->sol))
-        ;
+        if((int) $data->caseTypeBien == 1){
+            $obj = ($obj)
+                ->setHasGarden($this->setToUnknownEmpty($data->hasGarden))
+                ->setHasTerrace($this->setToUnknownEmpty($data->hasTerrace))
+                ->setHasPool($this->setToUnknownEmpty($data->hasPool))
+                ->setHasCave($this->setToUnknownEmpty($data->hasCave))
+                ->setHasDigicode($this->setToUnknownEmpty($data->hasDigicode))
+                ->setHasInterphone($this->setToUnknownEmpty($data->hasInterphone))
+                ->setHasGuardian($this->setToUnknownEmpty($data->hasGuardian))
+                ->setHasAlarme($this->setToUnknownEmpty($data->hasAlarme))
+                ->setHasLift($this->setToUnknownEmpty($data->hasLift))
+                ->setHasClim($this->setToUnknownEmpty($data->hasClim))
+                ->setHasCalme($this->setToUnknownEmpty($data->hasCalme))
+                ->setHasInternet($this->setToUnknownEmpty($data->hasInternet))
+                ->setHasHandi($this->setToUnknownEmpty($data->hasHandi))
+                ->setHasFibre($this->setToUnknownEmpty($data->hasFibre))
+                ->setSituation($this->sanitizeData->trimData($data->situation))
+                ->setSousType($this->sanitizeData->trimData($data->sousType))
+                ->setSol($this->sanitizeData->trimData($data->sol))
+            ;
+        }
+
+        return $obj;
     }
 
     /**
@@ -263,19 +337,23 @@ class DataImmo extends DataConstructor
      */
     public function setDataDiag(ImDiag $obj, $data): ImDiag
     {
-        return ($obj)
-            ->setBeforeJuly($this->setToUnknownEmpty($data->beforeJuly))
-            ->setIsVirgin($this->setToUnknownEmpty($data->isVirgin))
-            ->setIsSend($this->setToUnknownEmpty($data->isSend))
-            ->setCreatedAtDpe($this->createDate($data->createdAtDpe))
-            ->setReferenceDpe($this->setToNullInteger($data->referenceDpe))
-            ->setDpeLetter($this->setToNullInteger($data->dpeLetter))
-            ->setGesLetter($this->setToNullInteger($data->gesLetter))
-            ->setDpeValue($this->setToNullFloat($data->dpeValue))
-            ->setGesValue($this->setToNullFloat($data->gesValue))
-            ->setMinAnnual($this->setToNullFloat($data->minAnnual))
-            ->setMaxAnnual($this->setToNullFloat($data->maxAnnual))
-        ;
+        if((int) $data->codeTypeBien !== ImBien::BIEN_TERRAIN){
+            $obj = ($obj)
+                ->setBeforeJuly($this->setToUnknownEmpty($data->beforeJuly))
+                ->setIsVirgin($this->setToUnknownEmpty($data->isVirgin))
+                ->setIsSend($this->setToUnknownEmpty($data->isSend))
+                ->setCreatedAtDpe($this->createDate($data->createdAtDpe))
+                ->setReferenceDpe($this->setToNullInteger($data->referenceDpe))
+                ->setDpeLetter($this->setToNullInteger($data->dpeLetter))
+                ->setGesLetter($this->setToNullInteger($data->gesLetter))
+                ->setDpeValue($this->setToNullFloat($data->dpeValue))
+                ->setGesValue($this->setToNullFloat($data->gesValue))
+                ->setMinAnnual($this->setToNullFloat($data->minAnnual))
+                ->setMaxAnnual($this->setToNullFloat($data->maxAnnual))
+            ;
+        }
+
+        return $obj;
     }
 
     public function setDataLocalisation(ImLocalisation $obj, $data): ImLocalisation
@@ -296,33 +374,69 @@ class DataImmo extends DataConstructor
 
     public function setDataFinancial(ImFinancial $obj, $data): ImFinancial
     {
+        $codeTypeAd = (int) $data->codeTypeAd;
+        if($codeTypeAd == ImBien::AD_LOCATION || $codeTypeAd == ImBien::AD_LOCATION_VAC || $codeTypeAd == ImBien::AD_CESSION_BAIL ){
+            $obj = ($obj)
+                ->setProvisionCharges($this->setToNullFloat($data->provisionCharges))
+                ->setTypeCharges($this->setToNullInteger($data->typeCharges))
+                ->setCaution($this->setToNullFloat($data->caution))
+                ->setEdl($this->setToNullFloat($data->edl))
+                ->setTypeBail($this->setToZeroEmpty($data->typeBail))
+                ->setDurationBail($this->setToNullFloat($data->durationBail))
+                ->setComplementLoyer($this->setToNullFloat($data->complementLoyer))
+                ->setPriceHt($this->setToNullFloat($data->priceHt))
+                ->setPricePlafond($this->setToNullFloat($data->pricePlafond))
+            ;
+
+            if($codeTypeAd == ImBien::AD_CESSION_BAIL){
+                $obj->setPriceMurs($this->setToNullFloat($data->priceMurs));
+            }
+
+        }else{
+            $obj = ($obj)
+                ->setHonoraireChargeDe($this->setToNullInteger($data->honoraireChargeDe))
+                ->setHonorairePourcentage($this->setToNullFloat($data->honorairePourcentage))
+                ->setPriceHorsAcquereur($this->setToNullFloat($data->priceHorsAcquereur))
+                ->setChargesMensuelles($this->setToNullFloat($data->chargesMensuelles))
+                ->setNotaire($this->setToNullFloat($data->notaire))
+                ->setFoncier($this->setToNullFloat($data->foncier))
+                ->setTaxeHabitation($this->setToNullFloat($data->taxeHabitation))
+                ->setIsCopro($data->isCopro)
+                ->setIsSyndicProcedure($data->isSyndicProcedure)
+            ;
+
+            if($data->isCopro){
+                $obj = ($obj)
+                    ->setNbLot($this->setToNullFloat($data->nbLot))
+                    ->setChargesLot($this->setToNullFloat($data->chargesLot))
+                ;
+            }
+
+            if($data->isSyndicProcedure){
+                $obj = ($obj)
+                    ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
+                ;
+            }
+
+            if($codeTypeAd == ImBien::AD_VIAGER){
+                $obj->setRente($this->setToNullFloat($data->rente));
+            }
+
+            if($codeTypeAd == ImBien::AD_FOND_COMMERCE){
+                $obj = ($obj)
+                    ->setRepartitionCa($this->sanitizeData->trimData($data->repartitionCa))
+                    ->setNatureBailCommercial($this->sanitizeData->trimData($data->natureBailCommercial))
+                    ->setResultatN0($this->setToNullInteger($data->resultatN0))
+                    ->setResultatN1($this->setToNullInteger($data->resultatN1))
+                    ->setResultatN2($this->setToNullInteger($data->resultatN2))
+                ;
+            }
+        }
+
         return ($obj)
             ->setPrice((float) $data->price)
-            ->setProvisionCharges($this->setToNullFloat($data->provisionCharges))
-            ->setProvisionOrdures($this->setToNullFloat($data->provisionOrdures))
-            ->setTva($this->setToNullFloat($data->tva))
-            ->setTotalTerme($this->setToNullFloat($data->totalTerme))
-            ->setCaution($this->setToNullFloat($data->caution))
-            ->setHonoraireTtc($this->setToNullFloat($data->honoraireTtc))
-            ->setHonoraireBail($this->setToNullFloat($data->honoraireBail))
-            ->setEdl($this->setToNullFloat($data->edl))
-            ->setTypeCalcul($this->setToNullInteger($data->typeCalcul))
-            ->setTypeCharges($this->setToNullInteger($data->typeCharges))
             ->setTotalGeneral($this->setToNullFloat($data->totalGeneral))
-            ->setTypeBail($this->setToZeroEmpty($data->typeBail))
-            ->setDurationBail($this->setToNullFloat($data->durationBail))
-            ->setChargesMensuelles($this->setToNullFloat($data->chargesMensuelles))
-            ->setNotaire($this->setToNullFloat($data->notaire))
-            ->setFoncier($this->setToNullFloat($data->foncier))
-            ->setTaxeHabitation($this->setToNullFloat($data->taxeHabitation))
-            ->setHonoraireChargeDe($this->setToNullInteger($data->honoraireChargeDe))
-            ->setHonorairePourcentage($this->setToNullFloat($data->honorairePourcentage))
-            ->setPriceHorsAcquereur($this->setToNullFloat($data->priceHorsAcquereur))
-            ->setIsCopro($data->isCopro)
-            ->setNbLot($this->setToNullFloat($data->nbLot))
-            ->setChargesLot($this->setToNullFloat($data->chargesLot))
-            ->setIsSyndicProcedure($data->isSyndicProcedure)
-            ->setDetailsProcedure($this->sanitizeData->sanitizeString($data->detailsProcedure))
+            ->setHonoraireTtc($this->setToNullFloat($data->honoraireTtc))
         ;
     }
 
@@ -331,11 +445,17 @@ class DataImmo extends DataConstructor
      */
     public function setDataConfidential(ImConfidential $obj, $data): ImConfidential
     {
+        $inform = $this->setToZeroEmpty($data->inform);
+        if($inform == 3){
+            $obj = ($obj)
+                ->setLastname($this->sanitizeData->sanitizeString($data->lastname))
+                ->setPhone1($this->sanitizeData->trimData($data->phone1))
+                ->setEmail($this->sanitizeData->trimData($data->email))
+            ;
+        }
+
         return ($obj)
-            ->setInform($this->setToZeroEmpty($data->inform))
-            ->setLastname($this->sanitizeData->sanitizeString($data->lastname))
-            ->setPhone1($this->sanitizeData->trimData($data->phone1))
-            ->setEmail($this->sanitizeData->trimData($data->email))
+            ->setInform($inform)
             ->setVisiteAt($this->createDate($data->visiteAt))
             ->setKeysNumber($this->setToNullInteger($data->keysNumber))
             ->setKeysWhere($this->sanitizeData->trimData($data->keysWhere))
@@ -481,34 +601,24 @@ class DataImmo extends DataConstructor
      */
     public function setDataOwner(ImOwner $obj, $data): ImOwner
     {
-        $society = $this->em->getRepository(Society::class)->find($data->society);
-        if(!$society){
-            throw new Exception("Société introuvable.");
-        }
         $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
         if(!$agency){
             throw new Exception("Agence introuvable.");
         }
-        $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+
+        $society = $agency->getSociety();
+        if(!$society){
+            throw new Exception("Société introuvable.");
+        }
+
+        dump($data);
+
+        $negotiator = $data->negotiator ? $this->em->getRepository(ImNegotiator::class)->find($data->negotiator) : null;
 
         $civility = (int) $data->civility;
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
         $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
         $code = mb_strtoupper(substr($lastname, 0, 1) . substr($firstname, 0, 1)) . time();
-
-        $isCoIndivisaire = $this->setToNullInteger($data->isCoIndivisaire);
-
-        if($isCoIndivisaire){
-            $obj = ($obj)
-                ->setCoLastname(mb_strtoupper($this->sanitizeData->sanitizeString($data->coLastname)))
-                ->setCoFirstname(ucfirst($this->sanitizeData->sanitizeString($data->coFirstname)))
-                ->setCoEmail($this->sanitizeData->trimData($data->coEmail))
-                ->setCoPhone($this->sanitizeData->trimData($data->coPhone))
-                ->setCoAddress($this->sanitizeData->trimData($data->coAddress))
-                ->setCoZipcode($this->sanitizeData->trimData($data->zipcode))
-                ->setCoCity($this->sanitizeData->trimData($data->city))
-            ;
-        }
 
         return ($obj)
             ->setSociety($society)
@@ -528,7 +638,6 @@ class DataImmo extends DataConstructor
             ->setCity($this->sanitizeData->trimData($data->city))
             ->setCountry($this->sanitizeData->trimData($data->country))
             ->setCategory($this->setToNullInteger($data->category))
-            ->setIsCoIndivisaire($isCoIndivisaire)
         ;
     }
 
@@ -619,42 +728,6 @@ class DataImmo extends DataConstructor
             ->setBien($bien)
             ->setProspect($prospect)
         ;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function setDataBuyer(ImBuyer $obj, $data): ImBuyer
-    {
-        $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
-        if(!$agency){
-            throw new Exception("Agence introuvable.");
-        }
-        $negotiator = null;
-        if($data->negotiator){
-            $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
-        }
-
-        $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
-        $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
-
-        return ($obj)
-            ->setAgency($agency)
-            ->setNegotiator($negotiator)
-            ->setLastname($lastname)
-            ->setFirstname($firstname)
-            ->setCivility((int) $data->civility)
-            ->setEmail($this->sanitizeData->trimData($data->email))
-            ->setPhone1($this->sanitizeData->trimData($data->phone1))
-            ->setPhone2($this->sanitizeData->trimData($data->phone2))
-            ->setPhone3($this->sanitizeData->trimData($data->phone3))
-            ->setAddress($this->sanitizeData->trimData($data->address))
-            ->setComplement($this->sanitizeData->trimData($data->complement))
-            ->setZipcode($this->sanitizeData->trimData($data->zipcode))
-            ->setCity($this->sanitizeData->trimData($data->city))
-            ->setBirthday($this->createDate($data->birthday))
-            ->setType((int) $data->type)
-            ;
     }
 
     /**

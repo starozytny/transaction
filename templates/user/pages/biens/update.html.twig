@@ -1,7 +1,7 @@
 {% extends 'user/pages/biens/template.html.twig' %}
 
 {% set page_title %}Modifier un bien{% endset %}
-{% set submenuActive = "Liste des biens" %}
+{% set submenuActive = "Modifier un bien" %}
 
 {% block main_content %}
     <div id="update-bien"
@@ -9,6 +9,7 @@
          data-rooms="{{ rooms }}"
          data-photos="{{ photos }}"
          data-negotiators="{{ negotiators }}"
+         data-owners="{{ owners }}"
          data-all-owners="{{ allOwners }}"
          data-quartiers="{{ quartiers }}"
          data-sols="{{ sols }}"

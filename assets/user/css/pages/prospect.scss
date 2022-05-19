@@ -3,5 +3,6 @@
 
 @import "../../../common/css/pages/prospects";
 @import "../components/card";
+@import "./split/prospects/list";
 
 @include toolbarCreateFilterSearch(199);

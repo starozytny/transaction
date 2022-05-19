@@ -79,7 +79,7 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                             <div className="infos">
                                 <div className="col-1">
                                     <div className="badges">
-                                        <div className="status">{typeBienString}</div>
+                                        <div className="badge-bien badge">{typeBienString}</div>
                                     </div>
                                     <div className="identifier">
                                         <div className="title">
@@ -93,8 +93,8 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                 </div>
                                 <div className="col-2">
                                     <div className="badges">
-                                        <div className="status">{typeAdString}</div>
-                                        <div className="status">Mandat {typeMandatString}</div>
+                                        <div className="badge-bien badge">{typeAdString}</div>
+                                        <div className="badge-bien badge">Mandat {typeMandatString}</div>
                                     </div>
                                     <div className="identifier">
                                         <div className="price">{Sanitaze.toFormatCurrency(price)} cc/mois</div>
@@ -133,13 +133,16 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                             <div>
                                 {dpeLetter !== "" && <div>DPE : [{dpeLetterString}] {dpeValue} KWh/m² an</div>}
                                 {gesLetter !== "" && <div>GES : [{gesLetterString}] {gesValue} Kg/co² an</div>}
-                                {provisionCharges !== "" && <div>Provision pour charges : {Sanitaze.toFormatCurrency(provisionCharges)}</div>}
-                                {caution !== "" && <div>Caution : {Sanitaze.toFormatCurrency(caution)}</div>}
-                                {honoraireTtc !== "" && <div>Honoraire TTC : {Sanitaze.toFormatCurrency(honoraireTtc)}</div>}
-                                {edl !== "" && <div>Honoraire EDL : {Sanitaze.toFormatCurrency(edl)}</div>}
-                                {chargesMensuelles !== "" && <div>Charges mensuelles EDL : {Sanitaze.toFormatCurrency(chargesMensuelles)}</div>}
-                                {notaire !== "" && <div>Notaire : {Sanitaze.toFormatCurrency(notaire)}</div>}
-                                {foncier !== "" && <div>Foncier : {Sanitaze.toFormatCurrency(foncier)}</div>}
+                                <div className="synthese-financial">
+                                    {provisionCharges !== "" && <div>Provision pour charges : {Sanitaze.toFormatCurrency(provisionCharges)}</div>}
+                                    {caution !== "" && <div>Caution : {Sanitaze.toFormatCurrency(caution)}</div>}
+                                    {honoraireTtc !== "" && <div>Honoraire TTC : {Sanitaze.toFormatCurrency(honoraireTtc)}</div>}
+                                    {edl !== "" && <div>Honoraire EDL : {Sanitaze.toFormatCurrency(edl)}</div>}
+                                    {chargesMensuelles !== "" && <div>Charges mensuelles : {Sanitaze.toFormatCurrency(chargesMensuelles)}</div>}
+                                    {notaire !== "" && <div>Notaire : {Sanitaze.toFormatCurrency(notaire)}</div>}
+                                    {foncier !== "" && <div>Foncier : {Sanitaze.toFormatCurrency(foncier)}</div>}
+                                </div>
+
                             </div>
 
                             <div>
@@ -200,7 +203,7 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </div>
             <div className="line line-2">
                 <div className="form-group">
-                    <Button type="default" onClick={() => onGenerateContent("simple")}>Générer un texte simple par défaut</Button>
+                    <Button type="default" outline={true} onClick={() => onGenerateContent("simple")}>Générer un texte simple par défaut</Button>
                 </div>
                 <div className="form-group">
                     Nombre de caractères : {contentSimple ? contentSimple.length : 0}/250
@@ -213,7 +216,7 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
             </div>
             <div className="line line-2">
                 <div className="form-group">
-                    <Button type="default" onClick={() => onGenerateContent("complexe")}>Générer un texte complexe par défaut</Button>
+                    <Button type="default" outline={true} onClick={() => onGenerateContent("complexe")}>Générer un texte complexe par défaut</Button>
                 </div>
                 <div className="form-group">
                     Nombre de caractères : {contentFull ? contentFull.length : 0}/4000

@@ -4,12 +4,14 @@ namespace App\Entity\Immo;
 
 use App\Repository\Immo\ImContractantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImContractantRepository::class)
  */
 class ImContractant
 {
+    const CONTRACTANT_OWNER_READ = ["contractant-owner:read"];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -18,23 +20,20 @@ class ImContractant
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImContract::class, inversedBy="contractants")
+     * @ORM\ManyToOne(targetEntity=ImContract::class, fetch="EAGER", inversedBy="contractants")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"contractant-owner:read"})
      */
     private $contract;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImOwner::class, inversedBy="contractants")
+     * @ORM\ManyToOne(targetEntity=ImOwner::class, fetch="EAGER", inversedBy="contractants")
+     * @Groups({"contractant-owner:read"})
      */
     private $owner;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBuyer::class, inversedBy="contractants")
-     */
-    private $buyer;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=ImTenant::class, inversedBy="contractants")
+     * @ORM\ManyToOne(targetEntity=ImTenant::class, fetch="EAGER", inversedBy="contractants")
      */
     private $tenant;
 
@@ -55,14 +54,14 @@ class ImContractant
         return $this;
     }
 
-    public function getBuyer(): ?ImBuyer
+    public function getOwner(): ?ImOwner
     {
-        return $this->buyer;
+        return $this->owner;
     }
 
-    public function setBuyer(?ImBuyer $buyer): self
+    public function setOwner(?ImOwner $owner): self
     {
-        $this->buyer = $buyer;
+        $this->owner = $owner;
 
         return $this;
     }
@@ -75,18 +74,6 @@ class ImContractant
     public function setTenant(?ImTenant $tenant): self
     {
         $this->tenant = $tenant;
-
-        return $this;
-    }
-
-    public function getOwner(): ?ImOwner
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?ImOwner $owner): self
-    {
-        $this->owner = $owner;
 
         return $this;
     }

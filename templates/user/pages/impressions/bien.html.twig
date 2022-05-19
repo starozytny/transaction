@@ -1,0 +1,27 @@
+{% extends 'user/pages/impressions/template.html.twig' %}
+
+{% set page_title %}Affiche pour la vitrine{% endset %}
+
+{% block main_content %}
+    {% if ori == "landscape" %}
+        <style>
+            @page{
+                size: landscape;
+            }
+        </style>
+    {% else %}
+        <style>
+            @page{
+                size: A4;
+            }
+        </style>
+    {% endif %}
+
+    <div id="printer-bien"
+         data-donnees="{{ donnees }}"
+         data-photos="{{ photos }}"
+         data-ori="{{ ori }}"
+    >
+        {% include "dashboard/layout/components/spinner.html.twig" %}
+    </div>
+{% endblock %}

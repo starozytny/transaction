@@ -140,7 +140,7 @@ class ImSearch extends DataEntity
     private $hasBox = ImBien::ANSWER_UNKNOWN;
 
     /**
-     * @ORM\OneToOne(targetEntity=ImProspect::class, mappedBy="search", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity=ImProspect::class, fetch="EAGER", mappedBy="search", cascade={"persist"})
      */
     private $prospect;
 

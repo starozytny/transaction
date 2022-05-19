@@ -36,7 +36,7 @@ class ImContract extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"contract:read"})
+     * @Groups({"contract:read", "contractant-owner:read"})
      */
     private $id;
 
@@ -47,7 +47,7 @@ class ImContract extends DataEntity
     private $status = self::STATUS_PROCESSING;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @Groups({"contract:read"})
      */
     private $sellAt;
@@ -62,16 +62,17 @@ class ImContract extends DataEntity
      * @ORM\Column(type="integer")
      * @Groups({"contract:read"})
      */
-    private $sellWhy =self::WHY_SELL;
+    private $sellWhy =self::WHY_UNKNOWN;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImBien::class, inversedBy="contracts")
+     * @ORM\ManyToOne(targetEntity=ImBien::class, fetch="EAGER", inversedBy="contracts")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"contractant-owner:read"})
      */
     private $bien;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, inversedBy="contracts")
+     * @ORM\ManyToOne(targetEntity=ImNegotiator::class, fetch="EAGER", inversedBy="contracts")
      */
     private $negotiator;
 
@@ -91,10 +92,16 @@ class ImContract extends DataEntity
      */
     private $contractants;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImSeller::class, mappedBy="contract")
+     */
+    private $sellers;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
         $this->contractants = new ArrayCollection();
+        $this->sellers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,7 +138,7 @@ class ImContract extends DataEntity
         return $this->sellAt;
     }
 
-    public function setSellAt(\DateTimeInterface $sellAt): self
+    public function setSellAt(?\DateTimeInterface $sellAt): self
     {
         $this->sellAt = $sellAt;
 
@@ -258,5 +265,55 @@ class ImContract extends DataEntity
     public function getSellAtJavascript(): ?string
     {
         return $this->setDateJavascript($this->sellAt);
+    }
+
+    /**
+     * @return string|null
+     * @Groups({"contract:read"})
+     */
+    public function getSellAtString(): ?string
+    {
+        return $this->getFullDateString($this->sellAt, 'LLLL');
+    }
+
+    /**
+     * @return string
+     * @Groups({"contract:read"})
+     */
+    public function getStatusString(): string
+    {
+        $values = ["Terminé", "En cours", "Annulé"];
+
+        return $values[$this->status];
+    }
+
+    /**
+     * @return Collection|ImSeller[]
+     */
+    public function getSellers(): Collection
+    {
+        return $this->sellers;
+    }
+
+    public function addSeller(ImSeller $seller): self
+    {
+        if (!$this->sellers->contains($seller)) {
+            $this->sellers[] = $seller;
+            $seller->setContract($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeller(ImSeller $seller): self
+    {
+        if ($this->sellers->removeElement($seller)) {
+            // set the owning side to null (unless already changed)
+            if ($seller->getContract() === $this) {
+                $seller->setContract(null);
+            }
+        }
+
+        return $this;
     }
 }

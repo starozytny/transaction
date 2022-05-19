@@ -72,8 +72,6 @@ class GenerauxForm extends Component {
         }else{
             this.setState({ errors: [], success: false });
 
-            console.log(this.state)
-
             let paramsToValidate = [
                 {type: "text", id: 'negotiatorDefault',   value: negotiatorDefault},
                 {type: "text", id: 'mandatMonthVente',    value: mandatMonthVente},

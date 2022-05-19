@@ -1,3 +1,14 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/circular";
+
+@for $i from 0 to 101 {
+  .chart-two-#{$i} {
+    svg {
+
+      .circle-foreground {
+        stroke: rgb(0, $i + 5, $i * 2 + 50);
+      }
+    }
+  }
+}

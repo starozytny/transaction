@@ -6,7 +6,10 @@ const Formulaire = require("@dashboardComponents/functions/Formulaire");
 function getDataState (props) {
     return {
         context: props.context,
-        step: 1,
+        step: 6,
+
+        caseTypeBien: 1,
+        percentageFilled: 0,
 
         codeTypeAd: props.codeTypeAd,
         codeTypeBien: props.codeTypeBien,
@@ -44,6 +47,13 @@ function getDataState (props) {
         isWcSeparate: props.isWcSeparate,
         codeWater: props.codeWater,
         exposition: props.exposition,
+
+        nbVehicles: props.nbVehicles,
+        isImmeubleParking: props.isImmeubleParking,
+        isParkingIsolate: props.isParkingIsolate,
+
+        age1: props.age1,
+        age2: props.age2,
 
         hasGarden: props.hasGarden,
         hasTerrace: props.hasTerrace,
@@ -90,17 +100,16 @@ function getDataState (props) {
         typeCalcul: props.typeCalcul,
         price: props.price,
         provisionCharges: props.provisionCharges,
-        provisionOrdures: props.provisionOrdures,
-        tva: props.tva,
-        totalTerme: props.totalTerme,
         caution: props.caution,
         honoraireTtc: props.honoraireTtc,
-        honoraireBail: props.honoraireBail,
         edl: props.edl,
         typeCharges: props.typeCharges,
         totalGeneral: props.totalGeneral,
         typeBail: props.typeBail,
         durationBail: props.durationBail,
+        complementLoyer: props.complementLoyer,
+        priceHt: props.priceHt,
+        pricePlafond: props.pricePlafond,
 
         chargesMensuelles: props.chargesMensuelles,
         notaire: props.notaire,
@@ -115,10 +124,18 @@ function getDataState (props) {
         isSyndicProcedure: props.isSyndicProcedure,
         detailsProcedure: props.detailsProcedure,
 
+        priceMurs: props.priceMurs,
+        rente: props.complementLoyer,
+        repartitionCa: props.repartitionCa,
+        resultatN2: props.resultatN2,
+        resultatN1: props.resultatN1,
+        resultatN0: props.resultatN0,
+        natureBailCommercial: props.natureBailCommercial,
+
         photos: props.photos,
         photo: null,
 
-        owner: props.owner,
+        owners: props.owners,
         allOwners: props.allOwners,
 
         inform: props.inform,
@@ -179,11 +196,14 @@ function getOwners (self) {
         })
 }
 
-function getProspects (self) {
+function getProspects (self, onUpdateData = null) {
     axios.get(Routing.generate('api_prospects_user_agency'), {})
         .then(function (response) {
             let data = response.data;
             self.setState({ allProspects: data, loadDataProspects: true })
+            if(onUpdateData){
+                onUpdateData(data);
+            }
         })
         .catch(function (error) {
             Formulaire.displayErrors(self, error);
@@ -207,9 +227,34 @@ function getVisits (self, elem) {
         })
 }
 
+function getDataBien (self, elem) {
+    axios.get(Routing.generate('api_suivis_bien', {'slug': elem.slug}), {})
+        .then(function (response) {
+            let data = response.data;
+            self.setState({
+                elem: JSON.parse(data.elem),
+                rooms: JSON.parse(data.rooms),
+                photos: JSON.parse(data.photos),
+                suivis: JSON.parse(data.suivis),
+                offers: JSON.parse(data.offers),
+                contracts: JSON.parse(data.contracts),
+                rapprochements: JSON.parse(data.rapprochements),
+                allVisits: JSON.parse(data.visits),
+                historiesVisits: JSON.parse(data.historiesVisits),
+            })
+        })
+        .catch(function (error) {
+            Formulaire.displayErrors(self, error);
+        })
+        .then(() => {
+            Formulaire.loader(false);
+        })
+}
+
 module.exports = {
     getDataState,
     getOwners,
     getProspects,
-    getVisits
+    getVisits,
+    getDataBien
 }

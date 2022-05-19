@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 
-import parse from "html-react-parser";
+import parse   from "html-react-parser";
+import Routing from '@publicFolder/bundles/fosjsrouting/js/router.min.js';
 
-import { ButtonIcon, ButtonIconContacts } from "@dashboardComponents/Tools/Button";
+import { ButtonIcon } from "@dashboardComponents/Tools/Button";
+import { MailAsideButton } from "@dashboardPages/components/Mails/MailAside";
 
 export class VisitsItem extends Component {
     render () {
-        const { elem, onDelete, onChangeContext } = this.props;
+        const { isDoubleAside=false, elem, onDelete, onChangeContext } = this.props;
 
         let event = elem.agEvent;
         let persons = event.persons;
@@ -19,6 +21,9 @@ export class VisitsItem extends Component {
                 }
             })
         })
+
+        let haveProspect = !!(persons.prospects && persons.prospects.length !== 0);
+
 
         return <div className="item">
             <div className="item-content">
@@ -34,7 +39,9 @@ export class VisitsItem extends Component {
 
                         </div>
                         <div className="col-4 actions">
-                            {emails.length > 0 && <ButtonIconContacts emails={emails}/>}
+                            {haveProspect && <ButtonIcon icon="file" type="default" element="a" target="_blank" tooltipWidth={70}
+                                    onClick={Routing.generate('api_visits_document_bon', {'from': 'visite', 'id': elem.id})}>Bon de visite</ButtonIcon>}
+                            {emails.length > 0 && <MailAsideButton txtBtn="Contacter" title="Envoyer un mail" to={emails} isDoubleAside={isDoubleAside} />}
                             <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                             <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
                         </div>
@@ -45,15 +52,18 @@ export class VisitsItem extends Component {
     }
 }
 
-export function VisitsMainInfos({ havePersons=false, inline=true, event, persons=null }) {
+export function VisitsMainInfos({ haveBubble=false, havePersons=false, inline=true, event, persons=null }) {
     return <>
-        <div className="name">
-            {event.name}
+        <div className="visite-date">{inline ? parse(event.fullDate) : event.fullDateInline}</div>
+        <div className="visite-content">
+            <div className="name">
+                <span>{event.name}</span> {event.location && <span>à {event.location}</span>}
+            </div>
+
+            {event.comment && <div className="sub">{event.comment}</div>}
+            {havePersons && <Persons persons={persons} />}
+            {haveBubble && <div className="item-details">Voir le details</div>}
         </div>
-        <div className="sub">{inline ? parse(event.fullDate) : event.fullDateInline}</div>
-        {event.location && <div className="sub">{event.location}</div>}
-        {event.comment && <div className="sub">{event.comment}</div>}
-        {havePersons && <Persons persons={persons} />}
     </>
 }
 

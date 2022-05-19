@@ -1,3 +1,30 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/button";
+
+.btn{
+  @include fontSemibold();
+  text-transform: uppercase;
+  padding: 16px 32px;
+  border-radius: 120px;
+}
+
+$icons:
+        "reverse" var(--grey) var(--txt) var(--grey),
+        "color0" var(--color0) var(--alpha) var(--color0Shadow2);
+
+@each $name, $bg, $txt, $shadow in $icons {
+  .btn-#{$name} {
+    background: $bg;
+    color: $txt;
+    border: 1px solid transparent;
+    box-shadow: 0 4px 12px $shadow;
+  }
+
+  .btn-outline-#{$name} {
+    background-color: var(--alpha);
+    color: $bg;
+    border: 1px solid $bg;
+    box-shadow: 0 4px 12px $shadow;
+  }
+}

@@ -51,8 +51,8 @@ export function NegotiatorFormulaire ({ type, onChangeContext, onUpdateList, ele
         isClient={isClient}
     />
 
-    return isClient ? <FormLayout url={Routing.generate('user_profil')} form={form} text="Retour à mon profil">{title}</FormLayout> :
-            <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
+    return <FormLayout onChangeContext={onChangeContext} form={form}>{title}</FormLayout>
+
 }
 
 export class NegotiatorForm extends Component {

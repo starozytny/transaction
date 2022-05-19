@@ -5,16 +5,20 @@ namespace App\Entity\Immo;
 use App\Entity\DataEntity;
 use App\Repository\Immo\ImStatRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImStatRepository::class)
  */
 class ImStat extends DataEntity
 {
+    const STAT_READ = ["stat:read"];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"stat:read"})
      */
     private $id;
 
@@ -31,6 +35,7 @@ class ImStat extends DataEntity
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"stat:read"})
      */
     private $nbBiens = 0;
 
@@ -38,6 +43,21 @@ class ImStat extends DataEntity
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $detailsAd = [];
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $detailsBien = [];
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $userFullname;
 
     public function __construct()
     {
@@ -97,8 +117,48 @@ class ImStat extends DataEntity
         return $this;
     }
 
+    /**
+     * @return string|null
+     * @Groups({"stat:read"})
+     */
     public function getPublishedAtString(): ?string
     {
         return $this->getFullDateString($this->publishedAt, 'llll');
+    }
+
+    public function getDetailsAd(): ?array
+    {
+        return $this->detailsAd;
+    }
+
+    public function setDetailsAd(?array $detailsAd): self
+    {
+        $this->detailsAd = $detailsAd;
+
+        return $this;
+    }
+
+    public function getDetailsBien(): ?array
+    {
+        return $this->detailsBien;
+    }
+
+    public function setDetailsBien(?array $detailsBien): self
+    {
+        $this->detailsBien = $detailsBien;
+
+        return $this;
+    }
+
+    public function getUserFullname(): ?string
+    {
+        return $this->userFullname;
+    }
+
+    public function setUserFullname(string $userFullname): self
+    {
+        $this->userFullname = $userFullname;
+
+        return $this;
     }
 }

@@ -5,7 +5,7 @@ import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/Ne
 
 export function ReadCard (props)
 {
-    const { displayActions = true, elem, avatar, onChangeContext, totalBiens = null } = props;
+    const { displayActions = true, elem, avatar, onChangeContext, totalBiens = null, actions = null } = props;
 
     return <div className="item-read-2-container">
         <div className="item-read-2">
@@ -26,6 +26,7 @@ export function ReadCard (props)
                     {elem.lastContactAtAgo && <div className="sub">
                         Dernier contact : {elem.lastContactAtAgo}
                     </div>}
+                    {actions}
                 </div>
             </div>
             <div className="col-2">

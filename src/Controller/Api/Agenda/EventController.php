@@ -3,10 +3,12 @@
 namespace App\Controller\Api\Agenda;
 
 use App\Entity\Agenda\AgEvent;
+use App\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\Agenda\DataEvent;
 use App\Service\Data\DataService;
+use App\Service\History\HistoryService;
 use App\Service\ValidatorService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
@@ -174,10 +176,17 @@ class EventController extends AbstractController
      *
      * @param AgEvent $obj
      * @param DataService $dataService
+     * @param HistoryService $historyService
      * @return JsonResponse
      */
-    public function delete(AgEvent $obj, DataService $dataService): JsonResponse
+    public function delete(AgEvent $obj, DataService $dataService, HistoryService $historyService): JsonResponse
     {
+        $em = $this->doctrine->getManager();
+        if($visit = $obj->getImVisit()){
+            $historyService->createVisit(AgEvent::STATUS_DELETE, $visit->getBien()->getId(), $visit->getId(), $obj);
+            $em->remove($visit);
+        }
+
         return $dataService->delete($obj);
     }
 }

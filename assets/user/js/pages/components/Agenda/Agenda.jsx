@@ -42,11 +42,8 @@ function filterFunction(dataImmuable, filters, search = null) {
                 let push = false;
                 let person = false;
                 switch (filter){
-                    case 6:
-                        person = "prospects";
-                        break;
                     case 5:
-                        person = "buyers";
+                        person = "prospects";
                         break;
                     case 4:
                         person = "tenants";
@@ -120,7 +117,6 @@ export class Agenda extends Component {
             negotiator: setSelectorDefault("negotiator", props.type, props.search),
             owner: setSelectorDefault("owner", props.type, props.search),
             tenant: setSelectorDefault("tenant", props.type, props.search),
-            buyer: setSelectorDefault("buyer", props.type, props.search),
             prospect: setSelectorDefault("prospect", props.type, props.search),
         }
 
@@ -206,14 +202,14 @@ export class Agenda extends Component {
 
     // init event
     handleEventDidMount = (e) => {
-        const { users, managers, negotiators, owners, tenants, prospects, buyers } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
 
-        addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects, buyers);
+        addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects);
     }
 
     // move event
     handleEventDrop = (e) => {
-        const { users, managers, negotiators, owners, tenants, prospects, buyers } = this.state;
+        const { users, managers, negotiators, owners, tenants, prospects } = this.state;
 
         const self = this;
         Swal.fire(SwalOptions.options("Déplacer le rendez-vous", ""
@@ -230,7 +226,7 @@ export class Agenda extends Component {
                         }})
                         .then(function (response) {
                             toastr.info("Données mises à jour");
-                            addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects, buyers);
+                            addEventElement(e.el, e.event, users, managers, negotiators, owners, tenants, prospects);
                         })
                         .catch(function (error) {
                             toastr.error("Une erreur est survenue.");
@@ -266,22 +262,20 @@ export class Agenda extends Component {
 
     render () {
         const { context, errors, loadPageError, loadData, data, initialView, element,
-            users, managers, negotiators, owners, tenants, prospects, buyers, biens,
-            filters, selActive, user, manager, negotiator, owner, tenant, buyer, prospect } = this.state;
+            users, managers, negotiators, owners, tenants, prospects,
+            filters, selActive, user, manager, negotiator, owner, tenant, prospect } = this.state;
 
         let contentAside;
         switch (context){
             case "create":
                 contentAside = <AgendaFormulaire type="create" custom={element} refAside={this.aside}
-                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 prospects={prospects} buyers={buyers} biens={biens}
+                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants} prospects={prospects}
                                                  onUpdateList={this.handleUpdateList}
                                                  />
                 break;
             case "update":
                 contentAside = <AgendaFormulaire type="update" element={element} refAside={this.aside}
-                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
-                                                 prospects={prospects} buyers={buyers} biens={biens}
+                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants} prospects={prospects}
                                                  onUpdateList={this.handleUpdateList} onDelete={() => this.handleDelete(element)} />
                 break;
             default:
@@ -293,8 +287,8 @@ export class Agenda extends Component {
             events.push(AgendaData.createEventStructure(elem, elem.imVisit))
         })
 
-        let filtersLabel = ["Utilisateurs", "Managers", "Négociateurs", "Propriétaires", "Locataires", "Acquéreurs", "Prospects"];
-        let filtersId    = ["ff-user", "ff-mana", "ff-nego", "ff-ow", "ff-ten", "ff-ac", "ff-pr"];
+        let filtersLabel = ["Utilisateurs", "Managers", "Négociateurs", "Propriétaires", "Locataires", "Prospects"];
+        let filtersId    = ["ff-user", "ff-mana", "ff-nego", "ff-ow", "ff-ten", "ff-pr"];
 
         let itemsFilter = [
             { value: 0, id: filtersId[0], label: filtersLabel[0] },
@@ -303,7 +297,6 @@ export class Agenda extends Component {
             { value: 3, id: filtersId[3], label: filtersLabel[3] },
             { value: 4, id: filtersId[4], label: filtersLabel[4] },
             { value: 5, id: filtersId[5], label: filtersLabel[5] },
-            { value: 6, id: filtersId[6], label: filtersLabel[6] },
         ];
 
         let selectUsers         = AgendaData.getSelecteurData(users, 'sp-user');
@@ -311,10 +304,7 @@ export class Agenda extends Component {
         let selectNegotiators   = AgendaData.getSelecteurData(negotiators, 'sp-ne');
         let selectOwners        = AgendaData.getSelecteurData(owners, 'sp-ow');
         let selectTenants       = AgendaData.getSelecteurData(tenants, 'sp-te');
-        let selectBuyers        = AgendaData.getSelecteurData(buyers, 'sp-by');
         let selectProspects     = AgendaData.getSelecteurData(prospects, 'sp-pr');
-
-        console.log(selActive)
 
         return <>
             {loadPageError ? <div className="main-content"><PageError /></div> : <div id="calendar" className="main-content">
@@ -345,7 +335,11 @@ export class Agenda extends Component {
                                 Négociateur
                             </SelectReactSelectize>
                         </div>
-                        <div className="line line-4">
+                        <div className="line line-3">
+                            <SelectReactSelectize items={selectProspects} identifiant="prospect" disabled={selActive !== "" && selActive !== "prospect"}
+                                                  valeur={prospect} errors={errors} onChange={(e) => this.handleChangeSelect('prospect', e)}>
+                                Prospect
+                            </SelectReactSelectize>
                             <SelectReactSelectize items={selectOwners} identifiant="owner" disabled={selActive !== "" && selActive !== "owner"}
                                                   valeur={owner} errors={errors} onChange={(e) => this.handleChangeSelect('owner', e)}>
                                 Propriétaire
@@ -353,14 +347,6 @@ export class Agenda extends Component {
                             <SelectReactSelectize items={selectTenants} identifiant="tenant" disabled={selActive !== "" && selActive !== "tenant"}
                                                   valeur={tenant} errors={errors} onChange={(e) => this.handleChangeSelect('tenant', e)}>
                                 Locataire
-                            </SelectReactSelectize>
-                            <SelectReactSelectize items={selectBuyers} identifiant="buyer" disabled={selActive !== "" && selActive !== "buyer"}
-                                                  valeur={buyer} errors={errors} onChange={(e) => this.handleChangeSelect('buyer', e)}>
-                                Acquéreur
-                            </SelectReactSelectize>
-                            <SelectReactSelectize items={selectProspects} identifiant="prospect" disabled={selActive !== "" && selActive !== "prospect"}
-                                                  valeur={prospect} errors={errors} onChange={(e) => this.handleChangeSelect('prospect', e)}>
-                                Prospect
                             </SelectReactSelectize>
                         </div>
                     </div>
@@ -394,7 +380,7 @@ export class Agenda extends Component {
     }
 }
 
-function addEventElement (bloc, event, users, managers, negotiators, owners, tenants, prospects, buyers) {
+function addEventElement (bloc, event, users, managers, negotiators, owners, tenants, prospects) {
     bloc.innerHTML = "";
 
     let props = event.extendedProps;
@@ -425,15 +411,13 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
     let data3 = getDataPerson(persons.owners, owners);
     let data4 = getDataPerson(persons.tenants, tenants);
     let data5 = getDataPerson(persons.prospects, prospects);
-    let data6 = getDataPerson(persons.buyers, buyers);
 
     let items0 = getPersonAvatar(data0);
     let items1 = getPersonAvatar(data1);
     let items2 = getPersonAvatar(data2);
-    let items3 = getPersonTotal(data3, "propriétaire");
-    let items4 = getPersonTotal(data4, "locataire");
-    let items5 = getPersonTotal(data5, "prospect");
-    let items6 = getPersonTotal(data6, "acquéreur");
+    let items3 = getPersonTotal(data3, "Propriétaire");
+    let items4 = getPersonTotal(data4, "Locataire");
+    let items5 = getPersonTotal(data5, "Prospect");
 
     bloc.insertAdjacentHTML('beforeend', '<div class="persons">' +
         items0.join("") +
@@ -445,24 +429,19 @@ function addEventElement (bloc, event, users, managers, negotiators, owners, ten
         items2.join("") +
     '</div>')
     if(data3.length > 0){
-        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-            items3 +
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub sub-persons">'
+            + '<span class="ag-round">' + data3.length + '</span>' + items3 +
         '</div>')
     }
     if(data4.length > 0){
-        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-            items4 +
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub sub-persons">'
+            + '<span class="ag-round">' + data4.length + '</span>' + items4 +
         '</div>')
     }
     if(data5.length > 0){
-        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-            items5 +
-            '</div>')
-    }
-    if(data6.length > 0){
-        bloc.insertAdjacentHTML('beforeend', '<div class="sub">' +
-            items6 +
-            '</div>')
+        bloc.insertAdjacentHTML('beforeend', '<div class="sub sub-persons">'
+            + '<span class="ag-round">' + data5.length + '</span>' + items5 +
+        '</div>')
     }
 
 }
@@ -491,5 +470,5 @@ function getPersonAvatar (data) {
 }
 
 function getPersonTotal (data, name) {
-    return data.length + " " + name + (data.length > 1 ? "s" : "");
+    return " " + name + (data.length > 1 ? "s" : "");
 }

@@ -9,17 +9,38 @@ import { Selector }  from "@dashboardComponents/Layout/Selector";
 import { UtContact } from "@dashboardComponents/Tools/Utilitaire";
 
 import { NegotiatorBubble } from "@dashboardPages/components/Immo/Negociators/NegotiatorsItem";
+import { MailAside }        from "@dashboardPages/components/Mails/MailAside";
 
 export class OwnersItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.mail = React.createRef();
+    }
+
     render () {
-        const { isReadBien=false, isClient, isFormBien, owner, biens, elem,
+        const { isReadBien=false, isClient, isFormBien, owners, biens, elem,
             onDelete, onSelectors, onChangeContext, onSelectOwner } = this.props;
 
         let totalBiens = 0;
         if(biens) {
             biens.forEach(bien => {
-                if (bien.owner && bien.owner.id === elem.id) {
+                if (bien.ownerId === elem.id) {
                     totalBiens++;
+                }
+            })
+        }
+
+        let actions = Actions.getDefaultAction(isClient, elem, "owner", this.mail);
+        actions = actions.concat([
+            {data: <a target="_blank" href={Routing.generate('user_printer_owner_rapport', {'id': elem.id})}>Imprimer rapport</a>},
+        ])
+
+        let active = false;
+        if(isFormBien && owners){
+            owners.forEach(owner => {
+                if(owner && owner.id === elem.id){
+                    active = true;
                 }
             })
         }
@@ -27,7 +48,7 @@ export class OwnersItem extends Component {
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
             {isFormBien && <div className="selector" onClick={onSelectOwner ? () => onSelectOwner(elem) : null}>
-                <label className={"item-selector " + (owner === elem.id)}/>
+                <label className={"item-selector " + (active)}/>
             </div>}
 
             <div className="item-content">
@@ -48,18 +69,20 @@ export class OwnersItem extends Component {
                         </div>
                         {!isReadBien && <div className={isFormBien ? "col-3 actions" : "col-4 actions"}>
                             {(biens.length !== 0 && totalBiens !== 0) &&
-                                <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'fo': elem.id})}>
+                                <ButtonIcon icon="layer" onClick={() => onChangeContext("read", elem)}>
                                     Biens
                                 </ButtonIcon>}
                             {!elem.isGerance && <>
                                 <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
                                 {!isFormBien && <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>}
                             </>}
-                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "owner")}>Autres</ButtonIconDropdown>
+                            {!isFormBien && <ButtonIconDropdown icon="dropdown" items={actions}>Autres</ButtonIconDropdown>}
                         </div>}
                     </div>
                 </div>
             </div>
+
+            {!isFormBien && <MailAside ref={this.mail} to={[elem.email]} />}
         </div>
     }
 }

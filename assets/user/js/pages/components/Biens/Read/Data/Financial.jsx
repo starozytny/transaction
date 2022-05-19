@@ -7,10 +7,6 @@ export function Financial({ elem }){
     return (<div className="details-tab-infos">
         <div className="details-tab-infos-main">
             <div>
-                <div className="label">Type de calcul</div>
-                <div>{financial.typeCalculString}</div>
-            </div>
-            <div>
                 <div className="label">Loyer charges comprises</div>
                 <div>{Sanitize.toFormatCurrency(financial.price)} / mois</div>
             </div>
@@ -19,20 +15,8 @@ export function Financial({ elem }){
                 <div>{financial.typeChargesString}</div>
             </div>
             <div>
-                <div className="label">Provision pour charge (soumis à régularisation annuelle)</div>
+                <div className="label">Provision pour charge ({financial.typeChargesString})</div>
                 <div>{Sanitize.toFormatCurrency(financial.provisionCharges)}</div>
-            </div>
-            <div>
-                <div className="label">Provision ordures ménagères</div>
-                <div>{Sanitize.toFormatCurrency(financial.provisionOrdures)}</div>
-            </div>
-            <div>
-                <div className="label">Montant T.V.A</div>
-                <div>{Sanitize.toFormatCurrency(financial.tva)}</div>
-            </div>
-            <div>
-                <div className="label">Total terme</div>
-                <div>{Sanitize.toFormatCurrency(financial.totalTerme)}</div>
             </div>
         </div>
         <div className="details-tab-infos-main">
@@ -47,10 +31,6 @@ export function Financial({ elem }){
             <div>
                 <div className="label">- dont état des lieux</div>
                 <div>{Sanitize.toFormatCurrency(financial.edl)}</div>
-            </div>
-            <div>
-                <div className="label">Honoraire rédaction bail</div>
-                <div>{Sanitize.toFormatCurrency(financial.honoraireBail)}</div>
             </div>
         </div>
 

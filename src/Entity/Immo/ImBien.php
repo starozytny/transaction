@@ -47,6 +47,11 @@ class ImBien extends DataEntity
     const BIEN_CHATEAU          = 6;
     const BIEN_IMMEUBLE         = 7;
     const BIEN_TERRAIN_MAISON   = 8;
+    const BIEN_BATIMENT         = 9;
+    const BIEN_LOCAL            = 10;
+    const BIEN_LOFT             = 11;
+    const BIEN_HOTEL            = 12;
+    const BIEN_AUTRES           = 13;
 
     const BUSY_NONE = 0;
     const BUSY_OWNER = 1;
@@ -56,7 +61,8 @@ class ImBien extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "agenda:read", "visit:read", "suivi:read", "offer:read", "publish:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "visit:read", "suivi:read", "offer:read",
+     *     "publish:read", "history:publish", "history:visite", "contractant-owner:read"})
      */
     private $id;
 
@@ -119,6 +125,17 @@ class ImBien extends DataEntity
      * @ORM\Column(type="boolean")
      */
     private $isArchived = false;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isGerance = false;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $referenceGerance;
 
     /**
      * @ORM\OneToOne(targetEntity=ImArea::class, fetch="EAGER", cascade={"persist", "remove"})
@@ -189,12 +206,6 @@ class ImBien extends DataEntity
      * @Groups({"user:read", "suivi:read"})
      */
     private $financial;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=ImOwner::class, fetch="EAGER", inversedBy="biens")
-     * @Groups({"user:read"})
-     */
-    private $owner;
 
     /**
      * @ORM\OneToMany(targetEntity=ImPhoto::class, mappedBy="bien")
@@ -349,9 +360,7 @@ class ImBien extends DataEntity
 
     public function getTypeBienSeloger(): string
     {
-        $data = ["Appartement", "maison", "parking/Box", "terrain", "boutique", "bureaux", "château", "immeuble", "maison/villa", "inconnu"];
-
-        return $data[$this->codeTypeBien];
+        return $this->getCodeTypeBienSeLoger($this->codeTypeBien);
     }
 
     /**
@@ -588,18 +597,6 @@ class ImBien extends DataEntity
     public function setFinancial(ImFinancial $financial): self
     {
         $this->financial = $financial;
-
-        return $this;
-    }
-
-    public function getOwner(): ?ImOwner
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?ImOwner $owner): self
-    {
-        $this->owner = $owner;
 
         return $this;
     }
@@ -944,6 +941,30 @@ class ImBien extends DataEntity
                 $contract->setBien(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsGerance(): ?bool
+    {
+        return $this->isGerance;
+    }
+
+    public function setIsGerance(bool $isGerance): self
+    {
+        $this->isGerance = $isGerance;
+
+        return $this;
+    }
+
+    public function getReferenceGerance(): ?string
+    {
+        return $this->referenceGerance;
+    }
+
+    public function setReferenceGerance(?string $referenceGerance): self
+    {
+        $this->referenceGerance = $referenceGerance;
 
         return $this;
     }

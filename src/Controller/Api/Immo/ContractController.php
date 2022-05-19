@@ -3,9 +3,9 @@
 namespace App\Controller\Api\Immo;
 
 use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImContract;
 use App\Entity\Immo\ImContractant;
+use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImTenant;
@@ -37,7 +37,7 @@ class ContractController extends AbstractController
      * @throws Exception
      */
     public function submitForm($type, ImContract $obj, Request $request, ApiResponse $apiResponse,
-                               ValidatorService $validator, DataImmo $dataEntity, SerializerInterface $serializer): JsonResponse
+                               ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
         $em = $this->doctrine->getManager();
         $data = json_decode($request->getContent());
@@ -50,49 +50,56 @@ class ContractController extends AbstractController
 
         $obj = $dataEntity->setDataContract($obj, $data, $bien);
 
-        $others = $em->getRepository(ImContract::class)->findBy(['bien' => $data->bien->id, 'status' => ImContract::STATUS_PROCESSING]);
-        foreach($others as $other){
-            $other->setStatus(ImContract::STATUS_END);
+        if($type !== "update"){
+            $others = $em->getRepository(ImContract::class)->findBy(['bien' => $data->bien->id, 'status' => ImContract::STATUS_PROCESSING]);
+            foreach($others as $other){
+                $other->setStatus(ImContract::STATUS_END);
+            }
         }
-
-        $prospect = $em->getRepository(ImProspect::class)->find($data->prospect->id);
-
-        $dataPerson = [
-            "agency" => $bien->getAgency()->getId(),
-            "lastname" => $prospect->getLastname(),
-            "firstname" => $prospect->getFirstname(),
-            "civility" => $prospect->getCivility(),
-            "email" => $prospect->getEmail(),
-            "phone1" => $prospect->getPhone1(),
-            "phone2" => $prospect->getPhone2(),
-            "phone3" => $prospect->getPhone3(),
-            "address" => $prospect->getAddress(),
-            "complement" => $prospect->getComplement(),
-            "zipcode" => $prospect->getZipcode(),
-            "city" => $prospect->getCity(),
-            "birthday" => $prospect->getBirthdayJavascript(),
-            "type" => $bien->getCodeTypeAd() == ImBien::AD_PDT_INVEST ? ImBuyer::TYPE_INVEST : ImBuyer::TYPE_BUYER,
-            "country" => "France",
-            "negotiator" => null
-        ];
-
-        $dataPerson = json_decode(json_encode($dataPerson));
 
         $contractant = (new ImContractant())
             ->setContract($obj)
-            ->setOwner($bien->getOwner())
         ;
 
-        if($bien->getCodeTypeAd() == ImBien::AD_LOCATION || $bien->getCodeTypeAd() == ImBien::AD_LOCATION_VAC){
-            $tenant = $dataEntity->setDataTenant(new ImTenant(), $dataPerson);
-            $em->persist($tenant);
+        if($data->prospect){
+            $prospect = $em->getRepository(ImProspect::class)->find($data->prospect->id);
 
-            $contractant->setTenant($tenant);
-        }else{
-            $buyer = $dataEntity->setDataBuyer(new ImBuyer(), $dataPerson);
-            $em->persist($buyer);
+            $dataPerson = [
+                "agency" => $bien->getAgency()->getId(),
+                "lastname" => $prospect->getLastname(),
+                "firstname" => $prospect->getFirstname(),
+                "civility" => $prospect->getCivility(),
+                "email" => $prospect->getEmail(),
+                "phone1" => $prospect->getPhone1(),
+                "phone2" => $prospect->getPhone2(),
+                "phone3" => $prospect->getPhone3(),
+                "address" => $prospect->getAddress(),
+                "complement" => $prospect->getComplement(),
+                "zipcode" => $prospect->getZipcode(),
+                "city" => $prospect->getCity(),
+                "birthday" => $prospect->getBirthdayJavascript(),
+                "country" => "France",
+                "category" => null,
+                "negotiator" => null
+            ];
 
-            $contractant->setBuyer($buyer);
+            $dataPerson = json_decode(json_encode($dataPerson));
+
+            if($bien->getCodeTypeAd() == ImBien::AD_LOCATION || $bien->getCodeTypeAd() == ImBien::AD_LOCATION_VAC){
+                $tenant = $dataEntity->setDataTenant(new ImTenant(), $dataPerson);
+                $em->persist($tenant);
+
+                $contractant->setTenant($tenant);
+            }else{
+                $owner = $dataEntity->setDataOwner(new ImOwner(), $dataPerson);
+                $em->persist($owner);
+
+                $contractant->setOwner($owner);
+            }
+
+            if($suivi = $this->getSuivi($bien, $prospect)){
+                $suivi->setStatus(ImSuivi::STATUS_END);
+            }
         }
 
         $noErrors = $validator->validate($obj);
@@ -100,15 +107,13 @@ class ContractController extends AbstractController
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
         }
 
-        if($suivi = $this->getSuivi($bien, $prospect)){
-            $suivi->setStatus(ImSuivi::STATUS_END);
-        }
+        $bien->setStatus(ImBien::STATUS_INACTIF);
 
         $em->persist($contractant);
         $em->persist($obj);
         $em->flush();
 
-        return $apiResponse->apiJsonResponseSuccessful("ok");
+        return $apiResponse->apiJsonResponse($obj, ImContract::CONTRACT_READ);
     }
 
     /**
@@ -127,16 +132,15 @@ class ContractController extends AbstractController
      * @OA\Tag(name="Contracts")
      *
      * @param Request $request
-     * @param SerializerInterface $serializer
      * @param ValidatorService $validator
      * @param ApiResponse $apiResponse
      * @param DataImmo $dataEntity
      * @return JsonResponse
      * @throws Exception
      */
-    public function create(Request $request, SerializerInterface $serializer, ValidatorService $validator, ApiResponse $apiResponse, DataImmo $dataEntity): JsonResponse
+    public function create(Request $request, ValidatorService $validator, ApiResponse $apiResponse, DataImmo $dataEntity): JsonResponse
     {
-        return $this->submitForm("create", new ImContract(), $request, $apiResponse, $validator, $dataEntity, $serializer);
+        return $this->submitForm("create", new ImContract(), $request, $apiResponse, $validator, $dataEntity);
     }
 
     /**
@@ -158,7 +162,6 @@ class ContractController extends AbstractController
      * @OA\Tag(name="Contracts")
      *
      * @param Request $request
-     * @param SerializerInterface $serializer
      * @param ValidatorService $validator
      * @param ApiResponse $apiResponse
      * @param ImContract $obj
@@ -166,10 +169,10 @@ class ContractController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(Request $request, SerializerInterface $serializer, ValidatorService $validator,  ApiResponse $apiResponse,
+    public function update(Request $request, ValidatorService $validator,  ApiResponse $apiResponse,
                            ImContract $obj, DataImmo $dataEntity): JsonResponse
     {
-        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $serializer);
+        return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
 
     private function getSuivi($bien, $prospect)
@@ -180,5 +183,34 @@ class ContractController extends AbstractController
             'bien' => $bien,
             'prospect' => $prospect
         ]);
+    }
+
+    /**
+     * @Route("/{id}/status/{status}", name="switch_status", options={"expose"=true}, methods={"POST"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Return message successful",
+     * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Forbidden for not good role or user",
+     * )
+     *
+     * @OA\Tag(name="Changelogs")
+     *
+     * @param ImContract $obj
+     * @param $status
+     * @param ApiResponse $apiResponse
+     * @return JsonResponse
+     */
+    public function switchStatus(ImContract $obj, $status, ApiResponse $apiResponse): JsonResponse
+    {
+        $em = $this->doctrine->getManager();
+
+        $obj->setStatus($status);
+        $em->flush();
+
+        return $apiResponse->apiJsonResponse($obj, ImContract::CONTRACT_READ);
     }
 }

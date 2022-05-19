@@ -1,0 +1,12 @@
+{% extends 'user/pages/biens/template.html.twig' %}
+
+{% set page_title %}Carte des biens actifs{% endset %}
+{% set submenuActive = "Carte des biens actifs" %}
+
+{% block main_content %}
+    <div id="map-biens"
+         data-donnees="{{ data }}"
+    >
+        {% include "dashboard/layout/components/spinner.html.twig" %}
+    </div>
+{% endblock %}

@@ -78,6 +78,28 @@
   .title-col-2{
     margin-bottom: 24px;
   }
+
+  .page-infos-2-image{
+    max-width: 220px;
+  }
+
+  .page-infos-2-text{
+    margin-top: 24px;
+    font-size: 15px;
+
+    & + .page-infos-2-actions{
+      margin-top: 24px;
+    }
+  }
+
+  .page-infos-2-actions{
+    .btn:not(:last-child){
+      margin-bottom: 12px;
+    }
+    a.btn{
+      width: calc(100% - 48px);
+    }
+  }
 }
 
 .page-default-menu{
@@ -241,6 +263,9 @@
     .page-col-2{
       width: calc(100% - 260px - 48px);
       margin-left: 48px;
+    }
+    .page-infos-2-content{
+      padding: 24px;
     }
   }
 

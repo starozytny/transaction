@@ -4,13 +4,15 @@
 {% set submenuActive = "Liste des biens" %}
 
 {% block main_content %}
-    <div id="list-biens" data-donnees="{{ data }}"
-         data-filter-owner="{{ filterOwner }}"
+    <div id="list-biens"
+         data-agency-id="{{ user.agency.id }}"
+         data-donnees="{{ data }}"
          data-filter-nego="{{ filterNego }}"
          data-filter-user="{{ filterUser }}"
          data-page-status="{{ st }}"
          data-rapprochements="{{ rapprochements }}"
          data-suivis="{{ suivis }}"
+         data-contractants="{{ contractants }}"
     >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>

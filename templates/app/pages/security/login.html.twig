@@ -1,41 +1,58 @@
 {% extends 'app/pages/security/template.html.twig' %}
 
-{% block title %}Connexion à son espace{% endblock %}
+{% block title %}Espace connexion | Ultimmo Transaction {{ parent() }}{% endblock %}
 
 {% block main_content %}
-    <div class="main-content">
-        <h1>Se connecter</h1>
+    <div class="login-page">
+        <div class="col-1">
+            <div class="title-page">
+                <h1>Espace Ultimmo Transaction</h1>
+                <p class="subtitle">Accédez à votre espace professionnel de gestion de biens immobiliers.</p>
+            </div>
 
-        <form method="post" class="form-login">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
+            <form method="post" class="form-login">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
 
-           <div class="line">
-               <label for="inputUsername">Nom utilisateur</label>
-               <input type="text" value="{{ last_username }}" name="username" id="inputUsername" required autofocus>
-           </div>
-            <div class="line">
-                <label for="inputPassword">Mot de passe</label>
-                <div class="see-password">
-                    <input type="password" name="password" id="inputPassword" required>
-                    <span class="icon-vision btn-see-password"></span>
+                <div class="line">
+                    <label for="inputUsername">
+                        <span class="icon-user"></span> Nom utilisateur
+                    </label>
+                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" required autofocus>
                 </div>
-            </div>
+                <div class="line">
+                    <label for="inputPassword">
+                        <span class="icon-padlock"></span> Mot de passe
+                    </label>
+                    <div class="see-password">
+                        <input type="password" name="password" id="inputPassword" required>
+                        <span class="icon-vision btn-see-password"></span>
+                    </div>
+                </div>
 
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}"
+                >
 
-            <div class="line">
-                <div id="forget"></div>
-            </div>
+                <div class="line">
+                    <div id="forget"></div>
+                </div>
 
-            <div class="form-button">
-                <button class="btn btn-primary" type="submit">
-                    Se connecter
-                </button>
+                <div class="form-button">
+                    <button class="btn btn-color0" type="submit">
+                        Se connecter
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="col-2">
+            <div class="image">
+                <img src="{{ asset('build/app/images/image-4.jpg') }}" alt="formulaire connexion au logiciel de transaction">
             </div>
-        </form>
+        </div>
+
     </div>
 {% endblock %}

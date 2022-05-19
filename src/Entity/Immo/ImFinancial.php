@@ -28,12 +28,6 @@ class ImFinancial
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
-     */
-    private $typeCalcul;
-
-    /**
      * @ORM\Column(type="float")
      * @Groups({"user:read", "suivi:read"})
      */
@@ -44,24 +38,6 @@ class ImFinancial
      * @Groups({"user:read"})
      */
     private $provisionCharges;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $provisionOrdures;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $tva;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"user:read"})
-     */
-    private $totalTerme;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -85,7 +61,7 @@ class ImFinancial
      * @ORM\Column(type="float", nullable=true)
      * @Groups({"user:read"})
      */
-    private $honoraireBail;
+    private $complementLoyer;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -103,7 +79,7 @@ class ImFinancial
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
-    private $typeBail = 0;
+    private $typeBail;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -116,7 +92,6 @@ class ImFinancial
      * @Groups({"user:read"})
      */
     private $priceHorsAcquereur;
-
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -143,10 +118,10 @@ class ImFinancial
     private $notaire;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"user:read"})
      */
-    private $honoraireChargeDe = self::VENTE_CHARGES_ACQUEREUR;
+    private $honoraireChargeDe;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -184,21 +159,61 @@ class ImFinancial
      */
     private $detailsProcedure;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $priceMurs;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $rente;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $repartitionCa;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $resultatN2;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $resultatN1;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $resultatN0;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $natureBailCommercial;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $priceHt;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $pricePlafond;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTypeCalcul(): ?int
-    {
-        return $this->typeCalcul;
-    }
-
-    public function setTypeCalcul(int $typeCalcul): self
-    {
-        $this->typeCalcul = $typeCalcul;
-
-        return $this;
     }
 
     public function getPrice(): ?float
@@ -221,30 +236,6 @@ class ImFinancial
     public function setProvisionCharges(?float $provisionCharges): self
     {
         $this->provisionCharges = $provisionCharges;
-
-        return $this;
-    }
-
-    public function getTva(): ?float
-    {
-        return $this->tva;
-    }
-
-    public function setTva(?float $tva): self
-    {
-        $this->tva = $tva;
-
-        return $this;
-    }
-
-    public function getTotalTerme(): ?float
-    {
-        return $this->totalTerme;
-    }
-
-    public function setTotalTerme(?float $totalTerme): self
-    {
-        $this->totalTerme = $totalTerme;
 
         return $this;
     }
@@ -285,18 +276,6 @@ class ImFinancial
         return $this;
     }
 
-    public function getHonoraireBail(): ?float
-    {
-        return $this->honoraireBail;
-    }
-
-    public function setHonoraireBail(?float $honoraireBail): self
-    {
-        $this->honoraireBail = $honoraireBail;
-
-        return $this;
-    }
-
     public function getTypeCharges(): ?int
     {
         return $this->typeCharges;
@@ -317,18 +296,6 @@ class ImFinancial
     public function setTotalGeneral(?float $totalGeneral): self
     {
         $this->totalGeneral = $totalGeneral;
-
-        return $this;
-    }
-
-    public function getProvisionOrdures(): ?float
-    {
-        return $this->provisionOrdures;
-    }
-
-    public function setProvisionOrdures(?float $provisionOrdures): self
-    {
-        $this->provisionOrdures = $provisionOrdures;
 
         return $this;
     }
@@ -410,7 +377,7 @@ class ImFinancial
         return $this->honoraireChargeDe;
     }
 
-    public function setHonoraireChargeDe(int $honoraireChargeDe): self
+    public function setHonoraireChargeDe(?int $honoraireChargeDe): self
     {
         $this->honoraireChargeDe = $honoraireChargeDe;
 
@@ -505,43 +472,151 @@ class ImFinancial
      * @return string
      * @Groups({"user:read"})
      */
-    public function getHonoraireChargeDeString(): string
+    public function getHonoraireChargeDeString(): ?string
     {
         $charges = ["Acquéreur", "Vendeur", "Acquéreur et vendeur"];
 
-        return $charges[$this->honoraireChargeDe];
+        return  $this->honoraireChargeDe !== null ? $charges[$this->honoraireChargeDe] : null;
     }
 
     /**
-     * @return string
      * @Groups({"user:read"})
      */
-    public function getTypeCalculString(): string
-    {
-        $charges = ["Pas de taxe", "TVA/Loyer + Charges", "TVA/Loyer + Charges + Ordures ménagères"];
-
-        return $charges[$this->typeCalcul];
-    }
-
-    /**
-     * @return string
-     * @Groups({"user:read"})
-     */
-    public function getTypeChargesString(): string
+    public function getTypeChargesString(): ?string
     {
         $charges = ["Forfaitaires mensuelles", "Prévisionnelles mensuelles avec régularisation annuelle", "Remboursement annuel par le locataire"];
 
-        return $charges[$this->typeCharges];
+        return $this->typeCharges !== null ? $charges[$this->typeCharges] : null;
     }
 
     /**
      * @return string
      * @Groups({"user:read"})
      */
-    public function getTypeBailString(): string
+    public function getTypeBailString(): ?string
     {
-        $charges = ["", "Habitation", "Commercial", "Meublé", "Professionnel", "Garage"];
+        $charges = ["Habitation", "Commercial", "Meublé", "Professionnel", "Garage"];
 
-        return $charges[$this->typeBail];
+        return $this->typeBail !== null ? $charges[$this->typeBail] : null;
+    }
+
+    public function getPriceMurs(): ?float
+    {
+        return $this->priceMurs;
+    }
+
+    public function setPriceMurs(?float $priceMurs): self
+    {
+        $this->priceMurs = $priceMurs;
+
+        return $this;
+    }
+
+    public function getComplementLoyer(): ?float
+    {
+        return $this->complementLoyer;
+    }
+
+    public function setComplementLoyer(?float $complementLoyer): self
+    {
+        $this->complementLoyer = $complementLoyer;
+
+        return $this;
+    }
+
+    public function getRente(): ?float
+    {
+        return $this->rente;
+    }
+
+    public function setRente(?float $rente): self
+    {
+        $this->rente = $rente;
+
+        return $this;
+    }
+
+    public function getRepartitionCa(): ?string
+    {
+        return $this->repartitionCa;
+    }
+
+    public function setRepartitionCa(?string $repartitionCa): self
+    {
+        $this->repartitionCa = $repartitionCa;
+
+        return $this;
+    }
+
+    public function getResultatN2(): ?int
+    {
+        return $this->resultatN2;
+    }
+
+    public function setResultatN2(?int $resultatN2): self
+    {
+        $this->resultatN2 = $resultatN2;
+
+        return $this;
+    }
+
+    public function getResultatN1(): ?int
+    {
+        return $this->resultatN1;
+    }
+
+    public function setResultatN1(?int $resultatN1): self
+    {
+        $this->resultatN1 = $resultatN1;
+
+        return $this;
+    }
+
+    public function getResultatN0(): ?int
+    {
+        return $this->resultatN0;
+    }
+
+    public function setResultatN0(?int $resultatN0): self
+    {
+        $this->resultatN0 = $resultatN0;
+
+        return $this;
+    }
+
+    public function getNatureBailCommercial(): ?string
+    {
+        return $this->natureBailCommercial;
+    }
+
+    public function setNatureBailCommercial(?string $natureBailCommercial): self
+    {
+        $this->natureBailCommercial = $natureBailCommercial;
+
+        return $this;
+    }
+
+    public function getPriceHt(): ?float
+    {
+        return $this->priceHt;
+    }
+
+    public function setPriceHt(?float $priceHt): self
+    {
+        $this->priceHt = $priceHt;
+
+        return $this;
+    }
+
+    public function getPricePlafond(): ?float
+    {
+        return $this->pricePlafond;
+    }
+
+    public function setPricePlafond(?float $pricePlafond): self
+    {
+        $this->pricePlafond = $pricePlafond;
+
+        return $this;
     }
 }

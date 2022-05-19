@@ -33,4 +33,10 @@
   .list-month .item .col-5{
     font-size: 16px;
   }
+
+  .btn-icon {
+    [class^="icon-"]{
+      font-size: 20px;
+    }
+  }
 }

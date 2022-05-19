@@ -43,19 +43,19 @@
                 'name': 'negociateurs'
             },
             {
-                'path': path('user_prospects'),
-                'label': 'Prospects',
-                'name': 'prospects'
+                'path': path('user_prospects', {'type': 'acquereurs'}),
+                'label': 'Futurs acquéreurs',
+                'name': 'prospects-acquereurs'
+            },
+            {
+                'path': path('user_prospects', {'type': 'locataires'}),
+                'label': 'Futurs locataires',
+                'name': 'prospects-locataires'
             },
             {
                 'path': path('user_owners'),
                 'label': 'Propriétaires',
                 'name': 'proprietaires'
-            },
-            {
-                'path': path('user_buyers'),
-                'label': 'Acquéreurs',
-                'name': 'acquereurs'
             },
             {
                 'path': path('user_tenants'),
@@ -82,6 +82,18 @@
         'label': 'Paramètres',
         'name': 'parametres'
     },
+    {
+        'path': path('user_utilities_financial'),
+        'icon': 'calculator',
+        'label': 'Financement',
+        'name': 'financement'
+    },
+    {
+        'path': path('user_mails'),
+        'icon': 'email',
+        'label': 'Boite mails',
+        'name': 'boite-mails'
+    }
 ] %}
 
 {% set menuBottom = [

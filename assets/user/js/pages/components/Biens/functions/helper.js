@@ -47,10 +47,9 @@ function getItems (type, prefix) {
             ];
         case "informs":
             return [
-                { value: 0, label: 'Personne à contacter',  identifiant: 'inform-nobody' },
-                { value: 1, label: 'Propriétaire',          identifiant: 'inform-owner' },
-                // { value: 2, label: 'Locataire(s)',          identifiant: 'inform-tenant' },
-                { value: 3, label: 'Autres',                identifiant: 'inform-others' },
+                { value: 0, label: 'Agence',       identifiant: 'inform-agency' },
+                { value: 1, label: 'Négociateur',  identifiant: 'inform-negotiator' },
+                { value: 2, label: 'Autres',       identifiant: 'inform-other' },
             ];
         case "occupations":
             return [
@@ -66,24 +65,17 @@ function getItems (type, prefix) {
             ];
         case "bails":
             return [
-                { value: 0, label: 'Aucun',          identifiant: 'bail-aucun' },
-                { value: 1, label: 'Habitation',     identifiant: 'habitation' },
-                { value: 2, label: 'Commercial',     identifiant: 'commercial' },
-                { value: 3, label: 'Meublé',         identifiant: 'meublé' },
-                { value: 4, label: 'Professionnel',  identifiant: 'professionnel' },
-                { value: 5, label: 'Garage',         identifiant: 'garage' },
+                { value: 0, label: 'Habitation',     identifiant: 'habitation' },
+                { value: 1, label: 'Commercial',     identifiant: 'commercial' },
+                { value: 2, label: 'Meublé',         identifiant: 'meublé' },
+                { value: 3, label: 'Professionnel',  identifiant: 'professionnel' },
+                { value: 4, label: 'Garage',         identifiant: 'garage' },
             ];
         case "charges":
             return [
                 { value: 0, label: 'Forfaitaires mensuelles',     identifiant: 'charges-fo' },
                 { value: 1, label: 'Prévisionnelles mensuelles avec régularisation annuelle',  identifiant: 'regularisation' },
                 { value: 2, label: 'Remboursement annuel par le locataire',     identifiant: 'remboursement' },
-            ];
-        case "calculs":
-            return [
-                { value: 0, label: 'Pas de taxe',                               identifiant: 'no-taxe' },
-                { value: 1, label: 'TVA/Loyer + Charges',                       identifiant: 'tva-l-c' },
-                { value: 2, label: 'TVA/Loyer + Charges + Ordures ménagères',   identifiant: 'tva-l-c-o' },
             ];
         case "diags":
             return [
@@ -186,7 +178,11 @@ function getItems (type, prefix) {
                 { value: 6, label: 'Château',           identifiant: 'chateau' },
                 { value: 7, label: 'Immeuble',          identifiant: 'immeuble' },
                 { value: 8, label: 'Terrain + Maison',  identifiant: 'terrain-maison' },
-                { value: 9, label: 'Inconnu',           identifiant: 'inconnu' },
+                { value: 9, label: 'Bâtiment',          identifiant: 'batiment' },
+                { value: 10, label: 'Local',            identifiant: 'local' },
+                { value: 11, label: 'Loft/Atelier/Surface', identifiant: 'loft' },
+                { value: 12, label: 'Hôtel particulier',    identifiant: 'hotel' },
+                { value: 13, label: 'Autres',               identifiant: 'inconnu' },
             ];
         default:
             return [
@@ -195,9 +191,9 @@ function getItems (type, prefix) {
                 { value: 2, label: "Viager",                         identifiant: "viager" },
                 { value: 3, label: "Produit d'investissement",       identifiant: "pdt-invest" },
                 { value: 4, label: "Cession bail",                   identifiant: "cession-bail" },
-                { value: 5, label: "Location vacances",              identifiant: "location-vac" },
-                { value: 6, label: "Vente prestige",                 identifiant: "vente-prestige" },
-                { value: 7, label: "Fond de commerce",               identifiant: "fond-commerce" },
+                // { value: 5, label: "Location vacances",              identifiant: "location-vac" },
+                { value: 6, label: "Vente de prestige",                 identifiant: "vente-prestige" },
+                { value: 7, label: "Vente fond de commerce",               identifiant: "fond-commerce" },
             ]
     }
 }

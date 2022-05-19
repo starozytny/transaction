@@ -116,14 +116,15 @@ class ImNegotiator
     private $prospects;
 
     /**
-     * @ORM\OneToMany(targetEntity=ImBuyer::class, mappedBy="negotiator")
-     */
-    private $buyers;
-
-    /**
      * @ORM\OneToMany(targetEntity=ImContract::class, mappedBy="negotiator")
      */
     private $contracts;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"admin:read"})
+     */
+    private $isDefault = false;
 
     public function __construct()
     {
@@ -131,7 +132,6 @@ class ImNegotiator
         $this->owners = new ArrayCollection();
         $this->tenants = new ArrayCollection();
         $this->prospects = new ArrayCollection();
-        $this->buyers = new ArrayCollection();
         $this->contracts = new ArrayCollection();
     }
 
@@ -422,36 +422,6 @@ class ImNegotiator
     }
 
     /**
-     * @return Collection|ImBuyer[]
-     */
-    public function getBuyers(): Collection
-    {
-        return $this->buyers;
-    }
-
-    public function addBuyer(ImBuyer $buyer): self
-    {
-        if (!$this->buyers->contains($buyer)) {
-            $this->buyers[] = $buyer;
-            $buyer->setNegotiator($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBuyer(ImBuyer $buyer): self
-    {
-        if ($this->buyers->removeElement($buyer)) {
-            // set the owning side to null (unless already changed)
-            if ($buyer->getNegotiator() === $this) {
-                $buyer->setNegotiator(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|ImContract[]
      */
     public function getContracts(): Collection
@@ -477,6 +447,18 @@ class ImNegotiator
                 $contract->setNegotiator(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsDefault(): ?bool
+    {
+        return $this->isDefault;
+    }
+
+    public function setIsDefault(bool $isDefault): self
+    {
+        $this->isDefault = $isDefault;
 
         return $this;
     }

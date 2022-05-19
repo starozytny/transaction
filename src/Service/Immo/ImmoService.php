@@ -5,8 +5,6 @@ namespace App\Service\Immo;
 
 
 use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImSupport;
 use App\Entity\User;
 use App\Service\Data\DataImmo;

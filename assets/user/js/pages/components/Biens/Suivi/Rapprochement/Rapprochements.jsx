@@ -12,8 +12,8 @@ import { Alert }         from "@dashboardComponents/Tools/Alert";
 import { Button }        from "@dashboardComponents/Tools/Button";
 import { LoaderElement } from "@dashboardComponents/Layout/Loader";
 
-import DataState     from "@userPages/components/Biens/Form/data";
 import Sort          from "@commonComponents/functions/sort";
+import DataState     from "@userPages/components/Biens/Form/data";
 import Formulaire    from "@dashboardComponents/functions/Formulaire";
 
 import { ProspectFormulaire }       from "@dashboardPages/components/Immo/Prospects/ProspectForm";
@@ -22,13 +22,15 @@ import { OfferFormulaire }          from "@userPages/components/Biens/Suivi/Offe
 import { OfferFinalFormulaire }     from "@userPages/components/Biens/Suivi/Offer/OfferFinalForm";
 import { RapprochementsItem }       from "@userPages/components/Biens/Suivi/Rapprochement/RapprochementsItem";
 import { ContractFormulaire }       from "@userPages/components/Biens/Suivi/Contract/ContractForm";
+import { AgendaFormulaire }         from "@userPages/components/Agenda/AgendaForm";
 
 const URL_DELETE_OFFER = "api_offers_delete";
 const URL_SWITCH_STATUS_OFFER = "api_offers_switch_status";
 
 const STATUS_SUIVI_TO_PROCESS = 0;
 const STATUS_SUIVI_PROCESSING = 1;
-const STATUS_SUIVI_ENDING = 2;
+const STATUS_SUIVI_PROCESSED = 2;
+const STATUS_SUIVI_ENDING = 3;
 
 const STATUS_PROPAL = 0;
 const STATUS_ACCEPT = 1;
@@ -45,33 +47,37 @@ export class Rapprochements extends Component {
             context: "list",
             subContext: props.context ? props.context : "tous",
             sorter: SORTER,
-            loadDataProspects: false,
-            allProspects: [],
+            loadDataProspects: props.loadDataProspects ? props.loadDataProspects : false,
+            allProspects: props.allProspects ? props.allProspects : [],
             data: props.data,
             rapprochements: props.rapprochements,
             element: null,
             offer: null,
+            persons: {}
         }
 
         this.aside = React.createRef();
 
         this.handleChangeContext = this.handleChangeContext.bind(this);
+        this.handleUpdateData = this.handleUpdateData.bind(this);
         this.handleSelectProspect = this.handleSelectProspect.bind(this);
         this.handleUpdateList = this.handleUpdateList.bind(this);
         this.handleDeleteOffer = this.handleDeleteOffer.bind(this);
         this.handleSwitchStatusOffer = this.handleSwitchStatusOffer.bind(this);
     }
 
-    componentDidMount() {
-        DataState.getProspects(this);
-    }
-
     handleChangeSubContext = (subContext) => { this.setState({ subContext })}
 
     handleChangeContext = (context, element, offer = null) => {
         let nElement = element ? element : this.state.element;
+        let nPersons = {};
 
         switch (context){
+            case "create-visit":
+                nPersons = {users: [], managers: [], negotiators: [], owners: [], tenants: [], buyers: [],
+                    prospects: [{ value: element.id, label: element.fullname, email: element.email }]}
+                this.aside.current.handleOpen("Programmer une visite pour " + element.fullname);
+                break;
             case "final-offer":
                 this.aside.current.handleOpen("Finaliser l'offre de " + element.fullname);
                 break;
@@ -100,14 +106,16 @@ export class Rapprochements extends Component {
                 break;
         }
 
-        this.setState({ context: context, element: nElement, offer: offer })
+        this.setState({ context: context, element: nElement, offer: offer, persons: nPersons })
     }
+
+    handleUpdateData = (allProspects) => { this.setState({ allProspects }) }
 
     handleUpdateListProspects = (element, newContext = null) => {
         const { data, context, sorter } = this.state;
 
         Formulaire.updateData(this, sorter, newContext, context, data, element);
-        DataState.getProspects(this);
+        DataState.getProspects(this, this.props.onUpdateProspects);
     }
 
     handleUpdateList = (element, newContext=null) => {
@@ -148,14 +156,40 @@ export class Rapprochements extends Component {
     }
 
     render () {
-        const { elem, societyId, agencyId, negotiators, offers, onUpdateOffers } = this.props;
-        const { loadDataProspects, context, subContext, data, allProspects, element, offer, rapprochements } = this.state;
+        const { isFromListBien, elem, societyId, agencyId, offers, onUpdateOffers,
+            users, managers, negotiators, owners, tenants, buyers, historiesVisits } = this.props;
+        const { loadDataProspects, context, subContext, data, allProspects, element, offer, rapprochements, persons } = this.state;
 
         let nData = [];
+        let nbPossibilities = 0, nbProcessing = 0, nbEnding = 0;
 
         let items = [];
         let prospects = [], prospectsUsed = [];
         data.forEach(el => {
+
+            let noDuplicateHistories = [];
+            el.prospect.nbVisits = 0;
+
+            historiesVisits.forEach(hi => {
+                if(!noDuplicateHistories.includes(hi.visiteId)){
+                    noDuplicateHistories.push(hi.visiteId)
+
+                    if(hi.status !== 4){
+                        hi.prospects.forEach(pr => {
+                            if(pr.value === el.prospect.id){
+                                el.prospect.nbVisits = el.prospect.nbVisits + 1;
+                            }
+                        })
+                    }
+                }
+            })
+
+            if(el.status === STATUS_SUIVI_TO_PROCESS || el.status === STATUS_SUIVI_PROCESSING){
+                nbProcessing++;
+            }else{
+                nbEnding++;
+            }
+
             nData.push({ lastname: el.prospect.lastname, suivi: el, rapprochement: null })
             prospects.push(el.prospect);
             prospectsUsed.push(el.prospect.id);
@@ -165,7 +199,10 @@ export class Rapprochements extends Component {
             rapprochements.forEach(el => {
                 if(!prospectsUsed.includes(el.prospect)){
                     let prospect = getProspect(allProspects, el.prospect);
-                    nData.push({ lastname: prospect.lastname, suivi: null, rapprochement: prospect })
+                    if(prospect){
+                        nbPossibilities++;
+                        nData.push({ lastname: prospect.lastname, suivi: null, rapprochement: prospect })
+                    }
                 }
             })
         }
@@ -176,7 +213,7 @@ export class Rapprochements extends Component {
 
             switch (subContext) {
                 case "ending":
-                    if(item.suivi && item.rapprochement === null && item.suivi.status === STATUS_SUIVI_ENDING){
+                    if(item.suivi && item.rapprochement === null && (item.suivi.status === STATUS_SUIVI_PROCESSED || item.suivi.status === STATUS_SUIVI_ENDING)){
                         canAdd = true;
                     }
                     break;
@@ -210,32 +247,47 @@ export class Rapprochements extends Component {
             }
         })
 
+        let nNegotiators = [];
+        if(negotiators){
+            negotiators.map(ne => {
+                ne.agency = { id: agencyId }
+                nNegotiators.push(ne)
+            })
+        }
+
         let contentAside;
         switch (context) {
+            case "create-visit":
+                contentAside = <AgendaFormulaire type="create" useAside={true} refAside={this.aside}
+                                                 users={users} managers={managers} negotiators={negotiators} owners={owners} tenants={tenants}
+                                                 buyers={buyers} prospects={allProspects} bienId={elem.id} persons={persons}
+                                                 onUpdateList={this.props.onUpdateVisits}
+                                                 url_create={'api_visits_create'} key={i++}
+                />
+                break;
             case "final-offer":
-                contentAside = <ContractFormulaire type="create" bien={elem} prospect={element}
-                                                   onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
-                break
+                contentAside = <ContractFormulaire type="create" bien={elem} prospect={element}/>;
+                break;
             case "accept-offer":
                 contentAside = <OfferFinalFormulaire type="update" element={offer}
                                                     onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
-                break
+                break;
             case "update-offer":
                 contentAside = <OfferFormulaire type="update" bien={elem} prospect={element} element={offer}
                                                 onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
-                break
+                break;
             case "create-offer":
                 contentAside = <OfferFormulaire type="create" bien={elem} prospect={element}
                                                 onUpdateList={onUpdateOffers} onChangeContext={this.handleChangeContext}/>;
-                break
+                break;
             case "update":
-                contentAside = <ProspectFormulaire type="update" isFromRead={true} isClient={true} element={element} bienId={elem.id} negotiators={negotiators}
+                contentAside = <ProspectFormulaire type="update" isFromRead={true} isClient={true} element={element} bienId={elem.id} negotiators={nNegotiators}
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
-                break
+                break;
             case "create":
-                contentAside = <ProspectFormulaire type="create" isFromRead={true} isClient={true} bienId={elem.id} negotiators={negotiators}
+                contentAside = <ProspectFormulaire type="create" isFromRead={true} isClient={true} bienId={elem.id} negotiators={nNegotiators}
                                                    societyId={societyId} agencyId={agencyId} onUpdateList={this.handleUpdateListProspects}/>;
-                break
+                break;
             case "select":
                 contentAside = <Prospects isSelect={true} isClient={true}
                                           donnees={JSON.stringify(allProspects)} prospects={prospects} classes={" "}
@@ -246,10 +298,10 @@ export class Rapprochements extends Component {
         }
 
         let subMenu = [
-            { value: 'tous',            label: 'Tous' },
-            { value: 'possibilities',   label: 'Possibilités' },
-            { value: 'processing',      label: 'A traiter/En cours' },
-            { value: 'ending',          label: 'Traités' },
+            { value: 'tous',            label: 'Tous'               , total: nbPossibilities + nbProcessing + nbEnding},
+            { value: 'possibilities',   label: 'Possibilités'       , total: nbPossibilities},
+            { value: 'processing',      label: 'A traiter/En cours' , total: nbProcessing},
+            { value: 'ending',          label: 'Traités'            , total: nbEnding},
         ]
 
         let pageInfosActions = <>
@@ -257,7 +309,27 @@ export class Rapprochements extends Component {
             <Button outline={true} onClick={() => this.handleChangeContext('create')}>Ajouter</Button>
         </>
 
-        return (<div className="details-tab-infos">
+        let content = <>
+            <div className="title-col-2">
+                <div className="tab-col-2 rapprochement-submenu">
+                    {subMenu.map((sub, index) => {
+                        return <div className={"item" + (sub.value === subContext ? " active" : "")}
+                                    onClick={() => this.handleChangeSubContext(sub.value)}
+                                    key={index}>
+                            <span>{sub.label}</span>
+                            <span className="total">
+                                        <span>{sub.total}</span>
+                                    </span>
+                        </div>
+                    })}
+                </div>
+            </div>
+            <div>
+                {!loadDataProspects ? <LoaderElement /> : (items && items.length !== 0 ? items : <Alert>Aucun résultat</Alert>)}
+            </div>
+        </>
+
+        return <div className="details-tab-infos">
             <div className="page-default">
                 <div className="page-col-1">
                     <div className="body-col-1">
@@ -270,25 +342,12 @@ export class Rapprochements extends Component {
                     </div>
                 </div>
                 <div className="page-col-2">
-                    <div className="title-col-2">
-                        <div className="tab-col-2">
-                            {subMenu.map((sub, index) => {
-                                return <div className={"item" + (sub.value === subContext ? " active" : "")}
-                                            onClick={() => this.handleChangeSubContext(sub.value)}
-                                            key={index}>
-                                    {sub.label}
-                                </div>
-                            })}
-                        </div>
-                    </div>
-                    <div>
-                        {!loadDataProspects ? <LoaderElement /> : (items && items.length !== 0 ? items : <Alert>Aucun résultat</Alert>)}
-                    </div>
+                    {content}
                 </div>
             </div>
 
-            <Aside ref={this.aside} content={contentAside}/>
-        </div>)
+            <Aside ref={this.aside} isDoubleAside={!!isFromListBien} content={contentAside}/>
+        </div>
     }
 }
 

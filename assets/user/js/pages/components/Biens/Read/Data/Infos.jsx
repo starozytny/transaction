@@ -6,6 +6,9 @@ import Sanitize  from "@commonComponents/functions/sanitaze";
 export function Infos({ elem }){
     return (<div className="details-tab-infos">
         <div className="details-tab-infos-main details-identifiant">
+            <div className="createdAt">
+                Ajouté le {elem.createdAtString} par {elem.createdBy} {elem.updatedBy && ("- Modifié le " + elem.updatedAtString + " par " + elem.updatedBy)}
+            </div>
             <div>
                 <div className="label">Identifiant immuable</div>
                 <div>{elem.identifiant}</div>

@@ -6,6 +6,7 @@ nav.fixed{
   left: 0;
   width: 100%;
   background-color: var(--alpha);
+  box-shadow: 0 4px 12px var(--greyShadow);
   z-index: 1000;
 
   & + main{
@@ -34,12 +35,26 @@ nav.fixed{
   background: var(--fondMenu);
   padding-top: 24px;
 
+  .items{
+    .item:last-child{
+      background-color: var(--color0);
+
+      a{
+        color: var(--alpha);
+        opacity: 1;
+      }
+    }
+  }
+
+
   a, .item-dropdown > span{
     @include flex(row, center, flex-start);
     padding: 12px;
     width: calc(100% - 24px);
-    color: var(--fond);
+    color: var(--txt);
     opacity: 0.6;
+    @include fontSemibold();
+    text-transform: uppercase;
 
     [class^="icon-"]{
       display: inline-block;

@@ -107,20 +107,6 @@ class FakeOwnersCreate extends Command
                     $new = ($new)
                         ->setIsGerance(true)
                         ->setCodeGerance(time())
-                        ->setFolderGerance(time())
-                    ;
-                }
-
-                if($fake->numberBetween(0,1) == 1){
-                    $new = ($new)
-                        ->setIsCoIndivisaire(true)
-                        ->setCoLastname(mb_strtoupper($fake->lastName))
-                        ->setCoFirstname($fake->firstName)
-                        ->setCoPhone($fake->e164PhoneNumber)
-                        ->setCoEmail($fake->email)
-                        ->setCoAddress($fake->streetName)
-                        ->setCoZipcode($fake->postcode)
-                        ->setCoCity($fake->city)
                     ;
                 }
 

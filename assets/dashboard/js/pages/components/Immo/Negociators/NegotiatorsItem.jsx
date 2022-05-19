@@ -6,10 +6,17 @@ import Actions from "@userComponents/functions/actions";
 
 import { ButtonIcon, ButtonIconDropdown } from "@dashboardComponents/Tools/Button";
 import { Selector }     from "@dashboardComponents/Layout/Selector";
+import { MailAside }    from "@dashboardPages/components/Mails/MailAside";
 
 export class NegotiatorsItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.mail = React.createRef();
+    }
+
     render () {
-        const { isClient, isUser, biens, elem, onDelete, onChangeContext, onSelectors } = this.props
+        const { agencyId, isClient, isUser, biens, elem, onDelete, onChangeContext, onSelectors } = this.props;
 
         let totalBien = 0;
         biens.forEach(bien => {
@@ -17,6 +24,11 @@ export class NegotiatorsItem extends Component {
                 totalBien++;
             }
         })
+
+        let actions = Actions.getDefaultAction(isClient, elem, "negotiator", this.mail);
+        actions = actions.concat([
+            {data: <a target="_blank" href={Routing.generate('user_printer_negotiator_rapport', {'id': elem.id})}>Imprimer rapport</a>},
+        ])
 
         return <div className="item">
             {!isClient && <Selector id={elem.id} onSelectors={onSelectors} />}
@@ -46,15 +58,21 @@ export class NegotiatorsItem extends Component {
                                 <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'fn': elem.id})}>
                                     Biens
                                 </ButtonIcon>}
-                            <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
-                            {!isUser && <>
-                                <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+
+                            {agencyId === elem.agency.id && <>
+                                <ButtonIcon icon="pencil" onClick={() => onChangeContext("update", elem)}>Modifier</ButtonIcon>
+                                {!isUser && !elem.isDefault && <>
+                                    <ButtonIcon icon="trash" onClick={() => onDelete(elem)}>Supprimer</ButtonIcon>
+                                </>}
                             </>}
-                            <ButtonIconDropdown icon="dropdown" items={Actions.getDefaultAction(isClient, elem, "negotiator")}>Autres</ButtonIconDropdown>
+
+                            <ButtonIconDropdown icon="dropdown" items={actions}>Autres</ButtonIconDropdown>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <MailAside ref={this.mail} to={[elem.email]} />
         </div>
     }
 }

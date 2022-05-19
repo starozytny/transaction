@@ -8,9 +8,9 @@ import { Input, Select }       from "@dashboardComponents/Tools/Fields";
 import { DatePick }            from "@dashboardComponents/Tools/DatePicker";
 import { Alert }               from "@dashboardComponents/Tools/Alert";
 import { Button }              from "@dashboardComponents/Tools/Button";
+import { FormLayout }          from "@dashboardComponents/Layout/Elements";
 
 import Validateur              from "@commonComponents/functions/validateur";
-import Helper                  from "@commonComponents/functions/helper";
 import Formulaire              from "@dashboardComponents/functions/Formulaire";
 
 const URL_CREATE_ELEMENT     = "api_contracts_create";
@@ -32,16 +32,15 @@ export function ContractFormulaire ({ type, onChangeContext, onUpdateList, eleme
         context={type}
         url={url}
         bien={bien}
-        prospect={prospect}
+        prospect={prospect ? prospect : null}
         sellAt={element ? Formulaire.setDateOrEmptyIfNull(element.sellAtJavascript) : new Date()}
         sellBy={element ? Formulaire.setValueEmptyIfNull(element.sellBy, 1) : 1}
         sellWhy={element ? Formulaire.setValueEmptyIfNull(element.sellWhy, 1) : 1}
         onUpdateList={onUpdateList}
-        onChangeContext={onChangeContext}
         messageSuccess={msg}
     />
 
-    return <div className="form">{form}</div>
+    return onChangeContext ? <FormLayout onChangeContext={onChangeContext} form={form}>Modifier le contrat</FormLayout> : <div className="form">{form}</div>
 }
 
 class ContractForm extends Component {
@@ -62,11 +61,6 @@ class ContractForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        Helper.toTop();
-        document.getElementById("sellBy").focus()
     }
 
     handleChange = (e) => { this.setState({[e.currentTarget.name]: e.currentTarget.value}) }
@@ -101,13 +95,16 @@ class ContractForm extends Component {
 
                 axios({ method: method, url: url, data: this.state })
                     .then(function (response) {
-                        location.reload();
+                        if(self.props.onUpdateList){
+                            Formulaire.loader(false);
+                            self.props.onUpdateList(response.data);
+                            self.setState({ success: messageSuccess, errors: [] })
+                        }else{
+                            location.reload();
+                        }
                     })
                     .catch(function (error) {
                         Formulaire.displayErrors(self, error);
-                    })
-                    .then(() => {
-                        Formulaire.loader(false);
                     })
                 ;
             }
@@ -140,7 +137,7 @@ class ContractForm extends Component {
                 {success !== false && <Alert type="info">{success}</Alert>}
 
                 <div className="line line-2">
-                    <DatePick identifiant="sellAt" valeur={sellAt} errors={errors} onChange={(e) => this.handleChangeDate('sallAt', e)}>Date de sortie</DatePick>
+                    <DatePick identifiant="sellAt" valeur={sellAt} errors={errors} onChange={(e) => this.handleChangeDate('sellAt', e)}>Date de sortie</DatePick>
                     <div className="form-group" />
                 </div>
 

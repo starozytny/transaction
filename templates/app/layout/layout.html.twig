@@ -10,38 +10,22 @@
     {% set menu = [
         {
             'path': path('app_homepage'),
-            'label': 'Accueil',
+            'label': 'Ultimmo Transaction',
             'name': 'accueil'
-        },
-        {
-            'dropdown': true,
-            'label': 'Dropdown',
-            'items': [
-                {
-                    'path': path('app_homepage'),
-                    'label': 'Item 1',
-                    'name': 'item-2'
-                },
-                {
-                    'path': path('app_homepage'),
-                    'label': 'Item 2',
-                    'name': 'item-2'
-                }
-            ]
         }
     ] %}
 
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         {% set menuLogged = [
             {
-                'path': path('app_login'),
-                'label': 'Mon espace',
-                'name': 'login'
-            },
-            {
                 'path': path('app_logout'),
                 'label': 'Déconnexion',
                 'name': 'logout'
+            },
+            {
+                'path': path('app_login'),
+                'label': 'Mon espace',
+                'name': 'login'
             }
         ] %}
         {% set menu = menu | merge(menuLogged) %}
@@ -49,7 +33,7 @@
         {% set menuLogged = [
             {
                 'path': path('app_login'),
-                'label': 'Mon espace',
+                'label': 'Se connecter',
                 'name': 'login'
             }
         ] %}

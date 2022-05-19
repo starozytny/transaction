@@ -1,14 +1,27 @@
 @import "../vars/vars";
 
 @import "../../../common/css/components/homepage";
-@import "./split/biens/suivi";
+@import "./split/visite/visite";
 @import "../../../common/css/pages/changelog";
+
+#chart-ads-tiny{
+  & > div{
+    position: absolute;
+    bottom: -68px;
+    left: -83px;
+    z-index: 0;
+    width: 111%;
+    transform: scale(0.5);
+    border-radius: 8px;
+  }
+}
 
 .badge-changelog.badge{
   color: var(--alpha);
 }
 
 .welcome-back{
+
   .avatar{
     background: var(--fondContent);
   }
@@ -19,9 +32,16 @@
 }
 
 .dash-card-1{
+  position: relative;
+  overflow: hidden;
   @include flex(column, flex-start, space-between);
   color: var(--txt);
   transition: all 0.2s ease-in-out;
+
+  .card-header, .card-body{
+    position: relative;
+    z-index: 10;
+  }
 
   &:hover{
     transform: scale(1.01);
@@ -49,6 +69,7 @@
   }
 }
 
+.dash-card-chart-ads,
 .dash-card-changelogs{
   max-width: 1024px;
 
@@ -116,6 +137,10 @@
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
+  .welcome-back {
+    margin-bottom: 0;
+  }
+
   .dash-card-changelogs{
     width: calc(100% - 48px);
     margin-right: 0;
@@ -126,12 +151,12 @@
       @include flex(row, flex-start, flex-start);
 
       .changelog-date{
-        width: 180px;
+        width: 200px;
       }
 
       .changelog-content{
         margin-left: 48px;
-        width: calc(100% - 180px - 48px);
+        width: calc(100% - 200px - 48px);
       }
     }
   }
@@ -152,7 +177,15 @@
     width: calc(25% - 48px - 18px);
   }
 
+  .dash-line-2{
+    @include flex(row, flex-start, flex-start);
+  }
+
   .dash-card-changelogs{
     width: calc(60% - 48px);
+  }
+
+  .dash-card-chart-ads{
+    width: 40%;
   }
 }

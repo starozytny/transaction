@@ -3,13 +3,14 @@
 namespace App\Command;
 
 use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImBuyer;
 use App\Entity\Immo\ImNegotiator;
 use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImProspect;
 use App\Entity\Immo\ImSettings;
+use App\Entity\Immo\ImStat;
 use App\Entity\Immo\ImSupport;
 use App\Entity\Immo\ImTenant;
+use App\Entity\Mail;
 use App\Entity\Notification;
 use App\Entity\Society;
 use App\Entity\User;
@@ -64,10 +65,11 @@ class AdminUsersCreateCommand extends Command
 
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
+            ImStat::class,
+            Mail::class,
             Notification::class,
             ImTenant::class,
             ImSupport::class,
-            ImBuyer::class,
             ImOwner::class,
             ImProspect::class,
             ImNegotiator::class,
@@ -154,12 +156,24 @@ class AdminUsersCreateCommand extends Command
             "))
         ;
 
+        $negotiator = (new ImNegotiator())
+            ->setAgency($agency)
+            ->setIsDefault(true)
+            ->setLastname("Logilink")
+            ->setFirstname("Négociateur")
+            ->setCode("LN")
+        ;
+
+        $this->em->persist($negotiator);
+
         $setting = (new ImSettings())->setAgency($agency);
         $this->immoService->initiateSupport($agency);
 
         $this->em->persist($setting);
         $this->em->persist($agency);
+
         $io->text('AGENCE : Logilink créée' );
+        $this->em->flush();
 
         $io->title('Création des utilisateurs');
         foreach ($users as $user) {
@@ -172,6 +186,7 @@ class AdminUsersCreateCommand extends Command
                 ->setPassword($password)
                 ->setSociety($society)
                 ->setAgency($agency)
+                ->setNegotiatorId($negotiator->getId())
             ;
 
             $this->em->persist($new);
@@ -204,9 +219,11 @@ class AdminUsersCreateCommand extends Command
             for($i=0; $i<20 ; $i++) {
                 $agenceSociety = $i == 0 ? $society : $societies[$fake->numberBetween(0,9)];
 
+                $name = $fake->name;
+
                 $data = [
                     "society" => $agenceSociety->getId(),
-                    "name" => $fake->name,
+                    "name" => $name,
                     "dirname" => "fake-" . $i,
                     "website" => $fake->domainName,
                     "email" => $fake->email,
@@ -236,6 +253,16 @@ class AdminUsersCreateCommand extends Command
 
                 $new = $this->dataImmo->setDataAgency(new ImAgency(), $data);
 
+                $negotiator = (new ImNegotiator())
+                    ->setAgency($new)
+                    ->setIsDefault(true)
+                    ->setLastname($name)
+                    ->setFirstname("Négociateur")
+                    ->setCode("N" . $i)
+                ;
+
+                $this->em->persist($negotiator);
+
                 $setting = (new ImSettings())->setAgency($new);
                 $this->immoService->initiateSupport($new);
 
@@ -248,6 +275,7 @@ class AdminUsersCreateCommand extends Command
                 ];
             }
             $io->text('AGENCE : Agences fake créées' );
+            $this->em->flush();
 
             $io->title('Création de 550 utilisateurs fake');
             $fake = Factory::create();

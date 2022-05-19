@@ -27,7 +27,7 @@ class ImOwner extends DataEntity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "contractant-owner:read"})
      */
     private $id;
 
@@ -57,25 +57,25 @@ class ImOwner extends DataEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "agenda:read", "owner:read", "contractant-owner:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "owner:read", "contractant-owner:read"})
      */
     private $phone1;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "owner:read", "contractant-owner:read"})
      */
     private $phone2;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read", "owner:read"})
+     * @Groups({"admin:read", "user:read", "owner:read", "contractant-owner:read"})
      */
     private $phone3;
 
@@ -122,66 +122,6 @@ class ImOwner extends DataEntity
     private $codeGerance;
 
     /**
-     * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read", "owner:read"})
-     */
-    private $folderGerance;
-
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"admin:read", "user:read", "owner:read"})
-     */
-    private $isCoIndivisaire = false;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
-     */
-    private $coLastname;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
-     */
-    private $coFirstname;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
-     */
-    private $coAddress;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
-     */
-    private $coComplement;
-
-    /**
-     * @ORM\Column(type="string", length=20, nullable=true)
-     * @Groups({"admin:read", "user:read"})
-     */
-    private $coZipcode;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read"})
-     */
-    private $coCity;
-
-    /**
-     * @ORM\Column(type="string", length=60, nullable=true)
-     * @Groups({"admin:read", "user:read", "owner:read"})
-     */
-    private $coPhone;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"admin:read", "user:read", "owner:read"})
-     */
-    private $coEmail;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"admin:read", "user:read", "owner:read"})
      */
@@ -201,11 +141,6 @@ class ImOwner extends DataEntity
     private $society;
 
     /**
-     * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="owner")
-     */
-    private $biens;
-
-    /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="owners")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"admin:read", "user:read", "owner:read"})
@@ -217,10 +152,15 @@ class ImOwner extends DataEntity
      */
     private $contractants;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ImSeller::class, mappedBy="owner")
+     */
+    private $sellers;
+
     public function __construct()
     {
-        $this->biens = new ArrayCollection();
         $this->contractants = new ArrayCollection();
+        $this->sellers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -429,126 +369,6 @@ class ImOwner extends DataEntity
         return $this;
     }
 
-    public function getFolderGerance(): ?string
-    {
-        return $this->folderGerance;
-    }
-
-    public function setFolderGerance(?string $folderGerance): self
-    {
-        $this->folderGerance = $folderGerance;
-
-        return $this;
-    }
-
-    public function getIsCoIndivisaire(): ?bool
-    {
-        return $this->isCoIndivisaire;
-    }
-
-    public function setIsCoIndivisaire(bool $isCoIndivisaire): self
-    {
-        $this->isCoIndivisaire = $isCoIndivisaire;
-
-        return $this;
-    }
-
-    public function getCoLastname(): ?string
-    {
-        return $this->coLastname;
-    }
-
-    public function setCoLastname(?string $coLastname): self
-    {
-        $this->coLastname = $coLastname;
-
-        return $this;
-    }
-
-    public function getCoFirstname(): ?string
-    {
-        return $this->coFirstname;
-    }
-
-    public function setCoFirstname(?string $coFirstname): self
-    {
-        $this->coFirstname = $coFirstname;
-
-        return $this;
-    }
-
-    public function getCoAddress(): ?string
-    {
-        return $this->coAddress;
-    }
-
-    public function setCoAddress(?string $coAddress): self
-    {
-        $this->coAddress = $coAddress;
-
-        return $this;
-    }
-
-    public function getCoComplement(): ?string
-    {
-        return $this->coComplement;
-    }
-
-    public function setCoComplement(?string $coComplement): self
-    {
-        $this->coComplement = $coComplement;
-
-        return $this;
-    }
-
-    public function getCoZipcode(): ?string
-    {
-        return $this->coZipcode;
-    }
-
-    public function setCoZipcode(?string $coZipcode): self
-    {
-        $this->coZipcode = $coZipcode;
-
-        return $this;
-    }
-
-    public function getCoCity(): ?string
-    {
-        return $this->coCity;
-    }
-
-    public function setCoCity(?string $coCity): self
-    {
-        $this->coCity = $coCity;
-
-        return $this;
-    }
-
-    public function getCoPhone(): ?string
-    {
-        return $this->coPhone;
-    }
-
-    public function setCoPhone(?string $coPhone): self
-    {
-        $this->coPhone = $coPhone;
-
-        return $this;
-    }
-
-    public function getCoEmail(): ?string
-    {
-        return $this->coEmail;
-    }
-
-    public function setCoEmail(?string $coEmail): self
-    {
-        $this->coEmail = $coEmail;
-
-        return $this;
-    }
-
     public function getCategory(): ?int
     {
         return $this->category;
@@ -563,7 +383,7 @@ class ImOwner extends DataEntity
 
     /**
      * @return string
-     * @Groups({"admin:read", "user:read"})
+     * @Groups({"admin:read", "user:read", "contractant-owner:read"})
      */
     public function getFullnameCivility(): string
     {
@@ -588,24 +408,6 @@ class ImOwner extends DataEntity
         return $this->getFullAddressString($this->address, $this->zipcode, $this->city, $this->complement, $this->country);
     }
 
-    /**
-     * @return string
-     * @Groups({"admin:read", "user:read", "owner:read"})
-     */
-    public function getCoFullname(): string
-    {
-        return $this->getFullNameString($this->coLastname, $this->coFirstname);
-    }
-
-    /**
-     * @return string
-     * @Groups({"admin:read", "user:read", "owner:read"})
-     */
-    public function getCoFullAddress(): string
-    {
-        return $this->getFullAddressString($this->coAddress, $this->coZipcode, $this->coCity);
-    }
-
     public function getSociety(): ?Society
     {
         return $this->society;
@@ -614,36 +416,6 @@ class ImOwner extends DataEntity
     public function setSociety(?Society $society): self
     {
         $this->society = $society;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ImBien[]
-     */
-    public function getBiens(): Collection
-    {
-        return $this->biens;
-    }
-
-    public function addBien(ImBien $bien): self
-    {
-        if (!$this->biens->contains($bien)) {
-            $this->biens[] = $bien;
-            $bien->setOwner($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBien(ImBien $bien): self
-    {
-        if ($this->biens->removeElement($bien)) {
-            // set the owning side to null (unless already changed)
-            if ($bien->getOwner() === $this) {
-                $bien->setOwner(null);
-            }
-        }
 
         return $this;
     }
@@ -684,6 +456,36 @@ class ImOwner extends DataEntity
             // set the owning side to null (unless already changed)
             if ($contractant->getOwner() === $this) {
                 $contractant->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImSeller[]
+     */
+    public function getSellers(): Collection
+    {
+        return $this->sellers;
+    }
+
+    public function addSeller(ImSeller $seller): self
+    {
+        if (!$this->sellers->contains($seller)) {
+            $this->sellers[] = $seller;
+            $seller->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeller(ImSeller $seller): self
+    {
+        if ($this->sellers->removeElement($seller)) {
+            // set the owning side to null (unless already changed)
+            if ($seller->getOwner() === $this) {
+                $seller->setOwner(null);
             }
         }
 

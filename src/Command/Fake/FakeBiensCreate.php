@@ -8,6 +8,8 @@ use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImConfidential;
+use App\Entity\Immo\ImContract;
+use App\Entity\Immo\ImContractant;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
@@ -20,6 +22,7 @@ use App\Entity\Immo\ImOwner;
 use App\Entity\Immo\ImPhoto;
 use App\Entity\Immo\ImPublish;
 use App\Entity\Immo\ImRoom;
+use App\Entity\Immo\ImSeller;
 use App\Entity\Immo\ImSuivi;
 use App\Entity\Immo\ImVisit;
 use App\Entity\Society;
@@ -78,6 +81,9 @@ class FakeBiensCreate extends Command
 
         $io->title('Reset des tables');
         $this->databaseService->resetTable($io, [
+            ImSeller::class,
+            ImContractant::class,
+            ImContract::class,
             ImPhoto::class,
             ImPublish::class,
             ImOffer::class,
@@ -113,11 +119,15 @@ class FakeBiensCreate extends Command
             $isDraft = $fake->numberBetween(0, 1);
             $isArchived = $fake->numberBetween(0, 1);
 
+            $codeTypeBien = $fake->numberBetween(0, 13);
+
             $data = [
+                "caseTypeBien" => $codeTypeBien == ImBien::BIEN_PARKING_BOX || $codeTypeBien == ImBien::BIEN_TERRAIN ? 2 : 1,
                 "codeTypeAd" => (string) $fake->numberBetween(0, 7),
-                "codeTypeBien" => (string) $fake->numberBetween(0, 9),
+                "codeTypeBien" => (string) $codeTypeBien,
                 "libelle" => $fake->name,
                 "negotiator" => $negotiator->getId(),
+
                 "areaTotal" => (string) $fake->randomFloat(2),
                 "areaHabitable" => (string) $fake->randomFloat(2),
                 "areaLand" => (string) $fake->randomFloat(2),
@@ -127,6 +137,7 @@ class FakeBiensCreate extends Command
                 "areaBathroom" => (string) $fake->randomFloat(2),
                 "areaLiving" => (string) $fake->randomFloat(2),
                 "areaDining" => (string) $fake->randomFloat(2),
+
                 "piece" => (string) $fake->randomDigit(),
                 "room" => (string) $fake->randomDigit(),
                 "bathroom" => (string) $fake->randomDigit(),
@@ -134,6 +145,7 @@ class FakeBiensCreate extends Command
                 "balcony" => (string) $fake->randomDigit(),
                 "parking" => (string) $fake->randomDigit(),
                 "box" => (string) $fake->randomDigit(),
+
                 "dispoAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "buildAt" => $fake->numberBetween(1600, 2021),
                 "busy" => $fake->numberBetween(0, 2),
@@ -147,6 +159,12 @@ class FakeBiensCreate extends Command
                 "isWcSeparate" => $answers[$fake->numberBetween(0,2)],
                 "codeWater" =>  $fake->numberBetween(0, 1),
                 "exposition" => (string) $fake->numberBetween(0, 5),
+                "nbVehicles" => (string) $fake->numberBetween(0, 10),
+                "isImmeubleParking" => (string) $fake->numberBetween(0, 2),
+                "isParkingIsolate" => (string) $fake->numberBetween(0, 2),
+                "age1" => (string) $fake->numberBetween(50, 100),
+                "age2" => (string) $fake->numberBetween(50, 100),
+
                 "hasGarden" => $answers[$fake->numberBetween(0,2)],
                 "hasTerrace" => $answers[$fake->numberBetween(0,2)],
                 "hasPool" => $answers[$fake->numberBetween(0,2)],
@@ -164,6 +182,7 @@ class FakeBiensCreate extends Command
                 "situation" => $fake->name,
                 "sousType" => $fake->numberBetween(0, 10),
                 "sol" => $fake->numberBetween(0, 4),
+
                 "beforeJuly" => 1,
                 "isVirgin" => 0,
                 "isSend" => 0,
@@ -175,6 +194,7 @@ class FakeBiensCreate extends Command
                 "gesValue" => (string) $fake->numberBetween(0, 350),
                 "minAnnual" => (string) $fake->numberBetween(0, 10000),
                 "maxAnnual" => (string) $fake->numberBetween(0, 10000),
+
                 "address" => $fake->streetName,
                 "hideAddress" => $fake->numberBetween(0, 1),
                 "zipcode" => $fake->postcode,
@@ -185,20 +205,20 @@ class FakeBiensCreate extends Command
                 "lat" => (string) $fake->latitude,
                 "lon" => (string) $fake->longitude,
                 "hideMap" => $fake->numberBetween(0, 1),
-                "typeCalcul" => $fake->numberBetween(0, 2),
+
                 "price" => (string) $fake->randomFloat(2),
+                "priceHt" => (string) $fake->randomFloat(2),
+                "pricePlafond" => (string) $fake->randomFloat(2),
                 "provisionCharges" => (string) $fake->randomFloat(2),
-                "provisionOrdures" => (string) $fake->randomFloat(2),
-                "tva" => (string) $fake->randomFloat(2),
-                "totalTerme" => (string) $fake->randomFloat(2),
                 "caution" => (string) $fake->randomFloat(2),
                 "honoraireTtc" => (string) $fake->randomFloat(2),
-                "honoraireBail" => (string) $fake->randomFloat(2),
                 "edl" => (string) $fake->randomFloat(2),
                 "typeCharges" => $fake->numberBetween(0, 2),
                 "totalGeneral" => (string) $fake->randomFloat(2),
                 "typeBail" => $fake->numberBetween(0, 3),
                 "durationBail" => (string) $fake->numberBetween(0,5),
+                "complementLoyer" => (string) $fake->randomFloat(2),
+
                 "chargesMensuelles" => (string) $fake->randomFloat(2),
                 "notaire" => (string) $fake->randomFloat(2),
                 "foncier" => (string) $fake->randomFloat(2),
@@ -211,17 +231,29 @@ class FakeBiensCreate extends Command
                 "chargesLot" => (string) $fake->randomFloat(2),
                 "isSyndicProcedure" => $fake->numberBetween(0,1),
                 "detailsProcedure" => $fake->sentence,
-                "inform" => $fake->numberBetween(0, 3),
+
+                "priceMurs" => (string) $fake->randomFloat(2),
+                "rente" => (string) $fake->randomFloat(2),
+                "repartitionCa" => "70% bar / 30% restaurant",
+                "resultatN2" => (string) $fake->randomNumber(5),
+                "resultatN1" => (string) $fake->randomNumber(5),
+                "resultatN0" => (string) $fake->randomNumber(5),
+                "natureBailCommercial" => "Tous commerces sauf restauration",
+
+                "inform" => $fake->numberBetween(0, 2),
                 "lastname" => $fake->lastName,
                 "phone1" => $fake->e164PhoneNumber,
                 "email" => $fake->email,
                 "visiteAt" => $fake->numberBetween(0,1) == 1 ? $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z") : null,
                 "keysNumber" => $fake->randomNumber(1),
                 "keysWhere" => $fake->streetName,
+
                 "typeAdvert" => $fake->numberBetween(0, 2),
                 "contentSimple" => $fake->text,
                 "contentFull" => $fake->sentence(255),
+
                 "isDraft" => $isArchived ? false : $isDraft,
+
                 "codeTypeMandat" => (string) $fake->numberBetween(0, 3),
                 "startAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
                 "endAt" => $fake->date("Y-m-d\\TH\\:i\\:s\\.\\0\\0\\0\\Z"),
@@ -250,7 +282,7 @@ class FakeBiensCreate extends Command
             $area           = $this->dataImmo->setDataArea(new ImArea(), $data);
             $mandat         = $this->dataImmo->setDataMandat($this->immoService, new ImMandat(), $data, $user->getAgency());
 
-            $obj = $this->dataImmo->setDataBien($this->immoService, $user->getAgency(), new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
+            $obj = $this->dataImmo->setDataBien($user->getAgency(), new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
                 $localisation, $financial, $confidential, $advert, $mandat, []);
 
             $choicesOwners = [];
@@ -262,6 +294,20 @@ class FakeBiensCreate extends Command
             $owner = null;
             if(count($choicesOwners) > 0){
                 $owner = $choicesOwners[$fake->numberBetween(0,count($choicesOwners) - 1)];
+
+                $contract = (new ImContract())
+                    ->setNegotiator($negotiator)
+                    ->setBien($obj)
+                ;
+
+                $this->em->persist($contract);
+
+                $contractant = (new ImContractant())
+                    ->setContract($contract)
+                    ->setOwner($owner)
+                ;
+
+                $this->em->persist($contractant);
             }
 
             $obj = ($obj)
@@ -269,7 +315,6 @@ class FakeBiensCreate extends Command
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(4))) . $i)
                 ->setAgency($user->getAgency())
-                ->setOwner($owner)
             ;
 
             if($isArchived == 0){

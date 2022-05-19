@@ -1,0 +1,84 @@
+.line-dest-options{
+  margin-top: -20px;
+  transform: translateY(28px);
+
+  & + .line-to{
+    width: calc(100% - 40px - 24px);
+  }
+
+  .actions{
+    @include flex(row, flex-start, flex-end);
+
+    & > div{
+      color: var(--primary);
+      cursor: pointer;
+      opacity: 0.8;
+      transition: all 0.2s ease-in-out;
+
+      &:hover{
+        opacity: 1;
+      }
+
+      &:not(:last-child){
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.line:not(:last-child).line-theme{
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--greyShadow);
+}
+
+.line-subject{
+  padding-top: 24px;
+  margin-top: 24px;
+  border-top: 1px solid var(--greyShadow);
+}
+
+.line-dest{
+  .form-group{
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .react-selectize.default.root-node{
+      width: calc(100% - 48px - 24px);
+    }
+  }
+
+  .form-group-error{
+    .error{
+      margin-left: 56px;
+    }
+  }
+
+  label{
+    margin-bottom: 0;
+    margin-right: 12px;
+    width: 48px;
+  }
+}
+
+#preview{
+  margin: 24px;
+  border: 1px solid var(--grey);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.line-btn-mails{
+  .form-button{
+    justify-content: space-between;
+
+    & > div:first-child{
+      @include flex(row, flex-start, flex-start);
+
+      & > *:not(:last-child){
+        margin-right: 12px;
+      }
+    }
+  }
+}
