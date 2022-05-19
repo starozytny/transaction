@@ -52,7 +52,7 @@ export class AgencyRead extends Component {
         //     statsBiens = <ChartBiens donnees={JSON.stringify([element.stats[last - 1]])} />
         // }
 
-        let logo = (element.logo) ? "/immo/logos/" + element.logo : `https://robohash.org/${element.id}?size=64x64`;
+        let logo = (element.logo) ? "/immo/logos/" + element.logo : `https://robohash.org/${element.id}`;
 
         return <>
             <div>

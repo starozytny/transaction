@@ -16,7 +16,7 @@
                         {% if app.user.avatar %}
                             <img src="{{ asset(app.user.avatarFile) }}" alt="Avatar de {{ app.user.userIdentifier }}">
                         {% else %}
-                            <img src="https://robohash.org/{{ app.user.userIdentifier }}?size=126x126" alt="Avatar de {{ app.user.userIdentifier }}"/>
+                            <img src="https://robohash.org/{{ app.user.userIdentifier }}" alt="Avatar de {{ app.user.userIdentifier }}"/>
                         {% endif %}
                     </a>
                 </div>
