@@ -11,7 +11,7 @@ export function ReadCard (props)
         <div className="item-read-2">
             <div className="col-1">
                 <div className="image">
-                    <img src={avatar ? avatar : "https://robohash.org/" + elem.id + "?size=64x64"} alt="Avatar"/>
+                    <img src={avatar ? avatar : "https://robohash.org/" + elem.id} alt="Avatar"/>
                 </div>
                 <div className="infos">
                     <div className="name">

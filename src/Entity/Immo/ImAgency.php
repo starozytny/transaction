@@ -752,7 +752,7 @@ class ImAgency extends DataEntity
      */
     public function getLogoFile(): string
     {
-        return $this->getFileOrDefault($this->logo, self::FOLDER_LOGO, "https://robohash.org/" . $this->id . "?size=120x120");
+        return $this->getFileOrDefault($this->logo, self::FOLDER_LOGO, "https://robohash.org/" . $this->id);
     }
 
     /**

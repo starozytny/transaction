@@ -376,7 +376,7 @@ class ImNegotiator
      */
     public function getAvatarFile(): string
     {
-        return $this->avatar ? "/" . self::FOLDER_AVATARS . $this->avatar : "https://robohash.org/" . $this->id . "?size=64x64";
+        return $this->avatar ? "/" . self::FOLDER_AVATARS . $this->avatar : "https://robohash.org/" . $this->id;
     }
 
     public function getAvatar(): ?string

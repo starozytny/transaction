@@ -114,9 +114,12 @@ class BienController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $old = clone $obj;
-        $old = $serializer->serialize($old, 'json', ['groups' => User::USER_READ]);
-        $old = json_decode($old, true);
+        if($type === "update"){
+            $old = clone $obj;
+            $old = $serializer->serialize($old, 'json', ['groups' => User::USER_READ]);
+            $old = json_decode($old, true);
+        }
+
 
         /** @var User $user */
         $user = $this->getUser();

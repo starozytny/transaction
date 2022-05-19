@@ -108,7 +108,7 @@ export function Step9({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                                     <div className="negociateur">
                                         {nego && <>
                                             <div className="avatar">
-                                                <img src={`https://robohash.org/${nego.fullname}?size=64x64`} alt="Avatar" />
+                                                <img src={`https://robohash.org/${nego.fullname}`} alt="Avatar" />
                                             </div>
                                             <span className="tooltip">{nego.fullname}</span>
                                         </>}
