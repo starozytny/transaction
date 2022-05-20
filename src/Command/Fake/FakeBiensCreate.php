@@ -311,6 +311,7 @@ class FakeBiensCreate extends Command
             }
 
             $obj = ($obj)
+                ->setReference(uniqid())
                 ->setUser($user)
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(4))) . $i)
