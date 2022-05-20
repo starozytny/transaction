@@ -145,9 +145,9 @@ function InfosPrice ({ elem }) {
             {/*{financial.taxeHabitation && <div>Taxe habitation : {Sanitaze.toFormatCurrency(financial.taxeHabitation)}</div>}*/}
             {/*{financial.notaire && <div>Frais de notaire : {Sanitaze.toFormatCurrency(financial.notaire)}</div>}*/}
             {financial.honoraireChargeDe === 1 ? <>
-                <div>Honoraires à la charge du {(financial.honoraireChargeDeString).toLowerCase()}</div>
+                <div>Honoraires à la charge du {financial.honoraireChargeDeString ? (financial.honoraireChargeDeString).toLowerCase() : ""}</div>
             </> : <>
-                <div>Honoraires à la charge de l'{(financial.honoraireChargeDeString).toLowerCase()}</div>
+                <div>Honoraires à la charge de l'{financial.honoraireChargeDeString ? (financial.honoraireChargeDeString).toLowerCase() : ""}</div>
                 {financial.honorairePourcentage && <div>{Sanitaze.toFormatCurrency(financial.honorairePourcentage)} % du prix du bien hors honoraires</div>}
                 {financial.priceHorsAcquereur && <div>Prix du bien hors honoraires : {Sanitaze.toFormatCurrency(financial.priceHorsAcquereur)}</div>}
             </>}
