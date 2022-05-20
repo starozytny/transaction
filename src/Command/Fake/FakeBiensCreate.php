@@ -110,9 +110,9 @@ class FakeBiensCreate extends Command
 
         $answers = [0,1,99];
 
-        $io->title('Création de 1000 biens fake');
+        $io->title('Création de 200 biens fake');
         $fake = Factory::create();
-        for($i=0; $i<1000 ; $i++) {
+        for($i=0; $i<200 ; $i++) {
             $negotiator = $negotiators[$fake->numberBetween(0,$nbNegotiators - 1)];
             $user = $users[$fake->numberBetween(0,$nbUsers - 1)];
 
@@ -311,6 +311,7 @@ class FakeBiensCreate extends Command
             }
 
             $obj = ($obj)
+                ->setReference(uniqid())
                 ->setUser($user)
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(4))) . $i)
