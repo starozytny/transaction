@@ -110,7 +110,7 @@ function Infos ({ elem }) {
             <div className="address">{elem.localisation.zipcode}, {elem.localisation.city}</div>
             <div className="features">
                 <span>{elem.area.habitable}m²</span>
-                {elem.number.room &&<span> - {elem.number.room} chambre{elem.number.room > 1 ? "s" : ""}</span>}
+                {elem.number.room ? <span> - {elem.number.room} chambre{elem.number.room > 1 ? "s" : ""}</span> : null}
             </div>
         </div>
     </>
