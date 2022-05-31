@@ -6,8 +6,6 @@ use App\Entity\DataEntity;
 use App\Transaction\Entity\Donnee\DoQuartier;
 use App\Transaction\Entity\Donnee\DoSol;
 use App\Transaction\Entity\Donnee\DoSousType;
-use App\Entity\Society;
-use App\Entity\User;
 use App\Transaction\Repository\Immo\ImAgencyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -200,18 +198,6 @@ class ImAgency extends DataEntity
      * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="agency", orphanRemoval=true)
      */
     private $biens;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Society::class, fetch="EAGER", inversedBy="imAgencies")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read", "admin:read", "owner:read"})
-     */
-    private $society;
-
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="agency")
-     */
-    private $users;
 
     /**
      * @ORM\OneToMany(targetEntity=ImNegotiator::class, mappedBy="agency")
@@ -530,18 +516,6 @@ class ImAgency extends DataEntity
         return $this;
     }
 
-    public function getSociety(): ?Society
-    {
-        return $this->society;
-    }
-
-    public function setSociety(?Society $society): self
-    {
-        $this->society = $society;
-
-        return $this;
-    }
-
     public function getType(): ?string
     {
         return $this->type;
@@ -622,36 +596,6 @@ class ImAgency extends DataEntity
     public function setMediation(?string $mediation): self
     {
         $this->mediation = $mediation;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setAgency($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getAgency() === $this) {
-                $user->setAgency(null);
-            }
-        }
 
         return $this;
     }

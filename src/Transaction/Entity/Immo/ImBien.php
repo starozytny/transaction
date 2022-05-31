@@ -159,13 +159,6 @@ class ImBien extends DataEntity
     private $negotiator;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, fetch="EAGER", inversedBy="imBiens")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:read"})
-     */
-    private $user;
-
-    /**
      * @ORM\OneToOne(targetEntity=ImNumber::class, fetch="EAGER", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"user:read", "suivi:read"})
@@ -513,18 +506,6 @@ class ImBien extends DataEntity
     public function setNegotiator(?ImNegotiator $negotiator): self
     {
         $this->negotiator = $negotiator;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }

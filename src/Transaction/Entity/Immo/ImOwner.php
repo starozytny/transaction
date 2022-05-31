@@ -3,7 +3,6 @@
 namespace App\Transaction\Entity\Immo;
 
 use App\Entity\DataEntity;
-use App\Entity\Society;
 use App\Transaction\Repository\Immo\ImOwnerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -132,13 +131,6 @@ class ImOwner extends DataEntity
      * @Groups({"admin:read", "user:read", "owner:read"})
      */
     private $negotiator;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Society::class, fetch="EAGER", inversedBy="imOwners")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read", "user:read", "owner:read"})
-     */
-    private $society;
 
     /**
      * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="owners")
@@ -406,18 +398,6 @@ class ImOwner extends DataEntity
     public function getFullAddress(): string
     {
         return $this->getFullAddressString($this->address, $this->zipcode, $this->city, $this->complement, $this->country);
-    }
-
-    public function getSociety(): ?Society
-    {
-        return $this->society;
-    }
-
-    public function setSociety(?Society $society): self
-    {
-        $this->society = $society;
-
-        return $this;
     }
 
     public function getAgency(): ?ImAgency

@@ -28,6 +28,6 @@ doctrine:
                     Transac1:
                         is_bundle: false
                         type: annotation
-                        dir: '%kernel.project_dir%/src/Entity'
-                        prefix: 'App\Entity'
+                        dir: '%kernel.project_dir%/src/Transaction/Entity'
+                        prefix: 'App\Transaction\Entity'
                         alias: Transac1

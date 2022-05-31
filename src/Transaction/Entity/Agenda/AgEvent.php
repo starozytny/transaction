@@ -3,7 +3,6 @@
 namespace App\Transaction\Entity\Agenda;
 
 use App\Entity\DataEntity;
-use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Repository\Agenda\AgEventRepository;
@@ -99,8 +98,7 @@ class AgEvent extends DataEntity
     private $persons;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, fetch="EAGER", inversedBy="agEvents")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({"agenda:read"})
      */
     private $creator;
@@ -307,12 +305,12 @@ class AgEvent extends DataEntity
         return $this;
     }
 
-    public function getCreator(): ?User
+    public function getCreator(): ?string
     {
         return $this->creator;
     }
 
-    public function setCreator(?User $creator): self
+    public function setCreator(?string $creator): self
     {
         $this->creator = $creator;
 

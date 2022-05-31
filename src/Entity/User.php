@@ -2,10 +2,6 @@
 
 namespace App\Entity;
 
-use App\Transaction\Entity\Immo\ImAgency;
-use App\Transaction\Entity\Immo\ImBien;
-use App\Transaction\Entity\Agenda\AgEvent;
-use App\Transaction\Entity\Immo\ImNegotiator;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -139,23 +135,6 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $society;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ImAgency::class, fetch="EAGER", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read"})
-     */
-    private $agency;
-
-    /**
-     * @ORM\OneToMany(targetEntity=ImBien::class, mappedBy="user")
-     */
-    private $imBiens;
-
-    /**
-     * @ORM\OneToMany(targetEntity=AgEvent::class, mappedBy="creator")
-     */
-    private $agEvents;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"admin:read"})
      */
@@ -170,8 +149,6 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
         $this->token = $this->initToken();
         $this->notifications = new ArrayCollection();
         $this->mails = new ArrayCollection();
-        $this->imBiens = new ArrayCollection();
-        $this->agEvents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -519,48 +496,6 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
         return $this;
     }
 
-    public function getAgency(): ?ImAgency
-    {
-        return $this->agency;
-    }
-
-    public function setAgency(?ImAgency $agency): self
-    {
-        $this->agency = $agency;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ImBien[]
-     */
-    public function getImBiens(): Collection
-    {
-        return $this->imBiens;
-    }
-
-    public function addImBien(ImBien $imBien): self
-    {
-        if (!$this->imBiens->contains($imBien)) {
-            $this->imBiens[] = $imBien;
-            $imBien->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImBien(ImBien $imBien): self
-    {
-        if ($this->imBiens->removeElement($imBien)) {
-            // set the owning side to null (unless already changed)
-            if ($imBien->getUser() === $this) {
-                $imBien->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return string
      * @Groups({"admin:read", "user:read", "agenda:read"})
@@ -603,36 +538,6 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
             // set the owning side to null (unless already changed)
             if ($mail->getUser() === $this) {
                 $mail->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|AgEvent[]
-     */
-    public function getAgEvents(): Collection
-    {
-        return $this->agEvents;
-    }
-
-    public function addAgSlot(AgEvent $agEvent): self
-    {
-        if (!$this->agEvents->contains($agEvent)) {
-            $this->agEvents[] = $agEvent;
-            $agEvent->setCreator($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAgEvents(AgEvent $agEvent): self
-    {
-        if ($this->agEvents->removeElement($agEvent)) {
-            // set the owning side to null (unless already changed)
-            if ($agEvent->getCreator() === $this) {
-                $agEvent->setCreator(null);
             }
         }
 
