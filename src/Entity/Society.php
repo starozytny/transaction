@@ -34,6 +34,12 @@ class Society extends DataEntity
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"admin:read"})
+     */
+    private $manager;
+
+    /**
      * @ORM\Column(type="integer", unique=true)
      * @Groups({"admin:read"})
      */
@@ -230,6 +236,18 @@ class Society extends DataEntity
                 $imOwner->setSociety(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getManager(): ?string
+    {
+        return $this->manager;
+    }
+
+    public function setManager(string $manager): self
+    {
+        $this->manager = $manager;
 
         return $this;
     }
