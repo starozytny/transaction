@@ -76,13 +76,6 @@ function toFormatBytesToSize(bytes) {
     return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 }
 
-function toFormatBytesToSize(bytes) {
-    let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (bytes === 0) return '0 Byte';
-    let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-}
-
 function addZeroToNumber (data) {
     return data > 9 ? data : "0" + data;
 }
@@ -145,7 +138,7 @@ module.exports = {
     toFormatDataAgenda,
     toFormatDateTimeMidString,
     toFormatTimeHoursMinutes,
-    toTrilleanString
+    toTrilleanString,
     capitalize,
     removeAccents
 }
