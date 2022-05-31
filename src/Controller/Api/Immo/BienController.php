@@ -9,6 +9,7 @@ use App\Entity\Immo\ImAgency;
 use App\Entity\Immo\ImArea;
 use App\Entity\Immo\ImBien;
 use App\Entity\Immo\ImConfidential;
+use App\Entity\Immo\ImContract;
 use App\Entity\Immo\ImDiag;
 use App\Entity\Immo\ImFeature;
 use App\Entity\Immo\ImFinancial;
@@ -463,6 +464,14 @@ class BienController extends AbstractController
         $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $obj]);
         foreach($publishes as $publish){
             $em->remove($publish);
+        }
+
+        $contracts = $em->getRepository(ImContract::class)->findBy(['bien' => $obj]);
+        foreach($contracts as $contract){
+            foreach($contract->getContractants() as $contractant){
+                $em->remove($contractant);
+            }
+            $em->remove($contract);
         }
 
         return $dataService->delete($obj);
