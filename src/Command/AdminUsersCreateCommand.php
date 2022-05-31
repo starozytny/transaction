@@ -64,20 +64,24 @@ class AdminUsersCreateCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [
-            ImStat::class,
-            Mail::class,
-            Notification::class,
-            ImTenant::class,
-            ImSupport::class,
-            ImOwner::class,
-            ImProspect::class,
-            ImNegotiator::class,
-            User::class,
-            ImSettings::class,
-            ImAgency::class,
-            Society::class
-        ]);
+
+        $societies = $this->em->getRepository(Society::class)->findAll();
+        foreach($societies as $society){
+            $this->databaseService->resetTable($io, $society->getManager(), [
+                ImStat::class,
+                Mail::class,
+                Notification::class,
+                ImTenant::class,
+                ImSupport::class,
+                ImOwner::class,
+                ImProspect::class,
+                ImNegotiator::class,
+                User::class,
+                ImSettings::class,
+                ImAgency::class,
+                Society::class
+            ]);
+        }
 
         $users = array(
             [
