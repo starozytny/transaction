@@ -202,6 +202,12 @@ function switchCase(element){
         case 'atLeastOne':
             validate = validateAtLeastOne(element.value, element.valueCheck);
             break;
+        case 'length':
+            validate = validateLength(element.value, element.min, element.max);
+            break;
+        case 'uniqueLength':
+            validate = validateUniqueLength(element.value, element.size);
+            break;
         case 'minMax':
             validate = validateMinMax(element.value, element.valueCheck);
             break;

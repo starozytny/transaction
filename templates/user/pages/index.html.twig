@@ -12,13 +12,7 @@
         <div class="dash-line-1">
             <div class="welcome-back">
                 <div class="avatar">
-                    <a href="{{ path('user_profil') }}" title="Mon profil">
-                        {% if app.user.avatar %}
-                            <img src="{{ asset(app.user.avatarFile) }}" alt="Avatar de {{ app.user.userIdentifier }}">
-                        {% else %}
-                            <img src="https://robohash.org/{{ app.user.userIdentifier }}" alt="Avatar de {{ app.user.userIdentifier }}"/>
-                        {% endif %}
-                    </a>
+                    <img src="https://robohash.org/{{ app.user.userIdentifier }}" alt="Avatar de {{ app.user.userIdentifier }}"/>
                 </div>
                 <div class="me">
                     <p>Bon retour,</p>

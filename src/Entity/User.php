@@ -349,7 +349,7 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
      */
     public function getCreatedAtAgo(): string
     {
-        return $this->getHowLongAgo($this->getCreatedAt());
+        return $this->getHowLongAgo($this->getCreatedAt(), 2);
     }
 
     public function getLastLogin(): ?\DateTimeInterface
