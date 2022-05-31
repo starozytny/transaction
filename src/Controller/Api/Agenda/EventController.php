@@ -2,8 +2,8 @@
 
 namespace App\Controller\Api\Agenda;
 
-use App\Entity\Agenda\AgEvent;
-use App\Entity\Immo\ImVisit;
+use App\Transaction\Entity\Agenda\AgEvent;
+use App\Transaction\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\Agenda\DataEvent;

@@ -4,8 +4,8 @@
 namespace App\Service\Immo;
 
 
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImSupport;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImSupport;
 use App\Entity\User;
 use App\Service\Data\DataImmo;
 use App\Service\Export;

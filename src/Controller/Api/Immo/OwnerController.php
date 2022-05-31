@@ -2,9 +2,9 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\Immo\ImOwner;
+use App\Transaction\Entity\Immo\ImOwner;
 use App\Entity\User;
-use App\Repository\Immo\ImOwnerRepository;
+use App\Transaction\Repository\Immo\ImOwnerRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;

@@ -2,14 +2,14 @@
 
 namespace App\Command\Fake;
 
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImNegotiator;
-use App\Entity\Immo\ImOwner;
-use App\Entity\Immo\ImPublish;
-use App\Entity\Immo\ImRoom;
-use App\Entity\Immo\ImSuivi;
-use App\Entity\Immo\ImVisit;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImOwner;
+use App\Transaction\Entity\Immo\ImPublish;
+use App\Transaction\Entity\Immo\ImRoom;
+use App\Transaction\Entity\Immo\ImSuivi;
+use App\Transaction\Entity\Immo\ImVisit;
 use App\Entity\Society;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;

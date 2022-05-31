@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImOwner;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImOwner;
 use App\Repository\SocietyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

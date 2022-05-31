@@ -4,7 +4,7 @@
 namespace App\Service\Data\Agenda;
 
 
-use App\Entity\Agenda\AgEvent;
+use App\Transaction\Entity\Agenda\AgEvent;
 use App\Entity\User;
 use App\Service\Data\DataConstructor;
 use Exception;

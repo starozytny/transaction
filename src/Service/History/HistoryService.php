@@ -2,11 +2,11 @@
 
 namespace App\Service\History;
 
-use App\Entity\Agenda\AgEvent;
-use App\Entity\History\HiBien;
-use App\Entity\History\HiPrice;
-use App\Entity\History\HiVisite;
-use App\Entity\Immo\ImBien;
+use App\Transaction\Entity\Agenda\AgEvent;
+use App\Transaction\Entity\History\HiBien;
+use App\Transaction\Entity\History\HiPrice;
+use App\Transaction\Entity\History\HiVisite;
+use App\Transaction\Entity\Immo\ImBien;
 use App\Entity\User;
 use App\Service\Data\DataConstructor;
 use Symfony\Component\Serializer\SerializerInterface;

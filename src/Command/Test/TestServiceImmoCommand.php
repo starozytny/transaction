@@ -2,7 +2,7 @@
 
 namespace App\Command\Test;
 
-use App\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImBien;
 use App\Entity\User;
 use App\Service\Immo\ImmoService;
 use Doctrine\ORM\EntityManagerInterface;

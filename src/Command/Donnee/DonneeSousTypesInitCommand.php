@@ -2,7 +2,7 @@
 
 namespace App\Command\Donnee;
 
-use App\Entity\Donnee\DoSousType;
+use App\Transaction\Entity\Donnee\DoSousType;
 use App\Service\Data\Donnee\DataDonnee;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;

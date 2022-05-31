@@ -2,10 +2,10 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImNegotiator;
-use App\Entity\Immo\ImPhoto;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImPhoto;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\FileUploader;

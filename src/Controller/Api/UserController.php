@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImNegotiator;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\ApiResponse;

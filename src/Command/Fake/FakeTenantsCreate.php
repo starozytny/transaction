@@ -2,10 +2,10 @@
 
 namespace App\Command\Fake;
 
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImNegotiator;
-use App\Entity\Immo\ImTenant;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImTenant;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;

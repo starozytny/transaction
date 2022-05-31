@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\Immo\ImTenant;
+use App\Transaction\Entity\Immo\ImTenant;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;

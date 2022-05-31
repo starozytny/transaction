@@ -2,8 +2,8 @@
 
 namespace App\Command\Fake;
 
-use App\Entity\Agenda\AgEvent;
-use App\Entity\Immo\ImBien;
+use App\Transaction\Entity\Agenda\AgEvent;
+use App\Transaction\Entity\Immo\ImBien;
 use App\Entity\User;
 use App\Service\Data\Agenda\DataEvent;
 use App\Service\DatabaseService;

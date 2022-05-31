@@ -2,13 +2,13 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\Agenda\AgEvent;
-use App\Entity\History\HiVisite;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImSuivi;
-use App\Entity\Immo\ImVisit;
+use App\Transaction\Entity\Agenda\AgEvent;
+use App\Transaction\Entity\History\HiVisite;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImSuivi;
+use App\Transaction\Entity\Immo\ImVisit;
 use App\Entity\User;
-use App\Repository\Immo\ImVisitRepository;
+use App\Transaction\Repository\Immo\ImVisitRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\Agenda\DataEvent;
 use App\Service\Data\DataImmo;

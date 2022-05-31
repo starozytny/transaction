@@ -2,9 +2,9 @@
 
 namespace App\Service\Data\Donnee;
 
-use App\Entity\Donnee\DoQuartier;
-use App\Entity\Donnee\DoSol;
-use App\Entity\Donnee\DoSousType;
+use App\Transaction\Entity\Donnee\DoQuartier;
+use App\Transaction\Entity\Donnee\DoSol;
+use App\Transaction\Entity\Donnee\DoSousType;
 use App\Service\Data\DataConstructor;
 
 class DataDonnee extends DataConstructor

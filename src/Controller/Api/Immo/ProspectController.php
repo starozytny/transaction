@@ -2,12 +2,12 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImProspect;
-use App\Entity\Immo\ImSearch;
-use App\Entity\Immo\ImSuivi;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImProspect;
+use App\Transaction\Entity\Immo\ImSearch;
+use App\Transaction\Entity\Immo\ImSuivi;
 use App\Entity\User;
-use App\Repository\Immo\ImProspectRepository;
+use App\Transaction\Repository\Immo\ImProspectRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;

@@ -2,7 +2,7 @@
 
 namespace App\Service\Agenda;
 
-use App\Entity\Agenda\AgEvent;
+use App\Transaction\Entity\Agenda\AgEvent;
 use App\Entity\User;
 
 class EventService

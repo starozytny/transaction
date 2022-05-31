@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImBien;
-use App\Entity\Agenda\AgEvent;
-use App\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Agenda\AgEvent;
+use App\Transaction\Entity\Immo\ImNegotiator;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

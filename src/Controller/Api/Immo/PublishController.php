@@ -2,12 +2,12 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\History\HiPublish;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImPhoto;
-use App\Entity\Immo\ImPublish;
-use App\Entity\Immo\ImStat;
-use App\Entity\Immo\ImSupport;
+use App\Transaction\Entity\History\HiPublish;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImPhoto;
+use App\Transaction\Entity\Immo\ImPublish;
+use App\Transaction\Entity\Immo\ImStat;
+use App\Transaction\Entity\Immo\ImSupport;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Immo\PublishService;

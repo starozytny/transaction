@@ -2,9 +2,9 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImNegotiator;
-use App\Entity\Immo\ImSettings;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImSettings;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;

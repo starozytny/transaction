@@ -4,8 +4,8 @@
 namespace App\Service\Data;
 
 
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImNegotiator;
 use App\Entity\Society;
 use App\Entity\User;
 use App\Service\SanitizeData;

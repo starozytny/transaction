@@ -2,18 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\History\HiBien;
-use App\Entity\History\HiPrice;
-use App\Entity\History\HiPublish;
-use App\Entity\History\HiVisite;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImContract;
-use App\Entity\Immo\ImContractant;
-use App\Entity\Immo\ImNegotiator;
-use App\Entity\Immo\ImOwner;
+use App\Transaction\Entity\History\HiBien;
+use App\Transaction\Entity\History\HiPrice;
+use App\Transaction\Entity\History\HiPublish;
+use App\Transaction\Entity\History\HiVisite;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImContractant;
+use App\Transaction\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImOwner;
 use App\Entity\User;
-use App\Repository\Immo\ImBienRepository;
-use App\Repository\Immo\ImPhotoRepository;
+use App\Transaction\Repository\Immo\ImBienRepository;
+use App\Transaction\Repository\Immo\ImPhotoRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

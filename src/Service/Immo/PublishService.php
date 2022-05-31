@@ -2,13 +2,13 @@
 
 namespace App\Service\Immo;
 
-use App\Entity\Immo\ImAdvert;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImConfidential;
-use App\Entity\Immo\ImMandat;
-use App\Entity\Immo\ImPhoto;
-use App\Entity\Immo\ImPublish;
-use App\Entity\Immo\ImSupport;
+use App\Transaction\Entity\Immo\ImAdvert;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImConfidential;
+use App\Transaction\Entity\Immo\ImMandat;
+use App\Transaction\Entity\Immo\ImPhoto;
+use App\Transaction\Entity\Immo\ImPublish;
+use App\Transaction\Entity\Immo\ImSupport;
 use App\Service\Export;
 
 class PublishService

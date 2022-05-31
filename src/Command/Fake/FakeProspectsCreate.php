@@ -2,11 +2,11 @@
 
 namespace App\Command\Fake;
 
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImNegotiator;
-use App\Entity\Immo\ImProspect;
-use App\Entity\Immo\ImSearch;
-use App\Entity\Immo\ImSuivi;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImProspect;
+use App\Transaction\Entity\Immo\ImSearch;
+use App\Transaction\Entity\Immo\ImSuivi;
 use App\Service\Data\DataImmo;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Donnee;
 
-use App\Entity\Donnee\DoQuartier;
+use App\Transaction\Entity\Donnee\DoQuartier;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataService;

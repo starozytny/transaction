@@ -2,10 +2,10 @@
 
 namespace App\Service\Immo;
 
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImProspect;
-use App\Entity\Immo\ImSearch;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImProspect;
+use App\Transaction\Entity\Immo\ImSearch;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SearchService

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\Immo\ImSupport;
+use App\Transaction\Entity\Immo\ImSupport;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\ValidatorService;

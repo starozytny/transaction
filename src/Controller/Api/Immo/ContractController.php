@@ -2,13 +2,13 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImContract;
-use App\Entity\Immo\ImContractant;
-use App\Entity\Immo\ImOwner;
-use App\Entity\Immo\ImProspect;
-use App\Entity\Immo\ImSuivi;
-use App\Entity\Immo\ImTenant;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImContract;
+use App\Transaction\Entity\Immo\ImContractant;
+use App\Transaction\Entity\Immo\ImOwner;
+use App\Transaction\Entity\Immo\ImProspect;
+use App\Transaction\Entity\Immo\ImSuivi;
+use App\Transaction\Entity\Immo\ImTenant;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\ValidatorService;

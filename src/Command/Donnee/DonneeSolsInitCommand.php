@@ -2,8 +2,8 @@
 
 namespace App\Command\Donnee;
 
-use App\Entity\Donnee\DoQuartier;
-use App\Entity\Donnee\DoSol;
+use App\Transaction\Entity\Donnee\DoQuartier;
+use App\Transaction\Entity\Donnee\DoSol;
 use App\Service\Data\Donnee\DataDonnee;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;

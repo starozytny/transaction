@@ -2,15 +2,15 @@
 
 namespace App\Controller\Api\Immo;
 
-use App\Entity\History\HiVisite;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImContract;
-use App\Entity\Immo\ImOffer;
-use App\Entity\Immo\ImPhoto;
-use App\Entity\Immo\ImProspect;
-use App\Entity\Immo\ImRoom;
-use App\Entity\Immo\ImSuivi;
-use App\Entity\Immo\ImVisit;
+use App\Transaction\Entity\History\HiVisite;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImContract;
+use App\Transaction\Entity\Immo\ImOffer;
+use App\Transaction\Entity\Immo\ImPhoto;
+use App\Transaction\Entity\Immo\ImProspect;
+use App\Transaction\Entity\Immo\ImRoom;
+use App\Transaction\Entity\Immo\ImSuivi;
+use App\Transaction\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;

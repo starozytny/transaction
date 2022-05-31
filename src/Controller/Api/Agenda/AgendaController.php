@@ -2,10 +2,10 @@
 
 namespace App\Controller\Api\Agenda;
 
-use App\Entity\Immo\ImNegotiator;
-use App\Entity\Immo\ImOwner;
-use App\Entity\Immo\ImProspect;
-use App\Entity\Immo\ImTenant;
+use App\Transaction\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImOwner;
+use App\Transaction\Entity\Immo\ImProspect;
+use App\Transaction\Entity\Immo\ImTenant;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use Doctrine\Common\Persistence\ManagerRegistry;

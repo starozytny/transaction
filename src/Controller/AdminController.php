@@ -4,12 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Changelog;
 use App\Entity\Contact;
-use App\Entity\Immo\ImAgency;
-use App\Entity\Immo\ImBien;
-use App\Entity\Immo\ImNegotiator;
-use App\Entity\Immo\ImOwner;
-use App\Entity\Immo\ImProspect;
-use App\Entity\Immo\ImTenant;
+use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImBien;
+use App\Transaction\Entity\Immo\ImNegotiator;
+use App\Transaction\Entity\Immo\ImOwner;
+use App\Transaction\Entity\Immo\ImProspect;
+use App\Transaction\Entity\Immo\ImTenant;
 use App\Entity\Notification;
 use App\Entity\Settings;
 use App\Entity\Society;
