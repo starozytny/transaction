@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\Immo\ImSettings;
 use App\Entity\User;
 use App\Service\ApiResponse;
@@ -19,11 +20,11 @@ use OpenApi\Annotations as OA;
  */
 class SettingsController extends AbstractController
 {
-    private $doctrine;
+    private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ImmoService $immoService)
     {
-        $this->doctrine = $doctrine;
+        $this->immoService = $immoService;
     }
 
     public function submitForm($type, ImSettings $obj, Request $request, ApiResponse $apiResponse,

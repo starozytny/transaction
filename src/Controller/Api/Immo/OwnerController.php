@@ -25,11 +25,11 @@ use OpenApi\Annotations as OA;
  */
 class OwnerController extends AbstractController
 {
-    private $doctrine;
+    private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ImmoService $immoService)
     {
-        $this->doctrine = $doctrine;
+        $this->immoService = $immoService;
     }
 
     /**

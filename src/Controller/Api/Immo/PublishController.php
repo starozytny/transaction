@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\History\HiPublish;
 use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImPhoto;
@@ -24,11 +25,11 @@ use OpenApi\Annotations as OA;
  */
 class PublishController extends AbstractController
 {
-    private $doctrine;
+    private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ImmoService $immoService)
     {
-        $this->doctrine = $doctrine;
+        $this->immoService = $immoService;
     }
 
     /**

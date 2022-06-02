@@ -2,13 +2,14 @@
 
 namespace App\Controller\Api\Donnee;
 
+use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\Donnee\DoQuartier;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataService;
 use App\Service\Data\Donnee\DataDonnee;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,11 +22,11 @@ use OpenApi\Annotations as OA;
  */
 class QuartierController extends AbstractController
 {
-    private $doctrine;
+    private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ImmoService $immoService)
     {
-        $this->doctrine = $doctrine;
+        $this->immoService = $immoService;
     }
 
     /**
@@ -34,7 +35,9 @@ class QuartierController extends AbstractController
     public function submitForm($type, DoQuartier $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataDonnee $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         if ($data === null) {
@@ -43,9 +46,7 @@ class QuartierController extends AbstractController
 
         $obj = $dataEntity->setDataQuartier($obj, $data);
 
-        /** @var User $user */
-        $user = $this->getUser();
-        $obj->setAgency($user->getAgency());
+        $obj->setAgency($this->immoService->getUserAgency($user));
 
         if($type === "update"){
             $obj->setUpdatedAt(new DateTime());

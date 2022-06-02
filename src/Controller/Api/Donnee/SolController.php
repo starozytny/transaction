@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Donnee;
 
+use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\Donnee\DoSol;
 use App\Entity\User;
 use App\Service\ApiResponse;
@@ -9,7 +10,6 @@ use App\Service\Data\DataService;
 use App\Service\Data\Donnee\DataDonnee;
 use App\Service\ValidatorService;
 use DateTime;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,11 +22,11 @@ use OpenApi\Annotations as OA;
  */
 class SolController extends AbstractController
 {
-    private $doctrine;
+    private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ImmoService $immoService)
     {
-        $this->doctrine = $doctrine;
+        $this->immoService = $immoService;
     }
 
     /**
@@ -35,7 +35,9 @@ class SolController extends AbstractController
     public function submitForm($type, DoSol $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataDonnee $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         if ($data === null) {
@@ -44,9 +46,7 @@ class SolController extends AbstractController
 
         $obj = $dataEntity->setDataSol($obj, $data);
 
-        /** @var User $user */
-        $user = $this->getUser();
-        $obj->setAgency($user->getAgency());
+        $obj->setAgency($this->immoService->getUserAgency($user));
 
         if($type === "update"){
             $obj->setUpdatedAt(new DateTime());

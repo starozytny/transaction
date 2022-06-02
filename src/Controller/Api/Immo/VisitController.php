@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\Agenda\AgEvent;
 use App\Transaction\Entity\History\HiVisite;
 use App\Transaction\Entity\Immo\ImBien;
@@ -31,11 +32,11 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class VisitController extends AbstractController
 {
-    private $doctrine;
+    private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ImmoService $immoService)
     {
-        $this->doctrine = $doctrine;
+        $this->immoService = $immoService;
     }
 
     /**

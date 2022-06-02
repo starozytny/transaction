@@ -2,15 +2,14 @@
 
 namespace App\Controller\Api\Agenda;
 
+use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\Agenda\AgEvent;
-use App\Transaction\Entity\Immo\ImVisit;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\Agenda\DataEvent;
 use App\Service\Data\DataService;
 use App\Service\History\HistoryService;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,11 +23,11 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class EventController extends AbstractController
 {
-    private $doctrine;
+    private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ImmoService $immoService)
     {
-        $this->doctrine = $doctrine;
+        $this->immoService = $immoService;
     }
 
     /**
@@ -37,15 +36,14 @@ class EventController extends AbstractController
     public function submitForm($type, AgEvent $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataEvent $dataEntity, SerializerInterface $serializer): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         if ($data === null) {
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
-
-        /** @var User $user */
-        $user = $this->getUser();
 
         $obj = $dataEntity->setDataEvent($obj, $data);
         $obj = $dataEntity->setCreatorAndUpdate($type, $obj, $user);
@@ -141,7 +139,10 @@ class EventController extends AbstractController
      */
     public function updateDate(AgEvent $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataEvent $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
         $data = json_decode($request->getContent());
 
         if ($data === null) {
@@ -181,7 +182,10 @@ class EventController extends AbstractController
      */
     public function delete(AgEvent $obj, DataService $dataService, HistoryService $historyService): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
         if($visit = $obj->getImVisit()){
             $historyService->createVisit(AgEvent::STATUS_DELETE, $visit->getBien()->getId(), $visit->getId(), $obj);
             $em->remove($visit);

@@ -2,13 +2,13 @@
 
 namespace App\Controller\Api\Agenda;
 
+use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\Immo\ImNegotiator;
 use App\Transaction\Entity\Immo\ImOwner;
 use App\Transaction\Entity\Immo\ImProspect;
 use App\Transaction\Entity\Immo\ImTenant;
 use App\Entity\User;
 use App\Service\ApiResponse;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,11 +20,11 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class AgendaController extends AbstractController
 {
-    private $doctrine;
+    private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ImmoService $immoService)
     {
-        $this->doctrine = $doctrine;
+        $this->immoService = $immoService;
     }
 
     /**
@@ -45,16 +45,15 @@ class AgendaController extends AbstractController
      */
     public function persons(ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
     {
-        $em = $this->doctrine->getManager();
-
         /** @var User $user */
         $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         $allUsers       = $em->getRepository(User::class)->findAll();
-        $negotiators    = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgency()]);
-        $owners         = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgency()]);
-        $tenants        = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgency()]);
-        $prospects      = $em->getRepository(ImProspect::class)->findBy(['agency' => $user->getAgency()]);
+        $negotiators    = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgencyId()]);
+        $owners         = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgencyId()]);
+        $tenants        = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgencyId()]);
+        $prospects      = $em->getRepository(ImProspect::class)->findBy(['agency' => $user->getAgencyId()]);
 
         $users = []; $managers = [];
         foreach($allUsers as $user){
