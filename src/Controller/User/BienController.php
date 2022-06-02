@@ -41,19 +41,6 @@ class BienController extends AbstractController
         $this->immoService = $immoService;
     }
 
-    private function getDonneeData($em, $class, User $user, ?SerializerInterface $serializer, $group = User::DONNEE_READ)
-    {
-        $natives = $em->getRepository($class)->findBy(['isNative' => true]);
-        $customs = $em->getRepository($class)->findBy(['agency' => $user->getAgencyId()]);
-        $data = array_merge($natives, $customs);
-
-        if($serializer){
-            $data = $serializer->serialize($data, 'json', ['groups' => $group]);
-        }
-
-        return $data;
-    }
-
     /**
      * @Route("/", options={"expose"=true}, name="index")
      */
@@ -147,9 +134,9 @@ class BienController extends AbstractController
         $allSupports = $serializer->serialize($allSupports,'json', ['groups' => User::USER_READ]);
         $publishes   = $serializer->serialize($publishes,'json', ['groups' => ImPublish::PUBLISH_READ]);
 
-        $quartiers = $this->getDonneeData($em, DoQuartier::class, $user, $serializer);
-        $sols      = $this->getDonneeData($em, DoSol::class, $user, $serializer);
-        $sousTypes = $this->getDonneeData($em, DoSousType::class, $user, $serializer);
+        $quartiers = $this->immoService->getDonneeData($em, DoQuartier::class, $user, $serializer);
+        $sols      = $this->immoService->getDonneeData($em, DoSol::class, $user, $serializer);
+        $sousTypes = $this->immoService->getDonneeData($em, DoSousType::class, $user, $serializer);
 
         return $this->render($route, [
             'agency' => $agency,

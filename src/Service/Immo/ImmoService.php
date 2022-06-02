@@ -13,6 +13,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Http\Discovery\Exception\NotFoundException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ImmoService
 {
@@ -70,6 +71,19 @@ class ImmoService
     public function getPrivateDirectory()
     {
         return $this->privateDirectory;
+    }
+
+    public function getDonneeData($em, $class, User $user, ?SerializerInterface $serializer, $group = User::DONNEE_READ)
+    {
+        $natives = $em->getRepository($class)->findBy(['isNative' => true]);
+        $customs = $em->getRepository($class)->findBy(['agency' => $user->getAgencyId()]);
+        $data = array_merge($natives, $customs);
+
+        if($serializer){
+            $data = $serializer->serialize($data, 'json', ['groups' => $group]);
+        }
+
+        return $data;
     }
 
     public function getNumeroMandat(ImAgency $agency): string
