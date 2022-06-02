@@ -4,9 +4,8 @@ namespace App\Service\Data;
 
 use App\Service\SanitizeData;
 use App\Service\ValidatorService;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class DataConstructor
 {
