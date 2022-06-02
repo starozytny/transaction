@@ -255,6 +255,12 @@ class ImAgency extends DataEntity
      */
     private $manager;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"admin:read"})
+     */
+    private $societyId;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
@@ -961,4 +967,17 @@ class ImAgency extends DataEntity
 
         return $this;
     }
+
+    public function getSocietyId(): ?int
+    {
+        return $this->societyId;
+    }
+
+    public function setSocietyId(?int $societyId): self
+    {
+        $this->societyId = $societyId;
+
+        return $this;
+    }
+
 }

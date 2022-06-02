@@ -7,7 +7,6 @@ use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImPublish;
 use App\Transaction\Entity\Immo\ImStat;
 use App\Entity\User;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,12 +17,10 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class PublishController extends AbstractController
 {
-    private $doctrine;
     private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine, ImmoService $immoService)
+    public function __construct(ImmoService $immoService)
     {
-        $this->doctrine = $doctrine;
         $this->immoService = $immoService;
     }
 

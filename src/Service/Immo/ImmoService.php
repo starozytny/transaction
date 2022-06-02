@@ -49,7 +49,7 @@ class ImmoService
     public function getUserAgency($user)
     {
         /** @var User $user */
-        $agency = $this->getEntityUserManager($user->getManager())->getRepository(ImAgency::class)->find($user->getAgencyId());
+        $agency = $this->getEntityUserManager($user)->getRepository(ImAgency::class)->find($user->getAgencyId());
         if(!$agency){
             throw new NotFoundException("Agence introuvable : " . $user->getId());
         }

@@ -135,6 +135,7 @@ class AdminUsersCreateCommand extends Command
         $io->title('Création de l\'agence Logilink');
         $agency = (new ImAgency())
             ->setManager(self::NAME_MANAGER)
+            ->setSocietyId($society->getId())
             ->setCode("LO0")
             ->setName("Logilink")
             ->setDirname('logilinkZip')

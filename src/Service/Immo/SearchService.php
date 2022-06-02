@@ -7,15 +7,21 @@ use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImProspect;
 use App\Transaction\Entity\Immo\ImSearch;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 
 class SearchService
 {
-    private $em;
+    private $registry;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $registry)
     {
+        $this->registry = $registry;
+    }
 
-        $this->em = $entityManager;
+    private function getEntityManager($nameManager): ObjectManager
+    {
+        return $this->registry->getManager($nameManager);
     }
 
     /**
@@ -23,7 +29,8 @@ class SearchService
      */
     public function getRapprochementBySearchs(array $biens, ImAgency $agency): array
     {
-        $prospects = $this->em->getRepository(ImProspect::class)->findBy(['agency' => $agency, 'isArchived' => false]);
+        $em = $this->getEntityManager($agency->getManager());
+        $prospects = $em->getRepository(ImProspect::class)->findBy(['agency' => $agency, 'isArchived' => false]);
 
         //Rapprochement
         $rapprochements = [];
