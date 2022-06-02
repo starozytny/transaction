@@ -3,20 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Changelog;
-use App\Repository\UserRepository;
 use App\Service\Immo\ImmoService;
-use App\Entity\Mail;
 use App\Transaction\Entity\Immo\ImAgency;
 use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImNegotiator;
 use App\Transaction\Entity\Immo\ImStat;
 use App\Transaction\Entity\Immo\ImVisit;
 use App\Entity\User;
-use App\Service\MailerService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -129,45 +125,6 @@ class UserController extends AbstractController
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/profil/update.html.twig',  ['elem' => $obj, 'donnees' => $data, 'negotiators' => $negotiators]);
-    }
-
-    /**
-     * @Route("/boite-mails", name="mails")
-     */
-    public function mails(MailerService $mailerService): Response
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        $data = $mailerService->getAllMailsData($user);
-
-        return $this->render('user/pages/mails/index.html.twig', $data);
-    }
-
-    /**
-     * @Route("/boite-mails/document/{filename}", options={"expose"=true}, name="mails_attachement")
-     */
-    public function mailsAttachement($filename): BinaryFileResponse
-    {
-        return new BinaryFileResponse($this->getParameter('private_directory') . Mail::FOLDER_FILES . "/" . $filename);
-    }
-
-    /**
-     * @Route("/boite-mails/reception/envoyer", options={"expose"=true}, name="mails_send")
-     */
-    public function mailsSend(Request $request, UserRepository $userRepository, SerializerInterface $serializer): Response
-    {
-        $dest = $request->query->get('dest');
-
-        /** @var User $user */
-        $user = $this->getUser();
-        $users = $userRepository->findBy(['agency' => $user->getAgencyId()]);
-
-        $users = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
-
-        return $this->render('user/pages/mails/send.html.twig', [
-            'users' => $users,
-            'dest' => $dest
-        ]);
     }
 
     /**
