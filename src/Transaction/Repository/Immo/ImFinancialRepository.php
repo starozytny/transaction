@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImFinancial;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImFinancial[]    findAll()
  * @method ImFinancial[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImFinancialRepository extends ServiceEntityRepository
+class ImFinancialRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImFinancial::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImFinancial::class);
+//    }
 
     // /**
     //  * @return ImFinancial[] Returns an array of ImFinancial objects

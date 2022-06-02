@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImSuivi;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImSuivi[]    findAll()
  * @method ImSuivi[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImSuiviRepository extends ServiceEntityRepository
+class ImSuiviRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImSuivi::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImSuivi::class);
+//    }
 
      /**
       * @return ImSuivi[] Returns an array of ImSuivi objects

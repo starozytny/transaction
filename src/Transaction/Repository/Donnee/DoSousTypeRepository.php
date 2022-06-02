@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Donnee;
 
 use App\Transaction\Entity\Donnee\DoSousType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method DoSousType[]    findAll()
  * @method DoSousType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DoSousTypeRepository extends ServiceEntityRepository
+class DoSousTypeRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, DoSousType::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, DoSousType::class);
+//    }
 
     // /**
     //  * @return DoSousType[] Returns an array of DoSousType objects

@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImSettings;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImSettings[]    findAll()
  * @method ImSettings[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImSettingsRepository extends ServiceEntityRepository
+class ImSettingsRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImSettings::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImSettings::class);
+//    }
 
     // /**
     //  * @return ImSettings[] Returns an array of ImSettings objects

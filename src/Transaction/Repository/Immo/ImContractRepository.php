@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImContract;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImContract[]    findAll()
  * @method ImContract[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImContractRepository extends ServiceEntityRepository
+class ImContractRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImContract::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImContract::class);
+//    }
 
     // /**
     //  * @return ImContract[] Returns an array of ImContract objects

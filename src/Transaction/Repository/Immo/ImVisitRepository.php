@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImVisit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImVisit[]    findAll()
  * @method ImVisit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImVisitRepository extends ServiceEntityRepository
+class ImVisitRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImVisit::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImVisit::class);
+//    }
 
     // /**
     //  * @return ImVisit[] Returns an array of ImVisit objects

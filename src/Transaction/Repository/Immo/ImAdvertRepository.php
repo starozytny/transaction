@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImAdvert;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImAdvert[]    findAll()
  * @method ImAdvert[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImAdvertRepository extends ServiceEntityRepository
+class ImAdvertRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImAdvert::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImAdvert::class);
+//    }
 
     // /**
     //  * @return ImAdvert[] Returns an array of ImAdvert objects

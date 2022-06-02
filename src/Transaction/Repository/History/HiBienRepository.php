@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\History;
 
 use App\Transaction\Entity\History\HiBien;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method HiBien[]    findAll()
  * @method HiBien[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class HiBienRepository extends ServiceEntityRepository
+class HiBienRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, HiBien::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, HiBien::class);
+//    }
 
     // /**
     //  * @return HiBien[] Returns an array of HiBien objects

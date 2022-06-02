@@ -249,10 +249,15 @@ class ImAgency extends DataEntity
      */
     private $stats;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"admin:read"})
+     */
+    private $manager;
+
     public function __construct()
     {
         $this->biens = new ArrayCollection();
-        $this->users = new ArrayCollection();
         $this->negotiators = new ArrayCollection();
         $this->tenants = new ArrayCollection();
         $this->owners = new ArrayCollection();
@@ -941,6 +946,18 @@ class ImAgency extends DataEntity
                 $stat->setAgency(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getManager(): ?string
+    {
+        return $this->manager;
+    }
+
+    public function setManager(string $manager): self
+    {
+        $this->manager = $manager;
 
         return $this;
     }

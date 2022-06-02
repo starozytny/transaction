@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImPublish;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImPublish[]    findAll()
  * @method ImPublish[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImPublishRepository extends ServiceEntityRepository
+class ImPublishRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImPublish::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImPublish::class);
+//    }
 
     // /**
     //  * @return ImPublish[] Returns an array of ImPublish objects

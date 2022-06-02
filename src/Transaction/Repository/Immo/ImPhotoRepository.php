@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImPhoto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImPhoto[]    findAll()
  * @method ImPhoto[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImPhotoRepository extends ServiceEntityRepository
+class ImPhotoRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImPhoto::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImPhoto::class);
+//    }
 
     // /**
     //  * @return ImPhoto[] Returns an array of ImPhoto objects

@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImOwner;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImOwner[]    findAll()
  * @method ImOwner[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImOwnerRepository extends ServiceEntityRepository
+class ImOwnerRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImOwner::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImOwner::class);
+//    }
 
     // /**
     //  * @return ImOwner[] Returns an array of ImOwner objects

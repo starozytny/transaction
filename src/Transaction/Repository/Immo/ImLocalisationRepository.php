@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImLocalisation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImLocalisation[]    findAll()
  * @method ImLocalisation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImLocalisationRepository extends ServiceEntityRepository
+class ImLocalisationRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImLocalisation::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImLocalisation::class);
+//    }
 
     // /**
     //  * @return ImLocalisation[] Returns an array of ImLocalisation objects

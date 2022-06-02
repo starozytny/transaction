@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImArea[]    findAll()
  * @method ImArea[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImAreaRepository extends ServiceEntityRepository
+class ImAreaRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImArea::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImArea::class);
+//    }
 
     // /**
     //  * @return ImArea[] Returns an array of ImArea objects

@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImSearch[]    findAll()
  * @method ImSearch[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImSearchRepository extends ServiceEntityRepository
+class ImSearchRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImSearch::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImSearch::class);
+//    }
 
     // /**
     //  * @return ImSearch[] Returns an array of ImSearch objects

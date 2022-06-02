@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Donnee;
 
 use App\Transaction\Entity\Donnee\DoSol;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method DoSol[]    findAll()
  * @method DoSol[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DoSolRepository extends ServiceEntityRepository
+class DoSolRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, DoSol::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, DoSol::class);
+//    }
 
     // /**
     //  * @return DoSol[] Returns an array of DoSol objects

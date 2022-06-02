@@ -9,28 +9,34 @@ use App\Transaction\Entity\Immo\ImSupport;
 use App\Entity\User;
 use App\Service\Data\DataImmo;
 use App\Service\Export;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ImmoService
 {
-    private $em;
     private $imagesDirectory;
     private $thumbsDirectory;
     private $privateDirectory;
     private $dataImmo;
     private $export;
+    private $registry;
 
-    public function __construct($imagesDirectory, $thumbsDirectory, $privateDirectory, EntityManagerInterface $entityManager,
+    public function __construct($imagesDirectory, $thumbsDirectory, $privateDirectory, ManagerRegistry $registry,
                                 DataImmo $dataImmo, Export $export)
     {
 
-        $this->em = $entityManager;
         $this->imagesDirectory = $imagesDirectory;
         $this->thumbsDirectory = $thumbsDirectory;
         $this->privateDirectory = $privateDirectory;
         $this->dataImmo = $dataImmo;
         $this->export = $export;
+        $this->registry = $registry;
+    }
+
+    public function getEntityNameManager($nameManager): ObjectManager
+    {
+        return $this->registry->getManager($nameManager);
     }
 
     public function getImagesDirectory()
@@ -142,7 +148,8 @@ class ImmoService
 
     public function initiateSupport(ImAgency $agency): bool
     {
-        $supports = $this->em->getRepository(ImSupport::class)->findBy(['agency' => $agency]);
+        $em = $this->getEntityNameManager($agency->getManager());
+        $supports = $em->getRepository(ImSupport::class)->findBy(['agency' => $agency]);
         if(count($supports) > 0){
             return false;
         }
@@ -206,7 +213,7 @@ class ImmoService
 
             $obj->setAgency($agency);
 
-            $this->em->persist($obj);
+            $em->persist($obj);
         }
 
         return true;

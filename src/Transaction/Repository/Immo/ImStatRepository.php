@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImStat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImStat[]    findAll()
  * @method ImStat[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImStatRepository extends ServiceEntityRepository
+class ImStatRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImStat::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImStat::class);
+//    }
 
     // /**
     //  * @return ImStat[] Returns an array of ImStat objects

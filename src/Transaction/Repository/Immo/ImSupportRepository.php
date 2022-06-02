@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImSupport;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImSupport[]    findAll()
  * @method ImSupport[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImSupportRepository extends ServiceEntityRepository
+class ImSupportRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImSupport::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImSupport::class);
+//    }
 
     // /**
     //  * @return ImSupport[] Returns an array of ImSupport objects

@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\History;
 
 use App\Transaction\Entity\History\HiPublish;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method HiPublish[]    findAll()
  * @method HiPublish[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class HiPublishRepository extends ServiceEntityRepository
+class HiPublishRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, HiPublish::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, HiPublish::class);
+//    }
 
     // /**
     //  * @return HiPublish[] Returns an array of HiPublish objects

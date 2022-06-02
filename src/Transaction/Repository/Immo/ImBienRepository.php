@@ -4,6 +4,7 @@ namespace App\Transaction\Repository\Immo;
 
 use App\Transaction\Entity\Immo\ImBien;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,12 +13,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ImBien[]    findAll()
  * @method ImBien[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImBienRepository extends ServiceEntityRepository
+class ImBienRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ImBien::class);
-    }
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, ImBien::class);
+//    }
 
      /**
       * @return ImBien[] Returns an array of ImBien objects
