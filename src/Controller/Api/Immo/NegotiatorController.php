@@ -37,7 +37,10 @@ class NegotiatorController extends AbstractController
     public function submitForm($type, ImNegotiator $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
         $data = json_decode($request->get('data'));
 
         if ($data === null) {
@@ -163,7 +166,9 @@ class NegotiatorController extends AbstractController
      */
     public function deleteSelected(Request $request, ApiResponse $apiResponse, FileUploader $fileUploader): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         $objs = $em->getRepository(ImNegotiator::class)->findBy(['id' => $data]);

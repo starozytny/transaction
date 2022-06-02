@@ -28,7 +28,6 @@ use App\Service\FileUploader;
 use App\Service\History\HistoryService;
 use App\Service\Immo\ImmoService;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -52,11 +51,11 @@ class BienController extends AbstractController
     /**
      * @throws Exception
      */
-    public function setProperty($em, $type, $obj, $data, ImAgency $agency, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity, ImmoService $immoService)
+    public function setProperty($em, $type, $obj, $data, ImAgency $agency, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity)
     {
         switch ($type){
             case "mandat":
-                $obj = $dataEntity->setDataMandat($immoService, $obj, $data, $agency);
+                $obj = $dataEntity->setDataMandat($this->immoService, $obj, $data, $agency);
                 break;
             case "advert":
                 $obj = $dataEntity->setDataAdvert($obj, $data);
@@ -105,10 +104,12 @@ class BienController extends AbstractController
      * @throws Exception
      */
     public function submitForm($type, ImBien $obj, Request $request, ApiResponse $apiResponse, FileUploader $fileUploader,
-                               ValidatorService $validator, DataImmo $dataEntity, DataDonnee $dataDonnee, $immoService,
+                               ValidatorService $validator, DataImmo $dataEntity, DataDonnee $dataDonnee,
                                HistoryService $historyService, SerializerInterface $serializer): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->get('data'));
 
         if ($data === null) {
@@ -124,7 +125,7 @@ class BienController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $agency = $user->getAgency();
+        $agency = $this->immoService->getUserAgency($user);
 
         if($type === "create" && $data->id){
             $obj = $em->getRepository(ImBien::class)->find($data->id);
@@ -150,7 +151,7 @@ class BienController extends AbstractController
         $financial = null; $confidential = null; $advert = null; $mandat = null;
         foreach($tab as $item){
             $donnee = $this->setProperty($em, $item["type"], $type == "create" ? $item["new"] : $item["existe"],
-                $data, $agency, $apiResponse, $validator, $dataEntity, $immoService);
+                $data, $agency, $apiResponse, $validator, $dataEntity);
             switch ($item["type"]){
                 case "mandat":
                     if(!$donnee instanceof ImMandat){ return $donnee; }
@@ -209,8 +210,8 @@ class BienController extends AbstractController
 
         if($type == "create"){
             $obj = ($obj)
-                ->setUser($user)
-                ->setReference($immoService->getReference($agency, (int) $data->codeTypeAd))
+                ->setUserId($user->getId())
+                ->setReference($this->immoService->getReference($agency, (int) $data->codeTypeAd))
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(8))))
                 ->setAgency($agency)
@@ -236,16 +237,14 @@ class BienController extends AbstractController
         $em->flush();
 
         $historyService->createPrice($obj);
-        if($type == "update"){
+        if($type == "update" && isset($old)){
             $historyService->createBien($serializer, $old, $obj, $user);
         }
 
         if($data->newQuartier && $data->newQuartier[0] == 1){
             $quartier = $dataDonnee->setDataQuartier(new DoQuartier(), $data, $data->quartier);
 
-            /** @var User $user */
-            $user = $this->getUser();
-            $quartier->setAgency($user->getAgency());
+            $quartier->setAgency($agency);
 
             $em->persist($quartier);
         }
@@ -366,18 +365,17 @@ class BienController extends AbstractController
      * @param FileUploader $fileUploader
      * @param DataImmo $dataEntity
      * @param DataDonnee $dataDonnee
-     * @param ImmoService $immoService
      * @param HistoryService $historyService
      * @param SerializerInterface $serializer
      * @return JsonResponse
      * @throws Exception
      */
     public function create(Request $request, ApiResponse $apiResponse, ValidatorService $validator, FileUploader $fileUploader,
-                           DataImmo $dataEntity, DataDonnee $dataDonnee, ImmoService $immoService, HistoryService $historyService,
+                           DataImmo $dataEntity, DataDonnee $dataDonnee, HistoryService $historyService,
                            SerializerInterface $serializer): JsonResponse
     {
         return $this->submitForm("create", new ImBien(), $request, $apiResponse, $fileUploader, $validator,
-            $dataEntity, $dataDonnee, $immoService, $historyService, $serializer);
+            $dataEntity, $dataDonnee, $historyService, $serializer);
     }
 
     /**
@@ -399,17 +397,16 @@ class BienController extends AbstractController
      * @param FileUploader $fileUploader
      * @param DataImmo $dataEntity
      * @param DataDonnee $dataDonnee
-     * @param ImmoService $immoService
      * @param HistoryService $historyService
      * @param SerializerInterface $serializer
      * @return JsonResponse
      * @throws Exception
      */
     public function update(ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, FileUploader $fileUploader,
-                           DataImmo $dataEntity, DataDonnee $dataDonnee, ImmoService $immoService, HistoryService $historyService, SerializerInterface $serializer): JsonResponse
+                           DataImmo $dataEntity, DataDonnee $dataDonnee, HistoryService $historyService, SerializerInterface $serializer): JsonResponse
     {
         return $this->submitForm("update", $obj, $request, $apiResponse, $fileUploader, $validator,
-            $dataEntity, $dataDonnee, $immoService, $historyService, $serializer);
+            $dataEntity, $dataDonnee, $historyService, $serializer);
     }
 
     /**
@@ -431,7 +428,10 @@ class BienController extends AbstractController
      */
     public function status(ImBien $obj, $status, ApiResponse $apiResponse): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
         $obj->setStatus($status);
 
         $obj->setIsArchived($status == ImBien::STATUS_ARCHIVE);
@@ -459,7 +459,9 @@ class BienController extends AbstractController
      */
     public function delete(ImBien $obj, DataService $dataService): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $obj]);
         foreach($publishes as $publish){

@@ -49,7 +49,9 @@ class TransferController extends AbstractController
      */
     public function start(Request $request, ApiResponse $apiResponse, ImmoService $immoService, FileUploader $fileUploader): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         if(!isset($data->from) && !isset($data->to)){
@@ -95,7 +97,7 @@ class TransferController extends AbstractController
                 ->setAgency($to)
                 ->setReference($immoService->getReference($to, $bien->getCodeTypeAd()))
                 ->setNegotiator($negotiator)
-                ->setUser($user)
+                ->setUserId($user->getId())
                 ->setOwner($owner)
             ;
 

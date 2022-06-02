@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Entity\User;
 use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImOffer;
@@ -34,7 +35,9 @@ class OfferController extends AbstractController
     public function submitForm($type, ImOffer $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity, SerializerInterface $serializer): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         if ($data === null) {
@@ -144,7 +147,9 @@ class OfferController extends AbstractController
      */
     public function delete(ImOffer $obj, ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         $em->remove($obj);
 
@@ -180,7 +185,9 @@ class OfferController extends AbstractController
      */
     public function switchStatus(ImOffer $obj, $status, ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         $obj->setStatus($status);
 
@@ -223,7 +230,9 @@ class OfferController extends AbstractController
     public function final(Request $request, SerializerInterface $serializer, ValidatorService $validator,  ApiResponse $apiResponse,
                           ImOffer $obj, DataImmo $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         if ($data === null) {
@@ -249,7 +258,9 @@ class OfferController extends AbstractController
 
     private function getSuivi($bien, $prospect)
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         return  $em->getRepository(ImSuivi::class)->findOneBy([
             'bien' => $bien,

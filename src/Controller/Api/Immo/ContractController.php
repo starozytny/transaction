@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Entity\User;
 use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImContract;
@@ -40,7 +41,10 @@ class ContractController extends AbstractController
     public function submitForm($type, ImContract $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
         $data = json_decode($request->getContent());
 
         if ($data === null) {
@@ -178,7 +182,9 @@ class ContractController extends AbstractController
 
     private function getSuivi($bien, $prospect)
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         return  $em->getRepository(ImSuivi::class)->findOneBy([
             'bien' => $bien,
@@ -207,7 +213,9 @@ class ContractController extends AbstractController
      */
     public function switchStatus(ImContract $obj, $status, ApiResponse $apiResponse): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         $obj->setStatus($status);
         $em->flush();

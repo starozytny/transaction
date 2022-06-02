@@ -56,7 +56,9 @@ class SuiviController extends AbstractController
      */
     public function bien(ImBien $obj, ApiResponse $apiResponse, SerializerInterface $serializer, SearchService $searchService): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         $photos    = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
         $rooms     = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
@@ -114,7 +116,10 @@ class SuiviController extends AbstractController
     public function link(Request $request, ImBien $bien, ImProspect $prospect, ApiResponse $apiResponse,
                          DataImmo $dataEntity, SerializerInterface $serializer): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
         $obj = $em->getRepository(ImSuivi::class)->findOneBy(['bien' => $bien, 'prospect' => $prospect]);
 
         if(!$obj){ // create
@@ -158,7 +163,10 @@ class SuiviController extends AbstractController
      */
     public function delete(ImProspect $obj, ImBien $bien, ApiResponse $apiResponse): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
         $suivi = $em->getRepository(ImSuivi::class)->findOneBy(['bien' => $bien, 'prospect' => $obj]);
 
         $em->remove($suivi);

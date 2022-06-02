@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Immo;
 
+use App\Entity\User;
 use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\Immo\ImSupport;
 use App\Service\ApiResponse;
@@ -29,7 +30,9 @@ class SupportController extends AbstractController
     public function submitForm($type, ImSupport $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         if ($data === null) {

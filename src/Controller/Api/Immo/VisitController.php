@@ -56,9 +56,13 @@ class VisitController extends AbstractController
      * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
-    public function index(ImBien $obj, ImVisitRepository $repository, ApiResponse $apiResponse): JsonResponse
+    public function index(ImBien $obj, ApiResponse $apiResponse): JsonResponse
     {
-        $objs = $repository->findBy(['bien' => $obj]);
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
+        $objs = $em->getRepository(ImVisit::class)->findBy(['bien' => $obj]);
 
         return $apiResponse->apiJsonResponse($objs, ImVisit::VISIT_READ);
     }
@@ -69,7 +73,9 @@ class VisitController extends AbstractController
     public function submitForm($type, ImVisit $obj, AgEvent $event, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                                DataImmo $dataEntity, DataEvent $dataEvent, SerializerInterface $serializer, HistoryService $historyService): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         if ($data === null) {
@@ -186,7 +192,9 @@ class VisitController extends AbstractController
      */
     public function delete(ImVisit $obj, DataService $dataService, HistoryService $historyService): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         $event = $obj->getAgEvent();
         $historyService->createVisit(AgEvent::STATUS_DELETE, $obj->getBien()->getId(), $obj->getId(), $event);
@@ -216,11 +224,13 @@ class VisitController extends AbstractController
      */
     public function documentBon($from, $id, ApiResponse $apiResponse, FileCreator $fileCreator): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         /** @var User $user */
         $user = $this->getUser();
-        $agency = $user->getAgency();
+        $agency = $this->immoService->getUserAgency($user);
 
         $obj = $em->getRepository($from == "suivi" ? ImSuivi::class : ImVisit::class)->find($id);
 

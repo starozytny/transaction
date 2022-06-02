@@ -8,12 +8,10 @@ use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImPhoto;
 use App\Transaction\Entity\Immo\ImPublish;
 use App\Transaction\Entity\Immo\ImStat;
-use App\Transaction\Entity\Immo\ImSupport;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Immo\PublishService;
 use App\Service\SanitizeData;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +52,9 @@ class PublishController extends AbstractController
      */
     public function update(Request $request, ApiResponse $apiResponse, PublishService $publishService, SanitizeData $sanitizeData): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         /** @var User $user */
@@ -99,7 +99,7 @@ class PublishController extends AbstractController
         $publishService->createFile($publishes, $photos);
 
         $stat = (new ImStat())
-            ->setAgency($user->getAgency())
+            ->setAgency($this->immoService->getUserAgency($user))
             ->setNbBiens(count($data))
             ->setPublishedAt($sanitizeData->todayDate())
             ->setUserFullname($user->getFullname())

@@ -37,7 +37,9 @@ class TenantController extends AbstractController
     public function submitForm($type, ImTenant $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->get('data'));
 
         if ($data === null) {

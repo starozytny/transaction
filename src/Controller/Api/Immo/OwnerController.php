@@ -10,7 +10,6 @@ use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
 use App\Service\Immo\ImmoService;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,12 +47,13 @@ class OwnerController extends AbstractController
      * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
-    public function index(ImOwnerRepository $repository, ApiResponse $apiResponse): JsonResponse
+    public function index(ApiResponse $apiResponse): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
-        $objs = $repository->findBy(['agency' => $user->getAgency()]);
+        $objs = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgencyId()]);
 
         return $apiResponse->apiJsonResponse($objs, ImOwner::OWNER_READ);
     }
@@ -64,7 +64,9 @@ class OwnerController extends AbstractController
     public function submitForm($type, ImOwner $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->get('data'));
 
         if ($data === null) {

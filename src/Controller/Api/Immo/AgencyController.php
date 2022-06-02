@@ -55,7 +55,10 @@ class AgencyController extends AbstractController
      */
     public function read(ImAgency $obj, ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
         $users = $em->getRepository(User::class)->findBy(['agency' => $obj]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj]);
 
@@ -101,7 +104,9 @@ class AgencyController extends AbstractController
     public function create(Request $request, ValidatorService $validator, ApiResponse $apiResponse,
                            FileUploader $fileUploader, DataImmo $dataEntity, ImmoService $immoService): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->get('data'));
 
         if ($data === null) {
@@ -189,7 +194,9 @@ class AgencyController extends AbstractController
     public function update(Request $request, ValidatorService $validator, ApiResponse $apiResponse, ImAgency $obj,
                            FileUploader $fileUploader, DataImmo $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->get('data'));
 
         if($data === null){
@@ -243,7 +250,9 @@ class AgencyController extends AbstractController
      */
     public function delete(ApiResponse $apiResponse, ImAgency $obj, ImmoService $immoService, FileUploader $fileUploader): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         $immoService->deleteAgency($obj);
 
@@ -274,7 +283,10 @@ class AgencyController extends AbstractController
      */
     public function export(Export $export, $format): BinaryFileResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
         $objs = $em->getRepository(ImAgency::class)->findAll();
         $data = [];
 

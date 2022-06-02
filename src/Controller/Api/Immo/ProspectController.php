@@ -51,12 +51,13 @@ class ProspectController extends AbstractController
      * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
-    public function index(ImProspectRepository $repository, ApiResponse $apiResponse): JsonResponse
+    public function index(ApiResponse $apiResponse): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
-        $objs = $repository->findBy(['agency' => $user->getAgency(), 'isArchived' => false]);
+        $objs = $em->getRepository(ImProspect::class)->findBy(['agency' => $user->getAgencyId(), 'isArchived' => false]);
 
         return $apiResponse->apiJsonResponse($objs, User::ADMIN_READ);
     }
@@ -67,7 +68,9 @@ class ProspectController extends AbstractController
     public function submitForm($type, ImProspect $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->get('data'));
 
         if ($data === null) {
@@ -176,7 +179,9 @@ class ProspectController extends AbstractController
      */
     public function delete(ImProspect $obj, DataService $dataService): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         if($obj->getSearch()){
             $em->remove($obj->getSearch());
@@ -207,7 +212,9 @@ class ProspectController extends AbstractController
      */
     public function deleteSelected(Request $request, ApiResponse $apiResponse): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $ids = json_decode($request->getContent());
 
         $objs = $em->getRepository(ImProspect::class)->findBy(['id' => $ids]);
@@ -242,7 +249,9 @@ class ProspectController extends AbstractController
      */
     public function switchArchived(ImProspect $obj, ApiResponse $apiResponse): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
         $status = !$obj->getIsArchived();
 

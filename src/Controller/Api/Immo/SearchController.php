@@ -37,7 +37,9 @@ class SearchController extends AbstractController
     public function submitForm($type, ImSearch $obj, Request $request, ApiResponse $apiResponse,
                                ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
         $data = json_decode($request->getContent());
 
         if ($data === null) {
@@ -152,7 +154,10 @@ class SearchController extends AbstractController
      */
     public function results(Request $request, ImSearch $search, ApiResponse $apiResponse, SearchService $searchService): JsonResponse
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
         $biens = $em->getRepository(ImBien::class)->findByCodeAdBienWithoutArchive(
             $search->getCodeTypeAd(), $search->getCodeTypeBien()
         );
