@@ -1,18 +1,18 @@
-$dpeA: rgb(13,219,157);
-$dpeB: rgb(97,241,39);
-$dpeC: rgb(202,250,2);
-$dpeD: rgb(249,221,23);
-$dpeE: rgb(253,173,0);
-$dpeF: rgb(252,113,48);
-$dpeG: rgb(217,70,84);
+$dpeA: rgb(0,172,121);
+$dpeB: rgb(74,185,97);
+$dpeC: rgb(152,205,125);
+$dpeD: rgb(237,233,49);
+$dpeE: rgb(239,176,37);
+$dpeF: rgb(238,132,61);
+$dpeG: rgb(221,40,42);
 
-$gesA: rgb(253,234,254);
-$gesB: rgb(255,222,253);
-$gesC: rgb(249,190,253);
-$gesD: rgb(251,126,255);
-$gesE: rgb(246,82,252);
-$gesF: rgb(223,40,244);
-$gesG: rgb(180,21,185);
+$gesA: rgb(145,216,247);
+$gesB: rgb(121,171,203);
+$gesC: rgb(102,136,170);
+$gesD: rgb(83,101,135);
+$gesE: rgb(65,73,108);
+$gesF: rgb(48,46,80);
+$gesG: rgb(28,13,53);
 
 $colorsDPE: (
         'a': $dpeA,
@@ -34,163 +34,229 @@ $colorsGES: (
         'g': $gesG,
 );
 
-.diag-title{
-  font-weight: 600;
+@each $letter, $color in $colorsDPE{
+  .dpe-#{$letter}{
+    background-color: $color;
+    color: var(--alpha);
+  }
+}
+@each $letter, $color in $colorsGES{
+  .ges-#{$letter}{
+    background-color: $color;
+    color: var(--alpha);
+  }
 }
 
-.diagnostic{
-  width: 100%;
+.diag-details{
+  margin: 4px 0 8px 0;
 
   .diag-dpe, .diag-ges{
-    margin-top: 12px;
-  }
-}
-.diag-dpe, .diag-ges{
-  display: flex;
-
-  .dpe, .ges{
-    padding: 6px 8px;
-
-    & > div:first-child{
-      opacity: 0;
-    }
-  }
-
-  .number{
-    margin-top: 10px;
-    text-align: center;
-    font-weight: 600;
-    display: none;
-  }
-
-  .dpe-a, .ges-a{
-    border-radius: 3px 0 0 3px;
-  }
-  .dpe-g, .ges-g{
-    border-radius: 0 3px 3px 0;
-  }
-  @each $letter, $color in $colorsDPE{
-    .dpe-#{$letter}{
-      background-color: $color;
-      color: var(--alpha);
-    }
-  }
-  @each $letter, $color in $colorsGES{
-    .ges-#{$letter}{
-      background-color: $color;
-      color: var(--alpha);
-    }
-  }
-  .ges-a{
-    color: rgb(186,21,191);
-  }
-  .dpe-a, .dpe-g, .ges-a, .ges-g{
-    & > div:first-child{
-      opacity: 1;
-    }
-  }
-  .dpe.dpe_is-active,.ges.ges_is-active{
-    transform: scale(1.4);
-    border-radius: 500px;
-    font-size: 0.75em;
-    border: 2px solid var(--alpha);
-    color: var(--txt);
-    font-weight: 600;
-
-    & > div:first-child{
-      opacity: 1;
-    }
-
-    + .number{
-      display: block;
-    }
-  }
-}
-
-.diag-plus{
-  cursor: pointer;
-  color: var(--primary);
-  opacity: 0.8;
-  text-decoration: underline;
-  transition: all 0.2s ease-in-out;
-  margin-top: 12px;
-
-   &:hover{
-     opacity: 1;
-   }
-}
-
-.diagnostic-details{
-  display: flex;
-  width: 100%;
-
-  .diag-dpe, .diag-ges{
-    flex-direction: column;
     width: 100%;
 
     $sizes: (
-            '1': 6%,
-            '2': 10%,
-            '3': 14%,
-            '4': 18%,
-            '5': 22%,
-            '6': 26%,
-            '7': 30%,
+            '1': 50%,
+            '2': 56%,
+            '3': 63%,
+            '4': 73%,
+            '5': 83%,
+            '6': 93%,
+            '7': 100%,
     );
 
-    .dpe-a, .ges-a, .dpe-g, .ges-g{
-      border-radius: 0;
-    }
-
-    & > div{
-      position: relative;
-      display: inline-block;
-    }
-
     @each $i, $size in $sizes {
-      & > div:nth-child(#{$i}){
-        width: $size;
-      }
-
-    }
-
-    @each $letter, $color in $colorsDPE{
-      .dpe-#{$letter} + .number{
-        background-color: $color;
+      .diag-line:nth-child(#{$i}){
+        .diag-letter{
+          width: calc(#{$size} - 100px - 16px - 4px);
+        }
       }
     }
+  }
+}
 
-    @each $letter, $color in $colorsGES{
-      .ges-#{$letter} + .number{
-        background-color: $color;
-      }
-    }
+.graphs{
+  max-width: 540px;
+}
 
+.diagnostic{
+  margin-bottom: 48px;
+}
 
-    .dpe, .ges{
-      position: relative;
-      @include flex(row, center, space-between);
+.diag-infos{
+  margin-bottom: 24px;
+}
+
+.diag-title{
+  text-decoration: underline;
+  margin-bottom: 8px;
+}
+
+.diag-borne{
+  margin-left: 98px;
+  @include fontSemibold();
+  opacity: 0.8;
+  font-size: 15px;
+}
+
+.diag-excessif{
+  @include fontSemibold();
+  margin-top: 8px;
+}
+
+.diags{
+  .graph:not(:last-child){
+    margin-bottom: 24px;
+  }
+}
+
+.diag-line{
+  @include flex(row, stretch, flex-start);
+
+  &:not(:last-child){
+    margin-bottom: 3px;
+  }
+
+  .number{
+    position: relative;
+    width: calc(100px - 16px - 4px);
+    padding: 5px 8px 2px 8px;
+    border: 2px solid transparent;
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    background-color: var(--alpha);
+    opacity: 0;
+  }
+
+  .diag-letter{
+    @include flex(row, center, flex-start);
+    @include fontSemibold();
+    width: calc(100% - 100px - 16px - 4px);
+    padding: 5px 8px 2px 8px;
+    border-radius: 0 4px 4px 0;
+    border: 2px solid transparent;
+  }
+
+  .flottant{
+    position: absolute;
+    bottom: -59px;
+    left: 0;
+    font-size: 14px;
+    text-align: center;
+
+    & > div:first-child{
       @include fontSemibold();
+    }
+  }
 
-      & > div:first-child{
-        opacity: 1;
-        display: flex;
-        justify-content: space-between;
+  &.active{
+    .number{
+      @include flex(column, center, center);
+      padding: 8px 8px 7px 8px;
+      border-color: var(--txt);
+      opacity: 1;
+
+      .value{
+        @include fontSemibold();
+        font-size: 22px;
+      }
+
+      .unity{
+        font-size: 14px;
       }
     }
 
-    .dpe.dpe_is-active2,.ges.ges_is-active2{
-      color: var(--txt);
+    .diag-letter{
+      border-color: var(--txt);
+      padding: 8px 8px 7px 8px;
+    }
 
-      + .number{
-        position: absolute;
-        display: block;
-        top: -10px;
-        right: -170px;
-        padding: 5px 15px;
-        border-radius: 100px;
-        transform: scale(0.85);
-        min-width: 148px;
+    .letter{
+      font-size: 22px;
+    }
+  }
+
+  .number-2, &.active .number-2{
+    display: none;
+  }
+}
+
+
+.diagnostic-dpe{
+  .diag-borne{
+    &:first-child{
+      color: rgb(0,172,121);
+    }
+    &:last-child{
+      color: rgb(221,40,42);
+    }
+  }
+}
+
+.diagnostic-ges{
+  .diag-line{
+    .flottant{
+      bottom: -26px;
+      left: 18px;
+    }
+  }
+
+  .diag-borne{
+    &:first-child{
+      color: rgb(145,216,247);
+    }
+    &:last-child{
+      color: rgb(28,13,53);
+    }
+  }
+}
+
+//                      __   _____ __    ___    __
+//                     | _| |___  / /_  ( _ )  |_ |
+//    _____ _____ _____| |     / / '_ \ / _ \   | |_____ _____ _____
+//   |_____|_____|_____| |    / /| (_) | (_) |  | |_____|_____|_____|
+//                     | |   /_/  \___/ \___/   | |
+//                     |__|                    |__|
+@media (min-width:768px) {
+  .diagnostic-dpe{
+    .diag-borne {
+      margin-left: 196px;
+    }
+  }
+
+  .diagnostic-ges{
+    transform: translateX(98px);
+  }
+
+  .diag-line{
+    .number-2, &.active .number-2{
+      display: flex;
+      border-radius: 0;
+
+      .flottant{
+        bottom: -26px;
+        left: 18px;
+      }
+    }
+  }
+
+  .diag-details{
+
+    .diag-dpe, .diag-ges{
+      $sizes: (
+              '1': 50%,
+              '2': 56%,
+              '3': 63%,
+              '4': 73%,
+              '5': 83%,
+              '6': 93%,
+              '7': 100%,
+      );
+
+      @each $i, $size in $sizes {
+        .diag-line:nth-child(#{$i}){
+          .diag-letter{
+            width: calc(#{$size} - 100px - 100px - 16px - 4px);
+          }
+        }
       }
     }
   }
@@ -203,14 +269,4 @@ $colorsGES: (
 //                     | |  |_|_____\___/ \___/   | |
 //                     |__|                      |__|
 @media (min-width:1280px) {
-  .diagnostic{
-    & > *:not(:last-child){
-      margin-right: 30px;
-    }
-
-    & > *{
-      display: flex;
-      flex-direction: column;
-    }
-  }
 }

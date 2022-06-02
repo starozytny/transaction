@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\History\HiBien;
 use App\Transaction\Entity\History\HiPrice;
 use App\Transaction\Entity\History\HiPublish;
@@ -11,6 +12,7 @@ use App\Transaction\Entity\Immo\ImContractant;
 use App\Transaction\Entity\Immo\ImNegotiator;
 use App\Transaction\Entity\Immo\ImOwner;
 use App\Entity\User;
+use App\Transaction\Entity\Immo\ImPhoto;
 use App\Transaction\Repository\Immo\ImBienRepository;
 use App\Transaction\Repository\Immo\ImPhotoRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -26,19 +28,27 @@ use Symfony\Component\Serializer\SerializerInterface;
 class PrinterController extends AbstractController
 {
     private $doctrine;
+    private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ManagerRegistry $doctrine, ImmoService $immoService)
     {
         $this->doctrine = $doctrine;
+        $this->immoService = $immoService;
     }
 
     /**
      * @Route("/vitrine/bien/{slug}", options={"expose"=true}, name="bien_display")
      */
-    public function vitrineBien(Request $request, ImBien $obj, ImPhotoRepository $photoRepository, SerializerInterface $serializer): Response
+    public function vitrineBien(Request $request, $slug, SerializerInterface $serializer): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(ImBien::class)->findOneBy(['slug' => $slug]);
+
         $ori = $request->query->get('ori');
-        $photos = $photoRepository->findBy(['bien' => $obj], ['rank' => 'ASC'], 4);
+        $photos = $em->getRepository(ImPhoto::class)->findBy(['bien' => $obj], ['rank' => 'ASC'], 4);
 
         $obj    = $serializer->serialize([$obj], 'json', ['groups' => User::USER_READ]);
         $photos = $serializer->serialize($photos, 'json', ['groups' => User::USER_READ]);
@@ -53,16 +63,16 @@ class PrinterController extends AbstractController
     /**
      * @Route("/vitrine/biens", options={"expose"=true}, name="biens_display")
      */
-    public function vitrineBiens(Request $request, ImBienRepository $bienRepository, ImPhotoRepository $photoRepository,
-                          SerializerInterface $serializer): Response
+    public function vitrineBiens(Request $request, SerializerInterface $serializer): Response
     {
         $ori = $request->query->get('ori');
 
         /** @var User $user */
         $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
 
-        $biens = $bienRepository->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF]);
-        $photos = $photoRepository->findBy(['bien' => $biens], ['rank' => 'ASC'], 4);
+        $biens = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgencyId(), 'status' => ImBien::STATUS_ACTIF]);
+        $photos = $em->getRepository(ImPhoto::class)->findBy(['bien' => $biens], ['rank' => 'ASC'], 4);
 
         $biens    = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
         $photos = $serializer->serialize($photos, 'json', ['groups' => User::USER_READ]);
@@ -77,9 +87,14 @@ class PrinterController extends AbstractController
     /**
      * @Route("/rapport/bien/{slug}", options={"expose"=true}, name="bien_rapport")
      */
-    public function rapportBien(ImBien $obj, SerializerInterface $serializer): Response
+    public function rapportBien($slug, SerializerInterface $serializer): Response
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(ImBien::class)->findOneBy(['slug' => $slug]);
+
         $data = $this->getDataHistoryBien($em, $serializer, $obj);
 
         $obj = $serializer->serialize($obj, 'json', ['groups' => User::USER_READ]);
@@ -92,9 +107,13 @@ class PrinterController extends AbstractController
     /**
      * @Route("/rapport/proprietaire/{id}", options={"expose"=true}, name="owner_rapport")
      */
-    public function rapportOwner(ImOwner $obj, SerializerInterface $serializer): Response
+    public function rapportOwner($id, SerializerInterface $serializer): Response
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(ImOwner::class)->find($id);
 
         $contractants = $em->getRepository(ImContractant::class)->findBy(['owner' => $obj]);
         $biens = []; $noDuplication = [];
@@ -121,9 +140,14 @@ class PrinterController extends AbstractController
     /**
      * @Route("/rapport/negociateur/{id}", options={"expose"=true}, name="negotiator_rapport")
      */
-    public function rapportNegotiator(ImNegotiator $obj, SerializerInterface $serializer): Response
+    public function rapportNegotiator($id, SerializerInterface $serializer): Response
     {
-        $em = $this->doctrine->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(ImNegotiator::class)->find($id);
+
         $biens = $em->getRepository(ImBien::class)->findBy(['negotiator' => $obj, 'status' => ImBien::STATUS_ACTIF]);
         $data  = $this->getDataHistoryBien($em, $serializer, $biens);
 

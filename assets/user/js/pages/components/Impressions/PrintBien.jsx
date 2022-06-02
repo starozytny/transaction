@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Sanitaze from "@commonComponents/functions/sanitaze";
 
 import { Printer } from "@userPages/components/Impressions/Printer";
-import { DiagPrint } from "@userPages/components/Biens/Read/Data/Diag";
+import { Diag } from "@userPages/components/Biens/Read/Data/Diag";
 
 export class PrintBien extends Component{
     constructor(props) {
@@ -55,7 +55,7 @@ export function PrintBienPortrait ({ elem, photos }){
                 <Reference elem={elem} />
             </div>
             <div className="col-2">
-                <DiagPrint elem={elem} />
+                <Diag elem={elem} />
             </div>
         </div>
 
@@ -91,7 +91,7 @@ export function PrintBienLandscape ({ elem, photos }){
                 <Reference elem={elem} />
             </div>
             <div className="line-3">
-                <DiagPrint elem={elem} />
+                <Diag elem={elem} />
             </div>
         </div>
     </div>

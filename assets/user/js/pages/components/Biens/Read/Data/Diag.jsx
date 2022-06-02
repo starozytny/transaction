@@ -1,195 +1,81 @@
 import React, { Component } from "react";
 
-import { Button } from "@dashboardComponents/Tools/Button";
+import Sanitaze from "@commonComponents/functions/sanitaze";
 
 export class Diag extends Component{
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            status: false
-        }
-
-        this.handleOpen = this.handleOpen.bind(this);
-    }
-
-    handleOpen = (status) => { this.setState({ status: !status }) }
-
-    render () {
-        const { elem } = this.props;
-        const { status } = this.state;
-
-        let content = <div>Le diagnostic de performance énergétique et d'indice d'émission de gaz à effet de serre n'ont pas été soumis pour le moment.</div>
-        let dpeNotFound = <div>Le diagnostic de performance énergétique n'a pas été soumis pour le moment.</div>
-        let gesNotFound = <div>L'indice d'émission de gaz à effet de serre n'a pas été soumis pour le moment.</div>
-        let dpeVierge = <div>Le diagnostic de performance énergétique est vierge.</div>
-        let gesVierge = <div>L'indice d'émission de gaz à effet de serre est vierge.</div>
-
-        if(elem.diag){
-            let diag = elem.diag;
-
-            let savoirPlus = "";
-            if(!diag.isVirgin && diag.gesLetterString && diag.gesLetterString !== "NS" && diag.gesLetterString !== "VI" &&
-                diag.dpeLetterString && diag.dpeLetterString !== "NS" && diag.dpeLetterString !== "VI")
-            {
-                savoirPlus = <div className="diag-plus">
-                    <Button type="default" onClick={() => this.handleOpen(status)}>En savoir plus</Button>
-                </div>
-            }
-
-            let diagBeforeJuly = "";
-            if(!diag.isVirgin && diag.gesLetterString && diag.gesLetterString !== "NS" && diag.gesLetterString !== "VI" &&
-                diag.dpeLetterString && diag.dpeLetterString !== "NS" && diag.dpeLetterString !== "VI")
-            {
-                if(diag.beforeJuly){
-                    diagBeforeJuly = "Diagnostic réalisé avant le 1er Juillet 2021"
-                }else{
-                    diagBeforeJuly = "Diagnostic réalisé après le 1er Juillet 2021"
-                }
-
-                if(diag.createdAtDpeString){
-                    diagBeforeJuly = <>
-                        <div>
-                            <div className="label">Date de réalisation du DPE</div>
-                            <div>{diag.createdAtDpeString}</div>
-                        </div>
-                        <div>
-                            <div className="label">Année de référence conso DPE</div>
-                            <div>{diag.referenceDpe}</div>
-                        </div>
-                        <div>
-                            <div className="label">Estimation des coûts annuels minimun</div>
-                            <div>{diag.minAnnual}</div>
-                        </div>
-                        <div>
-                            <div className="label">Estimation des coûts annuels maximum</div>
-                            <div>{diag.maxAnnual}</div>
-                        </div>
-                    </>
-                }
-            }
-
-            content = <>
-                <div className="details-tab-infos-main">
-                    {diagBeforeJuly}
-                </div>
-                <div className="details-tab-infos-main">
-                    {diag.dpeLetterString ? <>
-                        {diag.dpeLetterString !== "NS" && diag.dpeLetterString !== "VI" ? <>
-                            <DiagSimple isDpe={true} elem={elem}/>
-                            {status && <DiagDetails isDpe={true} elem={elem}/>}
-                        </> : (diag.dpeLetterString !== "NS" && !diag.isVirgin) ? dpeNotFound : dpeVierge}
-                    </> : dpeNotFound}
-                </div>
-
-                <div className="details-tab-infos-main">
-                    {diag.gesLetterString ? <>
-                        {diag.gesLetterString !== "NS" && diag.gesLetterString !== "VI" ? <>
-                            <DiagSimple isDpe={false} elem={elem}/>
-                            {status && <DiagDetails isDpe={false} elem={elem}/>}
-                        </> : (diag.gesLetterString !== "NS" && !diag.isVirgin) ? gesNotFound : gesVierge}
-                    </> : gesNotFound}
-                </div>
-
-                {savoirPlus}
-            </>
-        }
-
-        return (<div className="details-tab-infos">
-            {content}
-        </div>)
-    }
-}
-
-export class DiagPrint extends Component{
     render () {
         const { elem } = this.props;
 
-        let content = <div>Le diagnostic de performance énergétique et d'indice d'émission de gaz à effet de serre n'ont pas été soumis pour le moment.</div>
+        let content     = <div>Le diagnostic de performance énergétique et d'indice d'émission de gaz à effet de serre n'ont pas été soumis pour le moment.</div>
         let dpeNotFound = <div>Le diagnostic de performance énergétique n'a pas été soumis pour le moment.</div>
         let gesNotFound = <div>L'indice d'émission de gaz à effet de serre n'a pas été soumis pour le moment.</div>
-        let dpeVierge = <div>Le diagnostic de performance énergétique est vierge.</div>
-        let gesVierge = <div>L'indice d'émission de gaz à effet de serre est vierge.</div>
+        let dpeVierge   = <div>Le diagnostic de performance énergétique est vierge.</div>
+        let gesVierge   = <div>L'indice d'émission de gaz à effet de serre est vierge.</div>
 
         if(elem.diag){
-            let diag = elem.diag;
 
-            let diagBeforeJuly = "";
-            if(!diag.isVirgin && diag.dpeLetterString && diag.dpeLetterString !== "NS" && diag.dpeLetterString !== "VI")
+            let diagnostic = elem.diag;
+
+            let dateDiag = ""; let diagInfos = null;
+            if(!diagnostic.isVirgin && diagnostic.gesLetterString && diagnostic.gesLetterString !== "NS" && diagnostic.gesLetterString !== "VI"
+                && diagnostic.dpeLetterString && diagnostic.dpeLetterString !== "NS" && diagnostic.dpeLetterString !== "VI")
             {
-                if(diag.beforeJuly){
-                    diagBeforeJuly = "Diagnostic réalisé avant le 1er Juillet 2021"
-                }else{
-                    diagBeforeJuly = "Diagnostic réalisé après le 1er Juillet 2021"
+                dateDiag = "Diagnostic réalisé " + (diagnostic.beforeJuly ? "avant" : "après") + " le 1er Juillet 2021"
+
+                if(diagnostic.createdAtDpeString){
+                    dateDiag = <div className="date-release">Diagnostic réalisé le {diagnostic.createdAtDpeString}</div>
                 }
 
-                if(diag.createdAtDpeString){
-                    diagBeforeJuly = <div className="label">Date de réalisation du DPE : {diag.createdAtDpeString}</div>
-                }
+                diagInfos = <>
+                    {diagnostic.referenceDpe ? <>
+                        <div>Date de référence des prix de l'énergie utilisés pour établir cette estimation : {diagnostic.referenceDpe}</div>
+                    </> : ""}
+                    {diagnostic.minAnnual && diagnostic.minAnnual !== 0 && diagnostic.maxAnnual && diagnostic.maxAnnual !== 0 ? <>
+                        <div>Montant estimé des dépenses annuelles d'énergie
+                            pour un usage
+                            standard : entre {Sanitaze.toFormatCurrency(diagnostic.minAnnual)} et {Sanitaze.toFormatCurrency(diagnostic.maxAnnual)} / an</div>
+                    </> : ""}
+                </>
             }
 
             content = <>
-                <div className="details-tab-infos-main">{diagBeforeJuly}</div>
-                <div className="diags-inline">
-                    <div className="details-tab-infos-main">
-                        {diag.dpeLetterString ? <>
-                            {diag.dpeLetterString !== "NS" && diag.dpeLetterString !== "VI" ? <>
-                                <div className="diag-title">Diagnostic de performance énergétique en kWhEP/m².an</div>
-                                <DiagDetails isDpe={true} showUnit={false} elem={elem}/>
-                            </> : (diag.dpeLetterString !== "NS" && !diag.isVirgin) ? dpeNotFound : dpeVierge}
+                <div className="diag-infos">
+                    {dateDiag}
+                    {diagInfos}
+                </div>
+
+                <div className="graphs">
+                    <div className="graph">
+                        {diagnostic.dpeLetter ? <>
+                            {diagnostic.dpeLetterString !== "NS" && diagnostic.dpeLetterString !== "VI" ? <>
+                                <DiagDetails isDpe={true} elem={elem}/>
+                                {diagnostic.dpeLetterString === "F" || diagnostic.dpeLetterString === "G" && <>
+                                    <div className="diag-excessif">Logement à consommation énergétique excessive : classe {diagnostic.dpeLetterString}</div>
+                                </>}
+                            </> : (diagnostic.dpeLetterString !== "NS") ? dpeNotFound : dpeVierge}
                         </> : dpeNotFound}
                     </div>
-                    <div className="details-tab-infos-main">
-                        {diag.gesLetterString ? <>
-                            {diag.gesLetterString !== "NS" && diag.gesLetterString !== "VI" ? <>
-                                <div className="diag-title">Indice d'émission de gaz à effet de serre en kgeqCO2/m².an</div>
-                                <DiagDetails isDpe={false} showUnit={false} elem={elem}/>
-                            </> : (diag.gesLetterString !== "NS" && !diag.isVirgin) ? gesNotFound : gesVierge}
-                        </> : null}
+
+                    <div className="graph">
+                        {diagnostic.gesLetter ? <>
+                            {diagnostic.gesLetterString !== "NS" && diagnostic.gesLetterString !== "VI" ? <>
+                                <DiagDetails isDpe={false} elem={elem}/>
+                            </> : (diagnostic.gesLetterString !== "NS") ? gesNotFound : gesVierge}
+                        </> : gesNotFound}
                     </div>
                 </div>
             </>
         }
 
-        return (<div className="details-tab-infos">
+        return <div className="diagnostics">
             {content}
-        </div>)
+        </div>
     }
 }
 
-function DiagSimple({ isDpe, elem })
+function DiagDetails({ isDpe, elem })
 {
-    let letters = ["A", "B", "C", "D", "E", "F", "G"];
-    let title = isDpe ? "Diagnostic de performance énergétique en kWhEP/m².an" : "Indice d'émission de gaz à effet de serre en kgeqCO2/m².an";
-    let classDiag = isDpe ? "dpe" : "ges";
-    let value = isDpe ? elem.diag.dpeValue : elem.diag.gesValue;
-
-    return (
-        <div className="diagnostic">
-            <div>
-                <div className="diag-title">{title}</div>
-                <div className={"diag-" + classDiag}>
-                    {letters.map(le => {
-
-                        let comparator = isDpe ? elem.diag.dpeLetterString : elem.diag.gesLetterString;
-                        let classActive = isDpe ? " dpe_is-active" : " ges_is-active";
-                        let active = comparator === le ? classActive : "";
-
-                        return <div key={le}>
-                            <div className={classDiag + " " + classDiag + "-" + le.toLowerCase() + active}>
-                                <div>{le}</div>
-                            </div>
-                            <div className="number">{value ? value : "N.C"}</div>
-                        </div>
-                    })}
-                </div>
-            </div>
-        </div>
-    )
-}
-
-function DiagDetails({ isDpe, elem, showUnit = true })
-{
+    let title = isDpe ? "Diagnostic de performance énergétique" : "Indice d'émission de gaz à effet de serre";
     let lettersDetails = [
         { le :"A", valDpe: "≤ 50", valGes: "≤ 5" },
         { le :"B", valDpe: "51 à 90", valGes: "6 à 10" },
@@ -200,26 +86,57 @@ function DiagDetails({ isDpe, elem, showUnit = true })
         { le :"G", valDpe: "> 450", valGes: "> 80" }
     ]
     let classDiag = isDpe ? "dpe" : "ges";
-    let unity = isDpe ? "kWhEP/m².an" : "kgeqCO2/m².an";
+    let unity = isDpe ? "kWh/m²/an" : "kgCO2/m²/an";
+    let borneA = isDpe ? "Logement extrêmement performant" : "Peu d'émissions de CO2";
+    let borneB = isDpe ? "Logement extrêmement peu performant" : "Emission de CO2 très importantes";
     let value = isDpe ? elem.diag.dpeValue : elem.diag.gesValue;
 
-    return (
-        <div className="diagnostic-details">
-            <div className={"diag-" + classDiag}>
-                {lettersDetails.map(le => {
+    return <>
+        <div className="diag-title">{title}</div>
+        <div className={"diagnostic diagnostic-" + classDiag}>
+            <div className="diag-borne">{borneA}</div>
+            <div className="diag-details">
+                <div className={"diag-" + classDiag}>
+                    {lettersDetails.map(le => {
 
-                    let comparator = isDpe ? elem.diag.dpeLetterString : elem.diag.gesLetterString;
-                    let classActive = isDpe ? " dpe_is-active2" : " ges_is-active2";
-                    let active = comparator === le.le ? classActive : "";
 
-                    return <div key={le.le}>
-                        <div className={classDiag + " " + classDiag + "-" + le.le.toLowerCase() + active}>
-                            <div>{le.le}</div>
+                        let comparator = isDpe ? elem.diag.dpeLetterString : elem.diag.gesLetterString;
+                        let active = comparator === le.le ? " active" : "";
+
+                        return <div className={"diag-line" + active} key={le.le}>
+                            <div className="number">
+                                <div className="value">{value ? value : "N.C"}</div>
+                                {comparator === le.le ? <>
+                                    <div className="unity">{unity}</div>
+                                    <div className="flottant">
+                                        {isDpe ? <>
+                                            <div>consommation</div>
+                                            <div>(énergie primaire)</div>
+                                        </> : <>
+                                            <div>émissions</div>
+                                        </>}
+                                    </div>
+                                </> : null}
+                            </div>
+                            {isDpe ? <>
+                                <div className="number number-2">
+                                    <div className="value">{elem.diag.gesValue ? elem.diag.gesValue : "N.C"}</div>
+                                    {comparator === le.le ? <>
+                                        <div className="unity">kgCO2/m²/an</div>
+                                        <div className="flottant">
+                                            <div>émissions</div>
+                                        </div>
+                                    </> : null}
+                                </div>
+                            </> : null}
+                            <div className={"diag-letter " + classDiag + " " + classDiag + "-" + le.le.toLowerCase()} key={le.le}>
+                                <div className="letter">{le.le}</div>
+                            </div>
                         </div>
-                        <div className="number">{value ? value + (showUnit ? " " + unity : "") : "N.C"}</div>
-                    </div>
-                })}
+                    })}
+                </div>
             </div>
+            <div className="diag-borne">{borneB}</div>
         </div>
-    )
+    </>
 }
