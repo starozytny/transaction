@@ -8,7 +8,7 @@
          data-donnees="{{ data }}"
          data-biens="{{ biens }}"
          data-society-id="{{ user.society.id }}"
-         data-agency-id="{{ user.agency.id }}"
+         data-agency-id="{{ agency.id }}"
          data-is-user="{{ app.user.highRoleCode == 0 ? true : false }}"
          {% if search is defined %}data-search="{{ search }}"{% endif %}
     >

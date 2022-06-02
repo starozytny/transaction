@@ -9,7 +9,7 @@
          data-negotiators="{{ negotiators }}"
          data-biens="{{ biens }}"
          data-society-id="{{ user.society.id }}"
-         data-agency-id="{{ user.agency.id }}"
+         data-agency-id="{{ agency.id }}"
          {% if search is defined %}data-search="{{ search }}"{% endif %}
     >
         {% include "dashboard/layout/components/spinner.html.twig" %}

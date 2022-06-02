@@ -43,9 +43,10 @@ class TransactionController extends AbstractController
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
 
-        $agencies = $em->getRepository(ImAgency::class)->findBy(['societyId' => $user->getSociety()->getId()]);
-        $objs = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
-        $biens = $em->getRepository(ImBien::class)->findBy(['negotiator' => $objs, 'status' => ImBien::STATUS_ACTIF]);
+        $agency      = $this->immoService->getUserAgency($user);
+        $agencies    = $em->getRepository(ImAgency::class)->findBy(['societyId' => $user->getSociety()->getId()]);
+        $objs        = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
+        $biens       = $em->getRepository(ImBien::class)->findBy(['negotiator' => $objs, 'status' => ImBien::STATUS_ACTIF]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $biens = $serializer->serialize($biens, 'json', ['groups' => User::USER_READ]);
@@ -53,6 +54,7 @@ class TransactionController extends AbstractController
         $params = [
             'data' => $objs,
             'user' => $user,
+            'agency' => $agency,
             'biens' => $biens,
         ];
 
@@ -75,9 +77,10 @@ class TransactionController extends AbstractController
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
 
-        $objs = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgencyId()]);
+        $agency       = $this->immoService->getUserAgency($user);
+        $objs         = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgencyId()]);
         $contractants = $em->getRepository(ImContractant::class)->findBy(['owner' => $objs]);
-        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgencyId()]);
+        $negotiators  = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgencyId()]);
 
         $biens = [];
         foreach($contractants as $contractant) {
@@ -94,6 +97,7 @@ class TransactionController extends AbstractController
         $params = [
             'data' => $objs,
             'user' => $user,
+            'agency' => $agency,
             'negotiators' => $negotiators,
             'biens' => $biens,
         ];
@@ -117,7 +121,8 @@ class TransactionController extends AbstractController
 
         $getArchived = (bool)$request->query->get('ar');
 
-        $objs = $em->getRepository(ImProspect::class)->findBy(['agency' => $user->getAgencyId(), 'isArchived' => $getArchived]);
+        $agency      = $this->immoService->getUserAgency($user);
+        $objs        = $em->getRepository(ImProspect::class)->findBy(['agency' => $user->getAgencyId(), 'isArchived' => $getArchived]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgencyId()]);
 
         $data = [];
@@ -146,6 +151,7 @@ class TransactionController extends AbstractController
             'type' => $type,
             'data' => $objs,
             'user' => $user,
+            'agency' => $agency,
             'negotiators' => $negotiators
         ];
 
@@ -168,8 +174,9 @@ class TransactionController extends AbstractController
 
         $getArchived = (bool)$request->query->get('ar');
 
-        $objs = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgencyId(), 'isArchived' => $getArchived]);
-        $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgencyId()]);
+        $agency       = $this->immoService->getUserAgency($user);
+        $objs         = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgencyId(), 'isArchived' => $getArchived]);
+        $negotiators  = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgencyId()]);
 
         $objs = $serializer->serialize($objs, 'json', ['groups' => User::ADMIN_READ]);
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
@@ -178,6 +185,7 @@ class TransactionController extends AbstractController
         $params = [
             'data' => $objs,
             'user' => $user,
+            'agency' => $agency,
             'negotiators' => $negotiators
         ];
 

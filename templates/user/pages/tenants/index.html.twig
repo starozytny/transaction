@@ -4,8 +4,12 @@
 {% set submenuActive = "Liste des locataires" %}
 
 {% block main_content %}
-    <div id="list-tenants" data-donnees="{{ data }}" data-negotiators="{{ negotiators }}"
-         data-society-id="{{ user.society.id }}" data-agency-id="{{ user.agency.id }}">
+    <div id="list-tenants"
+         data-donnees="{{ data }}"
+         data-negotiators="{{ negotiators }}"
+         data-society-id="{{ user.society.id }}"
+         data-agency-id="{{ agency.id }}"
+    >
         {% include "dashboard/layout/components/spinner.html.twig" %}
     </div>
 {% endblock %}

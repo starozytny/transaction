@@ -131,7 +131,7 @@ class Form extends Component {
             })
 
             users.forEach(user => {
-                if(user.agency.id === to){
+                if(user.agencyId === to){
                     selectUsers.push({ value: user.id, label: user.fullname, id: "us-" + user.id })
                 }
             })
