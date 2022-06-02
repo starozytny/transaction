@@ -11,7 +11,6 @@ use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
 use App\Service\Immo\SearchService;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -97,7 +96,7 @@ class SearchController extends AbstractController
      *
      * @OA\Tag(name="Searchs")
      *
-     * @param ImSearch $obj
+     * @param $id
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -105,8 +104,11 @@ class SearchController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(ImSearch $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+    public function update($id, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImSearch::class)->find($id);
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
 
@@ -122,16 +124,20 @@ class SearchController extends AbstractController
      *
      * @OA\Tag(name="Searchs")
      *
-     * @param ImSearch $obj
+     * @param $id
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(ImSearch $obj, DataService $dataService): JsonResponse
+    public function delete($id, DataService $dataService): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImSearch::class)->find($id);
+
         $prospect = $obj->getProspect();
         $prospect->setSearch(null);
 
-        return $dataService->delete($obj);
+        return $dataService->deleteTransac($this->getUser(), $obj);
     }
 
     /**
@@ -147,16 +153,18 @@ class SearchController extends AbstractController
      * @OA\Tag(name="Searchs")
      *
      * @param Request $request
-     * @param ImSearch $search
+     * @param $id
      * @param ApiResponse $apiResponse
      * @param SearchService $searchService
      * @return JsonResponse
      */
-    public function results(Request $request, ImSearch $search, ApiResponse $apiResponse, SearchService $searchService): JsonResponse
+    public function results(Request $request, $id, ApiResponse $apiResponse, SearchService $searchService): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
+
+        $search = $em->getRepository(ImSearch::class)->find($id);
 
         $biens = $em->getRepository(ImBien::class)->findByCodeAdBienWithoutArchive(
             $search->getCodeTypeAd(), $search->getCodeTypeBien()

@@ -10,7 +10,6 @@ use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\FileUploader;
 use App\Service\Immo\ImmoService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

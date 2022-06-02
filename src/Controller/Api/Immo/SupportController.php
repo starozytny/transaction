@@ -8,7 +8,6 @@ use App\Transaction\Entity\Immo\ImSupport;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,15 +75,18 @@ class SupportController extends AbstractController
      * @OA\Tag(name="ImmoSettings")
      *
      * @param Request $request
+     * @param $id
      * @param ValidatorService $validator
      * @param ApiResponse $apiResponse
-     * @param ImSupport $obj
      * @param DataImmo $dataEntity
      * @return JsonResponse
      */
-    public function update(Request $request, ValidatorService $validator,  ApiResponse $apiResponse,
-                           ImSupport $obj, DataImmo $dataEntity): JsonResponse
+    public function update(Request $request, $id, ValidatorService $validator,
+                           ApiResponse $apiResponse, DataImmo $dataEntity): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImSupport::class)->find($id);
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
 }

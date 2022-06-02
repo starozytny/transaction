@@ -5,6 +5,7 @@ namespace App\Service\Immo;
 
 
 use App\Transaction\Entity\Immo\ImAgency;
+use App\Transaction\Entity\Immo\ImSuivi;
 use App\Transaction\Entity\Immo\ImSupport;
 use App\Entity\User;
 use App\Service\Data\DataImmo;
@@ -256,4 +257,13 @@ class ImmoService
         return true;
     }
 
+    public function getSuivi($user, $bien, $prospect)
+    {
+        $em = $this->getEntityUserManager($user);
+
+        return  $em->getRepository(ImSuivi::class)->findOneBy([
+            'bien' => $bien,
+            'prospect' => $prospect
+        ]);
+    }
 }

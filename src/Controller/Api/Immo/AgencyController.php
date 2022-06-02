@@ -12,7 +12,6 @@ use App\Service\Export;
 use App\Service\FileUploader;
 use App\Service\Immo\ImmoService;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,16 +47,18 @@ class AgencyController extends AbstractController
      * )
      * @OA\Tag(name="Agency")
      *
-     * @param ImAgency $obj
+     * @param $id
      * @param ApiResponse $apiResponse
      * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function read(ImAgency $obj, ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
+    public function read($id, ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(ImAgency::class)->find($id);
 
         $users = $em->getRepository(User::class)->findBy(['agency' => $obj]);
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj]);
@@ -183,15 +184,15 @@ class AgencyController extends AbstractController
      * @OA\Tag(name="Agency")
      *
      * @param Request $request
+     * @param $id
      * @param ValidatorService $validator
      * @param ApiResponse $apiResponse
-     * @param ImAgency $obj
      * @param FileUploader $fileUploader
      * @param DataImmo $dataEntity
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(Request $request, ValidatorService $validator, ApiResponse $apiResponse, ImAgency $obj,
+    public function update(Request $request, $id, ValidatorService $validator, ApiResponse $apiResponse,
                            FileUploader $fileUploader, DataImmo $dataEntity): JsonResponse
     {
         /** @var User $user */
@@ -203,6 +204,7 @@ class AgencyController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
+        $obj = $em->getRepository(ImAgency::class)->find($id);
         $obj = $dataEntity->setDataAgency($obj, $data);
 
         $file = $request->files->get('logo');
@@ -242,19 +244,19 @@ class AgencyController extends AbstractController
      *
      * @OA\Tag(name="Agency")
      *
+     * @param $id
      * @param ApiResponse $apiResponse
-     * @param ImAgency $obj
-     * @param ImmoService $immoService
      * @param FileUploader $fileUploader
      * @return JsonResponse
      */
-    public function delete(ApiResponse $apiResponse, ImAgency $obj, ImmoService $immoService, FileUploader $fileUploader): JsonResponse
+    public function delete($id, ApiResponse $apiResponse, FileUploader $fileUploader): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
 
-        $immoService->deleteAgency($obj);
+        $obj = $em->getRepository(ImAgency::class)->find($id);
+        $this->immoService->deleteAgency($obj);
 
         $em->flush();
 

@@ -7,17 +7,19 @@ namespace App\Service\Data;
 use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\FileUploader;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DataService
 {
+    private $registry;
     private $em;
     private $apiResponse;
 
-    public function __construct(EntityManagerInterface $em, ApiResponse $apiResponse)
+    public function __construct(ManagerRegistry $registry, ApiResponse $apiResponse)
     {
-        $this->em = $em;
+        $this->registry = $registry;
+        $this->em = $registry->getManager('default');
         $this->apiResponse = $apiResponse;
     }
 
@@ -37,10 +39,10 @@ class DataService
         return $this->apiResponse->apiJsonResponse($obj, $groups);
     }
 
-    public function deleteWithImg($obj, $img, FileUploader $fileUploader, $folder): JsonResponse
+    public function deleteWithImg($em, $obj, $img, FileUploader $fileUploader, $folder): JsonResponse
     {
-        $this->em->remove($obj);
-        $this->em->flush();
+        $em->remove($obj);
+        $em->flush();
 
         $fileUploader->deleteFile($img, $folder);
 
@@ -77,6 +79,45 @@ class DataService
         }
 
         $this->em->flush();
+        return $this->apiResponse->apiJsonResponseSuccessful("Suppression de la sélection réussie !");
+    }
+
+    public function deleteTransac($user, $obj, $isSeen = false, $messageError = "Vous n'avez pas lu ce message."): JsonResponse
+    {
+        /** @var User $user */
+        $em = $this->registry->getManager($user->getManager());
+
+        if($isSeen){
+            if (!$obj->getIsSeen()) {
+                return $this->apiResponse->apiJsonResponseBadRequest($messageError);
+            }
+        }
+
+        $em->remove($obj);
+        $em->flush();
+        return $this->apiResponse->apiJsonResponseSuccessful("Suppression réussie !");
+    }
+
+    public function deleteSelectedTransac($user, $classe, $ids, $isSeen = false): JsonResponse
+    {
+        /** @var User $user */
+        $em = $this->registry->getManager($user->getManager());
+
+        $objs = $em->getRepository($classe)->findBy(['id' => $ids]);
+
+        if ($objs) {
+            foreach ($objs as $obj) {
+                if($isSeen){
+                    if (!$obj->getIsSeen()) {
+                        return $this->apiResponse->apiJsonResponseBadRequest('Vous n\'avez pas lu ce message.');
+                    }
+                }
+
+                $em->remove($obj);
+            }
+        }
+
+        $em->flush();
         return $this->apiResponse->apiJsonResponseSuccessful("Suppression de la sélection réussie !");
     }
 

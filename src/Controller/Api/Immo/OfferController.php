@@ -10,9 +10,7 @@ use App\Transaction\Entity\Immo\ImProspect;
 use App\Transaction\Entity\Immo\ImSuivi;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
-use App\Service\Data\DataService;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,7 +55,7 @@ class OfferController extends AbstractController
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
         }
 
-        if($suivi = $this->getSuivi($bien, $prospect)){
+        if($suivi = $this->immoService->getSuivi($user, $bien, $prospect)){
             $suivi->setStatus(ImSuivi::STATUS_PROCESSING);
         }
 
@@ -113,16 +111,19 @@ class OfferController extends AbstractController
      * @OA\Tag(name="Offers")
      *
      * @param Request $request
+     * @param $id
      * @param SerializerInterface $serializer
      * @param ValidatorService $validator
      * @param ApiResponse $apiResponse
-     * @param ImOffer $obj
      * @param DataImmo $dataEntity
      * @return JsonResponse
      */
-    public function update(Request $request, SerializerInterface $serializer, ValidatorService $validator,  ApiResponse $apiResponse,
-                           ImOffer $obj, DataImmo $dataEntity): JsonResponse
+    public function update(Request $request, $id, SerializerInterface $serializer, ValidatorService $validator,
+                           ApiResponse $apiResponse, DataImmo $dataEntity): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImOffer::class)->find($id);
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $serializer);
     }
 
@@ -140,20 +141,22 @@ class OfferController extends AbstractController
      *
      * @OA\Tag(name="Changelogs")
      *
-     * @param ImOffer $obj
+     * @param $id
      * @param ApiResponse $apiResponse
      * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function delete(ImOffer $obj, ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
+    public function delete($id, ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
 
+        $obj = $em->getRepository(ImOffer::class)->find($id);
+
         $em->remove($obj);
 
-        $suivi = $this->getSuivi($obj->getBien(), $obj->getProspect());
+        $suivi = $this->immoService->getSuivi($user, $obj->getBien(), $obj->getProspect());
         if($suivi){
             $suivi->setStatus(ImSuivi::STATUS_PROCESSED);
         }
@@ -177,21 +180,23 @@ class OfferController extends AbstractController
      *
      * @OA\Tag(name="Changelogs")
      *
-     * @param ImOffer $obj
+     * @param $id
      * @param $status
      * @param ApiResponse $apiResponse
      * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function switchStatus(ImOffer $obj, $status, ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
+    public function switchStatus($id, $status, ApiResponse $apiResponse, SerializerInterface $serializer): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
 
+        $obj = $em->getRepository(ImOffer::class)->find($id);
+
         $obj->setStatus($status);
 
-        $suivi = $this->getSuivi($obj->getBien(), $obj->getProspect());
+        $suivi = $this->immoService->getSuivi($user, $obj->getBien(), $obj->getProspect());
         if($suivi){
             if($status != ImOffer::STATUS_PROPAL){
                 $suivi->setStatus(ImSuivi::STATUS_PROCESSED);
@@ -220,15 +225,15 @@ class OfferController extends AbstractController
      * @OA\Tag(name="Offers")
      *
      * @param Request $request
+     * @param $id
      * @param SerializerInterface $serializer
      * @param ValidatorService $validator
      * @param ApiResponse $apiResponse
-     * @param ImOffer $obj
      * @param DataImmo $dataEntity
      * @return JsonResponse
      */
-    public function final(Request $request, SerializerInterface $serializer, ValidatorService $validator,  ApiResponse $apiResponse,
-                          ImOffer $obj, DataImmo $dataEntity): JsonResponse
+    public function final(Request $request, $id, SerializerInterface $serializer, ValidatorService $validator,
+                          ApiResponse $apiResponse, DataImmo $dataEntity): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -239,6 +244,7 @@ class OfferController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
+        $obj = $em->getRepository(ImOffer::class)->find($id);
         $obj = $dataEntity->setDataOfferFinal($obj, $data);
 
         $noErrors = $validator->validate($obj);
@@ -246,7 +252,7 @@ class OfferController extends AbstractController
             return $apiResponse->apiJsonResponseValidationFailed($noErrors);
         }
 
-        if($suivi = $this->getSuivi($obj->getBien(), $obj->getProspect())){
+        if($suivi = $this->immoService->getSuivi($user, $obj->getBien(), $obj->getProspect())){
             $suivi->setStatus(ImSuivi::STATUS_PROCESSING);
         }
 
@@ -254,18 +260,6 @@ class OfferController extends AbstractController
         $em->flush();
 
         return $this->returnData($apiResponse, $serializer, $obj, $suivi);
-    }
-
-    private function getSuivi($bien, $prospect)
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        $em = $this->immoService->getEntityUserManager($user);
-
-        return  $em->getRepository(ImSuivi::class)->findOneBy([
-            'bien' => $bien,
-            'prospect' => $prospect
-        ]);
     }
 
     private function returnData(ApiResponse $apiResponse, SerializerInterface $serializer, ImOffer $offer, ImSuivi $suivi): JsonResponse

@@ -50,7 +50,7 @@ class PublishController extends AbstractController
      * @param SanitizeData $sanitizeData
      * @return JsonResponse
      */
-    public function update(Request $request, ApiResponse $apiResponse, PublishService $publishService, SanitizeData $sanitizeData): JsonResponse
+    public function send(Request $request, ApiResponse $apiResponse, PublishService $publishService, SanitizeData $sanitizeData): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();

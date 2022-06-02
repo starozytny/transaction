@@ -95,7 +95,7 @@ class SousTypeController extends AbstractController
      *
      * @OA\Tag(name="Donnees")
      *
-     * @param DoSousType $obj
+     * @param $id
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -103,8 +103,11 @@ class SousTypeController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(DoSousType $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataDonnee $dataEntity): JsonResponse
+    public function update($id, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataDonnee $dataEntity): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(DoSousType::class)->find($id);
         if($obj->getIsNative()){
             return $apiResponse->apiJsonResponseBadRequest("Vous ne pouvez pas modifier cette donnée.");
         }
@@ -122,17 +125,20 @@ class SousTypeController extends AbstractController
      *
      * @OA\Tag(name="Donnees")
      *
-     * @param DoSousType $obj
+     * @param $id
      * @param ApiResponse $apiResponse
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(DoSousType $obj, ApiResponse $apiResponse, DataService $dataService): JsonResponse
+    public function delete($id, ApiResponse $apiResponse, DataService $dataService): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(DoSousType::class)->find($id);
         if($obj->getIsNative()){
             return $apiResponse->apiJsonResponseBadRequest("Vous ne pouvez pas modifier cette donnée.");
         }
 
-        return $dataService->delete($obj);
+        return $dataService->deleteTransac($this->getUser(), $obj);
     }
 }

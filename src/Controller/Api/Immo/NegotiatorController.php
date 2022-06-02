@@ -10,7 +10,6 @@ use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
 use App\Service\FileUploader;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -108,7 +107,7 @@ class NegotiatorController extends AbstractController
      *
      * @OA\Tag(name="Negociateurs")
      *
-     * @param ImNegotiator $obj
+     * @param $id
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -117,9 +116,12 @@ class NegotiatorController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(ImNegotiator $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
+    public function update($id, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataImmo $dataEntity, FileUploader $fileUploader): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImNegotiator::class)->find($id);
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $fileUploader);
     }
 
@@ -135,14 +137,17 @@ class NegotiatorController extends AbstractController
      *
      * @OA\Tag(name="Negociateurs")
      *
-     * @param ImNegotiator $obj
+     * @param $id
      * @param DataService $dataService
      * @param FileUploader $fileUploader
      * @return JsonResponse
      */
-    public function delete(ImNegotiator $obj, DataService $dataService, FileUploader $fileUploader): JsonResponse
+    public function delete($id, DataService $dataService, FileUploader $fileUploader): JsonResponse
     {
-        return $dataService->deleteWithImg($obj, $obj->getAvatar(), $fileUploader, ImNegotiator::FOLDER_AVATARS);
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImNegotiator::class)->find($id);
+        return $dataService->deleteWithImg($em, $obj, $obj->getAvatar(), $fileUploader, ImNegotiator::FOLDER_AVATARS);
     }
 
     /**

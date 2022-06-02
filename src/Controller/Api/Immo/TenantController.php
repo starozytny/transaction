@@ -95,7 +95,7 @@ class TenantController extends AbstractController
      *
      * @OA\Tag(name="Tenants")
      *
-     * @param ImTenant $obj
+     * @param $id
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -103,8 +103,11 @@ class TenantController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(ImTenant $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+    public function update($id, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImTenant::class)->find($id);
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
 
@@ -120,13 +123,16 @@ class TenantController extends AbstractController
      *
      * @OA\Tag(name="Tenants")
      *
-     * @param ImTenant $obj
+     * @param $id
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(ImTenant $obj, DataService $dataService): JsonResponse
+    public function delete($id, DataService $dataService): JsonResponse
     {
-        return $dataService->delete($obj);
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImTenant::class)->find($id);
+        return $dataService->deleteTransac($this->getUser(), $obj);
     }
 
     /**
@@ -149,7 +155,7 @@ class TenantController extends AbstractController
      */
     public function deleteSelected(Request $request, DataService $dataService): JsonResponse
     {
-        return $dataService->deleteSelected(ImTenant::class, json_decode($request->getContent()));
+        return $dataService->deleteSelectedTransac($this->getUser(), ImTenant::class, json_decode($request->getContent()));
     }
 
     /**
@@ -163,13 +169,12 @@ class TenantController extends AbstractController
      * @OA\Tag(name="Owners")
      *
      * @param $format
-     * @param ImmoService $immoService
      * @return BinaryFileResponse
      */
-    public function export($format, ImmoService $immoService): BinaryFileResponse
+    public function export($format): BinaryFileResponse
     {
         /** @var User $user */
         $user = $this->getUser();
-        return $immoService->exportData($format, $user, ImTenant::class, 'locataires');
+        return $this->immoService->exportData($format, $user, ImTenant::class, 'locataires');
     }
 }

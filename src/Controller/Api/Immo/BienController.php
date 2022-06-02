@@ -390,7 +390,7 @@ class BienController extends AbstractController
      *
      * @OA\Tag(name="Bien")
      *
-     * @param ImBien $obj
+     * @param $id
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -402,9 +402,12 @@ class BienController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(ImBien $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, FileUploader $fileUploader,
+    public function update($id, Request $request, ApiResponse $apiResponse, ValidatorService $validator, FileUploader $fileUploader,
                            DataImmo $dataEntity, DataDonnee $dataDonnee, HistoryService $historyService, SerializerInterface $serializer): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImBien::class)->find($id);
         return $this->submitForm("update", $obj, $request, $apiResponse, $fileUploader, $validator,
             $dataEntity, $dataDonnee, $historyService, $serializer);
     }
@@ -421,19 +424,20 @@ class BienController extends AbstractController
      *
      * @OA\Tag(name="Bien")
      *
-     * @param ImBien $obj
+     * @param $id
      * @param $status
      * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
-    public function status(ImBien $obj, $status, ApiResponse $apiResponse): JsonResponse
+    public function status($id, $status, ApiResponse $apiResponse): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
 
-        $obj->setStatus($status);
+        $obj = $em->getRepository(ImBien::class)->find($id);
 
+        $obj->setStatus($status);
         $obj->setIsArchived($status == ImBien::STATUS_ARCHIVE);
 
         $em->flush();
@@ -453,15 +457,17 @@ class BienController extends AbstractController
      *
      * @OA\Tag(name="Bien")
      *
-     * @param ImBien $obj
+     * @param $id
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(ImBien $obj, DataService $dataService): JsonResponse
+    public function delete($id, DataService $dataService): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(ImBien::class)->find($id);
 
         $publishes = $em->getRepository(ImPublish::class)->findBy(['bien' => $obj]);
         foreach($publishes as $publish){

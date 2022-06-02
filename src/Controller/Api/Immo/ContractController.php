@@ -14,14 +14,12 @@ use App\Transaction\Entity\Immo\ImTenant;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/contracts", name="api_contracts_")
@@ -102,7 +100,7 @@ class ContractController extends AbstractController
                 $contractant->setOwner($owner);
             }
 
-            if($suivi = $this->getSuivi($bien, $prospect)){
+            if($suivi = $this->immoService->getSuivi($user, $bien, $prospect)){
                 $suivi->setStatus(ImSuivi::STATUS_END);
             }
         }
@@ -167,29 +165,20 @@ class ContractController extends AbstractController
      * @OA\Tag(name="Contracts")
      *
      * @param Request $request
+     * @param $id
      * @param ValidatorService $validator
      * @param ApiResponse $apiResponse
-     * @param ImContract $obj
      * @param DataImmo $dataEntity
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(Request $request, ValidatorService $validator,  ApiResponse $apiResponse,
-                           ImContract $obj, DataImmo $dataEntity): JsonResponse
+    public function update(Request $request, $id, ValidatorService $validator,  ApiResponse $apiResponse,
+                           DataImmo $dataEntity): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImContract::class)->find($id);
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
-    }
-
-    private function getSuivi($bien, $prospect)
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        $em = $this->immoService->getEntityUserManager($user);
-
-        return  $em->getRepository(ImSuivi::class)->findOneBy([
-            'bien' => $bien,
-            'prospect' => $prospect
-        ]);
     }
 
     /**
@@ -206,16 +195,18 @@ class ContractController extends AbstractController
      *
      * @OA\Tag(name="Changelogs")
      *
-     * @param ImContract $obj
+     * @param $id
      * @param $status
      * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
-    public function switchStatus(ImContract $obj, $status, ApiResponse $apiResponse): JsonResponse
+    public function switchStatus($id, $status, ApiResponse $apiResponse): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(ImContract::class)->find($id);
 
         $obj->setStatus($status);
         $em->flush();

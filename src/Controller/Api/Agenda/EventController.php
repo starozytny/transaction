@@ -102,7 +102,7 @@ class EventController extends AbstractController
      *
      * @OA\Tag(name="Agenda")
      *
-     * @param AgEvent $obj
+     * @param $id
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -111,9 +111,12 @@ class EventController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(AgEvent $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
+    public function update($id, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataEvent $dataEntity, SerializerInterface $serializer): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(AgEvent::class)->find($id);
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity, $serializer);
     }
 
@@ -129,7 +132,7 @@ class EventController extends AbstractController
      *
      * @OA\Tag(name="Agenda")
      *
-     * @param AgEvent $obj
+     * @param $id
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -137,11 +140,13 @@ class EventController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function updateDate(AgEvent $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataEvent $dataEntity): JsonResponse
+    public function updateDate($id, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataEvent $dataEntity): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(AgEvent::class)->find($id);
 
         $data = json_decode($request->getContent());
 
@@ -175,16 +180,18 @@ class EventController extends AbstractController
      *
      * @OA\Tag(name="Agenda")
      *
-     * @param AgEvent $obj
+     * @param $id
      * @param DataService $dataService
      * @param HistoryService $historyService
      * @return JsonResponse
      */
-    public function delete(AgEvent $obj, DataService $dataService, HistoryService $historyService): JsonResponse
+    public function delete($id, DataService $dataService, HistoryService $historyService): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(AgEvent::class)->find($id);
 
         if($visit = $obj->getImVisit()){
             $historyService->createVisit(AgEvent::STATUS_DELETE, $visit->getBien()->getId(), $visit->getId(), $obj);

@@ -9,7 +9,6 @@ use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImSuivi;
 use App\Transaction\Entity\Immo\ImVisit;
 use App\Entity\User;
-use App\Transaction\Repository\Immo\ImVisitRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\Agenda\DataEvent;
 use App\Service\Data\DataImmo;
@@ -17,7 +16,6 @@ use App\Service\Data\DataService;
 use App\Service\FileCreator;
 use App\Service\History\HistoryService;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Mpdf\MpdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,7 +50,6 @@ class VisitController extends AbstractController
      * @OA\Tag(name="Visits")
      *
      * @param ImBien $obj
-     * @param ImVisitRepository $repository
      * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
@@ -156,7 +153,7 @@ class VisitController extends AbstractController
      *
      * @OA\Tag(name="Visits")
      *
-     * @param ImVisit $obj
+     * @param $id
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -167,9 +164,12 @@ class VisitController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(ImVisit $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
+    public function update($id, Request $request, ApiResponse $apiResponse, ValidatorService $validator,
                            DataImmo $dataEntity, DataEvent $dataEvent, SerializerInterface $serializer, HistoryService $historyService): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImVisit::class)->find($id);
         return $this->submitForm("update", $obj, $obj->getAgEvent(), $request, $apiResponse, $validator, $dataEntity, $dataEvent, $serializer, $historyService);
     }
 
@@ -185,22 +185,24 @@ class VisitController extends AbstractController
      *
      * @OA\Tag(name="Visits")
      *
-     * @param ImVisit $obj
+     * @param $id
      * @param DataService $dataService
      * @param HistoryService $historyService
      * @return JsonResponse
      */
-    public function delete(ImVisit $obj, DataService $dataService, HistoryService $historyService): JsonResponse
+    public function delete($id, DataService $dataService, HistoryService $historyService): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
 
+        $obj = $em->getRepository(ImVisit::class)->find($id);
+
         $event = $obj->getAgEvent();
         $historyService->createVisit(AgEvent::STATUS_DELETE, $obj->getBien()->getId(), $obj->getId(), $event);
         $em->remove($event);
 
-        return $dataService->delete($obj);
+        return $dataService->deleteTransac($this->getUser(), $obj);
     }
 
     /**
@@ -228,8 +230,6 @@ class VisitController extends AbstractController
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
 
-        /** @var User $user */
-        $user = $this->getUser();
         $agency = $this->immoService->getUserAgency($user);
 
         $obj = $em->getRepository($from == "suivi" ? ImSuivi::class : ImVisit::class)->find($id);

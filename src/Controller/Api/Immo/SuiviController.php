@@ -16,7 +16,6 @@ use App\Entity\User;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Immo\SearchService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,17 +47,19 @@ class SuiviController extends AbstractController
      *
      * @OA\Tag(name="Suivis")
      *
-     * @param ImBien $obj
+     * @param $slug
      * @param ApiResponse $apiResponse
      * @param SerializerInterface $serializer
      * @param SearchService $searchService
      * @return JsonResponse
      */
-    public function bien(ImBien $obj, ApiResponse $apiResponse, SerializerInterface $serializer, SearchService $searchService): JsonResponse
+    public function bien($slug, ApiResponse $apiResponse, SerializerInterface $serializer, SearchService $searchService): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(ImBien::class)->findOneBy(["slug" => $slug]);
 
         $photos    = $em->getRepository(ImPhoto::class)->findBy(["bien" => $obj]);
         $rooms     = $em->getRepository(ImRoom::class)->findBy(["bien" => $obj]);
@@ -105,20 +106,22 @@ class SuiviController extends AbstractController
      *
      * @OA\Tag(name="Suivis")
      *
-     * @param Request $request
-     * @param ImBien $bien
-     * @param ImProspect $prospect
+     * @param $bien
+     * @param $prospect
      * @param ApiResponse $apiResponse
      * @param DataImmo $dataEntity
      * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function link(Request $request, ImBien $bien, ImProspect $prospect, ApiResponse $apiResponse,
+    public function link($bien, $prospect, ApiResponse $apiResponse,
                          DataImmo $dataEntity, SerializerInterface $serializer): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
+
+        $bien     = $em->getRepository(ImBien::class)->find($bien);
+        $prospect = $em->getRepository(ImProspect::class)->find($prospect);
 
         $obj = $em->getRepository(ImSuivi::class)->findOneBy(['bien' => $bien, 'prospect' => $prospect]);
 
@@ -156,16 +159,19 @@ class SuiviController extends AbstractController
      *
      * @OA\Tag(name="Suivis")
      *
-     * @param ImProspect $obj
-     * @param ImBien $bien
+     * @param $id
+     * @param $bien
      * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
-    public function delete(ImProspect $obj, ImBien $bien, ApiResponse $apiResponse): JsonResponse
+    public function delete($id, $bien, ApiResponse $apiResponse): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
+
+        $obj  = $em->getRepository(ImProspect::class)->find($id);
+        $bien = $em->getRepository(ImBien::class)->find($bien);
 
         $suivi = $em->getRepository(ImSuivi::class)->findOneBy(['bien' => $bien, 'prospect' => $obj]);
 

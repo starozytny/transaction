@@ -4,7 +4,6 @@ namespace App\Controller\Api\Immo;
 
 use App\Transaction\Entity\Immo\ImOwner;
 use App\Entity\User;
-use App\Transaction\Repository\Immo\ImOwnerRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
@@ -43,7 +42,6 @@ class OwnerController extends AbstractController
      *
      * @OA\Tag(name="Owners")
      *
-     * @param ImOwnerRepository $repository
      * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
@@ -122,7 +120,7 @@ class OwnerController extends AbstractController
      *
      * @OA\Tag(name="Owners")
      *
-     * @param ImOwner $obj
+     * @param $id
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -130,8 +128,11 @@ class OwnerController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(ImOwner $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+    public function update($id, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImOwner::class)->find($id);
         if($obj->getIsGerance()){
             return $apiResponse->apiJsonResponseBadRequest("Vous ne pouvez pas modifier ce propriétaire venant de la gérance.");
         }
@@ -151,18 +152,21 @@ class OwnerController extends AbstractController
      *
      * @OA\Tag(name="Owners")
      *
-     * @param ImOwner $obj
+     * @param $id
      * @param ApiResponse $apiResponse
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(ImOwner $obj, ApiResponse $apiResponse, DataService $dataService): JsonResponse
+    public function delete($id, ApiResponse $apiResponse, DataService $dataService): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImOwner::class)->find($id);
         if($obj->getIsGerance()){
             return $apiResponse->apiJsonResponseBadRequest("Vous ne pouvez pas supprimer ce propriétaire venant de la gérance.");
         }
 
-        return $dataService->delete($obj);
+        return $dataService->deleteTransac($this->getUser(), $obj);
     }
 
     /**
@@ -185,7 +189,7 @@ class OwnerController extends AbstractController
      */
     public function deleteSelected(Request $request, DataService $dataService): JsonResponse
     {
-        return $dataService->deleteSelected(ImOwner::class, json_decode($request->getContent()));
+        return $dataService->deleteSelectedTransac($this->getUser(), ImOwner::class, json_decode($request->getContent()));
     }
 
     /**
@@ -199,13 +203,12 @@ class OwnerController extends AbstractController
      * @OA\Tag(name="Owners")
      *
      * @param $format
-     * @param ImmoService $immoService
      * @return BinaryFileResponse
      */
-    public function export($format, ImmoService $immoService): BinaryFileResponse
+    public function export($format): BinaryFileResponse
     {
         /** @var User $user */
         $user = $this->getUser();
-        return $immoService->exportData($format, $user, ImOwner::class, 'proprietaires');
+        return $this->immoService->exportData($format, $user, ImOwner::class, 'proprietaires');
     }
 }

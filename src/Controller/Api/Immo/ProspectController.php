@@ -4,16 +4,13 @@ namespace App\Controller\Api\Immo;
 
 use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImProspect;
-use App\Transaction\Entity\Immo\ImSearch;
 use App\Transaction\Entity\Immo\ImSuivi;
 use App\Entity\User;
-use App\Transaction\Repository\Immo\ImProspectRepository;
 use App\Service\ApiResponse;
 use App\Service\Data\DataImmo;
 use App\Service\Data\DataService;
 use App\Service\Immo\ImmoService;
 use App\Service\ValidatorService;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,7 +44,6 @@ class ProspectController extends AbstractController
      *
      * @OA\Tag(name="Prospects")
      *
-     * @param ImProspectRepository $repository
      * @param ApiResponse $apiResponse
      * @return JsonResponse
      */
@@ -139,7 +135,7 @@ class ProspectController extends AbstractController
      *
      * @OA\Tag(name="Prospects")
      *
-     * @param ImProspect $obj
+     * @param $id
      * @param Request $request
      * @param ApiResponse $apiResponse
      * @param ValidatorService $validator
@@ -147,8 +143,11 @@ class ProspectController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(ImProspect $obj, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
+    public function update($id, Request $request, ApiResponse $apiResponse, ValidatorService $validator, DataImmo $dataEntity): JsonResponse
     {
+        $em = $this->immoService->getEntityUserManager($this->getUser());
+
+        $obj = $em->getRepository(ImProspect::class)->find($id);
         return $this->submitForm("update", $obj, $request, $apiResponse, $validator, $dataEntity);
     }
 
@@ -173,15 +172,17 @@ class ProspectController extends AbstractController
      *
      * @OA\Tag(name="Prospects")
      *
-     * @param ImProspect $obj
+     * @param $id
      * @param DataService $dataService
      * @return JsonResponse
      */
-    public function delete(ImProspect $obj, DataService $dataService): JsonResponse
+    public function delete($id, DataService $dataService): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $em = $this->immoService->getEntityUserManager($user);
+
+        $obj = $em->getRepository(ImProspect::class)->find($id);
 
         if($obj->getSearch()){
             $em->remove($obj->getSearch());
@@ -189,7 +190,7 @@ class ProspectController extends AbstractController
 
         $this->deleteProspect($em, $obj);
 
-        return $dataService->delete($obj);
+        return $dataService->deleteTransac($user, $obj);
     }
 
     /**
@@ -276,13 +277,12 @@ class ProspectController extends AbstractController
      * @OA\Tag(name="Owners")
      *
      * @param $format
-     * @param ImmoService $immoService
      * @return BinaryFileResponse
      */
-    public function export($format, ImmoService $immoService): BinaryFileResponse
+    public function export($format): BinaryFileResponse
     {
         /** @var User $user */
         $user = $this->getUser();
-        return $immoService->exportData($format, $user, ImProspect::class, 'prospects');
+        return $this->immoService->exportData($format, $user, ImProspect::class, 'prospects');
     }
 }
