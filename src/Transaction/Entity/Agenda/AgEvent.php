@@ -98,7 +98,7 @@ class AgEvent extends DataEntity
     private $persons;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
      * @Groups({"agenda:read"})
      */
     private $creator;
@@ -305,12 +305,12 @@ class AgEvent extends DataEntity
         return $this;
     }
 
-    public function getCreator(): ?string
+    public function getCreator(): ?int
     {
         return $this->creator;
     }
 
-    public function setCreator(?string $creator): self
+    public function setCreator(?int $creator): self
     {
         $this->creator = $creator;
 

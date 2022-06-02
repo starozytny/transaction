@@ -18,7 +18,7 @@ class EventService
         foreach($objs as $obj){
             $persons = $obj->getPersons();
 
-            if($obj->getCreator()->getId() == $user->getId()){ // creator of event
+            if($obj->getCreator() == $user->getId()){ // creator of event
                 $data[] = $obj;
             }else{
 

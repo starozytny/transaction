@@ -71,7 +71,7 @@ class OwnerController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataOwner($obj, $data);
+        $obj = $dataEntity->setDataOwner($em, $obj, $data);
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {

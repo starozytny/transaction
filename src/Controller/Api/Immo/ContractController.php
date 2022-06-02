@@ -89,12 +89,12 @@ class ContractController extends AbstractController
             $dataPerson = json_decode(json_encode($dataPerson));
 
             if($bien->getCodeTypeAd() == ImBien::AD_LOCATION || $bien->getCodeTypeAd() == ImBien::AD_LOCATION_VAC){
-                $tenant = $dataEntity->setDataTenant(new ImTenant(), $dataPerson);
+                $tenant = $dataEntity->setDataTenant($em, new ImTenant(), $dataPerson);
                 $em->persist($tenant);
 
                 $contractant->setTenant($tenant);
             }else{
-                $owner = $dataEntity->setDataOwner(new ImOwner(), $dataPerson);
+                $owner = $dataEntity->setDataOwner($em, new ImOwner(), $dataPerson);
                 $em->persist($owner);
 
                 $contractant->setOwner($owner);

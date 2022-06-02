@@ -45,7 +45,7 @@ class SearchController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataSearch($obj, $data);
+        $obj = $dataEntity->setDataSearch($em, $obj, $data);
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {

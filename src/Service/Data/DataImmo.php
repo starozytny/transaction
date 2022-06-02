@@ -60,6 +60,8 @@ class DataImmo extends DataConstructor
                                 ImLocalisation $localisation, ImFinancial $financial, ImConfidential $confidential,
                                 ImAdvert $advert, ImMandat $mandat, array $rooms)
     {
+        $emT =  $this->registry->getManager($agency->getManager());
+
         $codeTypeAd     = $data->codeTypeAd;
         $codeTypeBien   = $data->codeTypeBien;
         $libelle        = $data->libelle;
@@ -85,7 +87,7 @@ class DataImmo extends DataConstructor
             }
         }
 
-        $negotiator = $this->em->getRepository(ImNegotiator::class)->findOneBy(['id' => $negotiator]);
+        $negotiator = $emT->getRepository(ImNegotiator::class)->findOneBy(['id' => $negotiator]);
         if(!$negotiator){
             return [[
                 'name' => "negotiator",
@@ -100,15 +102,15 @@ class DataImmo extends DataConstructor
                     $ownerIds[] = $owner->id;
                 }
             }
-            $owners = $this->em->getRepository(ImOwner::class)->findBy(['id' => $ownerIds]);
+            $owners = $emT->getRepository(ImOwner::class)->findBy(['id' => $ownerIds]);
 
             $contract = null;
             if($obj->getId()){
-                $contract = $this->em->getRepository(ImContract::class)->findOneBy(['bien' => $obj, 'status' => ImContract::STATUS_PROCESSING]);
-                $contractants = $this->em->getRepository(ImContractant::class)->findBy(['contract' => $contract]);
+                $contract     = $emT->getRepository(ImContract::class)->findOneBy(['bien' => $obj, 'status' => ImContract::STATUS_PROCESSING]);
+                $contractants = $emT->getRepository(ImContractant::class)->findBy(['contract' => $contract]);
 
                 foreach($contractants as $contractant){
-                    $this->em->remove($contractant);
+                    $emT->remove($contractant);
                 }
             }
 
@@ -117,7 +119,7 @@ class DataImmo extends DataConstructor
                     ->setBien($obj)
                 ;
 
-                $this->em->persist($contract);
+                $emT->persist($contract);
             }
 
             foreach($owners as $owner){
@@ -126,7 +128,7 @@ class DataImmo extends DataConstructor
                     ->setOwner($owner)
                 ;
 
-                $this->em->persist($contractant);
+                $emT->persist($contractant);
             }
         }
 
@@ -471,10 +473,10 @@ class DataImmo extends DataConstructor
         ;
     }
 
-    public function setDataRooms($data, $rooms): array
+    public function setDataRooms($em, $data, $rooms): array
     {
         foreach ($rooms as $room){
-            $this->em->remove($room);
+            $em->remove($room);
         }
 
         $tab = [];
@@ -482,7 +484,7 @@ class DataImmo extends DataConstructor
             foreach($data->rooms as $room){
                 $new = $this->setDataRoom($room);
 
-                $this->em->persist($new);
+                $em->persist($new);
                 $tab[] = $new;
             }
         }
@@ -529,19 +531,22 @@ class DataImmo extends DataConstructor
             throw new Exception("Société introuvable.");
         }
 
+        $emT = $this->registry->getManager($society->getManager());
+
         $name = $this->sanitizeData->sanitizeString($data->name);
 
         $i = 0;
         $code = mb_strtoupper(substr($name, 0, 2)) . $i;
         do{
-            $existe = $this->em->getRepository(ImAgency::class)->findOneBy(['code' => $code]);
+            $existe = $emT->getRepository(ImAgency::class)->findOneBy(['code' => $code]);
             if($existe){
                 $code .= $i++;
             }
         }while($existe);
 
         return ($obj)
-            ->setSociety($society)
+            ->setManager($society->getManager())
+            ->setSocietyId($society->getId())
             ->setName($name)
             ->setCode($code)
             ->setDirname($this->sanitizeData->sanitizeString($data->dirname))
@@ -572,9 +577,9 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataNegotiator(ImNegotiator $obj, $data): ImNegotiator
+    public function setDataNegotiator($em, ImNegotiator $obj, $data): ImNegotiator
     {
-        $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
+        $agency = $em->getRepository(ImAgency::class)->find($data->agency);
         if(!$agency){
             throw new Exception("Agence introuvable.");
         }
@@ -599,21 +604,14 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataOwner(ImOwner $obj, $data): ImOwner
+    public function setDataOwner($em, ImOwner $obj, $data): ImOwner
     {
-        $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
+        $agency = $em->getRepository(ImAgency::class)->find($data->agency);
         if(!$agency){
             throw new Exception("Agence introuvable.");
         }
 
-        $society = $agency->getSociety();
-        if(!$society){
-            throw new Exception("Société introuvable.");
-        }
-
-        dump($data);
-
-        $negotiator = $data->negotiator ? $this->em->getRepository(ImNegotiator::class)->find($data->negotiator) : null;
+        $negotiator = $data->negotiator ? $em->getRepository(ImNegotiator::class)->find($data->negotiator) : null;
 
         $civility = (int) $data->civility;
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
@@ -621,7 +619,6 @@ class DataImmo extends DataConstructor
         $code = mb_strtoupper(substr($lastname, 0, 1) . substr($firstname, 0, 1)) . time();
 
         return ($obj)
-            ->setSociety($society)
             ->setAgency($agency)
             ->setNegotiator($negotiator)
             ->setCode($code)
@@ -644,15 +641,15 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataTenant(ImTenant $obj, $data): ImTenant
+    public function setDataTenant($em, ImTenant $obj, $data): ImTenant
     {
-        $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
+        $agency = $em->getRepository(ImAgency::class)->find($data->agency);
         if(!$agency){
             throw new Exception("Agence introuvable.");
         }
         $negotiator = null;
         if($data->negotiator){
-            $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+            $negotiator = $em->getRepository(ImNegotiator::class)->find($data->negotiator);
         }
 
         $civility = (int) $data->civility;
@@ -681,13 +678,13 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataProspect(ImProspect $obj, $data): ImProspect
+    public function setDataProspect($em, ImProspect $obj, $data): ImProspect
     {
-        $agency = $this->em->getRepository(ImAgency::class)->find($data->agency);
+        $agency = $em->getRepository(ImAgency::class)->find($data->agency);
         if(!$agency){
             throw new Exception("Agence introuvable.");
         }
-        $negotiator = $this->em->getRepository(ImNegotiator::class)->find($data->negotiator);
+        $negotiator = $em->getRepository(ImNegotiator::class)->find($data->negotiator);
 
         $lastname = mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname));
         $firstname = ucfirst($this->sanitizeData->sanitizeString($data->firstname));
@@ -733,11 +730,11 @@ class DataImmo extends DataConstructor
     /**
      * @throws Exception
      */
-    public function setDataSearch(ImSearch $obj, $data): ImSearch
+    public function setDataSearch($em, ImSearch $obj, $data): ImSearch
     {
         $prospect = null;
         if($data->prospectId){
-            $prospect = $this->em->getRepository(ImProspect::class)->find($data->prospectId);
+            $prospect = $em->getRepository(ImProspect::class)->find($data->prospectId);
             if(!$prospect){
                 throw new Exception("Prospect introuvable.");
             }

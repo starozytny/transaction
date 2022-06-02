@@ -51,7 +51,7 @@ class DataEvent extends DataConstructor
     public function setCreatorAndUpdate($type, AgEvent $obj, User $user): AgEvent
     {
         if($type == "create"){
-            $obj->setCreator($user);
+            $obj->setCreator($user->getId());
         }else{
             $obj->setUpdatedAt(new \DateTime());
         }

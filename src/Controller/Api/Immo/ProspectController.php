@@ -73,7 +73,7 @@ class ProspectController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataProspect($obj, $data);
+        $obj = $dataEntity->setDataProspect($em, $obj, $data);
 
         if($data->bienId){
             $bien = $em->getRepository(ImBien::class)->find($data->bienId);

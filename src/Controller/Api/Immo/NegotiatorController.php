@@ -46,7 +46,7 @@ class NegotiatorController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataNegotiator($obj, $data);
+        $obj = $dataEntity->setDataNegotiator($em, $obj, $data);
 
         $file = $request->files->get('avatar');
         if ($file) {

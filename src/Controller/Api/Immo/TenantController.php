@@ -46,7 +46,7 @@ class TenantController extends AbstractController
             return $apiResponse->apiJsonResponseBadRequest('Les données sont vides.');
         }
 
-        $obj = $dataEntity->setDataTenant($obj, $data);
+        $obj = $dataEntity->setDataTenant($em, $obj, $data);
 
         $noErrors = $validator->validate($obj);
         if ($noErrors !== true) {

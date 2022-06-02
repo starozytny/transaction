@@ -99,7 +99,7 @@ class FakeProspectsCreate extends Command
 
             $data = json_decode(json_encode($data));
 
-            $new = $this->dataImmo->setDataProspect(new ImProspect(), $data);
+            $new = $this->dataImmo->setDataProspect($em, new ImProspect(), $data);
 
             $new->setIsArchived($fake->numberBetween(0, 1));
 

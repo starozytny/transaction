@@ -6,16 +6,19 @@ use App\Service\SanitizeData;
 use App\Service\ValidatorService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class DataConstructor
 {
     protected $em;
+    protected $registry;
     protected $validator;
     protected $sanitizeData;
 
-    public function __construct(EntityManagerInterface $entityManager, ValidatorService $validator, SanitizeData $sanitizeData)
+    public function __construct(ManagerRegistry $registry, ValidatorService $validator, SanitizeData $sanitizeData)
     {
-        $this->em = $entityManager;
+        $this->em = $registry->getManager("default");
+        $this->registry = $registry;
         $this->validator = $validator;
         $this->sanitizeData = $sanitizeData;
     }
