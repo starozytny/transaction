@@ -102,7 +102,7 @@ class VisitController extends AbstractController
 
         $existe = $em->getRepository(HiVisite::class)->findOneBy(['bienId' => $bien->getId(), 'visiteId' => $obj->getId()], ['createdAt' => 'DESC']);
         if($existe && $existe->getStatus() != $event->getStatus() || !$existe){
-            $historyService->createVisit($event->getStatus(), $bien->getId(), $obj->getId(), $event, $data->prospects ?: []);
+            $historyService->createVisit($em, $event->getStatus(), $bien->getId(), $obj->getId(), $event, $data->prospects ?: []);
         }
 
         $data = $serializer->serialize($obj, "json", ['groups' => ImVisit::VISIT_READ]);
@@ -199,7 +199,7 @@ class VisitController extends AbstractController
         $obj = $em->getRepository(ImVisit::class)->find($id);
 
         $event = $obj->getAgEvent();
-        $historyService->createVisit(AgEvent::STATUS_DELETE, $obj->getBien()->getId(), $obj->getId(), $event);
+        $historyService->createVisit($em, AgEvent::STATUS_DELETE, $obj->getBien()->getId(), $obj->getId(), $event);
         $em->remove($event);
 
         return $dataService->deleteTransac($this->getUser(), $obj);

@@ -47,7 +47,7 @@ class DataUser
             ->setLastname(mb_strtoupper($this->sanitizeData->sanitizeString($data->lastname)))
             ->setEmail($data->email)
             ->setSociety($society)
-            ->setAgency($agency)
+            ->setAgencyId($agency->getId())
             ->setNegotiatorId($this->sanitizeData->setToInteger($data->negotiator))
         ;
     }

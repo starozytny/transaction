@@ -15,8 +15,10 @@ class HistoryService extends DataConstructor
 {
     public function createPrice(ImBien $bien)
     {
+        $em = $this->registry->getManager($bien->getAgency()->getManager());
+
         $price = $bien->getFinancial()->getPrice();
-        $existe = $this->em->getRepository(HiPrice::class)->findOneBy([
+        $existe = $em->getRepository(HiPrice::class)->findOneBy([
             'bienId' => $bien,
             'price' => $price
         ], ['createdAt' => 'DESC']);
@@ -27,11 +29,11 @@ class HistoryService extends DataConstructor
                 ->setPrice($price)
             ;
 
-            $this->em->persist($history);
+            $em->persist($history);
         }
     }
 
-    public function createVisit($status, $bienId, $visitId, AgEvent $event, $prospects = [])
+    public function createVisit($em, $status, $bienId, $visitId, AgEvent $event, $prospects = [])
     {
         $history = (new HiVisite())
             ->setBienId($bienId)
@@ -43,12 +45,14 @@ class HistoryService extends DataConstructor
             ->setProspects($prospects)
         ;
 
-        $this->em->persist($history);
-        $this->em->flush();
+        $em->persist($history);
+        $em->flush();
     }
 
     public function createBien(SerializerInterface $serializer, $old, ImBien $bien, User $user)
     {
+        $em = $this->registry->getManager($bien->getAgency()->getManager());
+
         $history = (new HiBien())
             ->setBienId($bien->getId())
             ->setUserFullname($user->getFullname())
@@ -91,7 +95,7 @@ class HistoryService extends DataConstructor
         $history->setModifications($differences);
 
         if(count($differences) != 0){
-            $this->em->persist($history);
+            $em->persist($history);
         }
     }
 }

@@ -194,7 +194,7 @@ class EventController extends AbstractController
         $obj = $em->getRepository(AgEvent::class)->find($id);
 
         if($visit = $obj->getImVisit()){
-            $historyService->createVisit(AgEvent::STATUS_DELETE, $visit->getBien()->getId(), $visit->getId(), $obj);
+            $historyService->createVisit($em,AgEvent::STATUS_DELETE, $visit->getBien()->getId(), $visit->getId(), $obj);
             $em->remove($visit);
         }
 
