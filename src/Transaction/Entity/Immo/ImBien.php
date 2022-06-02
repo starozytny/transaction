@@ -284,6 +284,12 @@ class ImBien extends DataEntity
      */
     private $contracts;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read"})
+     */
+    private $userId;
+
     public function __construct()
     {
         $this->createdAt = $this->initNewDate();
@@ -946,6 +952,18 @@ class ImBien extends DataEntity
     public function setReferenceGerance(?string $referenceGerance): self
     {
         $this->referenceGerance = $referenceGerance;
+
+        return $this;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?int $userId): self
+    {
+        $this->userId = $userId;
 
         return $this;
     }

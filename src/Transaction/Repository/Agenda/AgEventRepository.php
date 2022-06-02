@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository\Agenda;
+namespace App\Transaction\Repository\Agenda;
 
 use App\Transaction\Entity\Agenda\AgEvent;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

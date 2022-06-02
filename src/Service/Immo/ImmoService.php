@@ -11,6 +11,7 @@ use App\Service\Data\DataImmo;
 use App\Service\Export;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Http\Discovery\Exception\NotFoundException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ImmoService
@@ -37,6 +38,23 @@ class ImmoService
     public function getEntityNameManager($nameManager): ObjectManager
     {
         return $this->registry->getManager($nameManager);
+    }
+
+    public function getEntityUserManager($user): ObjectManager
+    {
+        /** @var User $user */
+        return $this->registry->getManager($user->getManager());
+    }
+
+    public function getUserAgency($user)
+    {
+        /** @var User $user */
+        $agency = $this->getEntityUserManager($user->getManager())->getRepository(ImAgency::class)->find($user->getAgencyId());
+        if(!$agency){
+            throw new NotFoundException("Agence introuvable : " . $user->getId());
+        }
+
+        return $agency;
     }
 
     public function getImagesDirectory()

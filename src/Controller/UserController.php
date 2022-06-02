@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Changelog;
+use App\Service\Immo\ImmoService;
 use App\Transaction\Entity\Immo\ImContractant;
 use App\Transaction\Entity\Immo\ImProspect;
 use App\Entity\Mail;
@@ -35,7 +36,7 @@ use App\Transaction\Repository\Immo\ImTenantRepository;
 use App\Repository\UserRepository;
 use App\Service\Immo\SearchService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Repository\Agenda\AgEventRepository;
+use App\Transaction\Repository\Agenda\AgEventRepository;
 use App\Service\Agenda\EventService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -50,10 +51,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 class UserController extends AbstractController
 {
     private $doctrine;
+    private $immoService;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ManagerRegistry $doctrine, ImmoService $immoService)
     {
         $this->doctrine = $doctrine;
+        $this->immoService = $immoService;
     }
 
     private function getDonneeData($em, $class, User $user, ?SerializerInterface $serializer, $group = User::DONNEE_READ)
@@ -74,18 +77,19 @@ class UserController extends AbstractController
      */
     public function index(SerializerInterface $serializer): Response
     {
-        $em = $this->doctrine->getManager();
-
         /** @var User $user */
         $user = $this->getUser();
+        $em  = $this->doctrine->getManager();
+        $emT = $this->immoService->getEntityUserManager($user);
+
         $changelogs     = $em->getRepository(Changelog::class)->findBy(['isPublished' => true], ['createdAt' => 'DESC'], 5);
-        $biensAgency    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency(), 'status' => ImBien::STATUS_ACTIF, 'isArchived' => false, 'isDraft' => false]);
-        $biensVisits    = $em->getRepository(ImBien::class)->findBy(['agency' => $user->getAgency()]);
-        $biensUser      = $em->getRepository(ImBien::class)->findBy(['user' => $user, 'isArchived' => false, 'isDraft' => false]);
-        $biensDraft     = $em->getRepository(ImBien::class)->findBy(['user' => $user,  'isArchived' => false, 'isDraft' => true]);
-        $stats          = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['createdAt' => 'DESC']);
-        $visits         = $em->getRepository(ImVisit::class)->findBy(['bien' => $biensVisits]);
-        $statsAds       = $em->getRepository(ImStat::class)->findBy(['agency' => $user->getAgency()], ['publishedAt' => 'ASC'], 7);
+        $biensAgency    = $emT->getRepository(ImBien::class)->findBy(['agency' => $user->getAgencyId(), 'status' => ImBien::STATUS_ACTIF, 'isArchived' => false, 'isDraft' => false]);
+        $biensVisits    = $emT->getRepository(ImBien::class)->findBy(['agency' => $user->getAgencyId()]);
+        $biensUser      = $emT->getRepository(ImBien::class)->findBy(['userId' => $user->getId(), 'isArchived' => false, 'isDraft' => false]);
+        $biensDraft     = $emT->getRepository(ImBien::class)->findBy(['userId' => $user->getId(), 'isArchived' => false, 'isDraft' => true]);
+        $stats          = $emT->getRepository(ImStat::class)->findBy(['agency' => $user->getAgencyId()], ['createdAt' => 'DESC']);
+        $visits         = $emT->getRepository(ImVisit::class)->findBy(['bien' => $biensVisits]);
+        $statsAds       = $emT->getRepository(ImStat::class)->findBy(['agency' => $user->getAgencyId()], ['publishedAt' => 'ASC'], 7);
         $biens          = $biensAgency;
 
         $lastPublish = null;

@@ -55,7 +55,7 @@ export class NegotiatorsItem extends Component {
                         </div>
                         <div className="col-3 actions">
                             {(biens.length !== 0 && totalBien !== 0) &&
-                                <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens', {'fn': elem.id})}>
+                                <ButtonIcon icon="layer" element="a" onClick={Routing.generate('user_biens_index', {'fn': elem.id})}>
                                     Biens
                                 </ButtonIcon>}
 

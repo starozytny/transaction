@@ -135,16 +135,22 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     private $society;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"admin:read"})
+     */
+    private $manager;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"admin:read"})
      */
     private $negotiatorId;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"admin:read"})
      */
-    private $manager;
+    private $agencyId;
 
     /**
      * @throws Exception
@@ -558,6 +564,18 @@ class User extends DataEntity implements UserInterface, PasswordAuthenticatedUse
     public function setNegotiatorId(?int $negotiatorId): self
     {
         $this->negotiatorId = $negotiatorId;
+
+        return $this;
+    }
+
+    public function getAgencyId(): ?int
+    {
+        return $this->agencyId;
+    }
+
+    public function setAgencyId(?int $agencyId): self
+    {
+        $this->agencyId = $agencyId;
 
         return $this;
     }

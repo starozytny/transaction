@@ -543,7 +543,7 @@ export class BienForm extends Component {
                     if(isDraft){
                         location.href = Routing.generate('user_biens_update', {'slug': response.data.slug})
                     }else{
-                        location.href = Routing.generate('user_biens', {'st': 1})
+                        location.href = Routing.generate('user_biens_index', {'st': 1})
                     }
 
 

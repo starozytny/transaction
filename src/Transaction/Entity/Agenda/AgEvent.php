@@ -5,7 +5,7 @@ namespace App\Transaction\Entity\Agenda;
 use App\Entity\DataEntity;
 use App\Transaction\Entity\Immo\ImVisit;
 use App\Entity\User;
-use App\Repository\Agenda\AgEventRepository;
+use App\Transaction\Repository\Agenda\AgEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 

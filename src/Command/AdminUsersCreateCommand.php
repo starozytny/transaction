@@ -191,6 +191,7 @@ class AdminUsersCreateCommand extends Command
         $io->title('Création des utilisateurs');
         foreach ($users as $user) {
             $new = (new User())
+                ->setManager(self::NAME_MANAGER)
                 ->setUsername($user['username'])
                 ->setEmail($user['email'])
                 ->setRoles($user['roles'])
@@ -199,7 +200,7 @@ class AdminUsersCreateCommand extends Command
                 ->setPassword($password)
                 ->setSociety($society)
                 ->setNegotiatorId($negotiator->getId())
-                ->setManager(self::NAME_MANAGER)
+                ->setAgencyId($agency->getId())
             ;
 
             $this->em->persist($new);
