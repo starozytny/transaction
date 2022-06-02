@@ -37,7 +37,7 @@ class ImmoService
         $this->registry = $registry;
     }
 
-    public function getEntityNameManager($nameManager): ObjectManager
+    public function getEntityNameManager($nameManager = "default"): ObjectManager
     {
         return $this->registry->getManager($nameManager);
     }

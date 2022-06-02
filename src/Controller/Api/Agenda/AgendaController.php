@@ -16,7 +16,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * @Route("/api/agenda/", name="api_agenda_")
+ * @Route("/api/agenda", name="api_agenda_")
  */
 class AgendaController extends AbstractController
 {
@@ -47,13 +47,14 @@ class AgendaController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $em = $this->immoService->getEntityUserManager($user);
+        $em = $this->immoService->getEntityNameManager();
+        $emT = $this->immoService->getEntityUserManager($user);
 
         $allUsers       = $em->getRepository(User::class)->findAll();
-        $negotiators    = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgencyId()]);
-        $owners         = $em->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgencyId()]);
-        $tenants        = $em->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgencyId()]);
-        $prospects      = $em->getRepository(ImProspect::class)->findBy(['agency' => $user->getAgencyId()]);
+        $negotiators    = $emT->getRepository(ImNegotiator::class)->findBy(['agency' => $user->getAgencyId()]);
+        $owners         = $emT->getRepository(ImOwner::class)->findBy(['agency' => $user->getAgencyId()]);
+        $tenants        = $emT->getRepository(ImTenant::class)->findBy(['agency' => $user->getAgencyId()]);
+        $prospects      = $emT->getRepository(ImProspect::class)->findBy(['agency' => $user->getAgencyId()]);
 
         $users = []; $managers = [];
         foreach($allUsers as $user){
