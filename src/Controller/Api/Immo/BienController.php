@@ -209,11 +209,13 @@ class BienController extends AbstractController
         $folderPhoto = ImBien::FOLDER_PHOTOS . "/" . $agency->getDirname();
 
         if($type == "create"){
+            $identifiant = mb_strtoupper(uniqid().bin2hex(random_bytes(8)));
             $obj = ($obj)
                 ->setUserId($user->getId())
                 ->setReference($this->immoService->getReference($agency, (int) $data->codeTypeAd))
                 ->setCreatedBy($user->getShortFullName())
-                ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(8))))
+                ->setIdentifiant($identifiant)
+                ->setSlug($identifiant)
                 ->setAgency($agency)
             ;
         }else{

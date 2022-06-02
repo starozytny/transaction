@@ -40,7 +40,7 @@ export function ProspectFormulaire ({ type, onChangeContext, onUpdateList, eleme
     let form = <ProspectForm
         context={type}
         url={url}
-        society={element ? element.agency.society.id : societyId}
+        society={element ? element.agency.societyId : societyId}
         agency={element ? element.agency.id : agencyId}
         negotiator={element ? (element.negotiator ? element.negotiator.id : "") : ""}
         lastname={element ? Formulaire.setValueEmptyIfNull(element.lastname) : ""}

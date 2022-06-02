@@ -10,6 +10,7 @@ import Sanitaze   from "@commonComponents/functions/sanitaze";
 import DataState  from "@userPages/components/Biens/Form/data";
 import UpdateList from "@dashboardComponents/functions/updateList";
 import AgendaData from "@userPages/components/Agenda/agendaData";
+import Changer    from "@userPages/components/Biens/functions/changer";
 
 import { Financial, FinancialVente } from "@userPages/components/Biens/Read/Data/Financial";
 import { Global }             from "@userPages/components/Biens/Suivi/Global/Global";
@@ -26,7 +27,6 @@ import { Diag }               from "@userPages/components/Biens/Read/Data/Diag";
 import { Features }           from "@userPages/components/Biens/Read/Data/Features";
 import { Infos }              from "@userPages/components/Biens/Read/Data/Infos";
 import { ButtonBonVisite }    from "@dashboardPages/components/Immo/Visits/VisitsList";
-import Changer from "@userPages/components/Biens/functions/changer";
 
 const URL_GET_DATA = "api_agenda_data_persons";
 const URL_CHANGE_STATUS = "api_biens_status";
@@ -136,7 +136,7 @@ export class Suivi extends Component {
                     break;
                 case "rapprochements":
                     content = <Rapprochements ref={this.rapprochement} {...this.state} data={suivis} context={contextRapprochement}
-                                              societyId={elem.agency.society.id} agencyId={elem.agency.id}
+                                              societyId={elem.agency.societyId} agencyId={elem.agency.id}
                                               onUpdateProspects={this.handleUpdateProspects} onUpdateVisits={this.handleUpdateVisits}
                                               onUpdateOffers={this.handleUpdateOffers} onUpdateSuivis={this.handleUpdateSuivis}/>
                     break;
