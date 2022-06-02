@@ -121,6 +121,8 @@ class ImmoService
      */
     public function deleteAgency(ImAgency $agency)
     {
+        $em = $this->getEntityNameManager($agency->getManager());
+
         // remove bien of demandes
         if(count($agency->getBiens()) !== 0){
             foreach($agency->getBiens() as $bien){
@@ -141,17 +143,19 @@ class ImmoService
                 }
 
                 //remove bien
-                $this->em->remove($bien);
+                $em->remove($bien);
             }
         }
 
         //remove agency
-        $this->em->remove($agency);
+        $em->remove($agency);
     }
 
     public function exportData($format, User $user, $class, $nameFile): BinaryFileResponse
     {
-        $objs = $this->em->getRepository($class)->findBy(["agency" => $user->getAgency()], ['lastname' => 'ASC']);
+        $em = $this->getEntityUserManager($user);
+
+        $objs = $em->getRepository($class)->findBy(["agency" => $user->getAgencyId()], ['lastname' => 'ASC']);
         $data = [];
 
         $nameFolder = 'export/';
@@ -181,6 +185,7 @@ class ImmoService
     public function initiateSupport(ImAgency $agency): bool
     {
         $em = $this->getEntityNameManager($agency->getManager());
+
         $supports = $em->getRepository(ImSupport::class)->findBy(['agency' => $agency]);
         if(count($supports) > 0){
             return false;

@@ -98,7 +98,6 @@ class TransferController extends AbstractController
                 ->setReference($immoService->getReference($to, $bien->getCodeTypeAd()))
                 ->setNegotiator($negotiator)
                 ->setUserId($user->getId())
-                ->setOwner($owner)
             ;
 
             $em->persist($bien);
