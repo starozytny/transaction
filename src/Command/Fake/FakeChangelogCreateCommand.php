@@ -35,7 +35,7 @@ class FakeChangelogCreateCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [Changelog::class]);
+        $this->databaseService->resetTable($io, "default", [Changelog::class]);
 
         $io->title('Création de 30 changelogs fake');
         $fake = Factory::create();

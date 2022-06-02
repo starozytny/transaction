@@ -20,8 +20,8 @@ class FakeAgendaCreateCommand extends Command
 {
     protected static $defaultName = 'fake:agenda:create';
     protected static $defaultDescription = 'Create fake event of agenda';
-
     private $em;
+    private $registry;
     private $databaseService;
     private $dataEvent;
 

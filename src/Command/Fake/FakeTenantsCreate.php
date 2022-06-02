@@ -2,12 +2,15 @@
 
 namespace App\Command\Fake;
 
+use App\Entity\Society;
+use App\Entity\User;
 use App\Transaction\Entity\Immo\ImAgency;
 use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImNegotiator;
 use App\Transaction\Entity\Immo\ImTenant;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Faker\Factory;
 use Symfony\Component\Console\Command\Command;
@@ -18,14 +21,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class FakeTenantsCreate extends Command
 {
     protected static $defaultName = 'fake:tenants:create';
-    protected $em;
+    private $em;
+    private $registry;
     private $databaseService;
 
-    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService)
+    public function __construct(ManagerRegistry $registry, DatabaseService $databaseService)
     {
         parent::__construct();
 
-        $this->em = $entityManager;
+        $this->em = $registry->getManager();
+        $this->registry = $registry;
         $this->databaseService = $databaseService;
     }
 
@@ -44,21 +49,35 @@ class FakeTenantsCreate extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [ImBien::class, ImTenant::class]);
+        $societies = $this->em->getRepository(Society::class)->findAll();
+        foreach($societies as $society){
+            $this->databaseService->resetTable($io, $society->getManager(), [
+                ImBien::class, ImTenant::class
+            ]);
+        }
 
-        $agencies = $this->em->getRepository(ImAgency::class)->findAll();
-        $nbAgencies = count($agencies);
-        $negotiators = $this->em->getRepository(ImNegotiator::class)->findAll();
-        $nbNegotiators = count($negotiators);
+        $user = $this->em->getRepository(User::class)->findOneBy(['username' => 'shanbo']);
+        if(!$user){
+            $io->text("Veuillez créer l'user SHANBO avant de lancer cette commande.");
+            return Command::FAILURE;
+        }
+
+        $emT = $this->registry->getManager($user->getManager());
+
+        $agencies       = $emT->getRepository(ImAgency::class)->findAll();
+        $negotiators    = $emT->getRepository(ImNegotiator::class)->findAll();
+
+        $nbAgencies     = count($agencies);
+        $nbNegotiators  = count($negotiators);
 
         if($nbNegotiators == 0 || $nbAgencies == 0){
             $io->text("Veuillez créer un ou des négociateurs/agences avant de lancer cette commande.");
             return Command::FAILURE;
         }
 
-        $io->title('Création de 1000 locataires fake');
+        $io->title('Création de 500 locataires fake');
         $fake = Factory::create();
-        for($i=0; $i<1000 ; $i++) {
+        for($i=0; $i<500 ; $i++) {
             $agency = $agencies[$fake->numberBetween(0,$nbAgencies - 1)];
 
             $negotiators = $agency->getNegotiators();
@@ -91,11 +110,11 @@ class FakeTenantsCreate extends Command
                 }
             }
 
-            $this->em->persist($new);
+            $emT->persist($new);
         }
         $io->text('TENANTS : Locataires fake créés' );
 
-        $this->em->flush();
+        $emT->flush();
 
         $io->newLine();
         $io->comment('--- [FIN DE LA COMMANDE] ---');

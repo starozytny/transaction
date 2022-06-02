@@ -2,6 +2,8 @@
 
 namespace App\Command\Fake;
 
+use App\Entity\Society;
+use App\Entity\User;
 use App\Transaction\Entity\Immo\ImAgency;
 use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImNegotiator;
@@ -10,6 +12,7 @@ use App\Transaction\Entity\Immo\ImProspect;
 use App\Transaction\Entity\Immo\ImTenant;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Faker\Factory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,14 +22,17 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class FakeNegotiatorsCreate extends Command
 {
     protected static $defaultName = 'fake:negotiators:create';
-    protected $em;
+    private $em;
+    private $registry;
     private $databaseService;
 
-    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService)
+    public function __construct(ManagerRegistry $registry, DatabaseService $databaseService)
     {
         parent::__construct();
 
-        $this->em = $entityManager;
+
+        $this->em = $registry->getManager();
+        $this->registry = $registry;
         $this->databaseService = $databaseService;
     }
 
@@ -42,9 +48,27 @@ class FakeNegotiatorsCreate extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [ImProspect::class, ImBien::class, ImTenant::class, ImOwner::class, ImNegotiator::class]);
+        $societies = $this->em->getRepository(Society::class)->findAll();
+        foreach($societies as $society){
+            $this->databaseService->resetTable($io, $society->getManager(), [
+                ImProspect::class,
+                ImBien::class,
+                ImTenant::class,
+                ImOwner::class,
+                ImNegotiator::class
+            ]);
+        }
 
-        $agencies = $this->em->getRepository(ImAgency::class)->findAll();
+
+        $user = $this->em->getRepository(User::class)->findOneBy(['username' => 'shanbo']);
+        if(!$user){
+            $io->text("Veuillez créer l'user SHANBO avant de lancer cette commande.");
+            return Command::FAILURE;
+        }
+
+        $emT = $this->registry->getManager($user->getManager());
+
+        $agencies = $emT->getRepository(ImAgency::class)->findAll();
         $nbAgencies = count($agencies);
 
         if($nbAgencies == 0){
@@ -52,9 +76,9 @@ class FakeNegotiatorsCreate extends Command
             return Command::FAILURE;
         }
 
-        $io->title('Création de 1000 négociateurs fake');
+        $io->title('Création de 500 négociateurs fake');
         $fake = Factory::create();
-        for($i=0; $i<1000 ; $i++) {
+        for($i=0; $i<500 ; $i++) {
             $agency = $agencies[$fake->numberBetween(0,$nbAgencies - 1)];
 
             $lastname = $fake->lastName;
@@ -74,11 +98,11 @@ class FakeNegotiatorsCreate extends Command
                 ->setImmatriculation($fake->randomNumber(7))
             ;
 
-            $this->em->persist($new);
+            $emT->persist($new);
         }
         $io->text('NEGOTIATORS : Négociateurs fake créés' );
 
-        $this->em->flush();
+        $emT->flush();
 
         $io->newLine();
         $io->comment('--- [FIN DE LA COMMANDE] ---');

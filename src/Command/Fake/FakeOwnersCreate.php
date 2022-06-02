@@ -2,6 +2,7 @@
 
 namespace App\Command\Fake;
 
+use App\Entity\User;
 use App\Transaction\Entity\Immo\ImAgency;
 use App\Transaction\Entity\Immo\ImBien;
 use App\Transaction\Entity\Immo\ImNegotiator;
@@ -13,6 +14,7 @@ use App\Transaction\Entity\Immo\ImVisit;
 use App\Entity\Society;
 use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Faker\Factory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,14 +24,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class FakeOwnersCreate extends Command
 {
     protected static $defaultName = 'fake:owners:create';
-    protected $em;
+    private $em;
+    private $registry;
     private $databaseService;
 
-    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService)
+    public function __construct(ManagerRegistry $registry, DatabaseService $databaseService)
     {
         parent::__construct();
 
-        $this->em = $entityManager;
+        $this->em = $registry->getManager();
+        $this->registry = $registry;
         $this->databaseService = $databaseService;
     }
 
@@ -45,23 +49,33 @@ class FakeOwnersCreate extends Command
         $io = new SymfonyStyle($input, $output);
 
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [
-            ImPublish::class,
-            ImSuivi::class,
-            ImVisit::class,
-            ImRoom::class,
-            ImBien::class,
-            ImOwner::class
-        ]);
-
         $societies = $this->em->getRepository(Society::class)->findAll();
-        $nbSocieties = count($societies);
-        $agencies = $this->em->getRepository(ImAgency::class)->findAll();
-        $nbAgencies = count($agencies);
-        $negotiators = $this->em->getRepository(ImNegotiator::class)->findAll();
+        foreach($societies as $society) {
+            $this->databaseService->resetTable($io, $society->getManager(), [
+                ImPublish::class,
+                ImSuivi::class,
+                ImVisit::class,
+                ImRoom::class,
+                ImBien::class,
+                ImOwner::class
+            ]);
+        }
+
+        $user = $this->em->getRepository(User::class)->findOneBy(['username' => 'shanbo']);
+        if(!$user){
+            $io->text("Veuillez créer l'user SHANBO avant de lancer cette commande.");
+            return Command::FAILURE;
+        }
+
+        $emT = $this->registry->getManager($user->getManager());
+
+        $agencies    = $emT->getRepository(ImAgency::class)->findAll();
+        $negotiators = $emT->getRepository(ImNegotiator::class)->findAll();
+
+        $nbAgencies    = count($agencies);
         $nbNegotiators = count($negotiators);
 
-        if($nbSocieties == 0 || $nbNegotiators == 0 || $nbAgencies == 0){
+        if($nbNegotiators == 0 || $nbAgencies == 0){
             $io->text("Veuillez créer un ou des sociétés/négociateurs/agences avant de lancer cette commande.");
             return Command::FAILURE;
         }
@@ -69,61 +83,54 @@ class FakeOwnersCreate extends Command
         $io->title('Création de 600 propriétaires fake');
         $fake = Factory::create();
         for($i=0; $i<600 ; $i++) {
-            $society = $societies[$fake->numberBetween(0,$nbSocieties - 1)];
 
-            $agencies = $society->getImAgencies();
-            $nbAgencies = count($agencies);
-            if($nbAgencies !== 0){
-                $agency = $agencies[$fake->numberBetween(0,$nbAgencies - 1)];
+            $agency = $agencies[$fake->numberBetween(0,$nbAgencies - 1)];
 
-                $negotiators = $agency->getNegotiators();
-                $nbNegotiators = count($negotiators);
+            $negotiators = $agency->getNegotiators();
+            $nbNegotiators = count($negotiators);
 
-                $lastname = $fake->lastName;
-                $firstname = $fake->firstName;
+            $lastname = $fake->lastName;
+            $firstname = $fake->firstName;
 
-                $code = substr($lastname, 0,1) . substr($firstname, 0, 1) . time();
+            $code = substr($lastname, 0,1) . substr($firstname, 0, 1) . time();
 
-                $new = (new ImOwner())
-                    ->setSociety($society)
-                    ->setAgency($agency)
-                    ->setCode($code)
-                    ->setLastname(mb_strtoupper($lastname))
-                    ->setFirstname($firstname)
-                    ->setCivility($fake->numberBetween(0, 2))
-                    ->setPhone1($fake->e164PhoneNumber)
-                    ->setPhone2($fake->e164PhoneNumber)
-                    ->setPhone3($fake->e164PhoneNumber)
-                    ->setEmail($fake->email)
-                    ->setAddress($fake->streetName)
-                    ->setZipcode($fake->postcode)
-                    ->setCity($fake->city)
-                    ->setCountry($fake->country)
-                    ->setCategory($fake->numberBetween(0, 3))
+            $new = (new ImOwner())
+                ->setAgency($agency)
+                ->setCode($code)
+                ->setLastname(mb_strtoupper($lastname))
+                ->setFirstname($firstname)
+                ->setCivility($fake->numberBetween(0, 2))
+                ->setPhone1($fake->e164PhoneNumber)
+                ->setPhone2($fake->e164PhoneNumber)
+                ->setPhone3($fake->e164PhoneNumber)
+                ->setEmail($fake->email)
+                ->setAddress($fake->streetName)
+                ->setZipcode($fake->postcode)
+                ->setCity($fake->city)
+                ->setCountry($fake->country)
+                ->setCategory($fake->numberBetween(0, 3))
+            ;
 
+            if($fake->numberBetween(0,1) == 1){
+                $new = ($new)
+                    ->setIsGerance(true)
+                    ->setCodeGerance(time())
                 ;
+            }
 
-                if($fake->numberBetween(0,1) == 1){
+            if($fake->numberBetween(0,1) == 1){
+                if($negotiator = $negotiators[$fake->numberBetween(0,$nbNegotiators - 1)]){
                     $new = ($new)
-                        ->setIsGerance(true)
-                        ->setCodeGerance(time())
+                        ->setNegotiator($negotiator)
                     ;
                 }
-
-                if($fake->numberBetween(0,1) == 1){
-                    if($negotiator = $negotiators[$fake->numberBetween(0,$nbNegotiators - 1)]){
-                        $new = ($new)
-                            ->setNegotiator($negotiator)
-                        ;
-                    }
-                }
-
-                $this->em->persist($new);
             }
+
+            $emT->persist($new);
         }
         $io->text('OWNERS : Propriétaires fake créés' );
 
-        $this->em->flush();
+        $emT->flush();
 
         $io->newLine();
         $io->comment('--- [FIN DE LA COMMANDE] ---');

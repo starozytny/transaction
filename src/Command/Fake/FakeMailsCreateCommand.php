@@ -34,7 +34,7 @@ class FakeMailsCreateCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [Mail::class]);
+        $this->databaseService->resetTable($io, "default", [Mail::class]);
 
         $users = $this->em->getRepository(User::class)->findAll();
 

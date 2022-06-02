@@ -31,7 +31,7 @@ class FakeContactCreateCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [Notification::class, Contact::class]);
+        $this->databaseService->resetTable($io, "default", [Notification::class, Contact::class]);
 
         $io->title('Création de 110 contacts fake');
         $fake = Factory::create();
