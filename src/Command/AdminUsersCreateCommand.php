@@ -14,13 +14,10 @@ use App\Entity\Mail;
 use App\Entity\Notification;
 use App\Entity\Society;
 use App\Entity\User;
-use App\Service\Data\DataImmo;
-use App\Service\Data\Society\DataSociety;
 use App\Service\DatabaseService;
 use App\Service\Immo\ImmoService;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
-use Faker\Factory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -33,23 +30,18 @@ class AdminUsersCreateCommand extends Command
     private $em;
     private $registry;
     private $databaseService;
-    private $dataSociety;
     private $immoService;
-    private $dataImmo;
 
     const NAME_MANAGER = "transac1";
 
-    public function __construct(ManagerRegistry $registry, DatabaseService $databaseService,
-                                DataSociety $dataSociety, DataImmo $dataImmo, ImmoService $immoService)
+    public function __construct(ManagerRegistry $registry, DatabaseService $databaseService, ImmoService $immoService)
     {
         parent::__construct();
 
         $this->em = $registry->getManager();
         $this->registry = $registry;
         $this->databaseService = $databaseService;
-        $this->dataSociety = $dataSociety;
         $this->immoService = $immoService;
-        $this->dataImmo = $dataImmo;
     }
 
     protected function configure()

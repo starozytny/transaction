@@ -20,6 +20,7 @@ class DataSociety
     {
         return ($obj)
             ->setName(ucfirst($this->sanitizeData->sanitizeString($data->name)))
+            ->setManager($this->sanitizeData->trimData($data->manager))
             ->setCode($code)
         ;
     }
