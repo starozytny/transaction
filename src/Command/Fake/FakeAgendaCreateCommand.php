@@ -2,12 +2,13 @@
 
 namespace App\Command\Fake;
 
+use App\Entity\Society;
 use App\Transaction\Entity\Agenda\AgEvent;
 use App\Transaction\Entity\Immo\ImBien;
 use App\Entity\User;
 use App\Service\Data\Agenda\DataEvent;
 use App\Service\DatabaseService;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Faker\Factory;
 use Symfony\Component\Console\Command\Command;
@@ -24,11 +25,12 @@ class FakeAgendaCreateCommand extends Command
     private $databaseService;
     private $dataEvent;
 
-    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService, DataEvent $dataEvent)
+    public function __construct(ManagerRegistry $registry, DatabaseService $databaseService, DataEvent $dataEvent)
     {
         parent::__construct();
 
-        $this->em = $entityManager;
+        $this->em = $registry->getManager();
+        $this->registry = $registry;
         $this->databaseService = $databaseService;
         $this->dataEvent = $dataEvent;
     }
@@ -39,15 +41,22 @@ class FakeAgendaCreateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+
         $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [AgEvent::class]);
+        $societies = $this->em->getRepository(Society::class)->findAll();
+        foreach($societies as $society){
+            $this->databaseService->resetTable($io, $society->getManager(), [AgEvent::class]);
+        }
 
         $user = $this->em->getRepository(User::class)->findOneBy(['username' => 'shanbo']);
         if(!$user){
             $io->text("Veuillez créer l'user SHANBO avant de lancer cette commande.");
             return Command::FAILURE;
         }
-        $bien = $this->em->getRepository(ImBien::class)->findOneBy(['agency' => $user->getAgency()]);
+
+        $emT = $this->registry->getManager($user->getManager());
+
+        $bien = $emT->getRepository(ImBien::class)->findOneBy(['agency' => $user->getAgencyId()]);
         if(!$bien){
             $io->text("Veuillez créer un bien lié à l'agence de Shanbo avant de lancer cette commande.");
             return Command::FAILURE;
@@ -91,13 +100,13 @@ class FakeAgendaCreateCommand extends Command
             $data = json_decode(json_encode($data));
 
             $new = $this->dataEvent->setDataEvent(new AgEvent(), $data);
-            $new->setCreator($user);
+            $new->setCreator($user->getId());
 
-            $this->em->persist($new);
+            $emT->persist($new);
         }
         $io->text('AGENDA : Slots fake créés' );
 
-        $this->em->flush();
+        $emT->flush();
 
         $io->newLine();
         $io->comment('--- [FIN DE LA COMMANDE] ---');

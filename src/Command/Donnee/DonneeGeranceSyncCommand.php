@@ -74,7 +74,7 @@ class DonneeGeranceSyncCommand extends Command
 
 
         $user = $this->em->getRepository(User::class)->findOneBy(['username' => "shanbo"]);
-        $negotiator = $this->em->getRepository(ImNegotiator::class)->findOneBy(['agency' => $user->getAgency()]);
+        $negotiator = $this->em->getRepository(ImNegotiator::class)->findOneBy(['agency' => $user->getAgencyId()]);
 
         $first = true;
         foreach($sheetData as $item){

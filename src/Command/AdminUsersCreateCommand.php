@@ -122,6 +122,7 @@ class AdminUsersCreateCommand extends Command
         ;
 
         $this->em->persist($society);
+        $this->em->flush();
         $io->text('SOCIETE : Logilink créée' );
 
         $io->title('Création de l\'agence Logilink');

@@ -30,7 +30,7 @@ use App\Entity\User;
 use App\Service\Data\DataImmo;
 use App\Service\DatabaseService;
 use App\Service\Immo\ImmoService;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Faker\Factory;
 use Symfony\Component\Console\Command\Command;
@@ -41,16 +41,19 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class FakeBiensCreate extends Command
 {
     protected static $defaultName = 'fake:biens:create';
-    protected $em;
+    private $em;
+    private $registry;
     private $databaseService;
     private $dataImmo;
     private $immoService;
 
-    public function __construct(EntityManagerInterface $entityManager, DatabaseService $databaseService, DataImmo $dataImmo, ImmoService $immoService)
+    public function __construct(ManagerRegistry $registry, DatabaseService $databaseService,
+                                DataImmo $dataImmo, ImmoService $immoService)
     {
         parent::__construct();
 
-        $this->em = $entityManager;
+        $this->em = $registry->getManager();
+        $this->registry = $registry;
         $this->databaseService = $databaseService;
         $this->dataImmo = $dataImmo;
         $this->immoService = $immoService;
@@ -71,41 +74,48 @@ class FakeBiensCreate extends Command
         $io = new SymfonyStyle($input, $output);
 
         $society = $this->em->getRepository(Society::class)->findOneBy(['name' => "Logilink"]);
-        $agencies = $this->em->getRepository(ImAgency::class)->findBy(['society' => $society]);
-        $nbAgencies = count($agencies);
-        $negotiators = $this->em->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
-        $nbNegotiators = count($negotiators);
-        $users = $this->em->getRepository(User::class)->findBy(['society' => $society]);
-        $nbUsers = count($users);
-        $owners = $this->em->getRepository(ImOwner::class)->findBy(['society' => $society]);
 
-        $io->title('Reset des tables');
-        $this->databaseService->resetTable($io, [
-            ImSeller::class,
-            ImContractant::class,
-            ImContract::class,
-            ImPhoto::class,
-            ImPublish::class,
-            ImOffer::class,
-            ImSuivi::class,
-            ImVisit::class,
-            ImRoom::class,
-            ImBien::class,
-            ImAdvantage::class,
-            ImArea::class,
-            ImDiag::class,
-            ImFeature::class,
-            ImFinancial::class,
-            ImLocalisation::class,
-            ImNumber::class,
-            ImConfidential::class,
-            ImMandat::class,
-        ]);
+        $emT = $this->registry->getManager($society->getManager());
+
+        $users          = $this->em->getRepository(User::class)->findBy(['society' => $society]);
+        $agencies       = $emT->getRepository(ImAgency::class)->findBy(['societyId' => $society->getId()]);
+        $negotiators    = $emT->getRepository(ImNegotiator::class)->findBy(['agency' => $agencies]);
+        $owners         = $emT->getRepository(ImOwner::class)->findBy(['agency' => $agencies]);
+
+        $nbAgencies = count($agencies);
+        $nbNegotiators = count($negotiators);
+        $nbUsers = count($users);
 
         if($nbAgencies == 0 || $nbNegotiators == 0 || $nbUsers == 0){
             $io->text("Veuillez créer un ou des agences/négociateurs/utilisateurs avant de lancer cette commande : " .
                 " Agences : " . $nbAgencies . " Negos : " . $nbNegotiators . " Users : " . $nbUsers);
             return Command::FAILURE;
+        }
+
+        $io->title('Reset des tables');
+        $societies = $this->em->getRepository(Society::class)->findAll();
+        foreach($societies as $society){
+            $this->databaseService->resetTable($io, $society->getManager(), [
+                ImSeller::class,
+                ImContractant::class,
+                ImContract::class,
+                ImPhoto::class,
+                ImPublish::class,
+                ImOffer::class,
+                ImSuivi::class,
+                ImVisit::class,
+                ImRoom::class,
+                ImBien::class,
+                ImAdvantage::class,
+                ImArea::class,
+                ImDiag::class,
+                ImFeature::class,
+                ImFinancial::class,
+                ImLocalisation::class,
+                ImNumber::class,
+                ImConfidential::class,
+                ImMandat::class,
+            ]);
         }
 
         $answers = [0,1,99];
@@ -271,6 +281,8 @@ class FakeBiensCreate extends Command
 
             $data = json_decode(json_encode($data));
 
+            $agency = $this->immoService->getUserAgency($user);
+
             $advert         = $this->dataImmo->setDataAdvert(new ImAdvert(), $data);
             $confidential   = $this->dataImmo->setDataConfidential(new ImConfidential(), $data);
             $financial      = $this->dataImmo->setDataFinancial(new ImFinancial(), $data);
@@ -280,14 +292,14 @@ class FakeBiensCreate extends Command
             $feature        = $this->dataImmo->setDataFeature(new ImFeature(), $data);
             $number         = $this->dataImmo->setDataNumber(new ImNumber(), $data);
             $area           = $this->dataImmo->setDataArea(new ImArea(), $data);
-            $mandat         = $this->dataImmo->setDataMandat($this->immoService, new ImMandat(), $data, $user->getAgency());
+            $mandat         = $this->dataImmo->setDataMandat($this->immoService, new ImMandat(), $data, $agency);
 
-            $obj = $this->dataImmo->setDataBien($user->getAgency(), new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
+            $obj = $this->dataImmo->setDataBien($agency, new ImBien(), $data, $area, $number, $feature, $advantage, $diag,
                 $localisation, $financial, $confidential, $advert, $mandat, []);
 
             $choicesOwners = [];
             foreach($owners as $ow){
-                if($ow->getNegotiator() && $ow->getNegotiator()->getAgency()->getId() == $user->getAgency()->getId()){
+                if($ow->getNegotiator() && $ow->getNegotiator()->getAgency()->getId() == $agency->getId()){
                     $choicesOwners[] = $ow;
                 }
             }
@@ -300,22 +312,23 @@ class FakeBiensCreate extends Command
                     ->setBien($obj)
                 ;
 
-                $this->em->persist($contract);
+                $emT->persist($contract);
 
                 $contractant = (new ImContractant())
                     ->setContract($contract)
                     ->setOwner($owner)
                 ;
 
-                $this->em->persist($contractant);
+                $emT->persist($contractant);
             }
 
             $obj = ($obj)
                 ->setReference(uniqid())
-                ->setUser($user)
+                ->setUserId($user->getId())
                 ->setCreatedBy($user->getShortFullName())
                 ->setIdentifiant(mb_strtoupper(uniqid().bin2hex(random_bytes(4))) . $i)
-                ->setAgency($user->getAgency())
+                ->setSlug(uniqid())
+                ->setAgency($agency)
             ;
 
             if($isArchived == 0){
@@ -340,11 +353,11 @@ class FakeBiensCreate extends Command
                 ;
             }
 
-            $this->em->persist($obj);
+            $emT->persist($obj);
         }
         $io->text('BIENS : Biens fake créés' );
 
-        $this->em->flush();
+        $emT->flush();
 
         $io->newLine();
         $io->comment('--- [FIN DE LA COMMANDE] ---');

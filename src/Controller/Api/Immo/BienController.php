@@ -225,7 +225,7 @@ class BienController extends AbstractController
             $this->updateRemovePhotos($em, $fileUploader, $dataEntity, $folderPhoto, $oriPhotos, $data->photos);
         }
 
-        $obj = $this->addPhotos($em, $fileUploader, $folderPhoto, $dataEntity, $user, $obj, $files, $data->photos);
+        $obj = $this->addPhotos($em, $fileUploader, $folderPhoto, $dataEntity, $agency, $obj, $files, $data->photos);
         $obj = $this->addSupports($em, $obj, $data);
 
         $noErrors = $validator->validate($obj);
@@ -294,7 +294,7 @@ class BienController extends AbstractController
     }
 
     private function addPhotos($em, FileUploader $fileUploader, $folderPhoto, DataImmo $dataEntity,
-                               User $user, ImBien $obj, $files, $photos): ImBien
+                               ImAgency $agency, ImBien $obj, $files, $photos): ImBien
     {
         if ($files) {
             foreach($files as $file){
@@ -305,7 +305,7 @@ class BienController extends AbstractController
                     if(!isset($photo->id) && !$photo->isTrash && $photo->name == $file->getClientOriginalName()){
                         $fileName = $fileUploader->upload($file, $folderPhoto);
 
-                        $donnee = $dataEntity->setDataPhoto(new ImPhoto(), $photo, $fileName, $user->getAgency());
+                        $donnee = $dataEntity->setDataPhoto(new ImPhoto(), $photo, $fileName, $agency);
                         $em->persist($donnee);
 
                         if((int) $photo->rank == 1){
