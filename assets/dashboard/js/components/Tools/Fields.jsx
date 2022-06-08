@@ -4,6 +4,12 @@ import Cleave from 'cleave.js/react'
 
 import { MultiSelect, SimpleSelect } from 'react-selectize';
 
+export function InputView (props) {
+    const { valeur, children } = props;
+
+    return (<ClassiqueStructure {...props} content={<div>{valeur}</div>} label={children} />)
+}
+
 /***************************************
  * INPUT Classique
  ***************************************/
