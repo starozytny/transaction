@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import { Input, InputView, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 
 import { Alert }        from "@dashboardComponents/Tools/Alert";
 import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
@@ -22,8 +22,6 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
     let solItems = helper.getItemsFromDB(sols, sol, 'sol');
     let soustypeItems = helper.getItemsFromDB(sousTypes, sousType, 'sous-types');
     let situationItems = helper.getItems("situations", 'situation');
-    let diag0Items = helper.getItems("diags", 0);
-    let diag1Items = helper.getItems("diags", 1);
 
     return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
         {caseTypeBien === 1 && <>
@@ -141,12 +139,8 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     </div>
 
                     <div className="line line-2">
-                        <Radiobox items={diag0Items} identifiant="dpeLetter" valeur={dpeLetter} errors={errors} onChange={onChange}>
-                            Consommation énergétique DPE
-                        </Radiobox>
-                        <Radiobox items={diag1Items} identifiant="gesLetter" valeur={gesLetter} errors={errors} onChange={onChange}>
-                            Bilan émission GES
-                        </Radiobox>
+                        <InputView valeur={dpeLetter ? dpeLetter : "Veuillez saisir une valeur"} errors={errors}>Consommation énergétique DPE</InputView>
+                        <InputView valeur={gesLetter ? gesLetter : "Veuillez saisir une valeur"} errors={errors}>Bilan émission GES</InputView>
                     </div>
 
                     <div className="line line-2">

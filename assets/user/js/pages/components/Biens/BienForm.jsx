@@ -149,6 +149,13 @@ export class BienForm extends Component {
             this.setState({ caseTypeBien: caseTypeBien })
         }
 
+        if(name === "dpeValue"){
+            this.setState({ dpeLetter: helper.getLetterDpe(value) })
+        }
+        if(name === "gesValue"){
+            this.setState({ gesLetter: helper.getLetterGes(value) })
+        }
+
         this.setState({[name]: value });
     }
 
