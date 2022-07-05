@@ -73,17 +73,17 @@ export class Diag extends Component{
     }
 }
 
-function DiagDetails({ isDpe, elem })
+export function DiagDetails({ isDpe, elem })
 {
     let title = isDpe ? "Diagnostic de performance énergétique" : "Indice d'émission de gaz à effet de serre";
     let lettersDetails = [
-        { le :"A", valDpe: "≤ 50", valGes: "≤ 5" },
-        { le :"B", valDpe: "51 à 90", valGes: "6 à 10" },
-        { le :"C", valDpe: "91 à 150", valGes: "11 à 20" },
-        { le :"D", valDpe: "151 à 230", valGes: "21 à 35" },
-        { le :"E", valDpe: "231 à 330", valGes: "36 à 55" },
-        { le :"F", valDpe: "331 à 450", valGes: "56 à 80" },
-        { le :"G", valDpe: "> 450", valGes: "> 80" }
+        { le :"A", valDpe: "≤ 70", valGes: "≤ 6" },
+        { le :"B", valDpe: "70 à 110", valGes: "6 à 11" },
+        { le :"C", valDpe: "110 à 180", valGes: "11 à 30" },
+        { le :"D", valDpe: "180 à 250", valGes: "30 à 50" },
+        { le :"E", valDpe: "250 à 330", valGes: "50 à 70" },
+        { le :"F", valDpe: "331 à 420", valGes: "70 à 100" },
+        { le :"G", valDpe: "> 420", valGes: "> 100" }
     ]
     let classDiag = isDpe ? "dpe" : "ges";
     let unity = isDpe ? "kWh/m²/an" : "kgCO2/m²/an";
@@ -98,7 +98,6 @@ function DiagDetails({ isDpe, elem })
             <div className="diag-details">
                 <div className={"diag-" + classDiag}>
                     {lettersDetails.map(le => {
-
 
                         let comparator = isDpe ? elem.diag.dpeLetterString : elem.diag.gesLetterString;
                         let active = comparator === le.le ? " active" : "";

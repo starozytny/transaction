@@ -7,6 +7,7 @@ import { DatePick }     from "@dashboardComponents/Tools/DatePicker";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
 import helper from "@userPages/components/Biens/functions/helper";
+import {DiagDetails} from "@userPages/components/Biens/Read/Data/Diag";
 
 const CURRENT_STEP = 3;
 const BIEN_TERRAIN = 3;
@@ -139,17 +140,32 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                     </div>
 
                     <div className="line line-2">
-                        <InputView valeur={dpeLetter ? dpeLetter : "Veuillez saisir une valeur"} errors={errors}>Consommation énergétique DPE</InputView>
-                        <InputView valeur={gesLetter ? gesLetter : "Veuillez saisir une valeur"} errors={errors}>Bilan émission GES</InputView>
+                        <Input type="number" step="any" min={0} identifiant="dpeValue" valeur={dpeValue} errors={errors} onChange={onChange}>
+                            <span>Consommation énergétique DPE en KWh/m² an</span>
+                        </Input>
+                        <Input type="number" step="any" min={0} identifiant="gesValue" valeur={gesValue} errors={errors} onChange={onChange}>
+                            <span>Bilan émission GES en Kg/co² an</span>
+                        </Input>
                     </div>
 
                     <div className="line line-2">
-                        <Input type="number" step="any" min={0} identifiant="dpeValue" valeur={dpeValue} errors={errors} onChange={onChange}>
-                            <span>en KWh/m² an</span>
-                        </Input>
-                        <Input type="number" step="any" min={0} identifiant="gesValue" valeur={gesValue} errors={errors} onChange={onChange}>
-                            <span>en Kg/co² an</span>
-                        </Input>
+                        <div className="form-group form-group-diag">
+                            <DiagDetails isDpe={true} elem={{
+                                diag: {
+                                    dpeValue: dpeValue,
+                                    dpeLetterString: dpeLetter,
+                                    gesValue: gesValue,
+                                }
+                            }}/>
+                        </div>
+                        <div className="form-group form-group-diag">
+                            <DiagDetails isDpe={false} elem={{
+                                diag: {
+                                    gesValue: gesValue,
+                                    gesLetterString: gesLetter
+                                }
+                            }}/>
+                        </div>
                     </div>
 
                     <div className="line line-2">
