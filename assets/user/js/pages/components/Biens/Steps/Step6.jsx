@@ -1,98 +1,144 @@
-import React from "react";
+import React, {Component} from "react";
 
-import { Input, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet/dist/leaflet";
+import "leaflet-ajax/dist/leaflet.ajax.min";
 
+import Map      from "@commonComponents/functions/map";
+import helper   from "@userPages/components/Biens/functions/helper";
+
+import { Checkbox, Input, Radiobox, SelectReactSelectize } from "@dashboardComponents/Tools/Fields";
 import { Alert }        from "@dashboardComponents/Tools/Alert";
+import { Button }       from "@dashboardComponents/Tools/Button";
 import { FormActions }  from "@userPages/components/Biens/Form/Form";
 
-import helper from "@userPages/components/Biens/functions/helper";
-
-const AD_LOCATION = 1;
-const AD_CESSION_BAIL = 4;
-
 const CURRENT_STEP = 6;
+let mymap = null;
+let marker = null;
 
-export function Step6({ step, errors, onNext, onDraft, onChange, onChangeSelect, onChangeCleave,
-                          codeTypeAd,
-                          price, provisionCharges, caution, honoraireTtc, edl, complementLoyer, typeCharges, typeBail, durationBail,
-                          priceMurs, priceHt, pricePlafond })
-{
-    let chargesItems = helper.getItems("charges")
-    let bailsItems = helper.getItems("bails")
+export class Step6 extends Component {
+    constructor(props) {
+        super(props);
 
-    let codeTypeAdInt = parseInt(codeTypeAd);
+        this.state = {
+            init: false
+        }
 
-    return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
-        <div className="line-infos">
-            <Alert iconCustom="exclamation" type="reverse">(*) Champs obligatoires.</Alert>
-        </div>
-        <div className="line special-line">
-            <div className="form-group">
-                <label>Financier</label>
+        this.handleShowMap = this.handleShowMap.bind(this);
+    }
+
+    handleShowMap = () => {
+        // navigator.geolocation.getCurrentPosition(function (pos) {
+        //     let crd = pos.coords;
+        //
+        //     mymap = Map.createMap(crd.latitude, crd.longitude, 15, 13, 30);
+        // }, function () {
+        //     mymap = Map.createMap(43.297648, 5.372835, 15, 13, 30);
+        // })
+
+        if(!this.state.init){
+            mymap = Map.createMap(43.297648, 5.372835, 15, 13, 30);
+        }
+
+        this.setState({ init: true })
+    }
+
+    render () {
+        const { step, errors, quartiers, onNext, onDraft, onChange, onChangeSelect, onChangeZipcode, onChangeGeo,
+            address, hideAddress, zipcode, city, country, departement, newQuartier, quartier, lat, lon, hideMap } = this.props;
+
+        if(lat && lon && mymap){
+            if(marker) mymap.removeLayer(marker)
+            marker = L.marker([lat, lon], {icon: Map.getOriginalLeafletIcon("../../")}).addTo(mymap);
+        }
+
+        let quartiersItems = helper.getItemsFromDB(quartiers, quartier, 'quart', true);
+        let switcherItems = [ { value: 1, label: 'Oui', identifiant: 'oui' } ]
+
+        return <div className={"step-section" + (step === CURRENT_STEP ? " active" : "")}>
+            <div className="line-infos">
+                <Alert type="reverse">(*) Champs obligatoires.</Alert>
             </div>
-            <div className="line line-2">
-                <Input type="cleave" step="any" identifiant="price" valeur={price} errors={errors} onChange={onChangeCleave}>
-                    <span>{codeTypeAdInt !== AD_CESSION_BAIL ? "Loyer charges comprises" : "Prix de cession"} *</span>
-                </Input>
-                {codeTypeAdInt !== AD_CESSION_BAIL ? (codeTypeAdInt === AD_LOCATION ? <>
-                    <Input type="cleave" step="any" identifiant="complementLoyer" valeur={complementLoyer} errors={errors} onChange={onChangeCleave}>
-                        <span>Complément de loyer</span>
+
+            <div className="line special-line">
+                <div className="form-group">
+                    <label>Localisation</label>
+                </div>
+                <div className="line line-2">
+                    <Input identifiant="address" valeur={address} errors={errors} onChange={onChange}>
+                        <span>Adresse *</span>
                     </Input>
-                </> : <><div className="form-group" /></>) : <>
-                    <Input type="cleave" step="any" identifiant="priceMurs" valeur={priceMurs} errors={errors} onChange={onChangeCleave}>
-                        <span>Loyer / mois murs</span>
+                    <Radiobox items={helper.getItems("answers-simple", 0)} identifiant="hideAddress" valeur={hideAddress} errors={errors} onChange={onChange}>
+                        Masquer l'adresse
+                    </Radiobox>
+                </div>
+                <div className="line line-3">
+                    <Input identifiant="zipcode" valeur={zipcode} errors={errors} onChange={onChangeZipcode}>
+                        <span>Code postal *</span>
                     </Input>
-                </>}
-            </div>
-            <div className="line line-2">
-                <Input type="cleave" step="any" identifiant="provisionCharges" valeur={provisionCharges} errors={errors} onChange={onChangeCleave}>
-                    <span>Provision pour charges</span>
-                </Input>
-                <SelectReactSelectize items={chargesItems} identifiant="typeCharges" valeur={typeCharges} errors={errors}
-                                      onChange={(e) => onChangeSelect('typeCharges', e)}>
-                    Type de charges
-                </SelectReactSelectize>
+                    <Input identifiant="city" valeur={city} errors={errors} onChange={onChange}>
+                        <span>Ville *</span>
+                    </Input>
+                    <Input identifiant="country" valeur={country} errors={errors} onChange={onChange}>
+                        <span>Pays *</span>
+                    </Input>
+                </div>
+                {/*<div className="line line-3">*/}
+                {/*    <Input identifiant="departement" valeur={departement} errors={errors} onChange={onChange}>*/}
+                {/*        <span>Département</span>*/}
+                {/*    </Input>*/}
+                {/*    <div className="form-group" />*/}
+                {/*    <div className="form-group" />*/}
+                {/*</div>*/}
+                <div className="line line-2">
+                    <Checkbox isSwitcher={true} items={switcherItems} identifiant="newQuartier" valeur={newQuartier} errors={errors} onChange={onChange}>
+                        Ajouter un quartier à la base de donnée ?
+                    </Checkbox>
+                    {newQuartier[0] === 1 ? <Input identifiant="quartier" valeur={quartier} errors={errors} onChange={onChange}>
+                            <span>Quartier</span>
+                        </Input> : <SelectReactSelectize items={quartiersItems} identifiant="quartier" valeur={quartier} errors={errors}
+                                                         onChange={(e) => onChangeSelect('quartier', e)}>
+                        Quartier
+                    </SelectReactSelectize>}
+                </div>
             </div>
 
-            {codeTypeAdInt === AD_LOCATION && <div className="line line-2">
-                <Input type="cleave" step="any" identifiant="priceHt" valeur={priceHt} errors={errors} onChange={onChangeCleave}>
-                    <span>Loyer hors charges</span>
-                </Input>
-                <Input type="cleave" step="any" identifiant="pricePlafond" valeur={pricePlafond} errors={errors} onChange={onChangeCleave}>
-                    <span>Loyer de référence majoré</span>
-                </Input>
-            </div>}
+            <div className="line special-line">
+                <div className="form-group">
+                    <label>Géolocalisation</label>
+                </div>
+                <div className="line">
+                    <div className="form-group">
+                        <Button type="default" outline={true} icon="placeholder" onClick={onChangeGeo}>Obtenir les coordonnées GPS</Button>
+                    </div>
+                </div>
+                <div className="line line-3">
+                    <Input type="number" step="any" identifiant="lat" valeur={lat} errors={errors} onChange={onChange}>
+                        <span>Latitude</span>
+                    </Input>
+                    <Input type="number" step="any" identifiant="lon" valeur={lon} errors={errors} onChange={onChange}>
+                        <span>Longitude</span>
+                    </Input>
+                    <Radiobox items={helper.getItems("answers-simple", 1)} identifiant="hideMap" valeur={hideMap} errors={errors} onChange={onChange}>
+                        Masquer la géolocalisation
+                    </Radiobox>
+                </div>
+                <div className="line line-3">
+                    <div className="form-group">
+                        <Button outline={true} type="default" icon="map" onClick={this.handleShowMap}>Afficher la carte</Button>
+                    </div>
+                    <div className="form-group" />
+                    <div className="form-group" />
+                </div>
+            </div>
+
+            {!this.state.init && <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />}
+
+            <div className="line line-buttons">
+                <div id="mapid"/>
+            </div>
+
+            {this.state.init && <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />}
         </div>
-
-        <div className="line special-line">
-            <div className="line line-2">
-                <Input type="cleave" step="any" identifiant="caution" valeur={caution} errors={errors} onChange={onChangeCleave}>
-                    <span>Caution</span>
-                </Input>
-                <div className="form-group" />
-            </div>
-            <div className="line line-2">
-                <Input type="cleave" step="any" identifiant="honoraireTtc" valeur={honoraireTtc} errors={errors} onChange={onChangeCleave}>
-                    <span>Honoraires (avec état des lieux) TTC *</span>
-                </Input>
-                <Input type="cleave" step="any" identifiant="edl" valeur={edl} errors={errors} onChange={onChangeCleave}>
-                    <span>Honoraires état des lieux</span>
-                </Input>
-            </div>
-        </div>
-
-        <div className="line special-line">
-            <div className="line line-2">
-                <SelectReactSelectize items={bailsItems} identifiant="typeBail" valeur={typeBail} errors={errors}
-                                      onChange={(e) => onChangeSelect('typeBail', e)}>
-                    Type de bail
-                </SelectReactSelectize>
-                <Input type="number" identifiant="durationBail" valeur={durationBail} errors={errors} onChange={onChange}>
-                    <span>Durée du bail en mois</span>
-                </Input>
-            </div>
-        </div>
-
-        <FormActions onNext={onNext} onDraft={onDraft} currentStep={CURRENT_STEP} />
-    </div>
+    }
 }

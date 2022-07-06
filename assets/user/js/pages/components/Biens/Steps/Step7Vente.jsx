@@ -11,9 +11,9 @@ import Sanitaze from "@commonComponents/functions/sanitaze";
 const AD_VIAGER= 2;
 const AD_FOND_COMMERCE= 7;
 
-const CURRENT_STEP = 6
+const CURRENT_STEP = 7
 
-export function Step6Vente({ step, errors, onNext, onDraft, onChange, onChangeCleave, onChangeSelect,
+export function Step7Vente({ step, errors, onNext, onDraft, onChange, onChangeCleave, onChangeSelect,
                         codeTypeAd,
                         price, chargesMensuelles, notaire, foncier, taxeHabitation, honoraireChargeDe,
                         honorairePourcentage, honoraireTtc, totalGeneral, priceHorsAcquereur,

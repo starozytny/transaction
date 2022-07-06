@@ -23,11 +23,12 @@ import { Step3 }        from "@userPages/components/Biens/Steps/Step3";
 import { Step4 }        from "@userPages/components/Biens/Steps/Step4";
 import { Step5 }        from "@userPages/components/Biens/Steps/Step5";
 import { Step6 }        from "@userPages/components/Biens/Steps/Step6";
-import { Step6Vente }   from "@userPages/components/Biens/Steps/Step6Vente";
 import { Step7 }        from "@userPages/components/Biens/Steps/Step7";
+import { Step7Vente }   from "@userPages/components/Biens/Steps/Step7Vente";
 import { Step8 }        from "@userPages/components/Biens/Steps/Step8";
 import { Step9 }        from "@userPages/components/Biens/Steps/Step9";
 import { Step10 }       from "@userPages/components/Biens/Steps/Step10";
+import { Step11 }       from "@userPages/components/Biens/Steps/Step11";
 
 import { Owners}        from "@dashboardPages/components/Immo/Owners/Owners";
 import { PageInfos2 }   from "@userComponents/Layout/Page";
@@ -408,7 +409,7 @@ export class BienForm extends Component {
         if(stepInitial === null || fromMenu === true){
             let stepValue = fromMenu ? stepInitial + 1 : stepClicked;
             switch (stepValue){
-                case 10:
+                case 11:
                     paramsToValidate = [
                         {type: "text",      id: 'libelle',        value: libelle},
                         {type: "text",      id: 'contentSimple',  value: contentSimple},
@@ -418,7 +419,7 @@ export class BienForm extends Component {
                         {type: "length",    id: 'contentFull',    value: contentFull,   min:0, max: 4000},
                     ]
                     break;
-                case 7:
+                case 8:
                     paramsToValidate = [
                         {type: "text",  id: 'price',         value: price},
                         {type: "text",  id: 'honoraireTtc',  value: honoraireTtc},
@@ -431,7 +432,7 @@ export class BienForm extends Component {
                         ]];
                     }
                     break;
-                case 6:
+                case 7:
                     paramsToValidate = [
                         {type: "text",      id: 'address',  value: address},
                         {type: "text",      id: 'zipcode',  value: zipcode},
@@ -574,12 +575,13 @@ export class BienForm extends Component {
             {id: 2,  label: "Details du bien (1/2)"},
             {id: 3,  label: "Details du bien (2/2)"},
             {id: 4,  label: "Details des pièces"},
-            {id: 5,  label: "Localisation"},
-            {id: 6,  label: "Financier"},
-            {id: 7,  label: "Photos"},
-            {id: 8,  label: "Contacts"},
-            {id: 9,  label: "Description"},
-            {id: 10, label: "Diffusions"},
+            {id: 5,  label: "Diagnostics"},
+            {id: 6,  label: "Localisation"},
+            {id: 7,  label: "Financier"},
+            {id: 8,  label: "Photos"},
+            {id: 9,  label: "Contacts"},
+            {id: 10, label: "Description"},
+            {id: 11, label: "Diffusions"},
         ];
 
         let stepTitle = "Etape 1 : Informations globales";
@@ -658,7 +660,7 @@ export class BienForm extends Component {
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate} />
 
                         <Step3 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
-                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
+                               onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
                                sols={sols} sousTypes={sousTypes}/>
 
                         <Step4 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
@@ -666,36 +668,39 @@ export class BienForm extends Component {
                                refAside={this.aside3} onOpenAside={this.handleOpenAside}
                                ref={this.rooms} sols={sols}/>
 
-                        <Step5 {...this.state}  onDraft={this.handleSubmit} onNext={this.handleNext}
+                        <Step5 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                               onChange={this.handleChange} onChangeDate={this.handleChangeDate}/>
+
+                        <Step6 {...this.state}  onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeZipcode={this.handleChangeZipcode}
                                onChangeGeo={this.handleChangeGeo} quartiers={quartiers} />
 
                         {(codeTypeAdInt === AD_LOCATION || codeTypeAdInt === AD_LOCATION_VAC || codeTypeAdInt === AD_CESSION_BAIL) ? <>
-                                <Step6 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                                <Step7 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                        onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
                                        onChangeCleave={this.handleChangeCleave}/>
                             </>
-                            : <Step6Vente {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                            : <Step7Vente {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                           onChange={this.handleChange} onChangeSelect={this.handleChangeSelect}
                                           onChangeCleave={this.handleChangeCleave}/>}
 
-                        <Step7 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                        <Step8 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChangeFile={this.handleChangeFile} onSwitchTrashFile={this.handleSwitchTrashFile}
                                onChangeLegend={this.handleChangeLegend} onSaveLegend={this.handleSaveLegend}
                                onDragStart={this.handleDragStart} onDrop={this.handleDrop} onDragLeave={this.handleDragLeave}
                                refAside={this.aside0} onOpenAside={this.handleOpenAside} />
 
-                        <Step8 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                        <Step9 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onChangeDate={this.handleChangeDate}
                                refAside1={this.aside1} onOpenAside={this.handleOpenAside} onSelectOwner={this.handleSelectOwner}
                                allOwners={allOwners} />
 
-                        <Step9 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
+                        <Step10 {...this.state} onDraft={this.handleSubmit} onNext={this.handleNext}
                                onChange={this.handleChange} onChangeSelect={this.handleChangeSelect} onOpenHelp={this.handleOpenHelp}
                                onGenerateContent={this.handleGenerateContent}
                                negotiators={negotiators} />
 
-                        <Step10 {...this.state} onSubmit={this.handleSubmit} onDraft={this.handleSubmit} onNext={this.handleNext}
+                        <Step11 {...this.state} onSubmit={this.handleSubmit} onDraft={this.handleSubmit} onNext={this.handleNext}
                                 onChange={this.handleChange} allSupports={allSupports}/>
 
                     </form>
