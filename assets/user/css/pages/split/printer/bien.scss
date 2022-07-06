@@ -121,28 +121,6 @@
     margin-top: 0;
     margin-bottom: 0;
   }
-
-  .diag-details{
-    .diag-dpe, .diag-ges{
-      $sizes: (
-              '1': 50%,
-              '2': 56%,
-              '3': 63%,
-              '4': 73%,
-              '5': 83%,
-              '6': 93%,
-              '7': 100%,
-      );
-
-      @each $i, $size in $sizes {
-        .diag-line:nth-child(#{$i}){
-          .diag-letter{
-            width: calc(#{$size} - 100px - 100px - 16px - 4px);
-          }
-        }
-      }
-    }
-  }
 }
 
 .print-ad-portrait{
@@ -150,12 +128,12 @@
     @include flex(row, flex-start, flex-start);;
 
     .col-1{
-      width: calc(50% - 48px);
-      margin-right: 48px;
+      width: 312px;
     }
 
     .col-2{
-      width: 50%;
+      width: calc(50% - 24px);
+      margin-left: 24px;
     }
 
     .image{
@@ -168,7 +146,7 @@
 
   .line-2{
     position: relative;
-    margin-top: 24px;
+    margin-top: 12px;
 
     &:before{
       content: "";
@@ -186,26 +164,24 @@
       @include flex(row, flex-start, space-between);
 
       img{
-        width: 218px;
-        height: 218px;
+        width: 210px;
+        height: 160px;
       }
     }
   }
 
   .line-3{
-    @include flex(row, flex-start, flex-start);
-    margin: 24px 0;
-    padding-top: 24px;
-    border-top: 1px solid var(--greyShadow);
+    @include flex(row, stretch, flex-start);
+    margin: 12px 0;
 
     .col-1{
+      @include flex(column, flex-start, space-between);
       width: calc(60% - 48px);
       margin-right: 48px;
-      height: 300px;
 
       .content{
-        -webkit-line-clamp: 3; /* number of lines to show */
-        line-clamp: 3;
+        -webkit-line-clamp: 7; /* number of lines to show */
+        line-clamp: 7;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -215,37 +191,47 @@
 
     .col-2{
       width: 40%;
+
+      &.col-agency{
+        .infos:nth-child(2){
+          display: inline-block;
+          width: calc(100% - 64px - 12px);
+          margin-left: 12px;
+        }
+        .infos:nth-child(3){
+          margin-top: 4px;
+        }
+      }
+    }
+
+    .infos-footer{
+      @include flex(row, flex-start, space-between);
+      width: 100%;
     }
   }
 
-  .line-4{
-    background-color: var(--greyShadow);
-    padding: 24px 0;
+  .diag-excessif{
+    text-align: center;
+  }
 
-    .col-1{
-      @include flex(row, flex-start, flex-start);
-    }
+  .diag-details{
+    .diag-dpe, .diag-ges{
+      $sizes: (
+              '1': 63%,
+              '2': 67%,
+              '3': 69%,
+              '4': 73%,
+              '5': 83%,
+              '6': 93%,
+              '7': 100%,
+      );
 
-    .image{
-      width: 64px;
-      margin-left: 24px;
-    }
-
-    .infos{
-      margin-left: 24px;
-
-      &:not(:first-child){
-        margin-left: 48px;
-      }
-
-      .name{
-        @include fontSemibold();
-        font-size: 20px;
-        margin-bottom: 8px;
-      }
-
-      .name-sub{
-        @include fontRegular();
+      @each $i, $size in $sizes {
+        .diag-line:nth-child(#{$i}){
+          .diag-letter{
+            width: calc(#{$size} - 100px - 100px - 16px - 4px);
+          }
+        }
       }
     }
   }
@@ -311,43 +297,6 @@
     margin-right: 12px;
   }
 
-  .col-2-line-1-col-2{
-    @include flex(row, flex-start, flex-start);
-    flex-wrap: wrap;
-    background-color: var(--greyShadow);
-    font-size: 15px;
-    padding: 12px;
-    width: 200px;
-
-    .image{
-      width: 64px;
-    }
-
-    .infos:nth-child(2),
-    .infos:nth-child(3),
-    .infos:nth-child(4),{
-      width: 100%;
-    }
-
-    .infos:nth-child(3),
-    .infos:nth-child(4){
-      margin-top: 8px;
-    }
-
-    .infos{
-      .name{
-        @include fontSemibold();
-        font-size: 20px;
-        margin-bottom: 4px;
-        margin-top: 8px;
-      }
-
-      .name-sub{
-        @include fontRegular();
-      }
-    }
-  }
-
   .col-3{
     width: 100%;
     margin-top: 8px;
@@ -363,5 +312,64 @@
 
   .details-tab-infos{
     margin-top: 48px;
+  }
+
+  .diag-details{
+    .diag-dpe, .diag-ges{
+      $sizes: (
+              '1': 50%,
+              '2': 56%,
+              '3': 63%,
+              '4': 73%,
+              '5': 83%,
+              '6': 93%,
+              '7': 100%,
+      );
+
+      @each $i, $size in $sizes {
+        .diag-line:nth-child(#{$i}){
+          .diag-letter{
+            width: calc(#{$size} - 100px - 100px - 16px - 4px);
+          }
+        }
+      }
+    }
+  }
+}
+
+.col-agency{
+  @include flex(row, flex-start, flex-start);
+  flex-wrap: wrap;
+  background-color: var(--greyShadow);
+  font-size: 15px;
+  padding: 12px;
+  width: 200px;
+
+  .image{
+    width: 64px;
+  }
+
+  .infos:nth-child(2),
+  .infos:nth-child(3),
+  .infos:nth-child(4),{
+    width: 100%;
+  }
+
+  .infos:nth-child(3),
+  .infos:nth-child(4){
+    margin-top: 8px;
+  }
+
+  .infos{
+    .name{
+      @include fontSemibold();
+      font-size: 20px;
+      margin-bottom: 4px;
+      margin-top: 8px;
+    }
+
+    .name-sub{
+      @include fontRegular();
+    }
   }
 }

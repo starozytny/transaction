@@ -56,14 +56,14 @@ export function PrintBienPortrait ({ elem, photos }){
                 <Description content={elem.advert.contentFull} />
                 <Reference elem={elem} />
             </div>
-            <div className="col-2">
-                <Diag elem={elem} />
+            <div className="col-2 col-agency">
+                <Agence elem={elem.agency} codeTypeAd={elem.codeTypeAd} />
             </div>
         </div>
 
         <div className="line-4">
             <div className="col-1">
-                <Agence elem={elem.agency} codeTypeAd={elem.codeTypeAd} />
+                <Diag elem={elem} />
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@ export function PrintBienLandscape ({ elem, photos }){
                     <Price elem={elem} />
                     <InfosPrice elem={elem} />
                 </div>
-                <div className="col-2-line-1-col-2">
+                <div className="col-2-line-1-col-2 col-agency">
                     <Agence elem={elem.agency} codeTypeAd={elem.codeTypeAd} />
                 </div>
             </div>
