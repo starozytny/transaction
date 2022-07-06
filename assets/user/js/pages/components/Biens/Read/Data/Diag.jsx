@@ -28,12 +28,10 @@ export class Diag extends Component{
 
                 diagInfos = <>
                     {diagnostic.referenceDpe ? <>
-                        <div>Date de référence des prix de l'énergie utilisés pour établir cette estimation : {diagnostic.referenceDpe}</div>
+                        <div>Date de référence des prix de l'énergie utilisés : {diagnostic.referenceDpe}</div>
                     </> : ""}
                     {diagnostic.minAnnual && diagnostic.minAnnual !== 0 && diagnostic.maxAnnual && diagnostic.maxAnnual !== 0 ? <>
-                        <div>Montant estimé des dépenses annuelles d'énergie
-                            pour un usage
-                            standard : entre {Sanitaze.toFormatCurrency(diagnostic.minAnnual)} et {Sanitaze.toFormatCurrency(diagnostic.maxAnnual)} / an</div>
+                        <div>Estimation des coûts annuels d’énergie du logement : entre {Sanitaze.toFormatCurrency(diagnostic.minAnnual)} et {Sanitaze.toFormatCurrency(diagnostic.maxAnnual)} / an</div>
                     </> : ""}
                 </>
             }

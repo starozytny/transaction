@@ -247,7 +247,7 @@ class ImDiag extends DataEntity
      */
     public function getDpeLetterString(): ?string
     {
-        $values = ["A", "B", "C", "D", "E", "F", "G"];
+        $values = ["", "A", "B", "C", "D", "E", "F", "G"];
         return $this->dpeLetter ? $values[$this->dpeLetter] : null;
     }
 
@@ -257,7 +257,7 @@ class ImDiag extends DataEntity
      */
     public function getGesLetterString(): ?string
     {
-        $values = ["A", "B", "C", "D", "E", "F", "G"];
+        $values = ["", "A", "B", "C", "D", "E", "F", "G"];
         return $this->gesLetter ? $values[$this->gesLetter] : null;
     }
 }

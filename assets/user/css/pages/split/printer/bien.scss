@@ -1,4 +1,7 @@
 @import "../../../vars/vars";
+@page {
+  margin: 18px 24px;
+}
 
 .print-ad{
   page-break-after: always;
@@ -15,12 +18,12 @@
   }
 
   .features{
-    margin: 12px 0;
+    margin: 4px 0 8px 0;
     font-size: 18px;
   }
 
   .price{
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 
     & > span:first-child{
       @include fontSemibold();
@@ -32,7 +35,7 @@
   .infos-price{
     color: var(--grey3);
     height: 150px;
-    font-size: 18px;
+    font-size: 16px;
 
     & > div{
       margin-bottom: 4px;
@@ -40,13 +43,12 @@
   }
 
   .infos-footer{
-    margin-top: 12px;
+    margin-top: 8px;
   }
 
   .reference{
     font-size: 14px;
     color: var(--grey3);
-    margin-top: 8px;
   }
 
   .diags-inline{
@@ -54,44 +56,90 @@
     margin-top: 8px;
   }
 
-  .diag-title{
-    margin-bottom: 4px;
-    min-height: 73px;
+  .diag-infos{
+    margin-bottom: 2px;
   }
 
-  .diagnostic-details{
-    .diag-ges,
-    .diag-dpe{
-      .dpe,
-      .ges{
-        padding: 2px 4px;
+  .graphs{
+    max-width: initial;
+    width: 100%;
+    @include flex(row, flex-start, space-between);
 
-        &.dpe_is-active2,
-        &.ges_is-active2{
-          & + .number{
-            min-width: 40px;
-            padding: 6px 8px 4px 8px;
-            font-size: 18px;
-            right: -86px;
-          }
-        }
+    .graph{
+      width: 50%;
+    }
+
+    .graph:nth-child(2){
+      margin-left: 24px;
+    }
+  }
+
+  .diagnostic{
+    margin-bottom: 18px;
+  }
+
+  .diagnostic-dpe{
+    .diag-borne {
+      margin-left: 196px;
+    }
+  }
+
+  .diagnostic-ges{
+    transform: translateX(0);
+  }
+
+  .diag-title{
+    margin-bottom: 4px;
+  }
+
+  .diag-line{
+    .number-2, &.active .number-2{
+      display: flex;
+      border-radius: 0;
+
+      .flottant{
+        bottom: -26px;
+        left: 18px;
       }
+    }
+  }
 
+  .diag-line .number-2, .diag-line.active .number-2{
+    display: flex;
+  }
+
+  .diag-line .diag-letter,
+  .diag-line .number{
+    padding: 1px 8px 1px 8px;
+  }
+
+  .diag-line.active .number .value{
+    font-size: 18px;
+  }
+
+  .diag-excessif{
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .diag-details{
+    .diag-dpe, .diag-ges{
       $sizes: (
-              '1': 15%,
-              '2': 22%,
-              '3': 28%,
-              '4': 32%,
-              '5': 37%,
-              '6': 43%,
-              '7': 50%,
+              '1': 50%,
+              '2': 56%,
+              '3': 63%,
+              '4': 73%,
+              '5': 83%,
+              '6': 93%,
+              '7': 100%,
       );
 
       @each $i, $size in $sizes {
-        & > div:nth-child(#{$i}){
-          width: $size;
+        .diag-line:nth-child(#{$i}){
+          .diag-letter{
+            width: calc(#{$size} - 100px - 100px - 16px - 4px);
+          }
         }
-
       }
     }
   }
@@ -156,8 +204,8 @@
       height: 300px;
 
       .content{
-        -webkit-line-clamp: 13; /* number of lines to show */
-        line-clamp: 13;
+        -webkit-line-clamp: 3; /* number of lines to show */
+        line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -208,16 +256,15 @@
   flex-wrap: wrap;
 
   .col-1{
-    width: calc(50% - 48px);
-    margin-right: 48px;
+    width: 320px;
 
     .line-1{
       .image{
         margin-bottom: 8px;
 
         img{
-          width: 442px;
-          height: 380px;
+          width: 320px;
+          height: 280px;
         }
       }
     }
@@ -229,63 +276,81 @@
         @include flex(row, flex-start, space-between);
 
         img{
-          width: 134px;
-          height: 134px;
-        }
-      }
-    }
-
-    .line-3{
-      @include flex(row, flex-start, flex-start);
-      flex-wrap: wrap;
-      background-color: var(--greyShadow);
-      padding: 12px 0;
-      margin-top: 24px;
-
-      .image{
-        width: 64px;
-        margin-left: 12px;
-      }
-
-      .infos:nth-child(2){
-        width: calc(100% - 64px - 48px - 12px);
-        margin-left: 48px;
-      }
-
-      .infos:nth-child(3),
-      .infos:nth-child(4){
-        margin-top: 12px;
-      }
-
-      .infos:nth-child(3){
-        width: calc(50% - 12px);
-        margin-left: 12px;
-      }
-
-      .infos:nth-child(4){
-        width: 50%;
-      }
-
-      .infos{
-        .name{
-          @include fontSemibold();
-          font-size: 20px;
-          margin-bottom: 8px;
-        }
-
-        .name-sub{
-          @include fontRegular();
+          width: 96px;
+          height: 96px;
         }
       }
     }
   }
 
   .col-2{
-    width: 50%;
+    width: calc(100% - 320px - 24px);
+    margin-left: 24px;
+
+    .line-1{
+      @include flex(row, stretch, space-between);
+    }
+
+    .line-2{
+      margin-top: 8px;
+    }
+
+    .content{
+      -webkit-line-clamp: 5; /* number of lines to show */
+      line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      line-height: 1.3;
+    }
+  }
+
+  .col-2-line-1-col-1{
+    width: calc(100% - 200px - 12px);
+    margin-right: 12px;
+  }
+
+  .col-2-line-1-col-2{
+    @include flex(row, flex-start, flex-start);
+    flex-wrap: wrap;
+    background-color: var(--greyShadow);
+    font-size: 15px;
+    padding: 12px;
+    width: 200px;
+
+    .image{
+      width: 64px;
+    }
+
+    .infos:nth-child(2),
+    .infos:nth-child(3),
+    .infos:nth-child(4),{
+      width: 100%;
+    }
+
+    .infos:nth-child(3),
+    .infos:nth-child(4){
+      margin-top: 8px;
+    }
+
+    .infos{
+      .name{
+        @include fontSemibold();
+        font-size: 20px;
+        margin-bottom: 4px;
+        margin-top: 8px;
+      }
+
+      .name-sub{
+        @include fontRegular();
+      }
+    }
   }
 
   .col-3{
     width: 100%;
+    margin-top: 8px;
   }
 
   .infos-price{

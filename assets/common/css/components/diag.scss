@@ -78,7 +78,7 @@ $colorsGES: (
 }
 
 .diagnostic{
-  margin-bottom: 48px;
+  margin-bottom: 8px;
 }
 
 .diag-infos{
@@ -100,6 +100,7 @@ $colorsGES: (
 .diag-excessif{
   @include fontSemibold();
   margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .diags{
@@ -137,13 +138,17 @@ $colorsGES: (
 
   .flottant{
     position: absolute;
-    bottom: -59px;
+    bottom: -41px;
     left: 0;
     font-size: 14px;
     text-align: center;
 
     & > div:first-child{
       @include fontSemibold();
+    }
+
+    & > div:nth-child(2){
+      font-size: 12px;
     }
   }
 
@@ -216,6 +221,10 @@ $colorsGES: (
 //                     | |   /_/  \___/ \___/   | |
 //                     |__|                    |__|
 @media (min-width:768px) {
+  .diagnostic{
+    margin-bottom: 18px;
+  }
+
   .diagnostic-dpe{
     .diag-borne {
       margin-left: 196px;
