@@ -153,8 +153,9 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                             <DiagDetails isDpe={true} elem={{
                                 diag: {
                                     dpeValue: dpeValue,
-                                    dpeLetterString: dpeLetter,
                                     gesValue: gesValue,
+                                    dpeLetter: dpeLetter,
+                                    gesLetter: gesLetter,
                                 }
                             }}/>
                         </div>
@@ -162,7 +163,7 @@ export function Step3({ step, errors, onNext, onDraft, onChange, onChangeSelect,
                             <DiagDetails isDpe={false} elem={{
                                 diag: {
                                     gesValue: gesValue,
-                                    gesLetterString: gesLetter
+                                    gesLetter: gesLetter
                                 }
                             }}/>
                         </div>

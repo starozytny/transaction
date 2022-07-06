@@ -450,19 +450,19 @@ function getLetterDpe(value) {
 
     let letter = "Veuillez saisir une valeur valide."
     if(value < 70){
-        letter = "A"
+        letter = 1
     }else if(value >= 70 && value < 110){
-        letter = "B"
+        letter = 2
     }else if(value >= 110 && value < 180){
-        letter = "C"
+        letter = 3
     }else if(value >= 180 && value < 250){
-        letter = "D"
+        letter = 4
     }else if(value >= 250 && value < 330){
-        letter = "E"
+        letter = 5
     }else if(value >= 330 && value < 420){
-        letter = "F"
+        letter = 5
     }else if(value >= 420){
-        letter = "G"
+        letter = 7
     }
 
     return letter;
@@ -472,19 +472,19 @@ function getLetterGes(value) {
 
     let letter = "Veuillez saisir une valeur valide."
     if(value < 6){
-        letter = "A"
+        letter = 1
     }else if(value >= 6 && value < 11){
-        letter = "B"
+        letter = 2
     }else if(value >= 11 && value < 30){
-        letter = "C"
+        letter = 3
     }else if(value >= 30 && value < 50){
-        letter = "D"
+        letter = 4
     }else if(value >= 50 && value < 70){
-        letter = "E"
+        letter = 5
     }else if(value >= 70 && value < 100){
-        letter = "F"
+        letter = 6
     }else if(value >= 100){
-        letter = "G"
+        letter = 7
     }
 
     return letter;

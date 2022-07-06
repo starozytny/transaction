@@ -76,15 +76,7 @@ export class Diag extends Component{
 export function DiagDetails({ isDpe, elem })
 {
     let title = isDpe ? "Diagnostic de performance énergétique" : "Indice d'émission de gaz à effet de serre";
-    let lettersDetails = [
-        { le :"A", valDpe: "≤ 70", valGes: "≤ 6" },
-        { le :"B", valDpe: "70 à 110", valGes: "6 à 11" },
-        { le :"C", valDpe: "110 à 180", valGes: "11 à 30" },
-        { le :"D", valDpe: "180 à 250", valGes: "30 à 50" },
-        { le :"E", valDpe: "250 à 330", valGes: "50 à 70" },
-        { le :"F", valDpe: "331 à 420", valGes: "70 à 100" },
-        { le :"G", valDpe: "> 420", valGes: "> 100" }
-    ]
+    let lettersDetails = ["", "A", "B", "C", "D", "E", "F", "G"];
     let classDiag = isDpe ? "dpe" : "ges";
     let unity = isDpe ? "kWh/m²/an" : "kgCO2/m²/an";
     let borneA = isDpe ? "Logement extrêmement performant" : "Peu d'émissions de CO2";
@@ -97,41 +89,46 @@ export function DiagDetails({ isDpe, elem })
             <div className="diag-borne">{borneA}</div>
             <div className="diag-details">
                 <div className={"diag-" + classDiag}>
-                    {lettersDetails.map(le => {
+                    {lettersDetails.map((letter, index) => {
+                        if(index !== 0){
+                            let comparator = isDpe ? elem.diag.dpeLetter : elem.diag.gesLetter;
+                            if(isDpe && elem.diag.gesLetter && elem.diag.gesLetter > elem.diag.dpeLetter){
+                                comparator = elem.diag.gesLetter;
+                            }
 
-                        let comparator = isDpe ? elem.diag.dpeLetterString : elem.diag.gesLetterString;
-                        let active = comparator === le.le ? " active" : "";
+                            let active = comparator === index ? " active" : "";
 
-                        return <div className={"diag-line" + active} key={le.le}>
-                            <div className="number">
-                                <div className="value">{value ? value : "N.C"}</div>
-                                {comparator === le.le ? <>
-                                    <div className="unity">{unity}</div>
-                                    <div className="flottant">
-                                        {isDpe ? <>
-                                            <div>consommation</div>
-                                            <div>(énergie primaire)</div>
-                                        </> : <>
-                                            <div>émissions</div>
-                                        </>}
-                                    </div>
-                                </> : null}
-                            </div>
-                            {isDpe ? <>
-                                <div className="number number-2">
-                                    <div className="value">{elem.diag.gesValue ? elem.diag.gesValue : "N.C"}</div>
-                                    {comparator === le.le ? <>
-                                        <div className="unity">kgCO2/m²/an</div>
+                            return <div className={"diag-line" + active} key={index}>
+                                <div className="number">
+                                    <div className="value">{value ? value : "N.C"}</div>
+                                    {comparator === index ? <>
+                                        <div className="unity">{unity}</div>
                                         <div className="flottant">
-                                            <div>émissions</div>
+                                            {isDpe ? <>
+                                                <div>consommation</div>
+                                                <div>(énergie primaire)</div>
+                                            </> : <>
+                                                <div>émissions</div>
+                                            </>}
                                         </div>
                                     </> : null}
                                 </div>
-                            </> : null}
-                            <div className={"diag-letter " + classDiag + " " + classDiag + "-" + le.le.toLowerCase()} key={le.le}>
-                                <div className="letter">{le.le}</div>
+                                {isDpe ? <>
+                                    <div className="number number-2">
+                                        <div className="value">{elem.diag.gesValue ? elem.diag.gesValue : "N.C"}</div>
+                                        {comparator === index ? <>
+                                            <div className="unity">kgCO2/m²/an</div>
+                                            <div className="flottant">
+                                                <div>émissions</div>
+                                            </div>
+                                        </> : null}
+                                    </div>
+                                </> : null}
+                                <div className={"diag-letter " + classDiag + " " + classDiag + "-" + lettersDetails[index].toLowerCase()}>
+                                    <div className="letter">{lettersDetails[index]}</div>
+                                </div>
                             </div>
-                        </div>
+                        }
                     })}
                 </div>
             </div>
