@@ -140,7 +140,6 @@ class DataImmo extends DataConstructor
 
         // Création de l'objet
         return ($obj)
-            ->setSlug(null)
             ->setCodeTypeAd((int) $codeTypeAd)
             ->setCodeTypeBien((int) $codeTypeBien)
             ->setLibelle($this->sanitizeData->trimData($libelle))
