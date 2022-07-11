@@ -129,7 +129,12 @@ export class ChartAds extends Component {
                     '#421243',
                 ],
                 grid: { show: false },
-                dataLabels: { enabled: false },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function (val, opts) {
+                        return opts.w.config.series[opts.seriesIndex];
+                    }
+                },
                 stroke: { curve: 'smooth' },
             },
         })
