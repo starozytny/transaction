@@ -31,7 +31,7 @@ export function UserFormulaire ({ type, element, societyId, agencyId, negotiator
         roles={element ? element.roles : []}
         negotiator={element ? element.negotiatorId : ""}
         society={element ? element.society.id : societyId}
-        agency={element ? element.agency.id : agencyId}
+        agency={element ? element.agencyId : agencyId}
         negotiators={negotiators}
         messageSuccess={msg}
         isProfil={true}

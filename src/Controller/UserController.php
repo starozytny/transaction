@@ -92,20 +92,23 @@ class UserController extends AbstractController
      */
     public function profil(Request $request, SerializerInterface $serializer): Response
     {
-        $em = $this->doctrine->getManager();
-        $context = $request->query->get('ct');
-
         /** @var User $obj */
         $obj = $this->getUser();
 
-        $users       = $em->getRepository(User::class)->findBy(['agency' => $obj->getAgencyId()]);
-        $agencies    = $em->getRepository(ImAgency::class)->findBy(['society' => $obj->getSociety()]);
+        $em  = $this->doctrine->getManager();
+        $emT = $this->immoService->getEntityUserManager($obj);
+        $context = $request->query->get('ct');
+
+        $agency      = $this->immoService->getUserAgency($obj);
+        $users       = $em->getRepository(User::class)->findBy(['agencyId' => $obj->getAgencyId()]);
+        $agencies    = $emT->getRepository(ImAgency::class)->findBy(['societyId' => $obj->getSociety()->getId()]);
 
         $users       = $serializer->serialize($users, 'json', ['groups' => User::ADMIN_READ]);
         $agencies    = $serializer->serialize($agencies, 'json', ['groups' => User::ADMIN_READ]);
 
         return $this->render('user/pages/profil/index.html.twig',  [
             'obj' => $obj,
+            'agency' => $agency,
             'users' => $users,
             'agencies' => $agencies,
             'context' => $context ?: 'users'
@@ -117,10 +120,10 @@ class UserController extends AbstractController
      */
     public function profilUpdate(SerializerInterface $serializer): Response
     {
-        $em = $this->doctrine->getManager();
-
         /** @var User $obj */
         $obj = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($obj);
+
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgencyId()]);
 
         $data = $serializer->serialize($obj, 'json', ['groups' => User::ADMIN_READ]);
@@ -136,10 +139,10 @@ class UserController extends AbstractController
      */
     public function userCreate(SerializerInterface $serializer): Response
     {
-        $em = $this->doctrine->getManager();
-
         /** @var User $obj */
         $obj = $this->getUser();
+        $em = $this->immoService->getEntityUserManager($obj);
+
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgencyId()]);
 
         $negotiators = $serializer->serialize($negotiators, 'json', ['groups' => User::ADMIN_READ]);
@@ -154,7 +157,7 @@ class UserController extends AbstractController
      */
     public function userUpdate(User $obj, SerializerInterface $serializer): Response
     {
-        $em = $this->doctrine->getManager();
+        $em = $this->immoService->getEntityUserManager($obj);
 
         $negotiators = $em->getRepository(ImNegotiator::class)->findBy(['agency' => $obj->getAgencyId()]);
 
