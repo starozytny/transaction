@@ -42,6 +42,7 @@ class UserController extends AbstractController
         $em  = $this->doctrine->getManager();
         $emT = $this->immoService->getEntityUserManager($user);
 
+        $agency         = $this->immoService->getUserAgency($user);
         $changelogs     = $em->getRepository(Changelog::class)->findBy(['isPublished' => true], ['createdAt' => 'DESC'], 5);
         $biensAgency    = $emT->getRepository(ImBien::class)->findBy(['agency' => $user->getAgencyId(), 'status' => ImBien::STATUS_ACTIF, 'isArchived' => false, 'isDraft' => false]);
         $biensVisits    = $emT->getRepository(ImBien::class)->findBy(['agency' => $user->getAgencyId()]);
@@ -73,7 +74,8 @@ class UserController extends AbstractController
             'stats' => $stats,
             'lastPublish' => $lastPublish,
             'statsAds' => $statsAds,
-            'biens' => $biens
+            'biens' => $biens,
+            'agency' => $agency,
         ]);
     }
 
